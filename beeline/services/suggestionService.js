@@ -1,7 +1,6 @@
 
 
-export default function init(app) {
-    app.factory('suggestionService', function($http) {
+export default function($http) {
         var suggestions = [];
         var selectedSuggestion = null;
         var similarSuggestions = [];
@@ -58,5 +57,4 @@ export default function init(app) {
                 return selectedSuggestion;
             }
         };
-    })
-}
+    }

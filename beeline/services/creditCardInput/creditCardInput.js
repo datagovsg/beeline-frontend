@@ -1,8 +1,7 @@
 import {defaultMapOptions, dashedLineIcons} from '../../shared/util'
 import assert from 'assert'
 
-export default function CreditCardInput(app) {
-    app.factory('creditCardInput', [
+export default [
         '$state',
         '$ionicModal',
         '$rootScope',
@@ -63,5 +62,4 @@ export default function CreditCardInput(app) {
                 return pr;
             }
         };
-    }]);
-};
+    }];

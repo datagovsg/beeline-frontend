@@ -1,8 +1,6 @@
 import qs from 'querystring';
 
-export default function init(app) {
-
-	app.factory('Search', function(userService) {
+export function SearchService(userService) {
 		return {
 			data: {
 				startName: '',
@@ -55,8 +53,9 @@ export default function init(app) {
 				this.data.arrivalTime = arrivalTime.toISOString();
 			}
 		};
-	})
-	.factory('Routes', function(userService) {
+	}
+
+export function RoutesService(userService) {
 		return {
 			data: {
 				routedata: {},
@@ -88,5 +87,4 @@ export default function init(app) {
 				}
 			}
 		};
-	})
-}
+	}

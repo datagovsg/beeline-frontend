@@ -1,4 +1,4 @@
-import DatePicker from './directives/datePicker/datePicker'
+import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker'
 import DateService from './services/dateService'
 import {BookingController} from './controllers/booking'
 import {BookingDatesController} from './controllers/bookingDates'
@@ -13,8 +13,8 @@ import {RouteListController} from './controllers/routelistcontroller'
 import QtyInput from './directives/qtyInput/qtyInput'
 import PriceCalculator from './directives/priceCalculator/priceCalculator'
 import BusStopSelector from './directives/busStopSelector/busStopSelector'
-import RoutesService from './services/routesService'
-import TicketService from './services/ticketService'
+import {SearchService, RoutesService} from './services/routesService'
+import {TicketService, UserService, TripService, CompanyService} from './services/ticketService'
 import SuggestionService from './services/suggestionService'
 import CreditCardInput from './services/creditCardInput/creditCardInput'
 import RevGeocode from './directives/revGeocode/revGeocode'
@@ -22,72 +22,42 @@ import BookingService from './services/bookingService'
 import OneMapService from './services/oneMapService'
 import SuggestionViewer from './directives/suggestionViewer/suggestionViewer'
 import StartEndPicker from './directives/startEndPicker/startEndPicker'
-
-
 import AngularGoogleMap from 'angular-google-maps'
 import {formatDate, formatDateMMMdd, formatTime,
     formatUTCDate, titleCase} from './shared/format'
 import {setupBroadcastViewEnter} from './shared/util'
 
-// Ionic Starter App
+Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-
-window.Beeline = angular.module('BeelineModule', [
-    'ionic'
+var app = angular.module('beeline', [
+    'ionic',
+    'ngCordova',
+    'uiGmapgoogle-maps'
 ])
+
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
 .filter('formatTime', () => formatTime)
 .filter('formatHHMM_ampm', () => formatHHMM_ampm)
 .filter('titleCase', () => titleCase)
-
-DateService(Beeline);
-DatePicker(Beeline);
-QtyInput(Beeline);
-SuggestionViewer(Beeline);
-StartEndPicker(Beeline);
-BusStopSelector(Beeline);
-PriceCalculator(Beeline);
-TicketService(Beeline);
-SuggestionService(Beeline);
-RoutesService(Beeline);
-BookingService(Beeline);
-OneMapService(Beeline);
-RevGeocode(Beeline);
-CreditCardInput(Beeline);
-
-
-Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
-
-var app = angular.module('starter', [
-    'BeelineModule',
-    'ionic',
-    'ngCordova',
-    'uiGmapgoogle-maps',
-    ])
-
-
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
+.filter('monthNames', function () {
+    return function (i) {
+        return monthNames[i];
+    };
 })
+
+.factory('ticketService', TicketService)
+.factory('userService', UserService)
+.factory('tripService', TripService)
+.factory('companyService', CompanyService)
+.factory('suggestionService', SuggestionService)
+.factory('Search', SearchService)
+.factory('Routes', RoutesService)
+.factory('bookingService', BookingService)
+.factory('oneMapService', OneMapService)
+.factory('dateService', DateService)
+.factory('creditCardInput', CreditCardInput)
 .controller('BookingCtrl', BookingController)
 .controller('BookingDatesCtrl', BookingDatesController)
 .controller('BookingSummaryCtrl', BookingSummaryController)
@@ -98,14 +68,6 @@ var app = angular.module('starter', [
 .controller('TicketDetailCtrl', TicketDetailController)
 .controller('routeMapCtrl', RouteMapController)
 .controller('routeListCtrl', RouteListController)
-.config(function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-//        client: 'gme-infocommunications',
-        key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
-//        v: ', //defaults to latest 3.X anyhow
-        libraries: 'places'
-    });
-})
 
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
@@ -293,4 +255,41 @@ var app = angular.module('starter', [
   else {
       $urlRouterProvider.otherwise('/tab/routes/routemap');
   }
+})
+
+.config(function(uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+//        client: 'gme-infocommunications',
+        key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
+//        v: ', //defaults to latest 3.X anyhow
+        libraries: 'places'
+    });
+})
+
+.directive('datePicker', DatePicker)
+.directive('myTouchstart', TouchStart)
+.directive('myTouchend', TouchEnd)
+.directive('myTouchmove', TouchMove)
+.directive('myMousemove', MouseMove)
+.directive('qtyInput', QtyInput)
+.directive('suggestionViewer', SuggestionViewer)
+.directive('startEndPicker', StartEndPicker)
+.directive('busStopSelector', BusStopSelector)
+.directive('priceCalculator', PriceCalculator)
+.directive('revGeocode', RevGeocode)
+
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
+
+    }
+    if (window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+    }
+  });
 });

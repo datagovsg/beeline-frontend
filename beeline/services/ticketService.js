@@ -1,7 +1,6 @@
 import querystring from 'querystring'
 
-export default function init(app) {
-    app.factory('ticketService', function($http,$filter,userService) {
+export function TickerService($http,$filter,userService) {
         var now = new Date();
         var today0000 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0).getTime();
         var today2400 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 24, 0).getTime();
@@ -86,9 +85,9 @@ export default function init(app) {
                 return selectedticket;
             }
         };
-    })
+    }
 
-    .factory('userService', function($http) {
+export function UserService($http) {
         return {
             user: {},
             sessionToken: localStorage['sessionToken'] || null,
@@ -139,9 +138,9 @@ export default function init(app) {
                 return Promise.resolve(this);
             }
         };
-    })
+    } 
 
-    .factory('tripService', function($http) {
+export function TripService($http) {
         var trip;
         return {
             Trip: function(id){
@@ -159,9 +158,9 @@ export default function init(app) {
             },
 
         };
-    })
+    }
 
-    .factory('companyService', function($http) {
+export function CompanyService($http) {
         var company;
         return {
             Company: function(id){
@@ -179,6 +178,4 @@ export default function init(app) {
             },
 
         };
-    })
-
-}
+    }

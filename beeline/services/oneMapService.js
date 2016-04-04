@@ -1,9 +1,7 @@
 import {NetworkError} from '../shared/errors'
 import {formatDate, formatDateMMMdd, formatTime, formatUTCDate} from '../shared/format'
 
-export default function init (app) {
-
-    app.factory('oneMapService', function ($http) {
+export default function ($http) {
         var tokenRequest;
         return {
             token() {
@@ -18,5 +16,4 @@ export default function init (app) {
                 }
             }
         }
-    });
-}
+    };

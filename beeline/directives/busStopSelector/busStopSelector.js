@@ -1,7 +1,6 @@
-
-
-export default function BusStopSelector(app) {
-    app.directive('busStopSelector', [
+import busStopSelectorTemplate from './busStopSelector.html'
+import busStopSelectorListTemplate from './busStopSelectorList.html'
+export default [
         '$state',
         '$ionicModal',
         '$http',
@@ -16,7 +15,7 @@ export default function BusStopSelector(app) {
         return {
             restrict: 'E',
             transclude: true,
-            template: require('./busStopSelector.html'),
+            template: busStopSelectorTemplate,
             scope: {
                 busStops: '=',
                 valueFn: '=value',
@@ -56,7 +55,7 @@ export default function BusStopSelector(app) {
 					lines: [],
 				};
 
-                scope.selectionModal = $ionicModal.fromTemplate(require('./busStopSelectorList.html'), {
+                scope.selectionModal = $ionicModal.fromTemplate(busStopSelectorListTemplate, {
                     scope: scope,
                     animation: 'slide-in-up',
                 });
@@ -147,5 +146,4 @@ export default function BusStopSelector(app) {
 
             },
         };
-    }]);
-};
+    }];

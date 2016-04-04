@@ -1,10 +1,9 @@
+import priceCalculatorTemplate from './priceCalculator.html'
 
-export default function init(app) {
-    app.directive('priceCalculator', [
+export default [
         function () {
             return {
                 restrict: 'E',
-                template: require('./priceCalculator.html'),
+                template: priceCalculatorTemplate,
             };
-        }]);
-}
+        }]

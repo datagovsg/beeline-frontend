@@ -6,8 +6,7 @@
 import qs from 'querystring'
 import {titleCase} from '../../shared/format'
 
-export default function RevGeocode(app) {
-  app.directive('revGeocode',[
+export default [
     '$http',
     'oneMapService',
     'userService',
@@ -64,5 +63,4 @@ export default function RevGeocode(app) {
         }, /* link(...) */
       };
     }
-  ])
-}
+  ];

@@ -1,4 +1,5 @@
-var _ = require('lodash');
+import datePickerTemplate from './datePicker.html'
+import _ from 'lodash'
 
 var monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
 
@@ -255,7 +256,7 @@ function DatePickerDirective(dateService) {
             invalidStopDates: '=',
             numWeeks: '=',
         },
-        template: require('./datePicker.html'),
+        template: datePickerTemplate,
         link: link,
     }
 }
@@ -275,16 +276,9 @@ function TouchDirective(which) {
     });
 }
 
-export default function DatePicker(app) {
-    app.directive('datePicker', ['dateService', DatePickerDirective]);
-    app.directive('myTouchstart', TouchDirective('touchstart'));
-    app.directive('myTouchend', TouchDirective('touchend'));
-    app.directive('myTouchmove', TouchDirective('touchmove'));
-    app.directive('myMousemove', TouchDirective('mousemove'));
 
-    app.filter('monthNames', function () {
-        return function (i) {
-            return monthNames[i];
-        };
-    });
-}
+export var DatePicker = ['dateService', DatePickerDirective];
+export var TouchStart = TouchDirective('touchstart');
+export var TouchEnd = TouchDirective('touchend');
+export var TouchMove = TouchDirective('touchmove');
+export var MouseMove = TouchDirective('mousemove');

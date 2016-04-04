@@ -1,9 +1,7 @@
 import {NetworkError} from '../shared/errors'
 import {formatDate, formatDateMMMdd, formatTime, formatUTCDate} from '../shared/format'
 
-export default function init (app) {
-
-    app.factory('bookingService', function (userService) {
+export default function (userService) {
         var rv = {};
 
         rv.reset = function(routeId) {
@@ -327,5 +325,4 @@ export default function init (app) {
         rv.reset(1);
 
         return rv;
-    });
-}
+    }
