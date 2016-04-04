@@ -1,0 +1,67 @@
+<div class="locinputs">
+	<label class="item item-input ng-hide ng-cloak pickup fade" ng-hide="false">
+		<input class="input-start"
+            type="search"
+            placeholder="Enter your pick-up location"
+            ng-model="startPoint.text"
+            ng-change="pickupTxtChange()"
+            ng-focus="inputFocus($event, 'start')" />
+		<button class="item item-icon-right"
+        ng-click="reset('start')">
+		    <i class="icon ng-hide ion-ios-close-outline"
+          ng-hide="startPoint.text == ''"></i>
+		</button>
+	</label>
+
+	<label class="item item-input ng-hide ng-cloak dropoff" ng-hide="setPoint == 'start'">
+		<input class="input-end"
+          type="search"
+          placeholder="Enter your drop-off location"
+          ng-model="endPoint.text"
+          ng-change="dropoffTxtChange()"
+          ng-focus="inputFocus($event, 'end')" />
+    <button class="item item-icon-right"
+        ng-click="reset('end')">
+		    <i class="icon ng-hide ion-ios-close-outline"
+          ng-hide="endPoint.text == ''"></i>
+		</button>
+	</label>
+  <ng-transclude></ng-transclude>
+</div>
+
+<div class="centmark" class="ng-hide" ng-hide="setPoint == null"></div>
+<div class="locateme" class="ng-hide" ng-click="getUserLocation()"></div>
+<button class="btnnext" class="ng-hide" ng-hide="rmap.btnnexthide"
+        ng-click="nextBtnClick()"
+        ng-disabled="!nextAllowed()">
+  {{ setPoint == 'start' ? 'Set pick-up point' :
+     setPoint == 'end' ? 'Set drop-off point' : prompt}}
+</button>
+
+<ui-gmap-google-map center="map.center"
+                    zoom="map.zoom"
+                    options="map.options"
+                    bounds="map.bounds"
+                    control="map.control"
+                    events="map.events"
+                    data-tap-disabled="true">
+  <ui-gmap-marker
+  idkey="0"
+  coords="startPoint.coordinates"
+  options="map.boardMarkerOptions"
+  click="setSetPoint('start')"
+  ></ui-gmap-marker>
+
+  <!-- line between -->
+  <ui-gmap-polyline
+    path="lineBetween"
+    icons="map.lineIcons">
+  </ui-gmap-polyline>
+
+  <ui-gmap-marker
+    idkey="1"
+    coords="endPoint.coordinates"
+    options="map.alightMarkerOptions"
+    click="setSetPoint('end')"
+  ></ui-gmap-marker>
+</ui-gmap-google-map>

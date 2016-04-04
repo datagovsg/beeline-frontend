@@ -1,0 +1,43 @@
+<ion-view id="pg_bookdate" view-title="Select Dates">
+  <ion-content>
+    <date-picker
+        valid-dates="validDates"
+        exhausted-dates="exhaustedDates"
+        invalid-stop-dates="invalidStopDates"
+        min-date="minDate"
+        max-date="maxDate"
+        startDate="minDate"
+        dates="bookingService.currentBooking.selectedDates"
+    ></date-picker>
+
+    <div ng-if="priceChanges.length > 0">
+        <h3>Price Changes</h3>
+
+        <table>
+            <tr>
+                <th>Dates</th>
+                <th>Price</th>
+            </tr>
+            <tr ng-repeat="priceChange in priceChanges">
+                <td>
+                    {{priceChange.startDate | formatDate}}
+                    &mdash;
+                    {{priceChange.endDate | formatDate}}
+                </td>
+                <td>{{priceChange.price}}
+            </tr>
+        </table>
+    
+    </div>
+
+	<!--qty-input ng-model="bookingService.currentBooking.qty" placeholder="Number of passengers" ></qty-input-->
+
+	<div class="bookdetails">
+		<price-calculator></price-calculator>
+
+		<button id="btnreview" ng-disabled="bookingService.currentBooking.selectedDates.length == 0" ng-click="goToSummary()">
+			Review Booking
+		</button>
+	</div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,22 @@
+<span class="bus-stop-selector">
+<div
+    class="stop-description"
+    ng-model="displayText"
+    ng-click="showList()"
+    editable="false"
+    >
+    <span ng-if="!selectedStop"
+        class="placeholder">
+        {{placeholder}}
+    </span>
+    <span ng-if="selectedStop">
+        {{displayFn(selectedStop)}}
+    </span>
+    <i class="icon ion-ios-arrow-down"></i>
+</div>
+<!-- <input type="text"
+    ng-model="model"
+    aria-hidden="true"
+    style="display: none"
+    /> -->
+</span>

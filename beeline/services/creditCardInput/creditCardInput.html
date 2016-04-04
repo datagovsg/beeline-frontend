@@ -1,0 +1,51 @@
+<ion-modal-view class="credit_card_input modal" data-tap-disabled=true>
+  <ion-header-bar class="bar-stable">
+    <h1 class="title">Enter Credit Card Details</h1>
+    <button class="item-icon-right" ng-click="cancelled()">
+      <span class="icon ion-android-close"></span>
+    </button>
+  </ion-header-bar>
+  <ion-content>
+		Please enter your credit card details
+		<label class="item item-input">
+			Credit card number
+			<input type="text"
+					ng-model="creditCardNumber"
+					placeholder="4242 4242 4242 4242 4242"
+					/>
+		</label>
+		<label class="item item-input">
+			Expiry Month
+			<input type="text"
+					ng-model="expiryMonth"
+					placeholder="10"
+					/>
+		</label>
+		<label class="item item-input">
+			Expiry Year
+			<input type="text"
+					ng-model="expiryYear"
+					placeholder="19"
+					/>
+		</label>
+		<label class="item item-input">
+			CVC
+			<input type="text"
+					ng-model="cvc"
+					placeholder="123"
+					/>
+		</label>
+		<button type="button button-positive"
+			ng-click="submitted()"
+			class="button"
+			>
+			Submit
+		</button>
+		<button type="button button-light"
+			ng-click="cancelled()"
+			class="button"
+			>
+			Cancel
+		</button>
+  </ion-content>
+</ion-modal-view>

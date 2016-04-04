@@ -1,0 +1,193 @@
+<ion-view id="pg_booking" view-title="{{title}}">
+  <ion-content class="fullscreen-map">
+	<div class="routeinfo">
+		<div class="busnum">{{book.routeid}}</div>
+		<div class="stops">
+			<div class="line"></div>
+			<div class="start">
+				<span class="time">{{book.stime}}</span>
+				<span class="road">{{book.sroad}}</span>
+			</div>
+			<div class="end">
+				<span class="time">{{book.etime}}</span>
+				<span class="road">{{book.eroad}}</span>
+			</div>
+		</div>
+	</div>
+
+
+	<ui-gmap-google-map
+		center="map.center"
+		zoom="map.zoom"
+		bounds="map.bounds"
+		control="map.mapControl"
+		options="map.options"
+		data-tap-disabled="true"
+		>
+		<ui-gmap-marker
+			ng-repeat="stop in book.boardStops"
+			idKey="stop.id"
+			coords="{
+				latitude: stop.coordinates.coordinates[1],
+				longitude: stop.coordinates.coordinates[0],
+			}"
+			options="boardMarkerOptions"
+			click="applyTapBoard(stop)"
+		></ui-gmap-marker>
+		<ui-gmap-marker
+			ng-repeat="stop in book.alightStops"
+			idKey="stop.id"
+			coords="{
+				latitude: stop.coordinates.coordinates[1],
+				longitude: stop.coordinates.coordinates[0],
+			}"
+			options="alightMarkerOptions"
+			click="applyTapAlight(stop)"
+		></ui-gmap-marker>
+
+		<ui-gmap-polyline
+			path="routePath"
+			stroke="'#000000'"
+		>
+		</ui-gmap-polyline>
+
+		<ui-gmap-window
+			ng-if="infoStop"
+			show="infoStop"
+			coords="{
+				latitude: infoStop.coordinates.coordinates[1],
+				longitude: infoStop.coordinates.coordinates[0],
+			}"
+			>
+			<div>
+				<h4>{{infoStop.time}}</h4>
+				{{infoStop.description}}
+				<br/>
+                <button onclick="setStop()">
+                Select your {{infoType == 'board'? 'pick-up' : 'drop-off'}} stop
+                </button>
+			</div>
+		</ui-gmap-window>
+	</ui-gmap-google-map>
+
+	<div id="userpos" ng-click="getUserLocation()"></div>
+	<div id="stopinputs">
+		<bus-stop-selector
+			model="bookingService.currentBooking.boardStop"
+			bus-stops="book.boardStops"
+			value="getStopId"
+			display="getStopDescription"
+			placeholder="{{book.stxt}}"
+			title="{{book.stxt}}"
+			button="{{book.stxt}}"
+			>
+		</bus-stop-selector>
+		<div class="line"></div>
+		<bus-stop-selector
+			model="bookingService.currentBooking.alightStop"
+			bus-stops="book.alightStops"
+			value="getStopId"
+			display="getStopDescription"
+			placeholder="{{book.etxt}}"
+			title="{{book.etxt}}"
+			button="{{book.etxt}}"
+			>
+		</bus-stop-selector>
+		<qty-input
+			placeholder="{{book.ptxt}}"
+			ng-model="bookingService.currentBooking.qty"
+			>
+		</qty-input>
+	</div>
+
+	<div id="transco">
+		<div class="coinfo">
+			<h4>Operated by</h4>
+			<div class="contact">
+				<div class="logo"><!--img ng-src="data:image/png;base64,{{book.transco.logo}}" /--></div>
+				<div class="name">{{book.transco.name}}</div>
+				<div class="email">{{book.transco.email}}</div>
+			</div>
+		</div>
+		<div class="coterms">
+			<ul>
+				<li>Guaranteed seats upon confirmation of booking.</li>
+				<li>Air-conditioned Bus.</li>
+				<li>Mon - Fri, except Publish Holidays.</li>
+				<li>No cancellation allowed.</li>
+				<li>Please arrive at your boarding stop 5 mins in advance.</li>
+			</ul>
+			<div class="sign">
+				<div class="img">Signage example</div>
+				Please look out for the Beeline sign at the front of the bus.
+				<div class="clear"></div>
+			</div>
+		</div>
+		<ion-checkbox class="confirm" ng-model="book.termsChecked">
+			Yes, I have read and agree to the Terms and Conditions of booking with <b>{{book.transco.name}}</b>.
+		</ion-checkbox>
+		<button id="btnbookcont" ng-click="goToDatepicker()" ng-disabled="book.allDataNotFilled">CONTINUE</button>
+		<div class="err">{{book.errmsg}}</div>
+	</div>
+  </ion-content>
+
+  <script id="changes-message.html" type="text/ng-template">
+	<div id="changes-message" class="modal">
+		<ion-header-bar class="bar-stable">
+			<h1 class="title">Changes to Service #{{bookingService.routeId}}</h1>
+			<a class="item-icon-right" ng-click="closeChangesModal()">
+				<i class="icon ion-android-close"></i>
+			</a>
+		</ion-header-bar>
+
+		<ion-content>
+			<table class="route-changes-table">
+				<thead>
+					<tr>
+						<th><!--icon--></th>
+						<th>Date</th>
+						<th>Changes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="priceChange in bookingService.routeInfo.priceChanges">
+						<td>$$</td>
+						<td>
+							{{priceChange.startDate | formatDate}}
+						</td>
+						<td>
+							{{priceChange.humanReadable[0]}}
+						</td>
+					</tr>
+					<tr ng-repeat="stopChange in bookingService.routeInfo.stopChanges">
+						<td>S</td>
+						<td>
+							{{stopChange.startDate | formatDate}}
+						</td>
+						<td>
+							<ul>
+							<li ng-repeat="hr in stopChange.humanReadble">
+							{{hr}}
+							</li>
+							</ul>
+						</td>
+					</tr>
+					<tr ng-repeat="timeChange in bookingService.routeInfo.timeChanges">
+						<td>T</td>
+						<td>
+							{{timeChange.startDate | formatDate}}
+						</td>
+						<td>
+							<ul>
+							<li ng-repeat="hr in timeChange.humanReadble">
+							{{hr}}
+							</li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</ion-content>
+	</div>
+  </script>
+</ion-view>

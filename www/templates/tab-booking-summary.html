@@ -1,0 +1,83 @@
+<ion-view id="pg_summary" view-title="Booking Summary">
+  <ion-content>
+	<div class="revtxt msg">
+		Please review the route and bus stop selections you have made for this booking.<br />
+		To change any of the selections, please click its corresponding <b>Edit</b> button.
+	</div>
+	<section>
+		<div class="ion-list-header">
+			<i class="icon ion-ios-location-outline"></i>
+			Route Information
+		</div>
+		<div class="routeinfo">
+			<div class="title">
+				<div class="busnum">{{bookingService.routeInfo.id}}</div>
+				<div class="name">{{bookingService.routeInfo.name}}</div>
+			</div>
+			<div class="stops">
+				<div class="line"></div>
+				<div class="start">
+					<span class="time">{{bookingService.boardingStop().time | formatTime}}</span>
+					<span class="desc">{{bookingService.boardingStop().stop.description}}</span>
+					<span class="road">{{bookingService.boardingStop().stop.road}}</span>
+				</div>
+				<div class="end">
+					<span class="time">{{bookingService.alightingStop().time | formatTime}}</span>
+					<span class="desc">{{bookingService.alightingStop().stop.description}}</span>
+					<span class="road">{{bookingService.alightingStop().stop.road}}</span>
+				</div>
+			</div>
+			<div class="edit">
+				<a class="btnsmall" ui-sref="tab.booking-pickup">Edit</a>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="ion-list-header">
+			<i class="icon ion-ios-clock-outline"></i>
+			Selected Dates
+		</div>
+		<div class="tripdates">
+			<div class="datesnum">
+				<span>{{bookingService.currentBooking.selectedDates.length}} day(s)</span> were selected for this booking.
+			</div>
+			<price-calculator></price-calculator>
+			<!--ul>
+				<li ng-repeat="dt in bookingService.currentBooking.selectedDates">
+					{{dt | formatDateMMMdd}}
+				</li>
+			</ul-->
+			<div class="edit">
+				<a class="btnsmall" ui-sref="tab.booking-dates">Edit</a>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="ion-list-header">
+			<i class="icon ion-card"></i>
+			Promo Codes
+		</div>
+		<div class="promo">
+			<ol>
+				<li ng-repeat="pc in bookingService.currentBooking.promoCodes">
+				 {{pc}}
+				</li>
+			</ol>
+			<form ng-submit="addPromoCode()">
+				<input id="promocode" type="text" placeholder="Enter your code here" />
+				<button type="submit">Add Code</button>
+			</form>
+		</div>
+	</section>
+	<div class="paytxt msg">
+		Please ensure that your credit card is ready for the next step in the booking process.
+
+		<div class="cclogos"></div>
+
+		<button id="btnpay" ng-click="pay()" ng-disabled="waitingForPaymentResult">
+			CONFIRM AND PAY
+		</button>
+	</div>
+
+  </ion-content>
+</ion-view>

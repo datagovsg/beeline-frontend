@@ -1,0 +1,14 @@
+<ion-modal-view>
+    <div id="pg_login" class="modal">
+         <ion-content class="padding">
+            <button ng-click="hideLoginModal()" class="cancelButton">Cancel</button></br>
+            <div class="header">Log in via SMS</div>
+            <tr>
+                <td>+65</td>
+                <td><input type="input" ng-model="mobileNo"/></td>
+            </tr>
+            <!-- +65 <input type="input" ng-model="mobileNo"/></br> -->
+            <button ng-click="submitModal(mobileNo)" class="nextButton">Next</button>
+        </ion-content>
+    </div>
+</ion-modal-view>

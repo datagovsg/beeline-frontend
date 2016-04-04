@@ -1,0 +1,13 @@
+<div class="qty-input">
+	<span class="placeholder">{{placeholder}}</span>
+	<div class="btns">
+		<button ng-click="down()"> - </button>
+		<input
+			ng-model="valueGetterSetter"
+			ng-model-options="{updateOn: 'blur', getterSetter: true}"
+			placeholder="{{placeholder}}"
+			readonly
+			>
+		<button ng-click="up()"> + </button>
+	</div>
+</div>
