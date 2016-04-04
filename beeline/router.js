@@ -12,7 +12,7 @@ export default function($stateProvider, $urlRouterProvider) {
   .state('tab', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'templates/0_tabs.html'
+    templateUrl: 'templates/tabs.html'
   })
 
   // Each tab has its own nav history stack:
@@ -22,7 +22,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-routes': {
     abstract: true,
-        templateUrl: 'templates/1_0_routes.html',
+        templateUrl: 'templates/routes.html',
         controller: function ($scope) {
             setupBroadcastViewEnter($scope);
         }
@@ -34,7 +34,7 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/routemap',
     views: {
       'routes-routemap': {
-        templateUrl: 'templates/1_a_routemap.html',
+        templateUrl: 'templates/routemap.html',
         controller: 'routeMapCtrl'
       }
     }
@@ -44,7 +44,7 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/routelist',
     views: {
       'routes-routelist': {
-        templateUrl: 'templates/1_b_routelist.html',
+        templateUrl: 'templates/routelist.html',
         controller: 'routeListCtrl'
       }
     }

@@ -1,0 +1,54 @@
+<!--
+Create tabs with an icon and label, using the tabs-positive style.
+Each tab's child <ion-nav-view> directive will have its own
+navigation history that also transitions its views in and out.
+-->
+<ion-tabs class="tabs-icon-top tabs-color-light">
+
+  <ion-tab title="ROUTES" 
+           icon="ion-network"
+           href="#/tab/routes">
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view name="tab-routes"></ion-nav-view>
+  </ion-tab>
+
+  <ion-tab title="SUGGEST" 
+           icon="ion-chatbox"
+           href="#/tab/suggest">
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view name="tab-suggest"></ion-nav-view>
+  </ion-tab>
+
+  <ion-tab title="BOOK" 
+           icon-off="ion-ios-chatboxes-outline" 
+           icon-on="ion-ios-chatboxes" 
+           href="#/tab/booking">
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view name="tab-booking"></ion-nav-view>
+  </ion-tab>
+
+  <ion-tab title="TICKETS" 
+           icon="ion-ios-film" 
+           href="#/tab/tickets">
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view name="tab-tickets"></ion-nav-view>
+  </ion-tab>
+
+  <ion-tab title="SETTINGS" 
+           icon="ion-ios-gear" 
+           href="#/tab/settings">
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view name="tab-settings"></ion-nav-view>
+  </ion-tab>
+
+</ion-tabs>
