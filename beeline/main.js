@@ -28,14 +28,19 @@ import {formatDate, formatDateMMMdd, formatTime,
 import {setupBroadcastViewEnter} from './shared/util'
 import configureRoutes from './router.js'
 
+////////////////////////////////////////////////////////////////////////////////
+// Non-angular configuration
+////////////////////////////////////////////////////////////////////////////////
 Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
 
+////////////////////////////////////////////////////////////////////////////////
+// Angular configuration
+////////////////////////////////////////////////////////////////////////////////
 var app = angular.module('beeline', [
     'ionic',
     'ngCordova',
     'uiGmapgoogle-maps'
 ])
-
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
@@ -44,10 +49,10 @@ var app = angular.module('beeline', [
 .filter('titleCase', () => titleCase)
 .filter('monthNames', function () {
     return function (i) {
+        monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
         return monthNames[i];
     };
 })
-
 .factory('ticketService', TicketService)
 .factory('userService', UserService)
 .factory('tripService', TripService)
@@ -69,14 +74,11 @@ var app = angular.module('beeline', [
 .controller('TicketDetailCtrl', TicketDetailController)
 .controller('routeMapCtrl', RouteMapController)
 .controller('routeListCtrl', RouteListController)
-
+.config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
 })
-
-.config(configureRoutes)
-
 .config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
 //        client: 'gme-infocommunications',
@@ -85,7 +87,6 @@ var app = angular.module('beeline', [
         libraries: 'places'
     });
 })
-
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)
@@ -97,7 +98,6 @@ var app = angular.module('beeline', [
 .directive('busStopSelector', BusStopSelector)
 .directive('priceCalculator', PriceCalculator)
 .directive('revGeocode', RevGeocode)
-
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
