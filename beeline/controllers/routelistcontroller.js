@@ -1,22 +1,8 @@
-'use strict';
 import {formatHHMM_ampm} from '../shared/format';
-var _ = require('lodash');
+import _ from 'lodash';
 
-export var RouteListController =[
-    '$scope',
-    '$state',
-    'uiGmapGoogleMapApi',
-    'Search',
-    'Routes',
-    'bookingService',
-function(
-    $scope,
-    $state,
-    uiGmapGoogleMapApi,
-    Search,
-    Routes,
-    bookingService
-){
+export default function ($scope, $state, uiGmapGoogleMapApi,
+											   Search, Routes, bookingService ) {
 	$scope.rlist = {
 		routesActive: [], //placeholders
 		routesKickstart: [],
@@ -31,7 +17,6 @@ function(
 		//Promise getallroutes
 		Routes.getallroutes().then(function(result){
 
-			//console.log(result.data)
 			var allroutes = {};
 			var allregions = [];
 
@@ -218,7 +203,7 @@ function(
 		bookingService.routeId = item.id;
 		//console.log(item);
 
-//FIX ME
+	//FIX ME
 		//redirect to Routes Details
 		$state.go('tab.booking-pickup');
 	}
@@ -227,8 +212,8 @@ function(
 		console.log('You clicked a kickstarter');
 		//console.log(item);
 
-//FIX ME
+	//FIX ME
 		//redirect to Routes Details
 		$state.go('tab.tickets');
 	}
-}];
+};

@@ -1,32 +1,32 @@
-import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker'
-import DateService from './services/dateService'
-import {BookingController} from './controllers/booking'
-import {BookingDatesController} from './controllers/bookingDates'
-import {BookingConfirmationController} from './controllers/bookingConfirmation'
-import {BookingSummaryController} from './controllers/bookingSummary'
-import {SettingsController} from './controllers/settingscontroller'
-import {SuggestController} from './controllers/suggestcontroller'
-import {TicketsController} from './controllers/ticketscontroller'
-import {TicketDetailController} from './controllers/ticketdetailcontroller'
-import {RouteMapController} from './controllers/routemapcontroller'
-import {RouteListController} from './controllers/routelistcontroller'
-import QtyInput from './directives/qtyInput/qtyInput'
-import PriceCalculator from './directives/priceCalculator/priceCalculator'
-import BusStopSelector from './directives/busStopSelector/busStopSelector'
-import {SearchService, RoutesService} from './services/routesService'
-import {TicketService, UserService, TripService, CompanyService} from './services/ticketService'
-import SuggestionService from './services/suggestionService'
-import CreditCardInput from './services/creditCardInput/creditCardInput'
-import RevGeocode from './directives/revGeocode/revGeocode'
-import BookingService from './services/bookingService'
-import OneMapService from './services/oneMapService'
-import SuggestionViewer from './directives/suggestionViewer/suggestionViewer'
-import StartEndPicker from './directives/startEndPicker/startEndPicker'
-import AngularGoogleMap from 'angular-google-maps'
+import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
+import DateService from './services/dateService';
+import {BookingController} from './controllers/booking';
+import {BookingDatesController} from './controllers/bookingDates';
+import {BookingConfirmationController} from './controllers/bookingConfirmation';
+import {BookingSummaryController} from './controllers/bookingSummary';
+import {SettingsController} from './controllers/settingscontroller';
+import {SuggestController} from './controllers/suggestcontroller';
+import {TicketsController} from './controllers/ticketscontroller';
+import {TicketDetailController} from './controllers/ticketdetailcontroller';
+import {RouteMapController} from './controllers/routemapcontroller';
+import RouteListController from './controllers/routeListController';
+import QtyInput from './directives/qtyInput/qtyInput';
+import PriceCalculator from './directives/priceCalculator/priceCalculator';
+import BusStopSelector from './directives/busStopSelector/busStopSelector';
+import {SearchService, RoutesService} from './services/routesService';
+import {TicketService, UserService, TripService, CompanyService} from './services/ticketService';
+import SuggestionService from './services/suggestionService';
+import CreditCardInput from './services/creditCardInput/creditCardInput';
+import RevGeocode from './directives/revGeocode/revGeocode';
+import BookingService from './services/bookingService';
+import OneMapService from './services/oneMapService';
+import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
+import StartEndPicker from './directives/startEndPicker/startEndPicker';
+import AngularGoogleMap from 'angular-google-maps';
 import {formatDate, formatDateMMMdd, formatTime,
-    formatUTCDate, titleCase} from './shared/format'
-import {setupBroadcastViewEnter} from './shared/util'
-import configureRoutes from './router.js'
+    formatUTCDate, titleCase} from './shared/format';
+import {setupBroadcastViewEnter} from './shared/util';
+import configureRoutes from './router.js';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Non-angular configuration
