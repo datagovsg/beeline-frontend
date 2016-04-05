@@ -1,33 +1,40 @@
-import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
+import {setupBroadcastViewEnter} from './shared/util';
+import {formatDate, formatDateMMMdd, formatTime,
+    formatUTCDate, titleCase} from './shared/format';
+// Service Imports
+import UserService from './services/UserService.js';
+import RoutesService from './services/RoutesService.js';
+import TripService from './services/TripService';
+import SuggestionService from './services/suggestionService';
+import BookingService from './services/bookingService';
+import CompanyService from './services/CompanyService';
+import TicketService from './services/ticketService';
+import OneMapService from './services/oneMapService';
+import RevGeocode from './directives/revGeocode/revGeocode';
+import CreditCardInput from './services/creditCardInput/creditCardInput';
 import DateService from './services/dateService';
+// Directive Imports
+import PriceCalculator from './directives/priceCalculator/priceCalculator';
+import BusStopSelector from './directives/busStopSelector/busStopSelector';
+import StartEndPicker from './directives/startEndPicker/startEndPicker';
+import routeItem from './directives/routeItem/routeItem.js';
+import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
+import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
+import QtyInput from './directives/qtyInput/qtyInput';
+// Controller Imports
 import {BookingController} from './controllers/booking';
 import {BookingDatesController} from './controllers/bookingDates';
 import {BookingConfirmationController} from './controllers/bookingConfirmation';
-import {BookingSummaryController} from './controllers/bookingSummary';
 import {SettingsController} from './controllers/settingscontroller';
 import {SuggestController} from './controllers/suggestcontroller';
 import {TicketsController} from './controllers/ticketscontroller';
 import {TicketDetailController} from './controllers/ticketdetailcontroller';
 import {RouteMapController} from './controllers/routemapcontroller';
 import RouteListController from './controllers/routeListController';
-import QtyInput from './directives/qtyInput/qtyInput';
-import PriceCalculator from './directives/priceCalculator/priceCalculator';
-import BusStopSelector from './directives/busStopSelector/busStopSelector';
-import {SearchService, RoutesService} from './services/routesService';
-import {TicketService, UserService, TripService, CompanyService} from './services/ticketService';
-import SuggestionService from './services/suggestionService';
-import CreditCardInput from './services/creditCardInput/creditCardInput';
-import RevGeocode from './directives/revGeocode/revGeocode';
-import BookingService from './services/bookingService';
-import OneMapService from './services/oneMapService';
-import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
-import StartEndPicker from './directives/startEndPicker/startEndPicker';
-import AngularGoogleMap from 'angular-google-maps';
-import {formatDate, formatDateMMMdd, formatTime,
-    formatUTCDate, titleCase} from './shared/format';
-import {setupBroadcastViewEnter} from './shared/util';
+import {BookingSummaryController} from './controllers/bookingSummary';
+// Configuration Imports
 import configureRoutes from './router.js';
-import routeItem from './directives/routeItem/routeItem.js';
+import AngularGoogleMap from 'angular-google-maps';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Non-angular configuration
@@ -76,6 +83,18 @@ var app = angular.module('beeline', [
 .controller('TicketDetailCtrl', TicketDetailController)
 .controller('routeMapCtrl', RouteMapController)
 .controller('routeListCtrl', RouteListController)
+.directive('datePicker', DatePicker)
+.directive('myTouchstart', TouchStart)
+.directive('myTouchend', TouchEnd)
+.directive('myTouchmove', TouchMove)
+.directive('myMousemove', MouseMove)
+.directive('qtyInput', QtyInput)
+.directive('suggestionViewer', SuggestionViewer)
+.directive('startEndPicker', StartEndPicker)
+.directive('busStopSelector', BusStopSelector)
+.directive('priceCalculator', PriceCalculator)
+.directive('revGeocode', RevGeocode)
+.directive('routeItem', routeItem)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
@@ -89,18 +108,6 @@ var app = angular.module('beeline', [
         libraries: 'places'
     });
 })
-.directive('datePicker', DatePicker)
-.directive('myTouchstart', TouchStart)
-.directive('myTouchend', TouchEnd)
-.directive('myTouchmove', TouchMove)
-.directive('myMousemove', MouseMove)
-.directive('qtyInput', QtyInput)
-.directive('suggestionViewer', SuggestionViewer)
-.directive('startEndPicker', StartEndPicker)
-.directive('busStopSelector', BusStopSelector)
-.directive('priceCalculator', PriceCalculator)
-.directive('revGeocode', RevGeocode)
-.directive('routeItem', routeItem)
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
