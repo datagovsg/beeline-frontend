@@ -1,6 +1,28 @@
 <ion-view id="pg_routelist" view-title="Explore Routes - List">
   <ion-content class="has-footer" has-bouncing="false">
-  
+
+    <!-- Region Filter  -->
+    <section>
+      <div id="regsel">
+        <label>Filter By</label>
+        <select ng-model="data.selectedRegionId">
+          <option value="">All Regions</option>
+          <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Available Routes Section -->
+    <section>
+      <div class="ion-list-header">Available Routes</div>
+      <hello-world/>
+      <ion-list id="booklist">
+        <route-item ng-repeat="route in data.activeRoutes">foobar</route-item>
+      </ion-list>
+    </section>
+
+
+  <!-- 
   	<section>
   		<div class="ion-list-header"></div>
   		<div id="regsel">
@@ -37,31 +59,6 @@
         </ion-list>
     </section>
 
-  	<section ng-hide="rlist.routesActive.length == 0">
-  		<div class="ion-list-header">Available Routes</div>
-  		<ion-list id="booklist">
-  			<ion-item ng-repeat="item in rlist.routesActive" ng-click="routeDetails(item)">
-  				<div class="routeinfo">
-  					<div class="busnum">{{item.busnum}}</div>
-  					<div class=" stops">
-  						<div class="line"></div>
-  						<div class="start">
-  							<span class="time">{{item.stime}}</span>
-  							<span class="road">{{item.sroad}}</span>
-  						</div>
-  						<div class="end">
-  							<span class="time">{{item.etime}}</span>
-  							<span class="road">{{item.eroad}}</span>
-  						</div>
-  						<span class="active">{{item.active}}</span>
-  					</div>
-  				</div>
-  				<a class="item-icon-right" href="#">
-  					<i class="icon ion-ios-arrow-right"></i>
-  				</a>
-  			</ion-item>
-  		</ion-list>
-  	</section>
   	<section ng-hide="rlist.routesKickstart.length == 0">
   		<div class="ion-list-header">Routes pending activation</div>
   		<ion-list id="pendlist">
@@ -103,7 +100,7 @@
   		<div class="loader">
   			<div class="txt">Loading available routes...</div>
   		</div>
-  	</section>
+  	</section> -->
 
   </ion-content>
 </ion-view>

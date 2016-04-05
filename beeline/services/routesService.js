@@ -55,36 +55,45 @@ export function SearchService(userService) {
 		};
 	}
 
-export function RoutesService(userService) {
-		return {
-			data: {
-				routedata: {},
-				regiondata: [],
-			},
-			getallroutes: function() {
-				//return Promise object
-				return userService.beeline({
-					method: 'GET',
-					url: '/routes?include_trips=true',
-				})
-			},
-			setroutes: function(data) {
-				this.data.routedata = data;
-			},
-			setregions: function(data) {
-				this.data.regiondata = data;
-			},
-			getRecentRoutes: function(){
-				var bearer = userService.sessionToken;
-				if (!bearer){
-					return Promise.resolve([]);
-				}
-				else{
-					return userService.beeline({
-						method: 'GET',
-						url: '/routes/recent?limit=10'
-					})
-				}
-			}
-		};
-	}
+export function RoutesService($http, SERVER_URL) {
+
+	return {
+
+		getRoutes: function(){
+			return $http.get(SERVER_URL + '/routes?include_trips=true')
+			.then(function(response){
+				return response.data;
+			});
+		},
+
+		// data: {
+		// 	routedata: {},
+		// 	regiondata: [],
+		// },
+		// getallroutes: function() {
+		// 	//return Promise object
+		// 	return userService.beeline({
+		// 		method: 'GET',
+		// 		url: '/routes?include_trips=true',
+		// 	})
+		// },
+		// setroutes: function(data) {
+		// 	this.data.routedata = data;
+		// },
+		// setregions: function(data) {
+		// 	this.data.regiondata = data;
+		// },
+		// getRecentRoutes: function(){
+		// 	var bearer = userService.sessionToken;
+		// 	if (!bearer){
+		// 		return Promise.resolve([]);
+		// 	}
+		// 	else{
+		// 		return userService.beeline({
+		// 			method: 'GET',
+		// 			url: '/routes/recent?limit=10'
+		// 		})
+		// 	}
+		// }
+	};
+}

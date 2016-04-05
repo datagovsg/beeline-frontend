@@ -19,7 +19,6 @@ module.exports = {
         ],
     },
     entry: [
-        'babel-polyfill',
         path.resolve('beeline/main.js'),
     ],
     output: {
@@ -30,6 +29,7 @@ module.exports = {
     babel: {
         presets: ['es2015', 'stage-3'],
         sourceMaps: true,
+        plugins: ['transform-runtime']
     },
 };
 

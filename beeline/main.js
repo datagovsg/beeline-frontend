@@ -27,6 +27,7 @@ import {formatDate, formatDateMMMdd, formatTime,
     formatUTCDate, titleCase} from './shared/format';
 import {setupBroadcastViewEnter} from './shared/util';
 import configureRoutes from './router.js';
+import routeItem from './directives/routeItem/routeItem.js';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Non-angular configuration
@@ -41,6 +42,7 @@ var app = angular.module('beeline', [
     'ngCordova',
     'uiGmapgoogle-maps'
 ])
+.constant('SERVER_URL', 'http://staging.beeline.sg')
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
@@ -98,6 +100,7 @@ var app = angular.module('beeline', [
 .directive('busStopSelector', BusStopSelector)
 .directive('priceCalculator', PriceCalculator)
 .directive('revGeocode', RevGeocode)
+.directive('routeItem', routeItem)
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
