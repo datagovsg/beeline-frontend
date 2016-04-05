@@ -1,5 +1,5 @@
 
-export var BookingDatesController = [
+export default [
     '$scope',
     '$state',
     '$http',

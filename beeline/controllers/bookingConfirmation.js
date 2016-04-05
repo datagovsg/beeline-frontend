@@ -1,5 +1,5 @@
 
-export var BookingConfirmationController = [
+export default [
     '$scope',
     '$state',
     '$http',

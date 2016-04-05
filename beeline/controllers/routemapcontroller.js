@@ -1,7 +1,7 @@
 import {formatHHMM_ampm} from '../shared/format';
 import _ from 'lodash'
 
-export var RouteMapController =[
+export default [
     '$scope',
     '$state',
     '$ionicModal',

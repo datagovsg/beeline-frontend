@@ -1,6 +1,6 @@
 import {setupBroadcastViewEnter} from './shared/util';
 import {formatDate, formatDateMMMdd, formatTime,
-    formatUTCDate, titleCase} from './shared/format';
+        formatUTCDate, titleCase} from './shared/format';
 // Service Imports
 import UserService from './services/UserService.js';
 import RoutesService from './services/RoutesService.js';
@@ -22,16 +22,16 @@ import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
 import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
 import QtyInput from './directives/qtyInput/qtyInput';
 // Controller Imports
-import {BookingController} from './controllers/booking';
-import {BookingDatesController} from './controllers/bookingDates';
-import {BookingConfirmationController} from './controllers/bookingConfirmation';
-import {SettingsController} from './controllers/settingscontroller';
-import {SuggestController} from './controllers/suggestcontroller';
-import {TicketsController} from './controllers/ticketscontroller';
-import {TicketDetailController} from './controllers/ticketdetailcontroller';
-import {RouteMapController} from './controllers/routemapcontroller';
+import BookingController from './controllers/booking';
+import BookingDatesController from './controllers/bookingDates';
+import BookingConfirmationController from './controllers/bookingConfirmation';
+import SettingsController from './controllers/settingscontroller';
+import SuggestController from './controllers/suggestcontroller';
+import TicketsController from './controllers/ticketscontroller';
+import TicketDetailController from './controllers/ticketdetailcontroller';
+import RouteMapController from './controllers/routemapcontroller';
 import RouteListController from './controllers/routeListController';
-import {BookingSummaryController} from './controllers/bookingSummary';
+import BookingSummaryController from './controllers/bookingSummary';
 // Configuration Imports
 import configureRoutes from './router.js';
 import AngularGoogleMap from 'angular-google-maps';
@@ -67,7 +67,6 @@ var app = angular.module('beeline', [
 .factory('tripService', TripService)
 .factory('companyService', CompanyService)
 .factory('suggestionService', SuggestionService)
-.factory('Search', SearchService)
 .factory('Routes', RoutesService)
 .factory('bookingService', BookingService)
 .factory('oneMapService', OneMapService)

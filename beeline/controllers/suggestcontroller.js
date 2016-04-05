@@ -1,6 +1,6 @@
 'use strict';
 
-export var SuggestController =[
+export default [
     '$scope',
     '$state',
     '$stateParams',
