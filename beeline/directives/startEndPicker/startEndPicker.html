@@ -1,5 +1,5 @@
 <div class="locinputs">
-	<label class="item item-input ng-hide ng-cloak pickup fade"
+	<label class="item item-input pickup"
 		ng-show="true || !setPoint || setPoint == 'start'"
 		>
 		<input class="input-start"
@@ -16,7 +16,7 @@
 		</button>
 	</label>
 
-	<label class="item item-input ng-hide ng-cloak dropoff"
+	<label class="item item-input dropoff"
 				ng-show="!setPoint || setPoint == 'end'">
 		<input class="input-end"
           type="search"
@@ -42,7 +42,6 @@
 		class="btnnext"
     ng-click="nextBtnClick()"
     ng-disabled="!nextAllowed()">
-		{{inFocus}}
 	  {{ setPoint == 'start' ? 'Set pick-up point' :
 	     setPoint == 'end' ? 'Set drop-off point' : prompt}}
 	</button>
