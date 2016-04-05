@@ -4,12 +4,12 @@
     <div class=" stops">
       <div class="line"></div>
       <div class="start">
-        <span class="time">{{ route.start.time }}</span>
-        <span class="road">{{ rute.start.road }}</span>
+        <span class="time">{{ route.startTime | date:'shortTime' }}</span>
+        <span class="road">{{ route.startRoad }}</span>
       </div>
       <div class="end">
-        <span class="time">{{ route.end.time }}</span>
-        <span class="road">{{ route.end.road }}</span>
+        <span class="time">{{ route.endTime | date:'shortTime' }}</span>
+        <span class="road">{{ route.endRoad }}</span>
       </div>
       <span class="active">active</span>
     </div>
