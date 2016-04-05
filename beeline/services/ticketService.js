@@ -1,6 +1,6 @@
 import querystring from 'querystring'
 
-export function TickerService($http,$filter,userService) {
+export function TicketService($http,$filter,userService) {
         var now = new Date();
         var today0000 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0).getTime();
         var today2400 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 24, 0).getTime();
@@ -127,9 +127,23 @@ export function UserService($http) {
                     })
                 })
                 .then((response) => {
-                    this.sessionToken = response.data.sessionToken;
-                    return true;
-                });
+					if (response.statusText = 'OK')
+					{
+						this.sessionToken = response.data.sessionToken;
+						localStorage.setItem('sessionToken', response.data.sessionToken);
+
+						var ud = response.data.user;
+						localStorage.setItem('beelineUser', '{"name": "'+ud.name+'", "email": "'+ud.email+'", "telephone": "'+ud.telephone+'"}');
+						
+						return true;
+					}
+					else
+						return false;
+                }, (error) => {
+					alert('An error occurred while trying to log in');
+					
+					return false;
+				});
             },
 
             authenticate() {
@@ -138,7 +152,7 @@ export function UserService($http) {
                 return Promise.resolve(this);
             }
         };
-    } 
+    }
 
 export function TripService($http) {
         var trip;

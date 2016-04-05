@@ -1,13 +1,32 @@
-<ion-view id="pg_smscode" view-title="Verification code">
+<ion-view id="pg_verify" view-title="Verification code">
 	<ion-content>
-		<div class="msg">
-			Please enter the code we sent to
-			<div class="num">+65 {{login.phoneNum || 12345678}}</div>
+		<div class="overlay ng-hide" ng-hide="login.overlayHide">
+			<div class="txt">Submitting code...</div>
 		</div>
-		<input type="input" ng-model="code" data-role="none" name="telephoneNo" id="login-telephoneNo" placeholder="Code" value="">
-		<div class="spacing"></div>
+		<div class="content">
+			<div class="msg">
+				Please enter the code we sent to
+				<div class="num">+65 {{login.phoneNum || 12345678}}</div>
+			</div>
+			<div class="codebox">
+				<div class="err ng-hide" ng-show="login.errmsg != ''">
+					<i class="icon ion-alert-circled"></i>
+					<span class="txt">{{login.errmsg}}</span>
+				</div>
 
-		By creating an account, you agree to Beeline's Term of Use and Privacy Policy.</br>
-		<button id="btn-login" ng-click="submit(code)">Submit</button>
+				<div class="cover" ng-click="focusCodeFields()"></div>
+				<input id="c0" class="digit" type="input" maxlength="1" ng-model="login.code[0]" ng-keyup="checkCodeFilled(0, 5)" />
+				<input id="c1" class="digit" type="input" maxlength="1" ng-model="login.code[1]" ng-keyup="checkCodeFilled(1, 5)" />
+				<input id="c2" class="digit" type="input" maxlength="1" ng-model="login.code[2]" ng-keyup="checkCodeFilled(2, 5)" />
+				<input id="c3" class="digit" type="input" maxlength="1" ng-model="login.code[3]" ng-keyup="checkCodeFilled(3, 5)" />
+				<input id="c4" class="digit" type="input" maxlength="1" ng-model="login.code[4]" ng-keyup="checkCodeFilled(4, 5)" />
+				<input id="c5" class="digit" type="input" maxlength="1" ng-model="login.code[5]" ng-keyup="checkCodeFilled(5, 5)" />
+
+				<!--input type="input" ng-model="login.code" data-role="none" name="telephoneNo" id="login-telephoneNo" placeholder="Code" value=""-->
+			</div>
+			<div class="resend">
+				<a href="#" ng-click="loginCodeResend()">Resend Code</a>
+			</div>
+		</div>
 	</ion-content>
 </ion-view>

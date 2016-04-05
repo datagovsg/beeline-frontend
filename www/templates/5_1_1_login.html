@@ -13,7 +13,7 @@
 			</div>
 			<div class="loginqn">
 				<i class="icon ion-ios-help-outline"></i>
-				<a ng-click="loginFAQModal.show()" href="">Why does the Beeline login use my number?</a>
+				<a ng-click="loginFAQModal.show()">Why does the Beeline login use my number?</a>
 			</div>
 			<div class="terms">
 				By creating an account, you agree to Beeline's <a href="#">Term of Use</a> and <a href="#">Privacy Policy</a>.
@@ -27,11 +27,11 @@
 	<div class="loginfaq modal">
 	  <ion-header-bar class="bar-stable">
 		<h1 class="title">Beeline login FAQ</h1>
-		<a class="item-icon-right" href="#" ng-click="loginFAQModal.hide()">
+		<a class="item-icon-right" ng-click="loginFAQModal.hide()">
 		<i class="icon ion-android-close"></i>
 		</a>
 	  </ion-header-bar>
-	  <ion-content>
+	  <ion-content has-bouncing="false">
 		  <h4>Why does the Beeline account login use my phone number?</h4>
 		  <section>
 			  <div class="title"><i class="icon ion-locked"></i> Security and Convenience</div>
