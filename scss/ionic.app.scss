@@ -58,6 +58,21 @@ ion-header-bar {
 	}
 }
 
+.modal ion-header-bar {
+	&.bar-modalhead {
+		background-color: #eceff1;
+	}
+
+	.title {
+		font-size: 18px !important;
+		color: #3f3f3f !important;
+	}
+
+	.icon {
+		color: #3f3f3f !important;
+	}
+}
+
 ion-content {
 	background: url('../img/bg_beeline.png') center center #ECEFF1;
 	/*background-color: #ECEFF1;*/
@@ -2135,17 +2150,8 @@ ion-list {
 		background-color: #FFF !important;
 	}
 
-	.header{
+	.header, h4{
 		text-align: center;
-		font-size: 20px;
-	}
-	.cancelButton{
-		color: green;
-	}
-	.nextButton{
-		width: 100%;
-		color: white;
-		background-color: green;
 	}
 }
 
