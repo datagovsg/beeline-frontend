@@ -122,8 +122,13 @@ export default [
               gmap.setZoom(17);
             }, 300);
           });
+
           scope.map.events = {
-            click: () => {},
+            click: () => {
+              if (scope.inFocusElement) {
+                scope.inFocusElement.blur();
+              }
+            },
             dragstart: function(map, e, args) {
             },
             zoom_changed: function(map, e, args) {
@@ -139,13 +144,38 @@ export default [
               })
             },
           }
+
+          //drop down list disappears before the clicked item is registered,
+          //this will disable the click event on the lists' containers
+          setTimeout(() => {
+            var contain = document.getElementsByClassName('pac-container');
+            angular.element(contain).attr('data-tap-disabled', 'true');
+          }, 500)
         });
+
+        function fitToPoints() {
+          var gmap = scope.map.control.getGMap();
+
+          var bounds = new google.maps.LatLngBounds();
+
+          bounds.extend(new google.maps.LatLng({
+            lat: scope.startPoint.coordinates.latitude,
+            lng: scope.startPoint.coordinates.longitude,
+          }))
+          bounds.extend(new google.maps.LatLng({
+            lat: scope.endPoint.coordinates.latitude,
+            lng: scope.endPoint.coordinates.longitude,
+          }))
+
+          gmap.fitBounds(bounds);
+        }
 
         scope.nextBtnClick = function() {
           if (scope.setPoint == 'start') {
             if (scope.startPoint.coordinates) {
               if (scope.endPoint.coordinates) { /* End point has been previously set, don't reset it */
                 scope.setPoint = null;
+                fitToPoints();
               }
               else {
                 scope.setPoint = 'end'
@@ -155,6 +185,7 @@ export default [
           else if (scope.setPoint == 'end') {
             if (scope.endPoint.coordinates) {
               scope.setPoint = null
+              fitToPoints();
             }
           }
           else {
@@ -208,6 +239,8 @@ export default [
             }
           });
         }
+        scope.inFocus = 0;
+        scope.inFocusElement = null;
         scope.inputFocus = function($event, which) {
           scope.setPoint = which;
           var point = scope[which + 'Point'];
@@ -217,6 +250,19 @@ export default [
               lng: scope[which + 'Point'].coordinates.longitude,
             });
           }
+          scope.inFocusElement = $event.target;
+          scope.inFocus++;
+        }
+        scope.inputBlur = function($event, which) {
+          scope.setPoint = which;
+          var point = scope[which + 'Point'];
+          if (point.coordinates) {
+            scope.map.control.getGMap().panTo({
+              lat: scope[which + 'Point'].coordinates.latitude,
+              lng: scope[which + 'Point'].coordinates.longitude,
+            });
+          }
+          scope.inFocus--;
         }
         scope.reset = function(which) {
           scope[`${which}Point`].text = '';
