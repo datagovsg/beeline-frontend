@@ -5,14 +5,16 @@ start-end-picker {
   }
 
   label.pickup, label.dropoff {
-      padding-left: 30px;
+      padding-left: 35px;
       box-sizing: border-box;
   }
   label.pickup {
-    background: #FFF url('../img/RoutePairBigStart.png') no-repeat 5px center;
+    background: #FFF url('../img/RoutePairBigStart@2x.png') no-repeat 5px center;
+    background-size: 24px 24px;
   }
   label.dropoff {
-    background: #FFF url('../img/RoutePairBigEnd.png') no-repeat 5px center;
+    background: #FFF url('../img/RoutePairBigEnd@2x.png') no-repeat 5px center;
+    background-size: 24px 24px;
   }
 
 	ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
