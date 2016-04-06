@@ -2,34 +2,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <!-- FIXME: leave this commented until we know how to let CardIO plugin work
-         on iOS with CSP turned on -->
-	<!-- meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-eval' 'unsafe-inline'
- http://staging.beeline.sg https://*.stripe.com  https://api.stripe.com
-    https://checkout.stripe.com https://*.googleapis.com/ https://*.gstatic.com
- http://localhost:35730 ws://localhost:35730
-; style-src 'self' 'unsafe-inline'  https://*.googleapis.com/ https://*.gstatic.com" -->
+    <meta name="viewport" content="initial-scale=1, 
+                                   maximum-scale=1, 
+                                   user-scalable=no, 
+                                   width=device-width">
 	
     <title>Beeline</title>
-
     <!-- compiled css output -->
     <link href="css/ionic.app.css" rel="stylesheet">
-
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <script src="js/angular-simple-logger.js"></script>
     <script src="js/angular-google-maps.js"></script>
-
     <!-- cordova script (this will be a 404 during development) -->
     <script src="js/ng-cordova.min.js"></script>
     <script src="cordova.js"></script>
-
     <!-- ionic/angularjs js -->
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
     <script src="lib/beeline/bundle.js"></script>
-
   </head>
   <body ng-app="beeline">
     <ion-nav-view></ion-nav-view>

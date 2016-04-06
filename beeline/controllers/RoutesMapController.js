@@ -1,23 +1,9 @@
 import {formatHHMM_ampm} from '../shared/format';
 import _ from 'lodash'
 
-export default [
-    '$scope',
-    '$state',
-    '$ionicModal',
-    '$cordovaGeolocation',
-    'uiGmapGoogleMapApi',
-    'bookingService',
-    'Routes',
-function(
-    $scope,
-    $state,
-    $ionicModal,
-    $cordovaGeolocation,
-    uiGmapGoogleMapApi,
-    BookingService,
-    Routes
-){
+export default function($scope, $state, $ionicModal, $cordovaGeolocation,
+    										uiGmapGoogleMapApi, BookingService, Routes){
+	
 	//Gmap default settings
 	$scope.map = {
 		center: { latitude: 1.370244, longitude: 103.823315 },
@@ -580,4 +566,4 @@ function(
 		}//end $scope.map.events
 
     }); //end Google maps callback function
-}];
+};

@@ -41,21 +41,21 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.routes.map', {
-    url: '/routemap',
+    url: '/map',
     views: {
       'routes-map': {
         templateUrl: 'templates/routes-map.html',
-        controller: 'routeMapCtrl'
+        controller: 'RoutesMapController'
       }
     }
   })
 
   .state('tabs.routes.list', {
-    url: '/routelist',
+    url: '/list',
     views: {
       'routes-list': {
         templateUrl: 'templates/routes-list.html',
-        controller: 'routeListCtrl'
+        controller: 'RoutesListController'
       }
     }
   })
@@ -66,7 +66,7 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-booking': {
         // templateUrl: 'templates/tab-booking-dates.html',
         template: '<ion-content>Whoa?</ion-content>',
-        controller: ['$state', 'bookingService', function ($state, bookingService) {
+        controller: ['$state', 'BookingService', function ($state, bookingService) {
             if (!bookingService.last) {
                 $state.go('tabs.booking-pickup');
             }

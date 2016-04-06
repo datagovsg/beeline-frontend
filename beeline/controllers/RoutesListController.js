@@ -1,4 +1,3 @@
-import {formatHHMM_ampm} from '../shared/format';
 import _ from 'lodash';
 
 // Return an array of regions covered by a given array of routes

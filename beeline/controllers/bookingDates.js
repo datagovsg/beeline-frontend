@@ -3,27 +3,27 @@ export default [
     '$scope',
     '$state',
     '$http',
-    'bookingService',
-    function ($scope, $state, $http, bookingService) {
+    'BookingService',
+    function ($scope, $state, $http, BookingService) {
         // navigate away if we don't have data (e.g. due to refresh)
-        if (!bookingService.currentBooking) {
+        if (!BookingService.currentBooking) {
             $state.go('tabs.booking-pickup');
         }
         //
-        $scope.bookingService = bookingService;
+        $scope.BookingService = BookingService;
 
         // watches
         function updateCalendar() {
-            if (!bookingService.routeInfo || !bookingService.currentBooking) {
+            if (!BookingService.routeInfo || !BookingService.currentBooking) {
                 return;
             }
 
             // set up the valid days
-            if ($scope.bookingService.currentBooking) {
-                $scope.bookingService.currentBooking.selectedDates = 
-                    $scope.bookingService.currentBooking.selectedDates || [];
-                $scope.bookingService.currentBooking.qty = 
-                    $scope.bookingService.currentBooking.qty || 1;
+            if ($scope.BookingService.currentBooking) {
+                $scope.BookingService.currentBooking.selectedDates = 
+                    $scope.BookingService.currentBooking.selectedDates || [];
+                $scope.BookingService.currentBooking.qty = 
+                    $scope.BookingService.currentBooking.qty || 1;
             }
 
             $scope.validDates = [];
@@ -32,7 +32,7 @@ export default [
             $scope.minDate = null;
             $scope.maxDate = null;
 
-            for (let trip of bookingService.routeInfo.trips) {
+            for (let trip of BookingService.routeInfo.trips) {
                 // FIXME: disable today if past the booking window
                 $scope.validDates.push(trip.date);
                 
@@ -44,15 +44,15 @@ export default [
                 }
 
                 // Check that quantity <= trips.available
-                if (bookingService.currentBooking.qty > trip.seatsAvailable) {
+                if (BookingService.currentBooking.qty > trip.seatsAvailable) {
                     $scope.exhaustedDates.push(trip.date);
                 }
 
                 // Check that the stops are available
                 var tripStops_stopIds = trip.tripStops.map(ts => ts.stop.id);
-                if (_.intersection([bookingService.currentBooking.boardStop],
+                if (_.intersection([BookingService.currentBooking.boardStop],
                                    tripStops_stopIds).length == 0 ||
-                    _.intersection([bookingService.currentBooking.alightStop],
+                    _.intersection([BookingService.currentBooking.alightStop],
                                    tripStops_stopIds).length == 0 
                     ) {
                     $scope.invalidStopDates.push(trip.date);
@@ -62,13 +62,13 @@ export default [
             }
         }
         /** FIXME this can be potentially very slow. Should ignore the routeInfo entry **/
-        // $scope.$watch('bookingService', updateCalendar, true);
-        $scope.$watch(() => [bookingService.currentBooking, bookingService.routeInfo ? bookingService.routeInfo.id : null], updateCalendar, true);
+        // $scope.$watch('BookingService', updateCalendar, true);
+        $scope.$watch(() => [BookingService.currentBooking, BookingService.routeInfo ? BookingService.routeInfo.id : null], updateCalendar, true);
         updateCalendar();
         
         /** FIXME this can be potentially very slow. Should ignore the routeInfo entry **/
-        $scope.$watch('bookingService.currentBooking', () => bookingService.updatePrice($scope, $http), true);
-        bookingService.updatePrice($scope, $http);
+        $scope.$watch('BookingService.currentBooking', () => BookingService.updatePrice($scope, $http), true);
+        BookingService.updatePrice($scope, $http);
 
         // methods
         $scope.goToSummary = function() {

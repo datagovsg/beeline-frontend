@@ -4,9 +4,9 @@ export default function() {
   return {
     replace: true,
     template: routeItemTemplate,
-    controller: function($scope, $state, bookingService){
+    controller: function($scope, $state, BookingService){
       $scope.click = function(routeId){
-        bookingService.routeId = routeId;
+        BookingService.routeId = routeId;
         $state.go('tabs.booking-pickup');
       };
     }

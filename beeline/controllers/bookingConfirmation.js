@@ -4,7 +4,7 @@ export default [
     '$state',
     '$http',
     'bookingService',
-    function ($scope, $state, $http, bookingService) {
+    function ($scope, $state, $http, BookingService) {
     },
 ];
 

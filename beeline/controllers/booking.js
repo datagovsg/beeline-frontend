@@ -11,7 +11,7 @@ export default [
         '$ionicModal',
         '$http',
 		'$cordovaGeolocation',
-        'bookingService',
+        'BookingService',
         'uiGmapGoogleMapApi',
 function(
         $rootScope,
@@ -21,7 +21,7 @@ function(
         $ionicModal,
         $http,
 		$cordovaGeolocation,
-        bookingService,
+        BookingService,
         uiGmapGoogleMapApi
 ) {
 	//Gmap default settings
@@ -82,19 +82,19 @@ function(
     // Name when controller was fired??
     // Maybe find a neater solution?
     var stateName = $state.current.name;
-    $scope.bookingService = bookingService;
+    $scope.BookingService = BookingService;
 
     // State change
     if ($state.is('tabs.booking')) {
-        if (bookingService.currentBooking && bookingService.lastState) {
-            $state.go(bookingService.lastState);
+        if (BookingService.currentBooking && BookingService.lastState) {
+            $state.go(BookingService.lastState);
         }
         else {
             $state.go('tabs.booking-pickup');
         }
     }
     $scope.updateState = function(state) {
-        $scope.bookingService.lastState = $scope.state = state.name;
+        $scope.BookingService.lastState = $scope.state = state.name;
     }
     $scope.updateState($state.current);
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -112,10 +112,10 @@ function(
         console.log(stop);
         $scope.$apply(() => {
             if (type == 'board') {
-                $scope.bookingService.currentBooking.boardStop = stop.id;
+                $scope.BookingService.currentBooking.boardStop = stop.id;
             }
             else {
-                $scope.bookingService.currentBooking.alightStop = stop.id;
+                $scope.BookingService.currentBooking.alightStop = stop.id;
             }
 
             /* Hide the infowindow */
@@ -141,8 +141,8 @@ function(
 
     // Properties
     $scope.bookingStep = $stateParams.step;
-    if (!$scope.bookingService.currentBooking) {
-        $scope.bookingService.currentBooking = {
+    if (!$scope.BookingService.currentBooking) {
+        $scope.BookingService.currentBooking = {
             boardStop: undefined,
             alightStop: undefined,
             qty: 1,
@@ -188,11 +188,11 @@ function(
 
 	//Load the data for the selected route
 	$scope.displayRouteInfo = function() {
-		if ($scope.bookingService.routeInfo == null ||
-			$scope.bookingService.routeInfo.id != $scope.bookingService.id) {
-			$scope.bookingService.loadRouteInfo($http)
+		if ($scope.BookingService.routeInfo == null ||
+			$scope.BookingService.routeInfo.id != $scope.BookingService.id) {
+			$scope.BookingService.loadRouteInfo($http)
 			.then(() => {
-				$scope.routePath = bookingService.routeInfo.path.map(latlng => ({
+				$scope.routePath = BookingService.routeInfo.path.map(latlng => ({
 					latitude: latlng.lat,
 					longitude: latlng.lng,
 				}));
@@ -200,13 +200,13 @@ function(
 				$scope.computeStops();
 				$scope.panToStops();
 
-				//console.log(bookingService);
+				//console.log(BookingService);
 
 				//Generate list of changes for modal
 				if ($scope.state.indexOf('pickup') != -1 &&
-					(bookingService.routeInfo.priceChanges.length > 0 ||
-					bookingService.routeInfo.stopChanges.length > 0 ||
-					bookingService.routeInfo.timeChanges.length > 0)) {
+					(BookingService.routeInfo.priceChanges.length > 0 ||
+					BookingService.routeInfo.stopChanges.length > 0 ||
+					BookingService.routeInfo.timeChanges.length > 0)) {
 
 					console.log('Changes detected: diplaying message box');
 
@@ -226,22 +226,22 @@ function(
 				}
 
 				//Fill the box at the top with Start and End info
-				var stops = bookingService.routeInfo.trips[0].tripStops,
-                    regions = bookingService.routeInfo.regions,
+				var stops = BookingService.routeInfo.trips[0].tripStops,
+                    regions = BookingService.routeInfo.regions,
 					start = stops[0],
 					end = stops[stops.length-1],
 					sd = new Date(start.time),
 					ed = new Date(end.time),
-					transco = bookingService.routeInfo.trips[0].transportCompanyId;
+					transco = BookingService.routeInfo.trips[0].transportCompanyId;
 
-				$scope.book.routeid = bookingService.routeId;
+				$scope.book.routeid = BookingService.routeId;
 				$scope.book.stime = formatHHMM_ampm(sd);
 				$scope.book.etime = formatHHMM_ampm(ed);
 				$scope.book.sroad = regions[0].name;
                 $scope.book.eroad = regions[1].name;
 
 				//Fill in the transport company info
-				$scope.bookingService.loadTranscoInfo($http, transco).then(function(result){
+				$scope.BookingService.loadTranscoInfo($http, transco).then(function(result){
 
 					var tdata = {
 						id: result.id,
@@ -294,7 +294,7 @@ function(
         var boardStopsObj = {};
         var alightStopsObj = {};
 
-        for (let trip of $scope.bookingService.routeInfo.trips) {
+        for (let trip of $scope.BookingService.routeInfo.trips) {
             for (let tripStop of trip.tripStops) {
                 if (tripStop.canBoard &&
                         !(tripStop.stop.id in boardStopsObj)) {
@@ -360,13 +360,13 @@ function(
 	//[2] End stop is specified
 	//[3] Checkbox is checked
     $scope.$watchGroup([
-        'bookingService.currentBooking.boardStop',
-        'bookingService.currentBooking.alightStop',
+        'BookingService.currentBooking.boardStop',
+        'BookingService.currentBooking.alightStop',
         'book.termsChecked',
     ], function () {
 		if ($scope.book.termsChecked == true) {
 			$scope.book.errmsg = '';
-			var curr = bookingService.currentBooking;
+			var curr = BookingService.currentBooking;
 
 			if (typeof(curr.boardStop) == 'undefined')
 				$scope.book.errmsg = 'Please specify a Boarding Stop.'
@@ -381,7 +381,7 @@ function(
 	});
 
     $scope.goToDatepicker = function() {
-        if (bookingService.currentBooking.boardStop && bookingService.currentBooking.alightStop) {
+        if (BookingService.currentBooking.boardStop && BookingService.currentBooking.alightStop) {
             $state.go('tabs.booking-dates');
         }
     };
