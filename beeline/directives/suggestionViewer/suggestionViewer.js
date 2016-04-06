@@ -39,7 +39,7 @@ export default [
       scope.mapReady = gmapResolve;
 
       scope.fitMarkers = function () {
-        gmapReady.promise(instanceNo).then(() => {
+        gmapReady.then(() => {
           var llBounds = new google.maps.LatLngBounds();
           llBounds.extend(new google.maps.LatLng({
             lat: scope.startLat,
