@@ -22,6 +22,7 @@ $stable:						  #4b3863 !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+@import "scss/startEndPicker";
 
 body, .ionic-body, input, select, button {
 	font-family: 'Ubuntu', 'Arial';
@@ -376,9 +377,10 @@ ion-list {
 
 /* ----- Remove Google logo and Map marker from Autocomplete dropdown ----- */
 .pac-container {
-	width: 86% !important;
+	/*width: 86% !important;
 	left: 50% !important;
-	margin: 15px 0px 0px -43%;
+	margin: 15px 0px 0px -43%;*/
+	pointer-events: auto;
 
 	.pac-item {
 		padding: 0px 10px 0px 10px;
@@ -1881,7 +1883,7 @@ ion-list {
 			float: right;
 			color: #999;
 		}
-		
+
 		.icon {
 			font-size: 25px;
 			font-weight: bold;
@@ -1921,12 +1923,12 @@ ion-list {
 			border-radius: 5px;
 			position: absolute;
 			top: 0;
-		
+
 			.icon {
 				font-size: 24px;
 				position: absolute;
 			}
-		
+
 			.txt {
 				padding-left: 25px;
 			}
@@ -1948,7 +1950,7 @@ ion-list {
 			font-size: 20px;
 			line-height: 30px;
 		}
-	
+
 		input {
 			width: calc(100% - 95px);
 			height: 30px;
@@ -1959,11 +1961,11 @@ ion-list {
 			line-height: 30px;
 			margin-left: 75px;
 		}
-		
+
 		.phtxt {
 			color: #8e8e8e;
 			padding-left: 30px;
-			
+
 			.icon {
 				font-size: 30px;
 				position: absolute;
@@ -1976,7 +1978,7 @@ ion-list {
 			margin: 10px 0px 20px 0px;
 			padding-left: 30px;
 			line-height: 24px;
-		
+
 			.icon {
 				font-size: 24px;
 				position: absolute;
@@ -2001,10 +2003,10 @@ ion-list {
 
 		section {
 			margin: 0px 0px 20px 0px;
-		
+
 			ul {
 				padding-left: 25px;
-			
+
 				li {
 					background-color: #E5E5E5;
 					padding: 5px 10px;
@@ -2020,7 +2022,7 @@ ion-list {
 			font-size: 16px;
 			border-bottom: 1px solid #333;
 			margin-bottom: 10px;
-		
+
 			.icon {
 				margin-right: 5px;
 				padding-left: 5px;
@@ -2059,60 +2061,6 @@ ion-list {
 	width: 100%;
 	height: 100%;
 	position: relative;
-}
-
-start-end-picker {
-	ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		left: 0;
-		top: 0;
-	}
-
-	.btnnext {
-		width: 60%;
-		height: 40px;
-		background: #FFFF00;
-		background-size: 75% auto;
-		position: absolute;
-		bottom: 50px;
-		margin: 0 20% 0 20%;
-		z-index: 3;
-	}
-
-	.centmark {
-		width: 37.5px;
-		height: 40px;
-		background: url('../img/icon-marker-big.png') center center no-repeat;
-		background-size: 75% auto;
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		margin: -38px 0px 0px -18.75px;
-		z-index: 3;
-	}
-
-	.locateme {
-		width: 40px;
-		height: 40px;
-		background: url('../img/icon-locateme.png') center center no-repeat #FFF;
-		background-size: 30px auto;
-		border-radius: 20px;
-		box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
-		position: fixed;
-		bottom: 90px;
-		right: 16px;
-		margin: 0px;
-		z-index: 3;
-		cursor: pointer;
-
-		&:active {
-			bottom: 89px;
-			right: 16px;
-			box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
-		}
-	}
 }
 
 .credit_card_input input[type='text'] {

@@ -3,7 +3,7 @@
   "version": "1.1.1",
   "description": "beeline2: An Ionic project",
   "dependencies": {
-    "angular-google-maps": "^2.3.2",
+    "angular-google-maps": "git+http://daniel.ssq89@www.ida-gds.com/stash/scm/~daniel.ssq89/angular-ui-google-maps.git#232-patched",
     "angular-simple-logger": "^0.1.7",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.4",

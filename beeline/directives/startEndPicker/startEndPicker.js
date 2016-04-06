@@ -66,7 +66,11 @@ export default [
             }
         })
 
-        uiGmapIsReady.promise().then(function x() {
+        var gmapResolve;
+        var gmapReady = new Promise((resolve) => gmapResolve = resolve);
+        scope.mapReady = gmapResolve;
+        gmapReady.then(function x() {
+          console.log('Map ready!');
           var gmap = scope.map.control.getGMap();
           scope.map.boardMarkerOptions = {
             icon: {
@@ -93,37 +97,52 @@ export default [
           }];
 
           var inputElems = elem[0].querySelectorAll('INPUT');
+          console.log(elem);
           var pickupautocomp = new google.maps.places.Autocomplete(inputElems[0]);
           var dropoffautocomp = new google.maps.places.Autocomplete(inputElems[1]);
 
-          pickupautocomp.addListener('place_changed', function() {
+          pickupautocomp.addListener('place_changed', function(event) {
             var pickupPos = pickupautocomp.getPlace().geometry.location;
 
-            scope.startPoint.coordinates = {
-              lat: pickupPos.lat(),
-              lng: pickupPos.lng()
-            }
+            scope.$apply(() => {
+              scope.startPoint.coordinates = {
+                lat: pickupPos.lat(),
+                lng: pickupPos.lng()
+              }
+              scope.startPoint.text = pickupautocomp.getPlace().formatted_address
+            })
 
-            gmap.panTo(pickupPos);
-            setTimeout(function(){
-              gmap.setZoom(17);
-            }, 300);
+            inputElems[0].blur();
+            setTimeout(() => {
+                gmap.setZoom(15);
+                gmap.panTo(pickupPos);
+            }, 100)
           });
 
           dropoffautocomp.addListener('place_changed', function() {
             var dropoffPos = dropoffautocomp.getPlace().geometry.location;
 
-            scope.endPoint.coordinates = {
-              lat: dropoffPos.lat(),
-              lng: dropoffPos.lng()
-            }
-            gmap.panTo(dropoffPos);
-            setTimeout(function(){
-              gmap.setZoom(17);
-            }, 300);
+            scope.$apply(() => {
+              scope.endPoint.coordinates = {
+                lat: dropoffPos.lat(),
+                lng: dropoffPos.lng()
+              }
+              scope.endPoint.text = dropoffautocomp.getPlace().formatted_address
+            })
+
+            inputElems[1].blur();
+            setTimeout(() => {
+              gmap.setZoom(15);
+              gmap.panTo(dropoffPos);
+            }, 100)
           });
+
           scope.map.events = {
-            click: () => {},
+            click: () => {
+              if (scope.inFocusElement) {
+                scope.inFocusElement.blur();
+              }
+            },
             dragstart: function(map, e, args) {
             },
             zoom_changed: function(map, e, args) {
@@ -139,13 +158,38 @@ export default [
               })
             },
           }
-        });
+
+          //drop down list disappears before the clicked item is registered,
+          //this will disable the click event on the lists' containers
+          setTimeout(() => {
+            var contain = document.getElementsByClassName('pac-container');
+            angular.element(contain).attr('data-tap-disabled', 'true');
+          }, 500)
+        })
+
+        function fitToPoints() {
+          var gmap = scope.map.control.getGMap();
+
+          var bounds = new google.maps.LatLngBounds();
+
+          bounds.extend(new google.maps.LatLng({
+            lat: scope.startPoint.coordinates.latitude,
+            lng: scope.startPoint.coordinates.longitude,
+          }))
+          bounds.extend(new google.maps.LatLng({
+            lat: scope.endPoint.coordinates.latitude,
+            lng: scope.endPoint.coordinates.longitude,
+          }))
+
+          gmap.fitBounds(bounds);
+        }
 
         scope.nextBtnClick = function() {
           if (scope.setPoint == 'start') {
             if (scope.startPoint.coordinates) {
               if (scope.endPoint.coordinates) { /* End point has been previously set, don't reset it */
                 scope.setPoint = null;
+                fitToPoints();
               }
               else {
                 scope.setPoint = 'end'
@@ -155,6 +199,7 @@ export default [
           else if (scope.setPoint == 'end') {
             if (scope.endPoint.coordinates) {
               scope.setPoint = null
+              fitToPoints();
             }
           }
           else {
@@ -208,6 +253,8 @@ export default [
             }
           });
         }
+        scope.inFocus = 0;
+        scope.inFocusElement = null;
         scope.inputFocus = function($event, which) {
           scope.setPoint = which;
           var point = scope[which + 'Point'];
@@ -217,6 +264,11 @@ export default [
               lng: scope[which + 'Point'].coordinates.longitude,
             });
           }
+          scope.inFocusElement = $event.target;
+          scope.inFocus++;
+        }
+        scope.inputBlur = function($event, which) {
+          scope.inFocus--;
         }
         scope.reset = function(which) {
           scope[`${which}Point`].text = '';

@@ -53,6 +53,14 @@ function(
 		lines: [],
 	};
 
+  var resolveGmap = null;
+  var gmapIsReady = new Promise((resolve, reject) => {
+    resolveGmap = resolve;
+  });
+  $scope.mapReady = function() {
+    resolveGmap();
+  }
+
 	//Default settings for various info used in the page
 	$scope.book = {
 		routeid: '',
@@ -123,10 +131,11 @@ function(
         }
     });
 
+    // FIXME: Use uiGmapIsReady, but that is so buggy WTF.
     async function resizeMap() {
-		$scope.displayRouteInfo();
-        await uiGmapGoogleMapApi;
-        google.maps.event.trigger($scope.map.mapControl.getGMap(), 'resize');
+      await gmapIsReady;
+	    $scope.displayRouteInfo();
+      google.maps.event.trigger($scope.map.mapControl.getGMap(), 'resize');
     }
     $scope.$on('$ionicView.afterEnter', resizeMap);
 
@@ -329,7 +338,6 @@ function(
                 s.coordinates.coordinates[0]
             ));
         }
-        await uiGmapGoogleMapApi;
         $scope.map.mapControl.getGMap().fitBounds(bounds);
     };
 
