@@ -33,7 +33,9 @@ import configureRoutes from './router.js';
 // Non-angular configuration
 ////////////////////////////////////////////////////////////////////////////////
 // FIXME: set this in StripeService;
-Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
+try {
+  Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
+} catch () {}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Angular configuration
