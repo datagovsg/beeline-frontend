@@ -34,7 +34,7 @@ export default [
             }
         })
         modalScope.cancelled = function () {
-            q.reject();
+            q.resolve(null);
             q = null;
         }
         console.log(modalScope);
