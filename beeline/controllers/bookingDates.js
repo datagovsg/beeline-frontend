@@ -7,7 +7,7 @@ export default [
     function ($scope, $state, $http, bookingService) {
         // navigate away if we don't have data (e.g. due to refresh)
         if (!bookingService.currentBooking) {
-            $state.go('tab.booking-pickup');
+            $state.go('tabs.booking-pickup');
         }
         //
         $scope.bookingService = bookingService;
@@ -72,7 +72,7 @@ export default [
 
         // methods
         $scope.goToSummary = function() {
-            $state.go('tab.booking-summary');
+            $state.go('tabs.booking-summary');
         };
     },
 ];

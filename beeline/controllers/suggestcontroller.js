@@ -53,7 +53,7 @@ function(
             .catch((err) => {
                 console.log(err);
                 alert('You must be logged in to make a suggestion');
-                $state.go('tab.suggest', {action: ''})
+                $state.go('tabs.suggest', {action: ''})
             });
         }
         else if ($state.params.action == 'new') {

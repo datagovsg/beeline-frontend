@@ -7,18 +7,27 @@ export default function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
 
+  //////////////////////////////////////////////////////////////////////////////
+  // Introductory slides
+  //////////////////////////////////////////////////////////////////////////////
   .state('intro', {
+    url: '/intro',
+    templateUrl: 'templates/intro.html'
+  })
 
-  // setup an abstract state for the tabs directive
-  .state('tab', {
-    url: '/tab',
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs', {
+    url: '/tabs',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
 
-  // Each tab has its own nav history stack:
-
-  .state('tab.routes', {
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface, Routes Tab
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs.routes', {
     url: '/routes',
     views: {
       'tab-routes': {
@@ -31,37 +40,27 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tab.routes.routemap', {
+  .state('tabs.routes.map', {
     url: '/routemap',
     views: {
-      'routes-routemap': {
-        templateUrl: 'templates/routemap.html',
+      'routes-map': {
+        templateUrl: 'templates/routes-map.html',
         controller: 'routeMapCtrl'
       }
     }
   })
 
-  .state('tab.routes.routelist', {
+  .state('tabs.routes.list', {
     url: '/routelist',
     views: {
-      'routes-routelist': {
-        templateUrl: 'templates/routelist.html',
+      'routes-list': {
+        templateUrl: 'templates/routes-list.html',
         controller: 'routeListCtrl'
       }
     }
   })
 
-  .state('tab.suggest', {
-    url: '/suggest/:action',
-    views: {
-      'tab-suggest': {
-        templateUrl: 'templates/tab-suggest.html',
-        controller: 'SuggestCtrl'
-      }
-    }
-  })
-
-  .state('tab.booking-last', {
+  .state('tabs.booking-last', {
     url: '/booking',
     views: {
       'tab-booking': {
@@ -69,7 +68,7 @@ export default function($stateProvider, $urlRouterProvider) {
         template: '<ion-content>Whoa?</ion-content>',
         controller: ['$state', 'bookingService', function ($state, bookingService) {
             if (!bookingService.last) {
-                $state.go('tab.booking-pickup');
+                $state.go('tabs.booking-pickup');
             }
             else {
                 $state.go(bookingService.last);
@@ -78,7 +77,7 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('tab.booking-pickup', {
+  .state('tabs.booking-pickup', {
     url: '/booking/pickup',
     views: {
       'tab-booking': {
@@ -87,7 +86,7 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('tab.booking-dropoff', {
+  .state('tabs.booking-dropoff', {
     url: '/booking/dropoff',
     views: {
       'tab-booking': {
@@ -96,7 +95,7 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('tab.booking-dates', {
+  .state('tabs.booking-dates', {
     url: '/booking/dates',
     views: {
         'tab-booking': {
@@ -105,7 +104,7 @@ export default function($stateProvider, $urlRouterProvider) {
         },
     },
   })
-  .state('tab.booking-summary', {
+  .state('tabs.booking-summary', {
     url: '/booking/summary',
     views: {
         'tab-booking': {
@@ -114,7 +113,7 @@ export default function($stateProvider, $urlRouterProvider) {
         },
     },
   })
-  .state('tab.booking-confirmation', {
+  .state('tabs.booking-confirmation', {
     url: '/booking/confirmation',
     views: {
         'tab-booking': {
@@ -124,7 +123,23 @@ export default function($stateProvider, $urlRouterProvider) {
     },
   })
 
-  .state('tab.tickets', {
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface, Sugesstions Tab
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs.suggest', {
+    url: '/suggest/:action',
+    views: {
+      'tab-suggest': {
+        templateUrl: 'templates/tab-suggest.html',
+        controller: 'SuggestCtrl'
+      }
+    }
+  })
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface, Tickets Tab
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs.tickets', {
     url: '/tickets',
     views: {
       'tab-tickets': {
@@ -134,7 +149,7 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tab.ticket-detail', {
+  .state('tabs.ticket-detail', {
     url: '/tickets/:tid',
     views: {
       'tab-tickets': {
@@ -144,7 +159,10 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tab.settings', {
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface, Settings Tab
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs.settings', {
     url: '/settings',
     views: {
       'tab-settings': {
@@ -154,32 +172,31 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tab.settings-login', {
-      url: '/settings/login',
-      views: {
-        'tab-settings': {
-          templateUrl: 'templates/5_1_1_login.html',
-          controller: 'SettingsCtrl'
-        }
+  .state('tabs.settings-login', {
+    url: '/settings/login',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/5_1_1_login.html',
+        controller: 'SettingsCtrl'
       }
-    })
+    }
+  })
 
-    .state('tab.settings-login-verify', {
-        url: '/settings/login/verify',
-        views: {
-          'tab-settings': {
-            templateUrl: 'templates/5_1_2_verify.html',
-            controller: 'SettingsCtrl'
-          }
-        }
-      });
+  .state('tabs.settings-login-verify', {
+    url: '/settings/login/verify',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/5_1_2_verify.html',
+        controller: 'SettingsCtrl'
+      }
+    }
+  });
 
   // if none of the above states are matched, use this as the fallback
- if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
+  if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
+    $urlRouterProvider.otherwise('/tabs/routes/list');
+  } else {
+    $urlRouterProvider.otherwise('/tabs/routes/map');
+  }
 
-      $urlRouterProvider.otherwise('/tab/routes/routelist');
-  }
-  else {
-      $urlRouterProvider.otherwise('/tab/routes/routemap');
-  }
 };

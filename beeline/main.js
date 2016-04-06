@@ -1,4 +1,3 @@
-import {setupBroadcastViewEnter} from './shared/util';
 import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
 // Service Imports
@@ -23,8 +22,8 @@ import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
 import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
 import QtyInput from './directives/qtyInput/qtyInput';
 // Controller Imports
-import RouteMapController from './controllers/routemapcontroller';
-import RouteListController from './controllers/routeListController';
+import RoutesMapController from './controllers/RoutesMapController.js';
+import RoutesListController from './controllers/RoutesListController.js';
 import BookingController from './controllers/booking';
 import BookingDatesController from './controllers/bookingDates';
 import BookingConfirmationController from './controllers/bookingConfirmation';

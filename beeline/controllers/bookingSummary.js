@@ -14,7 +14,7 @@ export default [
     StripeService) {
         // navigate away if we don't have data (e.g. due to refresh)
         if (!bookingService.currentBooking) {
-            $state.go('tab.booking-pickup');
+            $state.go('tabs.booking-pickup');
         }
         //
         $scope.bookingService = bookingService;
@@ -117,7 +117,7 @@ export default [
                 // Just cheat and show them the data we have
                 // and hope the serve has not changed anything
 
-                $state.go('tab.booking-confirmation');
+                $state.go('tabs.booking-confirmation');
             } catch (err) {
               await $ionicPopup.alert({
                 title: 'Error processing payment',

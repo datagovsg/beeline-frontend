@@ -7,7 +7,7 @@ export default function() {
     controller: function($scope, $state, bookingService){
       $scope.click = function(routeId){
         bookingService.routeId = routeId;
-        $state.go('tab.booking-pickup');
+        $state.go('tabs.booking-pickup');
       };
     }
   };

@@ -85,12 +85,12 @@ function(
     $scope.bookingService = bookingService;
 
     // State change
-    if ($state.is('tab.booking')) {
+    if ($state.is('tabs.booking')) {
         if (bookingService.currentBooking && bookingService.lastState) {
             $state.go(bookingService.lastState);
         }
         else {
-            $state.go('tab.booking-pickup');
+            $state.go('tabs.booking-pickup');
         }
     }
     $scope.updateState = function(state) {
@@ -150,7 +150,7 @@ function(
         };
     }
 
-    $scope.title = $scope.state == 'tab.booking-pickup' ?
+    $scope.title = $scope.state == 'tabs.booking-pickup' ?
         'Select Pick-up and Drop-off Points' :
         'Select Drop-off Point';
     $scope.routePath = [];
@@ -382,7 +382,7 @@ function(
 
     $scope.goToDatepicker = function() {
         if (bookingService.currentBooking.boardStop && bookingService.currentBooking.alightStop) {
-            $state.go('tab.booking-dates');
+            $state.go('tabs.booking-dates');
         }
     };
 

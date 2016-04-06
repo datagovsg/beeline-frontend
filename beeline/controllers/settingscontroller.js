@@ -41,22 +41,22 @@ function(
 
 		if ($scope.login.status)
 		{
-			if ($state.current.name == "tab.settings") {
+			if ($state.current.name == "tabs.settings") {
 				$scope.login.btntxt = $scope.login.truebtntxt;
 				$scope.login.msg = $scope.login.truemsg;
 			}
 			else {
-				$state.go("tab.settings");
+				$state.go("tabs.settings");
 			}
 		}
 		else //not logged in
 		{
-			if ($state.current.name == "tab.settings") {
+			if ($state.current.name == "tabs.settings") {
 				$scope.login.btntxt = $scope.login.falsebtntxt;
 				$scope.login.msg = $scope.login.falsemsg;
 			}
 			
-			if ($state.current.name == 'tab.settings-login') {
+			if ($state.current.name == 'tabs.settings-login') {
 				//Set up the FAQ modal
 				$ionicModal.fromTemplateUrl('login-faq.html', {
 					scope: $scope,
@@ -68,7 +68,7 @@ function(
 				document.getElementById('loginphone').focus();
 			}
 			
-			if ($state.current.name == 'tab.settings-login-verify') {
+			if ($state.current.name == 'tabs.settings-login-verify') {
 console.log($scope.login)
 				//fill in the user's phone number in page
 				$scope.login.phoneNum = userService.mobileNo;
@@ -80,7 +80,7 @@ console.log($scope.login)
 	$scope.logInOut = function () {
 		if ($scope.login.status == false)
 		{
-			$state.go("tab.settings-login");
+			$state.go("tabs.settings-login");
 		}
 		else //user logged in
 		{
@@ -119,7 +119,7 @@ console.log($scope.login)
 			userService.mobileNo = $scope.login.phoneNum;
 
 			//send user to SMS code input page
-			$state.go('tab.settings-login-verify');
+			$state.go('tabs.settings-login-verify');
 		}, function(error){
 			alert('SMS code send error. Please try again.');
 		});
@@ -130,7 +130,7 @@ console.log($scope.login)
             if (response) {
                 $state.go(userService.afterLoginGoWhere ?
                      userService.afterLoginGoWhere
-                     : "tab.settings");
+                     : "tabs.settings");
                 userService.afterLoginGoWhere = undefined;
             }
         })

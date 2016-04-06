@@ -343,7 +343,7 @@ function(
 
 		//redirect to Routes Details
         BookingService.routeId = item.id;
-		$state.go('tab.booking-pickup');
+		$state.go('tabs.booking-pickup');
 	};
 
 	//Update the Search Results modal with stuff retrieved from the DB
@@ -415,7 +415,7 @@ function(
 		$scope.rmap.resultsModal.hide();
 
 		//redirect to the Suggestions page
-		$state.go('tab.suggest', {
+		$state.go('tabs.suggest', {
             action: 'submit',
         });
 	};

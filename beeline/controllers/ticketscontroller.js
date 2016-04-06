@@ -23,7 +23,7 @@ function(
         console.log(userService.sessionToken);
         if (userService.sessionToken == undefined){
             userService.afterLoginGoWhere = $state.current.name;
-            $state.go("tab.settings-login");
+            $state.go("tabs.settings-login");
             return;
         }
         else {
