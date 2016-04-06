@@ -1,12 +1,18 @@
 import {setupBroadcastViewEnter} from './shared/util'
 
-export default function($stateProvider, $urlRouterProvider) {
+// Ionic uses AngularUI Router which uses the concept of states
+// Learn more here: https://github.com/angular-ui/ui-router
+// Set up the various states which the app can be in
+export default function($stateProvider, $urlRouterProvider, $locationProvider) {
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
+  $locationProvider.html5Mode(true);
+
   $stateProvider
+
+  .state('intro', {
+    url: '/',
+    templateUrl: 'templates/intro.html'
+  })
 
   // setup an abstract state for the tabs directive
   .state('tab', {
@@ -21,7 +27,7 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/routes',
     views: {
       'tab-routes': {
-    abstract: true,
+        abstract: true,
         templateUrl: 'templates/routes.html',
         controller: function ($scope) {
             setupBroadcastViewEnter($scope);

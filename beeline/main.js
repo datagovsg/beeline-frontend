@@ -43,7 +43,8 @@ import AngularGoogleMap from 'angular-google-maps';
 // FIXME: set this in StripeService;
 try {
   Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
-} catch () {}
+} 
+catch (error) {}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Angular configuration
