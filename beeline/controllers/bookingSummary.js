@@ -5,11 +5,13 @@ export var BookingSummaryController = [
     '$scope',
     '$state',
     '$http',
+    '$ionicPopup',
     'bookingService',
     'userService',
     'creditCardInput',
     'Stripe',
-    function ($scope, $state, $http, bookingService, userService, creditCardInput,
+    function ($scope, $state, $http, $ionicPopup,
+      bookingService, userService, creditCardInput,
     StripeService) {
         // navigate away if we don't have data (e.g. due to refresh)
         if (!bookingService.currentBooking) {
@@ -23,16 +25,6 @@ export var BookingSummaryController = [
                     () => bookingService.updatePrice($scope, $http),
                     true);
         bookingService.updatePrice($scope, $http);
-
-        // if (!window.CardIO) {
-        //     window.CardIO = {
-        //         scan(params, callback) {
-        //             creditCardInput.getInput().then((result) => {
-        //                 callback(result);
-        //             });
-        //         },
-        //     }
-        // }
 
         $scope.waitingForPaymentResult = false;
 
@@ -72,6 +64,8 @@ export var BookingSummaryController = [
                     return;
                 }
                 else { // Last resort :(
+                  throw new Error("There was some difficulty contacting the payment gateway." +
+                    " Please check your Internet connection")
                   var cardDetails = await creditCardInput.getInput()
                   if (cardDetails == null)
                     return;
@@ -126,9 +120,10 @@ export var BookingSummaryController = [
 
                 $state.go('tab.booking-confirmation');
             } catch (err) {
-              // FIXME: How to display error messages?
-              console.log(err);
-              alert(JSON.stringify(err));
+              await $ionicPopup.alert({
+                title: 'Error processing payment',
+                template: err,
+              })
             } finally {
               $scope.$apply(() => {
                 $scope.waitingForPaymentResult = false;

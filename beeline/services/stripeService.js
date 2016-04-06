@@ -27,10 +27,12 @@ export default function initStripe() {
     var tokenResolve, tokenReject;
     var tokenPromise;
     window.stripeLoaded = stripeResolve;
+    window.stripeError = stripeReject;
     var scriptElem = document.createElement('SCRIPT');
     scriptElem.setAttribute('src', 'https://checkout.stripe.com/checkout.js');
     scriptElem.setAttribute('async', '')
     scriptElem.setAttribute('onload', 'stripeLoaded()')
+    scriptElem.setAttribute('onerror', 'stripeError()')
     document.body.appendChild(scriptElem);
 
     var instance = {
