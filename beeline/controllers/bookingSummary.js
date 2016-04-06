@@ -5,10 +5,14 @@ export var BookingSummaryController = [
     '$scope',
     '$state',
     '$http',
+    '$ionicPopup',
     'bookingService',
     'userService',
     'creditCardInput',
-    function ($scope, $state, $http, bookingService, userService, creditCardInput) {
+    'Stripe',
+    function ($scope, $state, $http, $ionicPopup,
+      bookingService, userService, creditCardInput,
+    StripeService) {
         // navigate away if we don't have data (e.g. due to refresh)
         if (!bookingService.currentBooking) {
             $state.go('tab.booking-pickup');
@@ -22,16 +26,6 @@ export var BookingSummaryController = [
                     true);
         bookingService.updatePrice($scope, $http);
 
-        if (!window.CardIO) {
-            window.CardIO = {
-                scan(params, callback) {
-                    creditCardInput.getInput().then((result) => {
-                        callback(result);
-                    });
-                },
-            }
-        }
-
         $scope.waitingForPaymentResult = false;
 
         // methods
@@ -40,28 +34,53 @@ export var BookingSummaryController = [
                 // disable the button
                 $scope.waitingForPaymentResult = true;
 
-                var cardDetails = await new Promise((resolve, reject) => CardIO.scan({
-                        "expiry": true,
-                        "cvv": true,
-                        "zip": false,
-                        "suppressManual": false,
-                        "suppressConfirm": false,
-                        "hideLogo": true
-                    }, resolve, () => resolve(null)));
+                if (window.CardIO) {
+                  var cardDetails = await new Promise((resolve, reject) => CardIO.scan({
+                    "expiry": true,
+                    "cvv": true,
+                    "zip": false,
+                    "suppressManual": false,
+                    "suppressConfirm": false,
+                    "hideLogo": true
+                  }, resolve, () => resolve(null)));
 
-                if (cardDetails == null) return;
+                  if (cardDetails == null) return;
 
-                var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
-                    number:     cardDetails["card_number"],
-                    cvc:        cardDetails["cvv"],
-                    exp_month:  cardDetails["expiry_month"],
-                    exp_year:   cardDetails["expiry_year"],
-                }, (statusCode, response) => {
-                    if (response.error)
-                        reject(response.error.message);
-                    else
-                        resolve(response);
-                }));
+                  var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
+                      number:     cardDetails["card_number"],
+                      cvc:        cardDetails["cvv"],
+                      exp_month:  cardDetails["expiry_month"],
+                      exp_year:   cardDetails["expiry_year"],
+                  }, (statusCode, response) => {
+                      if (response.error)
+                          reject(response.error.message);
+                      else
+                          resolve(response);
+                  }));
+                }
+                else if (StripeService.loaded) { // Use Stripe Checkout
+                  var stripeToken = await StripeService.promptForToken();
+                  if (stripeToken == null)
+                    return;
+                }
+                else { // Last resort :(
+                  throw new Error("There was some difficulty contacting the payment gateway." +
+                    " Please check your Internet connection")
+                  var cardDetails = await creditCardInput.getInput()
+                  if (cardDetails == null)
+                    return;
+                  var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
+                      number:     cardDetails["card_number"],
+                      cvc:        cardDetails["cvv"],
+                      exp_month:  cardDetails["expiry_month"],
+                      exp_year:   cardDetails["expiry_year"],
+                  }, (statusCode, response) => {
+                      if (response.error)
+                          reject(response.error.message);
+                      else
+                          resolve(response);
+                  }));
+                }
 
                 if (!('id' in stripeToken)) {
                     alert("There was an error contacting Stripe");
@@ -101,11 +120,14 @@ export var BookingSummaryController = [
 
                 $state.go('tab.booking-confirmation');
             } catch (err) {
-                // FIXME: How to display error messages?
-                console.log(err);
-                alert(JSON.stringify(err));
+              await $ionicPopup.alert({
+                title: 'Error processing payment',
+                template: err,
+              })
             } finally {
+              $scope.$apply(() => {
                 $scope.waitingForPaymentResult = false;
+              })
             }
         };
 

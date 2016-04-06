@@ -20,6 +20,7 @@ function(
     $ionicModal
 ) {
     $scope.$on('$ionicView.afterEnter', async (event) => {
+        /* Entered from the route search */
         if ($state.params.action == 'submit' &&
             Search.data.startLat && Search.data.startLng) {
             $state.params.action = ''
@@ -55,6 +56,10 @@ function(
                 $state.go('tab.suggest', {action: ''})
             });
         }
+        else if ($state.params.action == 'new') {
+            $scope.promptNewSuggestion();
+            queryData();
+        }
         else {
             queryData()
         }
@@ -86,6 +91,18 @@ function(
             return suggestions;
         })
         .then(function (suggestions) {
+            /* Need to map the old suggestions to the new suggestions so
+            that we don't lose the geocoding */
+            // var oldSuggestions = _.keyBy(
+            //     $scope.suggestions,
+            //     sugg => sugg.id);
+
+            // for (let suggestion of suggestions) {
+            //     if (oldSuggestions[sugg.id] &&
+            //             oldSuggestion[sugg.id].updatedAt == suggestion.updatedAt) {
+            //         _.assign(suggestion, oldSuggestions[sugg.id])
+            //     }
+            // }
             $scope.suggestions = suggestions;
         });
 

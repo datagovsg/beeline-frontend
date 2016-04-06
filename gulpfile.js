@@ -17,7 +17,14 @@ function errHandler(err) {
     this.emit('end');
 }
 
-gulp.task('default', ['sass', 'webpack']);
+gulp.task('default', ['sass', 'webpack', 'js-libraries']);
+
+gulp.task('js-libraries', function() {
+    gulp.src('./node_modules/angular-google-maps/dist/angular-google-maps.js')
+        .pipe(gulp.dest('./www/js'))
+    gulp.src('./node_modules/angular-simple-logger/dist/angular-simple-logger.js')
+        .pipe(gulp.dest('./www/js'))
+});
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')

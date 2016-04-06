@@ -15,6 +15,7 @@ import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';
 import {SearchService, RoutesService} from './services/routesService';
 import {TicketService, UserService, TripService, CompanyService} from './services/ticketService';
+import StripeService from './services/stripeService'
 import SuggestionService from './services/suggestionService';
 import CreditCardInput from './services/creditCardInput/creditCardInput';
 import RevGeocode from './directives/revGeocode/revGeocode';
@@ -32,7 +33,10 @@ import routeItem from './directives/routeItem/routeItem.js';
 ////////////////////////////////////////////////////////////////////////////////
 // Non-angular configuration
 ////////////////////////////////////////////////////////////////////////////////
-Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
+// FIXME: set this in StripeService;
+try {
+  Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
+} catch () {}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -66,6 +70,7 @@ var app = angular.module('beeline', [
 .factory('oneMapService', OneMapService)
 .factory('dateService', DateService)
 .factory('creditCardInput', CreditCardInput)
+.factory('Stripe', StripeService)
 .controller('BookingCtrl', BookingController)
 .controller('BookingDatesCtrl', BookingDatesController)
 .controller('BookingSummaryCtrl', BookingSummaryController)
