@@ -1,6 +1,6 @@
 import querystring from 'querystring'
 
-export default function TickerService($http,$filter,userService) {
+export default function TickerService($http,$filter,UserService) {
         var now = new Date();
         var today0000 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0).getTime();
         var today2400 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 24, 0).getTime();
@@ -12,7 +12,7 @@ export default function TickerService($http,$filter,userService) {
 
         return {
             getTickets: function(){
-                var bearer = userService.sessionToken;
+                var bearer = UserService.sessionToken;
                 if (!bearer){
                     return Promise.resolve([]);
                 }

@@ -2,27 +2,27 @@
 
 export default [
     '$scope',
-    'ticketService',
-    'userService',
+    'TicketService',
+    'UserService',
     '$ionicModal',
     '$state',
 function(
     $scope,
-    ticketService,
-    userService,
+    TicketService,
+    UserService,
     $ionicModal,
     $state
 ) {
-    $scope.userService = userService;
+    $scope.UserService = UserService;
     $scope.todaydata = [];
     $scope.soondata = [];
-    $scope.ticketService = ticketService;
+    $scope.TicketService = TicketService;
 
     $scope.$on('$ionicView.beforeEnter',()=>{
 
-        console.log(userService.sessionToken);
-        if (userService.sessionToken == undefined){
-            userService.afterLoginGoWhere = $state.current.name;
+        console.log(UserService.sessionToken);
+        if (UserService.sessionToken == undefined){
+            UserService.afterLoginGoWhere = $state.current.name;
             $state.go("tabs.settings-login");
             return;
         }
@@ -30,16 +30,16 @@ function(
             $scope.login =true;
         }
 
-        ticketService.getTickets()
+        TicketService.getTickets()
         .then(function () {
-            ticketService.splitTickets();
-            $scope.todaydata = ticketService.todayTickets();
-            $scope.soondata = ticketService.soonTickets();
+            TicketService.splitTickets();
+            $scope.todaydata = TicketService.todayTickets();
+            $scope.soondata = TicketService.soonTickets();
         });
 
         $scope.setselectedticket = function(tid){
-            ticketService.setSelectedTicket(tid);
-            $scope.ticket = ticketService.getSelectedTicket();
+            TicketService.setSelectedTicket(tid);
+            $scope.ticket = TicketService.getSelectedTicket();
             console.log("selected ticket is "+$scope.ticket.id);
         }
 

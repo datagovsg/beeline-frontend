@@ -2,16 +2,16 @@
 
 export default [
     '$scope',
-    'userService',
+    'UserService',
     '$state',
     '$ionicModal',
 function(
     $scope,
-    userService,
+    UserService,
     $state,
     $ionicModal
 ) {
-    $scope.userService = userService;
+    $scope.UserService = UserService;
 
 	$scope.login = {
 		status: false,
@@ -37,7 +37,7 @@ function(
 
 	//set the Login button labels and message for Settings page
     $scope.$on('$ionicView.beforeEnter',()=>{
-		$scope.login.status = (userService.sessionToken == undefined) ? false : true;
+		$scope.login.status = (UserService.sessionToken == undefined) ? false : true;
 
 		if ($scope.login.status)
 		{
@@ -71,7 +71,7 @@ function(
 			if ($state.current.name == 'tabs.settings-login-verify') {
 console.log($scope.login)
 				//fill in the user's phone number in page
-				$scope.login.phoneNum = userService.mobileNo;
+				$scope.login.phoneNum = UserService.mobileNo;
 			}
 		}
     });
@@ -115,8 +115,8 @@ console.log($scope.login)
 
 	//NEXT button clicked (error checking passed)
 	$scope.phoneNumSubmit = function() {
-		userService.sendTelephoneVerificationCode($scope.login.phoneNum).then(function(response){
-			userService.mobileNo = $scope.login.phoneNum;
+		UserService.sendTelephoneVerificationCode($scope.login.phoneNum).then(function(response){
+			UserService.mobileNo = $scope.login.phoneNum;
 
 			//send user to SMS code input page
 			$state.go('tabs.settings-login-verify');
@@ -126,19 +126,19 @@ console.log($scope.login)
 	};
 
     $scope.submit = function(code) {
-        userService.verifyTelephone(code).then(function(response) {
+        UserService.verifyTelephone(code).then(function(response) {
             if (response) {
-                $state.go(userService.afterLoginGoWhere ?
-                     userService.afterLoginGoWhere
+                $state.go(UserService.afterLoginGoWhere ?
+                     UserService.afterLoginGoWhere
                      : "tabs.settings");
-                userService.afterLoginGoWhere = undefined;
+                UserService.afterLoginGoWhere = undefined;
             }
         })
     };
 
     $scope.ok = function (){
         window.localStorage.removeItem('sessionToken');
-        userService.sessionToken = undefined;
+        UserService.sessionToken = undefined;
         $scope.modal.hide();
         $scope.$emit('$ionicView.beforeEnter');
     };

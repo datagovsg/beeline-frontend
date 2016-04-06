@@ -82,7 +82,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking.html',
-        controller: 'BookingCtrl',
+        controller: 'BookingController',
       }
     }
   })
@@ -91,7 +91,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking.html',
-        controller: 'BookingCtrl',
+        controller: 'BookingController',
       }
     }
   })
@@ -100,7 +100,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-dates.html',
-            controller: 'BookingDatesCtrl',
+            controller: 'BookingDatesController',
         },
     },
   })
@@ -109,7 +109,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-summary.html',
-            controller: 'BookingSummaryCtrl',
+            controller: 'BookingSummaryController',
         },
     },
   })
@@ -118,7 +118,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-confirmation.html',
-            controller: 'BookingConfirmationCtrl',
+            controller: 'BookingConfirmationController',
         },
     },
   })
@@ -131,7 +131,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-suggest': {
         templateUrl: 'templates/tab-suggest.html',
-        controller: 'SuggestCtrl'
+        controller: 'SuggestController'
       }
     }
   })
@@ -144,7 +144,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-tickets': {
         templateUrl: 'templates/tab-tickets.html',
-        controller: 'TicketsCtrl'
+        controller: 'TicketsController'
       }
     }
   })
@@ -154,7 +154,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-tickets': {
         templateUrl: 'templates/ticket-detail.html',
-        controller: 'TicketDetailCtrl'
+        controller: 'TicketDetailController'
       }
     }
   })
@@ -167,7 +167,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-settings': {
         templateUrl: 'templates/5_0_settings.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsController'
       }
     }
   })
@@ -177,7 +177,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-settings': {
         templateUrl: 'templates/5_1_1_login.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsController'
       }
     }
   })
@@ -187,7 +187,7 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-settings': {
         templateUrl: 'templates/5_1_2_verify.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsController'
       }
     }
   });

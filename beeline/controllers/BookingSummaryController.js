@@ -5,25 +5,25 @@ export default [
     '$state',
     '$http',
     '$ionicPopup',
-    'bookingService',
-    'userService',
-    'creditCardInput',
-    'Stripe',
+    'BookingService',
+    'UserService',
+    'CreditCardInputService',
+    'StripeService',
     function ($scope, $state, $http, $ionicPopup,
-      bookingService, userService, creditCardInput,
+      BookingService, UserService, CreditCardInputService,
     StripeService) {
         // navigate away if we don't have data (e.g. due to refresh)
-        if (!bookingService.currentBooking) {
+        if (!BookingService.currentBooking) {
             $state.go('tabs.booking-pickup');
         }
         //
-        $scope.bookingService = bookingService;
+        $scope.BookingService = BookingService;
 
         /** FIXME this can be potentially very slow. Should ignore the routeInfo entry **/
-        $scope.$watch('bookingService.currentBooking',
-                    () => bookingService.updatePrice($scope, $http),
+        $scope.$watch('BookingService.currentBooking',
+                    () => BookingService.updatePrice($scope, $http),
                     true);
-        bookingService.updatePrice($scope, $http);
+        BookingService.updatePrice($scope, $http);
 
         $scope.waitingForPaymentResult = false;
 
@@ -65,7 +65,7 @@ export default [
                 else { // Last resort :(
                   throw new Error("There was some difficulty contacting the payment gateway." +
                     " Please check your Internet connection")
-                  var cardDetails = await creditCardInput.getInput()
+                  var cardDetails = await CreditCardInputService.getInput()
                   if (cardDetails == null)
                     return;
                   var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
@@ -86,13 +86,13 @@ export default [
                     return;
                 }
 
-                var result = await userService.beeline({
+                var result = await UserService.beeline({
 
                     method: 'POST',
                     url: '/transactions/payment_ticket_sale',
                     data: {
                         stripeToken: stripeToken.id,
-                        trips: bookingService.prepareTrips(),
+                        trips: BookingService.prepareTrips(),
                     },
                 });
 
@@ -102,7 +102,7 @@ export default [
                 // Read the transaction items back info the booking service.
                 // Parse the transactions...
                 let txn = result.data;
-                bookingService.bookingTransaction = txn;
+                BookingService.bookingTransaction = txn;
                 //  txn.transactionItems = _.groupBy(txn.transactionItems,
                 //      x => x.itemType);
 
@@ -137,14 +137,14 @@ export default [
 
 			if ((typeof(code) != 'undefined')&&(code.trim() != ''))
 			{
-				if (typeof(bookingService.currentBooking.promoCodes) == 'undefined')
-					bookingService.currentBooking.promoCodes = [];
+				if (typeof(BookingService.currentBooking.promoCodes) == 'undefined')
+					BookingService.currentBooking.promoCodes = [];
 
-				if (bookingService.currentBooking.promoCodes.indexOf(code) != '-1') //dupe
+				if (BookingService.currentBooking.promoCodes.indexOf(code) != '-1') //dupe
 					console.log('Duplicate code')
 				else
 				{
-					bookingService.currentBooking.promoCodes.push(code);
+					BookingService.currentBooking.promoCodes.push(code);
 					code = '';
 				}
 			}

@@ -5,8 +5,8 @@ export default [
     '$state',
     '$stateParams',
     '$http',
-    'suggestionService',
-    'userService',
+    'SuggestionService',
+    'UserService',
     'Search',
     '$ionicModal',
 function(
@@ -14,8 +14,8 @@ function(
     $state,
     $stateParams,
     $http,
-    suggestionService,
-    userService,
+    SuggestionService,
+    UserService,
     Search,
     $ionicModal
 ) {
@@ -25,9 +25,9 @@ function(
             Search.data.startLat && Search.data.startLng) {
             $state.params.action = ''
 
-            console.log(userService);
+            console.log(UserService);
             // submit the suggestion via $https
-            userService
+            UserService
             .authenticate()
             .then(() => {
                 var arrivalTime = new Date(Search.data.arrivalTime);
@@ -35,7 +35,7 @@ function(
                         arrivalTime.getMinutes() * 60 +
                         arrivalTime.getSeconds();
 
-                return userService.beeline({
+                return UserService.beeline({
                     method: 'POST',
                     url: '/suggestions',
                     data: {
@@ -69,7 +69,7 @@ function(
     function queryData() {
         var suggestions;
 
-        userService.beeline({
+        UserService.beeline({
             url: '/suggestions',
             method: 'GET',
         })
@@ -77,7 +77,7 @@ function(
             suggestions = response.data;
 
             var countSimilar = suggestions.map(suggestion =>
-                userService.beeline({
+                UserService.beeline({
                     url: `/suggestions/${suggestion.id}/similar`,
                     method: 'GET'
                 }))
@@ -106,14 +106,14 @@ function(
             $scope.suggestions = suggestions;
         });
 
-        suggestionService.getSimilar()
+        SuggestionService.getSimilar()
         .then(function () {
-            $scope.similarSuggestions = suggestionService.getSimilarSuggestions();
+            $scope.similarSuggestions = SuggestionService.getSimilarSuggestions();
         });
 
         $scope.getSuggestionById = function(tid){
-            suggestionService.getSuggestionById(tid);
-            $scope.suggestion = suggestionService.getSelectedSuggestion();
+            SuggestionService.getSuggestionById(tid);
+            $scope.suggestion = SuggestionService.getSelectedSuggestion();
             console.log("selected suggestion is "+$scope.suggestion.id);
         }
     }
@@ -130,7 +130,7 @@ function(
     $scope.deleteSuggestion = function(event, id) {
         event.stopPropagation();
         if (confirm("Are you sure you want to delete this suggestion?")) {
-            userService.beeline({
+            UserService.beeline({
                 method: 'DELETE',
                 url: '/suggestions/' + id
             })
@@ -155,7 +155,7 @@ function(
         $scope.newSuggestionModal.show();
     };
     $scope.submitSuggestion = function (suggestion) {
-        userService
+        UserService
         .authenticate()
         .then(() => {
             var arrivalTime = new (
@@ -164,7 +164,7 @@ function(
                     arrivalTime.getMinutes() * 60 +
                     arrivalTime.getSeconds();
 
-            return userService.beeline({
+            return UserService.beeline({
                 method: 'POST',
                 url: '/suggestions',
                 data: {

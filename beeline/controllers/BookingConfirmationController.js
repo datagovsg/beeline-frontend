@@ -3,7 +3,7 @@ export default [
     '$scope',
     '$state',
     '$http',
-    'bookingService',
+    'BookingService',
     function ($scope, $state, $http, BookingService) {
     },
 ];

@@ -7,11 +7,11 @@ import {titleCase} from '../../shared/format'
 
 export default [
     '$http',
-    'oneMapService',
-    'userService',
+    'OneMapService',
+    'UserService',
     function($http,
-             oneMapService,
-             userService){
+             OneMapService,
+             UserService){
       return {
         restrict: 'E',
         transclude: true,
@@ -36,7 +36,7 @@ export default [
         `,
         link: async function(scope, elem) {
             scope.geocodeW = {}//`${scope.y}, ${scope.x}`
-            var oneMapToken = await oneMapService.token();
+            var oneMapToken = await OneMapService.token();
             //var url = `http://staging.beeline.sg/onemap/revgeocode?location=${scope.x},${scope.y}`;
 
             function updateDescription() {
@@ -54,7 +54,7 @@ export default [
                 }
             }
             function geocode() {
-                scope.geocodePromiseW = userService.beeline({
+                scope.geocodePromiseW = UserService.beeline({
                     method: 'GET',
                     url: `/onemap/revgeocode?location=${scope.x},${scope.y}`
                 })

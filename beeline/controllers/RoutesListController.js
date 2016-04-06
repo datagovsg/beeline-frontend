@@ -18,12 +18,12 @@ function filterRoutesByRegionId(routes, regionId){
   });
 }
 
-export default function ($scope, $state, Routes) {
+export default function ($scope, $state, RoutesService) {
 
   $scope.data = {} // Create a scope sub-object cos angular is dumb
                    // https://github.com/angular/angular.js/wiki/Understanding-Scopes
 
-  Routes.getRoutes().then(function(routes){
+  RoutesService.getRoutes().then(function(routes){
     $scope.data.regions = getUniqueRegionsFromRoutes(routes);
     $scope.$watch('data.selectedRegionId', function(newSelectedRegionId, oldSelectedRegionId){
       $scope.data.activeRoutes = filterRoutesByRegionId(routes, +newSelectedRegionId);

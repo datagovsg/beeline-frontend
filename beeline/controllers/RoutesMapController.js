@@ -2,7 +2,7 @@ import {formatHHMM_ampm} from '../shared/format';
 import _ from 'lodash'
 
 export default function($scope, $state, $ionicModal, $cordovaGeolocation,
-    										uiGmapGoogleMapApi, BookingService, Routes){
+    										uiGmapGoogleMapApi, BookingService, RoutesService){
 	
 	//Gmap default settings
 	$scope.map = {
@@ -307,7 +307,7 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 			else //user is one click away from submitting the search request
 			{
 				//place the start and end locations' latlng into the Search object
-				Routes.addReqData($scope.rmap.pickupvalue,
+				RoutesService.addReqData($scope.rmap.pickupvalue,
                     $scope.rmap.dropoffvalue,
                     $scope.rmap.platlng[0],
                     $scope.rmap.platlng[1],
@@ -334,10 +334,10 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 
 	//Update the Search Results modal with stuff retrieved from the DB
 	$scope.showSearchResults = function() {
-		Routes.getclosestroute().then(function(result){
+		RoutesService.getclosestroute().then(function(result){
 
 			//store a copy of the search results in the Search object
-			Routes.setresults(result.data);
+			RoutesService.setresults(result.data);
 
 			//sift through the data to get the values we need
 			$scope.rmap.searchresults = [];
@@ -395,7 +395,7 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 
 	//Route Suggestion button clicked - redirect to Suggestion page
 	$scope.routeSuggest = function() {
-		Routes.setArrivalTime($scope.rmap.suggestTime);
+		RoutesService.setArrivalTime($scope.rmap.suggestTime);
 
 		//close the modal
 		$scope.rmap.resultsModal.hide();

@@ -3,17 +3,28 @@ import {formatDate, formatDateMMMdd, formatTime,
 // Service Imports
 import UserService from './services/UserService.js';
 import RoutesService from './services/RoutesService.js';
-import TripService from './services/TripService';
-import SuggestionService from './services/suggestionService';
-import BookingService from './services/bookingService';
-import CompanyService from './services/CompanyService';
-import TicketService from './services/ticketService';
-import OneMapService from './services/oneMapService';
-import RevGeocode from './directives/revGeocode/revGeocode';
-import CreditCardInput from './services/creditCardInput/creditCardInput';
-import DateService from './services/dateService';
-import StripeService from './services/stripeService'
+import TripService from './services/TripService.js';
+import SuggestionService from './services/SuggestionService.js';
+import BookingService from './services/BookingService.js';
+import CompanyService from './services/CompanyService.js';
+import TicketService from './services/TicketService.js';
+import OneMapService from './services/OneMapService.js';
+import DateService from './services/DateService.js';
+import StripeService from './services/StripeService.js'
+import CreditCardInputService from './services/CreditCardInputService.js';
+// Controller Imports
+import RoutesMapController from './controllers/RoutesMapController.js';
+import RoutesListController from './controllers/RoutesListController.js';
+import BookingController from './controllers/BookingController.js';
+import BookingDatesController from './controllers/BookingDatesController.js';
+import BookingConfirmationController from './controllers/BookingConfirmationController.js';
+import BookingSummaryController from './controllers/BookingSummaryController.js';
+import SuggestController from './controllers/SuggestController.js';
+import TicketsController from './controllers/TicketsController.js';
+import TicketDetailController from './controllers/TicketDetailController.js';
+import SettingsController from './controllers/SettingsController.js';
 // Directive Imports
+import RevGeocode from './directives/revGeocode/revGeocode';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';
 import StartEndPicker from './directives/startEndPicker/startEndPicker';
@@ -21,17 +32,6 @@ import routeItem from './directives/routeItem/routeItem.js';
 import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
 import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
 import QtyInput from './directives/qtyInput/qtyInput';
-// Controller Imports
-import RoutesMapController from './controllers/RoutesMapController.js';
-import RoutesListController from './controllers/RoutesListController.js';
-import BookingController from './controllers/booking';
-import BookingDatesController from './controllers/bookingDates';
-import BookingConfirmationController from './controllers/bookingConfirmation';
-import BookingSummaryController from './controllers/bookingSummary';
-import SuggestController from './controllers/suggestcontroller';
-import TicketsController from './controllers/ticketscontroller';
-import TicketDetailController from './controllers/ticketdetailcontroller';
-import SettingsController from './controllers/settingscontroller';
 // Configuration Imports
 import configureRoutes from './router.js';
 import AngularGoogleMap from 'angular-google-maps';
@@ -66,25 +66,25 @@ var app = angular.module('beeline', [
         return monthNames[i];
     };
 })
-.factory('ticketService', TicketService)
-.factory('userService', UserService)
-.factory('tripService', TripService)
-.factory('companyService', CompanyService)
-.factory('suggestionService', SuggestionService)
-.factory('Routes', RoutesService)
+.factory('TicketService', TicketService)
+.factory('UserService', UserService)
+.factory('TripService', TripService)
+.factory('CompanyService', CompanyService)
+.factory('SuggestionService', SuggestionService)
+.factory('RoutesService', RoutesService)
 .factory('BookingService', BookingService)
-.factory('oneMapService', OneMapService)
-.factory('dateService', DateService)
-.factory('creditCardInput', CreditCardInput)
-.factory('Stripe', StripeService)
-.controller('BookingCtrl', BookingController)
-.controller('BookingDatesCtrl', BookingDatesController)
-.controller('BookingSummaryCtrl', BookingSummaryController)
-.controller('BookingConfirmationCtrl', BookingConfirmationController)
-.controller('SuggestCtrl', SuggestController)
-.controller('SettingsCtrl', SettingsController)
-.controller('TicketsCtrl', TicketsController)
-.controller('TicketDetailCtrl', TicketDetailController)
+.factory('OneMapService', OneMapService)
+.factory('DateService', DateService)
+.factory('CreditCardInputService', CreditCardInputService)
+.factory('StripeService', StripeService)
+.controller('BookingController', BookingController)
+.controller('BookingDatesController', BookingDatesController)
+.controller('BookingSummaryController', BookingSummaryController)
+.controller('BookingConfirmationController', BookingConfirmationController)
+.controller('SuggestController', SuggestController)
+.controller('SettingsController', SettingsController)
+.controller('TicketsController', TicketsController)
+.controller('TicketDetailController', TicketDetailController)
 .controller('RoutesMapController', RoutesMapController)
 .controller('RoutesListController', RoutesListController)
 .directive('datePicker', DatePicker)
