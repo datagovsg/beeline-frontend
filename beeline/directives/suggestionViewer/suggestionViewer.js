@@ -34,8 +34,12 @@ export default [
         scope.icons = dashedLineIcons();
       });
 
+      var gmapResolve;
+      var gmapReady = new Promise((resolve) => gmapResolve = resolve);
+      scope.mapReady = gmapResolve;
+
       scope.fitMarkers = function () {
-        uiGmapIsReady.promise().then(() => {
+        gmapReady.promise(instanceNo).then(() => {
           var llBounds = new google.maps.LatLngBounds();
           llBounds.extend(new google.maps.LatLng({
             lat: scope.startLat,
