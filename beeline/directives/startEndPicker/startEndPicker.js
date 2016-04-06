@@ -254,14 +254,6 @@ export default [
           scope.inFocus++;
         }
         scope.inputBlur = function($event, which) {
-          scope.setPoint = which;
-          var point = scope[which + 'Point'];
-          if (point.coordinates) {
-            scope.map.control.getGMap().panTo({
-              lat: scope[which + 'Point'].coordinates.latitude,
-              lng: scope[which + 'Point'].coordinates.longitude,
-            });
-          }
           scope.inFocus--;
         }
         scope.reset = function(which) {

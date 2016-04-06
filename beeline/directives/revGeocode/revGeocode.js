@@ -1,4 +1,3 @@
-
 // <rev-geocode x="longitude" y="latitude"></rev-geocode>
 
 // {{block_number}} {{road}}<br/>
@@ -41,7 +40,8 @@ export default [
             //var url = `http://staging.beeline.sg/onemap/revgeocode?location=${scope.x},${scope.y}`;
 
             function updateDescription() {
-                if (scope.geocodeW && scope.geocodeW.GeocodeInfo[0].ROAD) {
+                if (scope.geocodeW && scope.geocodeW.GeocodeInfo &&
+                    scope.geocodeW.GeocodeInfo[0].ROAD) {
                     scope.description1 = titleCase(scope.geocodeW.GeocodeInfo[0].BLOCK)
                         + ' ' + titleCase(scope.geocodeW.GeocodeInfo[0].ROAD);
                     scope.description2 = titleCase(scope.geocodeW.GeocodeInfo[0].BUILDINGNAME);

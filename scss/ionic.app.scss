@@ -377,9 +377,10 @@ ion-list {
 
 /* ----- Remove Google logo and Map marker from Autocomplete dropdown ----- */
 .pac-container {
-	width: 86% !important;
+	/*width: 86% !important;
 	left: 50% !important;
-	margin: 15px 0px 0px -43%;
+	margin: 15px 0px 0px -43%;*/
+	pointer-events: auto;
 
 	.pac-item {
 		padding: 0px 10px 0px 10px;
