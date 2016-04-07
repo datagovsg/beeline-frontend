@@ -156,7 +156,8 @@ export default [
       $scope.routePath = [];
 
       $scope.getStopId = (stop) => stop.id;
-      $scope.getStopDescription = (stop) => stop.description;
+      $scope.getStopDescription = (stop) =>
+        stop.time + ' \u00a0\u00a0' + stop.description;
 
       $scope.boardMarkerOptions = {};
       $scope.alightMarkerOptions = {};

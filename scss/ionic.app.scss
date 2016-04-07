@@ -23,6 +23,8 @@ $stable:						  #4b3863 !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 @import "scss/startEndPicker";
+@import "scss/busStopSelector.scss";
+
 @import "scss/beeline.scss";
 @import "scss/login.scss";
 @import "scss/verify.scss";
@@ -813,16 +815,6 @@ ion-list {
 		left: 5%;
 		box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
 
-		.bus-stop-selector-list {
-			li {
-				padding: 5px 0 5px 0;
-
-				&.active {
-					background-color: #9CF;
-				}
-			}
-		}
-
 		.line {
 			width: 2px;
 			height: 14px;
@@ -831,42 +823,6 @@ ion-list {
 			left: 16px;
 			position: absolute;
 			z-index: 1;
-		}
-
-		bus-stop-selector {
-			display: block;
-			background-color: #FFF;
-			font-size: 12px;
-			position: relative;
-
-			.stop-description {
-				height: 34px;
-				line-height: 29px;
-				padding: 3px 35px 2px 32px;
-				border-bottom: 1px solid #CCC;
-				background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
-				background-size: auto 20px;
-
-				.ng-binding {
-				    white-space: nowrap;
-					text-overflow: ellipsis;
-					width: 100%;
-					display: inline-block;
-					overflow: hidden;
-				}
-
-				.placeholder{
-					color: #828282;
-				}
-			}
-
-			.icon {
-				position: absolute;
-				top: 0;
-				right: 10px;
-				font-size: 24px;
-				line-height: 34px;
-			}
 		}
 	}
 
@@ -1001,74 +957,6 @@ ion-list {
 	}
 }
 
-/* ---------- BOOKINGS STOPS MODAL ---------- */
-.stop-selector.modal {
-	width: calc(100% - 20px);
-	min-height: calc(100% - 40px);
-	left: 9px;
-	top: 19px;
-	border-radius: 10px;
-	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
-	border: 1px solid #999;
-
-	.scroll, ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-	}
-
-	ui-gmap-google-map, .angular-google-map {
-		height: calc(100% - 240px);
-	}
-
-	.gmnoprint, .gm-style-cc {
-		display:none;
-	}
-
-	.ion-list-header {
-		height: 30px;
-	}
-
-	.stopslist {
-		height: 210px;
-		overflow-y: scroll;
-		overflow-x: hidden;
-
-		.item-radio {
-			.radio-icon {
-				padding: 0px;
-				top: 2px;
-				left: 16px;
-
-				&:before {
-					visibility: visible;
-					width: 15px;
-					height: 15px;
-					font-size: 16px;
-					background-color: #d6d6d6;
-					border-radius: 9px;
-					line-height: 1;
-					box-shadow: inset 2px 2px 2px rgba(0,0,0,0.2);
-					content: '';
-				}
-			}
-
-			.item-content {
-				padding: 10px 0px 10px 40px;
-				font-size: 14px;
-
-				.time {
-					float: left;
-					min-height: 38px;
-					margin-right: 10px;
-				}
-			}
-		}
-
-		.item-radio input:checked + .radio-content .radio-icon:before {
-			background-color: $stable;
-		}
-	}
-}
 
 #pg_bookdate {
 	.monthsel {
