@@ -3,9 +3,9 @@ import {formatDate, formatDateMMMdd, formatTime,
 // Service Imports
 import UserService from './services/UserService.js';
 import RoutesService from './services/RoutesService.js';
+import BookingService from './services/BookingService.js';
 import TripService from './services/TripService.js';
 import SuggestionService from './services/SuggestionService.js';
-import BookingService from './services/BookingService.js';
 import CompanyService from './services/CompanyService.js';
 import TicketService from './services/TicketService.js';
 import OneMapService from './services/OneMapService.js';
