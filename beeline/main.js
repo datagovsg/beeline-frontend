@@ -33,6 +33,7 @@ import SuggestController from './controllers/suggestcontroller';
 import TicketsController from './controllers/ticketscontroller';
 import TicketDetailController from './controllers/ticketdetailcontroller';
 import SettingsController from './controllers/settingscontroller';
+import LoginController from './controllers/loginController';
 // Configuration Imports
 import configureRoutes from './router.js';
 import AngularGoogleMap from 'angular-google-maps';
