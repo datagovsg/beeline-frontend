@@ -19,9 +19,6 @@ export default function TicketService($http,$filter,UserService) {
                 return UserService.beeline({
                     method: 'GET',
                     url: '/tickets',
-                    headers: {
-                      "Authorization": 'Bearer ' + bearer,
-                    },
                   }).then((response) => {
                     tickets = response.data;
                     console.log("get tickets")

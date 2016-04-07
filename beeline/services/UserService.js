@@ -2,7 +2,7 @@ export default function UserService($http) {
     var preLoginState;
     var instance = {
         user: {},
-        sessionToken: localStorage['sessionToken'] || null,
+        sessionToken: window.localStorage['sessionToken'] || null,
         userPromise: null,
         loginPromise: null,
         mobileNo: null,

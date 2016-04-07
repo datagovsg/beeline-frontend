@@ -1,15 +1,15 @@
 <ion-view id="pg_settings" view-title="Settings">
   <ion-content>
-		<div class="status" ng-if="userService.isLoggedIn()">
-		  <h3>{{userService.user.name}}</h3>
-      Telephone: {{userService.user.telephone}}
+		<div class="status" ng-if="UserService.isLoggedIn()">
+		  <h3>{{UserService.user.name}}</h3>
+      Telephone: {{UserService.user.telephone}}
 
       <div>
   			<button ng-click="logInOut()">Log Out</button>
       </div>
 		</div>
 
-		<div class="status" ng-if="!userService.isLoggedIn()">
+		<div class="status" ng-if="!UserService.isLoggedIn()">
 			<div class="msg">
         You are not logged in.
       </div>

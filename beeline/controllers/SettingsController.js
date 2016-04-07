@@ -86,7 +86,7 @@ function(
       })
       .then((res) => {
         if (res) {
-          userService.logOut();
+          UserService.logOut();
         }
       })
 		}

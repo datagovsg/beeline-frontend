@@ -1,23 +1,23 @@
 export var LoginController = [
     '$scope',
-    'userService',
+    'UserService',
     '$state',
     '$ionicModal',
     '$ionicPopup',
     '$timeout',
   function(
       $scope,
-      userService,
+      UserService,
       $state,
       $ionicModal,
       $ionicPopup,
       $timeout
   ) {
     console.log("Enter scope");
-    $scope.userService = userService;
+    $scope.UserService = UserService;
 
   	$scope.login = {
-  		phoneNumber: userService.mobileNo || '',
+  		phoneNumber: UserService.mobileNo || '',
   		errmsg: '',
       nextDisabled: true,
       code: '',
@@ -60,9 +60,9 @@ export var LoginController = [
     };
 
   	$scope.phoneNumSubmit = function() {
-      userService.logOut();
-      userService.mobileNo = $scope.login.phoneNumber;
-  		userService.sendTelephoneVerificationCode(userService.mobileNo)
+      UserService.logOut();
+      UserService.mobileNo = $scope.login.phoneNumber;
+  		UserService.sendTelephoneVerificationCode(UserService.mobileNo)
       .then(function(response){
   			//send user to SMS code input page
   			$state.go('login-verify');
@@ -79,7 +79,7 @@ export var LoginController = [
       $timeout(() => {
         $scope.login.timeout = false;
       }, 30000);
-      userService.sendTelephoneVerificationCode(userService.mobileNo)
+      UserService.sendTelephoneVerificationCode(UserService.mobileNo)
       .then(null, function(error){
   			$ionicPopup.alert({
           title: 'Error',
@@ -89,10 +89,10 @@ export var LoginController = [
     }
 
     $scope.submit = function() {
-      userService.verifyTelephone($scope.login.code)
+      UserService.verifyTelephone($scope.login.code)
       .then(function(response) {
-        window.localStorage.sessionToken = userService.sessionToken;
-        userService.afterLogin();
+        window.localStorage.sessionToken = UserService.sessionToken;
+        UserService.afterLogin();
       }, (err) => {
         login.errmsg = "The code you submitted is incorrect. Please try again."
       })
