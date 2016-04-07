@@ -5,6 +5,7 @@
 				<i class="icon ion-alert-circled"></i>
 				<span class="txt">{{login.errmsg}}</span>
 			</div>
+			Enter your mobile phone number to log in
 			<div class="holder">
 				<input type="tel"
 					autofocus
@@ -20,7 +21,9 @@
 			</div>
 			<div class="terms">
 				By creating an account, you agree to Beeline's <a href="#">Term of Use</a> and <a href="#">Privacy Policy</a>.
-				<button ng-click="phoneNumSubmit()"
+				<br/>
+				<button class="big-yellow"
+					ng-click="phoneNumSubmit()"
 					ng-disabled="login.nextDisabled">NEXT</button>
 			</div>
 		</div>

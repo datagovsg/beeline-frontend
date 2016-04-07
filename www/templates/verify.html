@@ -7,16 +7,17 @@
 
 		<div class="msg">
 			Please enter the code we sent to
-			<div class="num">+65 {{userService.mobileNo || 12345678}}</div>
+			<div class="telephone">+65 {{userService.mobileNo || 12345678}}</div>
 		</div>
+		<div class="holder">
 		<input type="input" ng-model="login.code" data-role="none"
 			autofocus
 			name="telephoneNo"
 			placeholder="Code" value="">
-			<div class="spacing"></div>
-		<div class="spacing">
+		</div>
+		<div class="msg">
 		By creating an account, you agree to Beeline's Term of Use and Privacy Policy.</br>
-		<button id="btn-login" ng-click="submit()">Submit</button>
+		<button class="big-yellow" ng-click="submit()">Submit</button>
 		</div>
 		<hr/>
 		<div class="spacing"></div>
