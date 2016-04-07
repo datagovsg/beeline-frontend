@@ -3,7 +3,7 @@
 import {NetworkError} from '../shared/errors'
 import {formatDate, formatTime, formatUTCDate,formatHHMM_ampm} from '../shared/format'
 
-export var BookingController = [
+export default [
         '$rootScope',
         '$scope',
         '$state',

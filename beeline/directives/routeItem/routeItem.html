@@ -1,0 +1,20 @@
+<ion-item ng-click="click(route.id)">
+  <div class="routeinfo">
+    <div class="busnum">{{ route.label }}</div>
+    <div class=" stops">
+      <div class="line"></div>
+      <div class="start">
+        <span class="time">{{ route.startTime | date:'shortTime' }}</span>
+        <span class="road">{{ route.startRoad }}</span>
+      </div>
+      <div class="end">
+        <span class="time">{{ route.endTime | date:'shortTime' }}</span>
+        <span class="road">{{ route.endRoad }}</span>
+      </div>
+      <span class="active">active</span>
+    </div>
+  </div>
+  <a class="item-icon-right" href="#">
+    <i class="icon ion-ios-arrow-right"></i>
+  </a>
+</ion-item>

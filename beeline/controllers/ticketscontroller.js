@@ -1,6 +1,6 @@
 'use strict';
 
-export var TicketsController =[
+export default [
     '$scope',
     'ticketService',
     'userService',

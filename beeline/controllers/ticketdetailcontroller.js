@@ -1,6 +1,6 @@
 'use strict';
 
-export var TicketDetailController =[
+export default [
     '$scope',
     '$stateParams',
     'uiGmapGoogleMapApi',

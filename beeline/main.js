@@ -1,36 +1,41 @@
-import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
+import {setupBroadcastViewEnter} from './shared/util';
+import {formatDate, formatDateMMMdd, formatTime,
+        formatUTCDate, titleCase} from './shared/format';
+// Service Imports
+import UserService from './services/UserService.js';
+import RoutesService from './services/RoutesService.js';
+import TripService from './services/TripService';
+import SuggestionService from './services/suggestionService';
+import BookingService from './services/bookingService';
+import CompanyService from './services/CompanyService';
+import TicketService from './services/ticketService';
+import OneMapService from './services/oneMapService';
+import RevGeocode from './directives/revGeocode/revGeocode';
+import CreditCardInput from './services/creditCardInput/creditCardInput';
 import DateService from './services/dateService';
-import {BookingController} from './controllers/booking';
-import {BookingDatesController} from './controllers/bookingDates';
-import {BookingConfirmationController} from './controllers/bookingConfirmation';
-import {BookingSummaryController} from './controllers/bookingSummary';
-import {SettingsController} from './controllers/settingscontroller';
-import {SuggestController} from './controllers/suggestcontroller';
-import {TicketsController} from './controllers/ticketscontroller';
-import {TicketDetailController} from './controllers/ticketdetailcontroller';
-import {RouteMapController} from './controllers/routemapcontroller';
-import RouteListController from './controllers/routeListController';
-import {LoginController} from './controllers/loginController';
-
-import QtyInput from './directives/qtyInput/qtyInput';
+import StripeService from './services/stripeService'
+// Directive Imports
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';
-import {SearchService, RoutesService} from './services/routesService';
-import {TicketService, TripService, CompanyService} from './services/ticketService';
-import {UserService} from './services/userService'
-import StripeService from './services/stripeService'
-import SuggestionService from './services/suggestionService';
-import CreditCardInput from './services/creditCardInput/creditCardInput';
-import RevGeocode from './directives/revGeocode/revGeocode';
-import BookingService from './services/bookingService';
-import OneMapService from './services/oneMapService';
-import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
 import StartEndPicker from './directives/startEndPicker/startEndPicker';
-import AngularGoogleMap from 'angular-google-maps';
-import {formatDate, formatDateMMMdd, formatTime,
-    formatUTCDate, titleCase} from './shared/format';
-import {setupBroadcastViewEnter} from './shared/util';
+import routeItem from './directives/routeItem/routeItem.js';
+import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
+import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
+import QtyInput from './directives/qtyInput/qtyInput';
+// Controller Imports
+import RouteMapController from './controllers/routemapcontroller';
+import RouteListController from './controllers/routeListController';
+import BookingController from './controllers/booking';
+import BookingDatesController from './controllers/bookingDates';
+import BookingConfirmationController from './controllers/bookingConfirmation';
+import BookingSummaryController from './controllers/bookingSummary';
+import SuggestController from './controllers/suggestcontroller';
+import TicketsController from './controllers/ticketscontroller';
+import TicketDetailController from './controllers/ticketdetailcontroller';
+import SettingsController from './controllers/settingscontroller';
+// Configuration Imports
 import configureRoutes from './router.js';
+import AngularGoogleMap from 'angular-google-maps';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Non-angular configuration
@@ -48,6 +53,7 @@ var app = angular.module('beeline', [
     'ngCordova',
     'uiGmapgoogle-maps'
 ])
+.constant('SERVER_URL', 'http://staging.beeline.sg')
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
@@ -65,7 +71,6 @@ var app = angular.module('beeline', [
 .factory('tripService', TripService)
 .factory('companyService', CompanyService)
 .factory('suggestionService', SuggestionService)
-.factory('Search', SearchService)
 .factory('Routes', RoutesService)
 .factory('bookingService', BookingService)
 .factory('oneMapService', OneMapService)
@@ -83,6 +88,18 @@ var app = angular.module('beeline', [
 .controller('routeMapCtrl', RouteMapController)
 .controller('routeListCtrl', RouteListController)
 .controller('LoginCtrl', LoginController)
+.directive('datePicker', DatePicker)
+.directive('myTouchstart', TouchStart)
+.directive('myTouchend', TouchEnd)
+.directive('myTouchmove', TouchMove)
+.directive('myMousemove', MouseMove)
+.directive('qtyInput', QtyInput)
+.directive('suggestionViewer', SuggestionViewer)
+.directive('startEndPicker', StartEndPicker)
+.directive('busStopSelector', BusStopSelector)
+.directive('priceCalculator', PriceCalculator)
+.directive('revGeocode', RevGeocode)
+.directive('routeItem', routeItem)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
@@ -96,17 +113,6 @@ var app = angular.module('beeline', [
         libraries: 'places'
     });
 })
-.directive('datePicker', DatePicker)
-.directive('myTouchstart', TouchStart)
-.directive('myTouchend', TouchEnd)
-.directive('myTouchmove', TouchMove)
-.directive('myMousemove', MouseMove)
-.directive('qtyInput', QtyInput)
-.directive('suggestionViewer', SuggestionViewer)
-.directive('startEndPicker', StartEndPicker)
-.directive('busStopSelector', BusStopSelector)
-.directive('priceCalculator', PriceCalculator)
-.directive('revGeocode', RevGeocode)
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

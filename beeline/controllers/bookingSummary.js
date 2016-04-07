@@ -1,7 +1,6 @@
+import assert from 'assert';
 
-import assert from 'assert'
-
-export var BookingSummaryController = [
+export default [
     '$scope',
     '$state',
     '$http',

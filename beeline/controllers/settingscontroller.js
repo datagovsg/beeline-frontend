@@ -1,5 +1,5 @@
 
-export var SettingsController =[
+export default [
     '$scope',
     'userService',
     '$state',

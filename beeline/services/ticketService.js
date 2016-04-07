@@ -1,6 +1,6 @@
 import querystring from 'querystring'
 
-export function TicketService($http,$filter,userService) {
+export default function TicketService($http,$filter,userService) {
         var now = new Date();
         var today0000 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0).getTime();
         var today2400 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 24, 0).getTime();
@@ -84,45 +84,5 @@ export function TicketService($http,$filter,userService) {
                 //need to handle if null
                 return selectedticket;
             }
-        };
-    }
-
-export function TripService($http) {
-        var trip;
-        return {
-            Trip: function(id){
-                return $http.get("http://staging.beeline.sg/trips/"+id, {
-                    headers: {
-                    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MSwiaWF0IjoxNDU2Mzk2MTU4fQ.eCgMcdrhZAWfWcQ3hhcYts9oyQetZ4prGGf4t5xEAwU'
-                    }
-            }).then(function(response){
-                    trip = response.data;
-                });
-            },
-
-            gettrip: function(){
-                return trip;
-            },
-
-        };
-    }
-
-export function CompanyService($http) {
-        var company;
-        return {
-            Company: function(id){
-                return $http.get("http://staging.beeline.sg/companies/"+id, {
-                    headers: {
-                    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MSwiaWF0IjoxNDU2Mzk2MTU4fQ.eCgMcdrhZAWfWcQ3hhcYts9oyQetZ4prGGf4t5xEAwU'
-                    }
-            }).then(function(response){
-                    company = response.data;
-                });
-            },
-
-            getcompany: function(){
-                return company;
-            },
-
         };
     }
