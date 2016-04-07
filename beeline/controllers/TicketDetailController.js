@@ -4,38 +4,38 @@ export default [
     '$scope',
     '$stateParams',
     'uiGmapGoogleMapApi',
-    'ticketService',
-    'userService',
-    'companyService',
-    'tripService',
+    'TickerService',
+    'UserService',
+    'CompanyService',
+    'TripService',
 function(
     $scope,
     $stateParams,
     uiGmapGoogleMapApi,
-    ticketService,
-    userService,
-    companyService,
-    tripService
+    TickerService,
+    UserService,
+    CompanyService,
+    TripService
 ){
-    ticketService.getTickets()
+    TickerService.getTickets()
         .then((tickets) => {
             $scope.ticket = tickets
                     .filter(tick => tick.id == $stateParams.tid)[0];
             console.log($scope.ticket.boardStop.time)
-            ticketService.splitTickets();
-            $scope.todaydata = ticketService.todayTickets();
-            $scope.soondata = ticketService.soonTickets();
-            return tripService.Trip($scope.ticket.id)
+            TickerService.splitTickets();
+            $scope.todaydata = TickerService.todayTickets();
+            $scope.soondata = TickerService.soonTickets();
+            return TripService.Trip($scope.ticket.id)
         })
         .then(function(){
-            $scope.trip = tripService.gettrip();
-            return companyService.Company($scope.trip.transportCompanyId)
+            $scope.trip = TripService.gettrip();
+            return CompanyService.Company($scope.trip.transportCompanyId)
         })
         .then(function(){
-            $scope.company = companyService.getcompany();
+            $scope.company = CompanyService.getcompany();
         })
 
-    $scope.userService = userService;
+    $scope.UserService = UserService;
 
     $scope.currentState = 'ticket';
 

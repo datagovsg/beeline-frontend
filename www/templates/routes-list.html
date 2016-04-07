@@ -1,0 +1,29 @@
+<ion-view id="pg_routelist" view-title="Explore Routes - List">
+  <ion-content class="has-footer" has-bouncing="false">
+
+    <!-- Region Filter  -->
+    <section>
+      <div id="regsel">
+        <label>Filter By</label>
+        <select ng-model="data.selectedRegionId">
+          <option value="">All Regions</option>
+          <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- TODO Recently booked section -->
+
+    <!-- Available Routes Section -->
+    <section>
+      <div class="ion-list-header">Available Routes</div>
+      <ion-list id="booklist">
+        <route-item ng-repeat="route in data.activeRoutes">foobar</route-item>
+      </ion-list>
+    </section>
+
+    <!-- TODO Pending Routes Section -->
+    <!-- TODO Kickstart Routes Section -->
+    
+  </ion-content>
+</ion-view>

@@ -1,18 +1,18 @@
 
 export default [
     '$scope',
-    'userService',
+    'UserService',
     '$state',
     '$ionicModal',
     '$ionicPopup',
 function(
     $scope,
-    userService,
+    UserService,
     $state,
     $ionicModal,
     $ionicPopup
 ) {
-  $scope.userService = userService;
+  $scope.UserService = UserService;
 
 	$scope.login = {
 		status: false,
@@ -33,26 +33,26 @@ function(
 
 	//set the Login button labels and message for Settings page
     $scope.$on('$ionicView.beforeEnter',()=>{
-		$scope.login.status = (userService.sessionToken == undefined) ? false : true;
+		$scope.login.status = (UserService.sessionToken == undefined) ? false : true;
 
 		if ($scope.login.status)
 		{
-			if ($state.current.name == "tab.settings") {
+			if ($state.current.name == "tabs.settings") {
 				$scope.login.btntxt = $scope.login.truebtntxt;
 				$scope.login.msg = $scope.login.truemsg;
 			}
 			else {
-				$state.go("tab.settings");
+				$state.go("tabs.settings");
 			}
 		}
 		else //not logged in
 		{
-			if ($state.current.name == "tab.settings") {
+			if ($state.current.name == "tabs.settings") {
 				$scope.login.btntxt = $scope.login.falsebtntxt;
 				$scope.login.msg = $scope.login.falsemsg;
 			}
 
-			if ($state.current.name == 'tab.settings-login') {
+			if ($state.current.name == 'login') {
 				//Set up the FAQ modal
 				$ionicModal.fromTemplateUrl('login-faq.html', {
 					scope: $scope,
@@ -64,10 +64,10 @@ function(
 				document.getElementById('loginphone').focus();
 			}
 
-			if ($state.current.name == 'tab.settings-login-verify') {
-console.log($scope.login)
+			if ($state.current.name == 'login-verify') {
+        console.log($scope.login)
 				//fill in the user's phone number in page
-				$scope.login.phoneNum = userService.mobileNo;
+				$scope.login.phoneNum = UserService.mobileNo;
 			}
 		}
     });
@@ -76,7 +76,7 @@ console.log($scope.login)
 	$scope.logInOut = function () {
 		if ($scope.login.status == false)
 		{
-			userService.logIn();
+			UserService.logIn();
 		}
 		else //user logged in
 		{
@@ -119,32 +119,32 @@ console.log($scope.login)
 
 	//NEXT button clicked (error checking passed)
 	$scope.phoneNumSubmit = function() {
-		userService.sendTelephoneVerificationCode($scope.login.phoneNum).then(function(response){
-			userService.mobileNo = $scope.login.phoneNum;
+		UserService.sendTelephoneVerificationCode($scope.login.phoneNum).then(function(response){
+			UserService.mobileNo = $scope.login.phoneNum;
 
 			//send user to SMS code input page
-			$state.go('tab.settings-login-verify');
+			$state.go('tabs.settings-login-verify');
 		}, function(error){
 			alert('SMS code send error. Please try again.');
 		});
 	};
 
     $scope.submit = function(code) {
-        userService.verifyTelephone(code).then(function(response) {
+        UserService.verifyTelephone(code).then(function(response) {
             if (response) {
-                $state.go(userService.afterLoginGoWhere ?
-                     userService.afterLoginGoWhere
-                     : "tab.settings");
-                userService.afterLoginGoWhere = undefined;
+                $state.go(UserService.afterLoginGoWhere ?
+                     UserService.afterLoginGoWhere
+                     : "tabs.settings");
+                UserService.afterLoginGoWhere = undefined;
             }
         })
     };
 
-    $scope.$on('$destroy', function() {
-        if ($scope.modal){
-            $scope.modal.remove();
-        }
-    });
+  $scope.$on('$destroy', function() {
+      if ($scope.modal){
+          $scope.modal.remove();
+      }
+  });
 
 	$scope.showBookingHistory = function() {
 		console.log('show booking history');

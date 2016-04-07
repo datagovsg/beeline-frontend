@@ -1,7 +1,7 @@
 import {NetworkError} from '../shared/errors'
 import {formatDate, formatDateMMMdd, formatTime, formatUTCDate} from '../shared/format'
 
-export default function (userService) {
+export default function (UserService) {
         var rv = {};
 
         rv.reset = function(routeId) {
@@ -19,7 +19,7 @@ export default function (userService) {
 
                 // load from http
                 try {
-                    var resp = await userService.beeline({
+                    var resp = await UserService.beeline({
                         method: 'GET',
                         url: '/routes/' + this.routeId
                             + '?include_trips=true&include_availability=true',
@@ -174,7 +174,7 @@ export default function (userService) {
 			try {
 				//load transport company info from http
                 try {
-                    var resp = await userService.beeline({
+                    var resp = await UserService.beeline({
                         method: 'GET',
                         url: '/companies/' + transcoId,
                     })
@@ -256,7 +256,7 @@ export default function (userService) {
                     var trips = this.prepareTrips();
 
                     try {
-                        var resp = await userService.beeline({
+                        var resp = await UserService.beeline({
                             method: 'POST',
                             url: '/transactions/ticket_sale',
                             data: {

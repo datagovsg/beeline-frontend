@@ -16,7 +16,7 @@ function transformRouteData(data){
 	return data;
 }
 
-export default function($http, SERVER_URL, userService) {
+export default function($http, SERVER_URL, UserService) {
 
 	return {
 
@@ -52,7 +52,7 @@ export default function($http, SERVER_URL, userService) {
 		},
 		getclosestroute: function() {
 			//return Promise object
-			return userService.beeline({
+			return UserService.beeline({
 			method: 'GET',
 			url: '/routes/search_by_latlon?' + qs.stringify({
 					startLat: this.data.startLat,

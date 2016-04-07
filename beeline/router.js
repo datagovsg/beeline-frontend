@@ -1,27 +1,37 @@
 import {setupBroadcastViewEnter} from './shared/util'
 
+// Ionic uses AngularUI Router which uses the concept of states
+// Learn more here: https://github.com/angular-ui/ui-router
+// Set up the various states which the app can be in
 export default function($stateProvider, $urlRouterProvider) {
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // setup an abstract state for the tabs directive
-  .state('tab', {
-    url: '/tab',
+  //////////////////////////////////////////////////////////////////////////////
+  // Introductory slides
+  //////////////////////////////////////////////////////////////////////////////
+  .state('intro', {
+    url: '/intro',
+    templateUrl: 'templates/intro.html'
+  })
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs', {
+    url: '/tabs',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
 
-  // Each tab has its own nav history stack:
-
-  .state('tab.routes', {
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface, Routes Tab
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs.routes', {
     url: '/routes',
     views: {
       'tab-routes': {
-    abstract: true,
+        abstract: true,
         templateUrl: 'templates/routes.html',
         controller: function ($scope) {
             setupBroadcastViewEnter($scope);
@@ -30,45 +40,35 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tab.routes.routemap', {
-    url: '/routemap',
+  .state('tabs.routes.map', {
+    url: '/map',
     views: {
-      'routes-routemap': {
-        templateUrl: 'templates/routemap.html',
-        controller: 'routeMapCtrl'
+      'routes-map': {
+        templateUrl: 'templates/routes-map.html',
+        controller: 'RoutesMapController'
       }
     }
   })
 
-  .state('tab.routes.routelist', {
-    url: '/routelist',
+  .state('tabs.routes.list', {
+    url: '/list',
     views: {
-      'routes-routelist': {
-        templateUrl: 'templates/routelist.html',
-        controller: 'routeListCtrl'
+      'routes-list': {
+        templateUrl: 'templates/routes-list.html',
+        controller: 'RoutesListController'
       }
     }
   })
 
-  .state('tab.suggest', {
-    url: '/suggest/:action',
-    views: {
-      'tab-suggest': {
-        templateUrl: 'templates/tab-suggest.html',
-        controller: 'SuggestCtrl'
-      }
-    }
-  })
-
-  .state('tab.booking-last', {
+  .state('tabs.booking-last', {
     url: '/booking',
     views: {
       'tab-booking': {
         // templateUrl: 'templates/tab-booking-dates.html',
         template: '<ion-content>Whoa?</ion-content>',
-        controller: ['$state', 'bookingService', function ($state, bookingService) {
+        controller: ['$state', 'BookingService', function ($state, bookingService) {
             if (!bookingService.last) {
-                $state.go('tab.booking-pickup');
+                $state.go('tabs.booking-pickup');
             }
             else {
                 $state.go(bookingService.last);
@@ -77,99 +77,118 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('tab.booking-pickup', {
+  .state('tabs.booking-pickup', {
     url: '/booking/pickup',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking.html',
-        controller: 'BookingCtrl',
+        controller: 'BookingController',
       }
     }
   })
-  .state('tab.booking-dropoff', {
+  .state('tabs.booking-dropoff', {
     url: '/booking/dropoff',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking.html',
-        controller: 'BookingCtrl',
+        controller: 'BookingController',
       }
     }
   })
-  .state('tab.booking-dates', {
+  .state('tabs.booking-dates', {
     url: '/booking/dates',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-dates.html',
-            controller: 'BookingDatesCtrl',
+            controller: 'BookingDatesController',
         },
     },
   })
-  .state('tab.booking-summary', {
+  .state('tabs.booking-summary', {
     url: '/booking/summary',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-summary.html',
-            controller: 'BookingSummaryCtrl',
+            controller: 'BookingSummaryController',
         },
     },
   })
-  .state('tab.booking-confirmation', {
+  .state('tabs.booking-confirmation', {
     url: '/booking/confirmation',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-confirmation.html',
-            controller: 'BookingConfirmationCtrl',
+            controller: 'BookingConfirmationController',
         },
     },
   })
 
-  .state('tab.tickets', {
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface, Sugesstions Tab
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs.suggest', {
+    url: '/suggest/:action',
+    views: {
+      'tab-suggest': {
+        templateUrl: 'templates/tab-suggest.html',
+        controller: 'SuggestController'
+      }
+    }
+  })
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface, Tickets Tab
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs.tickets', {
     url: '/tickets',
     views: {
       'tab-tickets': {
         templateUrl: 'templates/tab-tickets.html',
-        controller: 'TicketsCtrl'
+        controller: 'TicketsController'
       }
     }
   })
 
-  .state('tab.ticket-detail', {
+  .state('tabs.ticket-detail', {
     url: '/tickets/:tid',
     views: {
       'tab-tickets': {
         templateUrl: 'templates/ticket-detail.html',
-        controller: 'TicketDetailCtrl'
+        controller: 'TicketDetailController'
       }
     }
   })
 
-  .state('tab.settings', {
+  //////////////////////////////////////////////////////////////////////////////
+  // Main interface, Settings Tab
+  //////////////////////////////////////////////////////////////////////////////
+  .state('tabs.settings', {
     url: '/settings',
     views: {
       'tab-settings': {
         templateUrl: 'templates/5_0_settings.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsController'
       }
     }
   })
 
   .state('login', {
-      url: '/login',
-      templateUrl: 'templates/login.html',
-      controller: 'LoginCtrl'
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
   })
 
   .state('login-verify', {
-      url: '/login-verify',
-      templateUrl: 'templates/verify.html',
-      controller: 'LoginCtrl'
-    });
+    url: '/login-verify',
+    templateUrl: 'templates/verify.html',
+    controller: 'LoginCtrl'
+  });
 
   // if none of the above states are matched, use this as the fallback
- if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
-      $urlRouterProvider.otherwise('/tab/routes/routelist');
+  if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
+    $urlRouterProvider.otherwise('/tabs/routes/list');
+  } else {
+    $urlRouterProvider.otherwise('/tabs/routes/map');
   }
-  else {
-      $urlRouterProvider.otherwise('/tab/routes/routemap');
-  }
+
 };

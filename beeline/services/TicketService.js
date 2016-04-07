@@ -1,6 +1,6 @@
 import querystring from 'querystring'
 
-export default function TicketService($http,$filter,userService) {
+export default function TicketService($http,$filter,UserService) {
         var now = new Date();
         var today0000 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0).getTime();
         var today2400 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 24, 0).getTime();
@@ -12,22 +12,22 @@ export default function TicketService($http,$filter,userService) {
 
         return {
             getTickets: function(){
-                var bearer = userService.sessionToken;
+                var bearer = UserService.sessionToken;
                 if (!bearer){
                     return Promise.resolve([]);
                 }
-                return $http.get("http://staging.beeline.sg/tickets", {
-                        headers: {
-                        "Authorization": 'Bearer '+bearer
-                        //"Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MSwiaWF0IjoxNDU2Mzk2MTU4fQ.eCgMcdrhZAWfWcQ3hhcYts9oyQetZ4prGGf4t5xEAwU'
-                        }
-                    }).then((response) => {
-                        tickets = response.data;
-                        console.log("get tickets")
-                        console.log(tickets);
-                        return tickets;
-                    });
-
+                return UserService.beeline({
+                    method: 'GET',
+                    url: '/tickets',
+                    headers: {
+                      "Authorization": 'Bearer ' + bearer,
+                    },
+                  }).then((response) => {
+                    tickets = response.data;
+                    console.log("get tickets")
+                    console.log(tickets);
+                    return tickets;
+                  });
             },
             getTicketById: function(id){
                 for(var i=0;i<tickets.length;i++){
