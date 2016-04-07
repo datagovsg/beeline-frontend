@@ -3,31 +3,31 @@ import _ from 'lodash'
 
 var monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
 
-function DatePickerDirective(dateService) {
+function DatePickerDirective(DateService) {
     function link($scope, elem, attrs) {
         $scope.selectedDates = [];
         $scope.startDate = new Date($scope.startDate || '2015-01-01')
         $scope.startDate.setDate(1);
         $scope.startYear =  typeof $scope.startYear == 'undefined'
-                                ? dateService.date.getUTCFullYear()
+                                ? DateService.date.getUTCFullYear()
                                 : parseInt($scope.startYear);
         $scope.startMonth =  typeof $scope.startMonth == 'undefined'
-                                ? dateService.date.getUTCMonth()
+                                ? DateService.date.getUTCMonth()
                                 : parseInt($scope.startMonth);
-    
+
         $scope.displayYears = [
-            dateService.date.getUTCFullYear(),
-            dateService.date.getUTCFullYear() + 1,
+            DateService.date.getUTCFullYear(),
+            DateService.date.getUTCFullYear() + 1,
         ];
         $scope.displayMonths = _.range(0,12);
-    
+
         $scope.monthNames = monthNames;
-    
+
         $scope.$watchGroup(['startYear', 'startMonth'], function() {
             $scope.startDate = new Date(Date.UTC(parseInt($scope.startYear),
                                                 parseInt($scope.startMonth), 1));
         });
-        
+
         $scope.updateAvailability = function () {
             var realStart = new Date($scope.startDate.getTime() - $scope.startDate.getUTCDay()*24*60*60*1000);
 
@@ -81,7 +81,7 @@ function DatePickerDirective(dateService) {
             () => $scope.updateAvailability()
             );
         $scope.updateAvailability();
-     
+
         // functions
         $scope.selectDate = function (date) {
             var i;
@@ -92,14 +92,14 @@ function DatePickerDirective(dateService) {
             $scope.selectedDates.splice(i,1);
           }
         }
-        
+
         /**
             How to paint a day. Consider you have the following possibilities:
 
             1. In selection
             2. In the middle of a drag
             3. In the middle of a new selection
-            
+
             4. An invalid date (e.g. public holiday, service not running)
             5. An "exhausted" date (e.g. seats sold out)
             6. A date with invalid stops selected
@@ -108,7 +108,7 @@ function DatePickerDirective(dateService) {
         $scope.dateClasses = function (day) {
             var isInSelection = $scope.selectedDates.indexOf(day.time) != -1;
             var isDragging = ($scope.state.dragStart != null && $scope.state.dragEnd != null);
-            var isInNewSelection = isDragging && 
+            var isInNewSelection = isDragging &&
                                     $scope.state.dragFirst.time <= day.time &&
                                     day.time <= $scope.state.dragLast.time;
             var isValid = day.isValid && !day.isExhausted && !day.isInvalidStop;
@@ -123,7 +123,7 @@ function DatePickerDirective(dateService) {
                                                ].join(' '))
                     + (day.isWeekend ? ' weekend' : '')
                     + (day.isPrimaryMonth ? ' primary' : '')
-                        
+
         }
 
         $scope.previousMonth = function () {
@@ -136,7 +136,7 @@ function DatePickerDirective(dateService) {
             $scope.startMonth = $scope.startDate.getUTCMonth();
             $scope.startYear = $scope.startDate.getUTCFullYear();
         };
-        
+
         // event handlers...
         $scope.state = {
             dragStart: null,
@@ -174,14 +174,14 @@ function DatePickerDirective(dateService) {
                 date: selDate,
 				time: selDate.getTime(),
             };
-			
+
             computeFirstLastDates()
-			
+
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
             }
-        };		
+        };
         $scope.endTouch = function (day, event) {
             $scope.endSelection(null, event);
             computeFirstLastDates()
@@ -189,7 +189,7 @@ function DatePickerDirective(dateService) {
         $scope.beginSelection = function(day, event) {
             $scope.state.dragStart = day;
             computeFirstLastDates()
-            
+
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -220,7 +220,7 @@ function DatePickerDirective(dateService) {
                     if (day.time >= $scope.state.dragFirst.time
                             && day.time <= $scope.state.dragLast.time
                             && day.isValid && !day.isExhausted && !day.isInvalidStop) {
-                        
+
                         var i;
                         if ((i = $scope.selectedDates.indexOf(day.time)) == -1) {
                             $scope.selectedDates.push(day.time);
@@ -234,7 +234,7 @@ function DatePickerDirective(dateService) {
             $scope.state.dragStart = null;
             $scope.state.dragEnd = null;
             computeFirstLastDates()
-            
+
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -277,7 +277,7 @@ function TouchDirective(which) {
 }
 
 
-export var DatePicker = ['dateService', DatePickerDirective];
+export var DatePicker = ['DateService', DatePickerDirective];
 export var TouchStart = TouchDirective('touchstart');
 export var TouchEnd = TouchDirective('touchend');
 export var TouchMove = TouchDirective('touchmove');

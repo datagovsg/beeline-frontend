@@ -11,20 +11,20 @@
 		</div>
 		<div class="routeinfo">
 			<div class="title">
-				<div class="busnum">{{bookingService.routeInfo.id}}</div>
-				<div class="name">{{bookingService.routeInfo.name}}</div>
+				<div class="busnum">{{BookingService.routeInfo.id}}</div>
+				<div class="name">{{BookingService.routeInfo.name}}</div>
 			</div>
 			<div class="stops">
 				<div class="line"></div>
 				<div class="start">
-					<span class="time">{{bookingService.boardingStop().time | formatTime}}</span>
-					<span class="desc">{{bookingService.boardingStop().stop.description}}</span>
-					<span class="road">{{bookingService.boardingStop().stop.road}}</span>
+					<span class="time">{{BookingService.boardingStop().time | formatTime}}</span>
+					<span class="desc">{{BookingService.boardingStop().stop.description}}</span>
+					<span class="road">{{BookingService.boardingStop().stop.road}}</span>
 				</div>
 				<div class="end">
-					<span class="time">{{bookingService.alightingStop().time | formatTime}}</span>
-					<span class="desc">{{bookingService.alightingStop().stop.description}}</span>
-					<span class="road">{{bookingService.alightingStop().stop.road}}</span>
+					<span class="time">{{BookingService.alightingStop().time | formatTime}}</span>
+					<span class="desc">{{BookingService.alightingStop().stop.description}}</span>
+					<span class="road">{{BookingService.alightingStop().stop.road}}</span>
 				</div>
 			</div>
 			<div class="edit">
@@ -39,11 +39,11 @@
 		</div>
 		<div class="tripdates">
 			<div class="datesnum">
-				<span>{{bookingService.currentBooking.selectedDates.length}} day(s)</span> were selected for this booking.
+				<span>{{BookingService.currentBooking.selectedDates.length}} day(s)</span> were selected for this booking.
 			</div>
 			<price-calculator></price-calculator>
 			<!--ul>
-				<li ng-repeat="dt in bookingService.currentBooking.selectedDates">
+				<li ng-repeat="dt in BookingService.currentBooking.selectedDates">
 					{{dt | formatDateMMMdd}}
 				</li>
 			</ul-->
@@ -59,7 +59,7 @@
 		</div>
 		<div class="promo">
 			<ol>
-				<li ng-repeat="pc in bookingService.currentBooking.promoCodes">
+				<li ng-repeat="pc in BookingService.currentBooking.promoCodes">
 				 {{pc}}
 				</li>
 			</ol>

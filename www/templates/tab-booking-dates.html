@@ -7,7 +7,7 @@
         min-date="minDate"
         max-date="maxDate"
         startDate="minDate"
-        dates="bookingService.currentBooking.selectedDates"
+        dates="BookingService.currentBooking.selectedDates"
     ></date-picker>
 
     <div ng-if="priceChanges.length > 0">
@@ -27,15 +27,15 @@
                 <td>{{priceChange.price}}
             </tr>
         </table>
-    
+
     </div>
 
-	<!--qty-input ng-model="bookingService.currentBooking.qty" placeholder="Number of passengers" ></qty-input-->
+	<!--qty-input ng-model="BookingService.currentBooking.qty" placeholder="Number of passengers" ></qty-input-->
 
 	<div class="bookdetails">
 		<price-calculator></price-calculator>
 
-		<button id="btnreview" ng-disabled="bookingService.currentBooking.selectedDates.length == 0" ng-click="goToSummary()">
+		<button id="btnreview" ng-disabled="BookingService.currentBooking.selectedDates.length == 0" ng-click="goToSummary()">
 			Review Booking
 		</button>
 	</div>

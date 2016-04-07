@@ -70,7 +70,6 @@ export default [
         var gmapReady = new Promise((resolve) => gmapResolve = resolve);
         scope.mapReady = gmapResolve;
         gmapReady.then(function x() {
-          console.log('Map ready!');
           var gmap = scope.map.control.getGMap();
           scope.map.boardMarkerOptions = {
             icon: {
@@ -97,7 +96,6 @@ export default [
           }];
 
           var inputElems = elem[0].querySelectorAll('INPUT');
-          console.log(elem);
           var pickupautocomp = new google.maps.places.Autocomplete(inputElems[0]);
           var dropoffautocomp = new google.maps.places.Autocomplete(inputElems[1]);
 

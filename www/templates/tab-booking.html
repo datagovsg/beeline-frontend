@@ -73,7 +73,7 @@
 	<div id="userpos" ng-click="getUserLocation()"></div>
 	<div id="stopinputs">
 		<bus-stop-selector
-			model="bookingService.currentBooking.boardStop"
+			model="BookingService.currentBooking.boardStop"
 			bus-stops="book.boardStops"
 			value="getStopId"
 			display="getStopDescription"
@@ -84,7 +84,7 @@
 		</bus-stop-selector>
 		<div class="line"></div>
 		<bus-stop-selector
-			model="bookingService.currentBooking.alightStop"
+			model="BookingService.currentBooking.alightStop"
 			bus-stops="book.alightStops"
 			value="getStopId"
 			display="getStopDescription"
@@ -95,7 +95,7 @@
 		</bus-stop-selector>
 		<qty-input
 			placeholder="{{book.ptxt}}"
-			ng-model="bookingService.currentBooking.qty"
+			ng-model="BookingService.currentBooking.qty"
 			>
 		</qty-input>
 	</div>
@@ -134,7 +134,7 @@
   <script id="changes-message.html" type="text/ng-template">
 	<div id="changes-message" class="modal">
 		<ion-header-bar class="bar-stable">
-			<h1 class="title">Changes to Service #{{bookingService.routeId}}</h1>
+			<h1 class="title">Changes to Service #{{BookingService.routeId}}</h1>
 			<a class="item-icon-right" ng-click="closeChangesModal()">
 				<i class="icon ion-android-close"></i>
 			</a>
@@ -150,7 +150,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="priceChange in bookingService.routeInfo.priceChanges">
+					<tr ng-repeat="priceChange in BookingService.routeInfo.priceChanges">
 						<td>$$</td>
 						<td>
 							{{priceChange.startDate | formatDate}}
@@ -159,7 +159,7 @@
 							{{priceChange.humanReadable[0]}}
 						</td>
 					</tr>
-					<tr ng-repeat="stopChange in bookingService.routeInfo.stopChanges">
+					<tr ng-repeat="stopChange in BookingService.routeInfo.stopChanges">
 						<td>S</td>
 						<td>
 							{{stopChange.startDate | formatDate}}
@@ -172,7 +172,7 @@
 							</ul>
 						</td>
 					</tr>
-					<tr ng-repeat="timeChange in bookingService.routeInfo.timeChanges">
+					<tr ng-repeat="timeChange in BookingService.routeInfo.timeChanges">
 						<td>T</td>
 						<td>
 							{{timeChange.startDate | formatDate}}

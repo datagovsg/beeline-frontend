@@ -20,9 +20,9 @@ export default [
 
             // set up the valid days
             if ($scope.BookingService.currentBooking) {
-                $scope.BookingService.currentBooking.selectedDates = 
+                $scope.BookingService.currentBooking.selectedDates =
                     $scope.BookingService.currentBooking.selectedDates || [];
-                $scope.BookingService.currentBooking.qty = 
+                $scope.BookingService.currentBooking.qty =
                     $scope.BookingService.currentBooking.qty || 1;
             }
 
@@ -35,7 +35,7 @@ export default [
             for (let trip of BookingService.routeInfo.trips) {
                 // FIXME: disable today if past the booking window
                 $scope.validDates.push(trip.date);
-                
+
                 if (!$scope.minDate || $scope.minDate > trip.date.getTime()) {
                     $scope.minDate = trip.date.getTime();
                 }
@@ -53,7 +53,7 @@ export default [
                 if (_.intersection([BookingService.currentBooking.boardStop],
                                    tripStops_stopIds).length == 0 ||
                     _.intersection([BookingService.currentBooking.alightStop],
-                                   tripStops_stopIds).length == 0 
+                                   tripStops_stopIds).length == 0
                     ) {
                     $scope.invalidStopDates.push(trip.date);
                 }
@@ -65,9 +65,10 @@ export default [
         // $scope.$watch('BookingService', updateCalendar, true);
         $scope.$watch(() => [BookingService.currentBooking, BookingService.routeInfo ? BookingService.routeInfo.id : null], updateCalendar, true);
         updateCalendar();
-        
+
         /** FIXME this can be potentially very slow. Should ignore the routeInfo entry **/
-        $scope.$watch('BookingService.currentBooking', () => BookingService.updatePrice($scope, $http), true);
+        $scope.$watch('BookingService.currentBooking',
+            () => BookingService.updatePrice($scope, $http), true);
         BookingService.updatePrice($scope, $http);
 
         // methods
@@ -76,4 +77,3 @@ export default [
         };
     },
 ];
-
