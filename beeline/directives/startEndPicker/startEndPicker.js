@@ -104,36 +104,34 @@ export default [
           pickupautocomp.addListener('place_changed', function(event) {
             var pickupPos = pickupautocomp.getPlace().geometry.location;
 
-            scope.$apply(() => {
-              scope.startPoint.coordinates = {
-                lat: pickupPos.lat(),
-                lng: pickupPos.lng()
-              }
-              scope.startPoint.text = pickupautocomp.getPlace().formatted_address
-            })
+            scope.startPoint.coordinates = {
+              lat: pickupPos.lat(),
+              lng: pickupPos.lng()
+            }
+            scope.startPoint.text = pickupautocomp.getPlace().formatted_address
 
             inputElems[0].blur();
             setTimeout(() => {
                 gmap.setZoom(15);
                 gmap.panTo(pickupPos);
+                updateLocationText(gmap);
             }, 100)
           });
 
           dropoffautocomp.addListener('place_changed', function() {
             var dropoffPos = dropoffautocomp.getPlace().geometry.location;
 
-            scope.$apply(() => {
-              scope.endPoint.coordinates = {
-                lat: dropoffPos.lat(),
-                lng: dropoffPos.lng()
-              }
-              scope.endPoint.text = dropoffautocomp.getPlace().formatted_address
-            })
+            scope.endPoint.coordinates = {
+              lat: dropoffPos.lat(),
+              lng: dropoffPos.lng()
+            }
+            scope.endPoint.text = dropoffautocomp.getPlace().formatted_address
 
             inputElems[1].blur();
             setTimeout(() => {
               gmap.setZoom(15);
               gmap.panTo(dropoffPos);
+              updateLocationText(gmap);
             }, 100)
           });
 
@@ -299,7 +297,7 @@ export default [
           .then(function(userpos){
             scope.map.control.getGMap().panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude));
             setTimeout(function(){
-              gmap.setZoom(17);
+              gmap.setZoom(15);
             }, 300);
 
           }, function(err){
