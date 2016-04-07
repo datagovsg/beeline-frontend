@@ -153,29 +153,20 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tab.settings-login', {
-      url: '/settings/login',
-      views: {
-        'tab-settings': {
-          templateUrl: 'templates/5_1_1_login.html',
-          controller: 'SettingsCtrl'
-        }
-      }
-    })
+  .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
+  })
 
-    .state('tab.settings-login-verify', {
-        url: '/settings/login/verify',
-        views: {
-          'tab-settings': {
-            templateUrl: 'templates/5_1_2_verify.html',
-            controller: 'SettingsCtrl'
-          }
-        }
-      });
+  .state('login-verify', {
+      url: '/login-verify',
+      templateUrl: 'templates/verify.html',
+      controller: 'LoginCtrl'
+    });
 
   // if none of the above states are matched, use this as the fallback
  if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
-
       $urlRouterProvider.otherwise('/tab/routes/routelist');
   }
   else {

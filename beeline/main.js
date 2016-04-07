@@ -10,11 +10,14 @@ import {TicketsController} from './controllers/ticketscontroller';
 import {TicketDetailController} from './controllers/ticketdetailcontroller';
 import {RouteMapController} from './controllers/routemapcontroller';
 import RouteListController from './controllers/routeListController';
+import {LoginController} from './controllers/loginController';
+
 import QtyInput from './directives/qtyInput/qtyInput';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';
 import {SearchService, RoutesService} from './services/routesService';
-import {TicketService, UserService, TripService, CompanyService} from './services/ticketService';
+import {TicketService, TripService, CompanyService} from './services/ticketService';
+import {UserService} from './services/userService'
 import StripeService from './services/stripeService'
 import SuggestionService from './services/suggestionService';
 import CreditCardInput from './services/creditCardInput/creditCardInput';
@@ -35,7 +38,7 @@ import configureRoutes from './router.js';
 // FIXME: set this in StripeService;
 try {
   Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
-} catch () {}
+} catch (err) {}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -79,6 +82,7 @@ var app = angular.module('beeline', [
 .controller('TicketDetailCtrl', TicketDetailController)
 .controller('routeMapCtrl', RouteMapController)
 .controller('routeListCtrl', RouteListController)
+.controller('LoginCtrl', LoginController)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');

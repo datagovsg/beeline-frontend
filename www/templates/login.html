@@ -6,7 +6,10 @@
 				<span class="txt">{{login.errmsg}}</span>
 			</div>
 			<div class="holder">
-				<input id="loginphone" type="tel" ng-model="loginphone" ng-change="phoneNumCheckOK()" data-role="none" name="telephoneNo" id="login-telephoneNo">	
+				<input type="tel"
+					autofocus
+					ng-model="login.phoneNumber"
+					ng-change="phoneNumCheckOK()" data-role="none">
 				<div class="phtxt">
 					<i class="icon ion-ios-telephone-outline"></i> +65
 				</div>
@@ -17,7 +20,8 @@
 			</div>
 			<div class="terms">
 				By creating an account, you agree to Beeline's <a href="#">Term of Use</a> and <a href="#">Privacy Policy</a>.
-				<button id="btnloginnext" ng-click="phoneNumSubmit()" ng-disabled="login.nextDisabled">NEXT</button>
+				<button ng-click="phoneNumSubmit()"
+					ng-disabled="login.nextDisabled">NEXT</button>
 			</div>
 		</div>
 	</ion-content>
@@ -37,14 +41,14 @@
 			  <div class="title"><i class="icon ion-locked"></i> Security and Convenience</div>
 			  <ul>
 				  <li>
-					  To ensure the security of your Beeline account, 
-					  and safeguard against account theft, a text message 
-					  containing a special code will be sent via SMS to your 
+					  To ensure the security of your Beeline account,
+					  and safeguard against account theft, a text message
+					  containing a special code will be sent via SMS to your
 					  phone number to verify your identity during the login process.
 				  </li>
 				  <li>
-					  Beeline will also be able to update you about the status 
-					  of your bus in the event of unforseen emergencies or 
+					  Beeline will also be able to update you about the status
+					  of your bus in the event of unforseen emergencies or
 					  a disruption of service.
 				  </li>
 			  </ul>
@@ -53,9 +57,9 @@
 			  <div class="title"><i class="icon ion-ios-telephone"></i> What If I Change My Number?</div>
 			  <ul>
 				  <li>
-					  To transfer your Beeline account to your new number, 
+					  To transfer your Beeline account to your new number,
 					  simply update your phone number in your Account Settings
-					  and we will send your new number a verification code you 
+					  and we will send your new number a verification code you
 					  can use to log into your account.
 				  </li>
 			 </ul>

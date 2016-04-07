@@ -18,18 +18,7 @@ function(
     $scope.soondata = [];
     $scope.ticketService = ticketService;
 
-    $scope.$on('$ionicView.beforeEnter',()=>{
-
-        console.log(userService.sessionToken);
-        if (userService.sessionToken == undefined){
-            userService.afterLoginGoWhere = $state.current.name;
-            $state.go("tab.settings-login");
-            return;
-        }
-        else {
-            $scope.login =true;
-        }
-
+    $scope.$on('$ionicView.beforeEnter',() => {
         ticketService.getTickets()
         .then(function () {
             ticketService.splitTickets();

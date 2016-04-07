@@ -1,17 +1,18 @@
-'use strict';
 
 export var SettingsController =[
     '$scope',
     'userService',
     '$state',
     '$ionicModal',
+    '$ionicPopup',
 function(
     $scope,
     userService,
     $state,
-    $ionicModal
+    $ionicModal,
+    $ionicPopup
 ) {
-    $scope.userService = userService;
+  $scope.userService = userService;
 
 	$scope.login = {
 		status: false,
@@ -29,11 +30,6 @@ function(
 		errmsg: '',
 		nextDisabled: true
 	};
-
-	$scope.logoutModal = $ionicModal.fromTemplate('templates/m_ConfirmLogout.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	});
 
 	//set the Login button labels and message for Settings page
     $scope.$on('$ionicView.beforeEnter',()=>{
@@ -55,7 +51,7 @@ function(
 				$scope.login.btntxt = $scope.login.falsebtntxt;
 				$scope.login.msg = $scope.login.falsemsg;
 			}
-			
+
 			if ($state.current.name == 'tab.settings-login') {
 				//Set up the FAQ modal
 				$ionicModal.fromTemplateUrl('login-faq.html', {
@@ -67,7 +63,7 @@ function(
 
 				document.getElementById('loginphone').focus();
 			}
-			
+
 			if ($state.current.name == 'tab.settings-login-verify') {
 console.log($scope.login)
 				//fill in the user's phone number in page
@@ -80,11 +76,19 @@ console.log($scope.login)
 	$scope.logInOut = function () {
 		if ($scope.login.status == false)
 		{
-			$state.go("tab.settings-login");
+			userService.logIn();
 		}
 		else //user logged in
 		{
-			$scope.logoutModal.show();
+      $ionicPopup.confirm({
+        title: 'Logout',
+        template: 'Do you want to log out?'
+      })
+      .then((res) => {
+        if (res) {
+          userService.logOut();
+        }
+      })
 		}
 	};
 
@@ -108,7 +112,7 @@ console.log($scope.login)
 
 			//this is needed for phoneNumSubmit. Don't remove.
 			$scope.login.phoneNum = phonenum;
-		
+
 			return true;
 		}
     };
@@ -136,15 +140,6 @@ console.log($scope.login)
         })
     };
 
-    $scope.ok = function (){
-        window.localStorage.removeItem('sessionToken');
-        userService.sessionToken = undefined;
-        $scope.modal.hide();
-        $scope.$emit('$ionicView.beforeEnter');
-    };
-    $scope.cancelLogout = function (){
-        $scope.modal.hide();
-    };
     $scope.$on('$destroy', function() {
         if ($scope.modal){
             $scope.modal.remove();

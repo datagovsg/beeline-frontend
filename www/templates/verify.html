@@ -1,0 +1,30 @@
+<ion-view id="pg_smscode" view-title="Verification code">
+	<ion-content>
+		<div class="err ng-hide" ng-show="login.errmsg != ''">
+			<i class="icon ion-alert-circled"></i>
+			<span class="txt">{{login.errmsg}}</span>
+		</div>
+
+		<div class="msg">
+			Please enter the code we sent to
+			<div class="num">+65 {{userService.mobileNo || 12345678}}</div>
+		</div>
+		<input type="input" ng-model="login.code" data-role="none"
+			autofocus
+			name="telephoneNo"
+			placeholder="Code" value="">
+			<div class="spacing"></div>
+		<div class="spacing">
+		By creating an account, you agree to Beeline's Term of Use and Privacy Policy.</br>
+		<button id="btn-login" ng-click="submit()">Submit</button>
+		</div>
+		<hr/>
+		<div class="spacing"></div>
+			Didn't receive your code?
+				<button ng-click="resend()"
+							ng-disabled="login.timeout"
+							>Send a new code</button>
+				or <a ui-sref="login">enter a different telephone number</a>.
+		</div>
+	</ion-content>
+</ion-view>
