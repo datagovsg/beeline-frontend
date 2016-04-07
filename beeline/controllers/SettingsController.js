@@ -73,24 +73,20 @@ function(
     });
 
 	//Log in / Log out button in settings page
-	$scope.logInOut = function () {
-		if ($scope.login.status == false)
-		{
-			UserService.logIn();
-		}
-		else //user logged in
-		{
-      $ionicPopup.confirm({
-        title: 'Logout',
-        template: 'Do you want to log out?'
-      })
-      .then((res) => {
-        if (res) {
-          userService.logOut();
-        }
-      })
-		}
-	};
+	$scope.logIn = function () {
+    UserService.logIn();
+  }
+  $scope.logOut = function () {
+    $ionicPopup.confirm({
+      title: 'Logout',
+      template: 'Do you want to log out?'
+    })
+    .then((res) => {
+      if (res) {
+        UserService.logOut();
+      }
+    })
+  }
 
 	//Phone Number submission
     $scope.phoneNumCheckOK = function() {

@@ -1,4 +1,3 @@
-'use strict';
 
 export default [
     '$scope',
@@ -7,7 +6,6 @@ export default [
     '$http',
     'SuggestionService',
     'UserService',
-    'Search',
     '$ionicModal',
 function(
     $scope,
@@ -16,7 +14,6 @@ function(
     $http,
     SuggestionService,
     UserService,
-    Search,
     $ionicModal
 ) {
     $scope.$on('$ionicView.afterEnter', async (event) => {

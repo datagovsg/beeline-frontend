@@ -175,13 +175,13 @@ export default function($stateProvider, $urlRouterProvider) {
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'
+    controller: 'LoginController'
   })
 
   .state('login-verify', {
     url: '/login-verify',
     templateUrl: 'templates/verify.html',
-    controller: 'LoginCtrl'
+    controller: 'LoginController'
   });
 
   // if none of the above states are matched, use this as the fallback

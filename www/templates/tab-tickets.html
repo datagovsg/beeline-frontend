@@ -1,11 +1,11 @@
 <ion-view id="pg_tickets" view-title="Tickets">
   <ion-content>
-  	<section class="login" ng-if="!userService.isLoggedIn()">
+  	<section class="login" ng-if="!UserService.isLoggedIn()">
   		<div class="loginpls">
   			<i class="icon ion-android-alert"></i>
   			<div class="txt">To view your e-tickets,<br />please Log In to your account.</div>
 			     <button id="btnloginpls"
-                  ng-click="userService.logIn()">Log In to Account</a>
+                  ng-click="UserService.logIn()">Log In to Account</a>
   		</div>
   	</section>
   	<section ng-if="todaydata.length > 0">
