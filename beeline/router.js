@@ -12,7 +12,14 @@ export default function($stateProvider, $urlRouterProvider) {
   //////////////////////////////////////////////////////////////////////////////
   .state('intro', {
     url: '/intro',
-    templateUrl: 'templates/intro.html'
+    templateUrl: 'templates/intro.html',
+    controller: function ($scope) {
+        $scope.options = {
+          loop: false,
+          effect: 'slide',
+          speed: 500,
+        }
+    }
   })
 
   //////////////////////////////////////////////////////////////////////////////
@@ -196,7 +203,8 @@ export default function($stateProvider, $urlRouterProvider) {
   if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
     $urlRouterProvider.otherwise('/tabs/routes/list');
   } else {
-    $urlRouterProvider.otherwise('/tabs/routes/map');
+    // $urlRouterProvider.otherwise('/tabs/routes/map');
+    $urlRouterProvider.otherwise('/intro');
   }
 
 };

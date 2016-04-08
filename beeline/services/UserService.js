@@ -30,6 +30,7 @@ export default function UserService($http) {
             },
 
             verifyTelephone: function(code){
+                var querystring = require('querystring');
                 return this.beeline({
                     method: 'GET',
                     url: '/users/verifyTelephone?' + querystring.stringify({
@@ -49,4 +50,4 @@ export default function UserService($http) {
                 return Promise.resolve(this);
             }
         };
-    } 
+    }

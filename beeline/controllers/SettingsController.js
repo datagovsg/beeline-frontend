@@ -55,7 +55,7 @@ function(
 				$scope.login.btntxt = $scope.login.falsebtntxt;
 				$scope.login.msg = $scope.login.falsemsg;
 			}
-			
+
 			if ($state.current.name == 'tabs.settings-login') {
 				//Set up the FAQ modal
 				$ionicModal.fromTemplateUrl('login-faq.html', {
@@ -67,7 +67,7 @@ function(
 
 				document.getElementById('loginphone').focus();
 			}
-			
+
 			if ($state.current.name == 'tabs.settings-login-verify') {
 console.log($scope.login)
 				//fill in the user's phone number in page
@@ -108,7 +108,7 @@ console.log($scope.login)
 
 			//this is needed for phoneNumSubmit. Don't remove.
 			$scope.login.phoneNum = phonenum;
-		
+
 			return true;
 		}
     };
@@ -154,4 +154,8 @@ console.log($scope.login)
 	$scope.showBookingHistory = function() {
 		console.log('show booking history');
 	};
+
+    $scope.intro = function() {
+        $state.go('intro');
+    }
 }];

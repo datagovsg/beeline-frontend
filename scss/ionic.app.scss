@@ -2066,3 +2066,46 @@ ion-list {
 .credit_card_input input[type='text'] {
 	text-align: right;
 }
+
+/* ---------- SLIDE PAGE for intro ---------- */
+#pg_intro{
+	background-color: $stable;
+	#slides {
+		height: 90%;
+		position: absolute;
+		text-align: center;
+		font-size: 16px;
+		padding-top: 25%;
+		color: #FFF;
+		.header {
+			font-size: 28px;
+			color: #FFE76D;
+		}
+		img {
+			margin-top: 50px;
+		}
+		.notes {
+			margin-top: 40px;
+			left: 20%;
+			width: 60%;
+			position: absolute;
+		}
+		.swiper-pagination-bullet-active
+		{
+		  background: #FFF;
+		}
+	}
+
+	#bottom {
+		top: 90%;
+		height: 10%;
+		width: 100%;
+		position: absolute;
+		a {
+			color: #FFF;
+			right: 40px;
+			bottom: 40px;
+			position: absolute;
+		}
+	}
+}
