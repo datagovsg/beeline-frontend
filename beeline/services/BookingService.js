@@ -2,43 +2,153 @@ import {NetworkError} from '../shared/errors'
 import {formatDate, formatDateMMMdd, formatTime, formatUTCDate} from '../shared/format'
 import _ from 'lodash'
 
-export default function (UserService) {
+export default function (UserService, CompanyService, RoutesService, $http) {
   var rv = {};
 
   rv.reset = function(routeId) {
-    this.routeId = routeId;
-    this.routeInfo = null;
-    this.lastState = undefined;
     this.currentBooking = {
       boardStop: undefined,
       alightStop: undefined,
       qty: 1,
       trips: null,
+      routeId: routeId || 1, // FIXME: don't do this. throw an error if routeId is not defined
     };
   }
 
-  rv.loadRouteInfo = async function ($http) {
-    try {
-      // don't load if already loaded
-      if (this.routeInfo != null && this.routeInfo.id == this.routeId)
-        return;
+  rv.getCurrentBooking = function() {
+    return this.currentBooking;
+  }
 
-      // load from http
-      try {
-        var resp = await UserService.beeline({
-          method: 'GET',
-          url: '/routes/' + this.routeId
-            + '?include_trips=true&include_availability=true',
-        })
-      }
-      catch (err) {
+  rv.boardingStop = function () {
+    if (!this.currentBooking ||
+      !this.currentBooking.selectedDates ||
+      !this.currentBooking.selectedDates.length)
+      return {};
+
+    return this.routeInfo.tripsByDate[this.currentBooking.selectedDates[0]]
+          .tripStops
+          .filter(ts => this.currentBooking.boardStop == ts.stop.id)[0]
+  };
+  rv.alightingStop = function() {
+    if (!this.currentBooking ||
+      !this.currentBooking.selectedDates ||
+      !this.currentBooking.selectedDates.length)
+      return {};
+
+    return this.routeInfo.tripsByDate[this.currentBooking.selectedDates[0]]
+          .tripStops
+          .filter(ts => this.currentBooking.alightStop == ts.stop.id)[0]
+  };
+
+  rv.prepareTrips = function(booking) {
+    // create a list of trips
+    var trips = [];
+
+    // Cache trip by dates
+    if (!booking.route.tripsByDate) {
+      booking.route.tripsByDate =
+        _.keyBy(booking.route.trips,
+          trip => trip.date.getTime());
+    }
+
+    //
+    console.log(booking);
+    for (let dt of booking.selectedDates) {
+      trips.push({
+        tripId: booking.route.tripsByDate[dt].id,
+        boardStopId: booking.route.tripsByDate[dt]
+                .tripStops
+                .filter(ts => booking.boardStop == ts.stop.id)
+                [0].id,
+        alightStopId: booking.route.tripsByDate[dt]
+                .tripStops
+                .filter(ts => booking.alightStop == ts.stop.id)
+                [0].id,
+        qty: booking.qty,
+      });
+    }
+
+		//console.log(trips);
+    //console.log(this.routeInfo);
+
+    return trips;
+  };
+
+  /* If a booking has selectedDates array, then it
+    checks the prices.
+  */
+  rv.computePriceInfo = function(booking) {
+    if (!booking.selectedDates ||
+          booking.selectedDates.length == 0) {
+      return Promise.resolve({
+        total: 0,
+      });
+    }
+    else {
+      var trips = this.prepareTrips(booking);
+
+      var rv = UserService.beeline({
+        method: 'POST',
+        url: '/transactions/ticket_sale',
+        data: {
+          trips: trips,
+          dryRun: true,
+        },
+      })
+      .then((resp) => {
+        // Find the 'payment' entry in the list of transaction itemss
+        var txItems = _.groupBy(resp.data.transactionItems, 'itemType');
+
+        // FIXME: include discounts, vouchers
+        return {
+          totalDue: txItems.payment[0].debit,
+          tripCount: trips.length,
+          pricesPerTrip: this.summarizePrices(booking),
+        };
+      })
+      .then(null, (err) => {
         console.log(err.stack);
-        throw new NetworkError('Failed to download route information');
+        throw err;
+      });
+
+      return rv;
+    }
+};
+
+  rv.summarizePrices = function(booking) {
+    if (!booking.selectedDates) {
+      return [];
+    }
+
+    var dates = _.sortBy(booking.selectedDates);
+
+    if (dates.length == 0) return [];
+
+    var current = {}
+    var rv = [current];
+
+    for (let dt of dates) {
+      if (!current.startDate) {
+        current.startDate = dt;
+      }
+      if (!current.price) {
+        current.price = booking.route.tripsByDate[dt].price;
       }
 
-      var route = resp.data;
-      this.routeInfo = route;
+      if (current.price != booking.route.tripsByDate[dt].price) {
+        current = {
+          startDate: dt,
+          price: booking.route.tripsByDate[dt].price,
+        };
+        rv.push(current);
+      }
+      current.endDate = dt;
+    }
+    //console.log(rv);
+    return rv;
+  };
 
+  rv.computeChanges = function(route) {
       // convert dates (should be in ISO format therefore sortable)
       route.trips = _.sortBy(route.trips, trip => trip.date);
 
@@ -55,6 +165,11 @@ export default function (UserService) {
         route.tripsByDate[trip.date.getTime()] = trip;
       }
 
+      var changes = {
+        timeChanges: [],
+        priceChanges: [],
+        stopChanges: [],
+      }
 
       /**
         Produce an array of changes.
@@ -113,11 +228,11 @@ export default function (UserService) {
       }
 
       // summarize price/stop/time
-      route.priceChanges = summarizeChanges(route.trips,
+      changes.priceChanges = summarizeChanges(route.trips,
         (trip) => trip.price,
         (bef, aft) => [`Price change from ${bef.price} to ${aft.price}`]);
 
-      route.stopChanges = summarizeChanges(route.trips,
+      changes.stopChanges = summarizeChanges(route.trips,
         trip => trip.tripStops.map(ts => ts.stop.id).join(','),
         (bef, aft) => {
           var stopInfo = {};
@@ -149,7 +264,7 @@ export default function (UserService) {
           return messages;
         });
 
-      route.timeChanges = summarizeChanges(route.trips,
+      changes.timeChanges = summarizeChanges(route.trips,
         trip => trip.tripStops
               .map(ts => (ts.time.getTime() % (24*60*60*1000)) + ':' + ts.stop.id)
               .join(','),
@@ -171,160 +286,11 @@ export default function (UserService) {
           }
           return messages;
         });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-	rv.loadTranscoInfo = async function ($http, transcoId) {
-		try {
-			//load transport company info from http
-      try {
-        var resp = await UserService.beeline({
-          method: 'GET',
-          url: '/companies/' + transcoId,
-        })
-
-				var transcodata = resp.data;
-      }
-      catch (err) {
-        console.log(err.stack);
-        throw new NetworkError('Failed to download route information');
-      }
-
-			return transcodata;
-		} catch (err) {
-      console.error(err);
-    }
-	};
-
-  rv.boardingStop = function () {
-    if (!this.currentBooking ||
-      !this.currentBooking.selectedDates ||
-      !this.currentBooking.selectedDates.length)
-      return {};
-
-    return this.routeInfo.tripsByDate[this.currentBooking.selectedDates[0]]
-          .tripStops
-          .filter(ts => this.currentBooking.boardStop == ts.stop.id)[0]
-  };
-  rv.alightingStop = function() {
-    if (!this.currentBooking ||
-      !this.currentBooking.selectedDates ||
-      !this.currentBooking.selectedDates.length)
-      return {};
-
-    return this.routeInfo.tripsByDate[this.currentBooking.selectedDates[0]]
-          .tripStops
-          .filter(ts => this.currentBooking.alightStop == ts.stop.id)[0]
-  };
-
-  rv.prepareTrips = function() {
-    // create a list of trips
-    var trips = [];
-
-    for (let dt of this.currentBooking.selectedDates) {
-      trips.push({
-        tripId: this.routeInfo.tripsByDate[dt].id,
-        boardStopId: this.routeInfo.tripsByDate[dt]
-                .tripStops
-                .filter(ts => this.currentBooking.boardStop == ts.stop.id)
-                [0].id,
-        alightStopId: this.routeInfo.tripsByDate[dt]
-                .tripStops
-                .filter(ts => this.currentBooking.alightStop == ts.stop.id)
-                [0].id,
-        qty: this.currentBooking.qty,
-      });
-    }
-
-		//console.log(trips);
-    //console.log(this.routeInfo);
-
-    return trips;
-  };
-
-  rv.updatePrice = async function($scope) {
-    try {
-      if (!this.currentBooking) return;
-      else if (!this.currentBooking.selectedDates ||
-                !this.currentBooking.selectedDates.length) {
-        this.currentBooking.priceInfo = {
-          total: 0,
-        };
-        return;
-      }
-      else {
-        var trips = this.prepareTrips();
-
-        try {
-          var resp = await UserService.beeline({
-            method: 'POST',
-            url: '/transactions/ticket_sale',
-            data: {
-              trips: trips,
-              dryRun: true,
-            },
-          });
-          $scope.$apply(() => {
-            // Find the 'payment' entry in the list of transaction items
-
-            var txItems = _.groupBy(resp.data.transactionItems, 'itemType');
-
-            // FIXME: include discounts, vouchers
-            this.currentBooking.priceInfo = {
-              totalDue: txItems.payment[0].debit,
-              tripCount: trips.length,
-              pricesPerTrip: this.summarizePrices(),
-            };
-          });
-        }catch (err) {
-          console.log(err.stack);
-          throw new Error("Invalid status...");
-        }
-      }
-
-			//console.log(this.currentBooking);
-    }
-    catch (err) {
-      console.error(err);
-    }
-  };
-
-  rv.summarizePrices = function() {
-    if (!this.currentBooking.selectedDates) {
-      return [];
-    }
-
-    var dates = _.sortBy(this.currentBooking.selectedDates);
-
-    if (dates.length == 0) return [];
-
-    var current = {}
-    var rv = [current];
-
-    for (let dt of dates) {
-      if (!current.startDate) {
-        current.startDate = dt;
-      }
-      if (!current.price) {
-        current.price = this.routeInfo.tripsByDate[dt].price;
-      }
-
-      if (current.price != this.routeInfo.tripsByDate[dt].price) {
-        current = {
-          startDate: dt,
-          price: this.routeInfo.tripsByDate[dt].price,
-        };
-        rv.push(current);
-      }
-      current.endDate = dt;
-    }
-    //console.log(rv);
-    return rv;
+      return changes;
   };
 
   rv.reset(1);
+
 
   return rv;
 }

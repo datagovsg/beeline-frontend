@@ -20,6 +20,7 @@ export default [
       busStops: '=',
       valueFn: '=value',
       displayFn: '=display',
+      displayFn2: '=display2',
       model: "=",
       change: '=',
       placeholder: '@',

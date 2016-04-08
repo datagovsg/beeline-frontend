@@ -12,18 +12,22 @@ export default [
     function ($scope, $state, $http, $ionicPopup,
       BookingService, UserService, CreditCardInputService,
     StripeService) {
-        // navigate away if we don't have data (e.g. due to refresh)
-        if (!BookingService.currentBooking) {
-            $state.go('tabs.booking-pickup');
-        }
-        //
-        $scope.BookingService = BookingService;
 
-        /** FIXME this can be potentially very slow. Should ignore the routeInfo entry **/
-        $scope.$watch('BookingService.currentBooking',
-                    () => BookingService.updatePrice($scope, $http),
+        $scope.currentBooking = {};
+        $scope.currentRouteInfo = {};
+        $scope.$on('$ionicView.beforeEnter', () => {
+          $scope.currentBooking = BookingService.getCurrentBooking();
+        });
+
+        /* On this page we can only add promo codes... */
+        $scope.$watch('BookingService.currentBooking.promoCodes',
+                    () => {
+                      BookingService.computePriceInfo($scope, $http)
+                      .then((priceInfo) => {
+                        $scope.currentBooking.priceInfo = priceInfo;
+                      })
+                    },
                     true);
-        BookingService.updatePrice($scope, $http);
 
         $scope.waitingForPaymentResult = false;
 
@@ -92,30 +96,12 @@ export default [
                     url: '/transactions/payment_ticket_sale',
                     data: {
                         stripeToken: stripeToken.id,
-                        trips: BookingService.prepareTrips(),
+                        trips: BookingService.prepareTrips($scope.currentBooking),
                     },
                 });
 
                 // This gives us the transaction items
                 assert(result.status == 200);
-
-                // Read the transaction items back info the booking service.
-                // Parse the transactions...
-                let txn = result.data;
-                BookingService.bookingTransaction = txn;
-                //  txn.transactionItems = _.groupBy(txn.transactionItems,
-                //      x => x.itemType);
-
-                //  txn.transactionItems.ticketSale /* array of transactionitems */
-                //          = txn.transactionItems.ticketSale
-                //              .map(tsti => tsti.ticketSale) /* array of tickets */
-                //  txn.transactionItems.ticketSale
-                //          = _.groupBy(txn.transactionItems.ticketSale,
-                //                  t => t.boardStop.trip.date);
-
-                // Alternatively: It is difficult and complicated to parse the transaction
-                // Just cheat and show them the data we have
-                // and hope the serve has not changed anything
 
                 $state.go('tabs.booking-confirmation');
             } catch (err) {
@@ -149,5 +135,5 @@ export default [
 				}
 			}
 		}
-    },
+  },
 ];

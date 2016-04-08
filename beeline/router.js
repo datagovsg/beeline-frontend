@@ -77,24 +77,24 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('tabs.booking-pickup', {
-    url: '/booking/pickup',
+  .state('tabs.bookingPickup', {
+    url: '/booking/pickup/:routeId',
     views: {
       'tab-booking': {
-        templateUrl: 'templates/tab-booking.html',
-        controller: 'BookingController',
+        templateUrl: 'templates/tab-booking-stops.html',
+        controller: 'BookingStopsController',
       }
     }
   })
-  .state('tabs.booking-dropoff', {
-    url: '/booking/dropoff',
-    views: {
-      'tab-booking': {
-        templateUrl: 'templates/tab-booking.html',
-        controller: 'BookingController',
-      }
-    }
-  })
+  // .state('tabs.booking-dropoff', {
+  //   url: '/booking/dropoff',
+  //   views: {
+  //     'tab-booking': {
+  //       templateUrl: 'templates/tab-booking.html',
+  //       controller: 'BookingStopsController',
+  //     }
+  //   }
+  // })
   .state('tabs.booking-dates', {
     url: '/booking/dates',
     views: {

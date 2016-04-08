@@ -1,16 +1,16 @@
 <ion-view id="pg_booking" view-title="{{title}}">
   <ion-content class="fullscreen-map">
 	<div class="routeinfo">
-		<div class="busnum">{{book.routeid}}</div>
+		<div class="busnum">{{currentBooking.route.label}}</div>
 		<div class="stops">
 			<div class="line"></div>
 			<div class="start">
-				<span class="time">{{book.stime}}</span>
-				<span class="road">{{book.sroad}}</span>
+				<span class="time">{{currentBooking.stime}}</span>
+				<span class="road">{{currentBooking.sroad}}</span>
 			</div>
 			<div class="end">
-				<span class="time">{{book.etime}}</span>
-				<span class="road">{{book.eroad}}</span>
+				<span class="time">{{currentBooking.etime}}</span>
+				<span class="road">{{currentBooking.eroad}}</span>
 			</div>
 		</div>
 	</div>
@@ -60,12 +60,12 @@
 			}"
 			>
 			<div>
-				<h4>{{infoStop.time}}</h4>
+				<h4>{{infoStop.time | formatTime}}</h4>
 				{{infoStop.description}}
 				<br/>
-                <button onclick="setStop()">
-                Select your {{infoType == 'board'? 'pick-up' : 'drop-off'}} stop
-                </button>
+        <button onclick="setStop()">
+        Select your {{infoType == 'board'? 'pick-up' : 'drop-off'}} stop
+        </button>
 			</div>
 		</ui-gmap-window>
 	</ui-gmap-google-map>
@@ -73,10 +73,11 @@
 	<div id="userpos" ng-click="getUserLocation()"></div>
 	<div id="stopinputs">
 		<bus-stop-selector
-			model="BookingService.currentBooking.boardStop"
+			model="currentBooking.boardStop"
 			bus-stops="book.boardStops"
 			value="getStopId"
 			display="getStopDescription"
+			display2="getStopDescription2"
 			placeholder="{{book.stxt}}"
 			title="{{book.stxt}}"
 			button="{{book.stxt}}"
@@ -84,10 +85,11 @@
 		</bus-stop-selector>
 		<div class="line"></div>
 		<bus-stop-selector
-			model="BookingService.currentBooking.alightStop"
+			model="currentBooking.alightStop"
 			bus-stops="book.alightStops"
 			value="getStopId"
 			display="getStopDescription"
+			display2="getStopDescription2"
 			placeholder="{{book.etxt}}"
 			title="{{book.etxt}}"
 			button="{{book.etxt}}"
@@ -95,7 +97,7 @@
 		</bus-stop-selector>
 		<qty-input
 			placeholder="{{book.ptxt}}"
-			ng-model="BookingService.currentBooking.qty"
+			ng-model="currentBooking.qty"
 			>
 		</qty-input>
 	</div>
@@ -126,7 +128,8 @@
 		<ion-checkbox class="confirm" ng-model="book.termsChecked">
 			Yes, I have read and agree to the Terms and Conditions of booking with <b>{{book.transco.name}}</b>.
 		</ion-checkbox>
-		<button id="btnbookcont" ng-click="goToDatepicker()" ng-disabled="book.allDataNotFilled">CONTINUE</button>
+		<button id="btnbookcont" ui-sref="tabs.booking-dates"
+        g-disabled="book.allDataNotFilled">Continue</button>
 		<div class="err">{{book.errmsg}}</div>
 	</div>
   </ion-content>
@@ -150,7 +153,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="priceChange in BookingService.routeInfo.priceChanges">
+					<tr ng-repeat="priceChange in currentBooking.changes.priceChanges">
 						<td>$$</td>
 						<td>
 							{{priceChange.startDate | formatDate}}
@@ -159,7 +162,7 @@
 							{{priceChange.humanReadable[0]}}
 						</td>
 					</tr>
-					<tr ng-repeat="stopChange in BookingService.routeInfo.stopChanges">
+					<tr ng-repeat="stopChange in currentBooking.changes.stopChanges">
 						<td>S</td>
 						<td>
 							{{stopChange.startDate | formatDate}}
@@ -172,7 +175,7 @@
 							</ul>
 						</td>
 					</tr>
-					<tr ng-repeat="timeChange in BookingService.routeInfo.timeChanges">
+					<tr ng-repeat="timeChange in currentBooking.changes.timeChanges">
 						<td>T</td>
 						<td>
 							{{timeChange.startDate | formatDate}}

@@ -35,6 +35,15 @@ bus-stop-selector {
   }
 }
 
+.bus-stop-selector-map button {
+  border: solid 1px $stable;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  background-color: #FF0;
+  padding: 10px;
+}
+
 /* ---------- BOOKINGS STOPS MODAL ---------- */
 .stop-selector.modal {
 	width: calc(100% - 20px);

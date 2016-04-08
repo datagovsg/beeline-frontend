@@ -19,6 +19,21 @@ function transformRouteData(data){
 export default function($http, SERVER_URL, UserService) {
 
 	return {
+		getRoute: function (routeId) {
+			return $http.get(SERVER_URL + `/routes/${routeId}?include_trips=true`)
+				.then(function(response){
+					return response.data;
+				})
+				.then((route) => { /* Convert date values to date object */
+					for (let trip of route.trips) {
+						trip.date = new Date(trip.date);
+						for (let tripStop of trip.tripStops) {
+							tripStop.time = new Date(tripStop.time);
+						}
+					}
+					return route;
+				});
+		},
 
 		getRoutes: function(){
 			return $http.get(SERVER_URL + '/routes?include_trips=true')

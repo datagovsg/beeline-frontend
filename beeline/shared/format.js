@@ -49,7 +49,7 @@ export function formatTime(date) {
 
     var hours = date.getHours();
 
-    return twoPad(12 - (24 - hours) % 12, 2, '\u00a0\u00a0') + ':' +
+    return (12 - (24 - hours) % 12) + ':' +
             twoPad(date.getMinutes()) + ' '
             + (hours > 12 ? 'PM' : 'AM')/*+ ':' +
             twoPad(date.getSeconds()) */;

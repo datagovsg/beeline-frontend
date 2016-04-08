@@ -39,11 +39,12 @@
 		</div>
 		<div class="tripdates">
 			<div class="datesnum">
-				<span>{{BookingService.currentBooking.selectedDates.length}} day(s)</span> were selected for this booking.
+				<span>{{currentBooking.selectedDates.length}} day(s)</span> were selected for this booking.
 			</div>
-			<price-calculator></price-calculator>
+    		<price-calculator
+          booking="currentBooking"></price-calculator>
 			<!--ul>
-				<li ng-repeat="dt in BookingService.currentBooking.selectedDates">
+				<li ng-repeat="dt in currentBooking.selectedDates">
 					{{dt | formatDateMMMdd}}
 				</li>
 			</ul-->
@@ -59,7 +60,7 @@
 		</div>
 		<div class="promo">
 			<ol>
-				<li ng-repeat="pc in BookingService.currentBooking.promoCodes">
+				<li ng-repeat="pc in currentBooking.promoCodes">
 				 {{pc}}
 				</li>
 			</ol>

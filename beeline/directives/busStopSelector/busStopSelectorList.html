@@ -32,7 +32,7 @@
 						longitude: selectedStop.coordinates.coordinates[0],
 					}"
 					>
-					<div>
+					<div class="bus-stop-selector-map">
 						<h4>{{selectedStop.time}}</h4>
 						{{selectedStop.description}}
 						<br/>
@@ -50,7 +50,7 @@
                             icon="ion-ios-circle-outline"
                             ng-click="selectStop($event, stop)"
                             >
-					<div class="time">{{stop.time}}</div>
+					<div class="time">{{stop.time | formatTime}}</div>
 					<div class="details">
 						<div>{{stop.description}}</div>
 						<div>{{stop.road}}</div>

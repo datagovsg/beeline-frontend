@@ -15,7 +15,7 @@ import CreditCardInputService from './services/CreditCardInputService.js';
 // Controller Imports
 import RoutesMapController from './controllers/RoutesMapController.js';
 import RoutesListController from './controllers/RoutesListController.js';
-import BookingController from './controllers/BookingController.js';
+import BookingStopsController from './controllers/BookingStopsController.js';
 import BookingDatesController from './controllers/BookingDatesController.js';
 import BookingConfirmationController from './controllers/BookingConfirmationController.js';
 import BookingSummaryController from './controllers/BookingSummaryController.js';
@@ -79,7 +79,7 @@ var app = angular.module('beeline', [
 .factory('DateService', DateService)
 .factory('CreditCardInputService', CreditCardInputService)
 .factory('StripeService', StripeService)
-.controller('BookingController', BookingController)
+.controller('BookingStopsController', BookingStopsController)
 .controller('BookingDatesController', BookingDatesController)
 .controller('BookingSummaryController', BookingSummaryController)
 .controller('BookingConfirmationController', BookingConfirmationController)
