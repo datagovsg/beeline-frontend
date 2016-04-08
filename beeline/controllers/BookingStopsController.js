@@ -28,34 +28,34 @@ export default [
     CompanyService,
     uiGmapGoogleMapApi
   ) {
-  	//Gmap default settings
-  	$scope.map = {
-  		center: { latitude: 1.370244, longitude: 103.823315 },
-  		zoom: 11,
-  		bounds: { //so that autocomplete will mainly search within Singapore
-  			northeast: {
-  				latitude: 1.485152,
-  				longitude: 104.091837
-  			},
-  			southwest: {
-  				latitude: 1.205764,
-  				longitude: 103.589899
-  			}
-  		},
-  		mapControl: {},
-  		options: {
-  			disableDefaultUI: true,
-  			styles: [{
-  				featureType: "poi",
-  				stylers: [{
-  					visibility: "off"
-  				}]
-  			}],
-  			draggable: true
-  		},
-  		markers: [],
-  		lines: [],
-  	};
+    //Gmap default settings
+    $scope.map = {
+      center: { latitude: 1.370244, longitude: 103.823315 },
+      zoom: 11,
+      bounds: { //so that autocomplete will mainly search within Singapore
+        northeast: {
+          latitude: 1.485152,
+          longitude: 104.091837
+        },
+        southwest: {
+          latitude: 1.205764,
+          longitude: 103.589899
+        }
+      },
+      mapControl: {},
+      options: {
+        disableDefaultUI: true,
+        styles: [{
+          featureType: "poi",
+          stylers: [{
+            visibility: "off"
+          }]
+        }],
+        draggable: true
+      },
+      markers: [],
+      lines: [],
+    };
 
     var resolveGmap = null;
     var gmapIsReady = new Promise((resolve, reject) => {
@@ -65,23 +65,23 @@ export default [
       resolveGmap();
     }
 
-  	//Default settings for various info used in the page
-  	$scope.book = {
-  		routeid: '',
-  		boardStops: [],
-  		alightStops: [],
-  		stime: '',
-  		etime: '',
-  		sroad: '',
-  		eroad: '',
-  		stxt: 'Select your pick-up stop',
-  		etxt: 'Select your drop-off stop',
-  		ptxt: 'No. of passengers',
-  		transco: {},
-  		allDataNotFilled: true,
-  		termsChecked: false,
-  		errmsg: ''
-  	}
+    //Default settings for various info used in the page
+    $scope.book = {
+      routeid: '',
+      boardStops: [],
+      alightStops: [],
+      stime: '',
+      etime: '',
+      sroad: '',
+      eroad: '',
+      stxt: 'Select your pick-up stop',
+      etxt: 'Select your drop-off stop',
+      ptxt: 'No. of passengers',
+      transco: {},
+      allDataNotFilled: true,
+      termsChecked: false,
+      errmsg: ''
+    }
 
     // Name when controller was fired??
     // Maybe find a neater solution?
@@ -95,9 +95,8 @@ export default [
 
     $scope.setStop = function () {
       var stop = $scope.infoStop;
-      var type = $scope.infoType;
-      console.log(type);
-      console.log(stop);
+      var type = $scope.infoType
+
       $scope.$apply(() => {
         if (type == 'board') {
           $scope.currentBooking.boardStop = stop.id;
@@ -125,7 +124,7 @@ export default [
       may not handle event handlers correctly */
       window.setStop = $scope.setStop;
       resizeMap();
-	    $scope.displayRouteInfo();
+      $scope.displayRouteInfo();
     });
 
     // Subcomponents, views etc
@@ -153,13 +152,13 @@ export default [
 
     // FIXME: apply this to all maps somehow, instead of doing this ad-hoc
     uiGmapGoogleMapApi.then(() => {
-  		setTimeout(function(){
-  			//Disable the Google link at the bottom left of the map
-  			var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
-  			glink.next().find('a').on('click', function (e) {
-  				e.preventDefault();
-  			});
-  		}, 300);
+      setTimeout(function(){
+        //Disable the Google link at the bottom left of the map
+        var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
+        glink.next().find('a').on('click', function (e) {
+          e.preventDefault();
+        });
+      }, 300);
 
       $scope.alightMarkerOptions = {
         icon: {
@@ -177,91 +176,91 @@ export default [
       };
     })
 
-  	// Load the data for the selected route
+    // Load the data for the selected route
     // Which data?
     // 1. Route info
     // 2. Company info
     // 3. Changes to route
     $scope.lastDisplayedRouteId = null; // works if caching
-  	$scope.displayRouteInfo = function() {
-			RoutesService.getRoute($scope.currentBooking.routeId)
-			.then((route) => {
+    $scope.displayRouteInfo = function() {
+      RoutesService.getRoute($scope.currentBooking.routeId)
+      .then((route) => {
         // 1. Route info
-				$scope.routePath = route.path.map(latlng => ({
-					latitude: latlng.lat,
-					longitude: latlng.lng,
-				}));
+        $scope.routePath = route.path.map(latlng => ({
+          latitude: latlng.lat,
+          longitude: latlng.lng,
+        }));
         $scope.currentBooking.route = route;
 
-				computeStops();
-				panToStops();
+        computeStops();
+        panToStops();
 
-				// 3. Check if we should display changes
-				if ($scope.lastDisplayedRouteId != $scope.currentBooking.routeId) {
+        // 3. Check if we should display changes
+        if ($scope.lastDisplayedRouteId != $scope.currentBooking.routeId) {
           var changes = BookingService.computeChanges(route);
           $scope.currentBooking.changes = changes;
 
-					if (changes.priceChanges.length == 0 &&
+          if (changes.priceChanges.length == 0 &&
               changes.stopChanges.length == 0 &&
               changes.timeChanges.length == 0) {
             return
           }
 
-					console.log('Changes detected: diplaying message box');
+          console.log('Changes detected: diplaying message box');
 
-					if ($scope.changesModal) {
-						$scope.changesModal.remove();
-						$scope.changesModal = null;
-					}
+          if ($scope.changesModal) {
+            $scope.changesModal.remove();
+            $scope.changesModal = null;
+          }
 
-					$ionicModal.fromTemplateUrl('changes-message.html', {
-						scope: $scope,
-						animation: 'slide-in-up',
-					})
-					.then(modal => {
-						$scope.changesModal = modal;
-						$scope.changesModal.show();
-					});
-				}
+          $ionicModal.fromTemplateUrl('changes-message.html', {
+            scope: $scope,
+            animation: 'slide-in-up',
+          })
+          .then(modal => {
+            $scope.changesModal = modal;
+            $scope.changesModal.show();
+          });
+        }
         $scope.lastDisplayedRouteId = $scope.currentBooking.routeId;
 
-				// 2. Fill in the transport company info
-				return CompanyService.getCompany(route.trips[0].transportCompanyId)
+        // 2. Fill in the transport company info
+        return CompanyService.getCompany(route.trips[0].transportCompanyId)
         .then(function(result){
-					$scope.currentBooking.company = result;
-				});
-			})
-			.then(null, err => console.log(err.stack));
-  	};
+          $scope.currentBooking.company = result;
+        });
+      })
+      .then(null, err => console.log(err.stack));
+    };
 
-  	$scope.closeChangesModal = function() {
-  		$scope.changesModal.hide();
-  	}
+    $scope.closeChangesModal = function() {
+      $scope.changesModal.hide();
+    }
 
     /* ----- Methods ----- */
-  	//Click function for User Position Icon
-  	$scope.getUserLocation = function() {
-  		var options = {
-  			timeout: 5000,
-  			enableHighAccuracy: true
-  		};
+    //Click function for User Position Icon
+    $scope.getUserLocation = function() {
+      var options = {
+        timeout: 5000,
+        enableHighAccuracy: true
+      };
 
-  		//promise
-  		$cordovaGeolocation
-  		.getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
-  		.then(function(userpos){
+      //promise
+      $cordovaGeolocation
+      .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
+      .then(function(userpos){
 
-  			var gmap = $scope.map.mapControl.getGMap();
+        var gmap = $scope.map.mapControl.getGMap();
 
-  			gmap.panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude));
-  			setTimeout(function(){
-  				gmap.setZoom(17);
-  			}, 300);
+        gmap.panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude));
+        setTimeout(function(){
+          gmap.setZoom(17);
+        }, 300);
 
-  		}, function(err){
-  			console.log('ERROR - ' + err);
-  		});
-  	}
+      }, function(err){
+        console.log('ERROR - ' + err);
+      });
+    }
 
     function computeStops() {
       var trips = $scope.currentBooking.route.trips;
@@ -313,30 +312,30 @@ export default [
     $scope.applyTapAlight = (x) => $scope.$apply(() => $scope.tapAlight(x));
     $scope.applyTapBoard = (x) => $scope.$apply(() => $scope.tapBoard(x));
 
-  	//Check whether:
-  	//[1] Start stop is specified
-  	//[2] End stop is specified
-  	//[3] Checkbox is checked
+    //Check whether:
+    //[1] Start stop is specified
+    //[2] End stop is specified
+    //[3] Checkbox is checked
     $scope.$watchGroup([
         'currentBooking.boardStop',
         'currentBooking.alightStop',
         'book.termsChecked',
       ], function () {
-    		if ($scope.book.termsChecked == true) {
-    			$scope.book.errmsg = '';
-    			var curr = $scope.currentBooking;
+        if ($scope.book.termsChecked == true) {
+          $scope.book.errmsg = '';
+          var curr = $scope.currentBooking;
 
-    			if (typeof(curr.boardStop) == 'undefined')
-    				$scope.book.errmsg = 'Please specify a Boarding Stop.'
-    			else if (typeof(curr.alightStop) == 'undefined')
-    				$scope.book.errmsg = 'Please specify a Alighting Stop.'
-    			else
-    			{
-    				$scope.book.errmsg = ''
-    				$scope.book.allDataNotFilled = false;
-    			}
-    		}
-    	});
+          if (typeof(curr.boardStop) == 'undefined')
+            $scope.book.errmsg = 'Please specify a Boarding Stop.'
+          else if (typeof(curr.alightStop) == 'undefined')
+            $scope.book.errmsg = 'Please specify a Alighting Stop.'
+          else
+          {
+            $scope.book.errmsg = ''
+            $scope.book.allDataNotFilled = false;
+          }
+        }
+      });
 
     console.log('Revised(2) ' + stateName);
   }

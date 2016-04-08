@@ -177,7 +177,6 @@ export default function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/login.html',
     controller: 'LoginController'
   })
-
   .state('login-verify', {
     url: '/login-verify',
     templateUrl: 'templates/verify.html',

@@ -1,43 +1,43 @@
 
 <table class="price-table">
-    <thead>
-		<tr ng-if="booking.selectedDates.length != 0">
-			<th>Start/End Period</th>
-			<th>Price per trip</th>
-		</tr>
-    </thead>
-    <tbody>
-		<tr class="nosel" ng-if="booking.selectedDates.length == 0">
-			<td colspan="2">- Please select your trip dates -</td>
-		</tr>
-		<tr class="sel" ng-if="booking.selectedDates.length > 0"
-			ng-repeat="pinfo in booking.priceInfo.pricesPerTrip">
-			<td>
-				<span ng-if="pinfo.startDate == pinfo.endDate">{{pinfo.startDate | formatDateMMMdd}}</span>
-				<span ng-if="pinfo.startDate != pinfo.endDate">{{pinfo.startDate | formatDateMMMdd}} &mdash; {{pinfo.endDate | formatDateMMMdd}}</span>
-			</td>
-			<td>${{pinfo.price.toFixed(2)}}</td>
-		</tr>
-		<tr class="totals" ng-if="booking.selectedDates.length > 0">
-			<td>
-				<div class="trips box">
-					<div class="title">Total Trips</div>
-					<div class="val">{{booking.priceInfo.tripCount || 0}}</div>
-				</div>
-				<div class="pax box">
-					<div class="title">Passengers</div>
-					<div class="val">
-						<qty-input ng-model="booking.qty"></qty-input>
-					</div>
-				</div>
-			</td>
-			<td>
-				<div class="price box">
-					<div class="title">Total Amt.</div>
-					<div class="val">${{booking.priceInfo.totalDue.toFixed(2) || 0.00}}</div>
-				</div>
-			</td>
-		</tr>
-		<!-- FIXME: include vouchers, discounts here -->
-    </tbody>
+  <thead>
+    <tr ng-if="booking.selectedDates.length != 0">
+      <th>Start/End Period</th>
+      <th>Price per trip</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="nosel" ng-if="booking.selectedDates.length == 0">
+      <td colspan="2">- Please select your trip dates -</td>
+    </tr>
+    <tr class="sel" ng-if="booking.selectedDates.length > 0"
+      ng-repeat="pinfo in booking.priceInfo.pricesPerTrip">
+      <td>
+        <span ng-if="pinfo.startDate == pinfo.endDate">{{pinfo.startDate | formatDateMMMdd}}</span>
+        <span ng-if="pinfo.startDate != pinfo.endDate">{{pinfo.startDate | formatDateMMMdd}} &mdash; {{pinfo.endDate | formatDateMMMdd}}</span>
+      </td>
+      <td>${{pinfo.price.toFixed(2)}}</td>
+    </tr>
+    <tr class="totals" ng-if="booking.selectedDates.length > 0">
+      <td>
+        <div class="trips box">
+          <div class="title">Total Trips</div>
+          <div class="val">{{booking.priceInfo.tripCount || 0}}</div>
+        </div>
+        <div class="pax box">
+          <div class="title">Passengers</div>
+          <div class="val">
+            <qty-input ng-model="booking.qty"></qty-input>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="price box">
+          <div class="title">Total Amt.</div>
+          <div class="val">${{booking.priceInfo.totalDue.toFixed(2) || 0.00}}</div>
+        </div>
+      </td>
+    </tr>
+    <!-- FIXME: include vouchers, discounts here -->
+  </tbody>
 </table>

@@ -6,12 +6,12 @@ export default [
     '$ionicPopup',
     '$timeout',
   function(
-      $scope,
-      UserService,
-      $state,
-      $ionicModal,
-      $ionicPopup,
-      $timeout
+    $scope,
+    UserService,
+    $state,
+    $ionicModal,
+    $ionicPopup,
+    $timeout
   ) {
     $scope.UserService = UserService;
 

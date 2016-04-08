@@ -1,16 +1,16 @@
 import assert from 'assert';
 
 export default [
-    '$scope',
-    '$state',
-    '$http',
-    '$ionicPopup',
-    'BookingService',
-    'UserService',
-    'CreditCardInputService',
-    'StripeService',
-    function ($scope, $state, $http, $ionicPopup,
-      BookingService, UserService, CreditCardInputService,
+  '$scope',
+  '$state',
+  '$http',
+  '$ionicPopup',
+  'BookingService',
+  'UserService',
+  'CreditCardInputService',
+  'StripeService',
+  function ($scope, $state, $http, $ionicPopup,
+    BookingService, UserService, CreditCardInputService,
     StripeService) {
 
         $scope.currentBooking = {};
@@ -116,24 +116,24 @@ export default [
             }
         };
 
-		$scope.addPromoCode = function() {
-			var code = document.getElementById('promocode').value;
+    $scope.addPromoCode = function() {
+      var code = document.getElementById('promocode').value;
 
-			console.log(code);
+      console.log(code);
 
-			if ((typeof(code) != 'undefined')&&(code.trim() != ''))
-			{
-				if (typeof(BookingService.currentBooking.promoCodes) == 'undefined')
-					BookingService.currentBooking.promoCodes = [];
+      if ((typeof(code) != 'undefined')&&(code.trim() != ''))
+      {
+        if (typeof(BookingService.currentBooking.promoCodes) == 'undefined')
+          BookingService.currentBooking.promoCodes = [];
 
-				if (BookingService.currentBooking.promoCodes.indexOf(code) != '-1') //dupe
-					console.log('Duplicate code')
-				else
-				{
-					BookingService.currentBooking.promoCodes.push(code);
-					code = '';
-				}
-			}
-		}
+        if (BookingService.currentBooking.promoCodes.indexOf(code) != '-1') //dupe
+          console.log('Duplicate code')
+        else
+        {
+          BookingService.currentBooking.promoCodes.push(code);
+          code = '';
+        }
+      }
+    }
   },
 ];

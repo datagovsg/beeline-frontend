@@ -24,37 +24,37 @@ export default [
       model: "=",
       change: '=',
       placeholder: '@',
-			title: '@',
-			button: '@',
+      title: '@',
+      button: '@',
     },
     link: function (scope, elem, attrs) {
-			scope.map = {
-				center: { latitude: 1.370244, longitude: 103.823315 },
-				zoom: 11,
-				bounds: { //so that autocomplete will mainly search within Singapore
-					northeast: {
-						latitude: 1.485152,
-						longitude: 104.091837
-					},
-					southwest: {
-						latitude: 1.205764,
-						longitude: 103.589899
-					}
-				},
-				mapControl: {},
-				options: {
-					disableDefaultUI: true,
-					styles: [{
-						featureType: "poi",
-						stylers: [{
-							visibility: "off"
-						}]
-					}],
-					draggable: true
-				},
-				markers: [],
-				lines: [],
-			};
+      scope.map = {
+        center: { latitude: 1.370244, longitude: 103.823315 },
+        zoom: 11,
+        bounds: { //so that autocomplete will mainly search within Singapore
+          northeast: {
+            latitude: 1.485152,
+            longitude: 104.091837
+          },
+          southwest: {
+            latitude: 1.205764,
+            longitude: 103.589899
+          }
+        },
+        mapControl: {},
+        options: {
+          disableDefaultUI: true,
+          styles: [{
+            featureType: "poi",
+            stylers: [{
+              visibility: "off"
+            }]
+          }],
+          draggable: true
+        },
+        markers: [],
+        lines: [],
+      };
 
       scope.selectionModal = $ionicModal.fromTemplate(busStopSelectorListTemplate, {
         scope: scope,
@@ -81,11 +81,11 @@ export default [
       scope.fitMap = async () =>  {
           await uiGmapGoogleMapApi;
 
-  				//Disable the Google link at the bottom left of the map
-  				var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
-  				glink.next().find('a').on('click', function (e) {
-  					e.preventDefault();
-  				});
+          //Disable the Google link at the bottom left of the map
+          var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
+          glink.next().find('a').on('click', function (e) {
+            e.preventDefault();
+          });
 
           if (!scope.map.mapControl || !scope.busStops ||
                   scope.busStops.length == 0)
@@ -140,9 +140,9 @@ export default [
         });
       };
 
-			scope.closeStopSelectModal = function() {
-				scope.selectionModal.hide();
-			};
+      scope.closeStopSelectModal = function() {
+        scope.selectionModal.hide();
+      };
     },
   };
 }];

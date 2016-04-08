@@ -13,17 +13,17 @@ function(
     $ionicPopup
 ) {
   $scope.user = null;
-	$scope.login = {
-		errorMessage: '',
-	};
+  $scope.login = {
+    errorMessage: '',
+  };
 
-	//set the Login button labels and message for Settings page
+  //set the Login button labels and message for Settings page
   $scope.$on('$ionicView.beforeEnter',()=>{
     $scope.user = UserService.getCurrentUser();
   });
 
-	//Log in / Log out button in settings page
-	$scope.logIn = function () {
+  //Log in / Log out button in settings page
+  $scope.logIn = function () {
     UserService.logIn();
   }
 
@@ -39,7 +39,7 @@ function(
     })
   }
 
-	$scope.showBookingHistory = function() {
-		console.error("UNIMPLEMENTED STUB");
-	};
+  $scope.showBookingHistory = function() {
+    console.error("UNIMPLEMENTED STUB");
+  };
 }];

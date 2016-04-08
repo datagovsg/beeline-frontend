@@ -13,13 +13,13 @@ export default [
       $ionicPopup,
       $timeout
   ) {
-  	$scope.login = {
-  		telephone: '',
+    $scope.login = {
+      telephone: '',
       errorMessage: null,
       resendTimeout: false,
-  	};
+    };
 
-  	//set the Login button labels and message for Settings page
+    //set the Login button labels and message for Settings page
     $scope.$on('$ionicView.afterEnter',() => {
       // Reset data
       $scope.login.code = '';
@@ -33,8 +33,8 @@ export default [
       }, 30000);
       UserService.sendTelephoneVerificationCode(UserService.telephone)
       .then(null, function(error){
-  			$scope.login.errorMessage = 'There was a problem sending the SMS code. Please try again later.';
-  		});
+        $scope.login.errorMessage = 'There was a problem sending the SMS code. Please try again later.';
+      });
     }
 
     $scope.submit = function() {
