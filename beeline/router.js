@@ -166,7 +166,7 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/settings',
     views: {
       'tab-settings': {
-        templateUrl: 'templates/5_0_settings.html',
+        templateUrl: 'templates/tab-settings.html',
         controller: 'SettingsController'
       }
     }
@@ -181,7 +181,7 @@ export default function($stateProvider, $urlRouterProvider) {
   .state('login-verify', {
     url: '/login-verify',
     templateUrl: 'templates/verify.html',
-    controller: 'LoginController'
+    controller: 'VerifyController'
   });
 
   // if none of the above states are matched, use this as the fallback
