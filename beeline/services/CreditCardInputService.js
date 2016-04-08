@@ -1,4 +1,4 @@
-import {defaultMapOptions, dashedLineIcons} from '../../shared/util'
+import {defaultMapOptions, dashedLineIcons} from '../shared/util'
 import assert from 'assert'
 
 export default [
@@ -12,7 +12,7 @@ export default [
     ) {
         var modalScope = $rootScope.$new(true);
         var modal = $ionicModal.fromTemplate(
-            require("./creditCardInput.html"),
+            require("./CreditCardInput.html"),
             {
                 scope: modalScope,
             })
@@ -34,7 +34,7 @@ export default [
             }
         })
         modalScope.cancelled = function () {
-            q.reject();
+            q.resolve(null);
             q = null;
         }
         console.log(modalScope);

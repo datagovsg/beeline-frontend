@@ -1,23 +1,9 @@
 import {formatHHMM_ampm} from '../shared/format';
 import _ from 'lodash'
 
-export var RouteMapController =[
-    '$scope',
-    '$state',
-    '$ionicModal',
-    '$cordovaGeolocation',
-    'uiGmapGoogleMapApi',
-    'bookingService',
-    'Search',
-function(
-    $scope,
-    $state,
-    $ionicModal,
-    $cordovaGeolocation,
-    uiGmapGoogleMapApi,
-    BookingService,
-    Search
-){
+export default function($scope, $state, $ionicModal, $cordovaGeolocation,
+    										uiGmapGoogleMapApi, BookingService, RoutesService){
+	
 	//Gmap default settings
 	$scope.map = {
 		center: { latitude: 1.370244, longitude: 103.823315 },
@@ -321,7 +307,7 @@ function(
 			else //user is one click away from submitting the search request
 			{
 				//place the start and end locations' latlng into the Search object
-				Search.addReqData($scope.rmap.pickupvalue,
+				RoutesService.addReqData($scope.rmap.pickupvalue,
                     $scope.rmap.dropoffvalue,
                     $scope.rmap.platlng[0],
                     $scope.rmap.platlng[1],
@@ -343,15 +329,15 @@ function(
 
 		//redirect to Routes Details
         BookingService.routeId = item.id;
-		$state.go('tab.booking-pickup');
+		$state.go('tabs.booking-pickup');
 	};
 
 	//Update the Search Results modal with stuff retrieved from the DB
 	$scope.showSearchResults = function() {
-		Search.getclosestroute().then(function(result){
+		RoutesService.getclosestroute().then(function(result){
 
 			//store a copy of the search results in the Search object
-			Search.setresults(result.data);
+			RoutesService.setresults(result.data);
 
 			//sift through the data to get the values we need
 			$scope.rmap.searchresults = [];
@@ -409,13 +395,13 @@ function(
 
 	//Route Suggestion button clicked - redirect to Suggestion page
 	$scope.routeSuggest = function() {
-		Search.setArrivalTime($scope.rmap.suggestTime);
+		RoutesService.setArrivalTime($scope.rmap.suggestTime);
 
 		//close the modal
 		$scope.rmap.resultsModal.hide();
 
 		//redirect to the Suggestions page
-		$state.go('tab.suggest', {
+		$state.go('tabs.suggest', {
             action: 'submit',
         });
 	};
@@ -580,4 +566,4 @@ function(
 		}//end $scope.map.events
 
     }); //end Google maps callback function
-}];
+};

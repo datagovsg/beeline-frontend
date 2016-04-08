@@ -1,23 +1,24 @@
 'use strict';
 
-export var SettingsController =[
+export default [
     '$scope',
-    'userService',
+    'UserService',
     '$state',
     '$ionicModal',
 function(
     $scope,
-    userService,
+    UserService,
     $state,
     $ionicModal
 ) {
-    $scope.userService = userService;
+    $scope.UserService = UserService;
+
 	$scope.login = {
 		status: false,
 		phoneNum: '',
 		msg: '',
 		btntxt: '',
-		truemsg: 'You are currently logged in as ', //apend user data
+		truemsg: 'You are currently logged in as ', //append user data
 		falsemsg: 'Log in to make and view your bookings',
 		truebtntxt: 'LOG OUT',
 		falsebtntxt: 'LOG IN',
@@ -32,11 +33,11 @@ function(
 
 	//set the Login button labels and message for Settings page
     $scope.$on('$ionicView.beforeEnter',()=>{
-		$scope.login.status = (userService.sessionToken == undefined) ? false : true;
+		$scope.login.status = (UserService.sessionToken == undefined) ? false : true;
 
 		if ($scope.login.status)
 		{
-			if ($state.current.name == "tab.settings") {
+			if ($state.current.name == "tabs.settings") {
 				var user = JSON.parse(localStorage['beelineUser']);
 				$scope.user = user;
 
@@ -51,17 +52,17 @@ function(
 				});
 			}
 			else {
-				$state.go("tab.settings");
+				$state.go("tabs.settings");
 			}
 		}
 		else //not logged in
 		{
-			if ($state.current.name == "tab.settings") {
+			if ($state.current.name == "tabs.settings") {
 				$scope.login.btntxt = $scope.login.falsebtntxt;
 				$scope.login.msg = $scope.login.falsemsg;
 			}
 			
-			if ($state.current.name == 'tab.settings-login') {
+			if ($state.current.name == 'tabs.settings-login') {
 				//Set up the FAQ modal
 				$ionicModal.fromTemplateUrl('login-faq.html', {
 					scope: $scope,
@@ -73,10 +74,10 @@ function(
 				document.getElementById('loginphone').focus();
 			}
 			
-			if ($state.current.name == 'tab.settings-login-verify') {
+			if ($state.current.name == 'tabs.settings-login-verify') {
 
 				//grab the phone number from the User Service
-				$scope.login.phoneNum = userService.mobileNo;
+				$scope.login.phoneNum = UserService.mobileNo;
 			
 				//autofocus on first text field
 				document.getElementById('c0').focus();
@@ -88,7 +89,7 @@ function(
 	$scope.logInOut = function () {
 		if ($scope.login.status == false)
 		{
-			$state.go("tab.settings-login");
+			$state.go("tabs.settings-login");
 		}
 		else //user logged in
 		{
@@ -125,12 +126,12 @@ function(
 	$scope.phoneNumSubmit = function() {
 		//Pass the phone number into the User Service.
 		//$scope will be wiped clean when we enter the next screen so can't store it there
-		userService.mobileNo = $scope.login.phoneNum;
+		UserService.mobileNo = $scope.login.phoneNum;
 
 		//fire and forget - send user to SMS code input page regardless of success or failure
-		$state.go('tab.settings-login-verify');
+		$state.go('tabs.settings-login-verify');
 
-		userService.sendTelephoneVerificationCode($scope.login.phoneNum).then(function(response){
+		UserService.sendTelephoneVerificationCode($scope.login.phoneNum).then(function(response){
 			//console.log('Login Step 2...');
 		}, function(error){
 			alert('SMS code send error. Please try again.');
@@ -138,7 +139,7 @@ function(
 	};
 
 	//Clear all digits and set focus to first field
-	$scope.focusCodeFields = function() {
+	$scope.focusCodeFields = function(e) {
 		//clear the code fields and focus on first one
 		document.getElementById('c0').value = '';
 		document.getElementById('c1').value = '';
@@ -188,16 +189,16 @@ function(
 
 	//Verification Code submit button
     $scope.verifyCodeSubmit = function(code) {
-        userService.verifyTelephone(code).then(function(response) {
+        UserService.verifyTelephone(code).then(function(response) {
 			$scope.login.overlayHide = true;
 
 			//response is either TRUE or FALSE
 			if (response) {
 				//redirect user back to settings or tickets page depending on where he/she came from
-				$state.go(userService.afterLoginGoWhere ?
-					 userService.afterLoginGoWhere
-					 : "tab.settings");
-				userService.afterLoginGoWhere = undefined;
+				$state.go(UserService.afterLoginGoWhere ?
+					 UserService.afterLoginGoWhere
+					 : "tabs.settings");
+				UserService.afterLoginGoWhere = undefined;
 			}
 			else
 				$scope.login.errmsg = 'Error! Pls check your code.';
@@ -212,7 +213,7 @@ function(
 
 	//Resend Verification Code
 	$scope.loginCodeResend = function() {
-		userService.sendTelephoneVerificationCode($scope.login.phoneNum).then(function(response){
+		UserService.sendTelephoneVerificationCode($scope.login.phoneNum).then(function(response){
 			alert('New code sent! Please check your phone in a while.');
 		}, function(error){
 			alert('SMS code send error. Please try again.');
@@ -224,7 +225,7 @@ function(
         window.localStorage.removeItem('sessionToken');
         window.localStorage.removeItem('beelineUser');
 
-        userService.sessionToken = undefined;
+        UserService.sessionToken = undefined;
 
         $scope.logoutModal.hide();
         
