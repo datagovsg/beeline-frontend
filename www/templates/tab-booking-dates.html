@@ -36,7 +36,7 @@
 		<price-calculator
       booking="currentBooking"></price-calculator>
 
-		<button id="btnreview" ng-disabled="BookingService.currentBooking.selectedDates.length == 0"
+		<button id="btnreview" ng-disabled="currentBooking.selectedDates.length == 0"
           ui-sref="tabs.booking-summary">
 			Review Booking
 		</button>

@@ -35,4 +35,6 @@ function(
       console.log("selected ticket is "+$scope.ticket.id);
     }
   });
+
+  $scope.logIn = () => UserService.logIn();
 }];
