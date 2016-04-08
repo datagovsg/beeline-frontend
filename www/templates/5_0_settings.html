@@ -4,12 +4,12 @@
 			<div class="msg">{{login.msg}}</div>
 			<button ng-click="logInOut()">{{login.btntxt}}</button>
 		</div>
-        <div ng-show="loggedIn">
+        <div ng-show="login.status">
             <div class="ion-list-header">ACCOUNT</div>
             <ion-list id="userinfo">
-                <ion-item>Name <span>{{login.name}}</span></ion-item>
-                <ion-item>Email <span>{{login.email}}</span></ion-item>
-                <ion-item>Phone No. <span>{{login.contact}}</span></ion-item>
+                <ion-item>Name <span>{{user.name}}</span></ion-item>
+                <ion-item>Email <span>{{user.email}}</span></ion-item>
+                <ion-item>Phone No. <span>{{user.telephone}}</span></ion-item>
                 <ion-item ng-click="showBookingHistory()">
 					Booking History
 					<i class="icon ion-ios-arrow-right"></i>
@@ -24,3 +24,18 @@
     		</ion-list>
   </ion-content>
 </ion-view>
+
+<script id="logout-modal.html" type="text/ng-template">
+    <div class="logout modal">
+      <ion-header-bar class="bar-modalhead">
+		<h1 class="title">Confirm Log Out</h1>
+		<a class="item-icon-right" ng-click="logoutModal.hide()">
+			<i class="icon ion-ios-close-outline"></i>
+		</a>
+	  </ion-header-bar>
+	  <ion-content has-bouncing="false">
+		<h4>Do you want to log out?</h4>
+		<button id="btnlogout" ng-click="logoutConfirm()">YES</button>
+	  </ion-content>
+    </div>
+</script>

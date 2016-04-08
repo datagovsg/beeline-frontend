@@ -1,3 +1,5 @@
+import querystring from 'querystring';
+
 export default function UserService($http) {
         return {
             user: {},
@@ -38,9 +40,29 @@ export default function UserService($http) {
                     })
                 })
                 .then((response) => {
-                    this.sessionToken = response.data.sessionToken;
-                    return true;
-                });
+					if (response.statusText = 'OK')
+					{
+						this.sessionToken = response.data.sessionToken;
+						localStorage.setItem('sessionToken', response.data.sessionToken);
+
+						var ud = response.data.user;
+						var userobj = {
+							name: ud.name,
+							email: ud.email,
+							telephone: ud.telephone
+						};
+
+						localStorage.setItem('beelineUser', JSON.stringify(userobj));
+						
+						return true;
+					}
+					else
+						return false;
+                }, (error) => {
+					alert('An error occurred while trying to log in');
+					
+					return false;
+				});
             },
 
             authenticate() {
@@ -49,4 +71,4 @@ export default function UserService($http) {
                 return Promise.resolve(this);
             }
         };
-    } 
+    }
