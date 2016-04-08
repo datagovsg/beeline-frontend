@@ -17,7 +17,6 @@ function transformRouteData(data){
 }
 
 export default function($http, SERVER_URL, UserService) {
-
   return {
     getRoute: function (routeId) {
       return $http.get(SERVER_URL + `/routes/${routeId}?include_trips=true`)

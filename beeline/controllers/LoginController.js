@@ -13,8 +13,6 @@ export default [
     $ionicPopup,
     $timeout
   ) {
-    $scope.UserService = UserService;
-
     $scope.login = {
       telephone: UserService.telephone || '',
       errorMessage: '',

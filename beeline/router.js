@@ -68,7 +68,7 @@ export default function($stateProvider, $urlRouterProvider) {
         template: '<ion-content>Whoa?</ion-content>',
         controller: ['$state', 'BookingService', function ($state, bookingService) {
             if (!bookingService.last) {
-                $state.go('tabs.booking-pickup');
+                $state.go('tabs.bookingPickup');
             }
             else {
                 $state.go(bookingService.last);

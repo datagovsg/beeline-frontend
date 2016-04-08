@@ -18,8 +18,11 @@ function(
   };
 
   //set the Login button labels and message for Settings page
-  $scope.$on('$ionicView.beforeEnter',()=>{
-    $scope.user = UserService.getCurrentUser();
+  $scope.$on('$ionicView.beforeEnter', () => {
+    UserService.getCurrentUser()
+    .then((user) => {
+      $scope.user = user;
+    })
   });
 
   //Log in / Log out button in settings page

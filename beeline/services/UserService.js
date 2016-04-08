@@ -2,53 +2,58 @@ import querystring from 'querystring'
 
 export default function UserService($http, $state) {
   var preLoginState;
+  var userPromise = Promise.resolve(null);
+
   var instance = {
-  user: null,
-  sessionToken: window.localStorage['sessionToken'] || null,
-  telephone: null,
+    user: null,
+    sessionToken: window.localStorage['sessionToken'] || null,
+    telephone: null,
 
-  beeline(options) {
-    options.url = 'http://staging.beeline.sg' + options.url;
-    if (this.sessionToken) {
-      options.headers = options.headers || {}
-      options.headers.authorization = 'Bearer ' + this.sessionToken;
-    }
-    return $http(options);
-  },
-
-  loadUserData() {
-    if (this.sessionToken) {
-    this.beeline({
-      method: 'GET',
-      url: '/user',
-    })
-    .then((response) => {
-      this.user = response.data;
-    })
-    }
-  },
-
-  sendTelephoneVerificationCode: function(no){
-    return this.beeline({
-    method: 'POST',
-    url: '/users/sendTelephoneVerification',
-    data: {
-      "telephone":no
+    beeline(options) {
+      options.url = 'http://staging.beeline.sg' + options.url;
+      if (this.sessionToken) {
+        options.headers = options.headers || {}
+        options.headers.authorization = 'Bearer ' + this.sessionToken;
+      }
+      return $http(options);
     },
-    headers: {
-      "Content-Type": 'application/json'
-    }
-    });
-  },
 
-  verifyTelephone: function(code){
-    return this.beeline({
-      method: 'GET',
-      url: '/users/verifyTelephone?' + querystring.stringify({
-        telephone: '+65' + this.telephone,
-        code: code,
+    loadUserData() {
+      if (this.sessionToken) {
+        userPromise = this.beeline({
+          method: 'GET',
+          url: '/user',
+        })
+        .then((response) => {
+          return this.user = response.data;
+        })
+      }
+      else {
+        userPromise = Promise.resolve(null);
+      }
+    },
+
+    sendTelephoneVerificationCode: function(no){
+      return this.beeline({
+        method: 'POST',
+        url: '/users/sendTelephoneVerification',
+        data: {
+          "telephone":no
+        },
+        headers: {
+          "Content-Type": 'application/json'
+        }
+      });
+    },
+
+    verifyTelephone: function(code){
+      return this.beeline({
+        method: 'GET',
+        url: '/users/verifyTelephone?' + querystring.stringify({
+          telephone: '+65' + this.telephone,
+          code: code,
+        })
       })
-    })
       .then((response) => {
         this.sessionToken = response.data.sessionToken;
         this.loadUserData();
@@ -58,7 +63,7 @@ export default function UserService($http, $state) {
 
     /** calls the /user endpoint to check if user is logged in */
     getCurrentUser() {
-      return this.user;
+      return userPromise;
     },
 
     /** Ensures that the session token is valid too **/
