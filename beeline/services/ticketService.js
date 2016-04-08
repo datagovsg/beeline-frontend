@@ -23,8 +23,6 @@ export function TicketService($http,$filter,userService) {
                         }
                     }).then((response) => {
                         tickets = response.data;
-                        console.log("get tickets")
-                        console.log(tickets);
                         return tickets;
                     });
 
@@ -40,10 +38,8 @@ export function TicketService($http,$filter,userService) {
             },
 
             splitTickets: function() {
-
                 todaydata = tickets.filter(ts=> ts.boardStop!== null && new Date(ts.boardStop.time).getTime() > today0000 && new Date(ts.boardStop.time).getTime() < today2400);
                 soondata = tickets.filter(ts=> ts.boardStop!== null && new Date(ts.boardStop.time).getTime() >= today2400);
-
             },
             todayTickets: function() {
                 return todaydata;
@@ -68,18 +64,13 @@ export function TicketService($http,$filter,userService) {
             },
 
             setSelectedTicket: function(ticketId) {
-              console.log("setselectedticket");
-              console.log(ticketId);
-             for (var i = 0; i < tickets.length; i++) {
-                if (tickets[i].id === ticketId) {
-                  selectedticket = tickets[i];
-
-                }
-              }
-              console.log("-------------------");
-              console.log("setselectedticket");
-              console.log(selectedticket);
+				for (var i = 0; i < tickets.length; i++) {
+					if (tickets[i].id === ticketId) {
+						selectedticket = tickets[i];
+					}
+				}
             },
+
             getSelectedTicket: function() {
                 //need to handle if null
                 return selectedticket;
@@ -133,7 +124,13 @@ export function UserService($http) {
 						localStorage.setItem('sessionToken', response.data.sessionToken);
 
 						var ud = response.data.user;
-						localStorage.setItem('beelineUser', '{"name": "'+ud.name+'", "email": "'+ud.email+'", "telephone": "'+ud.telephone+'"}');
+						var userobj = {
+							name: ud.name,
+							email: ud.email,
+							telephone: ud.telephone
+						};
+
+						localStorage.setItem('beelineUser', JSON.stringify(userobj));
 						
 						return true;
 					}
@@ -156,13 +153,15 @@ export function UserService($http) {
 
 export function TripService($http) {
         var trip;
+        var pings;
+        
         return {
             Trip: function(id){
                 return $http.get("http://staging.beeline.sg/trips/"+id, {
                     headers: {
                     "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MSwiaWF0IjoxNDU2Mzk2MTU4fQ.eCgMcdrhZAWfWcQ3hhcYts9oyQetZ4prGGf4t5xEAwU'
                     }
-            }).then(function(response){
+				}).then(function(response){
                     trip = response.data;
                 });
             },
@@ -171,18 +170,30 @@ export function TripService($http) {
                 return trip;
             },
 
+			DriverPings: function(id) {
+				return $http.get("http://staging.beeline.sg/trips/"+id+"/latest_info", {
+                    headers: {}
+				}).then(function(response){
+                    pings = response.data;
+                });
+			},
+
+			getDriverPings: function() {
+				return pings;
+			}
         };
     }
 
 export function CompanyService($http) {
         var company;
+
         return {
             Company: function(id){
                 return $http.get("http://staging.beeline.sg/companies/"+id, {
                     headers: {
                     "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MSwiaWF0IjoxNDU2Mzk2MTU4fQ.eCgMcdrhZAWfWcQ3hhcYts9oyQetZ4prGGf4t5xEAwU'
                     }
-            }).then(function(response){
+				}).then(function(response){
                     company = response.data;
                 });
             },
@@ -190,6 +201,5 @@ export function CompanyService($http) {
             getcompany: function(){
                 return company;
             },
-
         };
     }

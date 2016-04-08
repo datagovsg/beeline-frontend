@@ -14,7 +14,7 @@
 					<span class="txt">{{login.errmsg}}</span>
 				</div>
 
-				<div class="cover" ng-click="focusCodeFields()"></div>
+				<div class="cover" ng-click="focusCodeFields($event)"></div>
 				<input id="c0" class="digit" type="input" maxlength="1" ng-model="login.code[0]" ng-keyup="checkCodeFilled(0, 5)" />
 				<input id="c1" class="digit" type="input" maxlength="1" ng-model="login.code[1]" ng-keyup="checkCodeFilled(1, 5)" />
 				<input id="c2" class="digit" type="input" maxlength="1" ng-model="login.code[2]" ng-keyup="checkCodeFilled(2, 5)" />

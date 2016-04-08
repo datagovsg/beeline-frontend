@@ -1543,40 +1543,51 @@ ion-list {
 }
 
 #pg_tickets {
-	.scroll, section.login {
+	.scroll {
 		height: 100%;
-	}
-
-	.loginpls {
-		height: 170px;
-		text-align: center;
-		position: relative;
-		top: 50%;
-		margin: -85px 10px 10px 10px;
-		padding: 20px 0px;
 		background-color: #FFF;
-		border-radius: 20px;
-		box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
-
-		.icon {
-			font-size: 40px;
-			display: inline-block;
-		}
-
-		.txt {
-			font-size: 16px;
-			margin: 10px 0px 20px 5px;
-			display: inline-block;
-			text-align:left;
-		}
 	}
 
-	#btnloginpls {
-		display: block;
-		position: relative;
+	.intro {
+		height: 100%;
 		text-align: center;
-		text-decoration: none;
-		bottom: initial;
+		display: flex;
+		flex-direction: column;
+
+		.gap {
+			flex-grow: 1;
+		}
+
+		.msg {
+			padding-top: 135px;
+			background: url('../img/bg_tickets.png') no-repeat center top;
+			flex-grow: 0;
+
+			.title {
+				font-size: 14px;
+				font-weight: bold;
+				color: $stable;
+				margin-bottom: 20px;
+			}
+		
+			.txt {
+				width: 200px;
+				margin: 0px auto;
+			}
+		}
+
+		#btnloginpls {
+			display: block;
+			position: relative;
+			text-align: center;
+			text-decoration: none;
+			bottom: initial;
+			margin-top: 30px;
+		}
+	
+		#btnloginpls:active {
+			margin-top: 33px;
+		}
 	}
 
 	ion-list ion-item.item {
@@ -1722,11 +1733,19 @@ ion-list {
 					/*padding-bottom: 34%;*/
 					padding-bottom: 30.7%;
 					position: relative;
-					background-color: #000;
 
-					.code {
+					#qrcodebg {
+						width: 100%;
+						height: 100%;
 						position: absolute;
-						color: #FFF;
+						color: #000;
+
+						canvas, img {
+							width: 100%;
+							position: absolute;
+							top: 0;
+							left: 0;
+						}
 					}
 				}
 
@@ -1755,7 +1774,9 @@ ion-list {
 					border-radius: 10px;
 					box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 					padding: 5px 5px 5px 130px;
-					background: url('../img/logo-aedge.jpg') left 5px center no-repeat #F5F5F5;
+					background-repeat: no-repeat;
+					background-position: left 5px center;
+					background-color: #F5F5F5;
 					background-size: auto 30px;
 
 					.cname {
