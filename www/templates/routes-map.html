@@ -2,35 +2,35 @@
   <ion-content class="has-footer" has-bouncing="false">
 
 		<div class="locinputs">
-			<label class="item item-input ng-hide ng-cloak pickup fade" ng-hide="rmap.pickuphide">
+			<label class="item item-input ng-hide ng-cloak pickup fade" ng-hide="data.pickuphide">
 				<input id="pickupinput" 
 							 type="search" 
 							 placeholder="Enter your pick-up location" 
-							 ng-model="rmap.pickupvalue" 
+							 ng-model="data.pickupText" 
 							 ng-change="pickupTxtChange()" 
 							 ng-focus="inputFocus($event)" />
-				<a class="item item-icon-right" href="#" on-tap="clearField('pickupinput')">
-					<i id="pclear" class="icon ng-hide ion-ios-close-outline" ng-hide="rmap.pclearhide"></i>
+				<a class="item item-icon-right" href="#" on-tap="clearPickup()">
+					<i id="pclear" class="icon ng-hide ion-ios-close-outline" ng-hide="data.pclearhide"></i>
 				</a>
 			</label>
 
-			<label class="item item-input ng-hide ng-cloak dropoff" ng-hide="rmap.dropoffhide">
+			<label class="item item-input ng-hide ng-cloak dropoff" ng-hide="data.dropoffhide">
 				<input id="dropoffinput" 
 							 type="search" 
 							 placeholder="Enter your drop-off location" 
-							 ng-model="rmap.dropoffvalue" 
+							 ng-model="data.dropoffText" 
 							 ng-change="dropoffTxtChange()" 
 							 ng-focus="inputFocus($event)" />
-				<a class="item item-icon-right" href="#" on-tap="clearField('dropoffinput')">
-					<i id="dclear" class="icon ng-hide ion-ios-close-outline" ng-hide="rmap.dclearhide"></i>
+				<a class="item item-icon-right" href="#" on-tap="clearDropoff()">
+					<i id="dclear" class="icon ng-hide ion-ios-close-outline" ng-hide="data.dclearhide"></i>
 				</a>
 			</label>
 		</div>
 
-		<div class="centmark" class="ng-hide" ng-hide="rmap.centmarkhide"></div>
+		<div class="centmark" class="ng-hide" ng-hide="data.centmarkhide"></div>
 		
-		<div class="locateme" class="ng-hide" ng-hide="rmap.locatemehide" ng-click="getUserLocation()"></div>
-		<button class="btnnext" class="ng-hide" ng-hide="rmap.btnnexthide" ng-click="nextBtnClick()" ng-disabled="nextNotAllowed()">{{rmap.btnnexttxt}}</button>
+		<div class="locateme" class="ng-hide" ng-hide="data.locatemehide" ng-click="getUserLocation()"></div>
+		<button class="btnnext" class="ng-hide" ng-hide="data.btnnexthide" ng-click="nextBtnClick()" ng-disabled="nextNotAllowed()">{{data.btnnexttxt}}</button>
 
     <ui-gmap-google-map center="map.center" 
     										pan="true" 
@@ -39,7 +39,7 @@
     										events="map.events" 
     										bounds="map.bounds" 
     										dragging="map.dragging" 
-    										control="map.mapControl" 
+    										control="map.control" 
     										data-tap-disabled="true">
 			<ui-gmap-markers models="map.markers" coords="'self'" icon="'icon'" options="'options'">
 			</ui-gmap-markers>
