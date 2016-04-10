@@ -2,35 +2,35 @@
   <ion-content class="has-footer" has-bouncing="false">
 
 		<div class="locinputs">
-			<label class="item item-input ng-hide ng-cloak pickup fade" ng-hide="data.pickuphide">
+			<label class="item item-input pickup fade">
 				<input id="pickupinput" 
 							 type="search" 
 							 placeholder="Enter your pick-up location" 
 							 ng-model="data.pickupText" 
 							 ng-change="pickupTxtChange()" 
-							 ng-focus="inputFocus($event)" />
+							 ng-focus="pickupFocus()" />
 				<a class="item item-icon-right" href="#" on-tap="clearPickup()">
-					<i id="pclear" class="icon ng-hide ion-ios-close-outline" ng-hide="data.pclearhide"></i>
+					<i id="pclear" class="icon ion-ios-close-outline"></i>
 				</a>
 			</label>
 
-			<label class="item item-input ng-hide ng-cloak dropoff" ng-hide="data.dropoffhide">
+			<label class="item item-input dropoff">
 				<input id="dropoffinput" 
 							 type="search" 
 							 placeholder="Enter your drop-off location" 
 							 ng-model="data.dropoffText" 
 							 ng-change="dropoffTxtChange()" 
-							 ng-focus="inputFocus($event)" />
+							 ng-focus="dropoffFocus" />
 				<a class="item item-icon-right" href="#" on-tap="clearDropoff()">
-					<i id="dclear" class="icon ng-hide ion-ios-close-outline" ng-hide="data.dclearhide"></i>
+					<i id="dclear" class="icon ion-ios-close-outline"></i>
 				</a>
 			</label>
 		</div>
 
-		<div class="centmark" class="ng-hide" ng-hide="data.centmarkhide"></div>
+		<div class="centmark"></div>
 		
-		<div class="locateme" class="ng-hide" ng-hide="data.locatemehide" ng-click="getUserLocation()"></div>
-		<button class="btnnext" class="ng-hide" ng-hide="data.btnnexthide" ng-click="nextBtnClick()" ng-disabled="nextNotAllowed()">{{data.btnnexttxt}}</button>
+		<div class="locateme" ng-click="getUserLocation()"></div>
+		<button class="btnnext" ng-click="nextBtnClick()" ng-disabled="nextNotAllowed()">{{data.btnnexttxt}}</button>
 
     <ui-gmap-google-map center="map.center" 
     										pan="true" 
@@ -41,9 +41,14 @@
     										dragging="map.dragging" 
     										control="map.control" 
     										data-tap-disabled="true">
-			<ui-gmap-markers models="map.markers" coords="'self'" icon="'icon'" options="'options'">
+			<ui-gmap-markers models="map.markers" 
+                       coords="'self'" 
+                       icon="'icon'" 
+                       options="'options'">
 			</ui-gmap-markers>
-			<ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" icons="p.icons">
+			<ui-gmap-polyline ng-repeat="p in map.lines" 
+                        path="p.path" 
+                        icons="p.icons">
 			</ui-gmap-polyline>
     </ui-gmap-google-map>
 
