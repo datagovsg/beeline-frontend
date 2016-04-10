@@ -101,10 +101,22 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 				gmap.setZoom(17);
 			});
 
+			// Set panning to update the input text
+			var geocoder = new googleMaps.Geocoder();
+			$scope.map.events.dragend = function(map, eventName, args) {
+				if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
+					geocoder.geocode({latLng: gmap.getCenter()}, function(results, status) {
+	          if (status === 'OK') {
+	          	var locationText = results[0].formatted_address;
+	          	if (!$scope.data.pickupCoordinates) { $scope.data.pickupText = locationText; } 
+	          	else if (!$scope.data.dropoffCoordinates) { $scope.data.dropoffText = locationText; }
+	          }
+	        });
+				}
+			};
 
 			// Configure the UI in accordance with the users set/unset coordinates
-			$scope.$watchGroup(['data.pickupCoordinates', 
-													'data.dropoffCoordinates'], function() {
+			$scope.$watchGroup(['data.pickupCoordinates', 'data.dropoffCoordinates'], function() {
 
 	      // Configure the next button text according to what has been set
 	      if (!$scope.data.pickupCoordinates) {
@@ -161,10 +173,6 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 		        }
 		      });
 	      }
-
-
-
-
 
 			});
 
