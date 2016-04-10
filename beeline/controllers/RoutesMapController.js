@@ -94,7 +94,7 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 
 			// Set panning to update the input text
 			var geocoder = new googleMaps.Geocoder();
-			$scope.map.events.dragend = $scope.map.events.zoom_changed = function(map, eventName, args) {
+			$scope.map.events.dragend = function(map, eventName, args) {
 				if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
 					geocoder.geocode({latLng: gmap.getCenter()}, function(results, status) {
 	          if (status === 'OK') {
