@@ -44,25 +44,9 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 
 	//HTML Elements above the Gmap are hidden at start
 	$scope.data = {
-		focus: 'pickupinput', //id of the input field
-		pickuphide : true,
-		dropoffhide: true,
-		centmarkhide : true,
-		locatemehide : true,
-		btnnexthide : true,
-		pickupText: '', //used by ng-model to display/store the txt value
-		dropoffText: '',
-		platlng: [],
-		dlatlng: [],
-		pclearhide : true,
-		dclearhide : true,
-		lockIdleEvent: true, //prevents the IDLE listener from firing the moment the map loads
-		btnnexttxt : 'NEXT',
-		readyToSubmit : false, //used to indicate when user is on final search 'screen',
-		resultsModal: '', //placeholder for search results modal
-		searchresults: [], //placeholders for search results
-		searchkickstart: [],
-		suggestTime: ''
+		centerMarkIsVisible: true,
+		locateMeIsVisible: true,
+		nextButtonIsVisible: true
 	};
 
 	uiGmapGoogleMapApi.then(function(googleMaps) {
@@ -72,22 +56,29 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 			// Set up the text inputs
 			var pickupInputElement = document.getElementById('pickupinput');
 			var dropoffInputElement = document.getElementById('dropoffinput');
-			// Triggers for focus. Empty placeholder functions for now
-			$scope.pickupFocus = function() {};
-			$scope.dropoffFocus = function() {};
+			// Triggers for focus and hide unecessary UI elements
+			$scope.pickupFocus = $scope.dropoffFocus = function() {
+				$scope.data.centerMarkIsVisible = false;
+				$scope.data.locateMeIsVisible = false;
+				$scope.data.nextButtonIsVisible = false;
+			};
+			$scope.pickupBlur = $scope.dropoffBlur = function() {
+				$scope.data.centerMarkIsVisible = true;
+				$scope.data.locateMeIsVisible = true;
+				$scope.data.nextButtonIsVisible = true;
+			};
+			
 			// If the text is changed clear the coordinates since they wont be valid anymore
 			$scope.pickupTxtChange = function() { delete $scope.data.pickupCoordinates; };
-			$scope.dropoffTxtChange = function() { delete $scope.data.pickupCoordinatesl; };
+			$scope.dropoffTxtChange = function() { delete $scope.data.dropoffCoordinates; };
 			// Buttons clear the current text, coordinates, and set the focus
 			$scope.clearPickup = function() {
 				$scope.data.pickupText = '';
 				delete $scope.data.pickupCoordinates;
-				pickupInputElement.focus();
 			};
 			$scope.clearDropoff = function() {
 				$scope.data.dropoffText = '';
-				delete $scope.data.pickupCoordinates;
-				dropoffInputElement.focus();
+				delete $scope.data.dropoffCoordinates;
 			};
 			// Attach Autocomplete Service to the input fields
 			var pickupAutocompleter = new googleMaps.places.Autocomplete(pickupInputElement);
@@ -115,27 +106,37 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 				}
 			};
 
+			// Configure the set my user location button
+			$scope.getUserLocation = function() {
+		    $cordovaGeolocation
+		    .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
+		    .then(function(userPosition){
+		      gmap.panTo(new google.maps.LatLng(userPosition.coords.latitude, userPosition.coords.longitude));
+	        gmap.setZoom(17);
+		    });
+		  };
+
 			// Configure the UI in accordance with the users set/unset coordinates
 			$scope.$watchGroup(['data.pickupCoordinates', 'data.dropoffCoordinates'], function() {
 
 	      // Configure the next button text according to what has been set
 	      if (!$scope.data.pickupCoordinates) {
-	      	$scope.data.btnnexttxt = "Set Pickup";
-	      	$scope.nextBtnClick	= function() {
+	      	$scope.data.nextActionName = "Set Pickup";
+	      	$scope.nextAction	= function() {
 						$scope.data.pickupCoordinates = gmap.getCenter().toJSON();
 	      	};
 	      } 
 	      else if ($scope.data.pickupCoordinates && 
 	               !$scope.data.dropoffCoordinates) {
-	      	$scope.data.btnnexttxt = "Set Dropoff";
-	      	$scope.nextBtnClick	= function() {
+	      	$scope.data.nextActionName = "Set Dropoff";
+	      	$scope.nextAction	= function() {
 						$scope.data.dropoffCoordinates = gmap.getCenter().toJSON();
 	      	};
 	      } 
 	      else if ($scope.data.pickupCoordinates && 
 	               $scope.data.dropoffCoordinates) {
-	      	$scope.data.btnnexttxt = "Search For Routes";
-	      	$scope.nextBtnClick	= function() {
+	      	$scope.data.nextActionName = "Search For Routes";
+	      	$scope.nextAction	= function() {
 		      	console.log("both set and ready for liftoff");
 		      	// TODO actually do something here
 	      	};
@@ -181,6 +182,27 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 	          { latitude: $scope.data.dropoffCoordinates.lat,
               longitude: $scope.data.dropoffCoordinates.lng }
 					];
+	      }
+
+	      // Pan & Zoom to the appropriate level
+	      if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
+	      	gmap.panTo({ lat: 1.370244, lng: 103.823315 });
+					gmap.setZoom(11);
+	      } 
+	      else if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
+	        var bounds = new googleMaps.LatLngBounds();
+	        bounds.extend(new google.maps.LatLng($scope.data.pickupCoordinates.lat, 
+	        																		 $scope.data.pickupCoordinates.lng));
+	        bounds.extend(new google.maps.LatLng($scope.data.dropoffCoordinates.lat, 
+	        																		 $scope.data.dropoffCoordinates.lng));
+        	gmap.fitBounds(bounds);
+	      }
+
+	      // Hide the center mark if both are set
+	      if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
+			    $scope.data.centerMarkIsVisible = false;
+	      } else {
+	      	$scope.data.centerMarkIsVisible = true;
 	      }
 
 			});

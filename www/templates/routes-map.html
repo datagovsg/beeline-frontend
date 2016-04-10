@@ -8,7 +8,8 @@
 							 placeholder="Enter your pick-up location" 
 							 ng-model="data.pickupText" 
 							 ng-change="pickupTxtChange()" 
-							 ng-focus="pickupFocus()" />
+							 ng-focus="pickupFocus()"
+               ng-blur="pickupBlur()" />
 				<a class="item item-icon-right" href="#" on-tap="clearPickup()">
 					<i id="pclear" class="icon ion-ios-close-outline"></i>
 				</a>
@@ -20,17 +21,21 @@
 							 placeholder="Enter your drop-off location" 
 							 ng-model="data.dropoffText" 
 							 ng-change="dropoffTxtChange()" 
-							 ng-focus="dropoffFocus" />
+							 ng-focus="dropoffFocus()"
+               ng-blur="dropoffBlur()"  />
 				<a class="item item-icon-right" href="#" on-tap="clearDropoff()">
 					<i id="dclear" class="icon ion-ios-close-outline"></i>
 				</a>
 			</label>
 		</div>
 
-		<div class="centmark"></div>
+		<div class="centmark" ng-show="data.centerMarkIsVisible"></div>
 		
-		<div class="locateme" ng-click="getUserLocation()"></div>
-		<button class="btnnext" ng-click="nextBtnClick()" ng-disabled="nextNotAllowed()">{{data.btnnexttxt}}</button>
+		<div class="locateme" ng-click="getUserLocation()"
+                          ng-show="data.locateMeIsVisible"></div>
+
+		<button class="btnnext" ng-click="nextAction()" 
+                            ng-show="data.nextButtonIsVisible"">{{ data.nextActionName }}</button>
 
     <ui-gmap-google-map center="map.center" 
     										pan="true" 
@@ -46,9 +51,9 @@
                        icon="'icon'" 
                        options="'options'">
 			</ui-gmap-markers>
-			<ui-gmap-polyline ng-repeat="p in map.lines" 
-                        path="p.path" 
-                        icons="p.icons">
+			<ui-gmap-polyline ng-repeat="line in map.lines" 
+                        path="line.path" 
+                        icons="line.icons">
 			</ui-gmap-polyline>
     </ui-gmap-google-map>
 
