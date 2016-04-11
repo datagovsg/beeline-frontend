@@ -13,13 +13,7 @@ export default function($stateProvider, $urlRouterProvider) {
   .state('intro', {
     url: '/intro',
     templateUrl: 'templates/intro.html',
-    controller: function ($scope) {
-        $scope.options = {
-          loop: false,
-          effect: 'slide',
-          speed: 500,
-        }
-    }
+    controller: 'IntroSlidesController'
   })
 
   //////////////////////////////////////////////////////////////////////////////

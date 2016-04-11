@@ -1,3 +1,4 @@
+import querystring from 'querystring';
 export default function UserService($http) {
         return {
             user: {},
@@ -30,7 +31,6 @@ export default function UserService($http) {
             },
 
             verifyTelephone: function(code){
-                var querystring = require('querystring');
                 return this.beeline({
                     method: 'GET',
                     url: '/users/verifyTelephone?' + querystring.stringify({

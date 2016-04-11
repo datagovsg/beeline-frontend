@@ -23,6 +23,7 @@ import SuggestController from './controllers/SuggestController.js';
 import TicketsController from './controllers/TicketsController.js';
 import TicketDetailController from './controllers/TicketDetailController.js';
 import SettingsController from './controllers/SettingsController.js';
+import IntroSlidesController from './controllers/IntroSlidesController.js';
 // Directive Imports
 import RevGeocode from './directives/revGeocode/revGeocode';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
@@ -42,7 +43,7 @@ import AngularGoogleMap from 'angular-google-maps';
 // FIXME: set this in StripeService;
 try {
   Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
-} 
+}
 catch (error) {}
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +88,7 @@ var app = angular.module('beeline', [
 .controller('TicketDetailController', TicketDetailController)
 .controller('RoutesMapController', RoutesMapController)
 .controller('RoutesListController', RoutesListController)
+.controller('IntroSlidesController', IntroSlidesController)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)
