@@ -72,6 +72,9 @@ bus-stop-selector {
       text-align: center;
       position: static;
     }
+    a.item-icon-right {
+      height: 43px;
+    }
 
     ui-gmap-google-map {
       flex: 1 1 auto;
