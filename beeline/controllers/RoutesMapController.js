@@ -195,6 +195,8 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
             // TODO replace with a state change to a results view
             ////////////////////////////////////////////////////////////////////
             //place the start and end locations' latlng into the Search object
+            console.log($scope.data.pickupCoordinates);
+            console.log($scope.data.dropoffCoordinates);
             RoutesService.addReqData($scope.data.pickupText,
                                      $scope.data.dropoffText,
                                      $scope.data.pickupCoordinates.lat,

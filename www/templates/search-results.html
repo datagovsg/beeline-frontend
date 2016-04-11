@@ -1,0 +1,117 @@
+<ion-view view-title="Search Results">
+  <ion-content>
+    <section ng-if="data.searchresults.length > 0">
+      <div class="msg">
+        We found <b>{{data.searchresults.length}} route(s)</b> suitable for you, with the nearest pick-up and drop-off stops indicated below.
+      </div>
+      <div class="ion-list-header">Available Routes</div>
+      <ion-list id="srcactive">
+        <ion-item ng-repeat="item in data.searchresults" ng-click="showRouteDetails(item)">
+          <div class="routeinfo">
+            <div class="numtime">
+              <div class="busnum">{{item.busnum}}</div>
+              <span class="active">{{item.active}}</span>
+              <a class="item-icon-right" href="#">
+                <i class="icon ion-ios-arrow-right"></i>
+              </a>
+            </div>
+            <div class=" stops">
+              <div class="line"></div>
+              <div class="start">
+                <div class="time">{{item.stime}}</div>
+                <div class="loc">
+                  <div class="txt">Pick up at</div>
+                  <div class="stop">{{item.sstop}} ({{item.sident}})</div>
+                  <div class="road"><i class="ion-arrow-right-b"></i> {{item.sroad}}</div>
+                  <div class="walk"><i class="ion-android-walk"></i> {{item.swalk}}</div>
+                </div>
+              </div>
+              <div class="end">
+                <div class="time">{{item.etime}}</div>
+                <div class="loc">
+                  <div class="txt">Drop off at</div>
+                  <div class="stop">{{item.estop}} ({{item.eident}})</div>
+                  <div class="road"><i class="ion-arrow-right-b"></i> {{item.eroad}}</div>
+                  <div class="walk"><i class="ion-android-walk"></i> {{item.ewalk}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+    </section> <!-- available routes -->
+
+    <section ng-if="data.searchkickstart.length > 0">
+      <div class="ion-list-header">Routes pending activation</div>
+      <ion-list id="srckickstart">
+        <ion-item ng-repeat="item in data.searchkickstart">
+          <div class="route">
+            <div class="line"></div>
+            <div class="start">
+              <span class="time">{{item.stime}}</span>
+              <span class="road">{{item.sroad}}</span>
+            </div>
+            <div class="end">
+              <span class="time">{{item.etime}}</span>
+              <span class="road">{{item.eroad}}</span>
+            </div>
+            <div class="info">
+              <div class="dleft">{{item.dleft}}d left</div>
+              <div class="sdate">Starts {{item.sdate}}</div>
+            </div>
+          </div>
+          <div class="pledge">
+            <label>0%</label>
+            <span class="fillbar">
+              <div class="full" style="width:{{item.pcurr}}"></div>
+              <div class="empty"></div>
+            </span>
+            <label>100%</label>
+          </div>
+          <div class="commit">
+            <div class="txt">{{item.pneed}} more pax to activate at ${{item.price}}</div>
+            <button class="button button-stable">Commit Now</button>
+          </div>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <section ng-if="data.searchresults.length == 0">
+      <div class="noroutes msg">
+        <h4>Sorry! There are no suitable routes corresponding to your Start and End locations.</h4>
+        <p>However, You can choose to indicate your interest in the route you have specified.</p>
+        <p>Please select your preferred time for arrival in the drop-down below and we will notify you as soon as this route is activated.</p>
+      </div>
+      <div class="route">
+        <div class="line"></div>
+        <div class="start">
+          <span class="name">{{data.pickupvalue}}</span>
+        </div>
+        <div class="end">
+          <span class="name">{{data.dropoffvalue}}</span>
+        </div>
+      </div>
+      <div class="arrtime">
+        <i class="icon ion-clock"></i>
+        <select ng-model="data.suggestTime">
+          <option value="">Time at destination</option>
+          <option value="00:00">00:00 - 02:00</option>
+          <option value="02:00">02:00 - 04:00</option>
+          <option value="04:00">04:00 - 06:00</option>
+          <option value="06:00">06:00 - 08:00</option>
+          <option value="08:00">08:00 - 10:00</option>
+          <option value="10:00">10:00 - 12:00</option>
+          <option value="12:00">12:00 - 14:00</option>
+          <option value="14:00">14:00 - 16:00</option>
+          <option value="16:00">16:00 - 18:00</option>
+          <option value="18:00">18:00 - 20:00</option>
+          <option value="20:00">20:00 - 22:00</option>
+        </select>
+      </div>
+      <button id="btnsugg" ng-click="routeSuggest()" ng-disabled="data.suggestTime == ''">
+        Submit Route Suggestion
+      </button>
+    </section>
+
+  </ion-content>
+</ion-view>
