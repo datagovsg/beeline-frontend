@@ -51,12 +51,12 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 
 	uiGmapGoogleMapApi.then(function(googleMaps) {
 		$scope.$watch('map.control.getGMap', function(){
-			var gmap = $scope.map.control.getGMap();
 
-			// Set up the text inputs
+			var gmap = $scope.map.control.getGMap();
 			var pickupInputElement = document.getElementById('pickupinput');
 			var dropoffInputElement = document.getElementById('dropoffinput');
-			// Triggers for focus and hide unecessary UI elements
+
+			// Hide uneccessary UI elements when typing in the text inputs
 			$scope.pickupFocus = $scope.dropoffFocus = function() {
 				$scope.data.centerMarkIsVisible = false;
 				$scope.data.locateMeIsVisible = false;
@@ -71,6 +71,7 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 			// If the text is changed clear the coordinates since they wont be valid anymore
 			$scope.pickupTxtChange = function() { delete $scope.data.pickupCoordinates; };
 			$scope.dropoffTxtChange = function() { delete $scope.data.dropoffCoordinates; };
+
 			// Buttons clear the current text, coordinates, and set the focus
 			$scope.clearPickup = function() {
 				$scope.data.pickupText = '';
@@ -80,6 +81,7 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 				$scope.data.dropoffText = '';
 				delete $scope.data.dropoffCoordinates;
 			};
+
 			// Attach Autocomplete Service to the input fields
 			var pickupAutocompleter = new googleMaps.places.Autocomplete(pickupInputElement);
 			var dropoffAutocompleter = new googleMaps.places.Autocomplete(dropoffInputElement);
@@ -137,8 +139,20 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 	               $scope.data.dropoffCoordinates) {
 	      	$scope.data.nextActionName = "Search For Routes";
 	      	$scope.nextAction	= function() {
-		      	console.log("both set and ready for liftoff");
-		      	// TODO actually do something here
+
+		      	////////////////////////////////////////////////////////////////////
+		      	// Show the search results
+		      	// TODO replace with a state change to a results view
+		      	////////////////////////////////////////////////////////////////////
+					  $scope.data.resultsModal = $ionicModal.fromTemplate(require('./searchResults.html'), {
+					    scope: $scope,
+					    animation: 'slide-in-up'
+					  });
+
+		      	////////////////////////////////////////////////////////////////////
+		      	// TODO replace with a state change to a results view
+		      	////////////////////////////////////////////////////////////////////
+
 	      	};
 	      }
 
@@ -174,6 +188,8 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 		        }
 		      });
 	      }
+
+	      // Draw the line between them if both are set
 	      $scope.map.lines[0].path = [];
 	      if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
 	      	$scope.map.lines[0].path = [
@@ -184,11 +200,20 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 					];
 	      }
 
-	      // Pan & Zoom to the appropriate level
+	      // Hide the center mark if both are set
+	      if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
+			    $scope.data.centerMarkIsVisible = false;
+	      } else {
+	      	$scope.data.centerMarkIsVisible = true;
+	      }
+
+	      // Zoom back out to the Singapore level if a single point is chosen
 	      if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
 	      	gmap.panTo({ lat: 1.370244, lng: 103.823315 });
 					gmap.setZoom(11);
 	      } 
+
+	      // If both pickup and dropoff are chosen then frame around them
 	      else if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
 	        var bounds = new googleMaps.LatLngBounds();
 	        bounds.extend(new google.maps.LatLng($scope.data.pickupCoordinates.lat, 
@@ -196,13 +221,6 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 	        bounds.extend(new google.maps.LatLng($scope.data.dropoffCoordinates.lat, 
 	        																		 $scope.data.dropoffCoordinates.lng));
         	gmap.fitBounds(bounds);
-	      }
-
-	      // Hide the center mark if both are set
-	      if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
-			    $scope.data.centerMarkIsVisible = false;
-	      } else {
-	      	$scope.data.centerMarkIsVisible = true;
 	      }
 
 			});
