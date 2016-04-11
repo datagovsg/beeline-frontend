@@ -1,5 +1,5 @@
 <ion-view id="pg_tickets" view-title="Tickets">
-  <ion-content>
+  <ion-content has-bouncing="false">
     <section class="login" ng-if="!user">
       <div class="loginpls">
         <i class="icon ion-android-alert"></i>
@@ -9,19 +9,23 @@
                   ng-click="logIn()">Log In to Account</a>
       </div>
     </section>
-    <section ng-if="todaydata.length > 0">
+    <section ng-if="tickets.today.length > 0">
       <div class="ion-list-header">Today's Trips</div>
       <ion-list id="ticktoday">
-        <ion-item class="item-icon-right" ng-repeat="item in todaydata" ng-click="setselectedticket(item.id)" href="#/tab/tickets/{{item.id}}">
+        <ion-item class="item-icon-right"
+            ng-repeat="item in tickets.today"
+            href="#/tabs/tickets/{{item.id}}">
           <span class="date">{{item.boardStop.time | date:'d MMM y'}}</span>{{item.boardStop.time | date:'h:mm a'}}
           <i class="icon ion-chevron-right icon-accessory"></i>
         </ion-item>
       </ion-list>
     </section>
-    <section ng-if="soondata.length > 0">
+    <section ng-if="tickets.soon.length > 0">
       <div class="ion-list-header">Upcoming Trips</div>
       <ion-list id="ticksoon">
-        <ion-item class="item-icon-right" ng-repeat="item in soondata" ng-click="setselectedticket(item.id)" href="#/tab/tickets/{{item.id}}">
+        <ion-item class="item-icon-right"
+        ng-repeat="item in tickets.soon"
+        href="#/tabs/tickets/{{item.id}}">
           <span class="date">{{item.boardStop.time | date:'d MMM y'}}</span>{{item.boardStop.time | date:'h:mm a'}}
           <i class="icon ion-chevron-right icon-accessory"></i>
         </ion-item>

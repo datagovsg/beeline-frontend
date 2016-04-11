@@ -21,8 +21,6 @@ export default function TicketService($http,$filter,UserService) {
                     url: '/tickets',
                   }).then((response) => {
                     tickets = response.data;
-                    console.log("get tickets")
-                    console.log(tickets);
                     return tickets;
                   });
             },
@@ -37,10 +35,8 @@ export default function TicketService($http,$filter,UserService) {
             },
 
             splitTickets: function() {
-
                 todaydata = tickets.filter(ts=> ts.boardStop!== null && new Date(ts.boardStop.time).getTime() > today0000 && new Date(ts.boardStop.time).getTime() < today2400);
                 soondata = tickets.filter(ts=> ts.boardStop!== null && new Date(ts.boardStop.time).getTime() >= today2400);
-
             },
             todayTickets: function() {
                 return todaydata;
@@ -65,18 +61,13 @@ export default function TicketService($http,$filter,UserService) {
             },
 
             setSelectedTicket: function(ticketId) {
-              console.log("setselectedticket");
-              console.log(ticketId);
              for (var i = 0; i < tickets.length; i++) {
                 if (tickets[i].id === ticketId) {
                   selectedticket = tickets[i];
-
                 }
               }
-              console.log("-------------------");
-              console.log("setselectedticket");
-              console.log(selectedticket);
             },
+
             getSelectedTicket: function() {
                 //need to handle if null
                 return selectedticket;

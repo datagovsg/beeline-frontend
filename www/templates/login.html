@@ -16,7 +16,7 @@
           ng-model="login.telephone"
           ng-pattern="eightDigitNumber"
           data-role="none"
-					required>
+          required>
         <div class="phtxt">
           <i class="icon ion-ios-telephone-outline"></i> +65
         </div>
@@ -39,13 +39,13 @@
 
 <script id="login-faq.html" type="text/ng-template">
   <div class="loginfaq modal">
-    <ion-header-bar class="bar-stable">
-    <h1 class="title">Beeline login FAQ</h1>
-    <a class="item-icon-right" href="#" ng-click="loginFAQModal.hide()">
-    <i class="icon ion-android-close"></i>
-    </a>
+    <ion-header-bar class="bar-modalhead">
+      <h1 class="title">Beeline login FAQ</h1>
+      <a class="item-icon-right" ng-click="loginFAQModal.hide()">
+      <i class="icon ion-ios-close-outline"></i>
+      </a>
     </ion-header-bar>
-    <ion-content>
+    <ion-content has-bouncing="false">
       <h4>Why does the Beeline account login use my phone number?</h4>
       <section>
         <div class="title"><i class="icon ion-locked"></i> Security and Convenience</div>

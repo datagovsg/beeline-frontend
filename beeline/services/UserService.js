@@ -1,6 +1,6 @@
 import querystring from 'querystring'
 
-export default function UserService($http, $state) {
+export default function UserService($http, $state, $ionicPopup) {
   var preLoginState;
   var userPromise = Promise.resolve(null);
 
@@ -55,9 +55,28 @@ export default function UserService($http, $state) {
         })
       })
       .then((response) => {
-        this.sessionToken = response.data.sessionToken;
-        this.loadUserData();
-        return true;
+				if (response.statusText = 'OK')
+				{
+          this.sessionToken = response.data.sessionToken;
+          this.user = response.data.user;
+          localStorage.setItem('sessionToken', response.data.sessionToken);
+
+          var ud = response.data.user;
+          var userobj = {
+            name: ud.name,
+            email: ud.email,
+            telephone: ud.telephone
+          };
+
+          localStorage.setItem('beelineUser', JSON.stringify(userobj));
+
+          return true;
+				}
+				else
+					return false;
+      }, (error) => {
+				$ionicPopup.alert('An error occurred while trying to log in');
+				return false;
       });
     },
 

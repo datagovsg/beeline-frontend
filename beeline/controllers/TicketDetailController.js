@@ -4,7 +4,7 @@ export default [
     '$scope',
     '$stateParams',
     'uiGmapGoogleMapApi',
-    'TickerService',
+    'TicketService',
     'UserService',
     'CompanyService',
     'TripService',
@@ -12,19 +12,19 @@ function(
     $scope,
     $stateParams,
     uiGmapGoogleMapApi,
-    TickerService,
+    TicketService,
     UserService,
     CompanyService,
     TripService
 ){
-  TickerService.getTickets()
+  TicketService.getTickets()
       .then((tickets) => {
           $scope.ticket = tickets
                   .filter(tick => tick.id == $stateParams.tid)[0];
           console.log($scope.ticket.boardStop.time)
-          TickerService.splitTickets();
-          $scope.todaydata = TickerService.todayTickets();
-          $scope.soondata = TickerService.soonTickets();
+          TicketService.splitTickets();
+          $scope.todaydata = TicketService.todayTickets();
+          $scope.soondata = TicketService.soonTickets();
           return TripService.Trip($scope.ticket.id)
       })
       .then(function(){

@@ -72,3 +72,12 @@
     visibility: hidden;
   }
 }
+
+.button {
+  border: solid 1px $stable;
+}
+
+.button-darkback {
+  border: solid 1px #FFF;
+  color: #FFF;
+}
