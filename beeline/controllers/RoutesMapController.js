@@ -84,12 +84,10 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
       var pickupAutocompleter = new googleMaps.places.Autocomplete(pickupInputElement);
       var dropoffAutocompleter = new googleMaps.places.Autocomplete(dropoffInputElement);
       pickupAutocompleter.addListener('place_changed', function() {
-        gmap.panTo(pickupAutocompleter.getPlace().geometry.location.toJSON());
-        gmap.setZoom(17);
+        $scope.data.pickupCoordinates = pickupAutocompleter.getPlace().geometry.location.toJSON();
       });
       dropoffAutocompleter.addListener('place_changed', function() {
-        gmap.panTo(dropoffAutocompleter.getPlace().geometry.location.toJSON());
-        gmap.setZoom(17);
+        $scope.data.dropoffCoordinates = dropoffAutocompleter.getPlace().geometry.location.toJSON();
       });
 
       // Set panning to update the input text
