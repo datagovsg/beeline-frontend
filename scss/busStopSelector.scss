@@ -45,99 +45,126 @@ bus-stop-selector {
 }
 
 /* ---------- BOOKINGS STOPS MODAL ---------- */
-.stop-selector.modal {
-	width: calc(100% - 20px);
-	min-height: calc(100% - 40px);
-	left: 9px;
-	top: 19px;
-	border-radius: 10px;
-	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
-	border: 1px solid #999;
+.stop-selector {
+  width: calc(100% - 20px);
+  min-height: calc(100% - 40px);
+  left: 9px;
+  top: 19px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+  border: 1px solid #999;
 
-	.scroll, ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-	}
+  display: flex;
+  flex-direction: column;
 
-	ui-gmap-google-map, .angular-google-map {
-		height: calc(100% - 240px);
-	}
+  .my-header-bar {
+    background-color: $stable;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
 
-	.gmnoprint, .gm-style-cc {
-		display:none;
-	}
+    h1.title {
+      flex: 0 0 auto;
+      left: auto;
+      right: auto;
+      color: white;
+      text-align: center;
+      position: static;
+    }
 
-	.ion-list-header {
-		height: 30px;
-	}
+    ui-gmap-google-map {
+      flex: 1 1 auto;
+      position: relative;
 
-	.stopslist {
-		height: 210px;
-		overflow-y: scroll;
-		overflow-x: hidden;
-
-		label.item-radio {
-
-			.radio-content {
-        height: 60px;
-				font-size: 14px;
-
-        display: flex;
-        flex-direction: row;
-        align-items: stretch;
-
-        .item-content {
-          padding: 0px;
-          flex: 1 1 auto;
-          display: flex;
-          align-items: center;
-          order: 2;
-
-  				.time {
-            flex: 0 0 auto;
-            width: 6em;
-            align-self: center;
-  				}
-
-  				.details {
-            flex: 1 1 auto;
-            width: 6em;
-  				}
-        }
-
-  			.radio-icon {
-          padding: 10px;
-          flex: 0 0 auto;
-          order: 0;
+      div.angular-google-map {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+      }
+      .angular-google-map-container {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+  ion-content {
+    top: 300px;
+      ion-item.item {
+        padding: 0;
+      }
+    .stops-list {
+      label.item-radio {
+        .radio-content {
+          height: 60px;
+          font-size: 14px;
 
           display: flex;
           flex-direction: row;
-          position: static;
+          align-items: stretch;
 
-          &:before {
-    				visibility: visible;
-            display: block;
-    				width: 15px;
-    				height: 15px;
-    				font-size: 16px;
-    				background-color: #d6d6d6;
-    				border-radius: 9px;
-    				line-height: 1;
-    				box-shadow: inset 2px 2px 2px rgba(0,0,0,0.2);
-    				content: '';
-            align-self: center;
+          .item-content {
+            padding: 0px;
+            flex: 1 1 auto;
+            display: flex;
+            align-items: center;
+            order: 2;
+
+            .time {
+              flex: 0 0 auto;
+              width: 6em;
+              align-self: center;
+            }
+
+            .details {
+              flex: 1 1 auto;
+              width: 6em;
+            }
           }
-  			}
-			}
-    }
 
-    label.item-radio input:checked + .radio-content .item-content,
-    label.item-radio input:checked + .radio-content .radio-icon
-    {
-      background: #f7f7f7;
-    }
-    label.item-radio input:checked + .radio-content .radio-icon:before {
-      background-color: $stable;
+          .radio-icon {
+            padding: 10px;
+            flex: 0 0 auto;
+            order: 0;
+
+            display: flex;
+            flex-direction: row;
+            position: static;
+
+            &:before {
+              visibility: visible;
+              display: block;
+              width: 15px;
+              height: 15px;
+              font-size: 16px;
+              background-color: #d6d6d6;
+              border-radius: 9px;
+              line-height: 1;
+              box-shadow: inset 2px 2px 2px rgba(0,0,0,0.2);
+              content: '';
+              align-self: center;
+            }
+          }
+        }
+      }
+
+      label.item-radio input:checked + .radio-content .item-content,
+      label.item-radio input:checked + .radio-content .radio-icon
+      {
+        background: #f7f7f7;
+      }
+      label.item-radio input:checked + .radio-content .radio-icon:before {
+        background-color: $stable;
+      }
     }
   }
+  ion-footer-bar {
+    text-align: center;
+    display: block;
+    height: 49px;
+  }
+  .gmnoprint, .gm-style-cc {
+    display:none;
+  }
+
 }

@@ -213,14 +213,19 @@ export default [
             $scope.changesModal = null;
           }
 
-          $ionicModal.fromTemplateUrl('changes-message.html', {
-            scope: $scope,
-            animation: 'slide-in-up',
-          })
-          .then(modal => {
-            $scope.changesModal = modal;
+          if ($scope.changesModal) {
             $scope.changesModal.show();
-          });
+          }
+          else {
+            $ionicModal.fromTemplateUrl('changes-message.html', {
+              scope: $scope,
+              animation: 'slide-in-up',
+            })
+            .then(modal => {
+              $scope.changesModal = modal;
+              $scope.changesModal.show();
+            });
+          }
         }
         $scope.lastDisplayedRouteId = $scope.currentBooking.routeId;
 

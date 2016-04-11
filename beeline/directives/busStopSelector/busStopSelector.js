@@ -26,6 +26,7 @@ export default [
       placeholder: '@',
       title: '@',
       button: '@',
+      markerOptions: '=',
     },
     link: function (scope, elem, attrs) {
       scope.map = {
@@ -104,7 +105,9 @@ export default [
 
       scope.selectStop = (e, stop) => {
       //prevent firing twice
-        if (e.target.tagName == 'INPUT') {
+        if (e.target.tagName == 'INPUT'
+            || e.target.tagName == 'BUTTON'
+          ) {
           if (stop == scope.selectedStop) {
             scope.model = scope.valueFn(stop);
             scope.selectionModal.hide();
@@ -123,13 +126,29 @@ export default [
           scope.selectedStop = undefined;
           return;
         }
-        var selectedIndex = scope.busStops.findIndex(bs =>
-            scope.valueFn(bs) == scope.model);
+        var selectedIndex = -1;
+        for (let i=0; i<scope.busStops.length; i++) {
+          if (scope.valueFn(scope.busStops[i]) == scope.model) {
+            selectedIndex = i;
+            break;
+          }
+        }
+        // NOT SUPPORTED BY EVERY BROWSER?
+        // scope.busStops.findIndex(bs =>
+        //    scope.valueFn(bs) == scope.model);
+
         if (selectedIndex != -1) {
             scope.selectedStop = scope.busStops[selectedIndex];
         }
         else {
             scope.selectedStop = undefined;
+        }
+
+        if (scope.map.mapControl.getGMap) {
+          scope.map.mapControl.getGMap().panTo({
+            lat: scope.selectedStop.coordinates.coordinates[1],
+            lng: scope.selectedStop.coordinates.coordinates[0],
+          })
         }
       });
       scope.selectStopByIndex();
