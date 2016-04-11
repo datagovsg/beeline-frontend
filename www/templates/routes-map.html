@@ -35,7 +35,7 @@
                           ng-show="data.locateMeIsVisible"></div>
 
 		<button class="btnnext" ng-click="nextAction()" 
-                            ng-show="data.nextButtonIsVisible"">{{ data.nextActionName }}</button>
+                            ng-show="data.nextButtonIsVisible">{{ data.nextActionName }}</button>
 
     <ui-gmap-google-map center="map.center" 
     										pan="true" 
@@ -46,7 +46,7 @@
     										dragging="map.dragging" 
     										control="map.control" 
     										data-tap-disabled="true">
-			<ui-gmap-markers models="map.markers" 
+			<ui-gmap-markers models="map.markers"
                        coords="'self'" 
                        icon="'icon'" 
                        options="'options'">

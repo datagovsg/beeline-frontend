@@ -58,12 +58,10 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 
 			// Hide uneccessary UI elements when typing in the text inputs
 			$scope.pickupFocus = $scope.dropoffFocus = function() {
-				$scope.data.centerMarkIsVisible = false;
 				$scope.data.locateMeIsVisible = false;
 				$scope.data.nextButtonIsVisible = false;
 			};
 			$scope.pickupBlur = $scope.dropoffBlur = function() {
-				$scope.data.centerMarkIsVisible = true;
 				$scope.data.locateMeIsVisible = true;
 				$scope.data.nextButtonIsVisible = true;
 			};
@@ -118,6 +116,21 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 		    });
 		  };
 
+		  // TODO refactor this into a separate view
+		  //Redirect to Route Details
+		  $scope.showRouteDetails = function(item) {
+		    //close the modal
+		    $scope.data.resultsModal.hide();
+		    //redirect to Routes Details
+        BookingService.routeId = item.id;
+		    $state.go('tabs.booking-pickup');
+		  };
+		  // Set up the results modal
+		  $scope.data.resultsModal = $ionicModal.fromTemplate(require('./searchResults.html'), {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+		  });
+
 			// Configure the UI in accordance with the users set/unset coordinates
 			$scope.$watchGroup(['data.pickupCoordinates', 'data.dropoffCoordinates'], function() {
 
@@ -144,15 +157,51 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
 		      	// Show the search results
 		      	// TODO replace with a state change to a results view
 		      	////////////////////////////////////////////////////////////////////
-					  $scope.data.resultsModal = $ionicModal.fromTemplate(require('./searchResults.html'), {
-					    scope: $scope,
-					    animation: 'slide-in-up'
-					  });
-
-		      	////////////////////////////////////////////////////////////////////
-		      	// TODO replace with a state change to a results view
-		      	////////////////////////////////////////////////////////////////////
-
+		        //place the start and end locations' latlng into the Search object
+		        RoutesService.addReqData($scope.data.pickupText,
+								                     $scope.data.dropoffText,
+								                     $scope.data.pickupCoordinates.lat,
+								                     $scope.data.pickupCoordinates.lng,
+								                     $scope.data.dropoffCoordinates.lat,
+								                     $scope.data.dropoffCoordinates.lng);
+		        RoutesService.getclosestroute().then(
+		        	function(result){
+					      console.log('Retrieved search results');
+					      //store a copy of the search results in the Search object
+					      RoutesService.setresults(result.data);
+					      //sift through the data to get the values we need
+					      $scope.data.searchresults = [];
+					      for(var i=0; i<result.data.length; i++) {
+					        var e = result.data[i];
+					        var sstop = e.nearestBoardStop;
+					        var estop = e.nearestAlightStop;
+					        var sd = new Date(sstop.time);
+					        var ed = new Date(estop.time);
+					        var temp = {
+					          id: e.id,
+					          busnum: 'ID ' + e.id,
+					          stime:  formatHHMM_ampm(sd),
+					          etime:  formatHHMM_ampm(ed),
+					          sstop:  sstop.stop.description,
+					          estop:  estop.stop.description,
+					          sident: 'ID ' + sstop.stop.postcode,
+					          eident: 'ID ' + estop.stop.postcode,
+					          sroad:  sstop.stop.road,
+					          eroad:  estop.stop.road,
+					          swalk:  e.distanceToStart.toFixed(0) + 'm',
+					          ewalk:  e.distanceToEnd.toFixed(0) + 'm',
+					          active: 'Mon-Fri only'
+					        };
+					        $scope.data.searchresults.push(temp);
+					      }
+		            //redirect the user to the LIST page
+		            $scope.data.resultsModal.show();
+					    }, 
+					    function(err) {
+					      console.log('Error retrieving Search Results - ');
+					      console.log(err.toString());
+					    }
+				  	);
 	      	};
 	      }
 
