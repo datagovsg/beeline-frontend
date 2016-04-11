@@ -1,6 +1,6 @@
 import querystring from 'querystring'
 
-export default function TickerService($http,$filter,UserService) {
+export default function TicketService($http,$filter,UserService) {
         var now = new Date();
         var today0000 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0).getTime();
         var today2400 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 24, 0).getTime();
@@ -16,16 +16,13 @@ export default function TickerService($http,$filter,UserService) {
                 if (!bearer){
                     return Promise.resolve([]);
                 }
-                return $http.get("http://staging.beeline.sg/tickets", {
-                        headers: {
-                        "Authorization": 'Bearer '+bearer
-                        //"Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MSwiaWF0IjoxNDU2Mzk2MTU4fQ.eCgMcdrhZAWfWcQ3hhcYts9oyQetZ4prGGf4t5xEAwU'
-                        }
-                    }).then((response) => {
-                        tickets = response.data;
-                        return tickets;
-                    });
-
+                return UserService.beeline({
+                    method: 'GET',
+                    url: '/tickets',
+                  }).then((response) => {
+                    tickets = response.data;
+                    return tickets;
+                  });
             },
             getTicketById: function(id){
                 for(var i=0;i<tickets.length;i++){
@@ -64,11 +61,11 @@ export default function TickerService($http,$filter,UserService) {
             },
 
             setSelectedTicket: function(ticketId) {
-				for (var i = 0; i < tickets.length; i++) {
-					if (tickets[i].id === ticketId) {
-						selectedticket = tickets[i];
-					}
-				}
+             for (var i = 0; i < tickets.length; i++) {
+                if (tickets[i].id === ticketId) {
+                  selectedticket = tickets[i];
+                }
+              }
             },
 
             getSelectedTicket: function() {

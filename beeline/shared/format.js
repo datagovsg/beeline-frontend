@@ -1,7 +1,12 @@
-export function twoPad(s) {
+
+
+export function twoPad(s, len, ch) {
+    len = len || 2;
+    ch = ch || '0';
+
     s = s + '';
-    while (s.length < 2) {
-        s = '0' + s;
+    while (s.length < len) {
+        s = ch + s;
     }
     return s;
 }
@@ -41,28 +46,32 @@ export function formatTime(date) {
     if (typeof date == 'string' || typeof date == 'number') {
         date = new Date(date);
     }
-    return twoPad(date.getHours()) + ':' +
-            twoPad(date.getMinutes()) /*+ ':' +
+
+    var hours = date.getHours();
+
+    return (12 - (24 - hours) % 12) + ':' +
+            twoPad(date.getMinutes()) + ' '
+            + (hours > 12 ? 'PM' : 'AM')/*+ ':' +
             twoPad(date.getSeconds()) */;
 }
 
 //func to generate something like '14:15 pm' from JS date obj
 export function formatHHMM_ampm(t) {
-	var h = t.getHours(),
-		m = t.getMinutes(),
-		term = 'am';
+  var h = t.getHours(),
+    m = t.getMinutes(),
+    term = 'am';
 
-	if (h >= 12)
-	{
-		term = 'pm';
-		if (h > 12) { h = h-12; }
-		h = h.toString();
-	}
+  if (h >= 12)
+  {
+    term = 'pm';
+    if (h > 12) { h = h-12; }
+    h = h.toString();
+  }
 
-	if (h.toString().length == 1) { h = '0' + h.toString() };
-	if (m.toString().length == 1) { m = '0' + m.toString() };
+  if (h.toString().length == 1) { h = '0' + h.toString() };
+  if (m.toString().length == 1) { m = '0' + m.toString() };
 
-	return h + ':' + m + ' ' + term;
+  return h + ':' + m + ' ' + term;
 }
 
 export function titleCase(s) {

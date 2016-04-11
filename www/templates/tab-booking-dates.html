@@ -2,15 +2,15 @@
   <ion-content>
     <date-picker
         valid-dates="validDates"
-        exhausted-dates="exhaustedDates"
+        exhausted-dates="soldOutDates"
         invalid-stop-dates="invalidStopDates"
         min-date="minDate"
         max-date="maxDate"
         startDate="minDate"
-        dates="bookingService.currentBooking.selectedDates"
+        dates="currentBooking.selectedDates"
     ></date-picker>
 
-    <div ng-if="priceChanges.length > 0">
+    <div ng-if="currentBooking.changes.priceChanges.length > 0">
         <h3>Price Changes</h3>
 
         <table>
@@ -18,7 +18,7 @@
                 <th>Dates</th>
                 <th>Price</th>
             </tr>
-            <tr ng-repeat="priceChange in priceChanges">
+            <tr ng-repeat="priceChange in currentBooking.changes.priceChanges">
                 <td>
                     {{priceChange.startDate | formatDate}}
                     &mdash;
@@ -27,15 +27,17 @@
                 <td>{{priceChange.price}}
             </tr>
         </table>
-    
+
     </div>
 
-	<!--qty-input ng-model="bookingService.currentBooking.qty" placeholder="Number of passengers" ></qty-input-->
+	<!--qty-input ng-model="BookingService.currentBooking.qty" placeholder="Number of passengers" ></qty-input-->
 
 	<div class="bookdetails">
-		<price-calculator></price-calculator>
+		<price-calculator
+      booking="currentBooking"></price-calculator>
 
-		<button id="btnreview" ng-disabled="bookingService.currentBooking.selectedDates.length == 0" ng-click="goToSummary()">
+		<button id="btnreview" ng-disabled="currentBooking.selectedDates.length == 0"
+          ui-sref="tabs.booking-summary">
 			Review Booking
 		</button>
 	</div>
