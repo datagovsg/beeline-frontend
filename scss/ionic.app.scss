@@ -28,7 +28,7 @@ $stable:						  #4b3863 !default;
 @import "scss/beeline.scss";
 @import "scss/login.scss";
 @import "scss/verify.scss";
-@import "scss/login.scss";
+@import "scss/suggestions.scss";
 
 body, .ionic-body, input, select, button {
 	font-family: 'Ubuntu', 'Arial';
@@ -1806,27 +1806,6 @@ ion-list {
 			}
 		}
 	}
-}
-
-#pg_suggestions {
-	.inline-suggestion-map {
-		width: 100%;
-		height: 250px;
-		position: relative;
-	}
-	ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		left: 0;
-		top: 0;
-	}
-}
-
-.new_suggestion.modal .scroll {
-	width: 100%;
-	height: 100%;
-	position: relative;
 }
 
 .credit_card_input input[type='text'] {

@@ -73,8 +73,26 @@
   }
 }
 
+/* Popups */
+.popup-container .popup {
+  border-radius: 5px;
+  overflow: hidden;
+}
+.popup-head {
+  background-color: #ddd;
+}
+.popup-body {
+  background-color: #eee;
+}
+
 .button {
   border: solid 1px $stable;
+}
+
+.button-default {
+  background-color: #eee;
+  border: solid 1px $stable;
+  color: #000;
 }
 
 .button-darkback {

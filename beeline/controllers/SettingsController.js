@@ -27,7 +27,7 @@ function(
 
   //Log in / Log out button in settings page
   $scope.logIn = function () {
-    UserService.logIn();
+    UserService.logIn()
   }
 
   $scope.logOut = function () {
@@ -38,6 +38,7 @@ function(
     .then((res) => {
       if (res) {
         UserService.logOut();
+        $scope.user = null;
       }
     })
   }

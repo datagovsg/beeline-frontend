@@ -1,4 +1,5 @@
 import querystring from 'querystring'
+import uuid from 'uuid';
 
 export default function UserService($http, $state, $ionicPopup) {
   var preLoginState;
@@ -11,10 +12,26 @@ export default function UserService($http, $state, $ionicPopup) {
 
     beeline(options) {
       options.url = 'http://staging.beeline.sg' + options.url;
+      options.headers = options.headers || {}
       if (this.sessionToken) {
-        options.headers = options.headers || {}
         options.headers.authorization = 'Bearer ' + this.sessionToken;
       }
+
+      if (window.device) {
+        options.headers['Beeline-Device-UUID'] = window.device.uuid;
+        options.headers['Beeline-Device-Model'] = window.device.model;
+        options.headers['Beeline-Device-Platform'] = window.device.platform;
+        options.headers['Beeline-Device-Version'] = window.device.version;
+        options.headers['Beeline-Device-Manufacturer'] = window.device.manufacturer;
+        options.headers['Beeline-Device-Serial'] = window.device.serial;
+      }
+      else {
+        window.localStorage.uuid  = window.localStorage.uuid || uuid.v4();
+        options.headers['Beeline-Device-UUID'] = window.localStorage.uuid
+        options.headers['Beeline-Device-Model'] = window.navigator.userAgent;
+        options.headers['Beeline-Device-Platform'] = 'Browser';
+      }
+
       return $http(options);
     },
 
@@ -96,23 +113,33 @@ export default function UserService($http, $state, $ionicPopup) {
 
     logOut: function() {
       this.sessionToken = null;
+      this.userPromise = Promise.resolve(null);
       delete window.localStorage['sessionToken'];
+      instance.loadUserData();
     },
 
+    /** Go to the login page
+      * As opposed to a standard ui-sref='login', this
+      * method saves the page. When login is complete it will return there.
+    */
     logIn(force) {
       preLoginState = $state.current;
       $state.go('login')
     },
+
+    /** Return to the page that activated the login */
     afterLogin() {
+      instance.loadUserData();
       $state.go(preLoginState || 'tabs.settings');
       preLoginState = undefined;
     },
+
     cancelLogin() {
       $state.go(preLoginState);
       preLoginState = undefined;
     },
   };
-  instance.loadUserData();
 
+  instance.loadUserData();
   return instance;
 }

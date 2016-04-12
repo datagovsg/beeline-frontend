@@ -1,185 +1,204 @@
 
 export default [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$http',
-    'SuggestionService',
-    'UserService',
-    '$ionicModal',
+  '$scope',
+  '$state',
+  '$stateParams',
+  '$http',
+  'SuggestionService',
+  'UserService',
+  '$ionicModal',
+  '$ionicPopup',
 function(
-    $scope,
-    $state,
-    $stateParams,
-    $http,
-    SuggestionService,
-    UserService,
-    $ionicModal
+  $scope,
+  $state,
+  $stateParams,
+  $http,
+  SuggestionService,
+  UserService,
+  $ionicModal,
+  $ionicPopup
 ) {
-    $scope.$on('$ionicView.afterEnter', async (event) => {
-        /* Entered from the route search */
-        if ($state.params.action == 'submit' &&
-            Search.data.startLat && Search.data.startLng) {
-            $state.params.action = ''
+  $scope.user = null;
 
-            console.log(UserService);
-            // submit the suggestion via $https
-            UserService
-            .authenticate()
-            .then(() => {
-                var arrivalTime = new Date(Search.data.arrivalTime);
-                var secondsSinceMidnight = arrivalTime.getHours() * 60*60 +
-                        arrivalTime.getMinutes() * 60 +
-                        arrivalTime.getSeconds();
+  $scope.$on('$ionicView.afterEnter', (event) => {
+    UserService.getCurrentUser()
+    .then((user) => {
+      $scope.user = user;
 
-                return UserService.beeline({
-                    method: 'POST',
-                    url: '/suggestions',
-                    data: {
-                        boardLat: Search.data.startLat,
-                        boardLon: Search.data.startLng,
-                        alightLat: Search.data.endLat,
-                        alightLon: Search.data.endLng,
-                        time: secondsSinceMidnight,
-                    }
-                })
-                .then(() => {
-                    queryData()
-                })
-            })
-            .catch((err) => {
-                console.log(err);
-                alert('You must be logged in to make a suggestion');
-                $state.go('tabs.suggest', {action: ''})
-            });
-        }
-        else if ($state.params.action == 'new') {
-            $scope.promptNewSuggestion();
-            queryData();
-        }
-        else {
-            queryData()
-        }
-    });
-
-    // populate
-    function queryData() {
-        var suggestions;
-
+      // if we had anonymous suggestions before, convert them to suggestions
+      // associated with this user
+      if (user) {
         UserService.beeline({
-            url: '/suggestions',
-            method: 'GET',
+          method: 'POST',
+          url: '/suggestions/deanonymize',
         })
         .then((response) => {
-            suggestions = response.data;
-
-            var countSimilar = suggestions.map(suggestion =>
-                UserService.beeline({
-                    url: `/suggestions/${suggestion.id}/similar`,
-                    method: 'GET'
-                }))
-
-            return Promise.all(countSimilar);
-        })
-        .then((similars) => {
-            for (var i=0; i<suggestions.length; i++) {
-                suggestions[i].numSimilar = similars[i].data.length
-            }
-            return suggestions;
-        })
-        .then(function (suggestions) {
-            /* Need to map the old suggestions to the new suggestions so
-            that we don't lose the geocoding */
-            // var oldSuggestions = _.keyBy(
-            //     $scope.suggestions,
-            //     sugg => sugg.id);
-
-            // for (let suggestion of suggestions) {
-            //     if (oldSuggestions[sugg.id] &&
-            //             oldSuggestion[sugg.id].updatedAt == suggestion.updatedAt) {
-            //         _.assign(suggestion, oldSuggestions[sugg.id])
-            //     }
-            // }
-            $scope.suggestions = suggestions;
-        });
-
-        SuggestionService.getSimilar()
-        .then(function () {
-            $scope.similarSuggestions = SuggestionService.getSimilarSuggestions();
-        });
-
-        $scope.getSuggestionById = function(tid){
-            SuggestionService.getSuggestionById(tid);
-            $scope.suggestion = SuggestionService.getSelectedSuggestion();
-            console.log("selected suggestion is "+$scope.suggestion.id);
-        }
-    }
-
-    $scope.toggleSelected = function(item) {
-        if ($scope.selectedItem == item) {
-            $scope.selectedItem  = null;
-        }
-        else {
-            $scope.selectedItem = item;
-        }
-    }
-
-    $scope.deleteSuggestion = function(event, id) {
-        event.stopPropagation();
-        if (confirm("Are you sure you want to delete this suggestion?")) {
-            UserService.beeline({
-                method: 'DELETE',
-                url: '/suggestions/' + id
-            })
-            .then(queryData);
-        }
-    };
-    $scope.promptNewSuggestion = function() {
-        if (!$scope.newSuggestionModal) {
-            $scope.newSuggestion = {
-                time: '',
-                startPoint: {},
-                endPoint: {},
-            };
-            $scope.newSuggestionModal = $ionicModal.fromTemplate(
-                require('./newSuggestion.html'),
-                {
-                    scope: $scope,
-                    animation: 'slide-in-up'
-                }
-            )
-        }
-        $scope.newSuggestionModal.show();
-    };
-    $scope.submitSuggestion = function (suggestion) {
-        UserService
-        .authenticate()
-        .then(() => {
-            var arrivalTime = new (
-                Date.bind.apply(Date, [{}, 2015, 1, 1].concat(suggestion.time.split(':'))));
-            var secondsSinceMidnight = arrivalTime.getHours() * 60*60 +
-                    arrivalTime.getMinutes() * 60 +
-                    arrivalTime.getSeconds();
-
-            return UserService.beeline({
-                method: 'POST',
-                url: '/suggestions',
-                data: {
-                    boardLat:  suggestion.startPoint.coordinates.latitude,
-                    boardLon:  suggestion.startPoint.coordinates.longitude,
-                    alightLat: suggestion.endPoint.coordinates.latitude,
-                    alightLon: suggestion.endPoint.coordinates.longitude,
-                    time: secondsSinceMidnight,
-                }
-            })
-        })
-        .catch(() => alert('Your suggestion could not be submitted'))
-        .then(() => {
+          if (response.data > 0) {
             queryData();
-            $scope.newSuggestionModal.hide();
-        });
-    };
-    $scope.cancel = function (suggestion) {
-        $scope.newSuggestionModal.hide();
-    };
+          }
+        })
+      }
+    })
+
+    /* Entered from the route search */
+    if ($state.params.action == 'submit' &&
+      Search.data.startLat && Search.data.startLng) {
+      $state.params.action = ''
+
+      var arrivalTime = new Date(Search.data.arrivalTime);
+      var secondsSinceMidnight = arrivalTime.getHours() * 60*60 +
+          arrivalTime.getMinutes() * 60 +
+          arrivalTime.getSeconds();
+
+      UserService.beeline({
+        method: 'POST',
+        url: '/suggestions',
+        data: {
+          boardLat: Search.data.startLat,
+          boardLon: Search.data.startLng,
+          alightLat: Search.data.endLat,
+          alightLon: Search.data.endLng,
+          time: secondsSinceMidnight,
+        }
+      })
+      .then(() => {
+        queryData()
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('You must be logged in to make a suggestion');
+        $state.go('tabs.suggest', {action: ''})
+      });
+    }
+    else if ($state.params.action == 'new') {
+      $scope.promptNewSuggestion();
+      queryData();
+    }
+    else {
+      queryData()
+    }
+  });
+
+  // populate
+  function queryData() {
+    var suggestions;
+
+    UserService.beeline({
+      url: '/suggestions',
+      method: 'GET',
+    })
+    .then((response) => {
+      suggestions = response.data;
+
+      var countSimilar = suggestions.map(suggestion =>
+        UserService.beeline({
+          url: `/suggestions/${suggestion.id}/similar`,
+          method: 'GET'
+        }))
+
+      return Promise.all(countSimilar);
+    })
+    .then((similars) => {
+      for (var i=0; i<suggestions.length; i++) {
+        suggestions[i].numSimilar = similars[i].data.length
+      }
+      return suggestions;
+    })
+    .then(function (suggestions) {
+      /* Need to map the old suggestions to the new suggestions so
+      that we don't lose the geocoding */
+      // var oldSuggestions = _.keyBy(
+      //   $scope.suggestions,
+      //   sugg => sugg.id);
+
+      // for (let suggestion of suggestions) {
+      //   if (oldSuggestions[sugg.id] &&
+      //       oldSuggestion[sugg.id].updatedAt == suggestion.updatedAt) {
+      //     _.assign(suggestion, oldSuggestions[sugg.id])
+      //   }
+      // }
+      $scope.suggestions = suggestions;
+    });
+
+    SuggestionService.getSimilar()
+    .then(function () {
+      $scope.similarSuggestions = SuggestionService.getSimilarSuggestions();
+    });
+
+    $scope.getSuggestionById = function(tid){
+      SuggestionService.getSuggestionById(tid);
+      $scope.suggestion = SuggestionService.getSelectedSuggestion();
+      console.log("selected suggestion is "+$scope.suggestion.id);
+    }
+  }
+
+  $scope.toggleSelected = function(item) {
+    if ($scope.selectedItem == item) {
+      $scope.selectedItem  = null;
+    }
+    else {
+      $scope.selectedItem = item;
+    }
+  }
+
+  $scope.deleteSuggestion = function(event, id) {
+    event.stopPropagation();
+    $ionicPopup.confirm({
+      title: 'Delete suggestion',
+      template: 'Are you sure you want to delete this suggestion?'
+    })
+    .then((result) => {
+      if (result) {
+        UserService.beeline({
+          method: 'DELETE',
+          url: '/suggestions/' + id
+        })
+        .then(queryData);
+      }
+    })
+  };
+  $scope.promptNewSuggestion = function() {
+    if (!$scope.newSuggestionModal) {
+      $scope.newSuggestion = {
+        time: '',
+        startPoint: {},
+        endPoint: {},
+      };
+      $scope.newSuggestionModal = $ionicModal.fromTemplate(
+        require('./newSuggestion.html'),
+        {
+          scope: $scope,
+          animation: 'slide-in-up'
+        }
+      )
+    }
+    $scope.newSuggestionModal.show();
+  };
+  $scope.submitSuggestion = function (suggestion) {
+    var arrivalTime = new (
+      Date.bind.apply(Date, [{}, 2015, 1, 1].concat(suggestion.time.split(':'))));
+    var secondsSinceMidnight = arrivalTime.getHours() * 60*60 +
+        arrivalTime.getMinutes() * 60 +
+        arrivalTime.getSeconds();
+
+    return UserService.beeline({
+      method: 'POST',
+      url: '/suggestions',
+      data: {
+        boardLat:  suggestion.startPoint.coordinates.latitude,
+        boardLon:  suggestion.startPoint.coordinates.longitude,
+        alightLat: suggestion.endPoint.coordinates.latitude,
+        alightLon: suggestion.endPoint.coordinates.longitude,
+        time: secondsSinceMidnight,
+      }
+    })
+    .catch(() => alert('Your suggestion could not be submitted'))
+    .then(() => {
+      queryData();
+      $scope.newSuggestionModal.hide();
+    });
+  };
+  $scope.cancel = function (suggestion) {
+    $scope.newSuggestionModal.hide();
+  };
 }];

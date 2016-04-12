@@ -6,6 +6,16 @@
             ng-click="promptNewSuggestion()"></button>
   </ion-nav-title>
   <ion-content class="padding">
+    <ion-item ng-if="!user"
+          ng-click="logIn()"
+          class="warning">
+      <i class="ion-android-warning"></i>
+      You are not logged in. Logging in helps us to keep track of the number
+      of actual users, so your suggestions will receive stronger consideration.
+      You will also be kept up to date when routes matching your suggestion
+      are created.
+    </ion-item>
+
     <div class="ion-list-header">Your Suggestions</div>
 		<ion-list id="suggself">
         <ion-item class="item-icon-right"

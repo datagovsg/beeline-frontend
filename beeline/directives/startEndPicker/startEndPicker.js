@@ -142,16 +142,12 @@ export default [
             dragstart: function(map, e, args) {
             },
             zoom_changed: function(map, e, args) {
-              scope.$apply(() => {
-                updateCenter(map);
-                updateLocationText(map, e, args);
-              })
+              updateCenter(map);
+              updateLocationText(map, e, args);
             },
             dragend : function(map, e, args) {
-              scope.$apply(() => {
-                updateCenter(map);
-                updateLocationText(map, e, args);
-              })
+              updateCenter(map);
+              updateLocationText(map, e, args);
             },
           }
 

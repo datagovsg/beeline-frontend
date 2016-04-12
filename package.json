@@ -21,6 +21,7 @@
     "html-loader": "^0.4.3",
     "lodash": "^4.5.1",
     "q": "^1.4.1",
+    "uuid": "^2.0.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.1.0"
   },
