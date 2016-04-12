@@ -16,7 +16,7 @@ function transformRouteData(data){
   return data;
 }
 
-export default function($http, SERVER_URL, UserService) {
+export default function($http, SERVER_URL) {
   return {
 
     // Retrive the data on a single route
