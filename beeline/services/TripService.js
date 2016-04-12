@@ -1,5 +1,6 @@
 export default function TripService($http) {
         var trip;
+        var routepath;
         var pings;
         
         return {
@@ -17,6 +18,17 @@ export default function TripService($http) {
                 return trip;
             },
 
+			RoutePath: function(id){
+				return $http.get("http://staging.beeline.sg/routes/"+id, {
+                    headers: {}
+				}).then(function(response){
+                    routepath = response.data;
+                });
+			},
+
+			getRoutePath: function() {
+				return routepath;
+			},
 
 			DriverPings: function(id) {
 				return $http.get("http://staging.beeline.sg/trips/"+id+"/latest_info", {
