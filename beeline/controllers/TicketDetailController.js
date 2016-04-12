@@ -110,10 +110,10 @@ function(
 		.then(function(){
 			$scope.route = TripService.getRoutePath();
 
-			return CompanyService.Company($scope.trip.transportCompanyId);
+			return CompanyService.getCompany($scope.trip.transportCompanyId);
         })
-        .then(function(){
-            $scope.company = CompanyService.getcompany();
+        .then(function(compdata){
+            $scope.company = compdata;
             $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
 
 			//grab the driver name and vehicle plate no
