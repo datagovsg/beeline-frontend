@@ -124,6 +124,8 @@ function(
 			return TripService.DriverPings($scope.tripTicket.alightStop.tripId);
 		}).then(function(tripinfo) {
 
+			$scope.info = tripinfo.data;
+
 			gmap = $scope.map.mapControl.getGMap();
 
 			//re-init the routepath and markers
@@ -143,7 +145,7 @@ function(
 			$scope.addBusStops();
 
 			//init the bus marker & bus path
-			$scope.updateTripInfo(tripinfo.data);
+			$scope.updateTripInfo();
 
 			//pan and zoom to bus location
 			var lastpos = tripinfo.data.pings[0].coordinates.coordinates;
@@ -189,15 +191,15 @@ function(
 		}
 	};
 
-	$scope.updateTripInfo = function(updateBundle) {
+	$scope.updateTripInfo = function() {
 		console.log('update');
 
 		$scope.map.lines[0].path = []; //buspath
 
 		//redraw polyline on google map - reverse order from end of array to head
-		for(var i=updateBundle.pings.length-1; i>=0; i--)
+		for(var i=$scope.info.pings.length-1; i>=0; i--)
 		{
-			var latlng = updateBundle.pings[i].coordinates.coordinates;
+			var latlng = $scope.info.pings[i].coordinates.coordinates;
 			$scope.map.lines[0].path.push({
 				latitude: latlng[1],
 				longitude: latlng[0]
@@ -205,7 +207,7 @@ function(
 		}
 
 		//redraw bus icon location
-		var buspos = updateBundle.pings[0].coordinates.coordinates;
+		var buspos = $scope.info.pings[0].coordinates.coordinates;
 		$scope.map.markers[0] = {
 			id: 'busloc',
 			coords: {
@@ -251,7 +253,8 @@ function(
 				angular.element(refreshbar).css('width', '0%');
 
 				TripService.DriverPings(tripid).then(function(tripinfo) {
-					$scope.updateTripInfo(tripinfo.data);
+					$scope.info = tripinfo.data;
+					$scope.updateTripInfo();
 				});
 			}
 
