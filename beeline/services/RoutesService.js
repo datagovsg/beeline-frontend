@@ -67,8 +67,8 @@ export default function($http, SERVER_URL, UserService) {
     getclosestroute: function() {
       //return Promise object
       return UserService.beeline({
-      method: 'GET',
-      url: '/routes/search_by_latlon?' + qs.stringify({
+        method: 'GET',
+        url: '/routes/search_by_latlon?' + qs.stringify({
           startLat: this.data.startLat,
           startLng: this.data.startLng,
           endLat: this.data.endLat,
@@ -77,7 +77,10 @@ export default function($http, SERVER_URL, UserService) {
           startTime:  this.data.startTime,
           endTime: this.data.endTime
         }),
-       })
+      }).then(function(response) {
+        transformRouteData(response.data);
+        return response;
+      });
     },
     setresults: function(searchresults){
       this.data.lastresults = searchresults;

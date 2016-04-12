@@ -115,38 +115,6 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
       };
 
       //////////////////////////////////////////////////////////////////////////
-      // Search results stuff
-      // TODO refactor this into a separate view
-      //////////////////////////////////////////////////////////////////////////
-      $scope.showRouteDetails = function(item) {
-        //close the modal
-        $scope.data.resultsModal.hide();
-        //redirect to Routes Details
-        BookingService.routeId = item.id;
-        $state.go('tabs.booking-pickup');
-      };
-      // Set up the results modal
-      $scope.data.resultsModal = $ionicModal.fromTemplate(require('./searchResults.html'), {
-        scope: $scope,
-        animation: 'slide-in-up'
-      });
-      //Route Suggestion button clicked - redirect to Suggestion page
-      $scope.routeSuggest = function() {
-        RoutesService.setArrivalTime($scope.data.suggestTime);
-
-        //close the modal
-        $scope.data.resultsModal.hide();
-
-        //redirect to the Suggestions page
-        $state.go('tabs.suggest', {
-                action: 'submit',
-            });
-      };
-      //////////////////////////////////////////////////////////////////////////
-      // End Search results stuff
-      //////////////////////////////////////////////////////////////////////////
-
-      //////////////////////////////////////////////////////////////////////////
       // Hack to fix map resizing due to ionic view cacheing
       // TODO find a better way?
       //////////////////////////////////////////////////////////////////////////
@@ -195,52 +163,12 @@ export default function($scope, $state, $ionicModal, $cordovaGeolocation,
             // TODO replace with a state change to a results view
             ////////////////////////////////////////////////////////////////////
             //place the start and end locations' latlng into the Search object
-            console.log($scope.data.pickupCoordinates);
-            console.log($scope.data.dropoffCoordinates);
-            RoutesService.addReqData($scope.data.pickupText,
-                                     $scope.data.dropoffText,
-                                     $scope.data.pickupCoordinates.lat,
-                                     $scope.data.pickupCoordinates.lng,
-                                     $scope.data.dropoffCoordinates.lat,
-                                     $scope.data.dropoffCoordinates.lng);
-            RoutesService.getclosestroute().then(
-              function(result) {
-                console.log('Retrieved search results');
-                //store a copy of the search results in the Search object
-                RoutesService.setresults(result.data);
-                //sift through the data to get the values we need
-                $scope.data.searchresults = [];
-                for (var i = 0; i < result.data.length; i++) {
-                  var e = result.data[i];
-                  var sstop = e.nearestBoardStop;
-                  var estop = e.nearestAlightStop;
-                  var sd = new Date(sstop.time);
-                  var ed = new Date(estop.time);
-                  var temp = {
-                    id: e.id,
-                    busnum: 'ID ' + e.id,
-                    stime: formatHHMM_ampm(sd),
-                    etime: formatHHMM_ampm(ed),
-                    sstop: sstop.stop.description,
-                    estop: estop.stop.description,
-                    sident: 'ID ' + sstop.stop.postcode,
-                    eident: 'ID ' + estop.stop.postcode,
-                    sroad: sstop.stop.road,
-                    eroad: estop.stop.road,
-                    swalk: e.distanceToStart.toFixed(0) + 'm',
-                    ewalk: e.distanceToEnd.toFixed(0) + 'm',
-                    active: 'Mon-Fri only'
-                  };
-                  $scope.data.searchresults.push(temp);
-                }
-                //redirect the user to the LIST page
-                $scope.data.resultsModal.show();
-              },
-              function(err) {
-                console.log('Error retrieving Search Results - ');
-                console.log(err.toString());
-              }
-            );
+            $state.go('tabs.results', {
+              pickupLat: $scope.data.pickupCoordinates.lat,
+              pickupLng: $scope.data.pickupCoordinates.lng,
+              dropoffLat: $scope.data.dropoffCoordinates.lat,
+              dropoffLng: $scope.data.dropoffCoordinates.lng
+            });
           };
         }
 

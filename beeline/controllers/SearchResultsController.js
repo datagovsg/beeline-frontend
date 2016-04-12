@@ -1,11 +1,8 @@
 import {formatHHMM_ampm} from '../shared/format';
 import _ from 'lodash';
 
-export default function($scope, $state, $stateParams, $ionicModal, $cordovaGeolocation,
-                        uiGmapGoogleMapApi, BookingService, RoutesService) {
-
+export default function($scope, $stateParams, RoutesService) {
   $scope.data = {}
-
   RoutesService.addReqData('unused pickup text',
                            'unused dropoff text',
                            $stateParams.pickupLat,
@@ -13,42 +10,10 @@ export default function($scope, $state, $stateParams, $ionicModal, $cordovaGeolo
                            $stateParams.dropoffLat,
                            $stateParams.dropoffLng);
   RoutesService.getclosestroute().then(function(result) {
-    //store a copy of the search results in the Search object
-    console.log('got results');
-    console.log(result);
     RoutesService.setresults(result.data);
-    //sift through the data to get the values we need
-    $scope.data.searchresults = [];
-    for (var i = 0; i < result.data.length; i++) {
-      var e = result.data[i];
-      var sstop = e.nearestBoardStop;
-      var estop = e.nearestAlightStop;
-      var sd = new Date(sstop.time);
-      var ed = new Date(estop.time);
-      var temp = {
-        id: e.id,
-        busnum: 'ID ' + e.id,
-        stime: formatHHMM_ampm(sd),
-        etime: formatHHMM_ampm(ed),
-        sstop: sstop.stop.description,
-        estop: estop.stop.description,
-        sident: 'ID ' + sstop.stop.postcode,
-        eident: 'ID ' + estop.stop.postcode,
-        sroad: sstop.stop.road,
-        eroad: estop.stop.road,
-        swalk: e.distanceToStart.toFixed(0) + 'm',
-        ewalk: e.distanceToEnd.toFixed(0) + 'm',
-        active: 'Mon-Fri only'
-      };
-      $scope.data.searchresults.push(temp);
-    }
+    $scope.data.activeRoutes = result.data
+    console.log(result.data);
   });
-
-  $scope.showRouteDetails = function(item) {
-    //redirect to Routes Details
-    BookingService.routeId = item.id;
-    $state.go('tabs.bookingPickup');
-  };
 
 }
 
