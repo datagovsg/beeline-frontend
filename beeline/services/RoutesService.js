@@ -19,6 +19,8 @@ function transformRouteData(data){
 export default function($http, SERVER_URL, UserService) {
   return {
 
+    // Retrive the data on a single route
+    // TODO refactor this to match getRoutes and searchRoutes
     getRoute: function (routeId) {
       return $http.get(SERVER_URL + `/routes/${routeId}?include_trips=true`)
         .then(function(response){ return response.data; })
@@ -33,6 +35,7 @@ export default function($http, SERVER_URL, UserService) {
         });
     },
 
+    // Retrive the data on all the routes
     getRoutes: function(){
       return $http.get(SERVER_URL + '/routes?include_trips=true')
       .then(function(response){
@@ -40,6 +43,7 @@ export default function($http, SERVER_URL, UserService) {
       });
     },
 
+    // Get the list of routes close to given set of coordinates
     searchRoutes: function(startLat, startLng, endLat, endLng) {      
       return $http.get(SERVER_URL + '/routes/search_by_latlon?' + querystring.stringify({
         startLat: startLat,
