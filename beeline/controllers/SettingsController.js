@@ -155,7 +155,4 @@ console.log($scope.login)
 		console.log('show booking history');
 	};
 
-    $scope.intro = function() {
-        $state.go('intro');
-    }
 }];

@@ -1893,6 +1893,11 @@ ion-list {
 			top: 6px;
 		}
 	}
+
+  ion-item a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 #pg_login {
