@@ -1,18 +1,18 @@
 <div class="search_results modal">
   <ion-header-bar class="bar-stable">
     <h1 class="title">Routes near you</h1>
-    <a class="item-icon-right" href="#" ng-click="rmap.resultsModal.hide()">
+    <a class="item-icon-right" href="#" ng-click="data.resultsModal.hide()">
     <i class="icon ion-android-close"></i>
     </a>
   </ion-header-bar>
   <ion-content>
-    <section ng-if="rmap.searchresults.length > 0">
+    <section ng-if="data.searchresults.length > 0">
       <div class="msg">
-        We found <b>{{rmap.searchresults.length}} route(s)</b> suitable for you, with the nearest pick-up and drop-off stops indicated below.
+        We found <b>{{data.searchresults.length}} route(s)</b> suitable for you, with the nearest pick-up and drop-off stops indicated below.
       </div>
       <div class="ion-list-header">Available Routes</div>
       <ion-list id="srcactive">
-        <ion-item ng-repeat="item in rmap.searchresults" ng-click="showRouteDetails(item)">
+        <ion-item ng-repeat="item in data.searchresults" ng-click="showRouteDetails(item)">
           <div class="routeinfo">
             <div class="numtime">
               <div class="busnum">{{item.busnum}}</div>
@@ -47,10 +47,10 @@
       </ion-list>
     </section> <!-- available routes -->
 
-    <section ng-if="rmap.searchkickstart.length > 0">
+    <section ng-if="data.searchkickstart.length > 0">
       <div class="ion-list-header">Routes pending activation</div>
       <ion-list id="srckickstart">
-        <ion-item ng-repeat="item in rmap.searchkickstart">
+        <ion-item ng-repeat="item in data.searchkickstart">
           <div class="route">
             <div class="line"></div>
             <div class="start">
@@ -82,7 +82,7 @@
       </ion-list>
     </section>
 
-    <section ng-if="rmap.searchresults.length == 0">
+    <section ng-if="data.searchresults.length == 0">
       <div class="noroutes msg">
         <h4>Sorry! There are no suitable routes corresponding to your Start and End locations.</h4>
         <p>However, You can choose to indicate your interest in the route you have specified.</p>
@@ -91,15 +91,15 @@
       <div class="route">
         <div class="line"></div>
         <div class="start">
-          <span class="name">{{rmap.pickupvalue}}</span>
+          <span class="name">{{data.pickupvalue}}</span>
         </div>
         <div class="end">
-          <span class="name">{{rmap.dropoffvalue}}</span>
+          <span class="name">{{data.dropoffvalue}}</span>
         </div>
       </div>
       <div class="arrtime">
         <i class="icon ion-clock"></i>
-        <select ng-model="rmap.suggestTime">
+        <select ng-model="data.suggestTime">
           <option value="">Time at destination</option>
           <option value="00:00">00:00 - 02:00</option>
           <option value="02:00">02:00 - 04:00</option>
@@ -114,7 +114,7 @@
           <option value="20:00">20:00 - 22:00</option>
         </select>
       </div>
-      <button id="btnsugg" ng-click="routeSuggest()" ng-disabled="rmap.suggestTime == ''">
+      <button id="btnsugg" ng-click="routeSuggest()" ng-disabled="data.suggestTime == ''">
         Submit Route Suggestion
       </button>
     </section>

@@ -23,6 +23,12 @@ $stable:						  #4b3863 !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 @import "scss/startEndPicker";
+@import "scss/busStopSelector.scss";
+
+@import "scss/beeline.scss";
+@import "scss/login.scss";
+@import "scss/verify.scss";
+@import "scss/login.scss";
 @import "scss/introSlides";
 
 body, .ionic-body, input, select, button {
@@ -57,6 +63,21 @@ ion-header-bar {
 	.item-icon-right.activated {
 		border-color: transparent;
 		background-color: transparent;
+	}
+}
+
+.modal ion-header-bar {
+	&.bar-modalhead {
+		background-color: #eceff1;
+	}
+
+	.title {
+		font-size: 18px !important;
+		color: #3f3f3f !important;
+	}
+
+	.icon {
+		color: #3f3f3f !important;
 	}
 }
 
@@ -246,35 +267,9 @@ ion-list {
 #pg_bookdate #btnreview,
 #pg_summary #btnpay,
 #pg_tickets #btnloginpls,
-#pg_login #btnloginnext {
-	width: 260px;
-	height: 15px;
-	padding: 20px 0px;
-	font-size: 16px;
-	line-height: 0px;
-	margin-left: -130px;
-	background-color: #ffe76e;
-	border: 0px;
-	border-bottom: 4px solid #f7c639;
-	border-radius: 20px;
-	box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
-	transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-	position: fixed;
-	bottom: 30px;
-	left: 50%;
-	color: #333;
-	z-index: 3;
-
-	&:active {
-		border-bottom: 1px solid #f7c639;
-		box-shadow: 1px 1px 1px rgba(0,0,0,0.6);
-	}
-
-	&[disabled="disabled"] {
-		background-color: #d6d6d6;
-		border-bottom: 4px solid #b9b9b9;
-		color: #6f6f6f;
-	}
+#pg_login #btnloginnext,
+.logout.modal #btnlogout {
+	@include big-yellow-fixed();
 }
 
 
@@ -838,16 +833,6 @@ ion-list {
 		left: 5%;
 		box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
 
-		.bus-stop-selector-list {
-			li {
-				padding: 5px 0 5px 0;
-
-				&.active {
-					background-color: #9CF;
-				}
-			}
-		}
-
 		.line {
 			width: 2px;
 			height: 14px;
@@ -856,42 +841,6 @@ ion-list {
 			left: 16px;
 			position: absolute;
 			z-index: 1;
-		}
-
-		bus-stop-selector {
-			display: block;
-			background-color: #FFF;
-			font-size: 12px;
-			position: relative;
-
-			.stop-description {
-				height: 34px;
-				line-height: 29px;
-				padding: 3px 35px 2px 32px;
-				border-bottom: 1px solid #CCC;
-				background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
-				background-size: auto 20px;
-
-				.ng-binding {
-				    white-space: nowrap;
-					text-overflow: ellipsis;
-					width: 100%;
-					display: inline-block;
-					overflow: hidden;
-				}
-
-				.placeholder{
-					color: #828282;
-				}
-			}
-
-			.icon {
-				position: absolute;
-				top: 0;
-				right: 10px;
-				font-size: 24px;
-				line-height: 34px;
-			}
 		}
 	}
 
@@ -1023,104 +972,6 @@ ion-list {
 		background-color: #FFF;
 		padding: 5px;
 		border: solid 1px #CCC;
-	}
-}
-
-/* ---------- Login MODAL ---------- */
-#pg_login.modal {
-	width: calc(100% - 20px);
-	min-height: 0px !important;
-	height: 200px !important;
-	left: 9px;
-	margin-top: -100px;
-	top: 50%;
-	border-radius: 10px;
-	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
-	border: 1px solid #999;
-	ion-content {
-		padding: 5px;
-	}
-
-	.header{
-		text-align: center;
-		font-size: 20px;
-	}
-	.cancelButton{
-		color: green;
-	}
-	.nextButton{
-		width: 100%;
-		color: white;
-		background-color: green;
-	}
-}
-
-/* ---------- BOOKINGS STOPS MODAL ---------- */
-.stop-selector.modal {
-	width: calc(100% - 20px);
-	min-height: calc(100% - 40px);
-	left: 9px;
-	top: 19px;
-	border-radius: 10px;
-	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
-	border: 1px solid #999;
-
-	.scroll, ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-	}
-
-	ui-gmap-google-map, .angular-google-map {
-		height: calc(100% - 240px);
-	}
-
-	.gmnoprint, .gm-style-cc {
-		display:none;
-	}
-
-	.ion-list-header {
-		height: 30px;
-	}
-
-	.stopslist {
-		height: 210px;
-		overflow-y: scroll;
-		overflow-x: hidden;
-
-		.item-radio {
-			.radio-icon {
-				padding: 0px;
-				top: 2px;
-				left: 16px;
-
-				&:before {
-					visibility: visible;
-					width: 15px;
-					height: 15px;
-					font-size: 16px;
-					background-color: #d6d6d6;
-					border-radius: 9px;
-					line-height: 1;
-					box-shadow: inset 2px 2px 2px rgba(0,0,0,0.2);
-					content: '';
-				}
-			}
-
-			.item-content {
-				padding: 10px 0px 10px 40px;
-				font-size: 14px;
-
-				.time {
-					float: left;
-					min-height: 38px;
-					margin-right: 10px;
-				}
-			}
-		}
-
-		.item-radio input:checked + .radio-content .radio-icon:before {
-			background-color: $stable;
-		}
 	}
 }
 
@@ -1558,31 +1409,36 @@ ion-list {
 }
 
 #pg_tickets {
-	.scroll, section.login {
+	.scroll {
 		height: 100%;
+		background-color: #FFF;
 	}
 
-	.loginpls {
-		height: 170px;
+	.intro {
+		height: 100%;
 		text-align: center;
-		position: relative;
-		top: 50%;
-		margin: -85px 10px 10px 10px;
-		padding: 20px 0px;
-		background-color: #FFF;
-		border-radius: 20px;
-		box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+		display: flex;
+		flex-direction: column;
 
-		.icon {
-			font-size: 40px;
-			display: inline-block;
+		.gap {
+			flex-grow: 1;
+		}
+
+		.msg {
+			padding-top: 135px;
+			background: url('../img/bg_tickets.png') no-repeat center top;
+			flex-grow: 0;
+
+			.title {
+				font-size: 14px;
+				font-weight: bold;
+				color: $stable;
+				margin-bottom: 20px;
 		}
 
 		.txt {
-			font-size: 16px;
-			margin: 10px 0px 20px 5px;
-			display: inline-block;
-			text-align:left;
+				width: 200px;
+				margin: 0px auto;
 		}
 	}
 
@@ -1592,6 +1448,12 @@ ion-list {
 		text-align: center;
 		text-decoration: none;
 		bottom: initial;
+			margin-top: 30px;
+		}
+
+		#btnloginpls:active {
+			margin-top: 33px;
+		}
 	}
 
 	ion-list ion-item.item {
@@ -1737,11 +1599,19 @@ ion-list {
 					/*padding-bottom: 34%;*/
 					padding-bottom: 30.7%;
 					position: relative;
-					background-color: #000;
 
-					.code {
+					#qrcodebg {
+						width: 100%;
+						height: 100%;
 						position: absolute;
-						color: #FFF;
+						color: #000;
+
+						canvas, img {
+							width: 100%;
+							position: absolute;
+							top: 0;
+							left: 0;
+						}
 					}
 				}
 
@@ -1770,7 +1640,9 @@ ion-list {
 					border-radius: 10px;
 					box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 					padding: 5px 5px 5px 130px;
-					background: url('../img/logo-aedge.jpg') left 5px center no-repeat #F5F5F5;
+					background-repeat: no-repeat;
+					background-position: left 5px center;
+					background-color: #F5F5F5;
 					background-size: auto 30px;
 
 					.cname {
@@ -1900,101 +1772,6 @@ ion-list {
   }
 }
 
-#pg_login {
-	.scroll {
-		height: 100%;
-		padding: 10px 16px;
-		background-color: $stable;
-		color: #FFF;
-	}
-
-	.content {
-		max-width: 400px;
-		margin: 0px auto;
-		padding-top: 30px;
-
-		a {
-			color: #e8d16b;
-		}
-
-		.err {
-			height: 26px;
-			width: 100%;
-			color: #FFF;
-			text-shadow: 1px 1px 1px #333;
-			text-align: center;
-			line-height: 26px;
-			margin-bottom: 5px;
-			background-color: rgba(255,50,50,0.7);
-			border-radius: 5px;
-			position: absolute;
-			top: 0;
-
-			.icon {
-				font-size: 24px;
-				position: absolute;
-			}
-
-			.txt {
-				padding-left: 25px;
-			}
-		}
-
-		.ng-hide-remove.err {
-			-webkit-animation:0.3s growanim;
-			animation:0.3s growanim;
-		}
-
-		.ng-hide-add.err  {
-			-webkit-animation:0.3s shrinkanim;
-			animation:0.3s shrinkanim;
-		}
-
-		.holder {
-			background-color: #FFF;
-			padding: 10px;
-			font-size: 20px;
-			line-height: 30px;
-		}
-
-		input {
-			width: calc(100% - 95px);
-			height: 30px;
-			border: none;
-			position: absolute;
-			background-color: transparent;
-			font-size: 20px;
-			line-height: 30px;
-			margin-left: 75px;
-		}
-
-		.phtxt {
-			color: #8e8e8e;
-			padding-left: 30px;
-
-			.icon {
-				font-size: 30px;
-				position: absolute;
-				left: 16px;
-			}
-		}
-
-		.loginqn {
-			display: block;
-			margin: 10px 0px 20px 0px;
-			padding-left: 30px;
-			line-height: 24px;
-
-			.icon {
-				font-size: 24px;
-				position: absolute;
-				left: 5px;
-			}
-
-		}
-	}
-}
-
 .loginfaq.modal {
 	.scroll {
 		height: 100%;
@@ -2035,17 +1812,6 @@ ion-list {
 			}
 		}
 	}
-}
-
-#pg_smscode {
-	.scroll {
-		height: 100%;
-		padding: 10px 16px;
-		background-color: $stable;
-		color: #FFF;
-	}
-
-
 }
 
 #pg_suggestions {

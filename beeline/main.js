@@ -15,7 +15,7 @@ import CreditCardInputService from './services/CreditCardInputService.js';
 // Controller Imports
 import RoutesMapController from './controllers/RoutesMapController.js';
 import RoutesListController from './controllers/RoutesListController.js';
-import BookingController from './controllers/BookingController.js';
+import BookingStopsController from './controllers/BookingStopsController.js';
 import BookingDatesController from './controllers/BookingDatesController.js';
 import BookingConfirmationController from './controllers/BookingConfirmationController.js';
 import BookingSummaryController from './controllers/BookingSummaryController.js';
@@ -24,6 +24,8 @@ import TicketsController from './controllers/TicketsController.js';
 import TicketDetailController from './controllers/TicketDetailController.js';
 import SettingsController from './controllers/SettingsController.js';
 import IntroSlidesController from './controllers/IntroSlidesController.js';
+import LoginController from './controllers/LoginController';
+import VerifyController from './controllers/VerifyController';
 // Directive Imports
 import RevGeocode from './directives/revGeocode/revGeocode';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
@@ -33,6 +35,7 @@ import routeItem from './directives/routeItem/routeItem.js';
 import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
 import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
 import QtyInput from './directives/qtyInput/qtyInput';
+
 // Configuration Imports
 import configureRoutes from './router.js';
 import AngularGoogleMap from 'angular-google-maps';
@@ -78,7 +81,7 @@ var app = angular.module('beeline', [
 .factory('DateService', DateService)
 .factory('CreditCardInputService', CreditCardInputService)
 .factory('StripeService', StripeService)
-.controller('BookingController', BookingController)
+.controller('BookingStopsController', BookingStopsController)
 .controller('BookingDatesController', BookingDatesController)
 .controller('BookingSummaryController', BookingSummaryController)
 .controller('BookingConfirmationController', BookingConfirmationController)
@@ -89,6 +92,8 @@ var app = angular.module('beeline', [
 .controller('RoutesMapController', RoutesMapController)
 .controller('RoutesListController', RoutesListController)
 .controller('IntroSlidesController', IntroSlidesController)
+.controller('LoginController', LoginController)
+.controller('VerifyController', VerifyController)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)
@@ -105,6 +110,8 @@ var app = angular.module('beeline', [
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
+  /* non-JS scrolling does not work on some devices */
+  $ionicConfigProvider.scrolling.jsScrolling(true);
 })
 .config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({

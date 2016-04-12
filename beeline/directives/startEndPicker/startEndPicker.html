@@ -1,50 +1,50 @@
 <div class="locinputs">
-	<label class="item item-input pickup"
-		ng-show="true || !setPoint || setPoint == 'start'"
-		>
-		<input class="input-start"
+  <label class="item item-input pickup"
+    ng-show="true || !setPoint || setPoint == 'start'"
+    >
+    <input class="input-start"
             type="search"
             placeholder="Enter your pick-up location"
             ng-model="startPoint.text"
             ng-focus="inputFocus($event, 'start')"
             ng-blur="inputBlur($event, 'start')"
-						 />
-		<button class="item item-icon-right"
+             />
+    <button class="item item-icon-right"
         ng-click="reset('start')">
-		    <i class="icon ng-hide ion-ios-close-outline"
+        <i class="icon ng-hide ion-ios-close-outline"
           ng-hide="startPoint.text == ''"></i>
-		</button>
-	</label>
+    </button>
+  </label>
 
-	<label class="item item-input dropoff"
-				ng-show="!setPoint || setPoint == 'end'">
-		<input class="input-end"
+  <label class="item item-input dropoff"
+        ng-show="!setPoint || setPoint == 'end'">
+    <input class="input-end"
           type="search"
           placeholder="Enter your drop-off location"
           ng-model="endPoint.text"
           ng-focus="inputFocus($event, 'end')"
-					ng-blur="inputBlur($event, 'end')" />
+          ng-blur="inputBlur($event, 'end')" />
     <button class="item item-icon-right"
         ng-click="reset('end')">
-		    <i class="icon ng-hide ion-ios-close-outline"
+        <i class="icon ng-hide ion-ios-close-outline"
           ng-hide="endPoint.text == ''"></i>
-		</button>
-	</label>
-	<div ng-show="!setPoint">
-  	<ng-transclude></ng-transclude>
-	</div>
+    </button>
+  </label>
+  <div ng-show="!setPoint">
+    <ng-transclude></ng-transclude>
+  </div>
 </div>
 
 <div ng-show="inFocus == 0">
-	<div class="centmark" ng-hide="setPoint == null"></div>
-	<div class="locateme" ng-click="getUserLocation()"></div>
-	<button
-		class="btnnext"
+  <div class="centmark" ng-hide="setPoint == null"></div>
+  <div class="locateme" ng-click="getUserLocation()"></div>
+  <button
+    class="btnnext"
     ng-click="nextBtnClick()"
     ng-disabled="!nextAllowed()">
-	  {{ setPoint == 'start' ? 'Set pick-up point' :
-	     setPoint == 'end' ? 'Set drop-off point' : prompt}}
-	</button>
+    {{ setPoint == 'start' ? 'Set pick-up point' :
+       setPoint == 'end' ? 'Set drop-off point' : prompt}}
+  </button>
 </div>
 <ui-gmap-google-map center="map.center"
                     zoom="map.zoom"
@@ -52,7 +52,7 @@
                     bounds="map.bounds"
                     control="map.control"
                     events="map.events"
-										ready="mapReady()"
+                    ready="mapReady()"
                     data-tap-disabled="true">
   <ui-gmap-marker
   idkey="0"

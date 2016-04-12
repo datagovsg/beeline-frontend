@@ -1,0 +1,39 @@
+<ion-view id="pg_settings" view-title="Settings">
+  <ion-content>
+		<div class="status" ng-if="user">
+		  <h3>{{user.name}}</h3>
+      Telephone: {{user.telephone}}
+
+      <div>
+  			<button ng-click="logOut()">Log Out</button>
+      </div>
+		</div>
+
+		<div class="status" ng-if="!user">
+			<div class="msg">
+        You are not logged in.
+      </div>
+			<button ng-click="logIn()">Log In</button>
+		</div>
+
+    <div ng-if="user">
+      <div class="ion-list-header">Account</div>
+      <ion-list id="userinfo">
+          <ion-item>Name <span>{{user.name}}</span></ion-item>
+          <ion-item>Email <span>{{user.email}}</span></ion-item>
+          <ion-item>Phone No. <span>{{user.telephone}}</span></ion-item>
+          <ion-item ng-click="showBookingHistory()">
+      			Booking History
+      			<i class="icon ion-ios-arrow-right"></i>
+      		</ion-item>
+      </ion-list>
+		</div>
+
+		<div class="ion-list-header">About Beeline</div>
+  		<ion-list id="toggles">
+        <ion-item><a ui-sref='intro'>Quick Tour</a></ion-item>
+        <ion-item>FAQ</ion-item>
+        <ion-item>Random Settings</ion-item>
+  		</ion-list>
+  </ion-content>
+</ion-view>

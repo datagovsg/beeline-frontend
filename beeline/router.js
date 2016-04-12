@@ -69,7 +69,7 @@ export default function($stateProvider, $urlRouterProvider) {
         template: '<ion-content>Whoa?</ion-content>',
         controller: ['$state', 'BookingService', function ($state, bookingService) {
             if (!bookingService.last) {
-                $state.go('tabs.booking-pickup');
+                $state.go('tabs.bookingPickup');
             }
             else {
                 $state.go(bookingService.last);
@@ -78,24 +78,24 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('tabs.booking-pickup', {
-    url: '/booking/pickup',
+  .state('tabs.bookingPickup', {
+    url: '/booking/pickup/:routeId',
     views: {
       'tab-booking': {
-        templateUrl: 'templates/tab-booking.html',
-        controller: 'BookingController',
+        templateUrl: 'templates/tab-booking-stops.html',
+        controller: 'BookingStopsController',
       }
     }
   })
-  .state('tabs.booking-dropoff', {
-    url: '/booking/dropoff',
-    views: {
-      'tab-booking': {
-        templateUrl: 'templates/tab-booking.html',
-        controller: 'BookingController',
-      }
-    }
-  })
+  // .state('tabs.booking-dropoff', {
+  //   url: '/booking/dropoff',
+  //   views: {
+  //     'tab-booking': {
+  //       templateUrl: 'templates/tab-booking.html',
+  //       controller: 'BookingStopsController',
+  //     }
+  //   }
+  // })
   .state('tabs.booking-dates', {
     url: '/booking/dates',
     views: {
@@ -167,30 +167,21 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/settings',
     views: {
       'tab-settings': {
-        templateUrl: 'templates/5_0_settings.html',
+        templateUrl: 'templates/tab-settings.html',
         controller: 'SettingsController'
       }
     }
   })
 
-  .state('tabs.settings-login', {
-    url: '/settings/login',
-    views: {
-      'tab-settings': {
-        templateUrl: 'templates/5_1_1_login.html',
-        controller: 'SettingsController'
-      }
-    }
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginController'
   })
-
-  .state('tabs.settings-login-verify', {
-    url: '/settings/login/verify',
-    views: {
-      'tab-settings': {
-        templateUrl: 'templates/5_1_2_verify.html',
-        controller: 'SettingsController'
-      }
-    }
+  .state('login-verify', {
+    url: '/login-verify',
+    templateUrl: 'templates/verify.html',
+    controller: 'VerifyController'
   });
 
   // if none of the above states are matched, use this as the fallback

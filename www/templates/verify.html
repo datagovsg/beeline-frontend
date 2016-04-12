@@ -1,0 +1,51 @@
+<ion-view id="pg_verify" view-title="Verification Code">
+	<ion-content>
+		<div class="overlay ng-hide" ng-show="login.showOverlay">
+			<div class="txt">Submitting code...</div>
+		</div>
+
+		<div class="content">
+			<div class="msg">
+				Please enter the code we sent to
+				<div class="telephone">+65 {{login.telephone}}</div>
+			</div>
+
+			<div class="codebox">
+				<div class="err ng-hide" ng-show="login.errorMessage">
+					<i class="icon ion-alert-circled"></i>
+					<span class="txt">The code you entered was invalid</span>
+				</div>
+
+				<div class="cover" ng-click="focusCodeFields($event)"></div>
+				<input id="c0" class="digit" type="input" maxlength="1" ng-model="login.code[0]" ng-keyup="checkCodeFilled(0, 5)" />
+				<input id="c1" class="digit" type="input" maxlength="1" ng-model="login.code[1]" ng-keyup="checkCodeFilled(1, 5)" />
+				<input id="c2" class="digit" type="input" maxlength="1" ng-model="login.code[2]" ng-keyup="checkCodeFilled(2, 5)" />
+				<input id="c3" class="digit" type="input" maxlength="1" ng-model="login.code[3]" ng-keyup="checkCodeFilled(3, 5)" />
+				<input id="c4" class="digit" type="input" maxlength="1" ng-model="login.code[4]" ng-keyup="checkCodeFilled(4, 5)" />
+				<input id="c5" class="digit" type="input" maxlength="1" ng-model="login.code[5]" ng-keyup="checkCodeFilled(5, 5)" />
+			</div>
+
+			<hr/>
+
+			<div class="resend">
+				<button class="button button-block button-darkback"
+				ng-click="resend($event)">
+					Resend Code
+				</button>
+			</div>
+
+			<div class="resend">
+				<button class="button button-block button-darkback" ui-sref="login">
+					Enter a different telephone number
+				</button>
+			</div>
+		</div>
+		<!--<div class="spacing"></div>
+			Didn't receive your code?
+				<button ng-click="resend()"
+							ng-disabled="login.resendTimeout"
+							>Send a new code</button>
+				or <a ui-sref="login">enter a different telephone number</a>.
+		</div>-->
+	</ion-content>
+</ion-view>

@@ -5,5 +5,8 @@ export default [
             return {
                 restrict: 'E',
                 template: priceCalculatorTemplate,
+                scope: {
+                  'booking': '=',
+                }
             };
         }]
