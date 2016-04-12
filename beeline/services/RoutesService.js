@@ -1,4 +1,4 @@
-import qs from 'querystring';
+import querystring from 'querystring';
 import _ from 'lodash';
 
 // Adapter function to convert what we get from the server into what we want
@@ -18,12 +18,11 @@ function transformRouteData(data){
 
 export default function($http, SERVER_URL, UserService) {
   return {
+
     getRoute: function (routeId) {
       return $http.get(SERVER_URL + `/routes/${routeId}?include_trips=true`)
-        .then(function(response){
-          return response.data;
-        })
-        .then((route) => { /* Convert date values to date object */
+        .then(function(response){ return response.data; })
+        .then((route) => { // Convert date values to date object
           for (let trip of route.trips) {
             trip.date = new Date(trip.date);
             for (let tripStop of trip.tripStops) {
@@ -41,61 +40,20 @@ export default function($http, SERVER_URL, UserService) {
       });
     },
 
-    //Old Search Service stuff
-    data: {
-      startName: '',
-      endName: '',
-      startLat: '',
-      startLng: '',
-      endLat: '',
-      endLng: '',
-      arrivalTime: '2016-02-26 01:00:00+00',
-      startTime: new Date().getTime(),
-      endTime: new Date().getTime() + 30*24*60*60*1000,
-      lastresults: [],
-      lastkickstart: [],
-      isSubmitting: false
-    },
-    addReqData: function(sname, ename, slat, slng, elat, elng) {
-      this.data.startName = sname;
-      this.data.endName = ename;
-      this.data.startLat = slat;
-      this.data.startLng = slng;
-      this.data.endLat = elat;
-      this.data.endLng = elng;
-    },
-    getclosestroute: function() {
-      //return Promise object
-      return UserService.beeline({
-        method: 'GET',
-        url: '/routes/search_by_latlon?' + qs.stringify({
-          startLat: this.data.startLat,
-          startLng: this.data.startLng,
-          endLat: this.data.endLat,
-          endLng: this.data.endLng,
-          arrivalTime: this.data.arrivalTime,
-          startTime:  this.data.startTime,
-          endTime: this.data.endTime
-        }),
-      }).then(function(response) {
-        transformRouteData(response.data);
-        return response;
+    searchRoutes: function(startLat, startLng, endLat, endLng) {      
+      return $http.get(SERVER_URL + '/routes/search_by_latlon?' + querystring.stringify({
+        startLat: startLat,
+        startLng: startLng,
+        endLat: endLat,
+        endLng: endLng,
+        arrivalTime: '2016-02-26 01:00:00+00', //Doesn't do much right now so doesnt matter
+        startTime: new Date().getTime(), //Start of search date
+        endTime: new Date().getTime() + 30*24*60*60*1000 //End of search date
+      }))
+      .then(function(response) {
+        return transformRouteData(response.data);
       });
-    },
-    setresults: function(searchresults){
-      this.data.lastresults = searchresults;
-    },
-    setkickstart: function(searchkickstart){
-      this.data.lastkickstart = searchkickstart;
-    },
-    setArrivalTime: function(arrtime) {
-      arrtime = arrtime.split(':').map(x => parseInt(x))
-      var arrivalTime = new (
-        Date.bind.apply(Date, [{}, 2015, 1, 1].concat(arrtime)));
-
-      this.data.arrivalTime = arrivalTime.toISOString();
     }
-    //End Old Search Service stuff
 
   };
 }
