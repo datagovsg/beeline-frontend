@@ -23,6 +23,7 @@ import SuggestController from './controllers/SuggestController.js';
 import TicketsController from './controllers/TicketsController.js';
 import TicketDetailController from './controllers/TicketDetailController.js';
 import SettingsController from './controllers/SettingsController.js';
+import IntroSlidesController from './controllers/IntroSlidesController.js';
 import LoginController from './controllers/LoginController';
 import VerifyController from './controllers/VerifyController';
 import SearchResultsController from './controllers/SearchResultsController.js'
@@ -91,6 +92,7 @@ var app = angular.module('beeline', [
 .controller('TicketDetailController', TicketDetailController)
 .controller('RoutesMapController', RoutesMapController)
 .controller('RoutesListController', RoutesListController)
+.controller('IntroSlidesController', IntroSlidesController)
 .controller('LoginController', LoginController)
 .controller('VerifyController', VerifyController)
 .controller('SearchResultsController', SearchResultsController)
