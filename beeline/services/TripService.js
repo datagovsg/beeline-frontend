@@ -33,9 +33,7 @@ export default function TripService($http) {
 			DriverPings: function(id) {
 				return $http.get("http://staging.beeline.sg/trips/"+id+"/latest_info", {
                     headers: {}
-				}).then(function(response){
-                    pings = response.data;
-                });
+				});
 			},
 
 			getDriverPings: function() {
