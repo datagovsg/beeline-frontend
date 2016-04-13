@@ -7,10 +7,9 @@ export default [
   '$ionicPopup',
   'BookingService',
   'UserService',
-  'CreditCardInputService',
   'StripeService',
   function ($scope, $state, $http, $ionicPopup,
-    BookingService, UserService, CreditCardInputService,
+    BookingService, UserService,
     StripeService) {
 
         $scope.currentBooking = {};
@@ -68,21 +67,7 @@ export default [
                 }
                 else { // Last resort :(
                   throw new Error("There was some difficulty contacting the payment gateway." +
-                    " Please check your Internet connection")
-                  var cardDetails = await CreditCardInputService.getInput()
-                  if (cardDetails == null)
-                    return;
-                  var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
-                      number:     cardDetails["card_number"],
-                      cvc:        cardDetails["cvv"],
-                      exp_month:  cardDetails["expiry_month"],
-                      exp_year:   cardDetails["expiry_year"],
-                  }, (statusCode, response) => {
-                      if (response.error)
-                          reject(response.error.message);
-                      else
-                          resolve(response);
-                  }));
+                    " Please check your Internet connection");
                 }
 
                 if (!('id' in stripeToken)) {

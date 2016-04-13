@@ -11,7 +11,6 @@ import TicketService from './services/TicketService.js';
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
-import CreditCardInputService from './services/CreditCardInputService.js';
 // Controller Imports
 import RoutesMapController from './controllers/RoutesMapController.js'; //OK
 import RoutesListController from './controllers/RoutesListController.js'; //OK
@@ -80,7 +79,6 @@ var app = angular.module('beeline', [
 .factory('BookingService', BookingService)
 .factory('OneMapService', OneMapService)
 .factory('DateService', DateService)
-.factory('CreditCardInputService', CreditCardInputService)
 .factory('StripeService', StripeService)
 .controller('BookingStopsController', BookingStopsController)
 .controller('BookingDatesController', BookingDatesController)
