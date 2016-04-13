@@ -47,6 +47,10 @@
   @include big-yellow();
 }
 
+.big-yellow-fixed {
+  @include big-yellow-fixed();
+}
+
 /* Error messages during form validation */
 .err {
 	height: 26px;
