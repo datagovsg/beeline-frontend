@@ -2,6 +2,13 @@
   Common design stuff that we use
 **/
 
+/* Big yellow buttons --
+      e.g.
+      1. Suggest (no routes) -> suggest new route.
+      2. Routes -> Set pick-up stop / Next / ...
+  N.B. if you want to use upper-case like in the prototypes, use
+  text-transform. The text in the HTML should themselves be properly capitalized
+*/
 @mixin big-yellow() {
   width: 260px;
   height: 15px;
@@ -17,6 +24,7 @@
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   color: #333;
   z-index: 3;
+  /* text-transform: uppercase; */ /* To match the prototype */
 
   &:active {
     border-bottom: 1px solid #f7c639;
@@ -30,12 +38,13 @@
   }
 }
 
+/* For login/verify pages, where we want to limit the width of content */
 @mixin narrow-content() {
     max-width: 400px;
     margin: 0px auto;
 }
 
-
+/* For Adrian's stuff -- fixed positioning in certain places */
 @mixin big-yellow-fixed() {
   @include big-yellow();
   margin-left: -130px;
@@ -49,31 +58,31 @@
 
 /* Error messages during form validation */
 .err {
-	height: 26px;
-	width: 100%;
-	color: #FFF;
-	text-shadow: 1px 1px 1px #333;
-	text-align: center;
-	line-height: 26px;
-	margin-bottom: 5px;
-	background-color: rgba(255,50,50,0.7);
-	border-radius: 5px;
-	top: 0;
+  height: 26px;
+  width: 100%;
+  color: #FFF;
+  text-shadow: 1px 1px 1px #333;
+  text-align: center;
+  line-height: 26px;
+  margin-bottom: 5px;
+  background-color: rgba(255,50,50,0.7);
+  border-radius: 5px;
+  top: 0;
 
-	.icon {
-		font-size: 24px;
+  .icon {
+    font-size: 24px;
     float: left;
-	}
+  }
 
-	.txt {
-		padding-left: 25px;
-	}
+  .txt {
+    padding-left: 25px;
+  }
   &.hide-err {
     visibility: hidden;
   }
 }
 
-/* Popups */
+/* Popups. E.g. Suggestion -> Delete -> Are you sure you want to delete? */
 .popup-container .popup {
   border-radius: 5px;
   overflow: hidden;
@@ -85,16 +94,24 @@
   background-color: #eee;
 }
 
+/* These buttons also appear in Suggestion -> Delete -> Are you sure you want to delete? */
 .button {
   border: solid 1px $stable;
 }
 
+/* OK button */
+.button-primary {
+
+}
+
+/* Cancel button */
 .button-default {
   background-color: #eee;
   border: solid 1px $stable;
   color: #000;
 }
 
+/* For use with dark backgrounds. Login -> Verify -> Re-send verification token */
 .button-darkback {
   border: solid 1px #FFF;
   color: #FFF;
