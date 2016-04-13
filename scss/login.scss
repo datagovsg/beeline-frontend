@@ -75,3 +75,45 @@
 		}
 	}
 }
+
+.loginfaq.modal {
+  .scroll {
+    height: 100%;
+    padding: 10px 16px;
+    background-color: #FFF;
+
+    h4 {
+      font-weight: bold;
+      margin: 0px;
+      padding: 10px 0px 20px 0px;
+    }
+
+    section {
+      margin: 0px 0px 20px 0px;
+
+      ul {
+        padding-left: 25px;
+
+        li {
+          background-color: #E5E5E5;
+          padding: 5px 10px;
+          border-radius: 5px;
+          list-style-type: decimal-leading-zero;
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 16px;
+      border-bottom: 1px solid #333;
+      margin-bottom: 10px;
+
+      .icon {
+        margin-right: 5px;
+        padding-left: 5px;
+      }
+    }
+  }
+}

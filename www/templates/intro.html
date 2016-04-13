@@ -1,38 +1,50 @@
 <!-- Placeholder Intro Template -->
 <ion-view id="pg_intro">
-    <ion-slides  options="options" id="intro-slides">
-      <ion-slide-page>
-        <div>
-            <header>Book a ride</header>
-            <img src="img/introBook.png">
-            <p class="notes">
-                Search for your route and book a guaranteed seat on a
-                direct bus to your destination.
-            </p>
-        </div>
-      </ion-slide-page>
-      <ion-slide-page>
-        <div>
-            <header>Suggest a new route</header>
-            <img src="img/introSuggest.png">
-            <p class="notes">
-                No suitable routes for you? Submit suggestions
-                to convince operators to propose new routes.
-            </p>
-        </div>
-      </ion-slide-page>
-      <ion-slide-page>
-        <div>
-            <header>Activate and book rides</header>
-            <img src="img/introActivate.png">
-            <p class="notes">
-                Operators will propose routes based on suggestions.
-                If enough people book the route, it will be activated!
-            </p>
-        </div>
-      </ion-slide-page>
-    </ion-slides>
-    <footer>
-        <a ui-sref='tabs.routes.map'>SKIP</a>
-    </footer>
+  <ion-slides  options="options" id="intro-slides"
+      delegate-handle="intro-slides"
+      on-slide-changed="onSlideChanged($index)">
+    <ion-slide-page>
+      <div>
+          <header>Book a ride</header>
+          <img src="img/introBook.png">
+          <p class="notes">
+              Search for your route and book a guaranteed seat on a
+              direct bus to your destination.
+          </p>
+      </div>
+    </ion-slide-page>
+    <ion-slide-page>
+      <div>
+          <header>Suggest a new route</header>
+          <img src="img/introSuggest.png">
+          <p class="notes">
+              No suitable routes for you? Submit suggestions
+              to convince operators to propose new routes.
+          </p>
+      </div>
+    </ion-slide-page>
+    <ion-slide-page>
+      <div>
+          <header>Activate and book rides</header>
+          <img src="img/introActivate.png">
+          <p class="notes">
+              Operators will propose routes based on suggestions.
+              If enough people book the route, it will be activated!
+
+              <br/>
+              <br/>
+              <button ui-sref="tabs.routes.map"
+              class="button button-darkback">
+                Start Booking on Beeline Today!
+              </button>
+          </p>
+
+      </div>
+    </ion-slide-page>
+  </ion-slides>
+  <footer>
+    <a ui-sref='tabs.routes.map'>
+      SKIP
+    </a>
+  </footer>
 </ion-view>

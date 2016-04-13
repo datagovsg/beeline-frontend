@@ -19,9 +19,9 @@
     <div ng-if="user">
       <div class="ion-list-header">Account</div>
       <ion-list id="userinfo">
-          <ion-item>Name <span>{{user.name}}</span></ion-item>
-          <ion-item>Email <span>{{user.email}}</span></ion-item>
-          <ion-item>Phone No. <span>{{user.telephone}}</span></ion-item>
+          <ion-item ng-click="updateUserInfo('name')">Name <span>{{user.name}}</span></ion-item>
+          <ion-item ng-click="updateUserInfo('email')">Email <span>{{user.email}}</span></ion-item>
+          <ion-item ng-click="updateUserInfo('telephone')">Phone No. <span>{{user.telephone}}</span></ion-item>
           <ion-item ng-click="showBookingHistory()">
       			Booking History
       			<i class="icon ion-ios-arrow-right"></i>
@@ -31,9 +31,15 @@
 
 		<div class="ion-list-header">About Beeline</div>
   		<ion-list id="toggles">
-        <ion-item><a ui-sref='intro'>Quick Tour</a></ion-item>
-        <ion-item>FAQ</ion-item>
-        <ion-item>Random Settings</ion-item>
+        <ion-item ui-sref='intro'>Quick Tour</ion-item>
+        <ion-item ng-click="viewFAQ()">
+          <!-- using Javascript here because we want to enforce
+          viewing a non-local page in inAppBrowser -->
+          FAQ
+        </ion-item>
+        <ion-item ng-click="viewPrivacyPolicy()">Privacy Policy</ion-item>
+        <ion-item ng-click="viewContactUs()">Contact Us
+        </ion-item>
   		</ion-list>
   </ion-content>
 </ion-view>

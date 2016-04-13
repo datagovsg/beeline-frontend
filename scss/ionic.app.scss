@@ -29,7 +29,9 @@ $stable:              #4b3863 !default;
 @import "scss/login";
 @import "scss/verify";
 @import "scss/suggestions";
+@import "scss/tab-settings";
 @import "scss/introSlides";
+@import "scss/privacyPolicy";
 
 body, .ionic-body, input, select, button {
   font-family: 'Ubuntu', 'Arial';
@@ -1725,91 +1727,6 @@ ion-list {
 
     .gmnoprint, .gm-style-cc {
       display:none;
-    }
-  }
-}
-
-#pg_settings {
-  .status {
-    text-align: center;
-    background-color: #FFF;
-    padding: 25px 0px;
-
-    .msg {
-      font-size: 13px;
-    }
-
-    button {
-      width: 260px;
-      border: 1px solid #a097ad;
-      border-radius: 40px;
-      background-color: #FFF;
-      color: $stable;
-      font-size: 16px;
-      padding: 10px 0px;
-      margin-top: 10px;
-    }
-  }
-
-  #userinfo {
-    span {
-      float: right;
-      color: #999;
-    }
-
-    .icon {
-      font-size: 25px;
-      font-weight: bold;
-      position: absolute;
-      right: 16px;
-      top: 6px;
-    }
-  }
-
-  ion-item a {
-    color: inherit;
-    text-decoration: none;
-  }
-}
-
-.loginfaq.modal {
-  .scroll {
-    height: 100%;
-    padding: 10px 16px;
-    background-color: #FFF;
-
-    h4 {
-      font-weight: bold;
-      margin: 0px;
-      padding: 10px 0px 20px 0px;
-    }
-
-    section {
-      margin: 0px 0px 20px 0px;
-
-      ul {
-        padding-left: 25px;
-
-        li {
-          background-color: #E5E5E5;
-          padding: 5px 10px;
-          border-radius: 5px;
-          list-style-type: decimal-leading-zero;
-          margin-bottom: 10px;
-        }
-      }
-    }
-
-    .title {
-      font-weight: bold;
-      font-size: 16px;
-      border-bottom: 1px solid #333;
-      margin-bottom: 10px;
-
-      .icon {
-        margin-right: 5px;
-        padding-left: 5px;
-      }
     }
   }
 }
