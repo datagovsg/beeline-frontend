@@ -18,12 +18,20 @@
     <section>
       <div class="ion-list-header">Available Routes</div>
       <ion-list id="booklist">
-        <route-item ng-repeat="route in data.activeRoutes">foobar</route-item>
+        <ion-item ng-repeat="route in data.activeRoutes"
+                  ui-sref="tabs.bookingPickup({ routeId: route.id})">
+          <route-item
+            route="route">foobar</route-item>
+
+          <a class="item-icon-right" href="#">
+            <i class="icon ion-ios-arrow-right"></i>
+          </a>
+        </ion-item>
       </ion-list>
     </section>
 
     <!-- TODO Pending Routes Section -->
     <!-- TODO Kickstart Routes Section -->
-    
+
   </ion-content>
 </ion-view>

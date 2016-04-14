@@ -32,6 +32,8 @@ $stable:              #4b3863 !default;
 @import "scss/tab-settings";
 @import "scss/introSlides";
 @import "scss/privacyPolicy";
+@import "scss/routeItem";
+@import "scss/routeList";
 
 body, .ionic-body, input, select, button {
   font-family: 'Ubuntu', 'Arial';
@@ -275,103 +277,6 @@ ion-list {
 }
 
 
-/* ----- General styling for route information listings ----- */
-.routeinfo {
-  position:relative;
-
-  .busnum {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    background-color: #4b3863;
-    color: #FFF;
-    line-height: 40px;
-    border-radius: 20px;
-    margin-right: 10px;
-    float:left;
-  }
-
-  .active {
-    background-color: #bdbdbd;
-    color: #FFF;
-    font-size: 0.8em;
-    line-height: 0.9em;
-    padding: 5px;
-    border-radius: 4px;
-    margin: 5px 0px 0px 10px;
-    display: inline-block;
-  }
-
-  .title {
-    position: relative;
-    margin-bottom: 10px;
-
-    .name {
-      width: calc(100% - 50px);
-      font-size: 20px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      line-height: 40px;
-      border-bottom: 1px solid #CCC;
-    }
-  }
-
-
-  .stops {
-    width: calc(100% - 50px);
-    position: relative;
-    float: left;
-
-    .line {
-      width: 2px;
-      height: 20px;
-      background: url('../img/dash.png') center center;
-      top: 10px;
-      left: 4px;
-      position: absolute;
-    }
-
-    .start, .end {
-      line-height: 20px;
-      background: url('../img/icon_stop.png') left center no-repeat;
-      background-size: 10px 10px;
-      padding-left: 15px;
-      z-index: 5;
-      position: relative;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .time {
-      text-transform: lowercase;
-      margin-right: 7px;
-    }
-
-    .road {
-      text-transform: capitalize;
-    }
-  }
-
-  .kspend {
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    .dleft {
-      background: url('../img/icon_hourglass.png') left center no-repeat;
-      padding-left: 15px;
-      line-height: 20px;
-    }
-
-    .sdate {
-      background: url('../img/icon_clock.png') left center no-repeat;
-      padding-left: 15px;
-      line-height: 20px;
-    }
-  }
-}
 
 /* ----- Remove Google logo and Map marker from Autocomplete dropdown ----- */
 .pac-container {
@@ -551,53 +456,6 @@ ion-list {
   }
 }/* #pg_routemap */
 
-/* ---------- ROUTE LIST PAGE ---------- */
-#pg_routelist {
-  color: #444;
-
-  .loader {
-    width: 100%;
-    height: 300px;
-    background: url('../img/loader120.gif') no-repeat center center transparent;
-    background-size: 120px auto;
-
-    .txt {
-      width: 100%;
-      text-align: center;
-      margin-top: 210px;
-      position: absolute;
-      font-size: 16px;
-    }
-  }
-
-  #regsel {
-    background-color: #FFF;
-    text-align:center;
-    border-bottom: 1px solid #ddd;
-    padding: 3px;
-
-    label {
-      margin-right: 5px;
-    }
-
-    select {
-      padding: 10px 0px;
-      border: 0px;
-      background: transparent;
-      cursor: pointer;
-    }
-  }
-
-  #booklist {
-    .routeinfo .stops {
-      width: calc(100% - 80px);
-    }
-
-    .item-icon-right {
-      padding: 0px;
-    }
-  }
-}
 
 /* ---------- SEARCH RESULTS MODAL ---------- */
 .search_results.modal {
@@ -799,12 +657,16 @@ ion-list {
     display:none;
   }
 
-  .routeinfo {
+  route-item {
+    padding: 10px;
     width: 100%;
     height: 60px;
-    padding: 10px 16px;
     background-color: #FFF;
     z-index: 1;
+
+    .active {
+      display: none;
+    }
   }
 
   #userpos {
@@ -1566,7 +1428,7 @@ ion-list {
 				left: 0px;
 				transition: all 1000ms linear;
 			}
-			
+
 			#refreshbar.reset {
 				transition: all 0ms linear;
 			}

@@ -1,0 +1,65 @@
+
+/* ----- General styling for route information listings ----- */
+route-item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+
+  .busnum {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    background-color: #4b3863;
+    color: #FFF;
+    line-height: 40px;
+    border-radius: 20px;
+    margin-right: 10px;
+    flex: 0 0 auto;
+  }
+
+  .stops {
+    flex: 1 1 auto;
+    position: relative;
+
+    .active {
+      background-color: #bdbdbd;
+      color: #FFF;
+      font-size: 0.8em;
+      line-height: 0.9em;
+      padding: 5px;
+      border-radius: 4px;
+      margin: 5px 0px 0px 10px;
+      display: inline-block;
+    }
+
+    .line {
+      width: 2px;
+      height: 20px;
+      background: url('../img/dash.png') center center;
+      top: 10px;
+      left: 4px;
+      position: absolute;
+    }
+
+    .start, .end {
+      line-height: 20px;
+      background: url('../img/icon_stop.png') left center no-repeat;
+      background-size: 10px 10px;
+      padding-left: 15px;
+      z-index: 5;
+      position: relative;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .time {
+      text-transform: lowercase;
+      margin-right: 7px;
+    }
+
+    .road {
+      text-transform: capitalize;
+    }
+  }
+}
