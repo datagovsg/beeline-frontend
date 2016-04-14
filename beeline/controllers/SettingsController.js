@@ -129,12 +129,12 @@ function(
   }
 
   $scope.viewFAQ = function() {
-    var notHttp = document.URL.indexOf( 'http://' ) === -1
-          && document.URL.indexOf( 'https://' ) === -1;
+    var notHttp = !document.URL.startsWith('http://') &&
+      !document.URL.startsWith('https://')
 
     if (window.device || notHttp || window.cordova) {
       if (window.cordova.InAppBrowser) {
-        window.cordova.InAppBrowser.open('http://www.beeline.sg/#faq');
+        window.cordova.InAppBrowser.open('http://www.beeline.sg/#faq', '_blank');
       }
     }
     else {
@@ -145,16 +145,22 @@ function(
   $scope.viewPrivacyPolicy = function() {
     if (!$scope.privacyPolicyModal) {
       $scope.privacyPolicyModal = $ionicModal.fromTemplate(
-        require('../templates/privacyPolicy.html')
+        require('../templates/privacyPolicy.html'),
+        {
+          scope: $scope,
+        }
       )
     }
     $scope.privacyPolicyModal.show();
   }
 
   $scope.viewContactUs = function() {
-    if (!$scope.privacyPolicyModal) {
-      $scope.contactUsModal = $ionicModal.fromTemplate(
-        require('../templates/contactUs.html')
+    if (!$scope.contactUsModal) {
+      $scope.contactUsModal = $scope.contactUsModal || $ionicModal.fromTemplate(
+        require('../templates/contactUs.html'),
+        {
+          scope: $scope,
+        }
       )
     }
     $scope.contactUsModal.show();
