@@ -12,18 +12,21 @@
       </div>
     </section>
 
-    <!-- TODO Recently booked section -->
+    <!-- Recent Routes Section -->
+    <section>
+      <div class="ion-list-header">Recently Booked Routes</div>
+      <ion-list id="booklist">
+        <route-item ng-repeat="route in data.recentActiveRoutes">foobar</route-item>
+      </ion-list>
+    </section>
 
     <!-- Available Routes Section -->
     <section>
       <div class="ion-list-header">Available Routes</div>
       <ion-list id="booklist">
-        <route-item ng-repeat="route in data.activeRoutes">foobar</route-item>
+        <route-item ng-repeat="route in data.remainingActiveRoutes">foobar</route-item>
       </ion-list>
     </section>
-
-    <!-- TODO Pending Routes Section -->
-    <!-- TODO Kickstart Routes Section -->
     
   </ion-content>
 </ion-view>

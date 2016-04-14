@@ -36,11 +36,24 @@ export default function($http, SERVER_URL, UserService) {
     },
 
     // Retrive the data on all the routes
-    getRoutes: function(){
+    getRoutes: function() {
       return $http.get(SERVER_URL + '/routes?include_trips=true')
       .then(function(response){
         return transformRouteData(response.data);
       });
+    },
+
+    getRecentRoutes: function() {
+      if (UserService.isLoggedInReal()) {
+        return UserService.beeline({
+          method: 'GET',
+          url: '/routes/recent?limit=10'
+        }).then(function(response) {
+          return transformRouteData(response.data);
+        });
+      } else {
+        return Promise.resolve([]);
+      }
     },
 
     // Get the list of routes close to given set of coordinates
