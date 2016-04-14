@@ -44,12 +44,12 @@ export default function($http, SERVER_URL, UserService) {
     },
 
     getRecentRoutes: function() {
-      if (UserService.isLoggedInReal()) {
+      if (UserService.isLoggedIn()) {
         return UserService.beeline({
           method: 'GET',
           url: '/routes/recent?limit=10'
         }).then(function(response) {
-          return transformRouteData(response.data);
+          return response.data;
         });
       } else {
         return Promise.resolve([]);
