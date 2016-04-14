@@ -1556,6 +1556,20 @@ ion-list {
       border-top: 1px solid #CCC;
       padding: 10px 16px 10px 90px;
       background: url('../img/anim-bus.gif') no-repeat left 10px center;
+
+			#refreshbar {
+				width: 0%;
+				height: 3px;
+				background-color: #33F;
+				position: absolute;
+				bottom: -1px;
+				left: 0px;
+				transition: all 1000ms linear;
+			}
+			
+			#refreshbar.reset {
+				transition: all 0ms linear;
+			}
     }
 
     .ticket {
