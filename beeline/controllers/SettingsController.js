@@ -45,6 +45,57 @@ function(
     })
   }
 
+  $scope.updateTelephone = function () {
+    $ionicPopup.prompt({
+      title: `Update telephone`,
+      template: `Enter your new telephone number:`,
+    })
+    .then((telephone) => {
+      if (telephone) {
+        var updateToken;
+
+        return UserService.beeline({
+          url: '/user/requestUpdateTelephone',
+          method: 'POST',
+          data: {
+            newTelephone: telephone,
+          }
+        })
+        .then((result) => {
+          updateToken = result.data.updateToken;
+
+          return $ionicPopup.prompt({
+            title: `Enter verification key`,
+            template: `Please enter the verification key you receive by SMS:`,
+          })
+        })
+        .then((verificationKey) => {
+          if (verificationKey) {
+            return UserService.beeline({
+              url: '/user/updateTelephone',
+              method: 'POST',
+              data: {
+                code: verificationKey,
+                updateToken: updateToken
+              }
+            })
+            .then((userResponse) => {
+              UserService.loadUserData();
+              $scope.user = userResponse.data;
+            })
+          }
+        })
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      $ionicPopup.alert({
+        title: 'Error',
+        template: `There was a problem updating your telephone: ${error.status}`
+      })
+    })
+  }
+
   // Generic event handler to allow user to update their
   // name, email or telephone
   // FIXME: Get Yixin to review the user info update flow.
