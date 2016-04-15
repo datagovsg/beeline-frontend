@@ -94,6 +94,10 @@ export default function UserService($http, $state, $ionicPopup) {
       .then(() => true, () => false);
     },
 
+    isLoggedIn: function() {
+      return !!this.sessionToken
+    },
+
     logOut: function() {
       this.sessionToken = null;
       delete window.localStorage['sessionToken'];
