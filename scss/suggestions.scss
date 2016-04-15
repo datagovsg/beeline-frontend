@@ -1,0 +1,52 @@
+
+#pg_suggestions {
+  .inline-suggestion-map {
+    width: 100%;
+    height: 250px;
+    position: relative;
+  }
+  ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  ion-item.warning {
+    background-color: #FFEE66;
+    font-size: 95%;
+    white-space: normal;
+  }
+
+  .scroll {
+    height: 100%;
+
+    .no-suggestions-message {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+
+      img.bus-icon {
+        width: 150px;
+        margin-bottom: 20px;
+      }
+
+      p {
+        flex: 0 0 auto;
+        margin: 10px 0 10px 0;
+      }
+      p.spacing {
+        flex: 1 1 auto;
+      }
+    }
+  }
+}
+
+.new_suggestion.modal .scroll {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}

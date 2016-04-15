@@ -18,245 +18,249 @@ $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
-$stable:						  #4b3863 !default;
+$stable:              #4b3863 !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 @import "scss/startEndPicker";
-@import "scss/busStopSelector.scss";
+@import "scss/busStopSelector";
 
-@import "scss/beeline.scss";
-@import "scss/login.scss";
-@import "scss/verify.scss";
-@import "scss/login.scss";
+@import "scss/beeline";
+@import "scss/login";
+@import "scss/verify";
+@import "scss/tab-settings";
+@import "scss/suggestions";
 @import "scss/introSlides";
+@import "scss/privacyPolicy";
+@import "scss/routeItem";
+@import "scss/routeList";
 
 body, .ionic-body, input, select, button {
-	font-family: 'Ubuntu', 'Arial';
-	font-size: 14px;
+  font-family: 'Ubuntu', 'Arial';
+  font-size: 14px;
 }
 
 ion-modal-view.modal {
-	background-color: transparent;
+  background-color: transparent;
 }
 .modal-backdrop.active {
-	background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.6);
 }
 
 ion-header-bar {
-	.title {
-		color: $light !important;
-		font-size: 1em !important;
-		font-weight: bold !important;
-	}
+  .title {
+    color: $light !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+  }
 
-	.item-icon-right {
-		height: 100%;
-		top: 0;
-		right: 0;
-		position: absolute;
-		background-color: transparent;
-		border: 0px;
-		color: #FFF;
-	}
+  .item-icon-right {
+    height: 100%;
+    top: 0;
+    right: 0;
+    position: absolute;
+    background-color: transparent;
+    border: 0px;
+    color: #FFF;
+  }
 
-	.item-icon-right.activated {
-		border-color: transparent;
-		background-color: transparent;
-	}
+  .item-icon-right.activated {
+    border-color: transparent;
+    background-color: transparent;
+  }
 }
 
 .modal ion-header-bar {
-	&.bar-modalhead {
-		background-color: #eceff1;
-	}
+  &.bar-modalhead {
+    background-color: #eceff1;
 
-	.title {
-		font-size: 18px !important;
-		color: #3f3f3f !important;
-	}
+    .title {
+      font-size: 18px !important;
+      color: $dark;
+    }
 
-	.icon {
-		color: #3f3f3f !important;
-	}
+    .icon {
+      color: $dark !important;
+    }
+  }
 }
 
 ion-content {
-	background: url('../img/bg_beeline.png') center center #ECEFF1;
-	/*background-color: #ECEFF1;*/
+  background: url('../img/bg_beeline.png') center center #ECEFF1;
+  /*background-color: #ECEFF1;*/
 
-	&.scroll-content {
-		margin: 0px;
-		padding: 0px;
-	}
+  &.scroll-content {
+    margin: 0px;
+    padding: 0px;
+  }
 
-	&.has-footer {
-		bottom: 49px;
-	}
+  &.has-footer {
+    bottom: 49px;
+  }
 }
 
 .tabs-bottom {
-	.tab-nav.tabs {
-		padding: 4px 0px;
-	}
+  .tab-nav.tabs {
+    padding: 4px 0px;
+  }
 
-	.tab-item {
-		&:not(:last-of-type) {
-			border-right: 1px solid #999 !important;
-		}
+  .tab-item {
+    &:not(:last-of-type) {
+      border-right: 1px solid #999 !important;
+    }
 
-		.icon {
-			height: 28px;
-			font-size: 28px;
-		}
-	}
+    .icon {
+      height: 28px;
+      font-size: 28px;
+    }
+  }
 }
 
 .tabs-top.tabs-striped {
-	.tab-nav.tabs {
-		padding: 0px;
-	}
+  .tab-nav.tabs {
+    padding: 0px;
+  }
 
-	.tab-item {
-		max-width: initial;
-		font-size: 1em !important;
-		font-weight: bold;
-		border-right: 0px !important;
-		position: relative;
+  .tab-item {
+    max-width: initial;
+    font-size: 1em !important;
+    font-weight: bold;
+    border-right: 0px !important;
+    position: relative;
 
-		.icon {
-			padding-right: 10px !important;
-		}
+    .icon {
+      padding-right: 10px !important;
+    }
 
-		&.tab-item-active {
-			border-width: 0px 0px 4px 0px !important;
-		}
+    &.tab-item-active {
+      border-width: 0px 0px 4px 0px !important;
+    }
 
-		.icon {
-			position: absolute;
-			left: 50%;
-			margin-left: -30px;
-		}
+    .icon {
+      position: absolute;
+      left: 50%;
+      margin-left: -30px;
+    }
 
-		.tab-title {
-			width: 100%;
-			border-right: 1px solid #d5d5d5;
-			height: 30px;
-			margin-top: 9px !important;
-			line-height: 30px;
-			padding-left: 22px;
-		}
+    .tab-title {
+      width: 100%;
+      border-right: 1px solid #d5d5d5;
+      height: 30px;
+      margin-top: 9px !important;
+      line-height: 30px;
+      padding-left: 22px;
+    }
 
-		&:last-of-type .tab-title{
-			border: 0px;
-		}
-	}
+    &:last-of-type .tab-title{
+      border: 0px;
+    }
+  }
 }
 
 /* Android specific styles for the tabs*/
 .platform-android {
-	.tabs-bottom {
-		.tab-nav.tabs {
-			background-color: $stable;
-			border-bottom: 0px;
-		}
+  .tabs-bottom {
+    .tab-nav.tabs {
+      background-color: $stable;
+      border-bottom: 0px;
+    }
 
-		.tab-item {
-			border-top: 0px !important;
+    .tab-item {
+      border-top: 0px !important;
 
-			&.tab-item-active {
-				margin-top: 0px !important;
-			}
-		}
-	}
+      &.tab-item-active {
+        margin-top: 0px !important;
+      }
+    }
+  }
 
-	.tabs-top {
-		.tab-nav.tabs {
-			background-color: #FFF;
-			height: 50px;
-		}
-	}
+  .tabs-top {
+    .tab-nav.tabs {
+      background-color: #FFF;
+      height: 50px;
+    }
+  }
 }
 
 .ion-list-header {
-	padding: 5px 16px;
-	letter-spacing: normal;
-	color: #7e7e7f;
-	font-size: 0.9em;
-	background-color: #ECEFF1;
+  padding: 5px 16px;
+  letter-spacing: normal;
+  color: #7e7e7f;
+  font-size: 0.9em;
+  background-color: #ECEFF1;
 }
 
 /* ----- General styles for Ionic item lists ----- */
 ion-list {
-	ion-item.item {
-		padding: 10px 16px;
-		font-size: 1em;
-	}
+  ion-item.item {
+    padding: 10px 16px;
+    font-size: 1em;
+  }
 
-	.item-icon-left .icon-accessory, .item-icon-right .icon-accessory {
-		color: #333;
-		font-size: 24px;
-	}
+  .item-icon-left .icon-accessory, .item-icon-right .icon-accessory {
+    color: #333;
+    font-size: 24px;
+  }
 
-	&#booklist, &#srcactive {
-		a.item-icon-right {
-			color: #333;
-		}
-	}
+  &#booklist, &#srcactive {
+    a.item-icon-right {
+      color: #333;
+    }
+  }
 
-	&#pendlist, &#srckickstart {
-		.routeinfo {
-			width: 100%;
-			display: inline-block;
-		}
+  &#pendlist, &#srckickstart {
+    .routeinfo {
+      width: 100%;
+      display: inline-block;
+    }
 
-		.pledge{
-			position: relative;
-			line-height: 20px;
-			margin-top: 5px;
+    .pledge{
+      position: relative;
+      line-height: 20px;
+      margin-top: 5px;
 
-			label {
-				width: 40px;
-				height: 40px;
-				text-align:center;
-				background-color: #CCC;
-				display: inline-block;
-				border-radius: 20px;
-				line-height: 40px;
-			}
-			span.fillbar {
-				position: relative;
-				width: calc(98% - 80px);
-				height: 5px;
-				display: inline-block;
-			}
+      label {
+        width: 40px;
+        height: 40px;
+        text-align:center;
+        background-color: #CCC;
+        display: inline-block;
+        border-radius: 20px;
+        line-height: 40px;
+      }
+      span.fillbar {
+        position: relative;
+        width: calc(98% - 80px);
+        height: 5px;
+        display: inline-block;
+      }
 
-			.empty {
-				width: 100%;
-				height: 100%;
-				background-color: #CCC;
-			}
+      .empty {
+        width: 100%;
+        height: 100%;
+        background-color: #CCC;
+      }
 
-			.full {
-				height: 100%;
-				position:absolute;
-				background-color: #333;
-			}
-		}
+      .full {
+        height: 100%;
+        position:absolute;
+        background-color: #333;
+      }
+    }
 
-		.commit {
-			text-align: center;
+    .commit {
+      text-align: center;
 
-			.txt {
-				margin: 5px 0px;
-			}
+      .txt {
+        margin: 5px 0px;
+      }
 
-			button {
-				color: #FFF;
-				border-radius: 10px;
-			}
-		}
-	}
+      button {
+        color: #FFF;
+        border-radius: 10px;
+      }
+    }
+  }
 }
 
 
@@ -269,1572 +273,1340 @@ ion-list {
 #pg_tickets #btnloginpls,
 #pg_login #btnloginnext,
 .logout.modal #btnlogout {
-	@include big-yellow-fixed();
+  @include big-yellow-fixed();
 }
 
 
-/* ----- General styling for route information listings ----- */
-.routeinfo {
-	position:relative;
-
-	.busnum {
-		width: 40px;
-		height: 40px;
-		text-align: center;
-		background-color: #4b3863;
-		color: #FFF;
-		line-height: 40px;
-		border-radius: 20px;
-		margin-right: 10px;
-		float:left;
-	}
-
-	.active {
-		background-color: #bdbdbd;
-		color: #FFF;
-		font-size: 0.8em;
-		line-height: 0.9em;
-		padding: 5px;
-		border-radius: 4px;
-		margin: 5px 0px 0px 10px;
-		display: inline-block;
-	}
-
-	.title {
-		position: relative;
-		margin-bottom: 10px;
-
-		.name {
-			width: calc(100% - 50px);
-			font-size: 20px;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			line-height: 40px;
-			border-bottom: 1px solid #CCC;
-		}
-	}
-
-
-	.stops {
-		width: calc(100% - 50px);
-		position: relative;
-		float: left;
-
-		.line {
-			width: 2px;
-			height: 20px;
-			background: url('../img/dash.png') center center;
-			top: 10px;
-			left: 4px;
-			position: absolute;
-		}
-
-		.start, .end {
-			line-height: 20px;
-			background: url('../img/icon_stop.png') left center no-repeat;
-			background-size: 10px 10px;
-			padding-left: 15px;
-			z-index: 5;
-			position: relative;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-
-		.time {
-			text-transform: lowercase;
-			margin-right: 7px;
-		}
-
-		.road {
-			text-transform: capitalize;
-		}
-	}
-
-	.kspend {
-		position: absolute;
-		top: 0;
-		right: 0;
-
-		.dleft {
-			background: url('../img/icon_hourglass.png') left center no-repeat;
-			padding-left: 15px;
-			line-height: 20px;
-		}
-
-		.sdate {
-			background: url('../img/icon_clock.png') left center no-repeat;
-			padding-left: 15px;
-			line-height: 20px;
-		}
-	}
-}
 
 /* ----- Remove Google logo and Map marker from Autocomplete dropdown ----- */
 .pac-container {
-	/*width: 86% !important;
-	left: 50% !important;
-	margin: 15px 0px 0px -43%;*/
-	pointer-events: auto;
+  /*width: 86% !important;
+  left: 50% !important;
+  margin: 15px 0px 0px -43%;*/
+  pointer-events: auto;
 
-	.pac-item {
-		padding: 0px 10px 0px 10px;
+  .pac-item {
+    padding: 0px 10px 0px 10px;
 
-		.pac-icon.pac-icon-marker {
-			display: none;
-		}
-	}
+    .pac-icon.pac-icon-marker {
+      display: none;
+    }
+  }
 
-	&.pac-logo:after { display:none; }
+  &.pac-logo:after { display:none; }
 }
 
 /* ---------- ROUTE MAP PAGE ---------- */
 #pg_routemap {
-	.scroll, ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-	}
+  .scroll, ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
+    width: 100%;
+    height: 100%;
+  }
 
-	.gmnoprint, .gm-style-cc {
-		display:none;
-	}
+  .gmnoprint, .gm-style-cc {
+    display:none;
+  }
 
-	.locinputs {
-		width: 100%;
-		padding: 16px;
-		position: absolute;
-		z-index: 2;
-		background-color: transparent;
+  .locinputs {
+    width: 100%;
+    padding: 16px;
+    position: absolute;
+    z-index: 2;
+    background-color: transparent;
 
-		.item {
-			height: 40px;
-			box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
-			padding: 6px 0 5px 32px;
-			border: 0px;
+    .item {
+      height: 40px;
+      box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+      padding: 6px 0 5px 32px;
+      border: 0px;
 
-			.item-input {
-				padding: 0px;
-			}
-		}
+      .item-input {
+        padding: 0px;
+      }
+    }
 
-		.icon {
-			right: 3px;
-		}
+    .icon {
+      right: 3px;
+    }
 
-		label {
-			padding-left: 0px;
-			background: url('../img/icon-stop-big.png') left 8px center no-repeat #FFF;
-			background-size: 20px auto;
-			border-bottom: 1px solid #CCC !important;
-			margin: 0px;
-		}
+    label {
+      padding-left: 0px;
+      background: url('../img/icon-stop-big.png') left 8px center no-repeat #FFF;
+      background-size: 20px auto;
+      border-bottom: 1px solid #CCC !important;
+      margin: 0px;
+    }
 
-		input {
-			width: 100%;
-			height: 100%;
-			margin: 0px;
-			padding: 0px 5px 0px 0px;
-		}
+    input {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px 5px 0px 0px;
+    }
 
-		.item.activated {
-			background-color: transparent;
-		}
-	}
+    .item.activated {
+      background-color: transparent;
+    }
+  }
 
-	.centmark {
-		width: 37.5px;
-		height: 40px;
-		background: url('../img/icon-marker-big.png') center center no-repeat;
-		background-size: 75% auto;
-		position: fixed;
-		left: 50%;
-		top: 50%;
-		margin: -38px 0px 0px -18.75px;
-		z-index: 3;
-	}
+  .centmark {
+    width: 37.5px;
+    height: 40px;
+    background: url('../img/icon-marker-big.png') center center no-repeat;
+    background-size: 75% auto;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin: -38px 0px 0px -18.75px;
+    z-index: 3;
+  }
 
-	.locateme {
-		width: 40px;
-		height: 40px;
-		background: url('../img/icon-locateme.png') center center no-repeat #FFF;
-		background-size: 30px auto;
-		border-radius: 20px;
-		box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
-		position: fixed;
-		bottom: 90px;
-		right: 16px;
-		margin: 0px;
-		z-index: 3;
-		cursor: pointer;
+  .locateme {
+    width: 40px;
+    height: 40px;
+    background: url('../img/icon-locateme.png') center center no-repeat #FFF;
+    background-size: 30px auto;
+    border-radius: 20px;
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+    position: fixed;
+    bottom: 90px;
+    right: 16px;
+    margin: 0px;
+    z-index: 3;
+    cursor: pointer;
 
-		&:active {
-			bottom: 89px;
-			right: 16px;
-			box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
-		}
-	}
+    &:active {
+      bottom: 89px;
+      right: 16px;
+      box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+    }
+  }
 
-	/* Animation styles for ngAnimate */
-	.ng-hide-remove.centmark,
-	.ng-hide-remove.locateme,
-	.ng-hide-remove.btnnext,
-	.ng-hide-remove#pclear,
-	.ng-hide-remove#dclear {
-	  -webkit-animation:0.5s growanim;
-	  animation:0.5s growanim;
-	}
+  /* Animation styles for ngAnimate */
+  .ng-hide-remove.centmark,
+  .ng-hide-remove.locateme,
+  .ng-hide-remove.btnnext,
+  .ng-hide-remove#pclear,
+  .ng-hide-remove#dclear {
+    -webkit-animation:0.5s growanim;
+    animation:0.5s growanim;
+  }
 
-	.ng-hide-add.centmark,
-	.ng-hide-add.locateme,
-	.ng-hide-add.btnnext,
-	.ng-hide-add#pclear,
-	.ng-hide-add#dclear {
-	  -webkit-animation:0.5s shrinkanim;
-	  animation:0.5s shrinkanim;
-	}
+  .ng-hide-add.centmark,
+  .ng-hide-add.locateme,
+  .ng-hide-add.btnnext,
+  .ng-hide-add#pclear,
+  .ng-hide-add#dclear {
+    -webkit-animation:0.5s shrinkanim;
+    animation:0.5s shrinkanim;
+  }
 
-	@keyframes growanim {
-	  0% { opacity:0; transform: scale(0.5); }
-	  70% { transform: scale(1.02); }
-	  100% { opacity:1; transform: scale(1); }
-	}
+  @keyframes growanim {
+    0% { opacity:0; transform: scale(0.5); }
+    70% { transform: scale(1.02); }
+    100% { opacity:1; transform: scale(1); }
+  }
 
-	@-webkit-keyframes growanim {
-	  0% { opacity:0; transform: scale(0.5); }
-	  70% { transform: scale(1.02); }
-	  100% { opacity:1; transform: scale(1); }
-	}
+  @-webkit-keyframes growanim {
+    0% { opacity:0; transform: scale(0.5); }
+    70% { transform: scale(1.02); }
+    100% { opacity:1; transform: scale(1); }
+  }
 
-	@keyframes shrinkanim {
-	  0% { opacity:1; transform: scale(1); }
-	  100% { opacity:0; transform: scale(0); }
-	}
+  @keyframes shrinkanim {
+    0% { opacity:1; transform: scale(1); }
+    100% { opacity:0; transform: scale(0); }
+  }
 
-	@-webkit-keyframes shrinkanim {
-	  0% { opacity:1; transform: scale(1); }
-	  100% { opacity:0; transform: scale(0); }
-	}
+  @-webkit-keyframes shrinkanim {
+    0% { opacity:1; transform: scale(1); }
+    100% { opacity:0; transform: scale(0); }
+  }
 
-	.locinputs label.item.ng-hide-remove {
-		-webkit-animation:0.3s heightanim;
-		animation:0.3s heightanim;
-	}
+  .locinputs label.item.ng-hide-remove {
+    -webkit-animation:0.3s heightanim;
+    animation:0.3s heightanim;
+  }
 
-	.locinputs label.item.ng-hide-add {
-		-webkit-animation:0.3s shortenanim;
-		animation:0.3s shortenanim;
-	}
+  .locinputs label.item.ng-hide-add {
+    -webkit-animation:0.3s shortenanim;
+    animation:0.3s shortenanim;
+  }
 
-	@keyframes heightanim {
-	  0% { opacity:0; padding: 0px; height:0px; }
-	  30% { opacity:1; }
-	  100% { padding: 6px 0 5px 16px; height:40px; }
-	}
+  @keyframes heightanim {
+    0% { opacity:0; padding: 0px; height:0px; }
+    30% { opacity:1; }
+    100% { padding: 6px 0 5px 16px; height:40px; }
+  }
 
-	@-webkit-keyframes heightanim {
-	  0% { opacity:0; padding: 0px; height:0px; }
-	  30% { opacity:1; }
-	  100% { padding: 6px 0 5px 16px; height:40px; }
-	}
+  @-webkit-keyframes heightanim {
+    0% { opacity:0; padding: 0px; height:0px; }
+    30% { opacity:1; }
+    100% { padding: 6px 0 5px 16px; height:40px; }
+  }
 
-	@keyframes shortenanim {
-	  0% { opacity:1; padding: 6px 0 5px 16px; height:40px; }
-	  100% { opacity:0; padding: 0px; height:0px; }
-	}
+  @keyframes shortenanim {
+    0% { opacity:1; padding: 6px 0 5px 16px; height:40px; }
+    100% { opacity:0; padding: 0px; height:0px; }
+  }
 
-	@-webkit-keyframes shortenanim {
-	  0% { opacity:1; padding: 6px 0 5px 16px; height:40px; }
-	  100% { opacity:0; padding: 0px; height:0px; }
-	}
+  @-webkit-keyframes shortenanim {
+    0% { opacity:1; padding: 6px 0 5px 16px; height:40px; }
+    100% { opacity:0; padding: 0px; height:0px; }
+  }
 }/* #pg_routemap */
 
-/* ---------- ROUTE LIST PAGE ---------- */
-#pg_routelist {
-	color: #444;
-
-	.loader {
-		width: 100%;
-		height: 300px;
-		background: url('../img/loader120.gif') no-repeat center center transparent;
-		background-size: 120px auto;
-
-		.txt {
-			width: 100%;
-			text-align: center;
-			margin-top: 210px;
-			position: absolute;
-			font-size: 16px;
-		}
-	}
-
-	#regsel {
-		background-color: #FFF;
-		text-align:center;
-		border-bottom: 1px solid #ddd;
-		padding: 3px;
-
-		label {
-			margin-right: 5px;
-		}
-
-		select {
-			padding: 10px 0px;
-			border: 0px;
-			background: transparent;
-			cursor: pointer;
-		}
-	}
-
-	#booklist {
-		.routeinfo .stops {
-			width: calc(100% - 80px);
-		}
-
-		.item-icon-right {
-			padding: 0px;
-		}
-	}
-}
 
 /* ---------- SEARCH RESULTS MODAL ---------- */
 .search_results.modal {
-	.scroll {
-		height: 100%;
-		min-height: 610px;
-	}
+  .scroll {
+    height: 100%;
+    min-height: 610px;
+  }
 
-	.msg {
-		background-color: #FFF;
-		padding: 16px;
-		border-bottom: 1px solid #ddd;
-	}
+  .msg {
+    background-color: #FFF;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+  }
 
-	.noroutes.msg {
-		background: url('../img/SuggestRoute.png') no-repeat center top 20px #FFF;
-		background-size: auto 165px;
-		padding-top: 190px;
+  .noroutes.msg {
+    background: url('../img/SuggestRoute.png') no-repeat center top 20px #FFF;
+    background-size: auto 165px;
+    padding-top: 190px;
 
-		h4 {
-			padding-bottom: 10px;
-			border-bottom: 1px solid #CCC;
-		}
+    h4 {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #CCC;
+    }
 
-		p {
-			margin-bottom: 10px;
-		}
-	}
+    p {
+      margin-bottom: 10px;
+    }
+  }
 
-	#srcactive {
-		.numtime {
-			height: 40px;
-			position: relative;
-			margin: 0px 0px 10px 0px;
+  #srcactive {
+    .numtime {
+      height: 40px;
+      position: relative;
+      margin: 0px 0px 10px 0px;
 
-			.active {
-				margin: 10px 0px 0px 10px;
-			}
+      .active {
+        margin: 10px 0px 0px 10px;
+      }
 
-			.item-icon-right .icon {
-				right: 0px;
-			}
-		}
+      .item-icon-right .icon {
+        right: 0px;
+      }
+    }
 
-		.routeinfo {
-			margin-bottom: 10px;
+    .routeinfo {
+      margin-bottom: 10px;
 
-			.line {
-				height: 116px;
-				left: 67px;
-			}
+      .line {
+        height: 116px;
+        left: 67px;
+      }
 
-			.start, .end {
-				padding: 0px;
-				background-position: top 5px left 63px;
-				clear: both;
-			}
+      .start, .end {
+        padding: 0px;
+        background-position: top 5px left 63px;
+        clear: both;
+      }
 
-			.time {
-				float: left;
-				height: 120px;
-				margin-right: 25px;
-			}
+      .time {
+        float: left;
+        height: 120px;
+        margin-right: 25px;
+      }
 
-			.txt {
-				color: #666;
-				font-size: 12px;
-				font-weight: bold;
-			}
+      .txt {
+        color: #666;
+        font-size: 12px;
+        font-weight: bold;
+      }
 
-			.loc {
-				margin: 0px 20px 0px 80px;
-				white-space: normal;
-			}
+      .loc {
+        margin: 0px 20px 0px 80px;
+        white-space: normal;
+      }
 
-			.stop {
-				background-color: #E5E5E5;
-				padding: 5px 7px;
-				border-radius: 5px;
-				margin: 0px 0px 3px -5px;
-			}
+      .stop {
+        background-color: #E5E5E5;
+        padding: 5px 7px;
+        border-radius: 5px;
+        margin: 0px 0px 3px -5px;
+      }
 
-			.walk {
-				font-size: 13px;
-				font-weight: bold;
-			}
-		}
-	}
+      .walk {
+        font-size: 13px;
+        font-weight: bold;
+      }
+    }
+  }
 
-	.route {
-		background-color: #FFF;
-		padding: 7px 16px;
-		border-bottom: 1px solid #ddd;
-		position: relative;
+  .route {
+    background-color: #FFF;
+    padding: 7px 16px;
+    border-bottom: 1px solid #ddd;
+    position: relative;
 
-		.line {
-			width: 2px;
-			height: 20px;
-			background: url('../img/dash.png') center center;
-			top: 20px;
-			left: 24px;
-			position: absolute;
-		}
+    .line {
+      width: 2px;
+      height: 20px;
+      background: url('../img/dash.png') center center;
+      top: 20px;
+      left: 24px;
+      position: absolute;
+    }
 
-		.start, .end {
-			line-height: 20px;
-			background: url('../img/icon_stop.png') left 4px center no-repeat;
-			background-size: 10px 10px;
-			padding-left: 30px;
-			z-index: 5;
-			position: relative;
-		}
-	}
+    .start, .end {
+      line-height: 20px;
+      background: url('../img/icon_stop.png') left 4px center no-repeat;
+      background-size: 10px 10px;
+      padding-left: 30px;
+      z-index: 5;
+      position: relative;
+    }
+  }
 
-	.arrtime {
-		background-color: #FFF;
-		padding: 7px 16px;
-		border-bottom: 1px solid #ddd;
-		line-height: 30px;
+  .arrtime {
+    background-color: #FFF;
+    padding: 7px 16px;
+    border-bottom: 1px solid #ddd;
+    line-height: 30px;
 
-		.txt {
-			color: #666;
-			padding-left: 5px;
-		}
+    .txt {
+      color: #666;
+      padding-left: 5px;
+    }
 
-		.icon {
-			border-radius: 5px;
-			border: 1px solid #333;
-			padding: 1px 2px;
-			display: inline-block;
-			line-height: 1;
-		}
+    .icon {
+      border-radius: 5px;
+      border: 1px solid #333;
+      padding: 1px 2px;
+      display: inline-block;
+      line-height: 1;
+    }
 
-		select {
-			float: right;
-			width: calc(100% - 25px);
-			display: inline-block;
-			height: 30px;
-			background-color: transparent;
-			border: 0px;
-		}
-	}
+    select {
+      float: right;
+      width: calc(100% - 25px);
+      display: inline-block;
+      height: 30px;
+      background-color: transparent;
+      border: 0px;
+    }
+  }
 
 }/* #search_results.modal */
 
 /* ---------- TICKETS PAGE ---------- */
 #pg-ticket-details {
-	.review {
-		font-size: 10px;
-	}
+  .review {
+    font-size: 10px;
+  }
 
-	.review-content{
-		font-weight: bold;
-	}
-	.scroll {
-		width: 100%;
-		min-height: 100%;
-	}
+  .review-content{
+    font-weight: bold;
+  }
+  .scroll {
+    width: 100%;
+    min-height: 100%;
+  }
 
-	.map {
-		position: relative;
-		width: 100%;
-		min-height: 350px;
-		flex: 1 1 auto;
-	}
-	ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
+  .map {
+    position: relative;
+    width: 100%;
+    min-height: 350px;
+    flex: 1 1 auto;
+  }
+  ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
-	.page-with-map .row {
-		flex: 0 0 auto;
-	}
-	.page-with-map .row .col button {
-		width: 100%;
-	}
-	.page-with-map .scroll {
-		display: flex;
-		flex-direction: column;
-	}
+  .page-with-map .row {
+    flex: 0 0 auto;
+  }
+  .page-with-map .row .col button {
+    width: 100%;
+  }
+  .page-with-map .scroll {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 /* ---------- BOOKINGS PAGE ---------- */
 #pg_booking {
 
-	.scroll, ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-	}
+  .scroll, ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
+    width: 100%;
+    height: 100%;
+  }
 
-	ui-gmap-google-map, .angular-google-map {
-		height: calc(90% - 60px);
-	}
+  ui-gmap-google-map, .angular-google-map {
+    height: calc(90% - 60px);
+  }
 
-	.gmnoprint, .gm-style-cc {
-		display:none;
-	}
+  .gmnoprint, .gm-style-cc {
+    display:none;
+  }
 
-	.routeinfo {
-		width: 100%;
-		height: 60px;
-		padding: 10px 16px;
-		background-color: #FFF;
-		z-index: 1;
-	}
+  route-item {
+    padding: 10px;
+    width: 100%;
+    height: 60px;
+    background-color: #FFF;
+    z-index: 1;
 
-	#userpos {
-		width: 40px;
-		height: 40px;
-		background: url('../img/icon-locateme.png') center center no-repeat #FFF;
-		background-size: 30px auto;
-		border-radius: 20px;
-		box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
-		position: fixed;
-		bottom: calc(10% + 130px);
-		right: 16px;
-		margin: 0px;
-		z-index: 3;
-		cursor: pointer;
+    .active {
+      display: none;
+    }
+  }
 
-		&.activated {
-			bottom: calc(10% + 128px);
-			right: 16px;
-			box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
-		}
-	}
+  #userpos {
+    width: 40px;
+    height: 40px;
+    background: url('../img/icon-locateme.png') center center no-repeat #FFF;
+    background-size: 30px auto;
+    border-radius: 20px;
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+    position: fixed;
+    bottom: calc(10% + 130px);
+    right: 16px;
+    margin: 0px;
+    z-index: 3;
+    cursor: pointer;
 
-	#stopinputs {
-		width: 90%;
-		position: absolute;
-		bottom: calc(10% + 10px);
-		left: 5%;
-		box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+    &.activated {
+      bottom: calc(10% + 128px);
+      right: 16px;
+      box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+    }
+  }
 
-		.line {
-			width: 2px;
-			height: 14px;
-			background: url('../img/dash.png') center center;
-			top: 27px;
-			left: 16px;
-			position: absolute;
-			z-index: 1;
-		}
-	}
+  #stopinputs {
+    width: 90%;
+    position: absolute;
+    bottom: calc(10% + 10px);
+    left: 5%;
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
 
-	#transco {
-		background-color: #FFF;
-		position: relative;
-		font-size: 13px;
-		line-height: 1.4;
-		padding-bottom: 20px;
+    .line {
+      width: 2px;
+      height: 14px;
+      background: url('../img/dash.png') center center;
+      top: 27px;
+      left: 16px;
+      position: absolute;
+      z-index: 1;
+    }
+  }
 
-		.coinfo {
-			padding: 10px 16px;
-			color: #666;
+  #transco {
+    background-color: #FFF;
+    position: relative;
+    font-size: 13px;
+    line-height: 1.4;
+    padding-bottom: 20px;
 
-			h4 {
-				color: #666;
-			}
+    .coinfo {
+      padding: 10px 16px;
+      color: #666;
 
-			.contact {
-				height: 80px;
-				background: url('../img/bus.jpg') left top no-repeat;
-				background-size: 120px auto;
-				padding-left: 135px;
+      h4 {
+        color: #666;
+      }
 
-				.logo {
-					height: 40px;
-					background: url('../img/logo-aedge.jpg') left top 5px no-repeat;
-					background-size: auto 30px;
-					margin-bottom: 5px;
-					border-bottom: 1px solid #CCC;
-				}
-			}
-		}
+      .contact {
+        height: 80px;
+        background: url('../img/bus.jpg') left top no-repeat;
+        background-size: 120px auto;
+        padding-left: 135px;
 
-		.coterms {
-			padding: 10px 16px;
+        .logo {
+          height: 40px;
+          background: url('../img/logo-aedge.jpg') left top 5px no-repeat;
+          background-size: auto 30px;
+          margin-bottom: 5px;
+          border-bottom: 1px solid #CCC;
+        }
+      }
+    }
 
-			li {
-				padding: 0px;
-				margin: 0px 0px 0px 20px;
-				list-style-type: disc;
-			}
+    .coterms {
+      padding: 10px 16px;
 
-			.sign {
-				margin: 15px 0px 0px 0px;
-				font-size: 15px;
-				border-top: 1px solid #CCC;
-				border-bottom: 1px solid #CCC;
-				padding-top: 10px;
+      li {
+        padding: 0px;
+        margin: 0px 0px 0px 20px;
+        list-style-type: disc;
+      }
 
-				.img {
-					width: 100px;
-					padding-top: 72px;
-					background: url('../img/terms-sign.png') left top no-repeat;
-					background-size: 100% auto;
-					text-align: center;
-					font-size: 11px;
-					float: left;
-					margin: 0px 10px 10px 0px;
-				}
+      .sign {
+        margin: 15px 0px 0px 0px;
+        font-size: 15px;
+        border-top: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
+        padding-top: 10px;
 
-				.clear {
-					clear: both;
-				}
-			}
-		}
+        .img {
+          width: 100px;
+          padding-top: 72px;
+          background: url('../img/terms-sign.png') left top no-repeat;
+          background-size: 100% auto;
+          text-align: center;
+          font-size: 11px;
+          float: left;
+          margin: 0px 10px 10px 0px;
+        }
 
-		.confirm {
-			border: 0px;
-			font-size: 12px;
+        .clear {
+          clear: both;
+        }
+      }
+    }
 
-			.checkbox-icon:before {
-				background-color: #CCC;
-			}
+    .confirm {
+      border: 0px;
+      font-size: 12px;
 
-			.checkbox input:checked + .checkbox-icon:before {
-				background-color: $stable;
-			}
+      .checkbox-icon:before {
+        background-color: #CCC;
+      }
 
-			.item-content {
-				white-space: normal;
-			}
-		}
-	}
+      .checkbox input:checked + .checkbox-icon:before {
+        background-color: $stable;
+      }
 
-	#btnbookcont {
-		position: relative;
-		bottom: 0;
-	}
+      .item-content {
+        white-space: normal;
+      }
+    }
+  }
 
-	.err {
-		height: 20px;
-		margin-top: 10px;
-		line-height: 20px;
-		font-size: 14px;
-		font-weight: bold;
-		color: #FF3333;
-		text-align: center;
-	}
+  #btnbookcont {
+    position: relative;
+    bottom: 0;
+  }
+
+  .err {
+    height: 20px;
+    margin-top: 10px;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FF3333;
+    text-align: center;
+  }
 }
 
 /* ---------- BOOKINGS CHANGES MODAL ---------- */
 #changes-message.modal {
-	width: calc(100% - 20px);
-	min-height: calc(100% - 40px);
-	left: 9px;
-	top: 19px;
-	border-radius: 10px;
-	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
-	border: 1px solid #999;
-
-	ion-content {
-		padding: 5px;
-	}
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-	}
-
-	th {
-		background-color: #BBB;
-		padding: 5px;
-		font-weight: bold;
-		border: solid 1px #CCC;
-	}
-
-	td {
-		background-color: #FFF;
-		padding: 5px;
-		border: solid 1px #CCC;
-	}
-}
-
-#pg_bookdate {
-	.monthsel {
-		background-color: #FFF;
-		padding: 10px 0px;
-		border-bottom: 1px solid #CCC;
-
-		.icon {
-			width: 40px;
-			height: 40px;
-			font-size: 28px;
-			color: #FFF;
-			line-height: 40px;
-			display: inline-block;
-			background-color: $stable;
-			border-radius: 40px;
-			position: relative;
-
-			&:active {
-				top: 2px;
-			}
-
-			&.prev::before {
-				padding-right: 3px;
-			}
-
-			&.next::before {
-				padding-left: 3px;
-			}
-		}
-
-		.mmyyyy-holder {
-			width: calc(60% - 10px);
-			height: 28px;
-			display: inline-block;
-			position: relative;
-			margin: 0px 10px;
-		}
-
-		.mm, .yyyy {
-			width: 45%;
-			font-size: 15px;
-			background-color: #FFF;
-			border: 1px solid #CCC;
-			border-radius: 5px;
-			padding: 5px;
-			position: absolute;
-			top: 3px;
-		}
-
-		.mm {
-			left: 5px;
-		}
-		.yyyy {
-			right: 5px;
-		}
-	}
-
-	.datepicker {
-		text-align: center;
-
-		table {
-			width: 100%;
-			padding: 0px;
-			margin: 0px;
-			border-spacing: 0px;
-			background-color: #FFF;
-
-			th {
-				font-weight: bold;
-				text-align: center;
-				background-color: #999;
-				color: #FFF;
-				padding: 5px;
-			}
-
-			td {
-				width: 14.2%;
-				padding: 10px 5px 10px 5px;
-				text-align: center;
-				background-color: #EDA;
-				border-right: 1px solid #F5F5F5;
-				border-bottom: 1px solid #CCC;
-			}
-
-			tr td:last-of-type {
-				border-right: 0px;
-			}
-
-			.selected {
-				background-color: #029;
-				color: #FFF;
-
-				&.dragged {
-					background-color: #66F;
-				}
-			}
-
-			.dragged {
-				background-color: #6AF;
-			}
-
-			.not-running, .sold-out, .invalid-stop {
-				background-color: #D5D5D5;
-				color: #888;
-			}
-
-			.primary:not(.not-running):not(.selected):not(.dragged) {
-				background-color: #FFF;
-			}
-		}
-	}
-
-	qty-input {
-		margin: 10px 0px;
-	}
-
-	.bookdetails {
-		padding: 0px 0px 20px 0px;
-		background-color: #FFF;
-	}
-
-	#btnreview {
-		margin-top: 20px;
-		position: relative;
-		bottom: 0;
-
-		&:active {
-			bottom: -3px;
-		}
-	}
-}
-
-#pg_summary {
-	.msg {
-		padding: 10px 16px;
-		background-color: #FFF;
-		border-bottom: 1px solid #CCC;
-	}
-
-	section {
-		border-bottom: 3px solid $stable;
-
-		.edit {
-			clear: both;
-			text-align: right;
-			border-top: 1px dashed #CCC;
-			padding-top: 10px;
-		}
-
-		.btnsmall {
-			width: 80px;
-			height: 15px;
-			padding: 15px 0px;
-			font-size: 14px;
-			text-decoration: none;
-			line-height: 0px;
-			background-color: #ffe76e;
-			border: 0px;
-			border-bottom: 3px solid #f7c639;
-			border-radius: 20px;
-			box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
-			text-align: center;
-			color: #333;
-			display: inline-block;
-		}
-	}
-
-	.ion-list-header {
-		border-bottom: 1px solid #CCC;
-		font-weight: bold;
-		color: #333;
-		font-size: 14px;
-		position: relative;
-		padding-left: 40px;
-
-		.icon {
-			font-size: 30px;
-			margin-right: 5px;
-			color: #000;
-			position: absolute;
-			left: 10px;
-			top: 0px;
-		}
-	}
-
-	.routeinfo {
-		background-color: #FFF;
-		padding: 15px 16px 15px 16px;
-
-		.stops {
-			float: none;
-			clear: both;
-			padding-left: 50px;
-
-			.line {
-				height: 50px;
-				left: 54px;
-			}
-
-			.time {
-				height: 50px;
-				float: left;
-			}
-
-			.desc {
-				display: block;
-			}
-
-			.start, .end {
-				background-position: left top 5px;
-				clear: both;
-			}
-		}
-	}
-
-	.tripdates {
-		background-color: #FFF;
-		padding: 15px 10px;
-
-		.datesnum {
-			padding: 10px 6px 20px 6px;
-
-			span {
-				font-weight: bold;
-				font-size: 20px;
-				margin-bottom: 5px;
-			}
-		}
-
-		.qty-input .btns button{
-			display: none;
-		}
-	}
-
-	.promo {
-		background-color: #FFF;
-		padding: 15px 16px;
-
-		ol {
-			margin-bottom: 15px;
-
-			li {
-				font-style: italic;
-				padding-left: 10px;
-				border-bottom: 1px dashed #CCC;
-			}
-		}
-
-		form {
-			input {
-				width: calc(100% - 90px);
-				height: 40px;
-				border: 1px solid #333;
-				margin-right: 5px;
-				border-radius: 5px;
-				padding: 3px 7px;
-				font-size: 18px;
-				display: inline-block;
-			}
-
-			button {
-				width: 80px;
-				height: 40px;
-			}
-		}
-	}
-
-	.paytxt {
-		text-align: center;
-	}
-
-	#btnpay {
-		position: relative;
-		bottom: auto;
-		left: auto;
-		margin: 20px 0px;
-
-		&:active {
-			margin-top: 23px;
-		}
-	}
-}
-
-#pg_booking qty-input, #pg_bookdate qty-input, #pg_summary qty-input {
-	display: block;
-	background-color: #FFF;
-	font-size: 12px;
-
-	.qty-input {
-		height: 34px;
-		line-height: 34px;
-		padding: 0px 0px 0px 32px;
-		background: url('../img/icon-pax.png') left 10px center no-repeat transparent;
-		background-size: auto 28px;
-		position: relative;
-	}
-
-	.placeholder {
-		color: #828282;
-	}
-
-	.btns {
-		position: absolute;
-		top: 2px;
-		right: 0px;
-	}
-
-	input {
-		width: 30px;
-		display: inline-block;
-		text-align: center;
-		background-color: #FFF !important;
-		border: 0px;
-		font-size: 12px;
-		position: relative;
-		top: -3px;
-	}
-
-	button {
-		background-color: $stable;
-		border: 0px;
-		color: #FFF;
-		width: 26px;
-		height: 26px;
-		font-size: 18px;
-		border-radius: 14px;
-		display: inline-block;
-		line-height: 1;
-	}
-
-	button:last-of-type {
-		margin-right: 10px;
-	}
-}
-
-#pg_bookdate .price-table, #pg_summary .price-table {
-	width: 100%;
-
-	th {
-		font-weight: bold;
-		text-align: center;
-		background-color: #CCC;
-		color: #333;
-		padding: 5px;
-	}
-
-	tr {
-		td {
-			padding: 5px;
-			text-align: center;
-			border-bottom: 1px solid #CCC;
-		}
-
-		td:first-of-type {
-		}
-
-		td:last-of-type {
-			width: 120px;
-		}
-
-		&.nosel td{
-			padding: 20px 0px;
-			color: #999;
-		}
-	}
-
-	.totals {
-		td {
-			position: relative;
-			padding-top: 10px;
-		}
-
-		.box {
-			float: left;
-		}
-
-		.title {
-			color: #333;
-			font-size: 12px;
-			font-weight: bold;
-			background-color: #d6d6d6;
-			padding: 2px 0px;
-			border-radius: 5px;
-		}
-
-		.val {
-			font-size: 18px;
-			line-height: 40px;
-		}
-
-		.trips {
-			width: calc(45% - 5px);
-			margin-right: 5px;
-		}
-
-		.pax {
-			width: 55%;
-
-			qty-input {
-				margin: 0px;
-
-				button:last-of-type {
-					margin: 0px;
-				}
-			}
-
-			.qty-input {
-				padding: 0px;
-				background: none;
-
-				input {
-					width: 40px;
-					font-size: 16px;
-				}
-
-				.btns {
-					position: relative;
-					top: 6px;
-				}
-			}
-		}
-
-		.price {
-			width: 100%;
-
-			.val {
-				font-size: 24px;
-				font-weight: bold;
-			}
-		}
-	}
-}
-
-#pg_tickets {
-	.scroll {
-		height: 100%;
-		background-color: #FFF;
-	}
-
-	.intro {
-		height: 100%;
-		text-align: center;
-		display: flex;
-		flex-direction: column;
-
-		.gap {
-			flex-grow: 1;
-		}
-
-		.msg {
-			padding-top: 135px;
-			background: url('../img/bg_tickets.png') no-repeat center top;
-			flex-grow: 0;
-
-			.title {
-				font-size: 14px;
-				font-weight: bold;
-				color: $stable;
-				margin-bottom: 20px;
-		}
-
-		.txt {
-				width: 200px;
-				margin: 0px auto;
-		}
-	}
-
-	#btnloginpls {
-		display: block;
-		position: relative;
-		text-align: center;
-		text-decoration: none;
-		bottom: initial;
-			margin-top: 30px;
-		}
-
-		#btnloginpls:active {
-			margin-top: 33px;
-		}
-	}
-
-	ion-list ion-item.item {
-		padding: 0px;
-
-		.date {
-			width: 80px;
-			display:inline-block;
-		}
-	}
-}
-
-#pg_tickdetails {
-	.scroll {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-
-	}
-
-	#tickettabs {
-		height: 48px;
-		display: flex;
-		flex-direction: row;
-		border-bottom: 1px solid #ddd;
-		flex-grow: 0;
-
-		.tab {
-			flex-grow: 1;
-			background-color: #FFF;
-			border: 0px;
-			padding: 10px 0px;
-			font-size: 1em !important;
-			font-weight: bold;
-			line-height: 30px;
-			text-align: center;
-
-			&.selected {
-				border-bottom: 4px solid $stable;
-			}
-
-			.content {
-				width: 100%;
-				height: 30px;
-				display: inline-block;
-				border-right: 1px solid #d5d5d5;
-
-				.icon {
-					display: inline-block;
-					font-size: 20px;
-				}
-
-				.txt {
-				}
-			}
-
-			&:last-of-type .content{
-				border: 0px;
-			}
-		}
-	}
-
-	#ticketinfo {
-		border-bottom: 1px solid #CCC;
-		background-color: #FFF;
-		position: relative;
-		flex-grow: 0;
-
-		#tdholder {
-			width: 300%;
-			position: relative;
-			left: 0%;
-			margin-bottom: 40px;
-			transition: all 0.3s;
-
-			&.ticketsel {left: 0%;}
-			&.driversel {left: -100%;}
-			&.stopssel {left: -200%;}
-
-			td.ticket, td.driver, td.stops {
-				width: 33.33%;
-			}
-		}
-
-		.header {
-			height: 20px;
-			font-size: 11px;
-			font-weight: bold;
-			color: #999;
-			border-bottom: 1px dashed #CCC;
-		}
-
-		.statusmsg {
-			width: 100%;
-			height: 40px;
-			position: absolute;
-			bottom: 0px;
-			border-top: 1px solid #CCC;
-			padding: 10px 16px 10px 90px;
-			background: url('../img/anim-bus.gif') no-repeat left 10px center;
-		}
-
-		.ticket {
-			.details {
-				width: 100%;
-				padding: 10px;
-
-				table {
-					width: calc(100% - 6px);
-					margin: 0px 3px;
-				}
-
-				.note {
-					font-size: 13px;
-					background-color: #D5D5FF;
-					padding: 5px 10px;
-					border-radius: 5px;
-					margin-bottom: 10px;
-					box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-
-					.icon {
-					    width: 20px;
-					    height: 20px;
-						background-color: #FF0000;
-						border-radius: 10px;
-						color: #FFF;
-						display: inline-block;
-						text-align: center;
-						margin-right: 5px;
-					}
-				}
-
-				.txt td {
-					height: 30px;
-				}
-
-				.gap {
-					width: 3%;
-				}
-
-				.qrbox {
-					width: 34%;
-					/*padding-bottom: 34%;*/
-					padding-bottom: 30.7%;
-					position: relative;
-
-					#qrcodebg {
-						width: 100%;
-						height: 100%;
-						position: absolute;
-						color: #000;
-
-						canvas, img {
-							width: 100%;
-							position: absolute;
-							top: 0;
-							left: 0;
-						}
-					}
-				}
-
-				.header.ticket, .header.pax {
-					width: 30%;
-				}
-
-				.last {
-					/*height: 100%;*/
-				}
-			}
-		}
-
-		.driver {
-			vertical-align: top;
-
-			.details {
-				width: 100%;
-				padding: 10px 16px;
-
-				table {
-					width: 100%;
-				}
-
-				.comp {
-					border-radius: 10px;
-					box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-					padding: 5px 5px 5px 130px;
-					background-repeat: no-repeat;
-					background-position: left 5px center;
-					background-color: #F5F5F5;
-					background-size: auto 30px;
-
-					.cname {
-						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
-					}
-				}
-
-				.header.operate { border-bottom: 0px; }
-				.header.vplate { width: 30%; }
-				.header.dname { width: 65%; }
-
-				.txt td {
-					height: 30px;
-				}
-
-				.terms {
-					font-size: 11px;
-					line-height: 15px;
-				}
-
-				.vgap {
-					height: 15px;
-				}
-				.gap {
-					width: 5%;
-				}
-			}
-		}
-
-		.stops {
-			.routeinfo {
-				background-color: #FFF;
-				padding: 10px 16px;
-
-				.stops {
-					width: 100%;
-					float: none;
-
-					.line {
-						height: 50px;
-						left: 4px;
-					}
-
-					.time {
-						height: 50px;
-						float: left;
-					}
-
-					.desc {
-						display: block;
-					}
-
-					.start, .end {
-						background-position: left top 5px;
-						clear: both;
-					}
-				}
-			}
-		}
-	}
-
-	.map {
-		width: 100%;
-		position: relative;
-		flex: 1 1 auto;
-
-		.show {
-			opacity: 1;
-		}
-
-		ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-			width: 100%;
-			height: 100%;
-			position: absolute;
-			left: 0;
-			top: 0;
-		}
-
-		.gmnoprint, .gm-style-cc {
-			display:none;
-		}
-	}
-}
-
-#pg_settings {
-	.status {
-		text-align: center;
-		background-color: #FFF;
-		padding: 25px 0px;
-
-		.msg {
-			font-size: 13px;
-		}
-
-		button {
-			width: 260px;
-			border: 1px solid #a097ad;
-			border-radius: 40px;
-			background-color: #FFF;
-			color: $stable;
-			font-size: 16px;
-			padding: 10px 0px;
-			margin-top: 10px;
-		}
-	}
-
-	#userinfo {
-		span {
-			float: right;
-			color: #999;
-		}
-
-		.icon {
-			font-size: 25px;
-			font-weight: bold;
-			position: absolute;
-			right: 16px;
-			top: 6px;
-		}
-	}
-
-  ion-item a {
-    color: inherit;
-    text-decoration: none;
+  width: calc(100% - 20px);
+  min-height: calc(100% - 40px);
+  left: 9px;
+  top: 19px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+  border: 1px solid #999;
+
+  ion-content {
+    padding: 5px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    background-color: #BBB;
+    padding: 5px;
+    font-weight: bold;
+    border: solid 1px #CCC;
+  }
+
+  td {
+    background-color: #FFF;
+    padding: 5px;
+    border: solid 1px #CCC;
   }
 }
 
-.loginfaq.modal {
-	.scroll {
-		height: 100%;
-		padding: 10px 16px;
-		background-color: #FFF;
+#pg_bookdate {
+  .monthsel {
+    background-color: #FFF;
+    padding: 10px 0px;
+    border-bottom: 1px solid #CCC;
 
-		h4 {
-			font-weight: bold;
-			margin: 0px;
-			padding: 10px 0px 20px 0px;
-		}
+    .icon {
+      width: 40px;
+      height: 40px;
+      font-size: 28px;
+      color: #FFF;
+      line-height: 40px;
+      display: inline-block;
+      background-color: $stable;
+      border-radius: 40px;
+      position: relative;
 
-		section {
-			margin: 0px 0px 20px 0px;
+      &:active {
+        top: 2px;
+      }
 
-			ul {
-				padding-left: 25px;
+      &.prev::before {
+        padding-right: 3px;
+      }
 
-				li {
-					background-color: #E5E5E5;
-					padding: 5px 10px;
-					border-radius: 5px;
-					list-style-type: decimal-leading-zero;
-					margin-bottom: 10px;
-				}
-			}
-		}
+      &.next::before {
+        padding-left: 3px;
+      }
+    }
 
-		.title {
-			font-weight: bold;
-			font-size: 16px;
-			border-bottom: 1px solid #333;
-			margin-bottom: 10px;
+    .mmyyyy-holder {
+      width: calc(60% - 10px);
+      height: 28px;
+      display: inline-block;
+      position: relative;
+      margin: 0px 10px;
+    }
 
-			.icon {
-				margin-right: 5px;
-				padding-left: 5px;
-			}
-		}
-	}
+    .mm, .yyyy {
+      width: 45%;
+      font-size: 15px;
+      background-color: #FFF;
+      border: 1px solid #CCC;
+      border-radius: 5px;
+      padding: 5px;
+      position: absolute;
+      top: 3px;
+    }
+
+    .mm {
+      left: 5px;
+    }
+    .yyyy {
+      right: 5px;
+    }
+  }
+
+  .datepicker {
+    text-align: center;
+
+    table {
+      width: 100%;
+      padding: 0px;
+      margin: 0px;
+      border-spacing: 0px;
+      background-color: #FFF;
+
+      th {
+        font-weight: bold;
+        text-align: center;
+        background-color: #999;
+        color: #FFF;
+        padding: 5px;
+      }
+
+      td {
+        width: 14.2%;
+        padding: 10px 5px 10px 5px;
+        text-align: center;
+        background-color: #EDA;
+        border-right: 1px solid #F5F5F5;
+        border-bottom: 1px solid #CCC;
+      }
+
+      tr td:last-of-type {
+        border-right: 0px;
+      }
+
+      .selected {
+        background-color: #029;
+        color: #FFF;
+
+        &.dragged {
+          background-color: #66F;
+        }
+      }
+
+      .dragged {
+        background-color: #6AF;
+      }
+
+      .not-running, .sold-out, .invalid-stop {
+        background-color: #D5D5D5;
+        color: #888;
+      }
+
+      .primary:not(.not-running):not(.selected):not(.dragged) {
+        background-color: #FFF;
+      }
+    }
+  }
+
+  qty-input {
+    margin: 10px 0px;
+  }
+
+  .bookdetails {
+    padding: 0px 0px 20px 0px;
+    background-color: #FFF;
+  }
+
+  #btnreview {
+    margin-top: 20px;
+    position: relative;
+    bottom: 0;
+
+    &:active {
+      bottom: -3px;
+    }
+  }
 }
 
-#pg_suggestions {
-	.inline-suggestion-map {
-		width: 100%;
-		height: 250px;
-		position: relative;
-	}
-	ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		left: 0;
-		top: 0;
-	}
+#pg_summary {
+  .msg {
+    padding: 10px 16px;
+    background-color: #FFF;
+    border-bottom: 1px solid #CCC;
+  }
+
+  section {
+    border-bottom: 3px solid $stable;
+
+    .edit {
+      clear: both;
+      text-align: right;
+      border-top: 1px dashed #CCC;
+      padding-top: 10px;
+    }
+
+    .btnsmall {
+      width: 80px;
+      height: 15px;
+      padding: 15px 0px;
+      font-size: 14px;
+      text-decoration: none;
+      line-height: 0px;
+      background-color: #ffe76e;
+      border: 0px;
+      border-bottom: 3px solid #f7c639;
+      border-radius: 20px;
+      box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
+      text-align: center;
+      color: #333;
+      display: inline-block;
+    }
+  }
+
+  .ion-list-header {
+    border-bottom: 1px solid #CCC;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+    position: relative;
+    padding-left: 40px;
+
+    .icon {
+      font-size: 30px;
+      margin-right: 5px;
+      color: #000;
+      position: absolute;
+      left: 10px;
+      top: 0px;
+    }
+  }
+
+  .routeinfo {
+    background-color: #FFF;
+    padding: 15px 16px 15px 16px;
+
+    .stops {
+      float: none;
+      clear: both;
+      padding-left: 50px;
+
+      .line {
+        height: 50px;
+        left: 54px;
+      }
+
+      .time {
+        height: 50px;
+        float: left;
+      }
+
+      .desc {
+        display: block;
+      }
+
+      .start, .end {
+        background-position: left top 5px;
+        clear: both;
+      }
+    }
+  }
+
+  .tripdates {
+    background-color: #FFF;
+    padding: 15px 10px;
+
+    .datesnum {
+      padding: 10px 6px 20px 6px;
+
+      span {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 5px;
+      }
+    }
+
+    .qty-input .btns button{
+      display: none;
+    }
+  }
+
+  .promo {
+    background-color: #FFF;
+    padding: 15px 16px;
+
+    ol {
+      margin-bottom: 15px;
+
+      li {
+        font-style: italic;
+        padding-left: 10px;
+        border-bottom: 1px dashed #CCC;
+      }
+    }
+
+    form {
+      input {
+        width: calc(100% - 90px);
+        height: 40px;
+        border: 1px solid #333;
+        margin-right: 5px;
+        border-radius: 5px;
+        padding: 3px 7px;
+        font-size: 18px;
+        display: inline-block;
+      }
+
+      button {
+        width: 80px;
+        height: 40px;
+      }
+    }
+  }
+
+  .paytxt {
+    text-align: center;
+  }
+
+  #btnpay {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    margin: 20px 0px;
+
+    &:active {
+      margin-top: 23px;
+    }
+  }
 }
 
-.new_suggestion.modal .scroll {
-	width: 100%;
-	height: 100%;
-	position: relative;
+#pg_booking qty-input, #pg_bookdate qty-input, #pg_summary qty-input {
+  display: block;
+  background-color: #FFF;
+  font-size: 12px;
+
+  .qty-input {
+    height: 34px;
+    line-height: 34px;
+    padding: 0px 0px 0px 32px;
+    background: url('../img/icon-pax.png') left 10px center no-repeat transparent;
+    background-size: auto 28px;
+    position: relative;
+  }
+
+  .placeholder {
+    color: #828282;
+  }
+
+  .btns {
+    position: absolute;
+    top: 2px;
+    right: 0px;
+  }
+
+  input {
+    width: 30px;
+    display: inline-block;
+    text-align: center;
+    background-color: #FFF !important;
+    border: 0px;
+    font-size: 12px;
+    position: relative;
+    top: -3px;
+  }
+
+  button {
+    background-color: $stable;
+    border: 0px;
+    color: #FFF;
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+    border-radius: 14px;
+    display: inline-block;
+    line-height: 1;
+  }
+
+  button:last-of-type {
+    margin-right: 10px;
+  }
+}
+
+#pg_bookdate .price-table, #pg_summary .price-table {
+  width: 100%;
+
+  th {
+    font-weight: bold;
+    text-align: center;
+    background-color: #CCC;
+    color: #333;
+    padding: 5px;
+  }
+
+  tr {
+    td {
+      padding: 5px;
+      text-align: center;
+      border-bottom: 1px solid #CCC;
+    }
+
+    td:first-of-type {
+    }
+
+    td:last-of-type {
+      width: 120px;
+    }
+
+    &.nosel td{
+      padding: 20px 0px;
+      color: #999;
+    }
+  }
+
+  .totals {
+    td {
+      position: relative;
+      padding-top: 10px;
+    }
+
+    .box {
+      float: left;
+    }
+
+    .title {
+      color: #333;
+      font-size: 12px;
+      font-weight: bold;
+      background-color: #d6d6d6;
+      padding: 2px 0px;
+      border-radius: 5px;
+    }
+
+    .val {
+      font-size: 18px;
+      line-height: 40px;
+    }
+
+    .trips {
+      width: calc(45% - 5px);
+      margin-right: 5px;
+    }
+
+    .pax {
+      width: 55%;
+
+      qty-input {
+        margin: 0px;
+
+        button:last-of-type {
+          margin: 0px;
+        }
+      }
+
+      .qty-input {
+        padding: 0px;
+        background: none;
+
+        input {
+          width: 40px;
+          font-size: 16px;
+        }
+
+        .btns {
+          position: relative;
+          top: 6px;
+        }
+      }
+    }
+
+    .price {
+      width: 100%;
+
+      .val {
+        font-size: 24px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+#pg_tickets {
+  .scroll {
+    height: 100%;
+    background-color: #FFF;
+  }
+
+  .intro {
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+
+    .gap {
+      flex-grow: 1;
+    }
+
+    .msg {
+      padding-top: 135px;
+      background: url('../img/bg_tickets.png') no-repeat center top;
+      flex-grow: 0;
+
+      .title {
+        font-size: 14px;
+        font-weight: bold;
+        color: $stable;
+        margin-bottom: 20px;
+    }
+
+    .txt {
+        width: 200px;
+        margin: 0px auto;
+    }
+  }
+
+  #btnloginpls {
+    display: block;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    bottom: initial;
+      margin-top: 30px;
+    }
+
+    #btnloginpls:active {
+      margin-top: 33px;
+    }
+  }
+
+  ion-list ion-item.item {
+    padding: 0px;
+
+    .date {
+      width: 80px;
+      display:inline-block;
+    }
+  }
+}
+
+#pg_tickdetails {
+  .scroll {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  #tickettabs {
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #ddd;
+    flex-grow: 0;
+
+    .tab {
+      flex-grow: 1;
+      background-color: #FFF;
+      border: 0px;
+      padding: 10px 0px;
+      font-size: 1em !important;
+      font-weight: bold;
+      line-height: 30px;
+      text-align: center;
+
+      &.selected {
+        border-bottom: 4px solid $stable;
+      }
+
+      .content {
+        width: 100%;
+        height: 30px;
+        display: inline-block;
+        border-right: 1px solid #d5d5d5;
+
+        .icon {
+          display: inline-block;
+          font-size: 20px;
+        }
+
+        .txt {
+        }
+      }
+
+      &:last-of-type .content{
+        border: 0px;
+      }
+    }
+  }
+
+  #ticketinfo {
+    border-bottom: 1px solid #CCC;
+    background-color: #FFF;
+    position: relative;
+    flex-grow: 0;
+
+    #tdholder {
+      width: 300%;
+      position: relative;
+      left: 0%;
+      margin-bottom: 40px;
+      transition: all 0.3s;
+
+      &.ticketsel {left: 0%;}
+      &.driversel {left: -100%;}
+      &.stopssel {left: -200%;}
+
+      td.ticket, td.driver, td.stops {
+        width: 33.33%;
+      }
+    }
+
+    .header {
+      height: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      color: #999;
+      border-bottom: 1px dashed #CCC;
+    }
+
+    .statusmsg {
+      width: 100%;
+      height: 40px;
+      position: absolute;
+      bottom: 0px;
+      border-top: 1px solid #CCC;
+      padding: 10px 16px 10px 90px;
+      background: url('../img/anim-bus.gif') no-repeat left 10px center;
+
+			#refreshbar {
+				width: 0%;
+				height: 3px;
+				background-color: #33F;
+				position: absolute;
+				bottom: -1px;
+				left: 0px;
+				transition: all 1000ms linear;
+			}
+
+			#refreshbar.reset {
+				transition: all 0ms linear;
+			}
+    }
+
+    .ticket {
+      .details {
+        width: 100%;
+        padding: 10px;
+
+        table {
+          width: calc(100% - 6px);
+          margin: 0px 3px;
+        }
+
+        .note {
+          font-size: 13px;
+          background-color: #D5D5FF;
+          padding: 5px 10px;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+
+          .icon {
+              width: 20px;
+              height: 20px;
+            background-color: #FF0000;
+            border-radius: 10px;
+            color: #FFF;
+            display: inline-block;
+            text-align: center;
+            margin-right: 5px;
+          }
+        }
+
+        .txt td {
+          height: 30px;
+        }
+
+        .gap {
+          width: 3%;
+        }
+
+        .qrbox {
+          width: 34%;
+          /*padding-bottom: 34%;*/
+          padding-bottom: 30.7%;
+          position: relative;
+
+          #qrcodebg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            color: #000;
+
+            canvas, img {
+              width: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+            }
+          }
+        }
+
+        .header.ticket, .header.pax {
+          width: 30%;
+        }
+
+        .last {
+          /*height: 100%;*/
+        }
+      }
+    }
+
+    .driver {
+      vertical-align: top;
+
+      .details {
+        width: 100%;
+        padding: 10px 16px;
+
+        table {
+          width: 100%;
+        }
+
+        .comp {
+          border-radius: 10px;
+          box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+          padding: 5px 5px 5px 130px;
+          background-repeat: no-repeat;
+          background-position: left 5px center;
+          background-color: #F5F5F5;
+          background-size: auto 30px;
+
+          .cname {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .header.operate { border-bottom: 0px; }
+        .header.vplate { width: 30%; }
+        .header.dname { width: 65%; }
+
+        .txt td {
+          height: 30px;
+        }
+
+        .terms {
+          font-size: 11px;
+          line-height: 15px;
+        }
+
+        .vgap {
+          height: 15px;
+        }
+        .gap {
+          width: 5%;
+        }
+      }
+    }
+
+    .stops {
+      .routeinfo {
+        background-color: #FFF;
+        padding: 10px 16px;
+
+        .stops {
+          width: 100%;
+          float: none;
+
+          .line {
+            height: 50px;
+            left: 4px;
+          }
+
+          .time {
+            height: 50px;
+            float: left;
+          }
+
+          .desc {
+            display: block;
+          }
+
+          .start, .end {
+            background-position: left top 5px;
+            clear: both;
+          }
+        }
+      }
+    }
+  }
+
+  .map {
+    width: 100%;
+    position: relative;
+    flex: 1 1 auto;
+
+    .show {
+      opacity: 1;
+    }
+
+    ui-gmap-google-map, .angular-google-map, .angular-google-map-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .gmnoprint, .gm-style-cc {
+      display:none;
+    }
+  }
 }
 
 .credit_card_input input[type='text'] {
-	text-align: right;
+  text-align: right;
 }
