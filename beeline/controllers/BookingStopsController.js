@@ -133,10 +133,7 @@ export default [
         $scope.changesModal.remove();
       }
     });
-
-    $scope.title = $scope.state == 'tabs.booking-pickup' ?
-        'Select Pick-up and Drop-off Points' :
-        'Select Drop-off Point';
+    
     $scope.routePath = [];
 
     /* These function teaches the <bus-stop-selector> how
