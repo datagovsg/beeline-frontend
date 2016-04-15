@@ -22,22 +22,31 @@ function filterRoutesByRegionId(routes, regionId){
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function ($scope, $state, RoutesService) {
+  
   $scope.data = {} // https://github.com/angular/angular.js/wiki/Understanding-Scopes
-  Promise.all([
-    RoutesService.getRoutes(),
-    RoutesService.getRecentRoutes()
-  ]).then(function(results) {
-    var allRoutes = results[0];
-    var recentRoutes = results[1];
+  var allRoutesPromise = RoutesService.getRoutes();
+  var recentRoutesPromise = RoutesService.getRecentRoutes();
+
+  // Configure the list of available regions
+  allRoutesPromise.then(function(allRoutes) {
     $scope.data.regions = getUniqueRegionsFromRoutes(allRoutes);
+  });
+
+  // Filter the displayed routes by selected region
+  allRoutesPromise.then(function(allRoutes) {
     $scope.$watch('data.selectedRegionId', function(newRegionId) {
-      var regionRoutes = filterRoutesByRegionId(allRoutes, +newRegionId);
-      $scope.data.recentActiveRoutes = _.filter(regionRoutes, function(route) {
-        return _.some(recentRoutes, {'id': route.id });
-      });
-      $scope.data.remainingActiveRoutes = _.reject(regionRoutes, function(route) {
+      $scope.data.filteredActiveRoutes = filterRoutesByRegionId(allRoutes, +newRegionId);
+    });
+  });
+
+  // Filter the recent routes display whenever the active routes is changed
+  // This cascades the region filter from the previous block
+  recentRoutesPromise.then(function(recentRoutes) {
+    $scope.$watch('data.filteredActiveRoutes', function(newActiveRoutes) {
+      $scope.data.filteredRecentRoutes = _.filter(newActiveRoutes, function(route) {
         return _.some(recentRoutes, {'id': route.id });
       });
     });
   });
+
 };

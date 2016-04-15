@@ -13,10 +13,10 @@
     </section>
 
     <!-- Recent Routes Section -->
-    <section>
+    <section ng-show="data.filteredRecentRoutes.length > 0">
       <div class="ion-list-header">Recently Booked Routes</div>
       <ion-list id="booklist">
-        <route-item ng-repeat="route in data.recentActiveRoutes">foobar</route-item>
+        <route-item ng-repeat="route in data.filteredRecentRoutes">foobar</route-item>
       </ion-list>
     </section>
 
@@ -24,7 +24,7 @@
     <section>
       <div class="ion-list-header">Available Routes</div>
       <ion-list id="booklist">
-        <route-item ng-repeat="route in data.remainingActiveRoutes">foobar</route-item>
+        <route-item ng-repeat="route in data.filteredActiveRoutes">foobar</route-item>
       </ion-list>
     </section>
     
