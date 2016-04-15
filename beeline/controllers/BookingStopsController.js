@@ -14,6 +14,7 @@ export default [
   'RoutesService',
   'CompanyService',
   'uiGmapGoogleMapApi',
+  '$timeout',
   function(
     $rootScope,
     $scope,
@@ -26,7 +27,8 @@ export default [
     BookingService,
     RoutesService,
     CompanyService,
-    uiGmapGoogleMapApi
+    uiGmapGoogleMapApi,
+    $timeout
   ) {
     //Gmap default settings
     $scope.map = {
@@ -59,10 +61,21 @@ export default [
 
     var resolveGmap = null;
     var gmapIsReady = new Promise((resolve, reject) => {
-      resolveGmap = resolve;
+      var resolved = false;
+
+      $scope.$watch('map.mapControl.getGMap', function () {
+        if (!resolved) {
+          resolve();
+          resolved = true;
+        }
+      });
     });
-    $scope.mapReady = function() {
-      resolveGmap();
+    
+    function resizeMap() {
+      gmapIsReady
+      .then(() => {
+        google.maps.event.trigger($scope.map.mapControl.getGMap(), 'resize');
+      });
     }
 
     //Default settings for various info used in the page
@@ -83,41 +96,15 @@ export default [
       errmsg: ''
     }
 
-    // Name when controller was fired??
-    // Maybe find a neater solution?
-    var stateName = $state.current.name;
     $scope.currentBooking = {};
+    $scope.routePath = [];
+    $scope.boardMarkerOptions = {};
+    $scope.alightMarkerOptions = {};
 
     $scope.$on('$ionicView.beforeEnter', () => {
       BookingService.reset($state.params.routeId)
       $scope.currentBooking = BookingService.getCurrentBooking();
     });
-
-    $scope.setStop = function () {
-      var stop = $scope.infoStop;
-      var type = $scope.infoType
-
-      $scope.$apply(() => {
-        if (type == 'board') {
-          $scope.currentBooking.boardStop = stop.id;
-        }
-        else {
-          $scope.currentBooking.alightStop = stop.id;
-        }
-
-        /* Hide the infowindow */
-        $scope.infoStop = null;
-        $scope.infoType = null;
-      });
-    };
-
-    //
-    function resizeMap() {
-      gmapIsReady
-      .then(() => {
-        google.maps.event.trigger($scope.map.mapControl.getGMap(), 'resize');
-      });
-    }
 
     $scope.$on('$ionicView.afterEnter', () => {
       /* Do this hackery because the content of an infowindow
@@ -132,24 +119,15 @@ export default [
       if ($scope.changesModal) {
         $scope.changesModal.remove();
       }
+      if (timer){
+        $timeout.cancel(timer);
+      }
     });
-    
-    $scope.routePath = [];
 
-    /* These function teaches the <bus-stop-selector> how
-     to display the stop id and description */
-    $scope.getStopId = (stop) => stop.id;
-    $scope.getStopDescription = (stop) =>
-      formatTime(stop.time) + ' \u00a0\u00a0' + stop.description;
-    $scope.getStopDescription2 = (stop) =>
-      stop.road;
-
-    $scope.boardMarkerOptions = {};
-    $scope.alightMarkerOptions = {};
-
+    var timer;
     // FIXME: apply this to all maps somehow, instead of doing this ad-hoc
     uiGmapGoogleMapApi.then(() => {
-      setTimeout(function(){
+      timer = $timeout(function(){
         //Disable the Google link at the bottom left of the map
         var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
         glink.next().find('a').on('click', function (e) {
@@ -172,6 +150,33 @@ export default [
         },
       };
     })
+
+    $scope.setStop = function () {
+      var stop = $scope.infoStop;
+      var type = $scope.infoType
+
+      $scope.$apply(() => {
+        if (type == 'board') {
+          $scope.currentBooking.boardStop = stop.id;
+        }
+        else {
+          $scope.currentBooking.alightStop = stop.id;
+        }
+
+        /* Hide the infowindow */
+        $scope.infoStop = null;
+        $scope.infoType = null;
+      });
+    };
+
+    /* These function teaches the <bus-stop-selector> how
+     to display the stop id and description */
+    $scope.getStopId = (stop) => stop.id;
+    $scope.getStopDescription = (stop) =>
+      formatTime(stop.time) + ' \u00a0\u00a0' + stop.description;
+    $scope.getStopDescription2 = (stop) =>
+      stop.road;
+
 
     // Load the data for the selected route
     // Which data?
@@ -339,6 +344,5 @@ export default [
         }
       });
 
-    console.log('Revised(2) ' + stateName);
   }
 ];
