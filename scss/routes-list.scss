@@ -1,0 +1,47 @@
+/* ---------- ROUTE LIST PAGE ---------- */
+#pg_routelist {
+  color: #444;
+
+  .loader {
+    width: 100%;
+    height: 300px;
+    background: url('../img/loader120.gif') no-repeat center center transparent;
+    background-size: 120px auto;
+
+    .txt {
+      width: 100%;
+      text-align: center;
+      margin-top: 210px;
+      position: absolute;
+      font-size: 16px;
+    }
+  }
+
+  #regsel {
+    background-color: #FFF;
+    text-align:center;
+    border-bottom: 1px solid #ddd;
+    padding: 3px;
+
+    label {
+      margin-right: 5px;
+    }
+
+    select {
+      padding: 10px 0px;
+      border: 0px;
+      background: transparent;
+      cursor: pointer;
+    }
+  }
+
+  #booklist {
+    .routeinfo .stops {
+      width: calc(100% - 80px);
+    }
+
+    .item-icon-right {
+      padding: 0px;
+    }
+  }
+}

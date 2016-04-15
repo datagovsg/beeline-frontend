@@ -1,5 +1,5 @@
-<ion-view id="pg_routemap" view-title="Explore Routes - Map">
-  <ion-content class="has-footer" has-bouncing="false">
+<ion-view class="routes-map-view" view-title="Routes">
+  <ion-content class="has-tabs" scroll="false" has-bouncing="false">
 
 		<div class="locinputs">
 			<label class="item item-input pickup fade">
@@ -37,7 +37,7 @@
 		<button class="btnnext" ng-click="nextAction()" 
                             ng-show="data.nextButtonIsVisible">{{ data.nextActionName }}</button>
 
-    <ui-gmap-google-map center="map.center" 
+    <ui-gmap-google-map center="map.center"
     										pan="true" 
     										zoom="map.zoom" 
     										options="map.options" 
