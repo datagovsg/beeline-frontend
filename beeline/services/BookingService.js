@@ -289,6 +289,22 @@ export default function (UserService, CompanyService, RoutesService, $http) {
       return changes;
   };
 
+  rv.computeStops = function(trips){
+    var tripStops = _.flatten(trips.map(trip => trip.tripStops));
+    var uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id)
+    var stopData = _.keyBy(uniqueStops, ts => ts.stop.id);
+
+    var boardStops = uniqueStops.filter(ts => ts.canBoard)
+      .map(ts => {
+        return _.extend({time: ts.time}, ts.stop);
+      })
+    var alightStops = uniqueStops.filter(ts => ts.canAlight)
+      .map(ts => {
+        return _.extend({time: ts.time}, ts.stop);
+      })
+    return [boardStops,alightStops];
+  }
+
   rv.reset(1);
 
 

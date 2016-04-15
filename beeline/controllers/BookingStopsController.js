@@ -64,13 +64,13 @@ export default [
       var resolved = false;
 
       $scope.$watch('map.mapControl.getGMap', function () {
-        if (!resolved) {
+        if ($scope.map.mapControl.getGMap && !resolved) {
           resolve();
           resolved = true;
         }
       });
     });
-    
+
     function resizeMap() {
       gmapIsReady
       .then(() => {
@@ -195,7 +195,9 @@ export default [
         $scope.currentBooking.route = route;
 
         computeStops();
-        panToStops();
+        gmapIsReady.then(() => {
+          panToStops();
+        })
 
         // 3. Check if we should display changes
         if ($scope.lastDisplayedRouteId != $scope.currentBooking.routeId) {
@@ -271,21 +273,9 @@ export default [
 
     function computeStops() {
       var trips = $scope.currentBooking.route.trips;
-      var tripStops = _.flatten(trips.map(trip => trip.tripStops));
-      var uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id)
-      var stopData = _.keyBy(uniqueStops, ts => ts.stop.id);
-
-      var boardStops = uniqueStops.filter(ts => ts.canBoard)
-        .map(ts => {
-          return _.extend({time: ts.time}, ts.stop);
-        })
-      var alightStops = uniqueStops.filter(ts => ts.canAlight)
-        .map(ts => {
-          return _.extend({time: ts.time}, ts.stop);
-        })
-
-      $scope.book.boardStops = boardStops;
-      $scope.book.alightStops = alightStops;
+      var stops = BookingService.computeStops(trips);
+      $scope.book.boardStops = stops[0];
+      $scope.book.alightStops = stops[1];
     }
 
     function panToStops() {
