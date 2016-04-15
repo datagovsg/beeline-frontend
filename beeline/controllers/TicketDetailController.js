@@ -9,6 +9,7 @@ export default [
     'TicketService',
     'CompanyService',
     'TripService',
+    'UserService',
 function(
     $scope,
     $state,
@@ -17,11 +18,12 @@ function(
     uiGmapGoogleMapApi,
     TicketService,
     CompanyService,
-    TripService
+    TripService,
+    UserService
 ){
-    $scope.currentState = 'ticket';
+  $scope.currentState = 'ticket';
 
-    $scope.map = {
+  $scope.map = {
 		center: { latitude: 1.370244, longitude: 103.823315 },
 		zoom: 10,
 		mapControl: {},
@@ -44,17 +46,6 @@ function(
 				opacity: 1.0,
 				weight: 3,
 			},
-			/*
-			icons: [{
-                icon: {
-                    path: 1,
-                    scale: 3,
-                    strokeColor: '#333'
-                },
-                offset: '20%',
-                repeat: '50px'
-            }]
-            */
 		},{
 			id: 'routepath',
 			path:[],
@@ -62,103 +53,36 @@ function(
 				opacity: 0,
 			},
 			icons: [{
-                icon: {
+        icon: {
 					path: 'M 0,-1 0,1',
 					strokeOpacity: 0.5,
 					scale: 3
-                },
-                offset: '0',
-                repeat: '20px'
+        },
+        offset: '0',
+        repeat: '20px'
 			}]
 		}],
 	};
 
-	$scope.user = JSON.parse(localStorage['beelineUser']);
-	$scope.tickets = {
+	$scope.user = UserService.getLocalJsonUserData();
+  $scope.tickets = {
 		today: [],
 		soon: []
 	}
 
 	$scope.locator = {
-		checkInterval: 8000,
 		timePassed: 0,
 		timer: '' //placeholder for $interval function
 	}
 
-	/*
-	$scope.$on('$ionicView.leave',()=>{
-		$interval.cancel($scope.locator.timer);
-	});
-	*/
-
 	var gmap;
+  var googleMaps;
+  var timerInterval = 8000; //8s refresh for bus location
 
-    TicketService.getTickets()
-        .then((tickets) => {
-            $scope.tripTicket = tickets
-                    .filter(tick => tick.id == $stateParams.tid)[0];
+  //generate QR Code
+  new QRCode(document.getElementById("qr-code-bg"), 'ticket code goes here');
 
-			//generate QR Code
-			new QRCode(document.getElementById("qrcodebg"), 'ticket code goes here');
-            return TripService.Trip($scope.tripTicket.alightStop.tripId);
-        })
-        .then(function(){
-            $scope.trip = TripService.gettrip();
-
-			return TripService.RoutePath($scope.trip.routeId);
-		})
-		.then(function(){
-			$scope.route = TripService.getRoutePath();
-
-			return CompanyService.getCompany($scope.trip.transportCompanyId);
-        })
-        .then(function(compdata){
-            $scope.company = compdata;
-            $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
-
-			return uiGmapGoogleMapApi;
-		}).then(function(map) {
-			console.log("map init success");
-
-			//grabbing the very first bundle of ping data
-			return TripService.DriverPings($scope.tripTicket.alightStop.tripId);
-		}).then(function(tripinfo) {
-
-			$scope.info = tripinfo.data;
-
-			gmap = $scope.map.mapControl.getGMap();
-
-			//re-init the routepath and markers
-			$scope.map.lines[1].path = [];
-			$scope.map.markers = [];
-
-			//add points for the Route
-			for(var i=0; i<$scope.route.path.length; i++)
-			{
-				$scope.map.lines[1].path.push({
-					latitude: $scope.route.path[i].lat,
-					longitude: $scope.route.path[i].lng
-				});
-			}
-
-			//add markers for Bus Stops
-			$scope.addBusStops();
-
-			//init the bus marker & bus path
-			$scope.updateTripInfo();
-
-			//pan and zoom to bus location
-			var lastpos = tripinfo.data.pings[0].coordinates.coordinates;
-			gmap.panTo(new google.maps.LatLng(lastpos[1], lastpos[0]));
-			setTimeout(function(){
-				gmap.setZoom(17);
-			}, 300);
-
-			//call recurring timer function
-			$scope.startPingsRefresh($scope.trip.id);
-    });
-
-	$scope.addBusStops = function() {
+	function addBusStops() {
 		var board = $scope.tripTicket.boardStop.stop.coordinates.coordinates;
 		var alight = $scope.tripTicket.alightStop.stop.coordinates.coordinates;
 
@@ -171,8 +95,8 @@ function(
 			},
             icon: {
 				url: 'img/icon-stop-big.png',
-				scaledSize: new google.maps.Size(25,25),
-				anchor: new google.maps.Point(13,25),
+				scaledSize: new googleMaps.Size(25,25),
+				anchor: new googleMaps.Point(13,25),
 			},
 		}
 
@@ -185,13 +109,13 @@ function(
 			},
             icon: {
 				url: 'img/icon-marker-big.png',
-				scaledSize: new google.maps.Size(25,30),
-				anchor: new google.maps.Point(13,30),
+				scaledSize: new googleMaps.Size(25,30),
+				anchor: new googleMaps.Point(13,30),
 			},
 		}
 	};
 
-	$scope.updateTripInfo = function() {
+	function updateTripInfo() {
 		console.log('update');
 
 		$scope.map.lines[0].path = []; //buspath
@@ -215,20 +139,20 @@ function(
 				longitude: buspos[0],
 			},
 			icon: {
-				url: 'img/map_bus1.png',
-				scaledSize: new google.maps.Size(80,80),
-				anchor: new google.maps.Point(40,73),
+				url: 'img/busMarker01.png',
+				scaledSize: new googleMaps.Size(80,80),
+				anchor: new googleMaps.Point(40,73),
 			},
 		}
 
 
 	}
 
-	$scope.startPingsRefresh = function(tripid) {
+	function startPingsRefresh(tripid) {
 		console.log('timer start')
 
 		var loc = $scope.locator;
-		var refreshbar = document.getElementById('refreshbar');
+		var refreshBar = document.getElementById('refresh-bar');
 
 		loc.timer = $interval(function() {
 
@@ -239,22 +163,22 @@ function(
 			}
 
 			if (loc.timePassed == 0) {
-				angular.element(refreshbar).removeClass('reset');
+				angular.element(refreshBar).removeClass('reset');
 			}
 
 			loc.timePassed += 1000;
 
-			angular.element(refreshbar).css('width', ((loc.timePassed/loc.checkInterval) * 100) + '%');
+			angular.element(refreshBar).css('width', ((loc.timePassed/timerInterval) * 100) + '%');
 
-			if (loc.timePassed > loc.checkInterval)
+			if (loc.timePassed > timerInterval)
 			{
 				loc.timePassed = 0;
-				angular.element(refreshbar).addClass('reset');
-				angular.element(refreshbar).css('width', '0%');
+				angular.element(refreshBar).addClass('reset');
+				angular.element(refreshBar).css('width', '0%');
 
 				TripService.DriverPings(tripid).then(function(tripinfo) {
 					$scope.info = tripinfo.data;
-					$scope.updateTripInfo();
+					updateTripInfo();
 				});
 			}
 
@@ -262,6 +186,73 @@ function(
 		}, 1000);
 
 	}
+
+  TicketService.getTickets()
+    .then((tickets) => {
+      $scope.tripTicket = tickets.filter(tick => tick.id == $stateParams.tid)[0];
+
+      //default value for pax
+      $scope.tripTicket.pax = 1;
+
+      return TripService.getTripData($scope.tripTicket.alightStop.tripId);
+    })
+    .then(function(tripResp){
+      $scope.trip = tripResp.data;
+
+			return TripService.getRoutePath($scope.trip.routeId);
+		})
+		.then(function(routeResp){
+			$scope.route = routeResp.data;
+
+			return CompanyService.getCompany($scope.trip.transportCompanyId);
+    })
+    .then(function(compData){
+      $scope.company = compData;
+      $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
+
+			return uiGmapGoogleMapApi;
+		}).then(function(map) {
+			console.log("map init success");
+
+      googleMaps = map;
+
+			//grabbing the very first bundle of ping data
+			return TripService.DriverPings($scope.tripTicket.alightStop.tripId);
+		}).then(function(tripinfo) {
+
+			$scope.info = tripinfo.data;
+
+			gmap = $scope.map.mapControl.getGMap();
+
+			//re-init the routepath and markers
+			$scope.map.lines[1].path = [];
+			$scope.map.markers = [];
+
+			//add points for the Route
+			for(var i=0; i<$scope.route.path.length; i++)
+			{
+				$scope.map.lines[1].path.push({
+					latitude: $scope.route.path[i].lat,
+					longitude: $scope.route.path[i].lng
+				});
+			}
+
+			//add markers for Bus Stops
+			addBusStops();
+
+			//init the bus marker & bus path
+			updateTripInfo();
+
+			//pan and zoom to bus location
+			var lastpos = tripinfo.data.pings[0].coordinates.coordinates;
+			gmap.panTo(new googleMaps.LatLng(lastpos[1], lastpos[0]));
+			setTimeout(function(){
+				gmap.setZoom(17);
+			}, 300);
+
+			//call recurring timer function
+			startPingsRefresh($scope.trip.id);
+    });
 
 	$scope.$on('$destroy', () => {
 		console.log('timer end');
