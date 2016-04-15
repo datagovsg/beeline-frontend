@@ -1,21 +1,7 @@
 <ion-view id="pg_booking" view-title="{{title}}">
   <ion-content class="fullscreen-map">
   <div class="routeinfo">
-  <!--
-    <div class="busnum">{{currentBooking.route.label}}</div>
-    <div class="stops">
-      <div class="line"></div>
-      <div class="start">
-        <span class="time">{{currentBooking.route.trips[0].tripStops[0].time | formatTime}}</span>
-        <span class="road">{{currentBooking.route.trips[0].tripStops[0].stop.road}}</span>
-      </div>
-      <div class="end">
-        <span class="time">{{currentBooking.route.trips[0].tripStops[currentBooking.route.trips[0].tripStops.length-1].time | formatTime}}</span>
-        <span class="road">{{currentBooking.route.trips[0].tripStops[currentBooking.route.trips[0].tripStops.length-1].stop.road}}</span>
-      </div>
-    </div>-->
-    <route-item route="currentBooking.route">
-    </route-item>
+    <route-item route="currentBooking.route"></route-item>
   </div>
 
   <ui-gmap-google-map

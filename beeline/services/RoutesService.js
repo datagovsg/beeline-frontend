@@ -1,5 +1,6 @@
 import querystring from 'querystring';
 import _ from 'lodash';
+import assert from 'assert';
 
 // Adapter function to convert what we get from the server into what we want
 // Ideally shouldn't need this if the server stays up to date
@@ -17,30 +18,40 @@ function transformRouteData(data){
 }
 
 export default function($http, SERVER_URL, UserService) {
+
+  var routesCachePromise;
+  var routesById;
+
   return {
 
     // Retrive the data on a single route
     // TODO refactor this to match getRoutes and searchRoutes
     getRoute: function (routeId) {
-      return $http.get(SERVER_URL + `/routes/${routeId}?include_trips=true`)
-        .then(function(response){ return response.data; })
-        .then((route) => { // Convert date values to date object
-          for (let trip of route.trips) {
-            trip.date = new Date(trip.date);
-            for (let tripStop of trip.tripStops) {
-              tripStop.time = new Date(tripStop.time);
-            }
-          }
-          return route;
-        });
+      return this.getRoutes()
+      .then(() => {
+        assert(routesById);
+        return routesById[routeId];
+      })
     },
 
     // Retrive the data on all the routes
     getRoutes: function() {
-      return $http.get(SERVER_URL + '/routes?include_trips=true')
-      .then(function(response){
-        return transformRouteData(response.data);
-      });
+      if (routesCachePromise) {
+        return routesCachePromise;
+      }
+      else {
+        routesCachePromise = UserService.beeline({
+          method: 'GET',
+          url: '/routes?include_trips=true'
+        })
+        .then(function(response){
+          routesById = _.keyBy(response.data, route => route.id);
+
+          return transformRouteData(response.data);
+        })
+
+        return routesCachePromise;
+      }
     },
 
     getRecentRoutes: function() {
@@ -57,7 +68,7 @@ export default function($http, SERVER_URL, UserService) {
     },
 
     // Get the list of routes close to given set of coordinates
-    searchRoutes: function(startLat, startLng, endLat, endLng) {      
+    searchRoutes: function(startLat, startLng, endLat, endLng) {
       return $http.get(SERVER_URL + '/routes/search_by_latlon?' + querystring.stringify({
         startLat: startLat,
         startLng: startLng,
@@ -68,6 +79,7 @@ export default function($http, SERVER_URL, UserService) {
         endTime: new Date().getTime() + 30*24*60*60*1000 //End of search date
       }))
       .then(function(response) {
+        console.log(response.data);
         return transformRouteData(response.data);
       });
     }
