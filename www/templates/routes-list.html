@@ -1,32 +1,25 @@
-<ion-view id="pg_routelist" view-title="Explore Routes - List">
+<ion-view class="routes-list-view" view-title="Explore Routes - List">
   <ion-content class="has-footer" has-bouncing="false">
 
     <!-- Region Filter  -->
-    <section>
-      <div id="regsel">
-        <label>Filter By</label>
-        <select ng-model="data.selectedRegionId">
-          <option value="">All Regions</option>
-          <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
-        </select>
+    <label class="item item-select region-filter">
+      <div>Filter By</div>
+      <select ng-model="data.selectedRegionId">
+        <option value="">All Regions</option>
+        <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
+      </select>
+    </label>
+
+    <ul class="list">
+      <div class="item item-divider" ng-show="data.filteredRecentRoutes.length > 0">
+        Recently Booked Routes
       </div>
-    </section>
-
-    <!-- Recent Routes Section -->
-    <section ng-show="data.filteredRecentRoutes.length > 0">
-      <div class="ion-list-header">Recently Booked Routes</div>
-      <ion-list id="booklist">
-        <route-item ng-repeat="route in data.filteredRecentRoutes">foobar</route-item>
-      </ion-list>
-    </section>
-
-    <!-- Available Routes Section -->
-    <section>
-      <div class="ion-list-header">Available Routes</div>
-      <ion-list id="booklist">
-        <route-item ng-repeat="route in data.filteredActiveRoutes">foobar</route-item>
-      </ion-list>
-    </section>
+      <route-item ng-repeat="route in data.filteredRecentRoutes"></route-item>
+      <div class="item item-divider">
+        Active Routes
+      </div>
+      <route-item ng-repeat="route in data.filteredActiveRoutes"></route-item>
+    </ul>
     
   </ion-content>
 </ion-view>

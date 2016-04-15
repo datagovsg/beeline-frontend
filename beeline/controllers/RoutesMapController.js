@@ -50,8 +50,8 @@ export default function($scope, $state, $cordovaGeolocation,
     $scope.$watch('map.control.getGMap', function() {
 
       var gmap = $scope.map.control.getGMap();
-      var pickupInputElement = document.getElementById('pickupinput');
-      var dropoffInputElement = document.getElementById('dropoffinput');
+      var pickupInputElement = document.getElementById('pickup-input');
+      var dropoffInputElement = document.getElementById('dropoff-input');
 
       // Hide uneccessary UI elements when typing in the text inputs
       $scope.pickupFocus = $scope.dropoffFocus = function() {
@@ -223,7 +223,7 @@ export default function($scope, $state, $cordovaGeolocation,
         // Zoom back out to the Singapore level if a single point is chosen
         if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
           gmap.panTo({ lat: 1.370244, lng: 103.823315 });
-          gmap.setZoom(11);
+          gmap.setZoom(9);
         }
 
         // If both pickup and dropoff are chosen then frame around them
