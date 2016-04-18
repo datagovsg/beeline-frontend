@@ -4,7 +4,7 @@
 		<div class="card list">
 			<label class="item item-input item-icon-right">
         <img class="input-icon"
-             src="/img/RoutePairBigStart.png"/>
+             src="./img/RoutePairBigStart.png"/>
 				<input id="pickup-input" 
 							 type="search" 
 							 placeholder="Enter your pick-up location" 
@@ -12,13 +12,13 @@
 							 ng-change="pickupTxtChange()"
 							 ng-focus="pickupFocus()"
                ng-blur="pickupBlur()" />
-        <i class="icon ion-ios-close-outline clear-button" 
+        <i class="icon ion-ios-close-empty clear-button" 
            ng-show="data.pickupText.length > 0"
            on-tap="clearPickup()"></i>
 			</label>
 			<label class="item item-input item-icon-right">
         <img class="input-icon"
-             src="/img/RoutePairBigEnd.png"/>
+             src="./img/RoutePairBigEnd.png"/>
 				<input id="dropoff-input" 
 							 type="search" 
 							 placeholder="Enter your drop-off location" 
@@ -26,19 +26,24 @@
 							 ng-change="dropoffTxtChange()" 
 							 ng-focus="dropoffFocus()"
                ng-blur="dropoffBlur()"  />
-				<i class="icon ion-ios-close-outline clear-button"
+				<i class="icon ion-ios-close-empty clear-button"
            ng-show="data.dropoffText.length > 0"
            on-tap="clearDropoff()"></i>
 			</label>
 		</div>
 
-		<div class="centmark" ng-show="data.centerMarkIsVisible"></div>
-		
-		<div class="locateme" ng-click="getUserLocation()"
-                          ng-show="data.locateMeIsVisible"></div>
+    <div class="pickup-crosshair" 
+         ng-show="data.showPickupCrosshair"
+         on-tap="setPickup()"></div>
+    <div class="dropoff-crosshair" 
+         ng-show="data.showDropoffCrosshair"
+         on-tap="setDropoff()"></div>
+	
+		<div class="locateme" on-tap="getUserLocation()"></div>
 
-		<button class="btnnext" ng-click="nextAction()" 
-                            ng-show="data.nextButtonIsVisible">{{ data.nextActionName }}</button>
+		<button class="next-button" 
+            ng-show="data.showSearchButton"
+            on-tap="searchForRoutes()">Search For Routes</button>
 
     <ui-gmap-google-map center="map.center"
     										pan="true" 
@@ -49,16 +54,18 @@
     										dragging="map.dragging" 
     										control="map.control" 
     										data-tap-disabled="true">
+      <ui-gmap-polyline ng-repeat="line in map.lines" 
+                        path="line.path" 
+                        stroke="line.stroke"
+                        icons="line.icons">
+      </ui-gmap-polyline>
 			<ui-gmap-markers models="map.markers"
                        coords="'self'" 
                        icon="'icon'" 
                        options="'options'">
 			</ui-gmap-markers>
-			<ui-gmap-polyline ng-repeat="line in map.lines" 
-                        path="line.path" 
-                        icons="line.icons">
-			</ui-gmap-polyline>
     </ui-gmap-google-map>
+
 
   </ion-content>
 </ion-view>

@@ -7,6 +7,11 @@
     left: 0;
     height: 100%;
     width: 100%;
+    z-index: 0;
+  }
+
+  .card.list {
+    z-index: 1;
   }
 
   // Give ths spacing between the icons and the input text
@@ -19,7 +24,37 @@
     cursor: pointer;
   }
 
-  
+  .pickup-crosshair, 
+  .dropoff-crosshair {
+    position: absolute;
+    z-index: 1;
+    top: 0; bottom: 45px; left: 0; right: 2px;
+    margin: auto;
+    width: 98px;
+    height: 55px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  .pickup-crosshair {
+    background-image: url('../img/MapPinStart@2x.png');
+  }
+  .dropoff-crosshair {
+    background-image: url('../img/MapPinEnd@2x.png');
+  }
+
+  .next-button {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    @include big-yellow();
+  }
+
+
   // // Hide the google maps boilerplate annotations 
   // .gmnoprint, .gm-style-cc {
   //   display:none;
@@ -65,18 +100,6 @@
   //   .item.activated {
   //     background-color: transparent;
   //   }
-  // }
-
-  // .centmark {
-  //   width: 37.5px;
-  //   height: 40px;
-  //   background: url('../img/icon-marker-big.png') center center no-repeat;
-  //   background-size: 75% auto;
-  //   position: fixed;
-  //   left: 50%;
-  //   top: 50%;
-  //   margin: -38px 0px 0px -18.75px;
-  //   z-index: 3;
   // }
 
   // .locateme {
