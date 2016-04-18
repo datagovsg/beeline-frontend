@@ -1,0 +1,127 @@
+@import "scss/routeItem"; /* import the busnum mixin */
+
+#pg_search-results {
+
+  ion-list {
+    .flex-row {
+      align-items: center;
+    }
+    .busnum {
+      @include busnum;
+    }
+
+    .description1 {
+      .text {
+        background-color: #ccc;
+        color: white;
+        border-radius: 4px;
+        padding: 5px 15px;
+      }
+    }
+
+    .arrow {
+      font-size: 150%;
+    }
+
+    .logo {
+      max-width: 50px;
+      max-height: 50px;
+      vertical-align: middle;
+    }
+
+    .from {
+      color: $text-gray;
+      margin: 0.5em 0;
+    }
+
+    .properties {
+      table th {
+        text-align: right;
+
+        i.ion-calendar {
+          font-size: 30px;
+        }
+      }
+      table td {
+        text-align: left;
+        vertical-align: middle;
+        padding: 0 1em;
+        color: $text-gray;
+      }
+    }
+
+    .start-end {
+      display: flex;
+      flex-direction: column;
+      margin-top: 1em;
+
+      .start, .end {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: row;
+
+        .label {
+          color: $text-gray;
+          margin-bottom: 0.3em;
+        }
+
+        stop-time {
+          flex: 0 0 auto;
+        }
+        stop-img {
+          flex: 0 0 auto;
+          text-align: center;
+          width: 30px;
+        }
+        stop-stop {
+          flex: 1 1 auto;
+          display: block;
+          margin-bottom: 1.5em;
+          margin-left: 1em;
+        }
+      }
+      .start {
+        stop-img {
+          background-image: url('../img/fromto-line.gif');
+          background-repeat: repeat-y;
+          background-position: 50% 0;
+          position: relative;
+          top: 5px;
+          img {
+            position: relative;
+            top: -5px;
+          }
+        }
+      }
+    }
+  }
+
+  .route-suggest {
+    align-items: center;
+    .image-text {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 400px;
+
+      .image {
+        flex: 0 0 auto;
+        order: 2;
+        img {
+          width: 150px;
+        }
+      }
+      .text {
+        flex: 1 1 auto;
+        font-size: 30px;
+        color: $stable;
+        line-height: normal;
+        white-space: normal;
+        text-align: center;
+      }
+    }
+    .suggest-button {
+      margin: 1em;
+    }
+  }
+}

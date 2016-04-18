@@ -1,5 +1,6 @@
 import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
+import {companyLogo} from './shared/imageSources';
 // Service Imports
 import UserService from './services/UserService.js';
 import RoutesService from './services/RoutesService.js';
@@ -29,6 +30,7 @@ import VerifyController from './controllers/VerifyController';
 import SearchResultsController from './controllers/SearchResultsController.js'
 // Directive Imports
 import RevGeocode from './directives/revGeocode/revGeocode';
+import FancyPrice from './directives/fancyPrice/fancyPrice';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';
 import StartEndPicker from './directives/startEndPicker/startEndPicker';
@@ -69,6 +71,7 @@ var app = angular.module('beeline', [
 .filter('routeEndTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].time : '')
 .filter('routeStartRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].stop.road : '')
 .filter('routeEndRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].stop.road : '')
+.filter('companyLogo', () => companyLogo)
 .filter('monthNames', function () {
     return function (i) {
         monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
@@ -111,6 +114,7 @@ var app = angular.module('beeline', [
 .directive('busStopSelector', BusStopSelector)
 .directive('priceCalculator', PriceCalculator)
 .directive('revGeocode', RevGeocode)
+.directive('fancyPrice', FancyPrice)
 .directive('routeItem', routeItem)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {

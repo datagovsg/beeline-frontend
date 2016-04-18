@@ -1,26 +1,165 @@
-<ion-view view-title="Search Results">
+<ion-view view-title="Search Results" id="pg_search-results">
+
   <ion-content>
 
+    <!-- count of routes found -->
+    <section class="route-count item">
+      <b>{{searchResults.length}} route(s)</b> found.
+      <span ng-if="searchResults.length > 0">
+        Nearest stops are shown.
+      </span>
+    </section>
+
     <!-- Available Routes Section -->
-    <section ng-if="data.activeRoutes.length > 0">
+    <section ng-if="searchResults.length > 0">
       <div class="ion-list-header">Available Routes</div>
       <ion-list>
-        <route-item ng-repeat="route in data.activeRoutes">foobar</route-item>
+        <ion-item ng-repeat="searchResult in searchResults">
+
+          <div class="flex-row">
+            <div class="shrink busnum">
+              {{searchResult.label}}
+            </div>
+
+            <div class="grow description1">
+              <span class="text">
+                STUB: New route!
+              </span>
+            </div>
+
+            <div class="shrink arrow">
+              <i class="ion-chevron-right"></i>
+            </div>
+          </div>
+
+          <!-- remember, when setting ui-sref, you also want to
+          pre-set the start and end stops -->
+          <div class="start-end">
+
+            <div class="start">
+              <stop-time>
+                {{ searchResult.nearestBoardStop.time | formatTime }}
+              </stop-time>
+              <stop-img>
+                <img src="img/icon_stop.png">
+              </stop-img>
+              <stop-stop>
+                <div class="label">Pick up at</div>
+                {{ searchResult.nearestBoardStop.stop.description }} <br/>
+                {{ searchResult.nearestBoardStop.stop.road }} <br/>
+                {{ searchResult.nearestBoardStop.stop.label }} <br/>
+                <i class="ion-android-walk"></i> {{searchResult.distanceToStart | number:0 }}m
+              </stop-stop>
+            </div>
+
+            <div class="end">
+              <stop-time>
+                {{ searchResult.nearestAlightStop.time | formatTime }}
+              </stop-time>
+              <stop-img>
+                <img src="img/icon_stop.png">
+              </stop-img>
+              <stop-stop>
+                <div class="label">Drop off at</div>
+                {{ searchResult.nearestAlightStop.stop.description }} <br/>
+                {{ searchResult.nearestAlightStop.stop.road }} <br/>
+                {{ searchResult.nearestAlightStop.stop.label }} <br/>
+                <i class="ion-android-walk"></i> {{searchResult.distanceToEnd | number:0}}m
+              </stop-stop>
+            </div>
+
+          </div>
+
+
+          <div class="flex-row">
+            <div class="properties grow">
+              <table>
+                <tr>
+                  <th>
+                    <img ng-src="{{searchResult.transportCompanyId | companyLogo}}" class="logo">
+                  </th>
+                  <td>
+                    STUB: ABC Bus Company
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <i class="ion-calendar"></i>
+                  </th>
+                  <td>
+                    {{ searchResult.schedule || 'STUB: Mon-Fri excluding PH' }}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="shrink">
+              <div class="from">from:</div>
+              <fancy-price value="4.80"></fancy-price>
+            </div>
+          </div>
+        </ion-item>
       </ion-list>
-    </section>
-    <section ng-if="data.activeRoutes.length === 0">
-      <div class="noroutes msg">
-        <h4>Sorry! There are no suitable routes corresponding to your Start and End locations.</h4>     
+
+      <div class="ion-list-header">&nbsp;</div>
+      <div class="flex-col route-suggest item">
+        <div class="image-text shrink">
+          <div class="image">
+            <img src="img/introSuggest.png">
+          </div>
+          <div class="text">
+            Route timing not suitable for you?
+          </div>
+        </div>
+        <div class="shrink suggest-button">
+          <button class='big-yellow big-yellow-centered'>Suggest a different timing</button>
+        </div>
       </div>
+    </section>
+
+    <!-- if no routes available -->
+    <section ng-if="searchResults.length === 0">
+      <p>
+        Submit your route as a suggestion to convince bus operators to run new routes.
+      </p>
+
+      <p>
+        We will notify you when a bus operator decides to run this route.
+      </p>
+
+      <start-end class="notime">
+        <start-stop>
+          <rev-geocode x="search.pickup[0]" y="search.pickup[1]">
+          </rev-geocode>
+        </start-stop>
+        <end-stop>
+          <rev-geocode x="search.dropoff[0]" y="search.dropoff[1]">
+          </rev-geocode>
+        </end-stop>
+      </start-end>
+
+      <p>
+        <button class="big-yellow"
+                ui-sref="tabs.suggest({
+                  action: 'new',
+                  pickupLng: search.pickup[0],
+                  pickupLat: search.pickup[1],
+                  dropoffLat: search.dropoff[0],
+                  dropoffLat: search.dropoff[1]
+                })"
+          >
+            Select Time at Destination
+        </button>
+      </p>
+
     </section>
 
     <!-- TODO Pending Routes Section -->
     <!-- TODO Suggest Routes Section -->
-    
+
   </ion-content>
 </ion-view>
 
-<!-- 
+<!--
 <ion-view view-title="Search Results">
   <ion-content>
     <section ng-if="data.searchresults.length > 0">

@@ -1,0 +1,15 @@
+
+
+fancy-price {
+  color: $stable;
+
+  .currency {
+
+  }
+  .integer {
+    font-size: 200%;
+  }
+  .fraction {
+    vertical-align: super;
+  }
+}

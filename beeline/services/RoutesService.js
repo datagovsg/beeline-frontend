@@ -64,22 +64,22 @@ export default function($http, SERVER_URL, UserService) {
       this.data.endLat = elat;
       this.data.endLng = elng;
     },
-    getclosestroute: function() {
+    searchRoutes: function(search) {
       //return Promise object
       return UserService.beeline({
         method: 'GET',
         url: '/routes/search_by_latlon?' + qs.stringify({
-          startLat: this.data.startLat,
-          startLng: this.data.startLng,
-          endLat: this.data.endLat,
-          endLng: this.data.endLng,
-          arrivalTime: this.data.arrivalTime,
-          startTime:  this.data.startTime,
-          endTime: this.data.endTime
+          startLat: search.startLat,
+          startLng: search.startLng,
+          endLat: search.endLat,
+          endLng: search.endLng,
+          arrivalTime: search.arrivalTime,
+          startTime:  search.startTime,
+          endTime: search.endTime
         }),
       }).then(function(response) {
         transformRouteData(response.data);
-        return response;
+        return response.data;
       });
     },
     setresults: function(searchresults){

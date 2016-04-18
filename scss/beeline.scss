@@ -55,6 +55,10 @@
 .big-yellow {
   @include big-yellow();
 }
+.big-yellow-centered {
+  display: block;
+  margin: 0 auto;
+}
 
 .big-yellow-fixed {
   @include big-yellow-fixed();
@@ -126,4 +130,30 @@
 .item a.item-content {
   padding: 0;
   display: block;
+}
+
+
+.flex-row, .flex-col {
+  display: flex;
+  .shrink {
+    flex: 0 0 auto;
+  }
+  .grow {
+    flex: 1 1 auto;
+  }
+}
+
+.flex-row {
+  flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
+}
+
+/* restyle ion objects */
+.ion-list-header {
+  text-transform: uppercase;
+}
+.bar-stable .button {
+  color: $light;
 }
