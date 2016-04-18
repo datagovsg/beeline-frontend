@@ -144,7 +144,7 @@ export default [
         if (typeof($scope.book.promoCodes) == 'undefined')
           $scope.book.promoCodes = [];
 
-        if (BookingService.currentBooking.promoCodes.indexOf(code) != '-1') //dupe
+        if ($scope.book.promoCodes.indexOf(code) != '-1') //dupe
           console.log('Duplicate code')
         else
         {

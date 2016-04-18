@@ -5,41 +5,6 @@ import _ from 'lodash'
 export default function (UserService, CompanyService, RoutesService, $http) {
   var rv = {};
 
-  rv.reset = function(routeId) {
-    this.currentBooking = {
-      boardStop: undefined,
-      alightStop: undefined,
-      qty: 1,
-      trips: null,
-      routeId: routeId || 1, // FIXME: don't do this. throw an error if routeId is not defined
-    };
-  }
-
-  rv.getCurrentBooking = function() {
-    return this.currentBooking;
-  }
-
-  rv.boardingStop = function () {
-    if (!this.currentBooking ||
-      !this.currentBooking.selectedDates ||
-      !this.currentBooking.selectedDates.length)
-      return {};
-
-    return this.routeInfo.tripsByDate[this.currentBooking.selectedDates[0]]
-          .tripStops
-          .filter(ts => this.currentBooking.boardStop == ts.stop.id)[0]
-  };
-  rv.alightingStop = function() {
-    if (!this.currentBooking ||
-      !this.currentBooking.selectedDates ||
-      !this.currentBooking.selectedDates.length)
-      return {};
-
-    return this.routeInfo.tripsByDate[this.currentBooking.selectedDates[0]]
-          .tripStops
-          .filter(ts => this.currentBooking.alightStop == ts.stop.id)[0]
-  };
-
   rv.prepareTrips = function(booking) {
     // create a list of trips
     var trips = [];
@@ -51,7 +16,6 @@ export default function (UserService, CompanyService, RoutesService, $http) {
           trip => trip.date.getTime());
     }
 
-    //
     console.log(booking);
     for (let dt of booking.selectedDates) {
       trips.push({
@@ -67,10 +31,6 @@ export default function (UserService, CompanyService, RoutesService, $http) {
         qty: booking.qty,
       });
     }
-
-		//console.log(trips);
-    //console.log(this.routeInfo);
-
     return trips;
   };
 
@@ -113,7 +73,7 @@ export default function (UserService, CompanyService, RoutesService, $http) {
 
       return rv;
     }
-};
+  };
 
   rv.summarizePrices = function(booking) {
     console.log(booking);
@@ -295,9 +255,6 @@ export default function (UserService, CompanyService, RoutesService, $http) {
       })
     return [boardStops,alightStops];
   }
-
-  rv.reset(1);
-
 
   return rv;
 }
