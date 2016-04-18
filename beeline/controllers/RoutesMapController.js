@@ -142,10 +142,14 @@ export default function($scope, $state, $cordovaGeolocation,
       //Disable the Google link at the bottom left of the map
       var glink = angular.element(document.getElementsByClassName('gm-style-cc'));
       glink.next().find('a').on('click', function(e) {e.preventDefault(); });
-      //drop down list disappears before the clicked item is registered,
+      //Hack to get autocomplete to work on mobile devices
+      //Normally ionic intercepts the taps this causes the dropdown list
+      //to disappear before the clicked item is registered,
       //this will disable the click event on the lists' containers
-      var contain = document.getElementsByClassName('pac-container');
-      angular.element(contain).attr('data-tap-disabled', 'true');
+      setTimeout(function() {
+        var contain = document.getElementsByClassName('pac-container');
+        angular.element(contain).attr('data-tap-disabled', 'true');
+      }, 300);
       //////////////////////////////////////////////////////////////////////////
 
       // Configure the UI in accordance with the users set/unset coordinates
