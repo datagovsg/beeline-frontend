@@ -1,7 +1,7 @@
 <ion-view id="pg_booking" view-title="Select Pick-up and Drop-off Points">
   <ion-content class="fullscreen-map">
   <div class="routeinfo">
-    <route-item route="currentBooking.route"></route-item>
+    <route-item route="book.route"></route-item>
   </div>
 
   <ui-gmap-google-map
@@ -61,7 +61,7 @@
   <div id="userpos" ng-click="getUserLocation()"></div>
   <div id="stopinputs">
     <bus-stop-selector
-      model="currentBooking.boardStop"
+      model="book.boardStop"
       bus-stops="book.boardStops"
       value="getStopId"
       display="getStopDescription"
@@ -74,7 +74,7 @@
     </bus-stop-selector>
     <div class="line"></div>
     <bus-stop-selector
-      model="currentBooking.alightStop"
+      model="book.alightStop"
       bus-stops="book.alightStops"
       value="getStopId"
       display="getStopDescription"
@@ -87,7 +87,7 @@
     </bus-stop-selector>
     <qty-input
       placeholder="{{book.ptxt}}"
-      ng-model="currentBooking.qty"
+      ng-model="book.qty"
       >
     </qty-input>
   </div>
@@ -125,62 +125,61 @@
   </ion-content>
 
   <script id="changes-message.html" type="text/ng-template">
-  <div id="changes-message" class="modal">
-    <ion-header-bar class="bar-stable">
-      <h1 class="title">Changes to Service #{{BookingService.routeId}}</h1>
-      <a class="item-icon-right" ng-click="closeChangesModal()">
-        <i class="icon ion-android-close"></i>
-      </a>
-    </ion-header-bar>
-
-    <ion-content>
-      <table class="route-changes-table">
-        <thead>
-          <tr>
-            <th><!--icon--></th>
-            <th>Date</th>
-            <th>Changes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="priceChange in currentBooking.changes.priceChanges">
-            <td>$$</td>
-            <td>
-              {{priceChange.startDate | formatDate}}
-            </td>
-            <td>
-              {{priceChange.humanReadable[0]}}
-            </td>
-          </tr>
-          <tr ng-repeat="stopChange in currentBooking.changes.stopChanges">
-            <td>S</td>
-            <td>
-              {{stopChange.startDate | formatDate}}
-            </td>
-            <td>
-              <ul>
-              <li ng-repeat="hr in stopChange.humanReadble">
-              {{hr}}
-              </li>
-              </ul>
-            </td>
-          </tr>
-          <tr ng-repeat="timeChange in currentBooking.changes.timeChanges">
-            <td>T</td>
-            <td>
-              {{timeChange.startDate | formatDate}}
-            </td>
-            <td>
-              <ul>
-              <li ng-repeat="hr in timeChange.humanReadble">
-              {{hr}}
-              </li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ion-content>
-  </div>
+    <div id="changes-message" class="modal">
+      <ion-header-bar class="bar-stable">
+        <h1 class="title">Changes to Service #{{book.routeid}}</h1>
+        <a class="item-icon-right" ng-click="closeChangesModal()">
+          <i class="icon ion-android-close"></i>
+        </a>
+      </ion-header-bar>
+      <ion-content>
+        <table class="route-changes-table">
+          <thead>
+            <tr>
+              <th><!--icon--></th>
+              <th>Date</th>
+              <th>Changes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="priceChange in book.changes.priceChanges">
+              <td>$$</td>
+              <td>
+                {{priceChange.startDate | formatDate}}
+              </td>
+              <td>
+                {{priceChange.humanReadable[0]}}
+              </td>
+            </tr>
+            <tr ng-repeat="stopChange in book.changes.stopChanges">
+              <td>S</td>
+              <td>
+                {{stopChange.startDate | formatDate}}
+              </td>
+              <td>
+                <ul>
+                <li ng-repeat="hr in stopChange.humanReadable">
+                {{hr}}
+                </li>
+                </ul>
+              </td>
+            </tr>
+            <tr ng-repeat="timeChange in book.changes.timeChanges">
+              <td>T</td>
+              <td>
+                {{timeChange.startDate | formatDate}}
+              </td>
+              <td>
+                <ul>
+                <li ng-repeat="hr in timeChange.humanReadable">
+                {{hr}}
+                </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ion-content>
+    </div>
   </script>
 </ion-view>
