@@ -138,7 +138,6 @@ export default [
         if (selectedIndex != -1) {
           scope.selectedStop = scope.busStops[selectedIndex];
           if (scope.map.mapControl.getGMap) {
-            console.log(scope.selectedStop);
             scope.map.mapControl.getGMap().panTo({
               lat: scope.selectedStop.coordinates.coordinates[1],
               lng: scope.selectedStop.coordinates.coordinates[0],

@@ -118,7 +118,7 @@
     <ion-checkbox class="confirm" ng-model="book.termsChecked">
       Yes, I have read and agree to the Terms and Conditions of booking with <b>{{book.transco.name}}</b>.
     </ion-checkbox>
-    <button id="btnbookcont" ui-sref="tabs.booking-dates"
+    <button id="btnbookcont" ui-sref="tabs.booking-dates({routeId: book.routeid,boardStop: book.boardStop,alightStop: book.alightStop})"
         ng-disabled="book.allDataNotFilled">Continue</button>
     <div class="err">{{book.errmsg}}</div>
   </div>

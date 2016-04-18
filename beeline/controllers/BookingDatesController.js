@@ -5,28 +5,41 @@ export default [
     '$http',
     'BookingService',
     'RoutesService',
+    '$stateParams',
     function ($scope, $state, $http, BookingService,
-    RoutesService) {
-      $scope.currentBooking = {};
-      $scope.currentRouteInfo = {};
+    RoutesService,$stateParams) {
+      $scope.book = {
+        routeid: '',
+        route: {},
+        qty: '',
+        boardStop: undefined,
+        alightStop: undefined,
+        priceInfo: {},
+        validDates: [],
+        soldOutDates: [],
+        invalidStopDates: [],
+        selectedDates: [],
+        minDate: null,
+        maxDate: null,
+      };
       $scope.$on('$ionicView.beforeEnter', () => {
-        $scope.currentBooking = BookingService.getCurrentBooking();
+        $scope.book.routeid = $stateParams.routeId;
+        $scope.book.boardStop =  parseInt($stateParams.boardStop);
+        $scope.book.alightStop =  parseInt($stateParams.alightStop);
+        RoutesService.getRoute($scope.book.routeid)
+        .then((route) => {
+          $scope.book.route = route;
+          console.log($scope.book.route)
+        });
       });
-
-      // display
-      $scope.validDates = [];
-      $scope.soldOutDates = [];
-      $scope.invalidStopDates = [];
-      $scope.minDate = null;
-      $scope.maxDate = null;
 
       // watches
       function updateCalendar() {
-        if (!$scope.currentBooking.route) {
+        if (!$scope.book.route) {
           // For development purposes, we could do this...
-          RoutesService.getRoute($scope.currentBooking.routeId)
+          RoutesService.getRoute($scope.book.routeid)
           .then((route) => {
-            $scope.currentBooking.route = route;
+            $scope.book.route = route;
             if (route) {
               updateCalendar();
             }
@@ -35,52 +48,54 @@ export default [
         }
 
         // set up the valid days
-        if ($scope.currentBooking) {
-            $scope.currentBooking.selectedDates =
-                $scope.currentBooking.selectedDates || [];
-            $scope.currentBooking.qty =
-                $scope.currentBooking.qty || 1;
+        if ($scope.book.route) {
+            $scope.book.selectedDates =
+                $scope.book.selectedDates || [];
+            $scope.book.qty =
+                $scope.book.qty || 1;
+            console.log($scope.book.selectedDates)
         }
 
-        $scope.validDates = [];
-        $scope.soldOutDates = [];
-        $scope.invalidStopDates = [];
-        $scope.minDate = null;
-        $scope.maxDate = null;
+        $scope.book.validDates = [];
+        $scope.book.soldOutDates = [];
+        $scope.book.invalidStopDates = [];
+        $scope.book.minDate = null;
+        $scope.book.maxDate = null;
 
-        for (let trip of $scope.currentBooking.route.trips) {
+        for (let trip of $scope.book.route.trips) {
           // FIXME: disable today if past the booking window
-          $scope.validDates.push(trip.date);
+          $scope.book.validDates.push(trip.date);
 
-          if (!$scope.minDate || $scope.minDate > trip.date.getTime()) {
-              $scope.minDate = trip.date.getTime();
+          if (!$scope.book.minDate || $scope.book.minDate > trip.date.getTime()) {
+              $scope.book.minDate = trip.date.getTime();
           }
-          if (!$scope.maxDate || $scope.maxDate < trip.date.getTime()) {
-              $scope.maxDate = trip.date.getTime();
+          if (!$scope.book.maxDate || $scope.book.maxDate < trip.date.getTime()) {
+              $scope.book.maxDate = trip.date.getTime();
           }
 
           // Check that quantity <= trips.available
-          if ($scope.currentBooking.qty > trip.seatsAvailable) {
-              $scope.soldOutDates.push(trip.date);
+          if ($scope.book.qty > trip.seatsAvailable) {
+              $scope.book.soldOutDates.push(trip.date);
           }
 
           // Check that the stops are available
           var tripStops_stopIds = trip.tripStops.map(ts => ts.stop.id);
-          if (_.intersection([$scope.currentBooking.boardStop],
+          if (_.intersection([$scope.book.boardStop],
                              tripStops_stopIds).length == 0 ||
-              _.intersection([$scope.currentBooking.alightStop],
+              _.intersection([$scope.book.alightStop],
                              tripStops_stopIds).length == 0
               ) {
-              $scope.invalidStopDates.push(trip.date);
+              $scope.book.invalidStopDates.push(trip.date);
           }
         }
       };
 
-      $scope.$watch('currentBooking.selectedDates',
+      $scope.$watch('book.selectedDates',
         () => {
-          BookingService.computePriceInfo($scope.currentBooking)
+          console.log($scope.book.selectedDates);
+          BookingService.computePriceInfo($scope.book)
           .then((priceInfo) => {
-            $scope.currentBooking.priceInfo = priceInfo;
+            $scope.book.priceInfo = priceInfo;
           });
           console.log('booking changed!')
           updateCalendar();
