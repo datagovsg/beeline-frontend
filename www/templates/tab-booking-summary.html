@@ -10,23 +10,7 @@
 			Route Information
 		</div>
 		<div class="routeinfo">
-			<div class="title">
-				<div class="busnum">{{BookingService.routeInfo.id}}</div>
-				<div class="name">{{BookingService.routeInfo.name}}</div>
-			</div>
-			<div class="stops">
-				<div class="line"></div>
-				<div class="start">
-					<span class="time">{{BookingService.boardingStop().time | formatTime}}</span>
-					<span class="desc">{{BookingService.boardingStop().stop.description}}</span>
-					<span class="road">{{BookingService.boardingStop().stop.road}}</span>
-				</div>
-				<div class="end">
-					<span class="time">{{BookingService.alightingStop().time | formatTime}}</span>
-					<span class="desc">{{BookingService.alightingStop().stop.description}}</span>
-					<span class="road">{{BookingService.alightingStop().stop.road}}</span>
-				</div>
-			</div>
+      <route-item route="book.route">foobar</route-item>
 			<div class="edit">
 				<a class="btnsmall" ui-sref="tab.booking-pickup">Edit</a>
 			</div>
@@ -39,15 +23,15 @@
 		</div>
 		<div class="tripdates">
 			<div class="datesnum">
-				<span>{{currentBooking.selectedDates.length}} day(s)</span> were selected for this booking.
+				<span>{{book.selectedDates.length}} day(s)</span> were selected for this booking.
 			</div>
     		<price-calculator
-          booking="currentBooking"></price-calculator>
-			<!--ul>
-				<li ng-repeat="dt in currentBooking.selectedDates">
+          booking="book"></price-calculator>
+			<!-- <ul>
+				<li ng-repeat="dt in book.selectedDates">
 					{{dt | formatDateMMMdd}}
 				</li>
-			</ul-->
+			</ul> -->
 			<div class="edit">
 				<a class="btnsmall" ui-sref="tab.booking-dates">Edit</a>
 			</div>
@@ -60,7 +44,7 @@
 		</div>
 		<div class="promo">
 			<ol>
-				<li ng-repeat="pc in currentBooking.promoCodes">
+				<li ng-repeat="pc in book.promoCodes">
 				 {{pc}}
 				</li>
 			</ol>

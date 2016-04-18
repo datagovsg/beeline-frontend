@@ -1028,28 +1028,15 @@ ion-list {
     background-color: #FFF;
     padding: 15px 16px 15px 16px;
 
-    .stops {
-      float: none;
-      clear: both;
-      padding-left: 50px;
+    route-item {
+      padding: 10px;
+      width: 100%;
+      height: 60px;
+      background-color: #FFF;
+      z-index: 1;
 
-      .line {
-        height: 50px;
-        left: 54px;
-      }
-
-      .time {
-        height: 50px;
-        float: left;
-      }
-
-      .desc {
-        display: block;
-      }
-
-      .start, .end {
-        background-position: left top 5px;
-        clear: both;
+      .active {
+        display: none;
       }
     }
   }

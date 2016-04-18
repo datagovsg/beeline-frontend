@@ -8,27 +8,60 @@ export default [
   'BookingService',
   'UserService',
   'StripeService',
+  '$stateParams',
+  'RoutesService',
   function ($scope, $state, $http, $ionicPopup,
     BookingService, UserService,
-    StripeService) {
+    StripeService, $stateParams, RoutesService) {
 
-        $scope.currentBooking = {};
-        $scope.currentRouteInfo = {};
+        $scope.book = {
+          routeid: '',
+          route: {},
+          qty: 1,
+          priceInfo: {},
+          waitingForPaymentResult : false,
+          promoCodes: undefined,
+          selectedDates: [],
+          boardStop: undefined,
+          alightStop: undefined,
+          boardStopPromise: undefined,
+          alightStopPromise: undefined,
+        };
         $scope.$on('$ionicView.beforeEnter', () => {
-          $scope.currentBooking = BookingService.getCurrentBooking();
+          $scope.book.routeid = $stateParams.routeId;
+          $scope.book.selectedDates = $stateParams.selectedDates.split(",")
+            .map(function(item){
+              return parseInt(item);
+            });
+          $scope.book.boardStop = $stateParams.boardStop;
+          $scope.book.alightStop = $stateParams.alightStop;
+          RoutesService.getRoute($scope.book.routeid)
+          .then((route) => {
+            $scope.book.route = route;
+            if (!$scope.book.route.tripsByDate) {
+              $scope.book.route.tripsByDate =
+                _.keyBy($scope.book.route.trips,
+                  trip => trip.date.getTime());
+            }
+            $scope.book.boardStopPromise = route.tripsByDate[$scope.book.selectedDates[0]]
+                  .tripStops
+                  .filter(ts => $scope.book.boardStop == ts.stop.id)[0];
+            $scope.book.alightStopPromise = route.tripsByDate[$scope.book.selectedDates[0]]
+                  .tripStops
+                  .filter(ts => $scope.book.alightStop == ts.stop.id)[0]
+          });
+
         });
 
         /* On this page we can only add promo codes... */
-        $scope.$watch('BookingService.currentBooking.promoCodes',
+        $scope.$watch('$scope.book.promoCodes',
                     () => {
-                      BookingService.computePriceInfo($scope, $http)
+                      BookingService.computePriceInfo($scope.book, $http)
                       .then((priceInfo) => {
-                        $scope.currentBooking.priceInfo = priceInfo;
+                        $scope.book.priceInfo = priceInfo;
                       })
                     },
                     true);
-
-        $scope.waitingForPaymentResult = false;
 
         // methods
         $scope.pay = async function() {
@@ -81,7 +114,7 @@ export default [
                     url: '/transactions/payment_ticket_sale',
                     data: {
                         stripeToken: stripeToken.id,
-                        trips: BookingService.prepareTrips($scope.currentBooking),
+                        trips: BookingService.prepareTrips($scope.book),
                     },
                 });
 
@@ -108,14 +141,14 @@ export default [
 
       if ((typeof(code) != 'undefined')&&(code.trim() != ''))
       {
-        if (typeof(BookingService.currentBooking.promoCodes) == 'undefined')
-          BookingService.currentBooking.promoCodes = [];
+        if (typeof($scope.book.promoCodes) == 'undefined')
+          $scope.book.promoCodes = [];
 
         if (BookingService.currentBooking.promoCodes.indexOf(code) != '-1') //dupe
           console.log('Duplicate code')
         else
         {
-          BookingService.currentBooking.promoCodes.push(code);
+          $scope.book.promoCodes.push(code);
           code = '';
         }
       }
