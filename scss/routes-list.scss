@@ -1,13 +1,17 @@
 .routes-list-view {
+  // Get the Region filter to be center aligned
   .item-select {
     text-align: center;
     color: #888;
+    // Hide the "down caret" dropdown icon
     &:after { display: none; }
+    // Get the select option to center align too
     select {
       position: relative;
       top: auto;
       bottom: auto;
       right: auto;
+      // Remove the unecessary right padding since we're center aligning
       padding-right: 0;
       direction: ltr;
     }
