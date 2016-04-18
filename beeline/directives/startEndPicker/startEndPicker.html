@@ -8,12 +8,13 @@
             ng-model="startPoint.text"
             ng-focus="inputFocus($event, 'start')"
             ng-blur="inputBlur($event, 'start')"
+            ng-disabled="disabled"
              />
-    <button class="item item-icon-right"
+    <a class="item item-icon-right"
         ng-click="reset('start')">
         <i class="icon ng-hide ion-ios-close-outline"
           ng-hide="startPoint.text == ''"></i>
-    </button>
+    </a>
   </label>
 
   <label class="item item-input dropoff"
@@ -23,12 +24,14 @@
           placeholder="Enter your drop-off location"
           ng-model="endPoint.text"
           ng-focus="inputFocus($event, 'end')"
-          ng-blur="inputBlur($event, 'end')" />
-    <button class="item item-icon-right"
+          ng-blur="inputBlur($event, 'end')"
+          ng-disabled="disabled"
+          />
+    <a class="item item-icon-right"
         ng-click="reset('end')">
         <i class="icon ng-hide ion-ios-close-outline"
           ng-hide="endPoint.text == ''"></i>
-    </button>
+    </a>
   </label>
   <div ng-show="!setPoint">
     <ng-transclude></ng-transclude>
@@ -39,6 +42,7 @@
   <div class="centmark" ng-hide="setPoint == null"></div>
   <div class="locateme" ng-click="getUserLocation()"></div>
   <button
+    ng-show="!disabled"
     class="btnnext"
     ng-click="nextBtnClick()"
     ng-disabled="!nextAllowed()">

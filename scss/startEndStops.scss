@@ -1,0 +1,48 @@
+
+$stopMarkerWidth: 30px;
+$stopMarkerRightMargin: 1em;
+
+.start-end {
+  display: flex;
+  flex-direction: column;
+  margin-top: $stopMarkerRightMargin;
+
+  .start, .end {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+
+    .label {
+      color: $text-gray;
+      margin-bottom: 0.3em;
+    }
+
+    stop-time {
+      flex: 0 0 auto;
+    }
+    stop-img {
+      flex: 0 0 auto;
+      text-align: center;
+      width: $stopMarkerWidth;
+    }
+    stop-stop {
+      flex: 1 1 auto;
+      display: block;
+      margin-bottom: 1.5em;
+      margin-left: 1em;
+    }
+  }
+  .start {
+    stop-img {
+      background-image: url('../img/RoutePairSmallLine.png');
+      background-repeat: repeat-y;
+      background-position: 50% 0;
+      position: relative;
+      top: 7px;
+      img {
+        position: relative;
+        top: -7px;
+      }
+    }
+  }
+}

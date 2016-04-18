@@ -20,6 +20,24 @@ function(
 ) {
   $scope.user = null;
 
+  $scope.newSuggestion = {
+    time: '',
+    startPoint: {},
+    endPoint: {},
+    control: {},
+  };
+  $scope.newSuggestionModal = $ionicModal.fromTemplate(
+    require('./newSuggestion.html'),
+    {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }
+  )
+
+  $scope.$on('destroy', () => {
+    $scope.newSuggestionModal.destroy();
+  })
+
   $scope.$on('$ionicView.afterEnter', (event) => {
     UserService.getCurrentUser()
     .then((user) => {
@@ -141,6 +159,28 @@ function(
     }
   }
 
+  $scope.selectItem = function(item) {
+    // Show a modal
+    $scope.newSuggestion.title = 'Your Suggestion'
+    $scope.newSuggestion.id = item.id;
+    $scope.newSuggestion.startPoint.coordinates = {
+      latitude: item.board.coordinates[1],
+      longitude: item.board.coordinates[0],
+    };
+    $scope.newSuggestion.startPoint.text = item.board.description1;
+    $scope.newSuggestion.endPoint.coordinates = {
+      latitude: item.alight.coordinates[1],
+      longitude: item.alight.coordinates[0],
+    };
+    $scope.newSuggestion.endPoint.text = item.alight.description1;
+    $scope.newSuggestion.disabled = true;
+    $scope.newSuggestion.setPoint = null;
+    $scope.newSuggestionModal.show()
+    .then(() => {
+      $scope.newSuggestion.control.fitToPoints();
+    });
+  }
+
   $scope.deleteSuggestion = function(event, id) {
     event.stopPropagation();
     $ionicPopup.confirm({
@@ -158,21 +198,19 @@ function(
     })
   };
   $scope.promptNewSuggestion = function() {
-    if (!$scope.newSuggestionModal) {
-      $scope.newSuggestion = {
-        time: '',
-        startPoint: {},
-        endPoint: {},
-      };
-      $scope.newSuggestionModal = $ionicModal.fromTemplate(
-        require('./newSuggestion.html'),
-        {
-          scope: $scope,
-          animation: 'slide-in-up'
-        }
-      )
-    }
-    $scope.newSuggestionModal.show();
+    $scope.newSuggestion.title = 'New Suggestion'
+    $scope.newSuggestion.time = ''
+    $scope.newSuggestion.id = false
+    $scope.newSuggestion.startPoint.coordinates = null;
+    $scope.newSuggestion.startPoint.text = ''
+    $scope.newSuggestion.endPoint.coordinates = null;
+    $scope.newSuggestion.endPoint.text = ''
+    $scope.newSuggestion.setPoint = 'start';
+    $scope.newSuggestion.disabled = false;
+    $scope.newSuggestionModal.show()
+    .then(() => {
+      $scope.newSuggestion.control.fitToPoints();
+    });
   };
   $scope.submitSuggestion = function (suggestion) {
     var arrivalTime = new (
