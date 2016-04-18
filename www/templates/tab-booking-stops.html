@@ -119,7 +119,7 @@
       Yes, I have read and agree to the Terms and Conditions of booking with <b>{{book.transco.name}}</b>.
     </ion-checkbox>
     <button id="btnbookcont" ui-sref="tabs.booking-dates"
-        g-disabled="book.allDataNotFilled">Continue</button>
+        ng-disabled="book.allDataNotFilled">Continue</button>
     <div class="err">{{book.errmsg}}</div>
   </div>
   </ion-content>

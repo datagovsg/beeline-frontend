@@ -59,6 +59,23 @@ export default [
       lines: [],
     };
     //Default settings for various info used in the page
+
+    $scope.alightMarkerOptions = {
+      icon: {
+        url: 'img/alight.png',
+        scaledSize: new google.maps.Size(20,20),
+        anchor: new google.maps.Point(5,5),
+      },
+    };
+
+    $scope.boardMarkerOptions = {
+      icon: {
+        url: 'img/board.png',
+        scaledSize: new google.maps.Size(20,20),
+        anchor: new google.maps.Point(5,5),
+      },
+    };
+
     $scope.book = {
       routeid: '',
       route: {},
@@ -75,8 +92,8 @@ export default [
       allDataNotFilled: true,
       termsChecked: false,
       errmsg: '',
-      boardStop: '',
-      alightStop: '',
+      boardStop: undefined,
+      alightStop: undefined,
       changes: {},
       company: {},
       qty: ''
@@ -124,29 +141,8 @@ export default [
         });
       }, 300);
 
-      $scope.alightMarkerOptions = {
-        icon: {
-          url: 'img/alight.png',
-          scaledSize: new google.maps.Size(20,20),
-          anchor: new google.maps.Point(5,5),
-        },
-      };
-
-      $scope.boardMarkerOptions = {
-        icon: {
-          url: 'img/board.png',
-          scaledSize: new google.maps.Size(20,20),
-          anchor: new google.maps.Point(5,5),
-        },
-      };
-
-
-
       $scope.routePath = [];
-      $scope.boardMarkerOptions = {};
-      $scope.alightMarkerOptions = {};
 
-      // Subcomponents, views etc
       $scope.$on('$destroy', () => {
         if ($scope.changesModal) {
           $scope.changesModal.remove();
@@ -155,7 +151,6 @@ export default [
           $timeout.cancel(timer);
         }
       });
-
 
       $scope.setStop = function () {
         var stop = $scope.infoStop;
@@ -168,7 +163,6 @@ export default [
           else {
             $scope.book.alightStop = stop.id;
           }
-
           /* Hide the infowindow */
           $scope.infoStop = null;
           $scope.infoType = null;
@@ -253,7 +247,7 @@ export default [
 
       /* ----- Methods ----- */
       //Click function for User Position Icon
-      $scope.getUserLocation = function(gmap) {
+      $scope.getUserLocation = function() {
         var options = {
           timeout: 5000,
           enableHighAccuracy: true
@@ -331,7 +325,7 @@ export default [
               $scope.book.errmsg = 'Please specify a Alighting Stop.'
             else
             {
-              $scope.book.errmsg = ''
+              $scope.book.errmsg = '';
               $scope.book.allDataNotFilled = false;
             }
           }
