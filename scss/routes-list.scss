@@ -1,1 +1,17 @@
-.routes-list-view {}
+.routes-list-view {
+  .item-select {
+    text-align: center;
+    color: #888;
+  }
+  .item-select select {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    right: auto;
+    direction: ltr;
+    text-align: center;
+  }
+  .item-select:after {
+    display: none;
+  }
+}

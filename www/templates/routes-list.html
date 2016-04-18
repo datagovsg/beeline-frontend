@@ -3,8 +3,9 @@
 
     <!-- Region Filter  -->
     <label class="item item-select region-filter">
-      <div>Filter By</div>
+      Filter By
       <select ng-model="data.selectedRegionId">
+        <option value="" disabled selected>Select A Region</option>
         <option value="">All Regions</option>
         <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
       </select>
