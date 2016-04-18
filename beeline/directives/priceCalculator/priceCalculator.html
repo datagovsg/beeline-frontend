@@ -1,8 +1,10 @@
-
+<div id="price-calculator">
+Selected Dates<br>
+{{booking.selectedDates.length}} day(s) were selected.
 <table class="price-table">
   <thead>
     <tr ng-if="booking.selectedDates.length != 0">
-      <th>Start/End Period</th>
+      <th>Dates</th>
       <th>Price per trip</th>
     </tr>
   </thead>
@@ -13,8 +15,7 @@
     <tr class="sel" ng-if="booking.selectedDates.length > 0"
       ng-repeat="pinfo in booking.priceInfo.pricesPerTrip">
       <td>
-        <span ng-if="pinfo.startDate == pinfo.endDate">{{pinfo.startDate | formatDateMMMdd}}</span>
-        <span ng-if="pinfo.startDate != pinfo.endDate">{{pinfo.startDate | formatDateMMMdd}} &mdash; {{pinfo.endDate | formatDateMMMdd}}</span>
+        {{pinfo.startDate | formatDateMMMdd}}
       </td>
       <td>${{pinfo.price.toFixed(2)}}</td>
     </tr>
@@ -41,3 +42,4 @@
     <!-- FIXME: include vouchers, discounts here -->
   </tbody>
 </table>
+</div>

@@ -1161,6 +1161,11 @@ ion-list {
   }
 }
 
+#pg_bookdate #price-calculator, #pg_summary #price-calculator {
+  line-height: 30px;
+  padding-left: 30px;
+}
+
 #pg_bookdate .price-table, #pg_summary .price-table {
   width: 100%;
 

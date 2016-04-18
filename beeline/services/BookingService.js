@@ -116,6 +116,7 @@ export default function (UserService, CompanyService, RoutesService, $http) {
 };
 
   rv.summarizePrices = function(booking) {
+    console.log(booking);
     if (!booking.selectedDates) {
       return [];
     }
@@ -125,26 +126,16 @@ export default function (UserService, CompanyService, RoutesService, $http) {
     if (dates.length == 0) return [];
 
     var current = {}
-    var rv = [current];
+    var rv = [];
 
     for (let dt of dates) {
-      if (!current.startDate) {
-        current.startDate = dt;
-      }
-      if (!current.price) {
-        current.price = booking.route.tripsByDate[dt].price;
-      }
-
-      if (current.price != booking.route.tripsByDate[dt].price) {
-        current = {
-          startDate: dt,
-          price: booking.route.tripsByDate[dt].price,
-        };
-        rv.push(current);
-      }
-      current.endDate = dt;
+      current = {
+        startDate: dt,
+        price: booking.route.tripsByDate[dt].price,
+      };
+      rv.push(current);
     }
-    //console.log(rv);
+    console.log(rv);
     return rv;
   };
 
