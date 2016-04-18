@@ -2,16 +2,14 @@
   .item-select {
     text-align: center;
     color: #888;
-  }
-  .item-select select {
-    position: relative;
-    top: auto;
-    bottom: auto;
-    right: auto;
-    direction: ltr;
-    text-align: center;
-  }
-  .item-select:after {
-    display: none;
+    &:after { display: none; }
+    select {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      padding-right: 0;
+      direction: ltr;
+    }
   }
 }
