@@ -12,16 +12,22 @@
       </div>
     </section>
 
-    <!-- TODO Recently booked section -->
+    <!-- Recent Routes Section -->
+    <section ng-show="data.filteredRecentRoutes.length > 0">
+      <div class="ion-list-header">Recently Booked Routes</div>
+      <ion-list id="booklist">
+        <route-item ng-repeat="route in data.filteredRecentRoutes">foobar</route-item>
+      </ion-list>
+    </section>
 
     <!-- Available Routes Section -->
     <section>
       <div class="ion-list-header">Available Routes</div>
       <ion-list id="booklist">
-        <ion-item ng-repeat="route in data.activeRoutes"
+        <ion-item ng-repeat="route in data.filteredActiveRoutes"
                   ui-sref="tabs.bookingPickup({ routeId: route.id})">
           <route-item
-            route="route">foobar</route-item>
+            route="route"></route-item>
 
           <a class="item-icon-right" href="#">
             <i class="icon ion-ios-arrow-right"></i>
@@ -29,9 +35,5 @@
         </ion-item>
       </ion-list>
     </section>
-
-    <!-- TODO Pending Routes Section -->
-    <!-- TODO Kickstart Routes Section -->
-
   </ion-content>
 </ion-view>

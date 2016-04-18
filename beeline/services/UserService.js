@@ -111,6 +111,10 @@ export default function UserService($http, $state, $ionicPopup) {
       .then(() => true, () => false);
     },
 
+    isLoggedIn: function() {
+      return !!this.sessionToken
+    },
+
     logOut: function() {
       this.sessionToken = null;
       this.userPromise = Promise.resolve(null);

@@ -3,7 +3,7 @@ import {formatDate, formatDateMMMdd, formatTime,
 import {companyLogo} from './shared/imageSources';
 // Service Imports
 import UserService from './services/UserService.js';
-import RoutesService from './services/RoutesService.js';
+import RoutesService from './services/RoutesService.js'; //OK
 import BookingService from './services/BookingService.js';
 import TripService from './services/TripService.js';
 import SuggestionService from './services/SuggestionService.js';
@@ -12,10 +12,9 @@ import TicketService from './services/TicketService.js';
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
-import CreditCardInputService from './services/CreditCardInputService.js';
 // Controller Imports
-import RoutesMapController from './controllers/RoutesMapController.js';
-import RoutesListController from './controllers/RoutesListController.js';
+import RoutesMapController from './controllers/RoutesMapController.js'; //OK
+import RoutesListController from './controllers/RoutesListController.js'; //OK
 import BookingStopsController from './controllers/BookingStopsController.js';
 import BookingDatesController from './controllers/BookingDatesController.js';
 import BookingConfirmationController from './controllers/BookingConfirmationController.js';
@@ -87,7 +86,6 @@ var app = angular.module('beeline', [
 .factory('BookingService', BookingService)
 .factory('OneMapService', OneMapService)
 .factory('DateService', DateService)
-.factory('CreditCardInputService', CreditCardInputService)
 .factory('StripeService', StripeService)
 .controller('BookingStopsController', BookingStopsController)
 .controller('BookingDatesController', BookingDatesController)

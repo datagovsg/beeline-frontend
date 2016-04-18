@@ -2,6 +2,12 @@
 
 #pg_search-results {
 
+  .item p {
+    font-size: inherit;
+    white-space: normal;
+    margin: 0.5em 0;
+  }
+
   ion-list {
     .flex-row {
       align-items: center;
@@ -49,48 +55,48 @@
         color: $text-gray;
       }
     }
+  }
 
-    .start-end {
+  .start-end {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+
+    .start, .end {
+      flex: 0 0 auto;
       display: flex;
-      flex-direction: column;
-      margin-top: 1em;
+      flex-direction: row;
 
-      .start, .end {
-        flex: 0 0 auto;
-        display: flex;
-        flex-direction: row;
-
-        .label {
-          color: $text-gray;
-          margin-bottom: 0.3em;
-        }
-
-        stop-time {
-          flex: 0 0 auto;
-        }
-        stop-img {
-          flex: 0 0 auto;
-          text-align: center;
-          width: 30px;
-        }
-        stop-stop {
-          flex: 1 1 auto;
-          display: block;
-          margin-bottom: 1.5em;
-          margin-left: 1em;
-        }
+      .label {
+        color: $text-gray;
+        margin-bottom: 0.3em;
       }
-      .start {
-        stop-img {
-          background-image: url('../img/fromto-line.gif');
-          background-repeat: repeat-y;
-          background-position: 50% 0;
+
+      stop-time {
+        flex: 0 0 auto;
+      }
+      stop-img {
+        flex: 0 0 auto;
+        text-align: center;
+        width: 30px;
+      }
+      stop-stop {
+        flex: 1 1 auto;
+        display: block;
+        margin-bottom: 1.5em;
+        margin-left: 1em;
+      }
+    }
+    .start {
+      stop-img {
+        background-image: url('../img/fromto-line.gif');
+        background-repeat: repeat-y;
+        background-position: 50% 0;
+        position: relative;
+        top: 7px;
+        img {
           position: relative;
-          top: 5px;
-          img {
-            position: relative;
-            top: -5px;
-          }
+          top: -7px;
         }
       }
     }

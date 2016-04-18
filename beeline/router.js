@@ -61,6 +61,17 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+// Putting this here temporarily to test before routing it in properly
+  .state('tabs.results', {
+    url: '/results?pickupLat&pickupLng&dropoffLat&dropoffLng',
+    views: {
+      'tab-routes': {
+        templateUrl: 'templates/search-results.html',
+        controller: 'SearchResultsController'
+      }
+    }
+  })
+  
   .state('tabs.booking-last', {
     url: '/booking',
     views: {
@@ -173,16 +184,7 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  // Putting this here temporarily to test before routing it in properly
-  .state('tabs.results', {
-    url: '/results?pickupLat&pickupLng&dropoffLat&dropoffLng',
-    views: {
-      'tab-routes': {
-        templateUrl: 'templates/search-results.html',
-        controller: 'SearchResultsController'
-      }
-    }
-  })
+  
 
   .state('login', {
     url: '/login',

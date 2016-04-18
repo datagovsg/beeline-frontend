@@ -117,7 +117,7 @@
     </section>
 
     <!-- if no routes available -->
-    <section ng-if="searchResults.length === 0">
+    <section ng-if="searchResults.length === 0" class="item">
       <p>
         Submit your route as a suggestion to convince bus operators to run new routes.
       </p>
@@ -126,19 +126,29 @@
         We will notify you when a bus operator decides to run this route.
       </p>
 
-      <start-end class="notime">
-        <start-stop>
-          <rev-geocode x="search.pickup[0]" y="search.pickup[1]">
-          </rev-geocode>
-        </start-stop>
-        <end-stop>
-          <rev-geocode x="search.dropoff[0]" y="search.dropoff[1]">
-          </rev-geocode>
-        </end-stop>
-      </start-end>
+      <div class="start-end">
+        <div class="start">
+          <stop-img>
+            <img src="img/icon_stop.png">
+          </stop-img>
+          <stop-stop>
+            <rev-geocode x="search.pickup[0]" y="search.pickup[1]">
+            </rev-geocode>
+          </stop-stop>
+        </div>
+        <div class="end">
+          <stop-img>
+            <img src="img/icon_stop.png">
+          </stop-img>
+          <stop-stop>
+            <rev-geocode x="search.dropoff[0]" y="search.dropoff[1]">
+            </rev-geocode>
+          </stop-stop>
+        </div>
+      </div>
 
       <p>
-        <button class="big-yellow"
+        <button class="big-yellow big-yellow-centered"
                 ui-sref="tabs.suggest({
                   action: 'new',
                   pickupLng: search.pickup[0],

@@ -1,8 +1,5 @@
-import {formatHHMM_ampm} from '../shared/format';
-import _ from 'lodash';
-
-export default function($scope, $state, $ionicModal, $cordovaGeolocation,
-                        uiGmapGoogleMapApi, BookingService, RoutesService) {
+export default function($scope, $state, $cordovaGeolocation,
+                        uiGmapGoogleMapApi, RoutesService) {
   //Gmap default settings
   //Map configuration
   $scope.map = {

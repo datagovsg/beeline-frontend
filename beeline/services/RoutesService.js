@@ -18,12 +18,13 @@ function transformRouteData(data){
 
 export default function($http, SERVER_URL, UserService) {
   return {
+
+    // Retrive the data on a single route
+    // TODO refactor this to match getRoutes and searchRoutes
     getRoute: function (routeId) {
       return $http.get(SERVER_URL + `/routes/${routeId}?include_trips=true`)
-        .then(function(response){
-          return response.data;
-        })
-        .then((route) => { /* Convert date values to date object */
+        .then(function(response){ return response.data; })
+        .then((route) => { // Convert date values to date object
           for (let trip of route.trips) {
             trip.date = new Date(trip.date);
             for (let tripStop of trip.tripStops) {
@@ -34,36 +35,14 @@ export default function($http, SERVER_URL, UserService) {
         });
     },
 
-    getRoutes: function(){
+    // Retrive the data on all the routes
+    getRoutes: function() {
       return $http.get(SERVER_URL + '/routes?include_trips=true')
       .then(function(response){
         return transformRouteData(response.data);
       });
     },
 
-    //Old Search Service stuff
-    data: {
-      startName: '',
-      endName: '',
-      startLat: '',
-      startLng: '',
-      endLat: '',
-      endLng: '',
-      arrivalTime: '2016-02-26 01:00:00+00',
-      startTime: new Date().getTime(),
-      endTime: new Date().getTime() + 30*24*60*60*1000,
-      lastresults: [],
-      lastkickstart: [],
-      isSubmitting: false
-    },
-    addReqData: function(sname, ename, slat, slng, elat, elng) {
-      this.data.startName = sname;
-      this.data.endName = ename;
-      this.data.startLat = slat;
-      this.data.startLng = slng;
-      this.data.endLat = elat;
-      this.data.endLng = elng;
-    },
     searchRoutes: function(search) {
       //return Promise object
       return UserService.beeline({
@@ -82,20 +61,18 @@ export default function($http, SERVER_URL, UserService) {
         return response.data;
       });
     },
-    setresults: function(searchresults){
-      this.data.lastresults = searchresults;
+    getRecentRoutes: function() {
+      if (UserService.isLoggedIn()) {
+        return UserService.beeline({
+          method: 'GET',
+          url: '/routes/recent?limit=10'
+        }).then(function(response) {
+          return response.data;
+        });
+      } else {
+        return Promise.resolve([]);
+      }
     },
-    setkickstart: function(searchkickstart){
-      this.data.lastkickstart = searchkickstart;
-    },
-    setArrivalTime: function(arrtime) {
-      arrtime = arrtime.split(':').map(x => parseInt(x))
-      var arrivalTime = new (
-        Date.bind.apply(Date, [{}, 2015, 1, 1].concat(arrtime)));
-
-      this.data.arrivalTime = arrivalTime.toISOString();
-    }
-    //End Old Search Service stuff
 
   };
 }
