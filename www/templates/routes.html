@@ -1,12 +1,15 @@
-<ion-view view-title="Routes">
-	<div class="tabs tabs-top">
+<ion-view view-title="Routes"
+					ng-init="activeTab=0">
+	<div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
 	  <a class="tab-item"
-	  	 on-tap="showMap=true">
-	    Search
+	  	 on-tap="activeTab=0"
+	  	 ng-class="{active: activeTab===0}">
+	  	 <i class="icon ion-map"></i>SEARCH
 	  </a>
 	  <a class="tab-item"
-	  	 on-tap="showMap=false">
-	    List
+	  	 on-tap="activeTab=1"
+	  	 ng-class="{active: activeTab===1}">
+	  	 <i class="icon ion-ios-list-outline"></i>LIST
 	  </a>
 	</div>
 
@@ -14,10 +17,10 @@
 							 scroll=false>
 		<div ng-include="'templates/routes-map.html'"
 				 ng-controller="RoutesMapController"
-				 ng-show="showMap"></div>
+				 ng-show="activeTab===0"></div>
 		<div ng-include="'templates/routes-list.html'"
 				 ng-controller="RoutesListController"
-				 ng-show="!showMap"></div>
+				 ng-show="activeTab===1"></div>
 	</ion-content>
 
 </ion-view>
