@@ -16,6 +16,7 @@ import IntroSlidesController from './controllers/IntroSlidesController.js'; //OK
 import RoutesController from './controllers/RoutesController.js'; //OK
 import RoutesMapController from './controllers/RoutesMapController.js'; //OK
 import RoutesListController from './controllers/RoutesListController.js'; //OK
+import RoutesResultsController from './controllers/RoutesResultsController.js' //OK
 import BookingStopsController from './controllers/BookingStopsController.js';
 import BookingDatesController from './controllers/BookingDatesController.js';
 import BookingConfirmationController from './controllers/BookingConfirmationController.js';
@@ -26,7 +27,6 @@ import TicketDetailController from './controllers/TicketDetailController.js';
 import SettingsController from './controllers/SettingsController.js';
 import LoginController from './controllers/LoginController';
 import VerifyController from './controllers/VerifyController';
-import SearchResultsController from './controllers/SearchResultsController.js'
 // Directive Imports
 import RevGeocode from './directives/revGeocode/revGeocode';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
@@ -85,6 +85,11 @@ var app = angular.module('beeline', [
 .factory('OneMapService', OneMapService)
 .factory('DateService', DateService)
 .factory('StripeService', StripeService)
+.controller('IntroSlidesController', IntroSlidesController)
+.controller('RoutesController', RoutesController)
+.controller('RoutesMapController', RoutesMapController)
+.controller('RoutesListController', RoutesListController)
+.controller('RoutesResultsController', RoutesResultsController)
 .controller('BookingStopsController', BookingStopsController)
 .controller('BookingDatesController', BookingDatesController)
 .controller('BookingSummaryController', BookingSummaryController)
@@ -93,13 +98,8 @@ var app = angular.module('beeline', [
 .controller('SettingsController', SettingsController)
 .controller('TicketsController', TicketsController)
 .controller('TicketDetailController', TicketDetailController)
-.controller('RoutesController', RoutesController)
-.controller('RoutesMapController', RoutesMapController)
-.controller('RoutesListController', RoutesListController)
-.controller('IntroSlidesController', IntroSlidesController)
 .controller('LoginController', LoginController)
 .controller('VerifyController', VerifyController)
-.controller('SearchResultsController', SearchResultsController)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)

@@ -38,8 +38,8 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/routes/results?pickupLat&pickupLng&dropoffLat&dropoffLng',
     views: {
       'tab-routes': {
-        templateUrl: 'templates/search-results.html',
-        controller: 'SearchResultsController'
+        templateUrl: 'templates/routes-results.html',
+        controller: 'RoutesResultsController'
       }
     }
   })
