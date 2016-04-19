@@ -16,7 +16,8 @@
   background-position: cener;
 }
 
-.item-input input {
+.item-input input:not([type]), 
+.item-input input[type="text"] {
   text-align: right;
 }
 
@@ -26,6 +27,10 @@
   right: 0;
   margin-left: auto;
   margin-right: auto;
+}
+
+.tab-title {
+  text-transform: uppercase;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -24,11 +24,11 @@ import BookingSummaryController from './controllers/BookingSummaryController.js'
 import SuggestController from './controllers/SuggestController.js';
 import TicketsController from './controllers/TicketsController.js';
 import TicketDetailController from './controllers/TicketDetailController.js';
-import SettingsController from './controllers/SettingsController.js';
+import SettingsController from './controllers/SettingsController.js'; //OK
 import LoginController from './controllers/LoginController';
 import VerifyController from './controllers/VerifyController';
 // Directive Imports
-import loginItem from './directives/loginItem/loginItem.js';
+import loginItem from './directives/loginItem/loginItem.js'; //OK
 import RevGeocode from './directives/revGeocode/revGeocode';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';

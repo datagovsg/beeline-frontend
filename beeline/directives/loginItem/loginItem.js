@@ -5,13 +5,11 @@ export default function(UserService) {
     replace: true,
     scope: {
       user: '=',
-      showLogOut: '=',
+      showLogOut: '@',
       message: '@'
     },
     template: loginItemTemplate,
     controller: function($scope, $ionicPopup) {
-
-      console.log($scope.message);
 
       // Check the user each time before entering
       $scope.$on('$ionicView.beforeEnter', function() {
