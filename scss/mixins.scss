@@ -1,0 +1,37 @@
+@mixin big-yellow() {
+  padding: 20px 0px;
+  font-size: 16px;
+  line-height: 0px;
+  background-color: #ffe76e;
+  border: 0px;
+  border-bottom: 4px solid #f7c639;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  color: #333;
+  z-index: 3;
+
+  &:active {
+    border-bottom: 1px solid #f7c639;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.6);
+  }
+
+  &[disabled="disabled"] {
+    background-color: #d6d6d6;
+    border-bottom: 4px solid #b9b9b9;
+    color: #6f6f6f;
+  }
+}
+
+@mixin narrow-content() {
+    max-width: 400px;
+    margin: 0px auto;
+}
+
+
+@mixin big-yellow-fixed() {
+  @include big-yellow();
+  margin-left: -130px;
+  left: 50%;
+  position: fixed;
+}

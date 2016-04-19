@@ -1,5 +1,8 @@
+<!-- Simulating a tabs view ourselves since nav-view history doesnt play nice with nested tabs  -->
 <ion-view view-title="Routes"
 					ng-init="activeTab=0">
+
+	<!-- The tabs at the top of the page -->
 	<div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
 	  <a class="tab-item"
 	  	 on-tap="activeTab=0"
@@ -13,6 +16,7 @@
 	  </a>
 	</div>
 
+	<!-- The different "views" that get activated -->
 	<ion-content class="has-tabs-top"
 							 scroll=false>
 		<div ng-include="'templates/routes-map.html'"
