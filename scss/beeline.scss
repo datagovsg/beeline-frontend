@@ -16,6 +16,18 @@
   background-position: cener;
 }
 
+.item-input input {
+  text-align: right;
+}
+
+.button-block {
+  max-width: 80%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // New global styles
 // Check to see if there's an applicable ionic style first before adding here
@@ -33,11 +45,6 @@
   @extend .button-energized;
   position: absolute;
   bottom: $content-padding;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 80%;
   @include box-shadow($card-box-shadow);
 }
 

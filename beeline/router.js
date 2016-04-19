@@ -125,7 +125,7 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/settings',
     views: {
       'tab-settings': {
-        templateUrl: 'templates/tab-settings.html',
+        templateUrl: 'templates/settings.html',
         controller: 'SettingsController'
       }
     }

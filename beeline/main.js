@@ -28,6 +28,7 @@ import SettingsController from './controllers/SettingsController.js';
 import LoginController from './controllers/LoginController';
 import VerifyController from './controllers/VerifyController';
 // Directive Imports
+import loginItem from './directives/loginItem/loginItem.js';
 import RevGeocode from './directives/revGeocode/revGeocode';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';
@@ -100,6 +101,7 @@ var app = angular.module('beeline', [
 .controller('TicketDetailController', TicketDetailController)
 .controller('LoginController', LoginController)
 .controller('VerifyController', VerifyController)
+.directive('loginItem', loginItem)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)

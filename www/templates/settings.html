@@ -1,0 +1,32 @@
+<ion-view class="settings" view-title="Settings">
+  <ion-content>
+
+    <login-item show-log-out=true></login-item>
+
+    <div class="list">
+
+      <div class="item item-divider" ng-if="user">Account</div>
+      <label class="item item-input" ng-if="user">
+        <span class="input-label">Name</span>
+        <input type="text" ng-model="user.name"/>
+      </label>
+      <label class="item item-input" ng-if="user">
+        <span class="input-label">Email</span>
+        <input type="text" ng-model="user.email"/>
+      </label>
+      <label class="item item-input" ng-if="user">
+        <span class="input-label">Phone Number</span>
+        <input type="text" ng-model="user.telephone"/>
+      </label>
+      <a class="item item-icon-right" ui-sref='' ng-if="user">
+        Booking History
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+
+      <div class="item item-divider">About Beeline</div>
+      <a class="item" ui-sref='intro'>Quick Tour</a>
+
+    </div>
+
+  </ion-content>
+</ion-view>

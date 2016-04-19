@@ -1,48 +1,42 @@
-
 export default [
-    '$scope',
-    'UserService',
-    '$state',
-    '$ionicModal',
-    '$ionicPopup',
-function(
+  '$scope',
+  'UserService',
+  '$state',
+  '$ionicModal',
+  '$ionicPopup',
+  '$ionicLoading',
+  function(
     $scope,
     UserService,
     $state,
     $ionicModal,
-    $ionicPopup
-) {
-  $scope.user = null;
-  $scope.login = {
-    errorMessage: '',
-  };
+    $ionicPopup,
+    $ionicLoading
+  ) {
+    
+    // Renew the user each time before entering
+    $scope.$on('$ionicView.beforeEnter', function() {
+      UserService.getCurrentUser()
+      .then((user) => {
+        $scope.user = user;
+      });
+    });
 
-  //set the Login button labels and message for Settings page
-  $scope.$on('$ionicView.beforeEnter', () => {
-    UserService.getCurrentUser()
-    .then((user) => {
-      $scope.user = user;
-    })
-  });
+    //Log in / Log out button in settings page
+    $scope.logIn = function () {
+      UserService.logIn();
+    };
+    $scope.logOut = function () {
+      $ionicPopup.confirm({
+        title: 'Logout',
+        template: 'Do you want to log out?'
+      })
+      .then((res) => {
+        if (res) {
+          UserService.logOut();
+        }
+      })
+    };
 
-  //Log in / Log out button in settings page
-  $scope.logIn = function () {
-    UserService.logIn();
   }
-
-  $scope.logOut = function () {
-    $ionicPopup.confirm({
-      title: 'Logout',
-      template: 'Do you want to log out?'
-    })
-    .then((res) => {
-      if (res) {
-        UserService.logOut();
-      }
-    })
-  }
-
-  $scope.showBookingHistory = function() {
-    console.error("UNIMPLEMENTED STUB");
-  };
-}];
+];
