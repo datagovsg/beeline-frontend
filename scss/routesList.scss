@@ -18,31 +18,31 @@
     }
   }
 
-  #regsel {
-    background-color: #FFF;
-    text-align:center;
-    border-bottom: 1px solid #ddd;
-    padding: 3px;
-
-    label {
-      margin-right: 5px;
-    }
-
-    select {
-      padding: 10px 0px;
-      border: 0px;
-      background: transparent;
-      cursor: pointer;
-    }
-  }
-
-  #booklist {
+  .list {
     .routeinfo .stops {
       width: calc(100% - 80px);
     }
 
     .item-icon-right {
       padding: 0px;
+    }
+  }
+
+  // Get the Region filter to be center aligned
+  .item-select {
+    text-align: center;
+    color: #888;
+    // Hide the "down caret" dropdown icon
+    &:after { display: none; }
+    // Get the select option to center align too
+    select {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      // Remove the unecessary right padding since we're center aligning
+      padding-right: 0;
+      direction: ltr;
     }
   }
 }
