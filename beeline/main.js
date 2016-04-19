@@ -12,6 +12,7 @@ import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
 // Controller Imports
+import IntroSlidesController from './controllers/IntroSlidesController.js'; //OK
 import RoutesController from './controllers/RoutesController.js'; //OK
 import RoutesMapController from './controllers/RoutesMapController.js'; //OK
 import RoutesListController from './controllers/RoutesListController.js'; //OK
@@ -23,7 +24,6 @@ import SuggestController from './controllers/SuggestController.js';
 import TicketsController from './controllers/TicketsController.js';
 import TicketDetailController from './controllers/TicketDetailController.js';
 import SettingsController from './controllers/SettingsController.js';
-import IntroSlidesController from './controllers/IntroSlidesController.js';
 import LoginController from './controllers/LoginController';
 import VerifyController from './controllers/VerifyController';
 import SearchResultsController from './controllers/SearchResultsController.js'

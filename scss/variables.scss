@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // New variables which dont match any existing ionic variable semantics
 //////////////////////////////////////////////////////////////////////////////// 
+$hint-color: #888;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ionic variables to be overriden
@@ -14,7 +15,7 @@
 // // -------------------------------
 
 // $light:                           #fff !default;
-$stable:                          #4b3863;
+// $stable:                          #f8f8f8 !default;
 // $positive:                        #387ef5 !default;
 // $calm:                            #11c1f3 !default;
 // $balanced:                        #33cd5f !default;
@@ -22,7 +23,6 @@ $energized:                       #ffe76e;
 // $assertive:                       #ef473a !default;
 $royal:                           #4b3863;
 $dark:                            #444 !default;
-
 
 // // Base
 // // -------------------------------
@@ -321,7 +321,7 @@ $tab-item-max-width:              400px;
 // $item-thumbnail-margin:           10px !default;
 
 // $item-divider-bg:                 #f5f5f5 !default;
-// $item-divider-color:              #222 !default;
+$item-divider-color:              $hint-color;
 // $item-divider-padding:            5px 15px !default;
 
 // $item-light-bg:                   $button-light-bg !default;
@@ -444,8 +444,8 @@ $tab-item-max-width:              400px;
 // $input-color:                     #111 !default;
 // $input-border:                    $item-default-border !default;
 // $input-border-width:              $item-border-width !default;
-// $input-label-color:               $dark !default;
-// $input-color-placeholder:         lighten($dark, 40%) !default;
+$input-label-color:               $hint-color;
+$input-color-placeholder:         $hint-color;
 
 
 // // Progress

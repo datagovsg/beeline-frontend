@@ -1,11 +1,24 @@
 // Styling for elements that exist across the app 
 
+////////////////////////////////////////////////////////////////////////////////
+// Ionic style overrides
+// Try to change using variables first before adding new styles here
+////////////////////////////////////////////////////////////////////////////////
+.item-divider {
+  font-weight: 400;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// New global styles
+// Check to see if there's an applicable ionic style first before adding here
+////////////////////////////////////////////////////////////////////////////////
 // Remove Google logo and Map marker from Autocomplete dropdown
 // Add some padding back to compensate for removed elements
 .pac-logo::after { display: none !important; }
 .pac-icon { display: none !important; }
 .pac-item { padding: $item-padding !important; }
 
+// Common big button which is the primary action for the view
 .primary-button {
   @extend .button;
   @extend .button-block;
