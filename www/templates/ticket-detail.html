@@ -1,6 +1,6 @@
 <ion-view id="pg_tickdetails">
   <ion-nav-title>
-      Ticket for {{ticket.boardStop.time | date:'d MMM y'}}
+      Ticket for {{tripTicket.boardStop.time | date:'d MMM y'}}
   </ion-nav-title>
   <ion-content class="padding page-with-map">
 
@@ -27,6 +27,7 @@
 	<div id="ticketinfo">
 		<div class="statusmsg">
 			Your driver is on the way
+			<div id="refresh-bar"></div>
 		</div>
 		<table id="tdholder" ng-class="{ticketsel: currentState == 'ticket', driversel: currentState == 'driver', stopssel: currentState == 'stops'}">
 			<tr>
@@ -41,13 +42,11 @@
 								<td colspan="3" class="header">PASSENGER</td>
 								<td rowspan="5" class="gap"></td>
 								<td rowspan="5" class="qrbox">
-									<div class="code">
-										{{ticket.alightStopId}}
-									</div>
+									<div id="qr-code-bg"></div>
 								</td>
 							</tr>
 							<tr class="txt">
-								<td colspan="3">{{UserService.user.name}}</td>
+								<td colspan="3">{{user.name}}</td>
 							</tr>
 							<tr>
 								<td class="header ticket">TICKET ID</td>
@@ -55,9 +54,9 @@
 								<td class="header pax">PAX</td>
 							</tr>
 							<tr class="txt">
-								<td>{{ticket.id}}</td>
+								<td>{{tripTicket.id}}</td>
 								<td></td>
-								<td>{{ticket.pax}}</td>
+								<td>{{tripTicket.pax}}</td>
 							</tr>
 							<tr class="last">
 								<td></td>
@@ -74,10 +73,10 @@
 							<tr><td colspan="3" class="header operate">OPERATED BY</td></tr>
 							<tr class="txt">
 								<td colspan="3">
-									<div class="comp">
+									<div class="comp" style="background-image:url('{{company.logourl}}')">
 										<div>
 											<div class="cname">{{company.name}}</div>
-											<div class="terms"><a href="#/tab/tickets/terms/{{company.id}}">Terms and Conditions</a></div>
+											<div class="terms"><a href="#/tabs/tickets/terms/{{company.id}}">Terms and Conditions</a></div>
 										</div>
 									</div>
 								</td>
@@ -89,9 +88,9 @@
 								<td class="header dname">DRIVER</td>
 							</tr>
 							<tr class="txt">
-								<td>{{trip.vehicleId}}</td>
+								<td>{{info.trip.vehicle.vehicleNumber}}</td>
 								<td class="gap"></td>
-								<td>{{trip.driverId}}</td>
+								<td>{{info.trip.vehicle.driver.name}}</td>
 							</tr>
 						</table>
 					</div>
@@ -100,20 +99,20 @@
 				<td class="stops">
 					<div class="routeinfo">
 						<div class="title">
-							<div class="busnum">{{trip.routeInfo.id || 0}}</div>
-							<div class="name">{{trip.routeInfo.name || 'Name of booked trip'}}</div>
+							<div class="busnum">{{route.label || 0}}</div>
+							<div class="name">{{route.description || 'Name of booked trip'}}</div>
 						</div>
 						<div class="stops">
 							<div class="line"></div>
 							<div class="start">
-								<span class="time">{{ticket.boardStop.time | date:'h:mm a'}}</span>
-								<span class="desc">{{ticket.boardStop.stop.description}}</span>
-								<span class="road">{{ticket.boardStop.stop.road}}</span>
+								<span class="time">{{tripTicket.boardStop.time | date:'h:mm a'}}</span>
+								<span class="desc">{{tripTicket.boardStop.stop.description}} ({{tripTicket.boardStop.stop.type}} ID {{tripTicket.boardStop.stop.label}})</span>
+								<span class="road">{{tripTicket.boardStop.stop.road}}</span>
 							</div>
 							<div class="end">
-								<span class="time">{{ticket.alightStop.time | date:'h:mm a'}}</span>
-								<span class="desc">{{ticket.alightStop.stop.description}}</span>
-								<span class="road">{{ticket.alightStop.stop.road}}</span>
+								<span class="time">{{tripTicket.alightStop.time | date:'h:mm a'}}</span>
+								<span class="desc">{{tripTicket.alightStop.stop.description}} ({{tripTicket.alightStop.stop.type}} ID {{tripTicket.alightStop.stop.label}})</span>
+								<span class="road">{{tripTicket.alightStop.stop.road}}</span>
 							</div>
 						</div>
 					</div>
@@ -122,13 +121,16 @@
 		</table>
 
 	</div>
-
-
+     
+      
     <div class="map">
-
-        <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" control="map.mapControl" data-tap-disabled="true"></ui-gmap-google-map>
+        
+        <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" control="map.mapControl" data-tap-disabled="true">
+			<ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" stroke="p.stroke" icons="p.icons"></ui-gmap-polyline>
+			<ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
+        </ui-gmap-google-map>
     </div>
-
-
+          
+      
   </ion-content>
 </ion-view>

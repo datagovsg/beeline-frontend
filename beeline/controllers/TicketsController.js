@@ -1,4 +1,3 @@
-
 export default [
     '$scope',
     'TicketService',
@@ -14,37 +13,61 @@ function(
     $state,
     $stateParams
 ) {
+
+  var introTxt = {
+    noneTitle: 'No tickets to display.',
+    noneMsg: 'You do not have any upcoming trips at the moment!',
+    noneBtnTxt: 'SEARCH ROUTES',
+    falseTitle: 'You are not logged in.',
+    falseMsg: 'To view your tickets, log in to your Beeline account!',
+    falseBtnTxt: 'LOG IN'
+  };
+
+  $scope.intro = {
+    title: '',
+    msg: '',
+    btntxt: '',
+  }
+  
   $scope.tickets = {
     today: [],
     soon: []
   }
+  
   $scope.user = null;
 
   $scope.$on('$ionicView.beforeEnter', () => {
     UserService.getCurrentUser()
     .then((user) => {
       $scope.user = user;
+
+      if ($scope.user == null) {
+        $scope.intro.title = introTxt.falseTitle;
+        $scope.intro.msg = introTxt.falseMsg;
+        $scope.intro.btntxt = introTxt.falseBtnTxt;
+      }
+      else {
+        $scope.intro.title = introTxt.noneTitle;
+        $scope.intro.msg = introTxt.noneMsg;
+        $scope.intro.btntxt = introTxt.noneBtnTxt;
+      }
     })
 
-    //user is logged in, load the ticket data
+    //load ticket data - doesn't matter if user logged in or not
     TicketService.getTickets()
     .then(function () {
       TicketService.splitTickets();
       $scope.tickets.today = TicketService.todayTickets();
       $scope.tickets.soon = TicketService.soonTickets();
-
-      //no current/future tickets to display
-      if (($scope.tickets.today.length == 0)&&($scope.tickets.soon.length == 0))
-      {
-        $scope.login.introtitle = $scope.login.nonetitle;
-        $scope.login.intromsg = $scope.login.nonemsg;
-        $scope.login.introbtntxt = $scope.login.nonebtntxt;
-      }
     });
   });
 
-  $scope.setselectedticket = function(tid) {
+  $scope.introButtonClick = () => {
+    if ($scope.user == null) {
+      UserService.logIn();
+    }
+    else {
+      $state.go("tabs.routes.routemap");
+    }
   }
-
-  $scope.logIn = () => UserService.logIn();
 }];

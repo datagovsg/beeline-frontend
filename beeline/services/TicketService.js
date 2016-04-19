@@ -1,5 +1,3 @@
-import querystring from 'querystring'
-
 export default function TicketService($http,$filter,UserService) {
         var now = new Date();
         var today0000 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0).getTime();
@@ -19,10 +17,11 @@ export default function TicketService($http,$filter,UserService) {
                 return UserService.beeline({
                     method: 'GET',
                     url: '/tickets',
-                  }).then((response) => {
-                    tickets = response.data;
-                    return tickets;
-                  });
+				}).then((response) => {
+					tickets = response.data;
+					return tickets;
+				});
+
             },
             getTicketById: function(id){
                 for(var i=0;i<tickets.length;i++){
@@ -61,11 +60,11 @@ export default function TicketService($http,$filter,UserService) {
             },
 
             setSelectedTicket: function(ticketId) {
-             for (var i = 0; i < tickets.length; i++) {
-                if (tickets[i].id === ticketId) {
-                  selectedticket = tickets[i];
-                }
-              }
+				for (var i = 0; i < tickets.length; i++) {
+					if (tickets[i].id === ticketId) {
+						selectedticket = tickets[i];
+					}
+				}
             },
 
             getSelectedTicket: function() {
