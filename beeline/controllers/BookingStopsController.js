@@ -162,16 +162,16 @@ export default [
 
       $scope.alightMarkerOptions = {
         icon: {
-          url: 'img/alight.png',
-          scaledSize: new google.maps.Size(20,20),
-          anchor: new google.maps.Point(5,5),
+          url: 'img/map/MapRoutePickupStop@2x.png',
+          scaledSize: new google.maps.Size(26,25),
+          anchor: new google.maps.Point(13,13),
         },
       };
       $scope.boardMarkerOptions = {
         icon: {
-          url: 'img/board.png',
-          scaledSize: new google.maps.Size(20,20),
-          anchor: new google.maps.Point(5,5),
+          url: 'img/map/MapRouteDropoffStop@2x.png',
+          scaledSize: new google.maps.Size(26,25),
+          anchor: new google.maps.Point(13,13),
         },
       };
     })
