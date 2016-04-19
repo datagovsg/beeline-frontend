@@ -64,6 +64,10 @@ var app = angular.module('beeline', [
 .filter('formatTime', () => formatTime)
 .filter('formatHHMM_ampm', () => formatHHMM_ampm)
 .filter('titleCase', () => titleCase)
+.filter('routeStartTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].time : '')
+.filter('routeEndTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].time : '')
+.filter('routeStartRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].stop.road : '')
+.filter('routeEndRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].stop.road : '')
 .filter('monthNames', function () {
     return function (i) {
         monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');

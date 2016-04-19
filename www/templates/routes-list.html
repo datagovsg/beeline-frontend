@@ -12,15 +12,35 @@
     </label>
 
     <ul class="list">
-      <div class="item item-divider" ng-show="data.filteredRecentRoutes.length > 0">
+      <!-- Recent Routes Section -->
+      <div class="item item-divider"
+          ng-show="data.filteredRecentRoutes.length > 0">
         Recently Booked Routes
       </div>
-      <route-item ng-repeat="route in data.filteredRecentRoutes"></route-item>
+      <ion-item
+        ng-repeat="route in data.filteredRecentRoutes"
+        ui-sref="tabs.bookingPickup({ routeId: route.id})"
+        >
+        <route-item></route-item>
+        <a class="item-icon-right">
+          <i class="icon ion-ios-arrow-right"></i>
+        </a>
+      </ion-item>
+
+      <!-- Available Routes Section -->
       <div class="item item-divider">
         Active Routes
       </div>
-      <route-item ng-repeat="route in data.filteredActiveRoutes"></route-item>
+      <ion-item
+        ng-repeat="route in data.filteredActiveRoutes"
+        ui-sref="tabs.bookingPickup({ routeId: route.id})"
+        >
+        <route-item route="route"></route-item>
+        <a class="item-icon-right">
+          <i class="icon ion-ios-arrow-right"></i>
+        </a>
+      </ion-item>
     </ul>
-    
+
   </ion-content>
 </ion-view>

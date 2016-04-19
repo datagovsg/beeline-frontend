@@ -5,72 +5,25 @@ import _ from 'lodash'
 export default function (UserService, CompanyService, RoutesService, $http) {
   var rv = {};
 
-  rv.reset = function(routeId) {
-    this.currentBooking = {
-      boardStop: undefined,
-      alightStop: undefined,
-      qty: 1,
-      trips: null,
-      routeId: routeId || 1, // FIXME: don't do this. throw an error if routeId is not defined
-    };
-  }
-
-  rv.getCurrentBooking = function() {
-    return this.currentBooking;
-  }
-
-  rv.boardingStop = function () {
-    if (!this.currentBooking ||
-      !this.currentBooking.selectedDates ||
-      !this.currentBooking.selectedDates.length)
-      return {};
-
-    return this.routeInfo.tripsByDate[this.currentBooking.selectedDates[0]]
-          .tripStops
-          .filter(ts => this.currentBooking.boardStop == ts.stop.id)[0]
-  };
-  rv.alightingStop = function() {
-    if (!this.currentBooking ||
-      !this.currentBooking.selectedDates ||
-      !this.currentBooking.selectedDates.length)
-      return {};
-
-    return this.routeInfo.tripsByDate[this.currentBooking.selectedDates[0]]
-          .tripStops
-          .filter(ts => this.currentBooking.alightStop == ts.stop.id)[0]
-  };
-
   rv.prepareTrips = function(booking) {
     // create a list of trips
     var trips = [];
 
-    // Cache trip by dates
-    if (!booking.route.tripsByDate) {
-      booking.route.tripsByDate =
-        _.keyBy(booking.route.trips,
-          trip => trip.date.getTime());
-    }
-
-    //
     console.log(booking);
     for (let dt of booking.selectedDates) {
       trips.push({
         tripId: booking.route.tripsByDate[dt].id,
         boardStopId: booking.route.tripsByDate[dt]
                 .tripStops
-                .filter(ts => booking.boardStop == ts.stop.id)
+                .filter(ts => booking.boardStopId == ts.stop.id)
                 [0].id,
         alightStopId: booking.route.tripsByDate[dt]
                 .tripStops
-                .filter(ts => booking.alightStop == ts.stop.id)
+                .filter(ts => booking.alightStopId == ts.stop.id)
                 [0].id,
         qty: booking.qty,
       });
     }
-
-		//console.log(trips);
-    //console.log(this.routeInfo);
-
     return trips;
   };
 
@@ -113,9 +66,10 @@ export default function (UserService, CompanyService, RoutesService, $http) {
 
       return rv;
     }
-};
+  };
 
   rv.summarizePrices = function(booking) {
+    console.log(booking);
     if (!booking.selectedDates) {
       return [];
     }
@@ -125,26 +79,16 @@ export default function (UserService, CompanyService, RoutesService, $http) {
     if (dates.length == 0) return [];
 
     var current = {}
-    var rv = [current];
+    var rv = [];
 
     for (let dt of dates) {
-      if (!current.startDate) {
-        current.startDate = dt;
-      }
-      if (!current.price) {
-        current.price = booking.route.tripsByDate[dt].price;
-      }
-
-      if (current.price != booking.route.tripsByDate[dt].price) {
-        current = {
-          startDate: dt,
-          price: booking.route.tripsByDate[dt].price,
-        };
-        rv.push(current);
-      }
-      current.endDate = dt;
+      current = {
+        startDate: dt,
+        price: booking.route.tripsByDate[dt].price,
+      };
+      rv.push(current);
     }
-    //console.log(rv);
+    console.log(rv);
     return rv;
   };
 
@@ -289,8 +233,21 @@ export default function (UserService, CompanyService, RoutesService, $http) {
       return changes;
   };
 
-  rv.reset(1);
+  rv.computeStops = function(trips){
+    var tripStops = _.flatten(trips.map(trip => trip.tripStops));
+    var uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id)
+    var stopData = _.keyBy(uniqueStops, ts => ts.stop.id);
 
+    var boardStops = uniqueStops.filter(ts => ts.canBoard)
+      .map(ts => {
+        return _.extend({time: ts.time}, ts.stop);
+      })
+    var alightStops = uniqueStops.filter(ts => ts.canAlight)
+      .map(ts => {
+        return _.extend({time: ts.time}, ts.stop);
+      })
+    return [boardStops,alightStops];
+  }
 
   return rv;
 }

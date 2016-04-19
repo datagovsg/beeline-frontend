@@ -1,4 +1,8 @@
+
+/* ---------- ROUTE LIST PAGE ---------- */
 .routes-list-view {
+  color: #444;
+
   // Get the Region filter to be center aligned
   .item-select {
     text-align: center;
@@ -15,5 +19,13 @@
       padding-right: 0;
       direction: ltr;
     }
+  }
+
+  route-item {
+    margin: 1em;
+  }
+
+  .item-icon-right {
+    float: right;
   }
 }

@@ -4,12 +4,14 @@ export default [
     '$state',
     '$ionicModal',
     '$http',
-    'uiGmapGoogleMapApi'
+    'uiGmapGoogleMapApi',
+    '$timeout'
   , function (
     $state,
     $ionicModal,
     $http,
-    uiGmapGoogleMapApi
+    uiGmapGoogleMapApi,
+    $timeout
     ) {
 
   return {
@@ -63,7 +65,7 @@ export default [
       });
 
       scope.showList = function () {
-        setTimeout(() => {
+        $timeout(() => {
             scope.fitMap();
         }, 300);
         window.setStop = scope.setStop;
@@ -80,28 +82,24 @@ export default [
       });
 
       scope.fitMap = async () =>  {
-          await uiGmapGoogleMapApi;
-
-          //Disable the Google link at the bottom left of the map
-          var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
-          glink.next().find('a').on('click', function (e) {
-            e.preventDefault();
-          });
-
-          if (!scope.map.mapControl || !scope.busStops ||
-                  scope.busStops.length == 0)
-                  return;
-
-          // Pan to the bus stops
-          var bounds = new google.maps.LatLngBounds();
-          for (let bs of scope.busStops) {
-              bounds.extend(new google.maps.LatLng(
-                  bs.coordinates.coordinates[1],
-                  bs.coordinates.coordinates[0]));
-          }
-
-          scope.map.mapControl.getGMap().fitBounds(bounds);
-        };
+        await uiGmapGoogleMapApi;
+        //Disable the Google link at the bottom left of the map
+        var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
+        glink.next().find('a').on('click', function (e) {
+          e.preventDefault();
+        });
+        if (!scope.map.mapControl || !scope.busStops ||
+                scope.busStops.length == 0)
+            return;
+        // Pan to the bus stops
+        var bounds = new google.maps.LatLngBounds();
+        for (let bs of scope.busStops) {
+            bounds.extend(new google.maps.LatLng(
+                bs.coordinates.coordinates[1],
+                bs.coordinates.coordinates[0]));
+        }
+        scope.map.mapControl.getGMap().fitBounds(bounds);
+      };
 
       scope.selectStop = (e, stop) => {
       //prevent firing twice
@@ -138,18 +136,18 @@ export default [
         //    scope.valueFn(bs) == scope.model);
 
         if (selectedIndex != -1) {
-            scope.selectedStop = scope.busStops[selectedIndex];
+          scope.selectedStop = scope.busStops[selectedIndex];
+          if (scope.map.mapControl.getGMap) {
+            scope.map.mapControl.getGMap().panTo({
+              lat: scope.selectedStop.coordinates.coordinates[1],
+              lng: scope.selectedStop.coordinates.coordinates[0],
+            })
+          }
         }
         else {
-            scope.selectedStop = undefined;
+          scope.selectedStop = undefined;
         }
 
-        if (scope.map.mapControl.getGMap) {
-          scope.map.mapControl.getGMap().panTo({
-            lat: scope.selectedStop.coordinates.coordinates[1],
-            lng: scope.selectedStop.coordinates.coordinates[0],
-          })
-        }
       });
       scope.selectStopByIndex();
 
