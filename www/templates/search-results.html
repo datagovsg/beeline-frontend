@@ -1,67 +1,27 @@
 <ion-view view-title="Search Results">
   <ion-content>
+    
+    <div class="item item-text-wrap" ng-if="data.activeRoutes.length === 0">
+      <p>Sorry! There are no matching routes corresponding to your Start and End locations.</p>
+    </div>
+    <div class="item item-text-wrap" ng-if="data.activeRoutes.length === 1">
+      <p><strong>{{ data.activeRoutes.length }} route</strong> found. Nearest stops selected.</p>
+    </div>
+    <div class="item item-text-wrap" ng-if="data.activeRoutes.length > 1">
+      <p><strong>{{ data.activeRoutes.length }} routes</strong> found. Nearest stops selected.</p>
+    </div>
 
-    <!-- Available Routes Section -->
-    <section ng-if="data.activeRoutes.length > 0">
-      <div class="ion-list-header">Available Routes</div>
-      <ion-list>
-        <route-item ng-repeat="route in data.activeRoutes">foobar</route-item>
-      </ion-list>
-    </section>
-    <section ng-if="data.activeRoutes.length === 0">
-      <div class="noroutes msg">
-        <h4>Sorry! There are no suitable routes corresponding to your Start and End locations.</h4>     
-      </div>
-    </section>
-
-    <!-- TODO Pending Routes Section -->
-    <!-- TODO Suggest Routes Section -->
+    <ul class="list" ng-if="data.activeRoutes.length > 0">
+      <!-- Available Routes Section -->
+      <div class="item item-divider">Available Routes</div>
+      <ion-item ng-repeat="route in data.activeRoutes"
+                ui-sref="tabs.bookingPickup({ routeId: route.id })">
+        <route-item route="route"></route-item>
+        <a class="item-icon-right">
+          <i class="icon ion-ios-arrow-right"></i>
+        </a>
+      </ion-item>
+    </ul>
     
   </ion-content>
 </ion-view>
-
-<!-- 
-<ion-view view-title="Search Results">
-  <ion-content>
-    <section ng-if="data.searchresults.length > 0">
-   <p>However, You can choose to indicate your interest in the route you have specified.</p>
-        <p>Please select your preferred time for arrival in the drop-down below and we will notify you as soon as this route is activated.</p>
-    <section ng-if="data.searchresults.length == 0">
-      <div class="noroutes msg">
-        <h4>Sorry! There are no suitable routes corresponding to your Start and End locations.</h4>
-        <p>However, You can choose to indicate your interest in the route you have specified.</p>
-        <p>Please select your preferred time for arrival in the drop-down below and we will notify you as soon as this route is activated.</p>
-      </div>
-      <div class="route">
-        <div class="line"></div>
-        <div class="start">
-          <span class="name">{{data.pickupvalue}}</span>
-        </div>
-        <div class="end">
-          <span class="name">{{data.dropoffvalue}}</span>
-        </div>
-      </div>
-      <div class="arrtime">
-        <i class="icon ion-clock"></i>
-        <select ng-model="data.suggestTime">
-          <option value="">Time at destination</option>
-          <option value="00:00">00:00 - 02:00</option>
-          <option value="02:00">02:00 - 04:00</option>
-          <option value="04:00">04:00 - 06:00</option>
-          <option value="06:00">06:00 - 08:00</option>
-          <option value="08:00">08:00 - 10:00</option>
-          <option value="10:00">10:00 - 12:00</option>
-          <option value="12:00">12:00 - 14:00</option>
-          <option value="14:00">14:00 - 16:00</option>
-          <option value="16:00">16:00 - 18:00</option>
-          <option value="18:00">18:00 - 20:00</option>
-          <option value="20:00">20:00 - 22:00</option>
-        </select>
-      </div>
-      <button id="btnsugg" ng-click="routeSuggest()" ng-disabled="data.suggestTime == ''">
-        Submit Route Suggestion
-      </button>
-    </section>
-
-  </ion-content>
-</ion-view> -->
