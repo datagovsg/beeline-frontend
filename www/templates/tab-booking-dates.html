@@ -17,9 +17,12 @@
       booking="book"></price-calculator>
 
 		<button id="btnreview" ng-disabled="book.selectedDates.length == 0"
-          ui-sref="tabs.booking-summary({routeId: book.routeid,
-            boardStop: book.boardStop,alightStop: book.alightStop,
-            selectedDates: book.selectedDates})">
+          ui-sref="tabs.booking-summary({
+            routeId: book.routeId,
+            boardStop: book.boardStopId,
+            alightStop: book.alightStopId,
+            selectedDates: book.selectedDates
+          })">
 			Review Booking
 		</button>
 	</div>
