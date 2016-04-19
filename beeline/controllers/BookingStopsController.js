@@ -14,6 +14,7 @@ export default [
   'RoutesService',
   'CompanyService',
   'uiGmapGoogleMapApi',
+  'MapOptions',
   function(
     $rootScope,
     $scope,
@@ -26,36 +27,11 @@ export default [
     BookingService,
     RoutesService,
     CompanyService,
-    uiGmapGoogleMapApi
+    uiGmapGoogleMapApi,
+    MapOptions
   ) {
     //Gmap default settings
-    $scope.map = {
-      center: { latitude: 1.370244, longitude: 103.823315 },
-      zoom: 11,
-      bounds: { //so that autocomplete will mainly search within Singapore
-        northeast: {
-          latitude: 1.485152,
-          longitude: 104.091837
-        },
-        southwest: {
-          latitude: 1.205764,
-          longitude: 103.589899
-        }
-      },
-      mapControl: {},
-      options: {
-        disableDefaultUI: true,
-        styles: [{
-          featureType: "poi",
-          stylers: [{
-            visibility: "off"
-          }]
-        }],
-        draggable: true
-      },
-      markers: [],
-      lines: [],
-    };
+    $scope.map = MapOptions.defaultMapOptions();
 
     var resolveGmap = null;
     var gmapIsReady = new Promise((resolve, reject) => {
@@ -115,7 +91,7 @@ export default [
     function resizeMap() {
       gmapIsReady
       .then(() => {
-        google.maps.event.trigger($scope.map.mapControl.getGMap(), 'resize');
+        google.maps.event.trigger($scope.map.control.getGMap(), 'resize');
       });
     }
 
@@ -147,9 +123,6 @@ export default [
     $scope.getStopDescription2 = (stop) =>
       stop.road;
 
-    $scope.boardMarkerOptions = {};
-    $scope.alightMarkerOptions = {};
-
     // FIXME: apply this to all maps somehow, instead of doing this ad-hoc
     uiGmapGoogleMapApi.then(() => {
       setTimeout(function(){
@@ -159,22 +132,9 @@ export default [
           e.preventDefault();
         });
       }, 300);
-
-      $scope.alightMarkerOptions = {
-        icon: {
-          url: 'img/map/MapRoutePickupStop@2x.png',
-          scaledSize: new google.maps.Size(26,25),
-          anchor: new google.maps.Point(13,13),
-        },
-      };
-      $scope.boardMarkerOptions = {
-        icon: {
-          url: 'img/map/MapRouteDropoffStop@2x.png',
-          scaledSize: new google.maps.Size(26,25),
-          anchor: new google.maps.Point(13,13),
-        },
-      };
     })
+
+    // FIXME: start/end marker on selected stops
 
     // Load the data for the selected route
     // Which data?
@@ -244,28 +204,7 @@ export default [
 
     /* ----- Methods ----- */
     //Click function for User Position Icon
-    $scope.getUserLocation = function() {
-      var options = {
-        timeout: 5000,
-        enableHighAccuracy: true
-      };
-
-      //promise
-      $cordovaGeolocation
-      .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
-      .then(function(userpos){
-
-        var gmap = $scope.map.mapControl.getGMap();
-
-        gmap.panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude));
-        setTimeout(function(){
-          gmap.setZoom(17);
-        }, 300);
-
-      }, function(err){
-        console.log('ERROR - ' + err);
-      });
-    }
+    $scope.getUserLocation = MapOptions.locateMe($scope.map.control);
 
     function computeStops() {
       var trips = $scope.currentBooking.route.trips;
@@ -300,7 +239,7 @@ export default [
           s.coordinates.coordinates[0]
         ));
       }
-      $scope.map.mapControl.getGMap().fitBounds(bounds);
+      $scope.map.control.getGMap().fitBounds(bounds);
     };
 
     $scope.tapBoard = function (board) {

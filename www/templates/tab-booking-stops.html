@@ -22,7 +22,7 @@
     center="map.center"
     zoom="map.zoom"
     bounds="map.bounds"
-    control="map.mapControl"
+    control="map.control"
     options="map.options"
     data-tap-disabled="true"
     ready="mapReady()"
@@ -34,7 +34,7 @@
         latitude: stop.coordinates.coordinates[1],
         longitude: stop.coordinates.coordinates[0],
       }"
-      options="boardMarkerOptions"
+      options="map.markerOptions.boardMarker"
       click="applyTapBoard(stop)"
     ></ui-gmap-marker>
     <ui-gmap-marker
@@ -44,7 +44,7 @@
         latitude: stop.coordinates.coordinates[1],
         longitude: stop.coordinates.coordinates[0],
       }"
-      options="alightMarkerOptions"
+      options="map.markerOptions.alightMarker"
       click="applyTapAlight(stop)"
     ></ui-gmap-marker>
 
@@ -87,7 +87,8 @@
       placeholder="{{book.stxt}}"
       title="{{book.stxt}}"
       button="{{book.stxt}}"
-      marker-options="boardMarkerOptions"
+      marker-options="map.markerOptions.boardMarker"
+      pin-options="map.markerOptions.startMarker"
       >
     </bus-stop-selector>
     <div class="line"></div>
@@ -100,7 +101,8 @@
       placeholder="{{book.etxt}}"
       title="{{book.etxt}}"
       button="{{book.etxt}}"
-      marker-options="alightMarkerOptions"
+      marker-options="map.markerOptions.alightMarker"
+      pin-options="map.markerOptions.endMarker"
       >
     </bus-stop-selector>
     <qty-input

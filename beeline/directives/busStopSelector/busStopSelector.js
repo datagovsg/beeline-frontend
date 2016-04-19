@@ -27,6 +27,7 @@ export default [
       title: '@',
       button: '@',
       markerOptions: '=',
+      pinOptions: '=',
     },
     link: function (scope, elem, attrs) {
       scope.map = {
