@@ -2,7 +2,7 @@ import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
 // Service Imports
 import UserService from './services/UserService.js';
-import RoutesService from './services/RoutesService.js';
+import RoutesService from './services/RoutesService.js'; //OK
 import BookingService from './services/BookingService.js';
 import TripService from './services/TripService.js';
 import SuggestionService from './services/SuggestionService.js';
@@ -11,10 +11,9 @@ import TicketService from './services/TicketService.js';
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
-import CreditCardInputService from './services/CreditCardInputService.js';
 // Controller Imports
-import RoutesMapController from './controllers/RoutesMapController.js';
-import RoutesListController from './controllers/RoutesListController.js';
+import RoutesMapController from './controllers/RoutesMapController.js'; //OK
+import RoutesListController from './controllers/RoutesListController.js'; //OK
 import BookingStopsController from './controllers/BookingStopsController.js';
 import BookingDatesController from './controllers/BookingDatesController.js';
 import BookingConfirmationController from './controllers/BookingConfirmationController.js';
@@ -65,6 +64,10 @@ var app = angular.module('beeline', [
 .filter('formatTime', () => formatTime)
 .filter('formatHHMM_ampm', () => formatHHMM_ampm)
 .filter('titleCase', () => titleCase)
+.filter('routeStartTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].time : '')
+.filter('routeEndTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].time : '')
+.filter('routeStartRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].stop.road : '')
+.filter('routeEndRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].stop.road : '')
 .filter('monthNames', function () {
     return function (i) {
         monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
@@ -80,7 +83,6 @@ var app = angular.module('beeline', [
 .factory('BookingService', BookingService)
 .factory('OneMapService', OneMapService)
 .factory('DateService', DateService)
-.factory('CreditCardInputService', CreditCardInputService)
 .factory('StripeService', StripeService)
 .controller('BookingStopsController', BookingStopsController)
 .controller('BookingDatesController', BookingDatesController)
