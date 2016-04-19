@@ -1,0 +1,43 @@
+/* ---------- SLIDE PAGE for intro ---------- */
+#pg_intro{
+  background-color: $stable;
+  #intro-slides {
+    height: 90%;
+    position: absolute;
+    text-align: center;
+    font-size: 14px;
+    padding-top: 20%;
+    color: #FFF;
+    header {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #FFE76D;
+    }
+    img {
+      margin-top: 50px;
+    }
+    p {
+      margin-top: 40px;
+      left: 20%;
+      width: 60%;
+      position: absolute;
+    }
+    .swiper-pagination-bullet-active
+    {
+      background: #FFF;
+    }
+  }
+  footer {
+    top: 90%;
+    height: 10%;
+    width: 100%;
+    position: absolute;
+    a {
+      color: #FFF;
+      right: 40px;
+      bottom: 40px;
+      font-size: 18px;
+      position: absolute;
+    }
+  }
+}

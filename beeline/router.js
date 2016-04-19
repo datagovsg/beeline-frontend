@@ -7,7 +7,7 @@ export default function($stateProvider, $urlRouterProvider) {
   //////////////////////////////////////////////////////////////////////////////
   .state('intro', {
     url: '/intro',
-    templateUrl: 'templates/intro.html',
+    templateUrl: 'templates/intro-slides.html',
     controller: 'IntroSlidesController'
   })
 
