@@ -47,9 +47,15 @@ route-item {
       position: absolute;
     }
 
+    .start {
+      background: url('../img/RoutePairSmallStart.png') left center no-repeat;
+    }
+    .end {
+      background: url('../img/RoutePairSmallEnd.png') left center no-repeat;
+    }
+
     .start, .end {
       line-height: 20px;
-      background: url('../img/icon_stop.png') left center no-repeat;
       background-size: 10px 10px;
       padding-left: 15px;
       z-index: 5;

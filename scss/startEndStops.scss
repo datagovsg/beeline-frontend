@@ -5,7 +5,6 @@ $stopMarkerRightMargin: 1em;
 .start-end {
   display: flex;
   flex-direction: column;
-  margin-top: $stopMarkerRightMargin;
 
   .start, .end {
     flex: 0 0 auto;
@@ -28,8 +27,7 @@ $stopMarkerRightMargin: 1em;
     stop-stop {
       flex: 1 1 auto;
       display: block;
-      margin-bottom: 1.5em;
-      margin-left: 1em;
+      margin-left: $stopMarkerRightMargin;
     }
   }
   .start {
