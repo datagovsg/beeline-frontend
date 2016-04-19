@@ -15,53 +15,36 @@ export default [
     StripeService, $stateParams, RoutesService) {
 
     $scope.book = {
-      routeid: '',
-      route: {},
+      routeId: '',
+      route: null,
       qty: 1,
-      priceInfo: {},
       waitingForPaymentResult : false,
       promoCodes: undefined,
       selectedDates: [],
+      boardStopId: undefined,
+      alightStopId: undefined,
       boardStop: undefined,
       alightStop: undefined,
-      boardStopPromise: undefined,
-      alightStopPromise: undefined,
     };
     $scope.$on('$ionicView.beforeEnter', () => {
-      $scope.book.routeid = $stateParams.routeId;
+      $scope.book.routeId = $stateParams.routeId;
       $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
           return parseInt(item);
       });
       console.log($scope.book.selectedDates);
-      $scope.book.boardStop = $stateParams.boardStop;
-      $scope.book.alightStop = $stateParams.alightStop;
-      RoutesService.getRoute($scope.book.routeid)
+      $scope.book.boardStopId  = parseInt($stateParams.boardStop);
+      $scope.book.alightStopId = parseInt($stateParams.alightStop);
+      RoutesService.getRoute($scope.book.routeId)
       .then((route) => {
         $scope.book.route = route;
-        recomputePrice();
-        $scope.book.boardStopPromise = route.tripsByDate[$scope.book.selectedDates[0]]
+        $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]]
               .tripStops
               .filter(ts => $scope.book.boardStop == ts.stop.id)[0];
-        $scope.book.alightStopPromise = route.tripsByDate[$scope.book.selectedDates[0]]
+        $scope.book.alightStop = route.tripsByDate[$scope.book.selectedDates[0]]
               .tripStops
               .filter(ts => $scope.book.alightStop == ts.stop.id)[0]
       });
     });
-
-    function recomputePrice() {
-      if (!$scope.book.route.tripsByDate) {
-        return;
-      }
-      BookingService.computePriceInfo($scope.book, $http)
-      .then((priceInfo) => {
-        $scope.book.priceInfo = priceInfo;
-      })
-    }
-
-    /* On this page we can only add promo codes... */
-    $scope.$watch('$scope.book.promoCodes',
-                recomputePrice,
-                true);
 
     // methods
     $scope.pay = async function() {

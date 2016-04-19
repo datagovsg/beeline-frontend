@@ -9,11 +9,11 @@ export default [
     function ($scope, $state, $http, BookingService,
     RoutesService,$stateParams) {
       $scope.book = {
-        routeid: '',
+        routeId: '',
         route: null,
         qty: '',
-        boardStop: undefined,
-        alightStop: undefined,
+        boardStopId: undefined,
+        alightStopId: undefined,
         priceInfo: {},
         validDates: [],
         soldOutDates: [],
@@ -23,10 +23,10 @@ export default [
         maxDate: null,
       };
       $scope.$on('$ionicView.beforeEnter', () => {
-        $scope.book.routeid = $stateParams.routeId;
-        $scope.book.boardStop =  parseInt($stateParams.boardStop);
-        $scope.book.alightStop =  parseInt($stateParams.alightStop);
-        RoutesService.getRoute($scope.book.routeid)
+        $scope.book.routeId = $stateParams.routeId;
+        $scope.book.boardStopId =  parseInt($stateParams.boardStop);
+        $scope.book.alightStopId =  parseInt($stateParams.alightStop);
+        RoutesService.getRoute($scope.book.routeId)
         .then((route) => {
           $scope.book.route = route;
           console.log($scope.book.route);
@@ -37,14 +37,6 @@ export default [
       // watches
       function updateCalendar() {
         if (!$scope.book.route) {
-          // For development purposes, we could do this...
-          // RoutesService.getRoute($scope.book.routeid)
-          // .then((route) => {
-          //   $scope.book.route = route;
-          //   if (route) {
-          //     updateCalendar();
-          //   }
-          // })
           return;
         }
 
@@ -82,25 +74,14 @@ export default [
 
           // Check that the stops are available
           var tripStops_stopIds = trip.tripStops.map(ts => ts.stop.id);
-          if (_.intersection([$scope.book.boardStop],
+          if (_.intersection([$scope.book.boardStopId],
                              tripStops_stopIds).length == 0 ||
-              _.intersection([$scope.book.alightStop],
+              _.intersection([$scope.book.alightStopId],
                              tripStops_stopIds).length == 0
               ) {
               $scope.book.invalidStopDates.push(trip.date);
           }
         }
       };
-
-      $scope.$watch('book.selectedDates',
-        () => {
-          console.log($scope.book.selectedDates);
-          BookingService.computePriceInfo($scope.book)
-          .then((priceInfo) => {
-            $scope.book.priceInfo = priceInfo;
-          });
-          console.log('booking changed!')
-          updateCalendar();
-        }, true);
     },
   ];

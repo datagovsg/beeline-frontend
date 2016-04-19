@@ -11,20 +11,15 @@ export default function (UserService, CompanyService, RoutesService, $http) {
 
     console.log(booking);
     for (let dt of booking.selectedDates) {
-      console.log(dt);
-      console.log(booking.route);
-      console.log(booking.route.trips);
-      console.log(booking.route.tripsByDate);
-      console.log(booking.route.tripsByDate.dt);
       trips.push({
         tripId: booking.route.tripsByDate[dt].id,
         boardStopId: booking.route.tripsByDate[dt]
                 .tripStops
-                .filter(ts => booking.boardStop == ts.stop.id)
+                .filter(ts => booking.boardStopId == ts.stop.id)
                 [0].id,
         alightStopId: booking.route.tripsByDate[dt]
                 .tripStops
-                .filter(ts => booking.alightStop == ts.stop.id)
+                .filter(ts => booking.alightStopId == ts.stop.id)
                 [0].id,
         qty: booking.qty,
       });

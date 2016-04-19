@@ -13,7 +13,7 @@ Selected Dates<br>
       <td colspan="2">- Please select your trip dates -</td>
     </tr>
     <tr class="sel" ng-if="booking.selectedDates.length > 0"
-      ng-repeat="pinfo in booking.priceInfo.pricesPerTrip">
+      ng-repeat="pinfo in priceInfo.pricesPerTrip">
       <td>
         {{pinfo.startDate | formatDateMMMdd}}
       </td>
@@ -23,7 +23,7 @@ Selected Dates<br>
       <td>
         <div class="trips box">
           <div class="title">Total Trips</div>
-          <div class="val">{{booking.priceInfo.tripCount || 0}}</div>
+          <div class="val">{{priceInfo.tripCount || 0}}</div>
         </div>
         <div class="pax box">
           <div class="title">Passengers</div>
@@ -35,7 +35,7 @@ Selected Dates<br>
       <td>
         <div class="price box">
           <div class="title">Total Amt.</div>
-          <div class="val">${{booking.priceInfo.totalDue.toFixed(2) || 0.00}}</div>
+          <div class="val">${{priceInfo.totalDue.toFixed(2) || '0.00'}}</div>
         </div>
       </td>
     </tr>

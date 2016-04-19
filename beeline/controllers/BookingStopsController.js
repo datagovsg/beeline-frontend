@@ -61,7 +61,7 @@ export default [
     //Default settings for various info used in the page
 
     $scope.book = {
-      routeid: '',
+      routeId: '',
       route: {},
       boardStops: [],
       alightStops: [],
@@ -105,7 +105,7 @@ export default [
     })
 
     $scope.$on('$ionicView.afterEnter', () => {
-      $scope.book.routeid = $stateParams.routeId;
+      $scope.book.routeId = $stateParams.routeId;
       window.setStop = $scope.setStop;
       gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
@@ -184,7 +184,7 @@ export default [
       // 3. Changes to route
       $scope.lastDisplayedRouteId = null; // works if caching
       $scope.displayRouteInfo = function() {
-        RoutesService.getRoute($scope.book.routeid)
+        RoutesService.getRoute($scope.book.routeId)
         .then((route) => {
           // 1. Route info
           $scope.routePath = route.path.map(latlng => ({
@@ -197,7 +197,7 @@ export default [
           panToStops();
 
           // 3. Check if we should display changes
-          if ($scope.lastDisplayedRouteId != $scope.book.routeid) {
+          if ($scope.lastDisplayedRouteId != $scope.book.routeId) {
             var changes = BookingService.computeChanges(route);
             $scope.book.changes = changes;
             console.log(changes);
