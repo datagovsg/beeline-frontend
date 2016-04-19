@@ -1,0 +1,45 @@
+
+price-calculator {
+
+  .price-table {
+    width: 100%;
+
+    &.totals {
+      border-spacing: 5px;
+      border-collapse: separate;
+      td, th{
+        width: 33%;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  th, div.title {
+    font-weight: normal;
+    text-align: center;
+    background-color: #f5f5f5;
+    color: $stable;
+    padding: 10px;
+    border-bottom: solid 2px $stable;
+  }
+
+  tr {
+    td {
+      padding: 5px;
+      text-align: center;
+      border-bottom: 1px solid #CCC;
+    }
+
+    td:first-of-type {
+    }
+
+    td:last-of-type {
+      width: 120px;
+    }
+
+    &.nosel td{
+      padding: 20px 0px;
+      color: #999;
+    }
+  }
+}

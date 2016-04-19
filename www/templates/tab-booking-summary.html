@@ -4,61 +4,83 @@
 		Please review the route and bus stop selections you have made for this booking.<br />
 		To change any of the selections, please click its corresponding <b>Edit</b> button.
 	</div>
-	<section>
-		<div class="ion-list-header">
-			<i class="icon ion-ios-location-outline"></i>
-			Route Information
-		</div>
+	<section class="item">
+    <h4>
+      Selected Route
+    </h4>
 		<div class="routeinfo">
       <!-- FIXME we need to show the SELECTED STOPS not the route
         itself -->
       <route-item route="book.route">foobar</route-item>
-			<div class="edit">
-				<a class="btnsmall" ui-sref="tab.booking-pickup">Edit</a>
-			</div>
 		</div>
 	</section>
-	<section>
-		<div class="ion-list-header">
-			<i class="icon ion-ios-clock-outline"></i>
-			Selected Dates
-		</div>
-		<div class="tripdates">
-    	<price-calculator
-        booking="book"></price-calculator>
-			<!-- <ul>
-				<li ng-repeat="dt in book.selectedDates">
-					{{dt | formatDateMMMdd}}
-				</li>
-			</ul> -->
-			<div class="edit">
-				<a class="btnsmall" ui-sref="tab.booking-dates">Edit</a>
-			</div>
-		</div>
+	<section class="item dates">
+    <h4>
+      Selected Dates
+    </h4>
+  	<price-calculator
+      booking="book"
+      read-only="true"></price-calculator>
+		<!-- <ul>
+			<li ng-repeat="dt in book.selectedDates">
+				{{dt | formatDateMMMdd}}
+			</li>
+		</ul> -->
 	</section>
-	<section>
-		<div class="ion-list-header">
-			<i class="icon ion-card"></i>
-			Promo Codes
-		</div>
-		<div class="promo">
-			<ol>
-				<li ng-repeat="pc in book.promoCodes">
-				 {{pc}}
-				</li>
-			</ol>
-			<form ng-submit="addPromoCode()">
-				<input id="promocode" type="text" placeholder="Enter your code here" />
-				<button type="submit">Add Code</button>
-			</form>
-		</div>
+	<section class="item promo">
+    <h4>
+      Promo Code
+    </h4>
+		<ol>
+			<li ng-repeat="pc in book.promoCodes">
+			 {{pc}}
+			</li>
+		</ol>
+		<form ng-submit="addPromoCode()">
+			<input id="promocode" type="text" placeholder="Enter your code here" />
+			<button type="submit">Add Code</button>
+		</form>
 	</section>
+
+  <section class="item booking-tnc">
+		<h4>
+			Terms and Conditions of Booking
+		</h4>
+    <div class="coinfo">
+      Operated By:
+      <div class="contact">
+        <img ng-src="{{book.route.transportCompanyId | companyLogo}}">
+        <div class="name">{{book.transco.name}}</div>
+        <div class="email">{{book.transco.email}}</div>
+      </div>
+    </div>
+    <div>
+      <ul>
+        <li>Guaranteed seats upon confirmation of booking.</li>
+        <li>Air-conditioned Bus.</li>
+        <li>Mon - Fri, except Publish Holidays.</li>
+        <li>No cancellation allowed.</li>
+        <li>Please arrive at your boarding stop 5 mins in advance.</li>
+      </ul>
+      <div class="sign">
+        <div class="img">Signage example:
+        <img src="img/terms-sign.png" width="200" class="signage-example"></div>
+        Please look out for the Beeline sign at the front of the bus.
+        <div class="clear"></div>
+      </div>
+    </div>
+    <ion-checkbox class="confirm" ng-model="book.termsChecked">
+      Yes, I have read and agree to the Terms and Conditions of booking with <b>{{book.transco.name}}</b>.
+    </ion-checkbox>
+  </section>
+
+
 	<div class="paytxt msg">
 		Please ensure that your credit card is ready for the next step in the booking process.
 
-		<div class="cclogos"></div>
-
-		<button id="btnpay" ng-click="pay()" ng-disabled="waitingForPaymentResult">
+		<button class="big-yellow-centered big-yellow"
+    ng-click="pay()"
+    ng-disabled="!book.termsChecked || waitingForPaymentResult">
 			CONFIRM AND PAY
 		</button>
 	</div>

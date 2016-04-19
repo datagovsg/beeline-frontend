@@ -12,19 +12,23 @@
 
 	<!--qty-input ng-model="BookingService.currentBooking.qty" placeholder="Number of passengers" ></qty-input-->
 
-	<div class="bookdetails">
+	<div class="bookdetails item">
+    <h4>Selected Dates</h4>
 		<price-calculator
       booking="book"></price-calculator>
-
-		<button id="btnreview" ng-disabled="book.selectedDates.length == 0"
+	</div>
+  <div class="item">
+    <button
+          class="big-yellow-centered big-yellow"
+          ng-disabled="book.selectedDates.length == 0"
           ui-sref="tabs.booking-summary({
             routeId: book.routeId,
             boardStop: book.boardStopId,
             alightStop: book.alightStopId,
             selectedDates: book.selectedDates
           })">
-			Review Booking
-		</button>
-	</div>
+      Review Booking
+    </button>
+  </div>
   </ion-content>
 </ion-view>

@@ -104,94 +104,75 @@
     </qty-input>
   </div>
 
-  <div id="transco">
-    <div class="coinfo">
-      <h4>Operated by</h4>
-      <div class="contact">
-        <div class="logo"><!--img ng-src="data:image/png;base64,{{book.transco.logo}}" /--></div>
-        <div class="name">{{book.transco.name}}</div>
-        <div class="email">{{book.transco.email}}</div>
-      </div>
-    </div>
-    <div class="coterms">
-      <ul>
-        <li>Guaranteed seats upon confirmation of booking.</li>
-        <li>Air-conditioned Bus.</li>
-        <li>Mon - Fri, except Publish Holidays.</li>
-        <li>No cancellation allowed.</li>
-        <li>Please arrive at your boarding stop 5 mins in advance.</li>
-      </ul>
-      <div class="sign">
-        <div class="img">Signage example</div>
-        Please look out for the Beeline sign at the front of the bus.
-        <div class="clear"></div>
-      </div>
-    </div>
-    <ion-checkbox class="confirm" ng-model="book.termsChecked">
-      Yes, I have read and agree to the Terms and Conditions of booking with <b>{{book.transco.name}}</b>.
-    </ion-checkbox>
-    <button id="btnbookcont" ui-sref="tabs.booking-dates({routeId: book.routeid,boardStop: book.boardStop,alightStop: book.alightStop})"
-        ng-disabled="book.allDataNotFilled">Continue</button>
-    <div class="err">{{book.errmsg}}</div>
+  <div class="item button-container">
+    <button class="big-yellow big-yellow-centered"
+      ui-sref="tabs.booking-dates({
+        routeId: book.routeId,
+        boardStop: book.boardStop,
+        alightStop: book.alightStop
+      })"
+      ng-disabled="!book.alightStop || !book.boardStop || !book.qty">
+      Continue
+    </button>
   </div>
   </ion-content>
 
   <script id="changes-message.html" type="text/ng-template">
-  <div id="changes-message" class="modal">
-    <ion-header-bar class="bar-stable">
-        <h1 class="title">Changes to Service #{{book.routeid}}</h1>
-      <a class="item-icon-right" ng-click="closeChangesModal()">
-        <i class="icon ion-android-close"></i>
-      </a>
-    </ion-header-bar>
-    <ion-content>
-      <table class="route-changes-table">
-        <thead>
-          <tr>
-            <th><!--icon--></th>
-            <th>Date</th>
-            <th>Changes</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="priceChange in book.changes.priceChanges">
-            <td>$$</td>
-            <td>
-              {{priceChange.startDate | formatDate}}
-            </td>
-            <td>
-              {{priceChange.humanReadable[0]}}
-            </td>
-          </tr>
-            <tr ng-repeat="stopChange in book.changes.stopChanges">
-            <td>S</td>
-            <td>
-              {{stopChange.startDate | formatDate}}
-            </td>
-            <td>
-              <ul>
-                <li ng-repeat="hr in stopChange.humanReadable track by $index">
-              {{hr}}
-              </li>
-              </ul>
-            </td>
-          </tr>
-            <tr ng-repeat="timeChange in book.changes.timeChanges">
-            <td>T</td>
-            <td>
-              {{timeChange.startDate | formatDate}}
-            </td>
-            <td>
-              <ul>
-                <li ng-repeat="hr in timeChange.humanReadable track by $index">
-              {{hr}}
-              </li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ion-content>
-  </div>
+    <div id="changes-message" class="modal">
+      <ion-header-bar class="bar-stable">
+          <h1 class="title">Changes to Service #{{book.routeid}}</h1>
+        <a class="item-icon-right" ng-click="closeChangesModal()">
+          <i class="icon ion-android-close"></i>
+        </a>
+      </ion-header-bar>
+      <ion-content>
+        <table class="route-changes-table">
+          <thead>
+            <tr>
+              <th><!--icon--></th>
+              <th>Date</th>
+              <th>Changes</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr ng-repeat="priceChange in book.changes.priceChanges">
+              <td>$$</td>
+              <td>
+                {{priceChange.startDate | formatDate}}
+              </td>
+              <td>
+                {{priceChange.humanReadable[0]}}
+              </td>
+            </tr>
+              <tr ng-repeat="stopChange in book.changes.stopChanges">
+              <td>S</td>
+              <td>
+                {{stopChange.startDate | formatDate}}
+              </td>
+              <td>
+                <ul>
+                  <li ng-repeat="hr in stopChange.humanReadable track by $index">
+                {{hr}}
+                </li>
+                </ul>
+              </td>
+            </tr>
+              <tr ng-repeat="timeChange in book.changes.timeChanges">
+              <td>T</td>
+              <td>
+                {{timeChange.startDate | formatDate}}
+              </td>
+              <td>
+                <ul>
+                  <li ng-repeat="hr in timeChange.humanReadable track by $index">
+                {{hr}}
+                </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ion-content>
+    </div>
   </script>
 </ion-view>

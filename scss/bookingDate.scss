@@ -109,23 +109,4 @@
       }
     }
   }
-
-  qty-input {
-    margin: 10px 0px;
-  }
-
-  .bookdetails {
-    padding: 0px 0px 20px 0px;
-    background-color: #FFF;
-  }
-
-  #btnreview {
-    margin-top: 20px;
-    position: relative;
-    bottom: 0;
-
-    &:active {
-      bottom: -3px;
-    }
-  }
 }

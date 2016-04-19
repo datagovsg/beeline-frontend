@@ -35,6 +35,7 @@ $input-bg-disabled: #FFF;
 @import "scss/routeItem";
 @import "scss/startEndStops";
 @import "scss/routeList";
+@import "scss/priceCalculator";
 
 @import "scss/login";
 @import "scss/verify";
@@ -543,111 +544,6 @@ ion-list {
     margin-right: 10px;
   }
 }
-
-#pg_bookdate #price-calculator, #pg_summary #price-calculator {
-  line-height: 30px;
-  padding-left: 20px;
-}
-
-#pg_bookdate .price-table, #pg_summary .price-table {
-  width: 100%;
-
-  th {
-    font-weight: bold;
-    text-align: center;
-    background-color: #CCC;
-    color: #333;
-    padding: 5px;
-  }
-
-  tr {
-    td {
-      padding: 5px;
-      text-align: center;
-      border-bottom: 1px solid #CCC;
-    }
-
-    td:first-of-type {
-    }
-
-    td:last-of-type {
-      width: 120px;
-    }
-
-    &.nosel td{
-      padding: 20px 0px;
-      color: #999;
-    }
-  }
-
-  .totals {
-    td {
-      position: relative;
-      padding-top: 10px;
-    }
-
-    .box {
-      float: left;
-    }
-
-    .title {
-      color: #333;
-      font-size: 12px;
-      font-weight: bold;
-      background-color: #d6d6d6;
-      padding: 2px 0px;
-      border-radius: 5px;
-    }
-
-    .val {
-      font-size: 18px;
-      line-height: 40px;
-    }
-
-    .trips {
-      width: calc(45% - 5px);
-      margin-right: 5px;
-    }
-
-    .pax {
-      width: 55%;
-
-      qty-input {
-        margin: 0px;
-
-        button:last-of-type {
-          margin: 0px;
-        }
-      }
-
-      .qty-input {
-        padding: 0px;
-        background: none;
-
-        input {
-          width: 40px;
-          font-size: 16px;
-        }
-
-        .btns {
-          position: relative;
-          top: 6px;
-        }
-      }
-    }
-
-    .price {
-      width: 100%;
-
-      .val {
-        font-size: 24px;
-        font-weight: bold;
-      }
-    }
-  }
-}
-
-
 
 .credit_card_input input[type='text'] {
   text-align: right;
