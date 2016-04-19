@@ -114,9 +114,19 @@ export default function($scope, $state, $cordovaGeolocation,
         // Configure the crosshair clickability
         $scope.setPickup = function() {
           $scope.data.pickupCoordinates = gmap.getCenter().toJSON();
+          geocoder.geocode({latLng: gmap.getCenter()}, function(results, status) {
+            if (status === 'OK') {
+              $scope.data.pickupText =  results[0].formatted_address;
+            }
+          });
         };
         $scope.setDropoff = function() {
           $scope.data.dropoffCoordinates = gmap.getCenter().toJSON();
+          geocoder.geocode({latLng: gmap.getCenter()}, function(results, status) {
+            if (status === 'OK') {
+              $scope.data.dropoffText =  results[0].formatted_address;
+            }
+          });
         };
         $scope.searchForRoutes = function() {
           $state.go('tabs.results', {
@@ -219,20 +229,32 @@ export default function($scope, $state, $cordovaGeolocation,
             ];
           }
 
-          // Zoom back out to the Singapore level if a single point is chosen
+          // Zoom back out to the Singapore level if there's an unchosen point
           if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
             gmap.panTo({ lat: 1.370244, lng: 103.823315 });
             gmap.setZoom(11);
+            // var bounds = gmap.getBounds();
+            // if ($scope.data.pickupCoordinates) {
+            //   bounds.extend(new google.maps.LatLng($scope.data.pickupCoordinates.lat,
+            //                                          $scope.data.pickupCoordinates.lng));
+            // }
+            // if ($scope.data.dropoffCoordinates) {
+            //   bounds.extend(new google.maps.LatLng($scope.data.dropoffCoordinates.lat,
+            //                                        $scope.data.dropoffCoordinates.lng));
+            // }
+            // gmap.fitBounds(bounds);
           }
 
-          // If both pickup and dropoff are chosen then frame around them
-          else if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
+          // // If both pickup and dropoff are chosen then frame around them
+          // else if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
+          if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
             var bounds = new googleMaps.LatLngBounds();
             bounds.extend(new google.maps.LatLng($scope.data.pickupCoordinates.lat,
                                                  $scope.data.pickupCoordinates.lng));
             bounds.extend(new google.maps.LatLng($scope.data.dropoffCoordinates.lat,
                                                  $scope.data.dropoffCoordinates.lng));
             gmap.fitBounds(bounds);
+            gmap.setZoom(gmap.getZoom() - 1);
           }
 
         });
