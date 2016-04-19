@@ -38,6 +38,24 @@
   }
 }
 
+@mixin locate-me-button() {
+  width: 60px;
+  height: 59px;
+  background: transparent url('../img/MapButtonLocateMe@2x.png') center center no-repeat;
+  background-size: 60px 59px;
+  position: absolute;
+  bottom: calc(10% + 130px);
+  right: 16px;
+  margin: 0px;
+  z-index: 3;
+  cursor: pointer;
+
+  &.activated {
+    bottom: calc(10% + 128px);
+    opacity: 0.8;
+  }
+}
+
 /* For login/verify pages, where we want to limit the width of content */
 @mixin narrow-content() {
     max-width: 400px;

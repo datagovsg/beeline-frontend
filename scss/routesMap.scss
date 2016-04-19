@@ -24,7 +24,7 @@
     cursor: pointer;
   }
 
-  .pickup-crosshair, 
+  .pickup-crosshair,
   .dropoff-crosshair {
     position: absolute;
     z-index: 1;
@@ -55,6 +55,11 @@
     height: 60px;
     border-radius: 30px;
     cursor: pointer;
+
+    &:active {
+      bottom: 88px;
+      opacity: 0.8;
+    }
   }
 
   .next-button {
@@ -68,7 +73,7 @@
   }
 
 
-  // // Hide the google maps boilerplate annotations 
+  // // Hide the google maps boilerplate annotations
   // .gmnoprint, .gm-style-cc {
   //   display:none;
   // }

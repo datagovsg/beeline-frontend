@@ -1,7 +1,14 @@
 <ion-view id="pg_booking" view-title="Select Pick-up and Drop-off Points">
   <ion-content class="fullscreen-map">
-  <div class="routeinfo">
+  <div class="route-info">
     <route-item route="book.route"></route-item>
+
+    <div class="price">
+      <div class="from">
+        from
+      </div>
+      <fancy-price value="book.route.trips[0].price"></fancy-price>
+    </div>
   </div>
 
   <ui-gmap-google-map

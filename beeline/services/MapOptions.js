@@ -1,4 +1,3 @@
-
 var googleMaps;
 
 export default [
