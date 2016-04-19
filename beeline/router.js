@@ -83,7 +83,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.booking-dates', {
-    url: '/booking/dates/:routeId/:boardStop/:alightStop',
+    url: '/booking/dates/:routeId?boardStop&alightStop',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-dates.html',
@@ -92,7 +92,7 @@ export default function($stateProvider, $urlRouterProvider) {
     },
   })
   .state('tabs.booking-summary', {
-    url: '/booking/summary/:routeId/:boardStop/:alightStop/:selectedDates',
+    url: '/booking/summary/:routeId?boardStop&alightStop?selectedDates',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-summary.html',

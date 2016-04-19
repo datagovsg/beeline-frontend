@@ -60,22 +60,6 @@ export default [
     };
     //Default settings for various info used in the page
 
-    $scope.alightMarkerOptions = {
-      icon: {
-        url: 'img/alight.png',
-        scaledSize: new google.maps.Size(20,20),
-        anchor: new google.maps.Point(5,5),
-      },
-    };
-
-    $scope.boardMarkerOptions = {
-      icon: {
-        url: 'img/board.png',
-        scaledSize: new google.maps.Size(20,20),
-        anchor: new google.maps.Point(5,5),
-      },
-    };
-
     $scope.book = {
       routeid: '',
       route: {},
@@ -132,6 +116,21 @@ export default [
 
     gmapIsReady.then(function() {
       var gmap = $scope.map.control.getGMap();
+      $scope.alightMarkerOptions = {
+        icon: {
+          url: 'img/alight.png',
+          scaledSize: new google.maps.Size(20,20),
+          anchor: new google.maps.Point(5,5),
+        },
+      };
+
+      $scope.boardMarkerOptions = {
+        icon: {
+          url: 'img/board.png',
+          scaledSize: new google.maps.Size(20,20),
+          anchor: new google.maps.Point(5,5),
+        },
+      };
       var timer;
       timer = $timeout(function(){
         //Disable the Google link at the bottom left of the map

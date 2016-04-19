@@ -9,15 +9,13 @@ export default function (UserService, CompanyService, RoutesService, $http) {
     // create a list of trips
     var trips = [];
 
-    // Cache trip by dates
-    if (!booking.route.tripsByDate) {
-      booking.route.tripsByDate =
-        _.keyBy(booking.route.trips,
-          trip => trip.date.getTime());
-    }
-
     console.log(booking);
     for (let dt of booking.selectedDates) {
+      console.log(dt);
+      console.log(booking.route);
+      console.log(booking.route.trips);
+      console.log(booking.route.tripsByDate);
+      console.log(booking.route.tripsByDate.dt);
       trips.push({
         tripId: booking.route.tripsByDate[dt].id,
         boardStopId: booking.route.tripsByDate[dt]

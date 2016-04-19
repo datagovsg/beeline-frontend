@@ -8,11 +8,25 @@ import assert from 'assert';
 // This is to save time since its a deep copy and you wont need the original array anyway
 function transformRouteData(data){
   _(data).each(function(route){
+    for (let trip of route.trips) {
+      assert(typeof trip.date == 'string');
+      trip.date = new Date(trip.date);
+
+      for (let tripStop of trip.tripStops) {
+        assert(typeof tripStop.time == 'string');
+        tripStop.time = new Date(tripStop.time);
+      }
+    }
+
     var firstTripStops = route.trips[0].tripStops;
     route.startTime = firstTripStops[0].time;
     route.startRoad = firstTripStops[0].stop.description;
     route.endTime = firstTripStops[firstTripStops.length - 1].time;
     route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description;
+    // route.trips = _.sortBy(route.trips, trip => trip.date);
+    // route.tripsByDate = [];
+    route.tripsByDate =_.keyBy(route.trips,
+        trip => trip.date.getTime());
   });
   return data;
 }

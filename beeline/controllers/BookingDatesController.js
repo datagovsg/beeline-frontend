@@ -10,7 +10,7 @@ export default [
     RoutesService,$stateParams) {
       $scope.book = {
         routeid: '',
-        route: {},
+        route: null,
         qty: '',
         boardStop: undefined,
         alightStop: undefined,
@@ -29,7 +29,8 @@ export default [
         RoutesService.getRoute($scope.book.routeid)
         .then((route) => {
           $scope.book.route = route;
-          console.log($scope.book.route)
+          console.log($scope.book.route);
+          updateCalendar();
         });
       });
 
@@ -37,13 +38,13 @@ export default [
       function updateCalendar() {
         if (!$scope.book.route) {
           // For development purposes, we could do this...
-          RoutesService.getRoute($scope.book.routeid)
-          .then((route) => {
-            $scope.book.route = route;
-            if (route) {
-              updateCalendar();
-            }
-          })
+          // RoutesService.getRoute($scope.book.routeid)
+          // .then((route) => {
+          //   $scope.book.route = route;
+          //   if (route) {
+          //     updateCalendar();
+          //   }
+          // })
           return;
         }
 
@@ -61,7 +62,8 @@ export default [
         $scope.book.invalidStopDates = [];
         $scope.book.minDate = null;
         $scope.book.maxDate = null;
-
+        console.log($scope.book.route);
+        console.log($scope.book.route.trips);
         for (let trip of $scope.book.route.trips) {
           // FIXME: disable today if past the booking window
           $scope.book.validDates.push(trip.date);

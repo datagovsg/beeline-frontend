@@ -8,11 +8,11 @@ export default function($state, BookingService) {
       route: '=',
     },
     link: function (scope, element, attributes) {
-      scope.click = function(routeId){
-        BookingService.reset();
-        BookingService.routeId = routeId;
-        $state.go('tabs.booking-pickup');
-      };
+      // scope.click = function(routeId){
+      //   BookingService.reset();
+      //   BookingService.routeId = routeId;
+      //   $state.go('tabs.booking-pickup');
+      // };
     },
   };
 };
