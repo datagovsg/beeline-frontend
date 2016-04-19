@@ -6,6 +6,20 @@
 .pac-icon { display: none !important; }
 .pac-item { padding: $item-padding !important; }
 
+.primary-button {
+  @extend .button;
+  @extend .button-block;
+  @extend .button-energized;
+  position: absolute;
+  bottom: $content-padding;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 80%;
+  @include box-shadow($card-box-shadow);
+}
+
 
 // .big-yellow {
 //   @include big-yellow();

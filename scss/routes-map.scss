@@ -1,10 +1,5 @@
 .routes-map-view {
 
-  // Bring the search boxes on top of the map
-  .card.list {
-    z-index: 1;
-  }
-
   // Make a spacing between the icon and the text input
   .input-icon {
     margin-right: $item-padding;
@@ -21,7 +16,6 @@
   .pickup-crosshair, 
   .dropoff-crosshair {
     position: absolute;
-    z-index: 1;
     top: 0; bottom: 56px; left: 0; right: 2px;
     margin: auto;
     width: 290px;
@@ -42,7 +36,7 @@
   .locate-button {
     position: absolute;
     z-index: 1;
-    bottom: $button-height + $content-padding;
+    bottom: $button-height + 3*$content-padding;
     right: $content-padding;
     margin: 0px;
     width: 60px;
@@ -73,7 +67,15 @@
   }
 
   // Hide the google maps boilerplate annotations 
-  .gmnoprint, .gm-style-cc {
+  .gmnoprint, 
+  .gm-style-cc {
     display:none;
   }
+  
+  // Hide the google logo in bottom left
+  .gm-style>div:last-child {
+    display: none;
+  }
+
+
 }
