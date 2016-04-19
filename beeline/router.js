@@ -1,8 +1,3 @@
-import {setupBroadcastViewEnter} from './shared/util'
-
-// Ionic uses AngularUI Router which uses the concept of states
-// Learn more here: https://github.com/angular-ui/ui-router
-// Set up the various states which the app can be in
 export default function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
@@ -32,38 +27,15 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/routes',
     views: {
       'tab-routes': {
-        abstract: true,
         templateUrl: 'templates/routes.html',
-        controller: function ($scope) {
-            setupBroadcastViewEnter($scope);
-        }
-      }
-    }
-  })
-
-  .state('tabs.routes.map', {
-    url: '/map',
-    views: {
-      'routes-map': {
-        templateUrl: 'templates/routes-map.html',
-        controller: 'RoutesMapController'
-      }
-    }
-  })
-
-  .state('tabs.routes.list', {
-    url: '/list',
-    views: {
-      'routes-list': {
-        templateUrl: 'templates/routes-list.html',
-        controller: 'RoutesListController'
+        controller: 'RoutesController'
       }
     }
   })
 
 // Putting this here temporarily to test before routing it in properly
   .state('tabs.results', {
-    url: '/results?pickupLat&pickupLng&dropoffLat&dropoffLng',
+    url: '/routes/results?pickupLat&pickupLng&dropoffLat&dropoffLng',
     views: {
       'tab-routes': {
         templateUrl: 'templates/search-results.html',
@@ -174,7 +146,7 @@ export default function($stateProvider, $urlRouterProvider) {
 
   // if none of the above states are matched, use this as the fallback
   if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
-    $urlRouterProvider.otherwise('/tabs/routes/list');
+    $urlRouterProvider.otherwise('/tabs/routes');
   } else {
     // $urlRouterProvider.otherwise('/tabs/routes/map');
     $urlRouterProvider.otherwise('/intro');

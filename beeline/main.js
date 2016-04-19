@@ -12,6 +12,7 @@ import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
 // Controller Imports
+import RoutesController from './controllers/RoutesController.js'; //OK
 import RoutesMapController from './controllers/RoutesMapController.js'; //OK
 import RoutesListController from './controllers/RoutesListController.js'; //OK
 import BookingStopsController from './controllers/BookingStopsController.js';
@@ -92,6 +93,7 @@ var app = angular.module('beeline', [
 .controller('SettingsController', SettingsController)
 .controller('TicketsController', TicketsController)
 .controller('TicketDetailController', TicketDetailController)
+.controller('RoutesController', RoutesController)
 .controller('RoutesMapController', RoutesMapController)
 .controller('RoutesListController', RoutesListController)
 .controller('IntroSlidesController', IntroSlidesController)
