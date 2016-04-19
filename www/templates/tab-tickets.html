@@ -1,5 +1,8 @@
 <ion-view id="pg_tickets" view-title="Tickets">
   <ion-content has-bouncing="false">
+    <login-item message="You are not logged in. To view your tickets, log in to your Beeline account!">
+    </login-item>
+    
 	<section class="intro" ng-hide="(tickets.today.length > 0)||(tickets.soon.length > 0)">
 		<div class="gap"></div>
 		<div class="msg">

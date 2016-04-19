@@ -3,11 +3,16 @@ import loginItemTemplate from './login-item.html';
 export default function(UserService) {
   return {
     replace: true,
-    scope: {showLogOut: '='},
+    scope: {
+      user: '=',
+      showLogOut: '=',
+      message: '@'
+    },
     template: loginItemTemplate,
     controller: function($scope, $ionicPopup) {
 
-      console.log($scope);
+      console.log($scope.message);
+
       // Check the user each time before entering
       $scope.$on('$ionicView.beforeEnter', function() {
         UserService.getCurrentUser()

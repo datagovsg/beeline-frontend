@@ -1,6 +1,6 @@
-<div ng-if="!user || showLogOut" class="status item item-text-wrap" >
+<div ng-show="!user || showLogOut" class="login-item status item item-text-wrap" >
 
-  <h4 ng-if="!user">You are not logged in.</h4>
+  <h4 ng-if="!user">{{ message || "You are not logged in" }}</h4>
   <button ng-if="!user"
           class="button button-block button-outline button-royal"
           ng-click="logIn()">Log In</button>

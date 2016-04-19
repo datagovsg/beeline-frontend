@@ -13,6 +13,9 @@ $ionicons-font-path: "../lib/ionic/fonts";
 // General styles across the site
 @import "scss/beeline";
 
+// Directive styles
+@import "scss/login-item";
+
 // View specific styles
 @import "scss/intro-slides";
 @import "scss/routes-map";

@@ -1,24 +1,24 @@
 <ion-view class="settings" view-title="Settings">
   <ion-content>
 
-    <login-item show-log-out=true></login-item>
+    <login-item user='data.user' show-log-out=true></login-item>
 
     <div class="list">
 
-      <div class="item item-divider" ng-if="user">Account</div>
-      <label class="item item-input" ng-if="user">
+      <div class="item item-divider" ng-if="data.user">Account</div>
+      <label class="item item-input" ng-if="data.user">
         <span class="input-label">Name</span>
-        <input type="text" ng-model="user.name"/>
+        <input type="text" ng-model="data.user.name"/>
       </label>
-      <label class="item item-input" ng-if="user">
+      <label class="item item-input" ng-if="data.user">
         <span class="input-label">Email</span>
-        <input type="text" ng-model="user.email"/>
+        <input type="text" ng-model="data.user.email"/>
       </label>
-      <label class="item item-input" ng-if="user">
+      <label class="item item-input" ng-if="data.user">
         <span class="input-label">Phone Number</span>
-        <input type="text" ng-model="user.telephone"/>
+        <input type="text" ng-model="data.user.telephone"/>
       </label>
-      <a class="item item-icon-right" ui-sref='' ng-if="user">
+      <a class="item item-icon-right" ng-if="data.user">
         Booking History
         <i class="icon ion-ios-arrow-right"></i>
       </a>
