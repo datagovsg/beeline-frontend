@@ -31,37 +31,32 @@ export default function($scope, $state, $cordovaGeolocation,
     lines: [{
       id: 'routepath',
       path: [],
+      stroke: { opacity: 0 },
       icons: [{
-        icon: { path: 1, scale: 3, strokeColor: '#333'},
-        offset: '20%',
-        repeat: '50px'
+        icon: {
+          path: 'M 0,-1 0,1',
+          strokeOpacity: 1,
+          scale: 2
+        },
+        offset: '0',
+        repeat: '10px'
       }]
     }],
   };
 
   //HTML Elements above the Gmap are hidden at start
-  $scope.data = {
-    centerMarkIsVisible: true,
-    locateMeIsVisible: true,
-    nextButtonIsVisible: true
-  };
+  $scope.data = {};
 
   uiGmapGoogleMapApi.then(function(googleMaps) {
     $scope.$watch('map.control.getGMap', function() {
 
       var gmap = $scope.map.control.getGMap();
-      var pickupInputElement = document.getElementById('pickupinput');
-      var dropoffInputElement = document.getElementById('dropoffinput');
+      var pickupInputElement = document.getElementById('pickup-input');
+      var dropoffInputElement = document.getElementById('dropoff-input');
 
       // Hide uneccessary UI elements when typing in the text inputs
-      $scope.pickupFocus = $scope.dropoffFocus = function() {
-        $scope.data.locateMeIsVisible = false;
-        $scope.data.nextButtonIsVisible = false;
-      };
-      $scope.pickupBlur = $scope.dropoffBlur = function() {
-        $scope.data.locateMeIsVisible = true;
-        $scope.data.nextButtonIsVisible = true;
-      };
+      $scope.pickupFocus = $scope.dropoffFocus = function() {};
+      $scope.pickupBlur = $scope.dropoffBlur = function() {};
 
       // If the text is changed clear the coordinates since they wont be valid anymore
       $scope.pickupTxtChange = function() { delete $scope.data.pickupCoordinates; };
@@ -81,10 +76,14 @@ export default function($scope, $state, $cordovaGeolocation,
       var pickupAutocompleter = new googleMaps.places.Autocomplete(pickupInputElement);
       var dropoffAutocompleter = new googleMaps.places.Autocomplete(dropoffInputElement);
       pickupAutocompleter.addListener('place_changed', function() {
-        $scope.data.pickupCoordinates = pickupAutocompleter.getPlace().geometry.location.toJSON();
+        $scope.$apply(function() {
+          $scope.data.pickupCoordinates = pickupAutocompleter.getPlace().geometry.location.toJSON();
+        });
       });
       dropoffAutocompleter.addListener('place_changed', function() {
-        $scope.data.dropoffCoordinates = dropoffAutocompleter.getPlace().geometry.location.toJSON();
+        $scope.$apply(function() {
+          $scope.data.dropoffCoordinates = dropoffAutocompleter.getPlace().geometry.location.toJSON();
+        });
       });
 
       // Set panning to update the input text
@@ -111,6 +110,22 @@ export default function($scope, $state, $cordovaGeolocation,
         });
       };
 
+      // Configure the crosshair clickability
+      $scope.setPickup = function() {
+        $scope.data.pickupCoordinates = gmap.getCenter().toJSON();
+      };
+      $scope.setDropoff = function() {
+        $scope.data.dropoffCoordinates = gmap.getCenter().toJSON();
+      };
+      $scope.searchForRoutes = function() {
+        $state.go('tabs.results', {
+          pickupLat: $scope.data.pickupCoordinates.lat,
+          pickupLng: $scope.data.pickupCoordinates.lng,
+          dropoffLat: $scope.data.dropoffCoordinates.lat,
+          dropoffLng: $scope.data.dropoffCoordinates.lng
+        });
+      };
+
       //////////////////////////////////////////////////////////////////////////
       // Hack to fix map resizing due to ionic view cacheing
       // TODO find a better way?
@@ -127,46 +142,37 @@ export default function($scope, $state, $cordovaGeolocation,
       //Disable the Google link at the bottom left of the map
       var glink = angular.element(document.getElementsByClassName('gm-style-cc'));
       glink.next().find('a').on('click', function(e) {e.preventDefault(); });
-      //drop down list disappears before the clicked item is registered,
+      //Hack to get autocomplete to work on mobile devices
+      //Normally ionic intercepts the taps this causes the dropdown list
+      //to disappear before the clicked item is registered,
       //this will disable the click event on the lists' containers
-      var contain = document.getElementsByClassName('pac-container');
-      angular.element(contain).attr('data-tap-disabled', 'true');
+      setTimeout(function() {
+        var contain = document.getElementsByClassName('pac-container');
+        angular.element(contain).attr('data-tap-disabled', 'true');
+      }, 300);
       //////////////////////////////////////////////////////////////////////////
 
       // Configure the UI in accordance with the users set/unset coordinates
       $scope.$watchGroup(['data.pickupCoordinates', 'data.dropoffCoordinates'], function() {
+        console.log('change detected');
 
-        // Configure the next button text according to what has been set
+        // Configure the crosshair and search button according to what has been set
         if (!$scope.data.pickupCoordinates) {
-          $scope.data.nextActionName = 'Set Pickup';
-          $scope.nextAction = function() {
-            $scope.data.pickupCoordinates = gmap.getCenter().toJSON();
-          };
+          $scope.data.showPickupCrosshair = true;
+          $scope.data.showDropoffCrosshair = false;
+          $scope.data.showSearchButton = false;
         }
         else if ($scope.data.pickupCoordinates &&
                  !$scope.data.dropoffCoordinates) {
-          $scope.data.nextActionName = 'Set Dropoff';
-          $scope.nextAction = function() {
-            $scope.data.dropoffCoordinates = gmap.getCenter().toJSON();
-          };
+          $scope.data.showPickupCrosshair = false;
+          $scope.data.showDropoffCrosshair = true;
+          $scope.data.showSearchButton = false;
         }
         else if ($scope.data.pickupCoordinates &&
                  $scope.data.dropoffCoordinates) {
-          $scope.data.nextActionName = 'Search For Routes';
-          $scope.nextAction = function() {
-
-            ////////////////////////////////////////////////////////////////////
-            // Show the search results
-            // TODO replace with a state change to a results view
-            ////////////////////////////////////////////////////////////////////
-            //place the start and end locations' latlng into the Search object
-            $state.go('tabs.results', {
-              pickupLat: $scope.data.pickupCoordinates.lat,
-              pickupLng: $scope.data.pickupCoordinates.lng,
-              dropoffLat: $scope.data.dropoffCoordinates.lat,
-              dropoffLng: $scope.data.dropoffCoordinates.lng
-            });
-          };
+          $scope.data.showPickupCrosshair = false;
+          $scope.data.showDropoffCrosshair = false;
+          $scope.data.showSearchButton = true;
         }
 
         // Draw the pickup & dropoff markers if we have coordinates
@@ -178,11 +184,11 @@ export default function($scope, $state, $cordovaGeolocation,
             longitude: $scope.data.pickupCoordinates.lng,
             title: 'pickupMarker',
             icon: {
-              url: './img/icon-marker-big.png',
-              size: new googleMaps.Size(49, 59),
+              url: './img/RoutePairBigStart@2x.png',
+              size: new googleMaps.Size(48, 48),
+              scaledSize: new googleMaps.Size(24, 24),
               origin: new googleMaps.Point(0, 0),
-              anchor: new googleMaps.Point(14, 34),
-              scaledSize: new googleMaps.Size(28.125, 33.86)
+              anchor: new googleMaps.Point(12, 12),
             }
           });
         }
@@ -193,11 +199,11 @@ export default function($scope, $state, $cordovaGeolocation,
             longitude: $scope.data.dropoffCoordinates.lng,
             title: 'dropoffMarker',
             icon: {
-              url: './img/icon-marker-big.png',
-              size: new googleMaps.Size(49, 59),
+              url: './img/RoutePairBigEnd@2x.png',
+              size: new googleMaps.Size(48, 48),
+              scaledSize: new googleMaps.Size(24, 24),
               origin: new googleMaps.Point(0, 0),
-              anchor: new googleMaps.Point(14, 34),
-              scaledSize: new googleMaps.Size(28.125, 33.86)
+              anchor: new googleMaps.Point(12, 12),
             }
           });
         }
@@ -211,13 +217,6 @@ export default function($scope, $state, $cordovaGeolocation,
             { latitude: $scope.data.dropoffCoordinates.lat,
               longitude: $scope.data.dropoffCoordinates.lng }
           ];
-        }
-
-        // Hide the center mark if both are set
-        if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
-          $scope.data.centerMarkIsVisible = false;
-        } else {
-          $scope.data.centerMarkIsVisible = true;
         }
 
         // Zoom back out to the Singapore level if a single point is chosen

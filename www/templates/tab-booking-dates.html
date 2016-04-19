@@ -1,23 +1,28 @@
 <ion-view id="pg_bookdate" view-title="Select Dates">
   <ion-content>
     <date-picker
-        valid-dates="validDates"
-        exhausted-dates="soldOutDates"
-        invalid-stop-dates="invalidStopDates"
-        min-date="minDate"
-        max-date="maxDate"
-        startDate="minDate"
-        dates="currentBooking.selectedDates"
+        valid-dates="book.validDates"
+        exhausted-dates="book.soldOutDates"
+        invalid-stop-dates="book.invalidStopDates"
+        min-date="book.minDate"
+        max-date="book.maxDate"
+        startDate="book.minDate"
+        dates="book.selectedDates"
     ></date-picker>
 
 	<!--qty-input ng-model="BookingService.currentBooking.qty" placeholder="Number of passengers" ></qty-input-->
 
 	<div class="bookdetails">
 		<price-calculator
-      booking="currentBooking"></price-calculator>
+      booking="book"></price-calculator>
 
-		<button id="btnreview" ng-disabled="currentBooking.selectedDates.length == 0"
-          ui-sref="tabs.booking-summary">
+		<button id="btnreview" ng-disabled="book.selectedDates.length == 0"
+          ui-sref="tabs.booking-summary({
+            routeId: book.routeId,
+            boardStop: book.boardStopId,
+            alightStop: book.alightStopId,
+            selectedDates: book.selectedDates
+          })">
 			Review Booking
 		</button>
 	</div>

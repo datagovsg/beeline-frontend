@@ -1,21 +1,7 @@
-<ion-view id="pg_booking" view-title="{{title}}">
+<ion-view id="pg_booking" view-title="Select Pick-up and Drop-off Points">
   <ion-content class="fullscreen-map">
   <div class="routeinfo">
-  <!--
-    <div class="busnum">{{currentBooking.route.label}}</div>
-    <div class="stops">
-      <div class="line"></div>
-      <div class="start">
-        <span class="time">{{currentBooking.route.trips[0].tripStops[0].time | formatTime}}</span>
-        <span class="road">{{currentBooking.route.trips[0].tripStops[0].stop.road}}</span>
-      </div>
-      <div class="end">
-        <span class="time">{{currentBooking.route.trips[0].tripStops[currentBooking.route.trips[0].tripStops.length-1].time | formatTime}}</span>
-        <span class="road">{{currentBooking.route.trips[0].tripStops[currentBooking.route.trips[0].tripStops.length-1].stop.road}}</span>
-      </div>
-    </div>-->
-    <route-item route="currentBooking.route">
-    </route-item>
+    <route-item route="book.route"></route-item>
   </div>
 
   <ui-gmap-google-map
@@ -25,7 +11,6 @@
     control="map.control"
     options="map.options"
     data-tap-disabled="true"
-    ready="mapReady()"
     >
     <ui-gmap-marker
       ng-repeat="stop in book.boardStops"
@@ -79,7 +64,7 @@
   <div id="userpos" ng-click="getUserLocation()"></div>
   <div id="stopinputs">
     <bus-stop-selector
-      model="currentBooking.boardStop"
+      model="book.boardStop"
       bus-stops="book.boardStops"
       value="getStopId"
       display="getStopDescription"
@@ -93,7 +78,7 @@
     </bus-stop-selector>
     <div class="line"></div>
     <bus-stop-selector
-      model="currentBooking.alightStop"
+      model="book.alightStop"
       bus-stops="book.alightStops"
       value="getStopId"
       display="getStopDescription"
@@ -107,7 +92,7 @@
     </bus-stop-selector>
     <qty-input
       placeholder="{{book.ptxt}}"
-      ng-model="currentBooking.qty"
+      ng-model="book.qty"
       >
     </qty-input>
   </div>
@@ -138,8 +123,8 @@
     <ion-checkbox class="confirm" ng-model="book.termsChecked">
       Yes, I have read and agree to the Terms and Conditions of booking with <b>{{book.transco.name}}</b>.
     </ion-checkbox>
-    <button id="btnbookcont" ui-sref="tabs.booking-dates"
-        g-disabled="book.allDataNotFilled">Continue</button>
+    <button id="btnbookcont" ui-sref="tabs.booking-dates({routeId: book.routeid,boardStop: book.boardStop,alightStop: book.alightStop})"
+        ng-disabled="book.allDataNotFilled">Continue</button>
     <div class="err">{{book.errmsg}}</div>
   </div>
   </ion-content>
@@ -147,12 +132,11 @@
   <script id="changes-message.html" type="text/ng-template">
   <div id="changes-message" class="modal">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Changes to Service #{{BookingService.routeId}}</h1>
+        <h1 class="title">Changes to Service #{{book.routeid}}</h1>
       <a class="item-icon-right" ng-click="closeChangesModal()">
         <i class="icon ion-android-close"></i>
       </a>
     </ion-header-bar>
-
     <ion-content>
       <table class="route-changes-table">
         <thead>
@@ -163,7 +147,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="priceChange in currentBooking.changes.priceChanges">
+            <tr ng-repeat="priceChange in book.changes.priceChanges">
             <td>$$</td>
             <td>
               {{priceChange.startDate | formatDate}}
@@ -172,27 +156,27 @@
               {{priceChange.humanReadable[0]}}
             </td>
           </tr>
-          <tr ng-repeat="stopChange in currentBooking.changes.stopChanges">
+            <tr ng-repeat="stopChange in book.changes.stopChanges">
             <td>S</td>
             <td>
               {{stopChange.startDate | formatDate}}
             </td>
             <td>
               <ul>
-              <li ng-repeat="hr in stopChange.humanReadable track by $index">
+                <li ng-repeat="hr in stopChange.humanReadable track by $index">
               {{hr}}
               </li>
               </ul>
             </td>
           </tr>
-          <tr ng-repeat="timeChange in currentBooking.changes.timeChanges">
+            <tr ng-repeat="timeChange in book.changes.timeChanges">
             <td>T</td>
             <td>
               {{timeChange.startDate | formatDate}}
             </td>
             <td>
               <ul>
-              <li ng-repeat="hr in timeChange.humanReadable track by $index">
+                <li ng-repeat="hr in timeChange.humanReadable track by $index">
               {{hr}}
               </li>
               </ul>

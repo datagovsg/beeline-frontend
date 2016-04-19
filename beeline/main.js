@@ -12,7 +12,7 @@ import TicketService from './services/TicketService.js';
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
-import MapOptionsService from './services/MapOptions.js'
+import MapOptionsService from './services/MapOptions'
 // Controller Imports
 import RoutesMapController from './controllers/RoutesMapController.js'; //OK
 import RoutesListController from './controllers/RoutesListController.js'; //OK

@@ -71,24 +71,7 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  
-  .state('tabs.booking-last', {
-    url: '/booking',
-    views: {
-      'tab-booking': {
-        // templateUrl: 'templates/tab-booking-dates.html',
-        template: '<ion-content>Whoa?</ion-content>',
-        controller: ['$state', 'BookingService', function ($state, bookingService) {
-            if (!bookingService.last) {
-                $state.go('tabs.bookingPickup');
-            }
-            else {
-                $state.go(bookingService.last);
-            }
-        }],
-      }
-    }
-  })
+
   .state('tabs.bookingPickup', {
     url: '/booking/pickup/:routeId',
     views: {
@@ -98,17 +81,9 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  // .state('tabs.booking-dropoff', {
-  //   url: '/booking/dropoff',
-  //   views: {
-  //     'tab-booking': {
-  //       templateUrl: 'templates/tab-booking.html',
-  //       controller: 'BookingStopsController',
-  //     }
-  //   }
-  // })
+
   .state('tabs.booking-dates', {
-    url: '/booking/dates',
+    url: '/booking/dates/:routeId?boardStop&alightStop',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-dates.html',
@@ -117,7 +92,7 @@ export default function($stateProvider, $urlRouterProvider) {
     },
   })
   .state('tabs.booking-summary', {
-    url: '/booking/summary',
+    url: '/booking/summary/:routeId?boardStop&alightStop&selectedDates',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-summary.html',
@@ -184,7 +159,7 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  
+
 
   .state('login', {
     url: '/login',

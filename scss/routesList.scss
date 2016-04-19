@@ -1,0 +1,31 @@
+
+/* ---------- ROUTE LIST PAGE ---------- */
+.routes-list-view {
+  color: #444;
+
+  // Get the Region filter to be center aligned
+  .item-select {
+    text-align: center;
+    color: #888;
+    // Hide the "down caret" dropdown icon
+    &:after { display: none; }
+    // Get the select option to center align too
+    select {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      // Remove the unecessary right padding since we're center aligning
+      padding-right: 0;
+      direction: ltr;
+    }
+  }
+
+  route-item {
+    margin: 1em;
+  }
+
+  .item-icon-right {
+    float: right;
+  }
+}
