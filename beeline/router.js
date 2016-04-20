@@ -45,7 +45,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.bookingPickup', {
-    url: '/booking/pickup/:routeId',
+    url: '/booking/pickup/:routeId?boardStop&alightStop',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-stops.html',
