@@ -42,35 +42,13 @@
 		</form>
 	</section>
 
-  <section class="item booking-tnc">
+  <section class="item item-text-wrap booking-tnc">
 		<h4>
 			Terms and Conditions of Booking
 		</h4>
-    <div class="coinfo">
-      Operated By:
-      <div class="contact">
-        <img ng-src="{{book.route.transportCompanyId | companyLogo}}">
-        <div class="name">{{book.transco.name}}</div>
-        <div class="email">{{book.transco.email}}</div>
-      </div>
-    </div>
-    <div>
-      <ul>
-        <li>Guaranteed seats upon confirmation of booking.</li>
-        <li>Air-conditioned Bus.</li>
-        <li>Mon - Fri, except Publish Holidays.</li>
-        <li>No cancellation allowed.</li>
-        <li>Please arrive at your boarding stop 5 mins in advance.</li>
-      </ul>
-      <div class="sign">
-        <div class="img">Signage example:
-        <img src="img/terms-sign.png" width="200" class="signage-example"></div>
-        Please look out for the Beeline sign at the front of the bus.
-        <div class="clear"></div>
-      </div>
-    </div>
+    <company-tnc company-id="book.route.transportCompanyId"></company-tnc>
     <ion-checkbox class="confirm" ng-model="book.termsChecked">
-      Yes, I have read and agree to the Terms and Conditions of booking with <b>{{book.transco.name}}</b>.
+      Yes, I have read and agree to the Terms and Conditions of booking.
     </ion-checkbox>
   </section>
 
