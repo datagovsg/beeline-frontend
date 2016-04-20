@@ -17,42 +17,8 @@ export default [
   ) {
     $scope.data = {}
 
-    $scope.updateTelephone = function () {
-      $ionicPopup.prompt({
-        title: `Update telephone`,
-        template: `Enter your new telephone number:`,
-      })
-      .then((telephone) => {
-        if (telephone) {
-          var updateToken;
-
-          return UserService.requestUpdateTelephone(telephone)
-          .then((upd) => {
-            updateToken = upd;
-
-            return $ionicPopup.prompt({
-              title: `Enter verification key`,
-              template: `Please enter the verification key you receive by SMS:`,
-            })
-          })
-          .then((verificationKey) => {
-            if (verificationKey) {
-              return UserService.updateTelephone(updateToken, verificationKey)
-            }
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        $ionicPopup.alert({
-          title: 'Error',
-          template: `There was a problem updating your telephone: ${error.status}`
-        })
-      })
-    }
-
     // Generic event handler to allow user to update their
-    // name, email or telephone
+    // name, email
     // FIXME: Get Yixin to review the user info update flow.
     $scope.updateUserInfo = function(field) {
       $ionicPopup.prompt({
@@ -61,25 +27,52 @@ export default [
       })
       .then((newVal) => {
         if (newVal) {
-          var update = {}
+          var update = {};
           update[field] = newVal;
-
           return UserService.updateUserInfo(update)
           .catch(() => {
             $ionicPopup.alert({
               title: `Error updating ${field}`,
               template: ''
             })
-          })
+          });
         }
       });
     }
 
-    // TODO Implement this
-    $scope.showBookingHistory = function() {
-      alert("unimplemented stub");
-    };
+    // Update telephone is distinct from the update user due to verification
+    $scope.updateTelephone = function () {
+      // Start by prompting the user for the desired new telephone number
+      $ionicPopup.prompt({
+        title: `Update telephone`,
+        template: `Enter your new telephone number:`,
+      })
+      // Wait for the update token and verification key
+      .then((telephone) => {
+        if (telephone) {
+          var requestUpdatePromise = UserService.requestUpdateTelephone(telephone);
+          var verificationPromptPromise = $ionicPopup.prompt({
+            title: `Enter verification key`,
+            template: `Please enter the verification key you receive by SMS:`,
+          });
+          return Promise.all([requestUpdatePromise, verificationPromptPromise])
+          .then(function(values){
+            var updateToken = values[0];
+            var verificationKey = values[1];
+            return UserService.updateTelephone(updateToken, verificationKey);
+          });
+        }
+      })
+      // Generic error if something goes wrong
+      .catch((error) => {
+        $ionicPopup.alert({
+          title: 'Error',
+          template: `There was a problem updating your telephone: ${error.status}`
+        })
+      });
+    }
 
+    // Configure modals
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,
       { scope: $scope }
@@ -92,7 +85,6 @@ export default [
       contactUsModalTemplate,
       { scope: $scope }
     );
-
     $scope.$on('$destroy', function() {
       $scope.faqModal.destroy();
       $scope.privacyPolicyModal.destroy();
