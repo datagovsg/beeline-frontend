@@ -28,6 +28,9 @@ export default [
     };
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
+      if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
+        $stateParams.selectedDates = [$stateParams.selectedDates]
+      }
       $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
           return parseInt(item);
       });

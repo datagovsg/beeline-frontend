@@ -23,10 +23,14 @@ function transformRouteData(data){
     route.startRoad = firstTripStops[0].stop.description;
     route.endTime = firstTripStops[firstTripStops.length - 1].time;
     route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description;
-    // route.trips = _.sortBy(route.trips, trip => trip.date);
-    // route.tripsByDate = [];
     route.tripsByDate =_.keyBy(route.trips,
         trip => trip.date.getTime());
+    if (typeof(route.nearestBoardStop) != 'undefined'){
+      route.nearestBoardStopId = parseInt(route.nearestBoardStop.stopId);
+    }
+    if (typeof(route.nearestAlightStop) != 'undefined'){
+      route.nearestAlightStopId = parseInt(route.nearestAlightStop.stopId);
+    }
   });
   return data;
 }

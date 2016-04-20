@@ -1,6 +1,6 @@
 <ion-view view-title="Search Results">
   <ion-content>
-    
+
     <div class="item item-text-wrap" ng-if="data.activeRoutes.length === 0">
       <p>Sorry! There are no matching routes corresponding to your Start and End locations.</p>
     </div>
@@ -15,13 +15,15 @@
       <!-- Available Routes Section -->
       <div class="item item-divider">Available Routes</div>
       <ion-item ng-repeat="route in data.activeRoutes"
-                ui-sref="tabs.bookingPickup({ routeId: route.id })">
+                ui-sref="tabs.bookingPickup({ routeId: route.id,
+                                              boardStop: route.nearestBoardStopId,
+                                              alightStop: route.nearestAlightStopId})">
         <route-item route="route"></route-item>
         <a class="item-icon-right">
           <i class="icon ion-ios-arrow-right"></i>
         </a>
       </ion-item>
     </ul>
-    
+
   </ion-content>
 </ion-view>

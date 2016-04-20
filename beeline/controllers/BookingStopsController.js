@@ -62,9 +62,11 @@ export default [
 
     $scope.book = {
       routeId: '',
-      route: {},
-      boardStops: [],
-      alightStops: [],
+      route: null,
+      boardStops: [], //all board stops for this route
+      alightStops: [], //all alight stops for this route
+      boardStop: undefined,
+      alightStop: undefined,
       stime: '',
       etime: '',
       sroad: '',
@@ -76,8 +78,6 @@ export default [
       allDataNotFilled: true,
       termsChecked: false,
       errmsg: '',
-      boardStop: undefined,
-      alightStop: undefined,
       changes: {},
       company: {},
       qty: ''
@@ -106,6 +106,8 @@ export default [
 
     $scope.$on('$ionicView.afterEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
+      $scope.book.boardStop  = parseInt($stateParams.boardStop);
+      $scope.book.alightStop = parseInt($stateParams.alightStop);
       window.setStop = $scope.setStop;
       gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
