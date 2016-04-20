@@ -16,8 +16,8 @@
       <div class="item item-divider">Available Routes</div>
       <ion-item ng-repeat="route in data.activeRoutes"
                 ui-sref="tabs.bookingPickup({ routeId: route.id,
-                                              boardStop: route.nearestBoardStopId,
-                                              alightStop: route.nearestAlightStopId})">
+                                              boardStop: route.nearestBoardStop.stopId,
+                                              alightStop: route.nearestAlightStop.stopId})">
         <route-item route="route"></route-item>
         <a class="item-icon-right">
           <i class="icon ion-ios-arrow-right"></i>

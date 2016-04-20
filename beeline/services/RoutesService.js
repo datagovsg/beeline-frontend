@@ -25,12 +25,6 @@ function transformRouteData(data){
     route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description;
     route.tripsByDate =_.keyBy(route.trips,
         trip => trip.date.getTime());
-    if (typeof(route.nearestBoardStop) != 'undefined'){
-      route.nearestBoardStopId = parseInt(route.nearestBoardStop.stopId);
-    }
-    if (typeof(route.nearestAlightStop) != 'undefined'){
-      route.nearestAlightStopId = parseInt(route.nearestAlightStop.stopId);
-    }
   });
   return data;
 }
