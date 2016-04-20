@@ -1,3 +1,6 @@
+var privacyPolicyTemplate = require('../templates/privacyPolicy.html')
+var contactUsTemplate = require('../templates/contactUs.html')
+
 export default [
     '$scope',
     'UserService',
@@ -15,36 +18,16 @@ function(
     user: null
   }
 
-  //set the Login button labels and message for Settings page
-  $scope.$on('$ionicView.beforeEnter', () => {
-    updateUser();
-  });
-
-  //Log in / Log out button in settings page
-  $scope.logIn = function () {
-    UserService.logIn()
-  }
-
-  $scope.logOut = function () {
-    $ionicPopup.confirm({
-      title: 'Logout',
-      template: 'Do you want to log out?'
-    })
-    .then((res) => {
-      if (res) {
-        UserService.logOut();
-        $scope.data.user = null;
-      }
-    })
-  }
-
-  function updateUser() {
-    // Really? Why not just share the UserService.currentUser object?
-    UserService.getCurrentUser()
-    .then((user) => {
+  $scope.$watch(() => UserService.getCurrentUser(), () => {
+    UserService.getCurrentUser().then((user) => {
       $scope.data.user = user;
     })
-  }
+  })
+
+  // //set the Login button labels and message for Settings page
+  // $scope.$on('$ionicView.beforeEnter', () => {
+  //   updateUser();
+  // });
 
   $scope.updateTelephone = function () {
     $ionicPopup.prompt({
@@ -55,15 +38,9 @@ function(
       if (telephone) {
         var updateToken;
 
-        return UserService.beeline({
-          url: '/user/requestUpdateTelephone',
-          method: 'POST',
-          data: {
-            newTelephone: telephone,
-          }
-        })
-        .then((result) => {
-          updateToken = result.data.updateToken;
+        return UserService.requestUpdateTelephone(telephone)
+        .then((upd) => {
+          updateToken = upd;
 
           return $ionicPopup.prompt({
             title: `Enter verification key`,
@@ -110,15 +87,7 @@ function(
         var update = {}
         update[field] = newVal;
 
-        return UserService.beeline({
-          method: 'PUT',
-          url: '/user',
-          data: update,
-        })
-        .then(() => {
-          UserService.loadUserData();
-          updateUser();
-        })
+        return UserService.updateUserInfo(update)
         .catch(() => {
           $ionicPopup.alert({
             title: `Error updating ${field}`,
@@ -130,23 +99,24 @@ function(
   }
 
   $scope.viewFAQ = function() {
-    var notHttp = !document.URL.startsWith('http://') &&
-      !document.URL.startsWith('https://')
+    throw new Error('UNIMPLEMENTED');
+    // var notHttp = !document.URL.startsWith('http://') &&
+    //   !document.URL.startsWith('https://')
 
-    if (window.device || notHttp || window.cordova) {
-      if (window.cordova.InAppBrowser) {
-        window.cordova.InAppBrowser.open('http://www.beeline.sg/#faq', '_blank');
-      }
-    }
-    else {
-      window.location.href = 'http://www.beeline.sg/#faq'
-    }
+    // if (window.device || notHttp || window.cordova) {
+    //   if (window.cordova.InAppBrowser) {
+    //     window.cordova.InAppBrowser.open('http://www.beeline.sg/#faq', '_blank');
+    //   }
+    // }
+    // else {
+    //   window.location.href = 'http://www.beeline.sg/#faq'
+    // }
   }
 
   $scope.viewPrivacyPolicy = function() {
     if (!$scope.privacyPolicyModal) {
       $scope.privacyPolicyModal = $ionicModal.fromTemplate(
-        require('../templates/privacyPolicy.html'),
+        privacyPolicyTemplate,
         {
           scope: $scope,
         }
@@ -158,7 +128,7 @@ function(
   $scope.viewContactUs = function() {
     if (!$scope.contactUsModal) {
       $scope.contactUsModal = $scope.contactUsModal || $ionicModal.fromTemplate(
-        require('../templates/contactUs.html'),
+        contactUsTemplate,
         {
           scope: $scope,
         }
@@ -169,6 +139,10 @@ function(
 
   $scope.$on('$destroy', () => {
     $scope.privacyPolicyModal.destroy();
+    $scope.contactUsModal.destroy();
+
+    $scope.privacyPolicyModal = null;
+    $scope.contactUsModal = null;
   });
 
   $scope.showBookingHistory = function() {

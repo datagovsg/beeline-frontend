@@ -66,6 +66,22 @@ export default function($http, SERVER_URL, UserService) {
       }
     },
 
+    /**
+    @param search: search parameters:
+      @prop startLat Starting point latitude
+      @prop startLng Starting point longitude
+      @prop endLat Ending point latitude
+      @prop endLng Ending point longitude
+      @prop arrivalTime a Date object where the number of seconds
+                since midnight is the desired arrival time at the
+                destination
+      @prop startTime A Date object.
+                Restricts search results to routes with trips
+                after this time
+      @prop endTime a Date object.
+                Restrict search results to routes with trips
+                before this time
+    **/
     searchRoutes: function(search) {
      //return Promise object
      return UserService.beeline({

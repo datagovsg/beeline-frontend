@@ -289,8 +289,8 @@ export default [
     //[2] End stop is specified
     //[3] Checkbox is checked
     $scope.$watchGroup([
-          'book.boardStop',
-          'book.alightStop',
+        'book.boardStop',
+        'book.alightStop',
         'book.termsChecked',
       ], function () {
         if ($scope.book.termsChecked == true) {

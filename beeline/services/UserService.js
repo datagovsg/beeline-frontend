@@ -97,6 +97,56 @@ export default function UserService($http, $state, $ionicPopup) {
       });
     },
 
+    /**
+
+    Prepares an update of the telephone number.
+    @returns Promise.<update token>
+
+    */
+    requestUpdateTelephone: function(telephone) {
+      return this.beeline({
+        url: '/user/requestUpdateTelephone',
+        method: 'POST',
+        data: {
+          newTelephone: telephone,
+        }
+      })
+      .then((result) => {
+        return result.data.updateToken;
+      })
+    },
+
+    /**
+    Really tell the server to update the telephone
+    number. Pass this function the updateToken returned by
+    requestUpdateTelephone and the verification key received
+    by SMS
+    */
+    updateTelephone: function (updateToken, verificationKey) {
+      return this.beeline({
+        url: '/user/updateTelephone',
+        method: 'POST',
+        data: {
+          code: verificationKey,
+          updateToken: updateToken
+        }
+      })
+      .then((userResponse) => {
+        userPromise = Promise.resolve(userResponse.data);
+      })
+    },
+
+    updateUserInfo: function(update) {
+      return this.beeline({
+        method: 'PUT',
+        url: '/user',
+        data: update,
+      })
+      .then(() => {
+        this.loadUserData();
+      })
+    },
+
     getLocalJsonUserData() {
       return JSON.parse(localStorage['beelineUser']);
     },
