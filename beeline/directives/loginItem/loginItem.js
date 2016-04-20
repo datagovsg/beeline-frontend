@@ -12,11 +12,10 @@ export default function(UserService) {
     controller: function($scope, $ionicPopup) {
 
       // Check the user each time before entering
-      $scope.$on('$ionicView.beforeEnter', function() {
-        UserService.getCurrentUser()
-        .then((user) => {
-          $scope.user = user;
-        });
+      $scope.$watch(function() {
+        return UserService.user
+      }, function(newUser) {
+        $scope.user = newUser;
       });
 
       //Log in / Log out button in settings page
@@ -27,7 +26,7 @@ export default function(UserService) {
           template: 'Do you want to log out?'
         })
         .then(function(response) {
-          if (res) UserService.logOut();
+          if (response) UserService.logOut();
         })
       };
 

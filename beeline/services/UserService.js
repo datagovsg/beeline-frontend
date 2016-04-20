@@ -3,6 +3,7 @@ import uuid from 'uuid';
 
 export default function UserService($http, $state, $ionicPopup) {
   var preLoginState;
+  var preLoginParams;
   var userPromise = Promise.resolve(null);
 
   var instance = {
@@ -181,19 +182,19 @@ export default function UserService($http, $state, $ionicPopup) {
       * method saves the page. When login is complete it will return there.
     */
     logIn(force) {
-      preLoginState = $state.current;
+      preLoginState = $state.current.name;
+      preLoginParams =  $state.params;
       $state.go('login')
     },
 
     /** Return to the page that activated the login */
     afterLogin() {
-      instance.loadUserData();
-      $state.go(preLoginState || 'tabs.settings');
+      $state.go(preLoginState || 'tabs.settings', preLoginParams);
       preLoginState = undefined;
     },
 
     cancelLogin() {
-      $state.go(preLoginState);
+      $state.go(preLoginState, preLoginParams);
       preLoginState = undefined;
     },
   };

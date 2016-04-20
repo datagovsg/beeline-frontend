@@ -49,18 +49,7 @@ function(
         })
         .then((verificationKey) => {
           if (verificationKey) {
-            return UserService.beeline({
-              url: '/user/updateTelephone',
-              method: 'POST',
-              data: {
-                code: verificationKey,
-                updateToken: updateToken
-              }
-            })
-            .then((userResponse) => {
-              UserService.loadUserData();
-              $scope.data.user = userResponse.data;
-            })
+            return UserService.updateTelephone(updateToken, verificationKey)
           }
         })
       }
