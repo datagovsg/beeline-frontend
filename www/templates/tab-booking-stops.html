@@ -57,12 +57,14 @@
         longitude: infoStop.coordinates.coordinates[0],
       }"
       >
-      <div>
-        <h4>{{infoStop.time | formatTime}}</h4>
+      <div class="booking-stops-infowindow">
+        <b>{{infoStop.time | formatTime}}</b><br/>
         {{infoStop.description}}
+        <br>{{infoStop.label}}
+        <br>{{infoStop.road}}
         <br/>
         <button onclick="setStop()">
-        Select your {{infoType == 'board'? 'pick-up' : 'drop-off'}} stop
+        Select {{infoType == 'board'? 'pick-up' : 'drop-off'}} stop
         </button>
       </div>
     </ui-gmap-window>

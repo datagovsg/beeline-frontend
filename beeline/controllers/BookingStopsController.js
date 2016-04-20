@@ -45,8 +45,8 @@ export default [
       etime: '',
       sroad: '',
       eroad: '',
-      stxt: 'Select your pick-up stop',
-      etxt: 'Select your drop-off stop',
+      stxt: 'Select pick-up stop',
+      etxt: 'Select drop-off stop',
       ptxt: 'No. of passengers',
       transco: {},
       allDataNotFilled: true,
@@ -148,7 +148,7 @@ export default [
      to display the stop id and description */
     $scope.getStopId = (stop) => stop.id;
     $scope.getStopDescription = (stop) =>
-      formatTime(stop.time) + ' \u00a0\u00a0' + stop.description;
+      formatTime(stop.time, true) + ' \u00a0\u00a0' + stop.description;
     $scope.getStopDescription2 = (stop) =>
       stop.road;
 

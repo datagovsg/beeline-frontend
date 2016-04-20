@@ -171,3 +171,16 @@
     text-align: center;
   }
 }
+
+// FIXME: big-white-button
+.booking-stops-infowindow {
+  button {
+    border: solid 2px $stable;
+    color: $stable;
+    background: $light;
+    border-radius: 15px;
+    padding: 5px 15px;
+    display: block;
+    margin-left: 1em;
+  }
+}
