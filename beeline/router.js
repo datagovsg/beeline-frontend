@@ -1,8 +1,3 @@
-import {setupBroadcastViewEnter} from './shared/util'
-
-// Ionic uses AngularUI Router which uses the concept of states
-// Learn more here: https://github.com/angular-ui/ui-router
-// Set up the various states which the app can be in
 export default function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
@@ -12,7 +7,7 @@ export default function($stateProvider, $urlRouterProvider) {
   //////////////////////////////////////////////////////////////////////////////
   .state('intro', {
     url: '/intro',
-    templateUrl: 'templates/intro.html',
+    templateUrl: 'templates/intro-slides.html',
     controller: 'IntroSlidesController'
   })
 
@@ -32,65 +27,25 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/routes',
     views: {
       'tab-routes': {
-        abstract: true,
         templateUrl: 'templates/routes.html',
-        controller: function ($scope) {
-            setupBroadcastViewEnter($scope);
-        }
-      }
-    }
-  })
-
-  .state('tabs.routes.map', {
-    url: '/map',
-    views: {
-      'routes-map': {
-        templateUrl: 'templates/routes-map.html',
-        controller: 'RoutesMapController'
-      }
-    }
-  })
-
-  .state('tabs.routes.list', {
-    url: '/list',
-    views: {
-      'routes-list': {
-        templateUrl: 'templates/routes-list.html',
-        controller: 'RoutesListController'
+        controller: 'RoutesController'
       }
     }
   })
 
 // Putting this here temporarily to test before routing it in properly
   .state('tabs.results', {
-    url: '/results?pickupLat&pickupLng&dropoffLat&dropoffLng',
+    url: '/routes/results?pickupLat&pickupLng&dropoffLat&dropoffLng',
     views: {
       'tab-routes': {
-        templateUrl: 'templates/search-results.html',
-        controller: 'SearchResultsController'
+        templateUrl: 'templates/routes-results.html',
+        controller: 'RoutesResultsController'
       }
     }
   })
-  
-  .state('tabs.booking-last', {
-    url: '/booking',
-    views: {
-      'tab-booking': {
-        // templateUrl: 'templates/tab-booking-dates.html',
-        template: '<ion-content>Whoa?</ion-content>',
-        controller: ['$state', 'BookingService', function ($state, bookingService) {
-            if (!bookingService.last) {
-                $state.go('tabs.bookingPickup');
-            }
-            else {
-                $state.go(bookingService.last);
-            }
-        }],
-      }
-    }
-  })
+
   .state('tabs.bookingPickup', {
-    url: '/booking/pickup/:routeId',
+    url: '/booking/pickup/:routeId?boardStop&alightStop',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-stops.html',
@@ -98,17 +53,9 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  // .state('tabs.booking-dropoff', {
-  //   url: '/booking/dropoff',
-  //   views: {
-  //     'tab-booking': {
-  //       templateUrl: 'templates/tab-booking.html',
-  //       controller: 'BookingStopsController',
-  //     }
-  //   }
-  // })
+
   .state('tabs.booking-dates', {
-    url: '/booking/dates',
+    url: '/booking/dates/:routeId?boardStop&alightStop',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-dates.html',
@@ -117,7 +64,7 @@ export default function($stateProvider, $urlRouterProvider) {
     },
   })
   .state('tabs.booking-summary', {
-    url: '/booking/summary',
+    url: '/booking/summary/:routeId?boardStop&alightStop&selectedDates',
     views: {
         'tab-booking': {
             templateUrl: 'templates/tab-booking-summary.html',
@@ -178,13 +125,13 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/settings',
     views: {
       'tab-settings': {
-        templateUrl: 'templates/tab-settings.html',
+        templateUrl: 'templates/settings.html',
         controller: 'SettingsController'
       }
     }
   })
 
-  
+
 
   .state('login', {
     url: '/login',
@@ -199,7 +146,7 @@ export default function($stateProvider, $urlRouterProvider) {
 
   // if none of the above states are matched, use this as the fallback
   if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
-    $urlRouterProvider.otherwise('/tabs/routes/list');
+    $urlRouterProvider.otherwise('/tabs/routes');
   } else {
     // $urlRouterProvider.otherwise('/tabs/routes/map');
     $urlRouterProvider.otherwise('/intro');

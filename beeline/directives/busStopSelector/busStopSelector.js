@@ -4,12 +4,14 @@ export default [
     '$state',
     '$ionicModal',
     '$http',
-    'uiGmapGoogleMapApi'
+    'uiGmapGoogleMapApi',
+    '$timeout'
   , function (
     $state,
     $ionicModal,
     $http,
-    uiGmapGoogleMapApi
+    uiGmapGoogleMapApi,
+    $timeout
     ) {
 
   return {
@@ -64,7 +66,7 @@ export default [
       });
 
       scope.showList = function () {
-        setTimeout(() => {
+        $timeout(() => {
             scope.fitMap();
         }, 300);
         window.setStop = scope.setStop;
@@ -82,17 +84,14 @@ export default [
 
       scope.fitMap = async () =>  {
           await uiGmapGoogleMapApi;
-
           //Disable the Google link at the bottom left of the map
           var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
           glink.next().find('a').on('click', function (e) {
             e.preventDefault();
           });
-
           if (!scope.map.mapControl || !scope.busStops ||
                   scope.busStops.length == 0)
                   return;
-
           // Pan to the bus stops
           var bounds = new google.maps.LatLngBounds();
           for (let bs of scope.busStops) {
@@ -100,7 +99,6 @@ export default [
                   bs.coordinates.coordinates[1],
                   bs.coordinates.coordinates[0]));
           }
-
           scope.map.mapControl.getGMap().fitBounds(bounds);
         };
 
@@ -122,7 +120,7 @@ export default [
       scope.$watch('selectedStop', function() {
         scope.displayText = scope.selectedStop ? scope.displayFn(scope.selectedStop) : undefined;
       });
-      scope.$watch('model', scope.selectStopByIndex = function() {
+      scope.$watchGroup(['model', 'busStops'], scope.selectStopByIndex = function() {
         if (!isFinite(scope.model)) {
           scope.selectedStop = undefined;
           return;
@@ -140,17 +138,17 @@ export default [
 
         if (selectedIndex != -1) {
             scope.selectedStop = scope.busStops[selectedIndex];
-        }
-        else {
-            scope.selectedStop = undefined;
-        }
-
         if (scope.map.mapControl.getGMap) {
           scope.map.mapControl.getGMap().panTo({
             lat: scope.selectedStop.coordinates.coordinates[1],
             lng: scope.selectedStop.coordinates.coordinates[0],
           })
         }
+        }
+        else {
+          scope.selectedStop = undefined;
+        }
+
       });
       scope.selectStopByIndex();
 

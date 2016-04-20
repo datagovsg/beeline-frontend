@@ -1,0 +1,32 @@
+.intro-slides {
+  background-color: $royal;
+  color: $light;
+  ion-slides {
+    text-align: center;
+    padding-top: 40%;
+    h2 {
+      color: $energized;
+    }
+    img { 
+      margin-top: 50px;
+    }
+    p {
+      margin-top: 40px;
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 60%;
+    }
+    .swiper-pagination-bullet-active {
+      background: $light;
+    }
+  }
+  button {
+    position: absolute;
+    right: $content-padding;
+    bottom: $content-padding;
+    z-index: $z-index-bar;
+  }
+}
+

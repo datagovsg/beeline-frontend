@@ -1,4 +1,3 @@
-
 export default [
     '$scope',
     'UserService',
@@ -12,7 +11,9 @@ function(
     $ionicModal,
     $ionicPopup
 ) {
-  $scope.user = null;
+  $scope.data = {
+    user: null
+  }
 
   //set the Login button labels and message for Settings page
   $scope.$on('$ionicView.beforeEnter', () => {
@@ -41,7 +42,7 @@ function(
     // Really? Why not just share the UserService.currentUser object?
     UserService.getCurrentUser()
     .then((user) => {
-      $scope.user = user;
+      $scope.data.user = user;
     })
   }
 

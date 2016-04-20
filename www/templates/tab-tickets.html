@@ -1,21 +1,7 @@
 <ion-view id="pg_tickets" view-title="Tickets">
   <ion-content has-bouncing="false">
-    
-  <!-- not logged in -->
-  <section class="intro" ng-if="!user">
-    <div class="gap"></div>
-    <div class="msg">
-      <div class="title">You are not logged in</div>
-      <div class="txt">
-        To view your e-tickets,<br />log in to your to your account.
-      </div>
-      <br/>
-      <button id="btnloginpls"
-          ng-click="logIn()">Log In to Account
-      </button>
-    </div>
-    <div class="gap"></div>
-  </section>
+    <login-item message="You are not logged in. To view your tickets, log in to your Beeline account!">
+    </login-item>
 
   <!-- logged in, no tickets -->
   <section class="intro" ng-if="user && (tickets.today.length == 0) && (tickets.soon.length == 0)">

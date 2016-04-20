@@ -97,6 +97,10 @@ export default function UserService($http, $state, $ionicPopup) {
       });
     },
 
+    getLocalJsonUserData() {
+      return JSON.parse(localStorage['beelineUser']);
+    },
+
     /** calls the /user endpoint to check if user is logged in */
     getCurrentUser() {
       return userPromise;

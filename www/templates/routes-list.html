@@ -1,39 +1,45 @@
-<ion-view id="pg_routelist" view-title="Explore Routes - List">
+<ion-view class="routes-list" view-title="Explore Routes - List">
   <ion-content class="has-footer" has-bouncing="false">
 
     <!-- Region Filter  -->
-    <section>
-      <div id="regsel">
-        <label>Filter By</label>
+    <label class="item item-input item-select region-filter">
+      <div class="input-label">Filter By</div>
         <select ng-model="data.selectedRegionId">
+        <option value="" disabled selected>Select A Region</option>
           <option value="">All Regions</option>
           <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
         </select>
-      </div>
-    </section>
+    </label>
 
+    <ul class="list">
     <!-- Recent Routes Section -->
-    <section ng-show="data.filteredRecentRoutes.length > 0">
-      <div class="ion-list-header">Recently Booked Routes</div>
-      <ion-list id="booklist">
-        <route-item ng-repeat="route in data.filteredRecentRoutes">foobar</route-item>
-      </ion-list>
-    </section>
+      <div class="item item-divider"
+          ng-show="data.filteredRecentRoutes.length > 0">
+        Recently Booked Routes
+      </div>
+      <ion-item
+        ng-repeat="route in data.filteredRecentRoutes"
+        ui-sref="tabs.bookingPickup({ routeId: route.id})"
+        >
+        <route-item></route-item>
+        <a class="item-icon-right">
+          <i class="icon ion-ios-arrow-right"></i>
+        </a>
+      </ion-item>
 
     <!-- Available Routes Section -->
-    <section>
-      <div class="ion-list-header">Available Routes</div>
-      <ion-list id="booklist">
-        <ion-item ng-repeat="route in data.filteredActiveRoutes"
-                  ui-sref="tabs.bookingPickup({ routeId: route.id})">
-          <route-item
-            route="route"></route-item>
-
-          <a class="item-icon-right" href="#">
-            <i class="icon ion-ios-arrow-right"></i>
-          </a>
-        </ion-item>
-      </ion-list>
-    </section>
+      <div class="item item-divider">
+        Active Routes
+      </div>
+      <ion-item
+        ng-repeat="route in data.filteredActiveRoutes"
+        ui-sref="tabs.bookingPickup({ routeId: route.id})"
+        >
+        <route-item route="route"></route-item>
+        <a class="item-icon-right">
+          <i class="icon ion-ios-arrow-right"></i>
+        </a>
+      </ion-item>
+    </ul>
   </ion-content>
 </ion-view>

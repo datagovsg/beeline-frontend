@@ -27,7 +27,7 @@
 	<div id="ticketinfo">
 		<div class="statusmsg">
 			Your driver is on the way
-			<div id="refreshbar"></div>
+			<div id="refresh-bar"></div>
 		</div>
 		<table id="tdholder" ng-class="{ticketsel: currentState == 'ticket', driversel: currentState == 'driver', stopssel: currentState == 'stops'}">
 			<tr>
@@ -42,7 +42,7 @@
 								<td colspan="3" class="header">PASSENGER</td>
 								<td rowspan="5" class="gap"></td>
 								<td rowspan="5" class="qrbox">
-									<div id="qrcodebg"></div>
+									<div id="qr-code-bg"></div>
 								</td>
 							</tr>
 							<tr class="txt">
@@ -56,7 +56,7 @@
 							<tr class="txt">
 								<td>{{tripTicket.id}}</td>
 								<td></td>
-								<td>{{tripTicket.pax || 1}}</td>
+								<td>{{tripTicket.pax}}</td>
 							</tr>
 							<tr class="last">
 								<td></td>
