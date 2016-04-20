@@ -2,6 +2,7 @@ import querystring from 'querystring'
 
 export default function UserService($http, $state, $ionicPopup) {
   var preLoginState;
+  var preLoginParams;
   var userPromise = Promise.resolve(null);
 
   var instance = {
@@ -108,15 +109,16 @@ export default function UserService($http, $state, $ionicPopup) {
     },
 
     logIn(force) {
-      preLoginState = $state.current;
+      preLoginState = $state.current.name;
+      preLoginParams =  $state.params;
       $state.go('login')
     },
     afterLogin() {
-      $state.go(preLoginState || 'tabs.settings');
+      $state.go(preLoginState || 'tabs.settings', preLoginParams);
       preLoginState = undefined;
     },
     cancelLogin() {
-      $state.go(preLoginState);
+      $state.go(preLoginState, preLoginParams);
       preLoginState = undefined;
     },
   };

@@ -49,6 +49,16 @@ export default [
       });
     });
 
+    $scope.loginBeforePay = function() {
+      // user must log in before pay
+      if (!UserService.isLoggedIn()) {
+        UserService.logIn();
+      }
+      else {
+        $scope.pay();
+      }
+    }
+
     // methods
     $scope.pay = async function() {
         try {
