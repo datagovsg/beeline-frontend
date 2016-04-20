@@ -1,4 +1,4 @@
-import qs from 'querystring';
+import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
 
@@ -23,8 +23,6 @@ function transformRouteData(data){
     route.startRoad = firstTripStops[0].stop.description;
     route.endTime = firstTripStops[firstTripStops.length - 1].time;
     route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description;
-    // route.trips = _.sortBy(route.trips, trip => trip.date);
-    // route.tripsByDate = [];
     route.tripsByDate =_.keyBy(route.trips,
         trip => trip.date.getTime());
   });
@@ -68,11 +66,27 @@ export default function($http, SERVER_URL, UserService) {
       }
     },
 
+    /**
+    @param search: search parameters:
+      @prop startLat Starting point latitude
+      @prop startLng Starting point longitude
+      @prop endLat Ending point latitude
+      @prop endLng Ending point longitude
+      @prop arrivalTime a Date object where the number of seconds
+                since midnight is the desired arrival time at the
+                destination
+      @prop startTime A Date object.
+                Restricts search results to routes with trips
+                after this time
+      @prop endTime a Date object.
+                Restrict search results to routes with trips
+                before this time
+    **/
     searchRoutes: function(search) {
       //return Promise object
       return UserService.beeline({
         method: 'GET',
-        url: '/routes/search_by_latlon?' + qs.stringify({
+       url: '/routes/search_by_latlon?' + querystring.stringify({
           startLat: search.startLat,
           startLng: search.startLng,
           endLat: search.endLat,

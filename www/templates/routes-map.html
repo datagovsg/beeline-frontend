@@ -1,6 +1,27 @@
 <ion-view class="routes-map-view" view-title="Routes">
-  <ion-content class="has-tabs" scroll="false" has-bouncing="false">
+  <ion-content scroll="false">
 
+    <ui-gmap-google-map center="map.center"
+                        pan="true" 
+                        zoom="map.zoom" 
+                        options="map.options" 
+                        events="map.events" 
+                        bounds="map.bounds" 
+                        dragging="map.dragging" 
+                        control="map.control" 
+                        data-tap-disabled="true">
+      <ui-gmap-polyline ng-repeat="line in map.lines" 
+                        path="line.path" 
+                        stroke="line.stroke"
+                        icons="line.icons">
+      </ui-gmap-polyline>
+      <ui-gmap-markers models="map.markers"
+                       coords="'self'" 
+                       icon="'icon'" 
+                       options="'options'">
+      </ui-gmap-markers>
+    </ui-gmap-google-map>
+    
 		<div class="card list">
 			<label class="item item-input item-icon-right">
         <img class="input-icon"
@@ -39,35 +60,13 @@
          ng-show="data.showDropoffCrosshair"
          on-tap="setDropoff()"></div>
 	
-		<img class="locate-me"
+		<img class="locate-button"
          src="./img/MapButtonLocateMe@2x.png"
-         on-tap="getUserLocation()"></img>
+         on-tap="locateMe()"></img>
 
-		<button class="next-button" 
+		<button class="primary-button" 
             ng-show="data.showSearchButton"
             on-tap="searchForRoutes()">Search For Routes</button>
-
-    <ui-gmap-google-map center="map.center"
-    										pan="true" 
-    										zoom="map.zoom" 
-    										options="map.options" 
-    										events="map.events" 
-    										bounds="map.bounds" 
-    										dragging="map.dragging" 
-    										control="map.control" 
-    										data-tap-disabled="true">
-      <ui-gmap-polyline ng-repeat="line in map.lines" 
-                        path="line.path" 
-                        stroke="line.stroke"
-                        icons="line.icons">
-      </ui-gmap-polyline>
-			<ui-gmap-markers models="map.markers"
-                       coords="'self'" 
-                       icon="'icon'" 
-                       options="'options'">
-			</ui-gmap-markers>
-    </ui-gmap-google-map>
-
 
   </ion-content>
 </ion-view>

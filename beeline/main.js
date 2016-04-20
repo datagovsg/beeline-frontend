@@ -14,8 +14,11 @@ import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
 import MapOptionsService from './services/MapOptions'
 // Controller Imports
+import IntroSlidesController from './controllers/IntroSlidesController.js'; //OK
+import RoutesController from './controllers/RoutesController.js'; //OK
 import RoutesMapController from './controllers/RoutesMapController.js'; //OK
 import RoutesListController from './controllers/RoutesListController.js'; //OK
+import RoutesResultsController from './controllers/RoutesResultsController.js' //OK
 import BookingStopsController from './controllers/BookingStopsController.js';
 import BookingDatesController from './controllers/BookingDatesController.js';
 import BookingConfirmationController from './controllers/BookingConfirmationController.js';
@@ -23,12 +26,11 @@ import BookingSummaryController from './controllers/BookingSummaryController.js'
 import SuggestController from './controllers/SuggestController.js';
 import TicketsController from './controllers/TicketsController.js';
 import TicketDetailController from './controllers/TicketDetailController.js';
-import SettingsController from './controllers/SettingsController.js';
-import IntroSlidesController from './controllers/IntroSlidesController.js';
+import SettingsController from './controllers/SettingsController.js'; //OK
 import LoginController from './controllers/LoginController';
 import VerifyController from './controllers/VerifyController';
-import SearchResultsController from './controllers/SearchResultsController.js'
 // Directive Imports
+import loginItem from './directives/loginItem/loginItem.js'; //OK
 import RevGeocode from './directives/revGeocode/revGeocode';
 import FancyPrice from './directives/fancyPrice/fancyPrice';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
@@ -90,6 +92,11 @@ var app = angular.module('beeline', [
 .factory('DateService', DateService)
 .factory('StripeService', StripeService)
 .service('MapOptions', MapOptionsService)
+.controller('IntroSlidesController', IntroSlidesController)
+.controller('RoutesController', RoutesController)
+.controller('RoutesMapController', RoutesMapController)
+.controller('RoutesListController', RoutesListController)
+.controller('RoutesResultsController', RoutesResultsController)
 .controller('BookingStopsController', BookingStopsController)
 .controller('BookingDatesController', BookingDatesController)
 .controller('BookingSummaryController', BookingSummaryController)
@@ -98,12 +105,9 @@ var app = angular.module('beeline', [
 .controller('SettingsController', SettingsController)
 .controller('TicketsController', TicketsController)
 .controller('TicketDetailController', TicketDetailController)
-.controller('RoutesMapController', RoutesMapController)
-.controller('RoutesListController', RoutesListController)
-.controller('IntroSlidesController', IntroSlidesController)
 .controller('LoginController', LoginController)
 .controller('VerifyController', VerifyController)
-.controller('SearchResultsController', SearchResultsController)
+.directive('loginItem', loginItem)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)

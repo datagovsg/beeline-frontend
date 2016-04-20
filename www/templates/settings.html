@@ -1,0 +1,44 @@
+<ion-view class="settings" view-title="Settings">
+  <ion-content>
+
+    <login-item user='data.user' show-log-out=true></login-item>
+
+    <div class="list">
+
+      <div class="item item-divider" ng-if="data.user">Account</div>
+      <label class="item" ng-if="data.user"
+       ng-click="updateUserInfo('name')">
+       Name
+        <span class="item-note">{{data.user.name}}</span>
+      </label>
+      <label class="item" ng-if="data.user"
+       ng-click="updateUserInfo('email')">
+        Email
+        <span class="item-note">{{data.user.email}}</span>
+      </label>
+      <label class="item" ng-if="data.user"
+       ng-click="updateTelephone()">
+        Phone Number
+        <span class="item-note">{{data.user.telephone}}</span>
+      </label>
+      <a class="item item-icon-right" ng-if="data.user">
+        Booking History
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+
+      <div class="item item-divider">About Beeline</div>
+
+      <ion-item ui-sref='intro'>Quick Tour</ion-item>
+      <ion-item ng-click="viewFAQ()">
+        <!-- using Javascript here because we want to enforce
+        viewing a non-local page in inAppBrowser -->
+        FAQ
+      </ion-item>
+      <ion-item ng-click="viewPrivacyPolicy()">Privacy Policy</ion-item>
+      <ion-item ng-click="viewContactUs()">Contact Us
+      </ion-item>
+
+    </div>
+
+  </ion-content>
+</ion-view>

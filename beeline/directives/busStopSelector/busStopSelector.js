@@ -96,7 +96,7 @@ export default [
       scope.$watch('selectedStop', function() {
         scope.displayText = scope.selectedStop ? scope.displayFn(scope.selectedStop) : undefined;
       });
-      scope.$watch('model', scope.selectStopByIndex = function() {
+      scope.$watchGroup(['model', 'busStops'], scope.selectStopByIndex = function() {
         if (!isFinite(scope.model)) {
           scope.selectedStop = undefined;
           return;

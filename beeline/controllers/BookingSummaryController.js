@@ -28,6 +28,9 @@ export default [
     };
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
+      if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
+        $stateParams.selectedDates = [$stateParams.selectedDates]
+      }
       $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
           return parseInt(item);
       });
@@ -45,6 +48,16 @@ export default [
               .filter(ts => $scope.book.alightStop == ts.stop.id)[0]
       });
     });
+
+    $scope.loginBeforePay = function() {
+      // user must log in before pay
+      if (!UserService.isLoggedIn()) {
+        UserService.logIn();
+      }
+      else {
+        $scope.pay();
+      }
+    }
 
     // methods
     $scope.pay = async function() {

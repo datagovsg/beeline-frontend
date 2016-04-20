@@ -1,0 +1,81 @@
+.routes-map-view {
+
+  // Make a spacing between the icon and the text input
+  .input-icon {
+    margin-right: $item-padding;
+  }
+
+  // Make the clear input button more buttony
+  .clear-button {
+    cursor: pointer;
+  }
+
+  // Position the crosshairs in the middle of the map
+  // This is done by pixel hacking so need to adjust to the image
+  // TODO find a better way of doing this
+  .pickup-crosshair, 
+  .dropoff-crosshair {
+    position: absolute;
+    top: 0; bottom: 56px; left: 0; right: 2px;
+    margin: auto;
+    width: 290px;
+    height: 69px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  .pickup-crosshair {
+    background-image: url('../img/MapPinStart@2x.png');
+  }
+  .dropoff-crosshair {
+    background-image: url('../img/MapPinEnd@2x.png');
+  }
+
+  // Position the locate me button near the bottom right
+  .locate-button {
+    position: absolute;
+    z-index: 1;
+    bottom: $button-height + 3*$content-padding;
+    right: $content-padding;
+    margin: 0px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    cursor: pointer;
+  }
+
+  // Place the search button at the bottom of the page
+  .search-button {
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: $content-padding;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // Have the map fill the container
+  .angular-google-map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+  }
+
+  // Hide the google maps boilerplate annotations 
+  .gmnoprint, 
+  .gm-style-cc {
+    display:none;
+  }
+  
+  // Hide the google logo in bottom left
+  .gm-style>div:last-child {
+    display: none;
+  }
+
+
+}

@@ -1,9 +1,9 @@
-<ion-view class="routes-list-view" view-title="Explore Routes - List">
+<ion-view class="routes-list" view-title="Explore Routes - List">
   <ion-content class="has-footer" has-bouncing="false">
 
     <!-- Region Filter  -->
-    <label class="item item-select region-filter">
-      Filter By
+    <label class="item item-input item-select region-filter">
+      <div class="input-label">Filter By</div>
         <select ng-model="data.selectedRegionId">
         <option value="" disabled selected>Select A Region</option>
           <option value="">All Regions</option>
