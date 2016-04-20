@@ -1,4 +1,14 @@
 
+@mixin busnum {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  background-color: #4b3863;
+  color: #FFF;
+  line-height: 40px;
+  border-radius: 20px;
+}
+
 /* ----- General styling for route information listings ----- */
 route-item {
   position: relative;
@@ -6,13 +16,7 @@ route-item {
   flex-direction: row;
 
   .busnum {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    background-color: #4b3863;
-    color: #FFF;
-    line-height: 40px;
-    border-radius: 20px;
+    @include busnum;
     margin-right: 10px;
     flex: 0 0 auto;
   }
@@ -41,9 +45,15 @@ route-item {
       position: absolute;
     }
 
+    .start {
+      background: url('../img/RoutePairSmallStart.png') left center no-repeat;
+    }
+    .end {
+      background: url('../img/RoutePairSmallEnd.png') left center no-repeat;
+    }
+
     .start, .end {
       line-height: 20px;
-      background: url('../img/icon_stop.png') left center no-repeat;
       background-size: 10px 10px;
       padding-left: 15px;
       z-index: 5;

@@ -56,16 +56,49 @@ export default function($http, SERVER_URL, UserService) {
           method: 'GET',
           url: '/routes?include_trips=true'
         })
-        .then(function(response){
+      .then(function(response){
           routesById = _.keyBy(response.data, route => route.id);
 
-          return transformRouteData(response.data);
+        return transformRouteData(response.data);
         })
 
         return routesCachePromise;
       }
     },
 
+    /**
+    @param search: search parameters:
+      @prop startLat Starting point latitude
+      @prop startLng Starting point longitude
+      @prop endLat Ending point latitude
+      @prop endLng Ending point longitude
+      @prop arrivalTime a Date object where the number of seconds
+                since midnight is the desired arrival time at the
+                destination
+      @prop startTime A Date object.
+                Restricts search results to routes with trips
+                after this time
+      @prop endTime a Date object.
+                Restrict search results to routes with trips
+                before this time
+    **/
+    searchRoutes: function(search) {
+     //return Promise object
+     return UserService.beeline({
+       method: 'GET',
+       url: '/routes/search_by_latlon?' + querystring.stringify({
+         startLat: search.startLat,
+         startLng: search.startLng,
+         endLat: search.endLat,
+         endLng: search.endLng,
+         arrivalTime: search.arrivalTime,
+         startTime:  search.startTime,
+         endTime: search.endTime
+       }),
+     }).then(function(response) {
+       return transformRouteData(response.data);
+     });
+    },
     getRecentRoutes: function() {
       if (UserService.isLoggedIn()) {
         return UserService.beeline({
@@ -79,22 +112,21 @@ export default function($http, SERVER_URL, UserService) {
       }
     },
 
-    // Get the list of routes close to given set of coordinates
-    searchRoutes: function(startLat, startLng, endLat, endLng) {
-      return $http.get(SERVER_URL + '/routes/search_by_latlon?' + querystring.stringify({
-        startLat: startLat,
-        startLng: startLng,
-        endLat: endLat,
-        endLng: endLng,
-        arrivalTime: '2016-02-26 01:00:00+00', //Doesn't do much right now so doesnt matter
-        startTime: new Date().getTime(), //Start of search date
-        endTime: new Date().getTime() + 30*24*60*60*1000 //End of search date
-      }))
-      .then(function(response) {
-        console.log(response.data);
-        return transformRouteData(response.data);
-      });
-    }
-
+    // // Get the list of routes close to given set of coordinates
+    // searchRoutes: function(startLat, startLng, endLat, endLng) {
+    //   return $http.get(SERVER_URL + '/routes/search_by_latlon?' + querystring.stringify({
+    //     startLat: startLat,
+    //     startLng: startLng,
+    //     endLat: endLat,
+    //     endLng: endLng,
+    //     arrivalTime: '2016-02-26 01:00:00+00', //Doesn't do much right now so doesnt matter
+    //     startTime: new Date().getTime(), //Start of search date
+    //     endTime: new Date().getTime() + 30*24*60*60*1000 //End of search date
+    //   }))
+    //   .then(function(response) {
+    //     console.log(response.data);
+    //     return transformRouteData(response.data);
+    //   });
+    // }
   };
 }

@@ -28,12 +28,12 @@ function(
     msg: '',
     btntxt: '',
   }
-  
+
   $scope.tickets = {
     today: [],
     soon: []
   }
-  
+
   $scope.user = null;
 
   $scope.$on('$ionicView.beforeEnter', () => {

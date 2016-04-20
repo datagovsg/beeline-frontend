@@ -4,15 +4,15 @@
     <!-- Region Filter  -->
     <label class="item item-input item-select region-filter">
       <div class="input-label">Filter By</div>
-      <select ng-model="data.selectedRegionId">
+        <select ng-model="data.selectedRegionId">
         <option value="" disabled selected>Select A Region</option>
-        <option value="">All Regions</option>
-        <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
-      </select>
+          <option value="">All Regions</option>
+          <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
+        </select>
     </label>
 
     <ul class="list">
-      <!-- Recent Routes Section -->
+    <!-- Recent Routes Section -->
       <div class="item item-divider"
           ng-show="data.filteredRecentRoutes.length > 0">
         Recently Booked Routes
@@ -27,7 +27,7 @@
         </a>
       </ion-item>
 
-      <!-- Available Routes Section -->
+    <!-- Available Routes Section -->
       <div class="item item-divider">
         Active Routes
       </div>
@@ -41,6 +41,5 @@
         </a>
       </ion-item>
     </ul>
-
   </ion-content>
 </ion-view>

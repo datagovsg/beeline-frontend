@@ -1,18 +1,23 @@
 <div class="new_suggestion modal" data-tap-disabled=true>
   <ion-header-bar class="bar-stable">
-    <h1 class="title">New Suggestion</h1>
+    <h1 class="title">{{newSuggestion.title}}</h1>
     <button class="item-icon-right" ng-click="cancel()">
       <span class="icon ion-android-close"></span>
     </button>
   </ion-header-bar>
   <ion-content>
+    <div class="button-controls" ng-if="newSuggestion.id">
+      <button ng-click="deleteSuggestion($event, newSuggestion.id)">Delete Suggestion</button>
+    </div>
     <start-end-picker
           is-valid="newSuggestion.time != ''"
           start-point="newSuggestion.startPoint"
           end-point="newSuggestion.endPoint"
           prompt="Make Suggestion!"
-          onsubmit="submitSuggestion(newSuggestion)"
-          style="width: 100%; height: 100%; top:0 ;left: 0 ; position: absolute">
+          set-point="newSuggestion.setPoint"
+          disabled="newSuggestion.disabled"
+          control="newSuggestion.control"
+          onsubmit="submitSuggestion(newSuggestion)">
       <!-- FIXME: duplicate code here -->
       <label class="item item-select">
         <i class="icon ion-clock"></i>

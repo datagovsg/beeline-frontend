@@ -1,20 +1,19 @@
 
 
-export default function($http) {
+export default function($http, UserService) {
         var suggestions = [];
         var selectedSuggestion = null;
         var similarSuggestions = [];
 
         return {
             get:function(){
-                return $http.get("http://staging.beeline.sg/suggestions", {
-                        headers: {
-                        "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MjAwLCJpYXQiOjE0NTg3OTAzMzB9.tX1zJofUeHTqCRoJ8hI1Fk36n7K9ftXMk0QkjiyPPBc'
-                        }
-                })
+              return UserService.beeline({
+                method: 'GET',
+                url: "/suggestions",
+              })
             },
             getSuggestions: function(){
-                return suggestions;
+              return suggestions;
             },
             getSuggestionById: function(id){
                 for(var i=0;i<suggestions.length;i++){
@@ -26,11 +25,11 @@ export default function($http) {
                 return null;
             },
             getSimilar: function(){
-                return $http.get("http://staging.beeline.sg/suggestions/10126/similar", {
-                    headers: {
-                    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6MjAwLCJpYXQiOjE0NTg3OTAzMzB9.tX1zJofUeHTqCRoJ8hI1Fk36n7K9ftXMk0QkjiyPPBc'
-                    }
-                }).then((response) => {
+                return UserService.beeline({
+                  method: 'GET',
+                  url: "/suggestions/10126/similar",
+                })
+                .then((response) => {
                     similarSuggestions = response.data;
                     return similarSuggestions;
                 });

@@ -26,13 +26,14 @@
         ng-click="selectStop($event, stop)"
       ></ui-gmap-marker>
 
-      <ui-gmap-circle
+      <ui-gmap-marker
         ng-if="selectedStop"
-        center="{
+        idkey="'ohhalalala'"
+        coords="{
+          latitude:  selectedStop.coordinates.coordinates[1],
           longitude: selectedStop.coordinates.coordinates[0],
-          latitude: selectedStop.coordinates.coordinates[1],
         }"
-        radius="50">
+        options="pinOptions">
       </ui-gmap-circle>
     </ui-gmap-google-map>
     <div class="ion-list-header">{{busStops.length}} stops available</div>

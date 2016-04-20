@@ -1,4 +1,3 @@
-'use strict';
 
 export default [
     '$scope',
@@ -21,9 +20,9 @@ function(
     TripService,
     UserService
 ){
-  $scope.currentState = 'ticket';
+    $scope.currentState = 'ticket';
 
-  $scope.map = {
+    $scope.map = {
 		center: { latitude: 1.370244, longitude: 103.823315 },
 		zoom: 10,
 		mapControl: {},
@@ -53,19 +52,19 @@ function(
 				opacity: 0,
 			},
 			icons: [{
-        icon: {
+                icon: {
 					path: 'M 0,-1 0,1',
 					strokeOpacity: 0.5,
 					scale: 3
-        },
-        offset: '0',
-        repeat: '20px'
+                },
+                offset: '0',
+                repeat: '20px'
 			}]
 		}],
 	};
 
 	$scope.user = UserService.getLocalJsonUserData();
-  $scope.tickets = {
+	$scope.tickets = {
 		today: [],
 		soon: []
 	}
@@ -79,7 +78,7 @@ function(
   var googleMaps;
   var timerInterval = 8000; //8s refresh for bus location
 
-  //generate QR Code
+			//generate QR Code
   new QRCode(document.getElementById("qr-code-bg"), 'ticket code goes here');
 
 	function addBusStops() {

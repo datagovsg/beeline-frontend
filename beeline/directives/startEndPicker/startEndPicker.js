@@ -26,6 +26,10 @@ export default [
         isValid: '=',
         startPoint: '=',
         endPoint: '=',
+        setPoint: '=',
+        control: '=',
+        disabled: '=',
+        mode: '=',
         onsubmit: '@',
       },
       link: function (scope, elem, attrs) {
@@ -42,15 +46,16 @@ export default [
         });
 
         scope.prompt = scope.prompt || 'Next'
-        scope.setPoint = 'start';
-        scope.startPoint = _.extend(scope.startPoint || {}, {
+        console.log(scope.setPoint);
+        scope.setPoint = scope.setPoint === undefined ? 'start' : scope.setPoint;
+        scope.startPoint = _.extend({
           text: '',
           coordinates: null,
-        })
-        scope.endPoint = _.extend(scope.endPoint || {}, {
+        }, scope.startPoint || {})
+        scope.endPoint = _.extend({
           text: '',
           coordinates: null,
-        })
+        }, scope.endPoint || {})
         scope.lineBetween = [];
 
         scope.$watchGroup([
@@ -63,6 +68,9 @@ export default [
                 scope.startPoint.coordinates,
                 scope.endPoint.coordinates
               ]
+            }
+            else {
+              scope.lineBetween = [];
             }
         })
 
@@ -142,16 +150,12 @@ export default [
             dragstart: function(map, e, args) {
             },
             zoom_changed: function(map, e, args) {
-              scope.$apply(() => {
-                updateCenter(map);
-                updateLocationText(map, e, args);
-              })
+              updateCenter(map);
+              updateLocationText(map, e, args);
             },
             dragend : function(map, e, args) {
-              scope.$apply(() => {
-                updateCenter(map);
-                updateLocationText(map, e, args);
-              })
+              updateCenter(map);
+              updateLocationText(map, e, args);
             },
           }
 
@@ -165,21 +169,35 @@ export default [
 
         function fitToPoints() {
           var gmap = scope.map.control.getGMap();
+          if (scope.startPoint.coordinates &&
+            scope.endPoint.coordinates) {
 
-          var bounds = new google.maps.LatLngBounds();
+            var bounds = new google.maps.LatLngBounds();
 
-          bounds.extend(new google.maps.LatLng({
-            lat: scope.startPoint.coordinates.latitude,
-            lng: scope.startPoint.coordinates.longitude,
-          }))
-          bounds.extend(new google.maps.LatLng({
-            lat: scope.endPoint.coordinates.latitude,
-            lng: scope.endPoint.coordinates.longitude,
-          }))
+            bounds.extend(new google.maps.LatLng({
+              lat: scope.startPoint.coordinates.latitude,
+              lng: scope.startPoint.coordinates.longitude,
+            }))
+            bounds.extend(new google.maps.LatLng({
+              lat: scope.endPoint.coordinates.latitude,
+              lng: scope.endPoint.coordinates.longitude,
+            }))
 
-          gmap.fitBounds(bounds);
+            gmap.fitBounds(bounds);
+          }
+          else {
+            gmap.setCenter({
+              lat: 1.38,
+              lng: 103.8,
+            })
+            gmap.setZoom(11);
+          }
         }
-
+        scope.$watch('control', function() {
+          if (scope.control) {
+            scope.control.fitToPoints = fitToPoints;
+          }
+        });
         scope.nextBtnClick = function() {
           if (scope.setPoint == 'start') {
             if (scope.startPoint.coordinates) {
@@ -203,6 +221,8 @@ export default [
           }
         };
         scope.setSetPoint = function(what) {
+          if (scope.disabled)
+            return;
           scope.setPoint = what;
 
           if (scope[what + 'Point'].coordinates) {
@@ -293,7 +313,8 @@ export default [
           $cordovaGeolocation
           .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
           .then(function(userpos){
-            scope.map.control.getGMap().panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude));
+            var gmap = scope.map.control.getGMap()
+            gmap.panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude));
             setTimeout(function(){
               gmap.setZoom(15);
             }, 300);

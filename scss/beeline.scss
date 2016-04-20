@@ -1,4 +1,4 @@
-// Styling for elements that exist across the app 
+// Styling for elements that exist across the app
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ionic style overrides
@@ -16,9 +16,13 @@
   background-position: cener;
 }
 
-.item-input input:not([type]), 
+.item-input input:not([type]),
 .item-input input[type="text"] {
   text-align: right;
+}
+.big-yellow-centered {
+  display: block;
+  margin: 0 auto;
 }
 
 .button-block {

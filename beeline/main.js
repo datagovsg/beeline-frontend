@@ -1,5 +1,6 @@
 import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
+import {companyLogo} from './shared/imageSources';
 // Service Imports
 import UserService from './services/UserService.js';
 import RoutesService from './services/RoutesService.js'; //OK
@@ -11,6 +12,7 @@ import TicketService from './services/TicketService.js';
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
+import MapOptionsService from './services/MapOptions.js'
 // Controller Imports
 import IntroSlidesController from './controllers/IntroSlidesController.js'; //OK
 import RoutesController from './controllers/RoutesController.js'; //OK
@@ -30,6 +32,7 @@ import VerifyController from './controllers/VerifyController';
 // Directive Imports
 import loginItem from './directives/loginItem/loginItem.js'; //OK
 import RevGeocode from './directives/revGeocode/revGeocode';
+import FancyPrice from './directives/fancyPrice/fancyPrice';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';
 import StartEndPicker from './directives/startEndPicker/startEndPicker';
@@ -70,6 +73,7 @@ var app = angular.module('beeline', [
 .filter('routeEndTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].time : '')
 .filter('routeStartRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].stop.road : '')
 .filter('routeEndRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].stop.road : '')
+.filter('companyLogo', () => companyLogo)
 .filter('monthNames', function () {
     return function (i) {
         monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
@@ -86,6 +90,7 @@ var app = angular.module('beeline', [
 .factory('OneMapService', OneMapService)
 .factory('DateService', DateService)
 .factory('StripeService', StripeService)
+.service('MapOptions', MapOptionsService)
 .controller('IntroSlidesController', IntroSlidesController)
 .controller('RoutesController', RoutesController)
 .controller('RoutesMapController', RoutesMapController)
@@ -113,6 +118,7 @@ var app = angular.module('beeline', [
 .directive('busStopSelector', BusStopSelector)
 .directive('priceCalculator', PriceCalculator)
 .directive('revGeocode', RevGeocode)
+.directive('fancyPrice', FancyPrice)
 .directive('routeItem', routeItem)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {

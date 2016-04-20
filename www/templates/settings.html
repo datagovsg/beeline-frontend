@@ -6,17 +6,20 @@
     <div class="list">
 
       <div class="item item-divider" ng-if="data.user">Account</div>
-      <label class="item item-input" ng-if="data.user">
-        <span class="input-label">Name</span>
-        <input type="text" ng-model="data.user.name"/>
+      <label class="item" ng-if="data.user"
+       ng-click="updateUserInfo('name')">
+       Name
+        <span class="item-note">{{data.user.name}}</span>
       </label>
-      <label class="item item-input" ng-if="data.user">
-        <span class="input-label">Email</span>
-        <input type="text" ng-model="data.user.email"/>
+      <label class="item" ng-if="data.user"
+       ng-click="updateUserInfo('email')">
+        Email
+        <span class="item-note">{{data.user.email}}</span>
       </label>
-      <label class="item item-input" ng-if="data.user">
-        <span class="input-label">Phone Number</span>
-        <input type="text" ng-model="data.user.telephone"/>
+      <label class="item" ng-if="data.user"
+       ng-click="updateTelephone()">
+        Phone Number
+        <span class="item-note">{{data.user.telephone}}</span>
       </label>
       <a class="item item-icon-right" ng-if="data.user">
         Booking History
@@ -24,7 +27,16 @@
       </a>
 
       <div class="item item-divider">About Beeline</div>
-      <a class="item" ui-sref='intro'>Quick Tour</a>
+
+      <ion-item ui-sref='intro'>Quick Tour</ion-item>
+      <ion-item ng-click="viewFAQ()">
+        <!-- using Javascript here because we want to enforce
+        viewing a non-local page in inAppBrowser -->
+        FAQ
+      </ion-item>
+      <ion-item ng-click="viewPrivacyPolicy()">Privacy Policy</ion-item>
+      <ion-item ng-click="viewContactUs()">Contact Us
+      </ion-item>
 
     </div>
 
