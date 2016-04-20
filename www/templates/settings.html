@@ -6,15 +6,18 @@
     <div class="list">
 
       <div class="item item-divider" ng-if="data.user">Account</div>
-      <label class="item item-input" ng-if="data.user">
+      <label class="item item-input" ng-if="data.user"
+       ng-click="updateUserInfo('name')">
         <span class="input-label">Name</span>
         <input type="text" ng-model="data.user.name"/>
       </label>
-      <label class="item item-input" ng-if="data.user">
+      <label class="item item-input" ng-if="data.user"
+       ng-click="updateUserInfo('email')">
         <span class="input-label">Email</span>
         <input type="text" ng-model="data.user.email"/>
       </label>
-      <label class="item item-input" ng-if="data.user">
+      <label class="item item-input" ng-if="data.user"
+       ng-click="updateTelephone()">
         <span class="input-label">Phone Number</span>
         <input type="text" ng-model="data.user.telephone"/>
       </label>
@@ -24,7 +27,16 @@
       </a>
 
       <div class="item item-divider">About Beeline</div>
-      <a class="item" ui-sref='intro'>Quick Tour</a>
+      
+      <ion-item ui-sref='intro'>Quick Tour</ion-item>
+      <ion-item ng-click="viewFAQ()">
+        <!-- using Javascript here because we want to enforce
+        viewing a non-local page in inAppBrowser -->
+        FAQ
+      </ion-item>
+      <ion-item ng-click="viewPrivacyPolicy()">Privacy Policy</ion-item>
+      <ion-item ng-click="viewContactUs()">Contact Us
+      </ion-item>
 
     </div>
 

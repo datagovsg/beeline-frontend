@@ -33,7 +33,7 @@ function(
     .then((res) => {
       if (res) {
         UserService.logOut();
-        $scope.user = null;
+        $scope.data.user = null;
       }
     })
   }
@@ -82,7 +82,7 @@ function(
             })
             .then((userResponse) => {
               UserService.loadUserData();
-              $scope.user = userResponse.data;
+              $scope.data.user = userResponse.data;
             })
           }
         })

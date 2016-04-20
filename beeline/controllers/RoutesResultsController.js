@@ -1,7 +1,5 @@
 export default function($scope, $stateParams, RoutesService) {
-
   $scope.data = {}
-  $scope.searchResults = [];
 
   function updateSearch() {
     $scope.search = {
@@ -24,8 +22,7 @@ export default function($scope, $stateParams, RoutesService) {
       endTime: new Date().getTime() + 30*24*60*60*1000, // search 30 days into the future
     })
     .then(function(routes) {
-      $scope.searchResults = routes
-      console.log(routes);
+      $scope.data.activeRoutes = routes
     });
   });
 }
