@@ -29,13 +29,9 @@
       <div class="item item-divider">About Beeline</div>
 
       <ion-item ui-sref='intro'>Quick Tour</ion-item>
-      <ion-item ng-click="viewFAQ()">
-        <!-- using Javascript here because we want to enforce
-        viewing a non-local page in inAppBrowser -->
-        FAQ
-      </ion-item>
-      <ion-item ng-click="viewPrivacyPolicy()">Privacy Policy</ion-item>
-      <ion-item ng-click="viewContactUs()">Contact Us
+      <ion-item ng-click="faqModal.show()">FAQ</ion-item>
+      <ion-item ng-click="privacyPolicyModal.show()">Privacy Policy</ion-item>
+      <ion-item ng-click="contactUsModal.show()">Contact Us
       </ion-item>
 
     </div>

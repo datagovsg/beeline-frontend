@@ -10,26 +10,35 @@ export default function(UserService) {
     },
     template: loginItemTemplate,
     controller: function($scope, $ionicPopup) {
-
-      // Check the user each time before entering
       $scope.$watch(function() {
         return UserService.user
       }, function(newUser) {
+        console.log("new user detected");
         $scope.user = newUser;
+
+        // What to configure if the user is logged in 
+        if ($scope.user) {
+          $scope.buttonText = "Log Out";
+          $scope.buttonAction = function() {
+            $ionicPopup.confirm({
+              title: 'Logout',
+              template: 'Do you want to log out?'
+            })
+            .then(function(response) {
+              if (response) UserService.logOut();
+            });
+          };
+        } 
+
+        // What to configure if the user is logged out
+        else {
+          $scope.buttonText = "Log In";
+          $scope.buttonAction = function() {
+            UserService.logIn();
+          }
+        }
+
       });
-
-      //Log in / Log out button in settings page
-      $scope.logIn = function () { UserService.logIn(); };
-      $scope.logOut = function () {
-        $ionicPopup.confirm({
-          title: 'Logout',
-          template: 'Do you want to log out?'
-        })
-        .then(function(response) {
-          if (response) UserService.logOut();
-        })
-      };
-
     }
   };
 };

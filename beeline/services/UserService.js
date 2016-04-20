@@ -11,6 +11,8 @@ export default function UserService($http, $state, $ionicPopup) {
     sessionToken: window.localStorage['sessionToken'] || null,
     telephone: null,
 
+    // Wrapper for making http requests to server
+    // Adds the appropriate http headers and token if signed in
     beeline(options) {
       options.url = 'http://staging.beeline.sg' + options.url;
       options.headers = options.headers || {}
@@ -36,6 +38,7 @@ export default function UserService($http, $state, $ionicPopup) {
       return $http(options);
     },
 
+    
     loadUserData() {
       if (this.sessionToken) {
         userPromise = this.beeline({
