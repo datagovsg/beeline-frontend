@@ -28,24 +28,43 @@
     }
 
     table {
-      width: 100%;
       padding: 0px;
       margin: 0px;
       border-spacing: 0px;
 
-      td {
-        width: 14.2%;
-        padding: 10px 5px 10px 5px;
-        text-align: center;
+      &.dates {
+        width: 100%;
+
+        td {
+          width: 14.2%;
+          padding: 10px 5px 10px 5px;
+          text-align: center;
+        }
       }
 
-      td:not(.valid) {
+      &.legend {
+        width: 80%;
+        max-width: 400px;
+        min-width: 200px;
+        margin: 1em auto;
+
+        td:nth-of-type(1) {
+          width: 30%;
+          max-width: 50px;
+        }
+      }
+
+      td.invalid {
         background-color: #DDD;
         border-left: 1px solid #DDD;
         color: #BBB;
 
         &.first-day-of-month {
           border-left: 1px solid #CCC;
+        }
+
+        &.previously-booked {
+          color: #F00;
         }
       }
       td.valid {

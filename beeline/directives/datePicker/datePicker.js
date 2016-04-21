@@ -31,26 +31,19 @@ function DatePickerDirective(DateService) {
     $scope.updateAvailability = function () {
       var realStart = new Date($scope.startDate.getTime() - $scope.startDate.getUTCDay()*24*60*60*1000);
 
+      if (!isFinite(realStart.getTime())) {
+        $scope.weeks = [];
+        return;
+      }
+
       // sort them
       // This step can be optimized by caching the sort (btw)
-      var objValidDates = {}; //_.sortBy($scope.validDates);
-      var objExhaustedDates = {}; //_.sortBy($scope.exhaustedDates);
-      var objInvalidStopDates = {}; //_.sortBy($scope.invalidStopDates);
+      var objValidDates = _.keyBy($scope.validDates, dt => dt.getTime())
+      var objExhaustedDates = _.keyBy($scope.exhaustedDates, dt => dt.getTime())
+      var objInvalidStopDates = _.keyBy($scope.invalidStopDates, dt => dt.getTime());
+      var objBookedDates = _.keyBy($scope.bookedDates, dt => dt.getTime());
 
       console.log('updateAvailability()!');
-
-      if ($scope.validDates) {
-        for (let dt of $scope.validDates)
-          objValidDates[dt.getTime()] = true;
-      }
-      if ($scope.exhaustedDates) {
-        for (let dt of $scope.exhaustedDates)
-          objExhaustedDates[dt.getTime()] = true;
-      }
-      if ($scope.invalidStopDates) {
-        for (let dt of $scope.invalidStopDates)
-          objInvalidStopDates[dt.getTime()] = true;
-      }
 
       //console.log($scope);
       //console.log(objValidDates);
@@ -70,6 +63,7 @@ function DatePickerDirective(DateService) {
           dayData.isValid = dayData.time in objValidDates;
           dayData.isExhausted = dayData.time in objExhaustedDates;
           dayData.isInvalidStop = dayData.time in objInvalidStopDates;
+          dayData.isBookedBefore = dayData.time in objBookedDates;
           dayData.isPrimaryMonth = dayData.date.getUTCMonth() == $scope.startDate.getUTCMonth();
           dayData.isWeekend = dayData.date.getUTCDay() == 0 || dayData.date.getUTCDay() == 6;
         }
@@ -77,7 +71,7 @@ function DatePickerDirective(DateService) {
     }; /* updateAvailability() */
     $scope.$watchGroup([
       'startDate', 'validDates', 'exhaustedDates',
-      'invalidStopDates','selectedDates'],
+      'invalidStopDates','selectedDates', 'bookedDates'],
       () => $scope.updateAvailability()
       );
     $scope.updateAvailability();
@@ -114,7 +108,7 @@ function DatePickerDirective(DateService) {
       var isInNewSelection = isDragging &&
                   $scope.state.dragFirst.time <= day.time &&
                   day.time <= $scope.state.dragLast.time;
-      var isValid = day.isValid && !day.isExhausted && !day.isInvalidStop;
+      var isValid = day.isValid && !day.isExhausted && !day.isInvalidStop && !day.isBookedBefore;
 
       return {
         selected: isInSelection,
@@ -123,9 +117,10 @@ function DatePickerDirective(DateService) {
         sunday: day.date.getDay() == 0,
         weekend: day.isWeekend,
         valid: isValid,
+        invalid: !isValid,
         'sold-out': day.isExhausted,
         'invalid-stop': day.isInvalidStop,
-        'previously-booked': false, // FIXME
+        'previously-booked': day.isBookedBefore, // FIXME
       }
     }
 
@@ -249,15 +244,17 @@ function DatePickerDirective(DateService) {
     restrict: 'E',
     scope: {
       selectedDates: '=dates',
-      startDate: '=',
+      startDate: '@',
       startYear: '=',
       startMonth: '=',
       minDate: '=',
       maxDate: '=',
       validDates: '=',
-      exhaustedDates: '=',
-      invalidStopDates: '=',
+      exhaustedDates: '=', /* Tickets sold out on that day */
+      invalidStopDates: '=', /* Dates on which selected stop is not served */
+      bookedDates: '=', /* Dates with existing tickets */
       numWeeks: '=',
+      showLegend: '@',
     },
     template: datePickerTemplate,
     link: link,

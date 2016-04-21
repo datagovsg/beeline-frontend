@@ -17,7 +17,7 @@
     <i class="icon ion-chevron-right next" ng-click="nextMonth()"></i>
   </div>
 
-  <table>
+  <table class="dates">
     <thead>
       <tr>
         <th>Sun</th>
@@ -48,5 +48,20 @@
         </td>
       </tr>
     </tbody>
+  </table>
+
+  <table class="legend" ng-if="showLegend">
+    <tr>
+      <td class="invalid">#</td>
+      <td>Not available / fully booked</td>
+    </tr>
+    <tr>
+      <td class="selected valid">#</td>
+      <td>Available dates</td>
+    </tr>
+    <tr>
+      <td class="invalid previously-booked">#</td>
+      <td>Prior booking</td>
+    </tr>
   </table>
 </div>

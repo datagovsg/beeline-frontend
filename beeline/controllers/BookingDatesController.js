@@ -6,8 +6,9 @@ export default [
     'BookingService',
     'RoutesService',
     '$stateParams',
+    'TicketService',
     function ($scope, $state, $http, BookingService,
-    RoutesService,$stateParams) {
+    RoutesService, $stateParams, TicketService) {
       $scope.book = {
         routeId: '',
         route: null,
@@ -19,6 +20,7 @@ export default [
         soldOutDates: [],
         invalidStopDates: [],
         selectedDates: [],
+        bookedDates: [],
         minDate: null,
         maxDate: null,
       };
@@ -26,12 +28,21 @@ export default [
         $scope.book.routeId = $stateParams.routeId;
         $scope.book.boardStopId =  parseInt($stateParams.boardStop);
         $scope.book.alightStopId =  parseInt($stateParams.alightStop);
+
         RoutesService.getRoute($scope.book.routeId)
         .then((route) => {
           $scope.book.route = route;
-          console.log($scope.book.route);
           updateCalendar();
         });
+
+        TicketService.getTicketsByRouteId($scope.book.routeId)
+        .then((tickets) => {
+          if (!tickets) {
+            $scope.book.bookedDates = [];
+            return;
+          }
+          $scope.book.bookedDates = tickets.map(ticket => new Date(ticket.boardStop.trip.date))
+        })
       });
 
       // watches
@@ -54,8 +65,7 @@ export default [
         $scope.book.invalidStopDates = [];
         $scope.book.minDate = null;
         $scope.book.maxDate = null;
-        console.log($scope.book.route);
-        console.log($scope.book.route.trips);
+
         for (let trip of $scope.book.route.trips) {
           // FIXME: disable today if past the booking window
           $scope.book.validDates.push(trip.date);
