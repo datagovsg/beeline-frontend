@@ -2,6 +2,12 @@
 
 #pg_booking-confirmation {
   table {
+    width: 100%;
     margin: auto;
+    tr {
+      td:nth-child(1) {
+        width: 80px;
+      }
+    }
   }
 }
