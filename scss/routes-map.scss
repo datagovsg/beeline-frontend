@@ -46,14 +46,9 @@
   }
 
   // Place the search button at the bottom of the page
-  .search-button {
-    z-index: 1;
+  .primary-button {
     position: absolute;
-    left: 0;
-    right: 0;
     bottom: $content-padding;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   // Have the map fill the container

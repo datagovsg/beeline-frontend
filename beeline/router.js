@@ -102,7 +102,7 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/tickets',
     views: {
       'tab-tickets': {
-        templateUrl: 'templates/tab-tickets.html',
+        templateUrl: 'templates/tickets.html',
         controller: 'TicketsController'
       }
     }

@@ -1,57 +1,17 @@
-#pg_tickets {
-  .scroll {
-    height: 100%;
-    background-color: #FFF;
-  }
-
-  .intro {
-    height: 100%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-
-    .gap {
-      flex-grow: 1;
+.tickets {
+  .no-tickets {
+    .item {
+      @include display-flex;
+      @include flex-direction(column);
+      @include justify-content(center);
+      @include align-items(center);
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      text-align: center;
+      p { max-width: 14em; }
     }
-
-    .msg {
-      padding-top: 135px;
-      background: url('../img/bg_tickets.png') no-repeat center top;
-      flex-grow: 0;
-
-      .title {
-        font-size: 14px;
-        font-weight: bold;
-        color: $stable;
-        margin-bottom: 20px;
-    }
-
-    .txt {
-        width: 200px;
-        margin: 0px auto;
-    }
-  }
-
-  #btnloginpls {
-    display: block;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    bottom: initial;
-      margin-top: 30px;
-    }
-
-    #btnloginpls:active {
-      margin-top: 33px;
-    }
-  }
-
-  ion-list ion-item.item {
-    padding: 0px;
-
-    .date {
-      width: 80px;
-      display:inline-block;
-    }
-  }
+  }  
 }

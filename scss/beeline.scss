@@ -11,9 +11,7 @@
 }
 
 .scroll-content {
-  background-color: $hint-color;
-  background-image: url('../img/bg_beeline.png');
-  background-position: cener;
+  background-color: $stable;
 }
 
 .item-input input:not([type]),
@@ -52,8 +50,6 @@
   @extend .button;
   @extend .button-block;
   @extend .button-energized;
-  position: absolute;
-  bottom: $content-padding;
   @include box-shadow($card-box-shadow);
 }
 
