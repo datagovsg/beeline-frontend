@@ -18,11 +18,11 @@
     display: flex;
     flex-direction: row;
     background: white;
+    height: $route-info-height;
 
     route-item {
       padding: 10px;
       width: 100%;
-      height: $route-info-height;
       background-color: #FFF;
       z-index: 1;
       flex: 1 1 auto;
@@ -44,7 +44,7 @@
   }
 
   ui-gmap-google-map {
-    top: $route-info-height;
+    top: $route-info-height + $breadcrumbs-height;
     bottom: $button-bar-height;
     width: 100%;
     left: 0;
