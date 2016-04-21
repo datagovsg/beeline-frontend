@@ -1,0 +1,143 @@
+#pg_booking {
+  $route-info-height: 60px;
+  $button-bar-height: 85px;
+  $list-offset: 10px;
+
+  /*
+  route-info: 60px;
+  map: whatever's remaining
+  button-container: 60px
+  */
+
+  .scroll, .angular-google-map-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .route-info {
+    display: flex;
+    flex-direction: row;
+    background: white;
+
+    route-item {
+      padding: 10px;
+      width: 100%;
+      height: $route-info-height;
+      background-color: #FFF;
+      z-index: 1;
+      flex: 1 1 auto;
+
+      .active {
+        display: none;
+      }
+    }
+    .price {
+      padding: 3px 5px;
+      flex: 0 0 auto;
+      align-self: flex-end;
+
+      .from {
+        color: $hint-color;
+        padding: 3px 0px;
+      }
+    }
+  }
+
+  ui-gmap-google-map {
+    top: $route-info-height;
+    bottom: $button-bar-height;
+    width: 100%;
+    left: 0;
+    position: absolute;
+
+    .angular-google-map {
+      width: 100%;
+      height: 100%;
+
+      /* Hides the terms of use */
+      .gmnoprint, .gm-style-cc {
+        display: none;
+      }
+    }
+  }
+
+  .button-bar { /* where the "Continue" button is */
+    position: absolute;
+    height: $button-bar-height;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  ion-list.stop-inputs {
+    bottom: $button-bar-height + $list-offset;
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+
+    .item {
+      padding: 5px 5px;
+    }
+
+    /* FIXME this is just arbitrarily positioned */
+    .line {
+      width: 2px;
+      height: 30px;
+      background: url('../img/RoutePairSmallLine.png') center center;
+      top: 27px;
+      left: 18px;
+      position: absolute;
+      z-index: 5;
+    }
+
+    bus-stop-selector:nth-of-type(1) .stop-description {
+      background: url('../img/RoutePairBigStart@2x.png') left 7px center no-repeat transparent;
+      background-size: 24px 24px;
+    }
+
+    bus-stop-selector:nth-of-type(2) .stop-description {
+      background: url('../img/RoutePairBigEnd@2x.png') left 7px center no-repeat transparent;
+      background-size: 24px 24px;
+    }
+  }
+
+  #userpos {
+    @include locate-me-button;
+  }
+}
+
+// FIXME: big-white-button
+.booking-stops-infowindow {
+  button {
+    border: solid 2px $royal;
+    color: $royal;
+    background: $light;
+    border-radius: 15px;
+    padding: 5px 15px;
+    display: block;
+    margin-left: 1em;
+  }
+}
+
+#changes-message {
+  table {
+    width: 100%;
+
+    tr {
+      td {
+        background-color: white;
+      }
+      td:nth-of-type(1) {
+        width: 10%;
+      }
+      td:nth-of-type(2) {
+        width: 30%;
+      }
+      td:nth-of-type(3) {
+        width: 60%;
+        text-align: left;
+      }
+    }
+  }
+}

@@ -1,22 +1,19 @@
 
 bus-stop-selector {
   display: block;
-  background-color: #FFF;
-  font-size: 12px;
-  position: relative;
+  background-color: $base-background-color;
 
   .stop-description {
     height: 34px;
     line-height: 29px;
-    padding: 3px 35px 2px 38px;
+    padding: 3px 1em 2px 38px;
     border-bottom: 1px solid #CCC;
     background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
     background-size: auto 20px;
 
-    .ng-binding {
+    .placeholder {
       white-space: nowrap;
       text-overflow: ellipsis;
-      width: 100%;
       display: inline-block;
       overflow: hidden;
     }
@@ -24,14 +21,11 @@ bus-stop-selector {
     .placeholder {
       color: #828282;
     }
-  }
 
-  .icon {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    font-size: 24px;
-    line-height: 34px;
+    .icon {
+      float: right;
+      font-size: 120%;
+    }
   }
 }
 

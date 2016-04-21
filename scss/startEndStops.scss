@@ -2,6 +2,10 @@
 $stopMarkerWidth: 30px;
 $stopMarkerRightMargin: 1em;
 
+.busnum {
+  @include bus-num;
+}
+
 .start-end {
   display: flex;
   flex-direction: column;
@@ -12,11 +16,11 @@ $stopMarkerRightMargin: 1em;
     flex-direction: row;
 
     .label {
-      color: $text-gray;
+      color: $hint-color;
       margin-bottom: 0.3em;
     }
 
-    stop-time {
+    stop-time, .stop-time {
       flex: 0 0 auto;
     }
     stop-img {
@@ -24,7 +28,7 @@ $stopMarkerRightMargin: 1em;
       text-align: center;
       width: $stopMarkerWidth;
     }
-    stop-stop {
+    stop-stop, .stop-stop {
       flex: 1 1 auto;
       display: block;
       margin-left: $stopMarkerRightMargin;

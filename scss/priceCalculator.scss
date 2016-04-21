@@ -4,6 +4,12 @@ price-calculator {
   .price-table {
     width: 100%;
 
+    &:not(.totals) {
+      td {
+        width:50%;
+      }
+    }
+
     &.totals {
       border-spacing: 5px;
       border-collapse: separate;

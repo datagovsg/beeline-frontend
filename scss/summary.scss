@@ -1,10 +1,21 @@
 #pg_summary {
-  .msg {
-    padding: 10px 16px;
-    background-color: #FFF;
-    border-bottom: 1px solid #CCC;
+
+  h3 {
+    color: $hint-color;
+    font-size: 100%;
   }
 
+  .route-info {
+    display: flex;
+    .bus-number {
+      @include bus-num;
+    }
+  }
+
+  .msg {
+    display: none;
+  }
+/*
   section {
 
     .edit {
@@ -30,45 +41,10 @@
       color: #333;
       display: inline-block;
     }
-  }
-
-  .routeinfo {
-    background-color: #FFF;
-    padding: 15px 16px 15px 16px;
-
-    route-item {
-      padding: 10px;
-      width: 100%;
-      height: 60px;
-      background-color: #FFF;
-      z-index: 1;
-
-      .active {
-        display: none;
-      }
-    }
-  }
-
-  .tripdates {
-    background-color: #FFF;
-    padding: 15px 10px;
-
-    .datesnum {
-      padding: 10px 6px 20px 6px;
-
-      span {
-        font-weight: bold;
-        font-size: 20px;
-        margin-bottom: 5px;
-      }
-    }
-
-    .qty-input .btns button{
-      display: none;
-    }
-  }
+  }*/
 
   .promo {
+    display: none;
     background-color: #FFF;
     padding: 15px 16px;
 

@@ -1,4 +1,22 @@
-<div class="datepicker"  data-tap-disabled="true">
+<div data-tap-disabled="true">
+  <div class="month-selector">
+    <i class="icon ion-chevron-left prev" ng-click="previousMonth()"></i>
+
+    <div class="mmyyyy-holder">
+      <select class="mm" ng-model="startMonth"
+        ng-options="i as monthNames[i] for i in displayMonths"
+      >
+      </select>
+
+      <select class="yyyy" ng-model="startYear"
+        ng-options="i for i in displayYears"
+      >
+      </select>
+    </div>
+
+    <i class="icon ion-chevron-right next" ng-click="nextMonth()"></i>
+  </div>
+
   <table>
     <thead>
       <tr>
@@ -31,21 +49,4 @@
       </tr>
     </tbody>
   </table>
-  <div class="monthsel">
-    <i class="icon ion-chevron-left prev" ng-click="previousMonth()"></i>
-
-    <div class="mmyyyy-holder">
-      <select class="mm" ng-model="startMonth"
-        ng-options="i as monthNames[i] for i in displayMonths"
-      >
-      </select>
-
-      <select class="yyyy" ng-model="startYear"
-        ng-options="i for i in displayYears"
-      >
-      </select>
-    </div>
-
-    <i class="icon ion-chevron-right next" ng-click="nextMonth()"></i>
-  </div>
 </div>

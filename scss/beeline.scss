@@ -20,10 +20,6 @@
 .item-input input[type="text"] {
   text-align: right;
 }
-.big-yellow-centered {
-  display: block;
-  margin: 0 auto;
-}
 
 .button-block {
   max-width: 80%;
@@ -58,13 +54,48 @@
 }
 
 
-// .big-yellow {
-//   @include big-yellow();
-// }
+.big-yellow {
+  @include big-yellow();
+}
 
-// .big-yellow-fixed {
-//   @include big-yellow-fixed();
-// }
+.big-yellow-fixed {
+  @include big-yellow-fixed();
+}
+
+.big-yellow-centered {
+  display: block;
+  margin: 0 auto;
+}
+
+th {
+  font-weight: normal;
+  text-align: center;
+  background-color: #f5f5f5;
+  color: $royal;
+  padding: 10px;
+  border-bottom: solid 2px $royal;
+}
+
+tr {
+  td {
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid #CCC;
+  }
+
+  td:first-of-type {
+  }
+
+  td:last-of-type {
+    width: 120px;
+  }
+
+  &.nosel td{
+    padding: 20px 0px;
+    color: #999;
+  }
+}
+
 
 // /* Error messages during form validation */
 // .err {

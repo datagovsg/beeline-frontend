@@ -1,5 +1,5 @@
 <ion-view id="pg_booking" view-title="Select Pick-up and Drop-off Points">
-  <ion-content class="fullscreen-map">
+  <ion-content class="fullscreen-map" has-bouncing="false">
   <div class="route-info">
     <route-item route="book.route"></route-item>
 
@@ -71,7 +71,8 @@
   </ui-gmap-google-map>
 
   <div id="userpos" ng-click="getUserLocation()"></div>
-  <div id="stopinputs">
+
+  <ion-list class="stop-inputs">
     <bus-stop-selector
       model="book.boardStop"
       bus-stops="book.boardStops"
@@ -99,15 +100,19 @@
       pin-options="map.markerOptions.endMarker"
       >
     </bus-stop-selector>
-    <qty-input
-      placeholder="{{book.ptxt}}"
-      ng-model="book.qty"
-      >
-    </qty-input>
-  </div>
+    <div class="item">
+      Number of Passengers
+      <qty-input
+        placeholder="{{book.ptxt}}"
+        ng-model="book.qty"
+        class="item-note"
+        >
+      </qty-input>
+    </div>
+  </ion-list>
 
-  <div class="item button-container">
-    <button class="big-yellow big-yellow-centered"
+  <div class="item button-bar">
+    <button class="button big-yellow big-yellow-centered"
       ui-sref="tabs.booking-dates({
         routeId: book.routeId,
         boardStop: book.boardStop,

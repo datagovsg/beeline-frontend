@@ -86,10 +86,13 @@ function DatePickerDirective(DateService) {
     $scope.selectDate = function (date) {
       var i;
       if ((i = $scope.selectedDates.indexOf(date.time)) == -1) {
-      $scope.selectedDates.push(date.time);
+        /* Ensure date is valid! */
+        if (date.isValid && !date.isExhausted && !date.isInvalidStop) {
+          $scope.selectedDates.push(date.time);
+        }
       }
       else {
-      $scope.selectedDates.splice(i,1);
+        $scope.selectedDates.splice(i,1);
       }
     }
 
@@ -113,17 +116,17 @@ function DatePickerDirective(DateService) {
                   day.time <= $scope.state.dragLast.time;
       var isValid = day.isValid && !day.isExhausted && !day.isInvalidStop;
 
-      return ((isValid && isInSelection && isInNewSelection) ? 'selected dragged'
-          :(isValid && isInSelection && !isInNewSelection) ? 'selected'
-          :(isValid && !isInSelection && isInNewSelection) ? 'dragged'
-          :(isValid && !isInSelection && !isInNewSelection) ? ''
-          :/* invalid days... why? */ [(day.isValid ? '' : 'not-running'),
-                         (day.isExhausted ? 'sold-out' : ''),
-                         (day.isInvalidStop ? 'invalid-stop' : ''),
-                         ].join(' '))
-          + (day.isWeekend ? ' weekend' : '')
-          + (day.isPrimaryMonth ? ' primary' : '')
-
+      return {
+        selected: isInSelection,
+        dragged: isDragging && isInNewSelection,
+        'first-day-of-month': day.date.getDate() == 1,
+        sunday: day.date.getDay() == 0,
+        weekend: day.isWeekend,
+        valid: isValid,
+        'sold-out': day.isExhausted,
+        'invalid-stop': day.isInvalidStop,
+        'previously-booked': false, // FIXME
+      }
     }
 
     $scope.previousMonth = function () {
