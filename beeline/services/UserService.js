@@ -11,15 +11,16 @@ export default function UserService($http, $state, $ionicPopup) {
     sessionToken: window.localStorage['sessionToken'] || null,
     telephone: null,
 
-    // Wrapper for making http requests to server
+    // General purpose wrapper for making http requests to server
     // Adds the appropriate http headers and token if signed in
     beeline(options) {
       options.url = 'http://staging.beeline.sg' + options.url;
       options.headers = options.headers || {}
+      // Attach the session token if logged in
       if (this.sessionToken) {
         options.headers.authorization = 'Bearer ' + this.sessionToken;
       }
-
+      // Attach headers to track execution environment
       if (window.device) {
         options.headers['Beeline-Device-UUID'] = window.device.uuid;
         options.headers['Beeline-Device-Model'] = window.device.model;
@@ -34,7 +35,6 @@ export default function UserService($http, $state, $ionicPopup) {
         options.headers['Beeline-Device-Model'] = window.navigator.userAgent;
         options.headers['Beeline-Device-Platform'] = 'Browser';
       }
-
       return $http(options);
     },
 
@@ -51,6 +51,7 @@ export default function UserService($http, $state, $ionicPopup) {
       }
       else {
         userPromise = Promise.resolve(null);
+        this.user = null;
       }
     },
 
@@ -102,10 +103,8 @@ export default function UserService($http, $state, $ionicPopup) {
     },
 
     /**
-
     Prepares an update of the telephone number.
     @returns Promise.<update token>
-
     */
     requestUpdateTelephone: function(telephone) {
       return this.beeline({
@@ -137,6 +136,7 @@ export default function UserService($http, $state, $ionicPopup) {
       })
       .then((userResponse) => {
         userPromise = Promise.resolve(userResponse.data);
+        this.user = userResponse.data;
       })
     },
 
@@ -176,6 +176,7 @@ export default function UserService($http, $state, $ionicPopup) {
     logOut: function() {
       this.sessionToken = null;
       this.userPromise = Promise.resolve(null);
+      this.user = null;
       delete window.localStorage['sessionToken'];
       instance.loadUserData();
     },

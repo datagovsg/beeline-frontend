@@ -13,7 +13,6 @@ export default function(UserService) {
       $scope.$watch(function() {
         return UserService.user
       }, function(newUser) {
-        console.log("new user detected");
         $scope.user = newUser;
 
         // What to configure if the user is logged in 

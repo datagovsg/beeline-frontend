@@ -5,17 +5,32 @@ import contactUsModalTemplate from '../templates/contact-us-modal.html';
 export default [
   '$scope',
   'UserService',
-  '$state',
   '$ionicModal',
   '$ionicPopup',
   function(
     $scope,
     UserService,
-    $state,
     $ionicModal,
     $ionicPopup
   ) {
     $scope.data = {}
+
+    // Track the login state of the user service
+    $scope.$watch(function() {
+      return UserService.user;
+    }, function(newUser) {
+      $scope.user = UserService.user;
+    });
+    
+    $scope.logIn = function() { UserService.logIn(); };
+    $scope.logOut = function() { 
+      $ionicPopup.confirm({
+        title: "Are you sure you want to log out?",
+        subTitle: "You won't be able to see your upcoming trips or make new bookings."
+      }).then(function(response) {
+        if (response) UserService.logOut();
+      });
+    };
 
     // Generic event handler to allow user to update their
     // name, email
