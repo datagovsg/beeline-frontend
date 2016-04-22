@@ -40,34 +40,35 @@ export default [
     ticketPromise.then((ticket) => { $scope.ticket = ticket; });
     routePromise.then((route) => { $scope.route = route; });
 
-    // // Draw the bus stops on the map
-    // Promise.all([ticketPromise, uiGmapGoogleMapApi])
-    // .then(function(values) {
-    //   var ticket = values[0];
-    //   var googleMaps = values[1];
-    //   var board = ticket.boardStop.stop.coordinates.coordinates;
-    //   var alight = ticket.alightStop.stop.coordinates.coordinates;
-    //   // Board marker
-    //   $scope.map.markers[1] = {
-    //     id: 'boardStop',
-    //     coords: { latitude: board[1], longitude: board[0] },
-    //     icon: {
-    //       url: 'img/icon-stop-big.png',
-    //       scaledSize: new googleMaps.Size(25,25),
-    //       anchor: new googleMaps.Point(13,25)
-    //     }
-    //   };
-    //   // //Alight marker
-    //   // $scope.map.markers[2] = {
-    //   //   id: 'alightstop',
-    //   //   coords: { latitude: alight[1], longitude: alight[0] },
-    //   //   icon: {
-    //   //     url: 'img/icon-marker-big.png',
-    //   //     scaledSize: new googleMaps.Size(25,30),
-    //   //     anchor: new googleMaps.Point(13,30)
-    //   //   }
-    //   // };
-    // });
+    // Draw the bus stops on the map
+    Promise.all([ticketPromise, uiGmapGoogleMapApi])
+    .then(function(values) {
+      var ticket = values[0];
+      var googleMaps = values[1];
+      var board = ticket.boardStop.stop.coordinates.coordinates;
+      var alight = ticket.alightStop.stop.coordinates.coordinates;
+      // Board marker
+      $scope.map.markers.push({
+        id: 'boardStop',
+        coords: { latitude: board[1], longitude: board[0] },
+        icon: {
+          url: 'img/MapRoutePickupStop@2x.png',
+          scaledSize: new googleMaps.Size(25,25),
+          anchor: new googleMaps.Point(13,13)
+        }
+      });
+      //Alight marker
+      $scope.map.markers.push({
+        id: 'alightstop',
+        coords: { latitude: alight[1], longitude: alight[0] },
+        icon: {
+          url: 'img/MapRouteDropoffStop@2x.png',
+          scaledSize: new googleMaps.Size(25,25),
+          anchor: new googleMaps.Point(13,13)
+        }
+      });
+    });
+
 
     var mapPromise = new Promise(function(resolve) {
       $scope.$watch('map.control.getGMap', function(getGMap) {

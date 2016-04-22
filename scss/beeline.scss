@@ -53,6 +53,12 @@
   @include box-shadow($card-box-shadow);
 }
 
+// Hide the google maps boilerplate annotations 
+.gmnoprint, 
+.gm-style-cc, 
+.gm-style>div:last-child {
+  display:none;
+}
 
 // .big-yellow {
 //   @include big-yellow();

@@ -61,16 +61,4 @@
     z-index: 0;
   }
 
-  // Hide the google maps boilerplate annotations 
-  .gmnoprint, 
-  .gm-style-cc {
-    display:none;
-  }
-  
-  // Hide the google logo in bottom left
-  .gm-style>div:last-child {
-    display: none;
-  }
-
-
 }
