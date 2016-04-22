@@ -139,7 +139,7 @@ export default function($stateProvider, $urlRouterProvider) {
     controller: 'LoginController'
   })
   .state('login-verify', {
-    url: '/login-verify',
+    url: '/login-verify?telephone',
     templateUrl: 'templates/verify.html',
     controller: 'VerifyController'
   });

@@ -2,14 +2,15 @@ import querystring from 'querystring'
 import uuid from 'uuid';
 
 export default function UserService($http, $state, $ionicPopup) {
-  var preLoginState;
-  var preLoginParams;
+  var preLoginState = null;
+  var preLoginParams = null;
   var userPromise = Promise.resolve(null);
+  var sessionToken = window.localStorage['sessionToken'] || null;
 
   var instance = {
-    user: null,
-    sessionToken: window.localStorage['sessionToken'] || null,
-    telephone: null,
+    // If user data is set then user is logged in
+    // If its null the user is logged out
+    user: window.localStorage['beelineUser'] ? JSON.parse(window.localStorage['beelineUser']) : null,
 
     // General purpose wrapper for making http requests to server
     // Adds the appropriate http headers and token if signed in
@@ -17,8 +18,8 @@ export default function UserService($http, $state, $ionicPopup) {
       options.url = 'http://staging.beeline.sg' + options.url;
       options.headers = options.headers || {}
       // Attach the session token if logged in
-      if (this.sessionToken) {
-        options.headers.authorization = 'Bearer ' + this.sessionToken;
+      if (instance.sessionToken) {
+        options.headers.authorization = 'Bearer ' + sessionToken;
       }
       // Attach headers to track execution environment
       if (window.device) {
@@ -38,85 +39,54 @@ export default function UserService($http, $state, $ionicPopup) {
       return $http(options);
     },
 
-    
-    loadUserData() {
-      if (this.sessionToken) {
-        userPromise = this.beeline({
-          method: 'GET',
-          url: '/user',
-        })
-        .then((response) => {
-          return this.user = response.data;
-        })
-      }
-      else {
-        userPromise = Promise.resolve(null);
-        this.user = null;
-      }
-    },
-
-    sendTelephoneVerificationCode: function(no){
-      return this.beeline({
+    // Requests a verification code to log in 
+    sendTelephoneVerificationCode: function(number) {
+      return instance.beeline({
         method: 'POST',
         url: '/users/sendTelephoneVerification',
-        data: {
-          "telephone":no
-        },
-        headers: {
-          "Content-Type": 'application/json'
-        }
+        data: { "telephone": number },
+        headers: { "Content-Type": 'application/json' }
       });
     },
 
-    verifyTelephone: function(code){
-      return this.beeline({
-        method: 'GET',
+    // Submit the received code for verification
+    verifyTelephone: function(telephoneNumber, code) {
+      return instance.beeline({
+        method: 'GET', //TODO shouldnt this be post?
         url: '/users/verifyTelephone?' + querystring.stringify({
-          telephone: '+65' + this.telephone,
-          code: code,
+          telephone: '+65' + telephoneNumber,
+          code: code
         })
       })
-      .then((response) => {
-				if (response.statusText = 'OK')
-				{
-          this.sessionToken = response.data.sessionToken;
-          this.user = response.data.user;
-          localStorage.setItem('sessionToken', response.data.sessionToken);
-
-          var ud = response.data.user;
-          var userobj = {
-            name: ud.name,
-            email: ud.email,
-            telephone: ud.telephone
-          };
-
-          localStorage.setItem('beelineUser', JSON.stringify(userobj));
-
-          return true;
+      .then(function(response) {
+				if (response.statusText = 'OK') {
+          sessionToken = response.data.sessionToken;
+          window.localStorage.setItem('sessionToken', sessionToken);
+          instance.user = response.data.user;
+          window.localStorage.setItem('beelineUser', JSON.stringify(instance.user));
+          return instance.user;
 				}
-				else
-					return false;
-      }, (error) => {
-				$ionicPopup.alert('An error occurred while trying to log in');
-				return false;
+        else return Promise.reject('Verification response not OK');
+      })
+      .catch(function(error) {
+        $ionicPopup.alert('An error occurred while trying to log in');
       });
     },
 
     /**
-    Prepares an update of the telephone number.
+    Prepares an update of the telephone number
+    The returned update toke is used together with the verification number
     @returns Promise.<update token>
     */
     requestUpdateTelephone: function(telephone) {
-      return this.beeline({
+      return instance.beeline({
         url: '/user/requestUpdateTelephone',
         method: 'POST',
-        data: {
-          newTelephone: telephone,
-        }
+        data: { newTelephone: telephone }
       })
       .then((result) => {
         return result.data.updateToken;
-      })
+      });
     },
 
     /**
@@ -126,7 +96,7 @@ export default function UserService($http, $state, $ionicPopup) {
     by SMS
     */
     updateTelephone: function (updateToken, verificationKey) {
-      return this.beeline({
+      return instance.beeline({
         url: '/user/updateTelephone',
         method: 'POST',
         data: {
@@ -135,63 +105,58 @@ export default function UserService($http, $state, $ionicPopup) {
         }
       })
       .then((userResponse) => {
-        userPromise = Promise.resolve(userResponse.data);
-        this.user = userResponse.data;
+        instance.user = userResponse.data;
+        window.localStorage.setItem('beelineUser', JSON.stringify(instance.user));
+        return instance.user;
       })
     },
 
+    // Updates user fields 
     updateUserInfo: function(update) {
-      return this.beeline({
+      return instance.beeline({
         method: 'PUT',
         url: '/user',
         data: update,
       })
-      .then(() => {
-        this.loadUserData();
+      .then((response) => {
+        return instance.user = response.data;
       })
     },
 
-    getLocalJsonUserData() {
-      return JSON.parse(localStorage['beelineUser']);
-    },
-
-    /** calls the /user endpoint to check if user is logged in */
-    getCurrentUser() {
-      return userPromise;
-    },
-
-    /** Ensures that the session token is valid too **/
-    isLoggedInReal: function() {
-      return this.beeline({
-      url: '/user',
-      method: 'GET'
+    // Queries the server to test if the session is still valid
+    // Updates the user info if necessary
+    // If the session is invalid then log out
+    verifySession: function() {
+      return instance.beeline({
+        url: '/user',
+        method: 'GET'
       })
-      .then(() => true, () => false);
-    },
-
-    isLoggedIn: function() {
-      return !!this.sessionToken
+      .then(function(response) {
+        instance.user = response.data;
+        return true;
+      }, function(error) {
+        instance.logOut();
+        return false;
+      });
     },
 
     logOut: function() {
-      this.sessionToken = null;
-      this.userPromise = Promise.resolve(null);
-      this.user = null;
+      sessionToken = null;
+      instance.user = null;
       delete window.localStorage['sessionToken'];
-      instance.loadUserData();
+      delete window.localStorage['beelineUser'];
     },
 
-    /** Go to the login page
-      * As opposed to a standard ui-sref='login', this
-      * method saves the page. When login is complete it will return there.
-    */
+    // Go to the login page
+    // As opposed to a standard ui-sref='login', this
+    // method si aves the page. When login is complete it will return there.
     logIn(force) {
       preLoginState = $state.current.name;
       preLoginParams =  $state.params;
       $state.go('login')
     },
 
-    /** Return to the page that activated the login */
+    // Return to the page that activated the login
     afterLogin() {
       $state.go(preLoginState || 'tabs.settings', preLoginParams);
       preLoginState = undefined;
@@ -201,8 +166,9 @@ export default function UserService($http, $state, $ionicPopup) {
       $state.go(preLoginState, preLoginParams);
       preLoginState = undefined;
     },
+
   };
 
-  instance.loadUserData();
+  instance.verifySession();
   return instance;
 }

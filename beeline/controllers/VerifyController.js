@@ -1,5 +1,6 @@
 export default [
     '$scope',
+    '$stateParams',
     'UserService',
     '$state',
     '$ionicModal',
@@ -7,6 +8,7 @@ export default [
     '$timeout',
   function(
       $scope,
+      $stateParams,
       UserService,
       $state,
       $ionicModal,
@@ -24,7 +26,7 @@ export default [
     $scope.$on('$ionicView.afterEnter',() => {
       // Reset data
       $scope.login.code = new Array(6);
-      $scope.login.telephone = UserService.telephone || '';
+      $scope.login.telephone = $stateParams.telephone;
     });
 
     $scope.resend = function($event) {
@@ -37,7 +39,7 @@ export default [
       }, 30000);
 
       // Send the code
-      UserService.sendTelephoneVerificationCode(UserService.telephone)
+      UserService.sendTelephoneVerificationCode($scope.login.telephone)
       .then(() => {
         $ionicPopup.alert('New code sent! Please check your phone in a while.');
       }, function(error){
@@ -92,10 +94,9 @@ export default [
   	//Verification Code submit button
     $scope.verifyCodeSubmit = function(code) {
       $scope.login.showOverlay = true;
-      UserService.verifyTelephone(code)
+      UserService.verifyTelephone($scope.login.telephone, code)
       .then(function(response) {
           if (response) {
-            window.localStorage.sessionToken = UserService.sessionToken;
       			UserService.afterLogin();
           }
           else {

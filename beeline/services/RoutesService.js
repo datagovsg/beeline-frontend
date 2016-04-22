@@ -100,7 +100,7 @@ export default function($http, SERVER_URL, UserService) {
      });
     },
     getRecentRoutes: function() {
-      if (UserService.isLoggedIn()) {
+      if (UserService.user) {
         return UserService.beeline({
           method: 'GET',
           url: '/routes/recent?limit=10'

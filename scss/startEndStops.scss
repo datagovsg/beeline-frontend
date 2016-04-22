@@ -1,7 +1,4 @@
 
-$stopMarkerWidth: 30px;
-$stopMarkerRightMargin: 1em;
-
 .start-end {
   display: flex;
   flex-direction: column;
@@ -12,7 +9,7 @@ $stopMarkerRightMargin: 1em;
     flex-direction: row;
 
     .label {
-      color: $text-gray;
+      color: $hint-color;
       margin-bottom: 0.3em;
     }
 

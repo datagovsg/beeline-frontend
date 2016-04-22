@@ -63,7 +63,7 @@ function(
 		}],
 	};
 
-	$scope.user = UserService.getLocalJsonUserData();
+	$scope.user = UserService.user;
 	$scope.tickets = {
 		today: [],
 		soon: []
