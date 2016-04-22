@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default [
   '$scope',
   '$state',
@@ -23,122 +25,108 @@ export default [
     MapOptions,
     RoutesService
   ){
+
+    // Initialize the necessary ticket data
     $scope.user = UserService.user;
     $scope.map = MapOptions.defaultMapOptions();
-    TicketService.getTicketById(+$stateParams.ticketId)
-    .then((ticket) => { 
-      $scope.ticket = ticket;
+    var ticketPromise = TicketService.getTicketById(+$stateParams.ticketId);
+    var tripPromise = ticketPromise.then((ticket) => { 
       return TripService.getTripData(+ticket.alightStop.tripId);
-    })
-    .then((trip) => { 
-      $scope.trip = trip;
-      return RoutesService.getRoute(trip.routeId);
-    })
-    .then((route) => {
-      $scope.route = route;
     });
+    var routePromise = tripPromise.then((trip) => {
+      return RoutesService.getRoute(trip.routeId);
+    });
+    tripPromise.then((trip) => { $scope.trip = trip; });
+    ticketPromise.then((ticket) => { $scope.ticket = ticket; });
+    routePromise.then((route) => { $scope.route = route; });
 
+    // // Draw the bus stops on the map
+    // Promise.all([ticketPromise, uiGmapGoogleMapApi])
+    // .then(function(values) {
+    //   var ticket = values[0];
+    //   var googleMaps = values[1];
+    //   var board = ticket.boardStop.stop.coordinates.coordinates;
+    //   var alight = ticket.alightStop.stop.coordinates.coordinates;
+    //   // Board marker
+    //   $scope.map.markers[1] = {
+    //     id: 'boardStop',
+    //     coords: { latitude: board[1], longitude: board[0] },
+    //     icon: {
+    //       url: 'img/icon-stop-big.png',
+    //       scaledSize: new googleMaps.Size(25,25),
+    //       anchor: new googleMaps.Point(13,25)
+    //     }
+    //   };
+    //   // //Alight marker
+    //   // $scope.map.markers[2] = {
+    //   //   id: 'alightstop',
+    //   //   coords: { latitude: alight[1], longitude: alight[0] },
+    //   //   icon: {
+    //   //     url: 'img/icon-marker-big.png',
+    //   //     scaledSize: new googleMaps.Size(25,30),
+    //   //     anchor: new googleMaps.Point(13,30)
+    //   //   }
+    //   // };
+    // });
+
+    var mapPromise = new Promise(function(resolve) {
+      $scope.$watch('map.control.getGMap', function(getGMap) {
+        if (getGMap) resolve($scope.map.control.getGMap());
+      });
+    });
+    mapPromise.then(function(gmap) {});
+
+    // $scope.$watch('map.control.getGMap', function(getGMap) {
+    // });
+    // uiGmapGoogleMapApi.then(function(googleMaps) {
+
+    // });
+
+     
+
+
+
+
+    // // Update with the driver Pings
+    // TripService.DriverPings(tripid)
+    // .then(function(info) {
+
+    //   // Draw the bus path
+    //   $scope.map.lines[0].path = [];
+    //   _.each($scope.info.pings, function(ping) {
+    //     var latLng = info.pings[i].coordinates.coordinates;
+    //     $scope.map.lines[0].path.push({
+    //       latitude: latLng[1],
+    //       longitude: latLng[0]
+    //     });
+    //   });
+
+    //   // Draw the bus icon
+    //   var busPosition = info.pings[0].coordinates.coordinates;
+    //   $scope.map.markers[0] = {
+    //      id: 'busLocation',
+    //      coords: {
+    //        latitude: busPosition[1],
+    //        longitude: busPosition[0],
+    //      },
+    //      icon: {
+    //        url: 'img/busMarker01.png',
+    //        scaledSize: new googleMaps.Size(80,80),
+    //        anchor: new googleMaps.Point(40,73),
+    //      },
+    //    };
+
+    // });
+
+
+  
   // 		//generate QR Code
   // new QRCode(document.getElementById("qr-code-bg"), 'ticket code goes here');
 
-  // function addBusStops() {
-  // 	var board = $scope.tripTicket.boardStop.stop.coordinates.coordinates;
-  // 	var alight = $scope.tripTicket.alightStop.stop.coordinates.coordinates;
-
-  // 	//Board marker
-  // 	$scope.map.markers[1] = {
-  // 		id: 'boardstop',
-  // 		coords: {
-  // 			latitude: board[1],
-  // 			longitude: board[0],
-  // 		},
-  //           icon: {
-  // 			url: 'img/icon-stop-big.png',
-  // 			scaledSize: new googleMaps.Size(25,25),
-  // 			anchor: new googleMaps.Point(13,25),
-  // 		},
-  // 	}
-
-  // 	//Alight marker
-  // 	$scope.map.markers[2] = {
-  // 		id: 'alightstop',
-  // 		coords: {
-  // 			latitude: alight[1],
-  // 			longitude: alight[0],
-  // 		},
-  //           icon: {
-  // 			url: 'img/icon-marker-big.png',
-  // 			scaledSize: new googleMaps.Size(25,30),
-  // 			anchor: new googleMaps.Point(13,30),
-  // 		},
-  // 	}
   // };
-
-  // function updateTripInfo() {
-  // 	console.log('update');
-
-  // 	$scope.map.lines[0].path = []; //buspath
-
-  // 	//redraw polyline on google map - reverse order from end of array to head
-  // 	for(var i=$scope.info.pings.length-1; i>=0; i--)
-  // 	{
-  // 		var latlng = $scope.info.pings[i].coordinates.coordinates;
-  // 		$scope.map.lines[0].path.push({
-  // 			latitude: latlng[1],
-  // 			longitude: latlng[0]
-  // 		});
-  // 	}
-
-  // 	//redraw bus icon location
-  // 	var buspos = $scope.info.pings[0].coordinates.coordinates;
-  // 	$scope.map.markers[0] = {
-  // 		id: 'busloc',
-  // 		coords: {
-  // 			latitude: buspos[1],
-  // 			longitude: buspos[0],
-  // 		},
-  // 		icon: {
-  // 			url: 'img/busMarker01.png',
-  // 			scaledSize: new googleMaps.Size(80,80),
-  // 			anchor: new googleMaps.Point(40,73),
-  // 		},
-  // 	}
 
 
   // }
-
-  $scope.locator = {};
-  function startPingsRefresh(tripid) {
-
-  	var loc = $scope.locator;
-  	loc.timer = $interval(function() {
-
-  		//Insurance
-  		if ($state.current.name != 'tabs.ticket-detail') {
-  			console.log('timer end');
-  			$interval.cancel($scope.locator.timer);
-  		}
-
-  		loc.timePassed += 1000;
-
-
-  		if (loc.timePassed > timerInterval)
-  		{
-  			loc.timePassed = 0;
-  			angular.element(refreshBar).addClass('reset');
-  			angular.element(refreshBar).css('width', '0%');
-
-  			TripService.DriverPings(tripid).then(function(tripinfo) {
-  				$scope.info = tripinfo.data;
-  				updateTripInfo();
-  			});
-  		}
-
-  		//console.log(loc.timePassed);
-  	}, 1000);
-
-  }
-
 
     // .then(function(compData){
     //   $scope.company = compData;
