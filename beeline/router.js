@@ -109,7 +109,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.ticket-detail', {
-    url: '/tickets/:tid',
+    url: '/tickets/:ticketId',
     views: {
       'tab-tickets': {
         templateUrl: 'templates/ticket-detail.html',
