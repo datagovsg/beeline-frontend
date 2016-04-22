@@ -193,16 +193,6 @@ export default function($scope, $state, $cordovaGeolocation,
           if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
             gmap.panTo({ lat: 1.370244, lng: 103.823315 });
             gmap.setZoom(11);
-            // var bounds = gmap.getBounds();
-            // if ($scope.data.pickupCoordinates) {
-            //   bounds.extend(new google.maps.LatLng($scope.data.pickupCoordinates.lat,
-            //                                          $scope.data.pickupCoordinates.lng));
-            // }
-            // if ($scope.data.dropoffCoordinates) {
-            //   bounds.extend(new google.maps.LatLng($scope.data.dropoffCoordinates.lat,
-            //                                        $scope.data.dropoffCoordinates.lng));
-            // }
-            // gmap.fitBounds(bounds);
           }
 
           // // If both pickup and dropoff are chosen then frame around them

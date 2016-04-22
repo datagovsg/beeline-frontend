@@ -12,6 +12,7 @@ export default [
   'UserService',
   'MapOptions',
   'RoutesService',
+  '$timeout',
   function(
     $scope,
     $state,
@@ -23,7 +24,8 @@ export default [
     TripService,
     UserService,
     MapOptions,
-    RoutesService
+    RoutesService,
+    $timeout
   ){
 
     // Initialize the necessary ticket data
@@ -69,7 +71,56 @@ export default [
       });
     });
 
+    // Method to draw the bus path and location based on driver pings
+    var updateMapWithPings = function() {
+      return tripPromise.then(function(trip) {
+        return TripService.DriverPings(trip.id);
+      })
+      .then(function(info) {
+        // Draw the bus path
+        $scope.map.lines[0].path = [];
+        _.each(info.pings, function(ping) {
+          var latLng = info.pings[i].coordinates.coordinates;
+          $scope.map.lines[0].path.push({
+            latitude: latLng[1],
+            longitude: latLng[0]
+          });
+        });
+        // Draw the bus icon
+        if (info.pings.length > 0) {
+          var busPosition = info.pings[0].coordinates.coordinates;
+          var locationIndex = _.findIndex($scope.map.markers, (marker) => {
+            marker.id === 'busLocation';
+          });
+          $scope.map.markers[locationIndex] = {
+            id: 'busLocation',
+            coords: {
+              latitude: busPosition[1],
+              longitude: busPosition[0],
+            },
+            icon: {
+              url: 'img/busMarker01.png',
+              scaledSize: new googleMaps.Size(80,80),
+              anchor: new googleMaps.Point(40,73),
+            },
+          };
+        }
+      });
+    };
 
+    // Set the pings on a timer every 15s between responses
+    // Using a recursive timeout instead of an interval to avoid backlog
+    // when the server is slow to respond
+    var updateTimer;
+    var updateLoopIteration = function(){
+      updateMapWithPings().then(function(){
+        updateTimer = $timeout(updateLoopIteration, 15000);
+      });
+    };
+    // Cleanup timer when view leaves 
+    $scope.$on('$destroy', () => { $timeout.cancel(updateTimer); });
+
+    // When the map itself loads pan to the appropriate location
     var mapPromise = new Promise(function(resolve) {
       $scope.$watch('map.control.getGMap', function(getGMap) {
         if (getGMap) resolve($scope.map.control.getGMap());
@@ -77,47 +128,6 @@ export default [
     });
     mapPromise.then(function(gmap) {});
 
-    // $scope.$watch('map.control.getGMap', function(getGMap) {
-    // });
-    // uiGmapGoogleMapApi.then(function(googleMaps) {
-
-    // });
-
-     
-
-
-
-
-    // // Update with the driver Pings
-    // TripService.DriverPings(tripid)
-    // .then(function(info) {
-
-    //   // Draw the bus path
-    //   $scope.map.lines[0].path = [];
-    //   _.each($scope.info.pings, function(ping) {
-    //     var latLng = info.pings[i].coordinates.coordinates;
-    //     $scope.map.lines[0].path.push({
-    //       latitude: latLng[1],
-    //       longitude: latLng[0]
-    //     });
-    //   });
-
-    //   // Draw the bus icon
-    //   var busPosition = info.pings[0].coordinates.coordinates;
-    //   $scope.map.markers[0] = {
-    //      id: 'busLocation',
-    //      coords: {
-    //        latitude: busPosition[1],
-    //        longitude: busPosition[0],
-    //      },
-    //      icon: {
-    //        url: 'img/busMarker01.png',
-    //        scaledSize: new googleMaps.Size(80,80),
-    //        anchor: new googleMaps.Point(40,73),
-    //      },
-    //    };
-
-    // });
 
 
   
@@ -160,11 +170,6 @@ export default [
   // 			});
   // 		}
 
-  // 		//add markers for Bus Stops
-  // 		addBusStops();
-
-  // 		//init the bus marker & bus path
-  // 		updateTripInfo();
 
   // 		//pan and zoom to bus location
   // 		var lastpos = tripinfo.data.pings[0].coordinates.coordinates;
@@ -173,13 +178,5 @@ export default [
   // 			gmap.setZoom(17);
   // 		}, 300);
 
-  // 		//call recurring timer function
-  // 		startPingsRefresh($scope.trip.id);
-  //   });
-
-  //   $scope.$on('$destroy', () => {
-  // 	 console.log('timer end');
-  // 	 $interval.cancel($scope.locator.timer);
-  //   });
   }
 ];
