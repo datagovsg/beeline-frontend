@@ -23,13 +23,25 @@
 	</div>
   <ion-content class="has-tabs-top" scroll=false>
   	<div class="item item-text-wrap" ng-show="activeTab===0">
-  	{{ ticket }}
+	  	<div ng-bind="user.name"></div>
+	  	<div ng-bind="trip.id"></div>
   	</div>
   	<div class="item item-text-wrap" ng-show="activeTab===1">
-  	{{ trip }}
   	</div>
   	<div class="item item-text-wrap" ng-show="activeTab===2">
-  	{{ route }}
+  		<span class="time">{{}}</span>
+  		<div class="row">
+	  		<span ng-bind="ticket.boardStop.time | date:'h:mm a'"></span>
+	  		<img class="input-icon" src="./img/RoutePairBigStart.png"/>
+		  	<span ng-bind="ticket.boardStop.stop.description"></span>, 
+		  	<span ng-bind="ticket.boardStop.stop.road"></span>
+  		</div>
+  		<div class="row row-top">
+  			<span ng-bind="ticket.alightStop.time | date:'h:mm a'"></span>
+	  		<img class="input-icon" src="./img/RoutePairBigEnd.png"/>
+	  		<span ng-bind="ticket.alightStop.stop.description"></span>, 
+	  		<span ng-bind="ticket.alightStop.stop.road"></span>
+	  	</div>
   	</div>
 
     <ui-gmap-google-map center="map.center" 
@@ -46,31 +58,10 @@
 			<ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
     </ui-gmap-google-map>
 
-<!-- 		<div id="ticketinfo">
-			<div class="statusmsg">
-				Your driver is on the way
-				<div id="refresh-bar"></div>
-			</div>
-			<table id="tdholder" ng-class="{ticketsel: currentState == 'ticket', driversel: currentState == 'driver', stopssel: currentState == 'stops'}">
-				<tr>
-					<td class="ticket">
-						<div class="details">
-							<div class="note">
-								<i class="icon ion-alert"></i>
-								Please scan this ticket when you board.
-							</div>
-							<table>
-								<tr>
-									<td colspan="3" class="header">PASSENGER</td>
-									<td rowspan="5" class="gap"></td>
-									<td rowspan="5" class="qrbox">
+<!-- 		
+
 										<div id="qr-code-bg"></div>
-									</td>
-								</tr>
-								<tr class="txt">
 									<td colspan="3">{{user.name}}</td>
-								</tr>
-								<tr>
 									<td class="header ticket">TICKET ID</td>
 									<td class="gap"></td>
 									<td class="header pax">PAX</td>

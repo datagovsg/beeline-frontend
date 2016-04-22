@@ -23,17 +23,21 @@ export default [
     MapOptions,
     RoutesService
   ){
+    $scope.user = UserService.user;
     $scope.map = MapOptions.defaultMapOptions();
     TicketService.getTicketById(+$stateParams.ticketId)
     .then((ticket) => { 
       $scope.ticket = ticket;
+      console.log(ticket);
       return TripService.getTripData(+ticket.alightStop.tripId);
     })
     .then((trip) => { 
       $scope.trip = trip;
+      console.log(trip);
       return RoutesService.getRoute(trip.routeId);
     })
     .then((route) => {
+      console.log(route);
       $scope.route = route;
     });
 
