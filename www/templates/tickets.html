@@ -30,24 +30,24 @@
     <div class="list">
       <div ng-if="tickets.today.length > 0"
            class="item item-divider">Today's Trips</div>
-      <div ng-if="tickets.today.length > 0"
+      <a ng-if="tickets.today.length > 0"
            class="item item-icon-right"
            ng-repeat="ticket in tickets.today"
-           href="#/tabs/tickets/{{ticket.id}}">
+           ui-sref="tabs.ticket-detail({ tid: ticket.id })">
         <span class="date">{{ ticket.boardStop.time | date:'d MMM y' }}</span>
         {{ ticket.boardStop.time | date:'h:mm a' }}
         <i class="icon ion-chevron-right icon-accessory"></i>
-      </div>
+      </a>
       <div ng-if="tickets.soon.length > 0" 
            class="item item-divider">Upcoming Trips</div>
-      <div ng-if="tickets.soon.length > 0"
+      <a ng-if="tickets.soon.length > 0"
            class="item item-icon-right"
            ng-repeat="ticket in tickets.soon"
-           href="#/tabs/tickets/{{ticket.id}}">
+           ui-sref="tabs.ticket-detail({ tid: ticket.id })">
         <span class="date">{{ ticket.boardStop.time | date:'d MMM y' }}</span>
         {{ ticket.boardStop.time | date:'h:mm a' }}
         <i class="icon ion-chevron-right icon-accessory"></i>
-      </div>
+      </a>
     </div>
   </ion-content>
 
