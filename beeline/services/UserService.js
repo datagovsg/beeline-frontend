@@ -18,7 +18,7 @@ export default function UserService($http, $state, $ionicPopup) {
       options.url = 'http://staging.beeline.sg' + options.url;
       options.headers = options.headers || {}
       // Attach the session token if logged in
-      if (instance.sessionToken) {
+      if (sessionToken) {
         options.headers.authorization = 'Bearer ' + sessionToken;
       }
       // Attach headers to track execution environment
@@ -44,7 +44,7 @@ export default function UserService($http, $state, $ionicPopup) {
       return instance.beeline({
         method: 'POST',
         url: '/users/sendTelephoneVerification',
-        data: { "telephone": number },
+        data: { "telephone": '+65' + number },
         headers: { "Content-Type": 'application/json' }
       });
     },
@@ -82,7 +82,7 @@ export default function UserService($http, $state, $ionicPopup) {
       return instance.beeline({
         url: '/user/requestUpdateTelephone',
         method: 'POST',
-        data: { newTelephone: telephone }
+        data: { newTelephone: '+65' + telephone }
       })
       .then((result) => {
         return result.data.updateToken;
@@ -135,7 +135,7 @@ export default function UserService($http, $state, $ionicPopup) {
         instance.user = response.data;
         return true;
       }, function(error) {
-        instance.logOut();
+        // instance.logOut();
         return false;
       });
     },

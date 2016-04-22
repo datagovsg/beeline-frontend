@@ -30,7 +30,6 @@ export default [
     $scope.eightDigitNumber = /^[0-9]{8}$/;
 
     $scope.submit = function() {
-      console.log($scope.login.telephone);
       UserService.logOut();
       UserService.sendTelephoneVerificationCode($scope.login.telephone)
       .then(function(response) {

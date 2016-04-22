@@ -1,5 +1,5 @@
 <ion-view class="tickets" view-title="Tickets">
-  
+  <!-- 
   <ion-content ng-if="!user"
                class="no-tickets" scroll=false>
     <div class="item item-text-wrap">
@@ -24,11 +24,9 @@
         Search For Routes
       </button>  
     </div>
-  </ion-content>
+  </ion-content> -->
 
-  <ion-content ng-if="user &&
-                      (tickets.today.length > 0 || 
-                       tickets.soon.length > 0)">
+  <ion-content>
     <div class="list">
       <div ng-if="tickets.today.length > 0"
            class="item item-divider">Today's Trips</div>
