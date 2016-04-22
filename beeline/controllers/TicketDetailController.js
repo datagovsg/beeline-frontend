@@ -28,16 +28,13 @@ export default [
     TicketService.getTicketById(+$stateParams.ticketId)
     .then((ticket) => { 
       $scope.ticket = ticket;
-      console.log(ticket);
       return TripService.getTripData(+ticket.alightStop.tripId);
     })
     .then((trip) => { 
       $scope.trip = trip;
-      console.log(trip);
       return RoutesService.getRoute(trip.routeId);
     })
     .then((route) => {
-      console.log(route);
       $scope.route = route;
     });
 
@@ -110,49 +107,42 @@ export default [
 
   // }
 
-  // function startPingsRefresh(tripid) {
-  // 	console.log('timer start')
+  $scope.locator = {};
+  function startPingsRefresh(tripid) {
 
-  // 	var loc = $scope.locator;
-  // 	var refreshBar = document.getElementById('refresh-bar');
+  	var loc = $scope.locator;
+  	loc.timer = $interval(function() {
 
-  // 	loc.timer = $interval(function() {
+  		//Insurance
+  		if ($state.current.name != 'tabs.ticket-detail') {
+  			console.log('timer end');
+  			$interval.cancel($scope.locator.timer);
+  		}
 
-  // 		//Insurance
-  // 		if ($state.current.name != 'tabs.ticket-detail') {
-  // 			console.log('timer end');
-  // 			$interval.cancel($scope.locator.timer);
-  // 		}
-
-  // 		if (loc.timePassed == 0) {
-  // 			angular.element(refreshBar).removeClass('reset');
-  // 		}
-
-  // 		loc.timePassed += 1000;
-
-  // 		angular.element(refreshBar).css('width', ((loc.timePassed/timerInterval) * 100) + '%');
-
-  // 		if (loc.timePassed > timerInterval)
-  // 		{
-  // 			loc.timePassed = 0;
-  // 			angular.element(refreshBar).addClass('reset');
-  // 			angular.element(refreshBar).css('width', '0%');
-
-  // 			TripService.DriverPings(tripid).then(function(tripinfo) {
-  // 				$scope.info = tripinfo.data;
-  // 				updateTripInfo();
-  // 			});
-  // 		}
-
-  // 		//console.log(loc.timePassed);
-  // 	}, 1000);
-
-  // }
+  		loc.timePassed += 1000;
 
 
-  //   .then(function(compData){
-  //     $scope.company = compData;
-  //     $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
+  		if (loc.timePassed > timerInterval)
+  		{
+  			loc.timePassed = 0;
+  			angular.element(refreshBar).addClass('reset');
+  			angular.element(refreshBar).css('width', '0%');
+
+  			TripService.DriverPings(tripid).then(function(tripinfo) {
+  				$scope.info = tripinfo.data;
+  				updateTripInfo();
+  			});
+  		}
+
+  		//console.log(loc.timePassed);
+  	}, 1000);
+
+  }
+
+
+    // .then(function(compData){
+    //   $scope.company = compData;
+    //   $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
 
   // 		return uiGmapGoogleMapApi;
   // 	}).then(function(map) {
