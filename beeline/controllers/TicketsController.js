@@ -16,17 +16,12 @@ export default [
     });
     $scope.logIn = function() { UserService.logIn(); };
 
-    $scope.tickets = {
-      today: [],
-      soon: []
-    }
-
+    // Grab the tickets
+    $scope.tickets = {};
     $scope.$on('$ionicView.beforeEnter', () => {
-      TicketService.getTickets()
-      .then(function () {
-        TicketService.splitTickets();
-        $scope.tickets.today = TicketService.todayTickets();
-        $scope.tickets.soon = TicketService.soonTickets();
+      TicketService.getCategorizedTickets(true).then((categorizedTickets) => {
+        $scope.tickets.today = categorizedTickets.today;
+        $scope.tickets.soon = categorizedTickets.afterToday;
       });
     });
 

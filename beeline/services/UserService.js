@@ -135,7 +135,7 @@ export default function UserService($http, $state, $ionicPopup) {
         instance.user = response.data;
         return true;
       }, function(error) {
-        // instance.logOut();
+        instance.logOut();
         return false;
       });
     },
