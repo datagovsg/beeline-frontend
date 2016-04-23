@@ -3,6 +3,20 @@ export default function($scope, $state, $cordovaGeolocation,
   //Gmap default settings
   //Map configuration
   $scope.map = MapOptions.defaultMapOptions();
+  $scope.map.lines = [{
+    id: 'routepath',
+    path: [],
+    stroke: { opacity: 0 },
+    icons: [{
+      icon: {
+        path: 'M 0,-1 0,1',
+        strokeOpacity: 1,
+        scale: 2
+      },
+      offset: '0',
+      repeat: '10px'
+    }]
+  }];
 
   //HTML Elements above the Gmap are hidden at start
   $scope.data = {};

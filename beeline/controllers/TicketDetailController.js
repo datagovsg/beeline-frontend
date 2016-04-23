@@ -31,6 +31,31 @@ export default [
     // Initialize the necessary data
     $scope.user = UserService.user;
     $scope.map = MapOptions.defaultMapOptions();
+    $scope.map.lines = [
+      {
+        id: 'busLine',
+        path: [],
+        stroke: {
+          color: '#333',
+          opacity: 1.0,
+          weight: 3,
+        },
+      },
+      {
+        id: 'routeLine',
+        path:[],
+        stroke: { opacity: 0 },
+        icons: [{
+          icon: {
+            path: 'M 0,-1 0,1',
+            strokeOpacity: 0.5,
+            scale: 3
+          },
+          offset: '0',
+          repeat: '20px'
+        }]
+      }
+    ];
     var ticketPromise = TicketService.getTicketById(+$stateParams.ticketId);
     var tripPromise = ticketPromise.then((ticket) => { 
       return TripService.getTripData(+ticket.alightStop.tripId);
@@ -73,9 +98,12 @@ export default [
 
     // Draw the planned route
     routePromise.then((route) => {
-      $scope.map.lines[0].path = [];
+      var routeLine = _.find($scope.map.lines, (line) => {
+        return line.id === "routeLine";
+      });
+      routeLine.path = [];
       _.each(route.path, (point) => {
-        $scope.map.lines[0].path.push({
+        routeLine.path.push({
            latitude: point.lat,
            longitude: point.lng
         });
@@ -89,10 +117,13 @@ export default [
       })
       .then(function(info) {
         // Draw the bus path
-        $scope.map.lines[0].path = [];
+        var busLine = _.find($scope.map.lines, (line) => {
+          return line.id === "busLine";
+        });
+        busLine.path = [];
         _.each(info.pings, function(ping) {
           var latLng = info.pings[i].coordinates.coordinates;
-          $scope.map.lines[0].path.push({
+          busLine.path.push({
             latitude: latLng[1],
             longitude: latLng[0]
           });
@@ -128,38 +159,46 @@ export default [
         updateTimer = $timeout(updateLoopIteration, 15000);
       });
     };
-    // updateLoopIteration();
+    updateLoopIteration();
     // Cleanup timer when view leaves 
     $scope.$on('$destroy', () => { $timeout.cancel(updateTimer); });
 
-    // When the map itself loads pan to the appropriate location
+    // Pan and zoom to the bus location when the map is ready    
+    // Single ping request for updating the map initially
+    // Duplicates a bit with the update loop but is much cleaner this way
+    // If the load ever gets too much can easily integrate into the 
+    // main update loop
+    var updatePromise = tripPromise.then(function(trip) {
+      return TripService.DriverPings(trip.id);
+    });
     var mapPromise = new Promise(function(resolve) {
       $scope.$watch('map.control.getGMap', function(getGMap) {
         if (getGMap) resolve($scope.map.control.getGMap());
       });
     });
-    mapPromise.then(function(gmap) {});
-
-
-
-  
-  // 		//generate QR Code
-  // new QRCode(document.getElementById("qr-code-bg"), 'ticket code goes here');
-
-      // .then(function(compData){
-      //   $scope.company = compData;
-      //   $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
-
-
-      //  gmap = $scope.map.mapControl.getGMap();
-
-
-  // 		//pan and zoom to bus location
-  // 		var lastpos = tripinfo.data.pings[0].coordinates.coordinates;
-  // 		gmap.panTo(new googleMaps.LatLng(lastpos[1], lastpos[0]));
-  // 		setTimeout(function(){
-  // 			gmap.setZoom(17);
-  // 		}, 300);
+    Promise.all([
+      mapPromise,
+      updatePromise,
+      ticketPromise,
+      uiGmapGoogleMapApi
+    ]).then((values) => {
+      var map = values[0];
+      var info = values[1];
+      var ticket = values[2];
+      var googleMaps = values[3];
+      if (info.pings.length > 0) {
+        var bounds = new googleMaps.LatLngBounds();
+        bounds.extend(new google.maps.LatLng(ticket.boardStop.stop.coordinates.coordinates[1],
+                                             ticket.boardStop.stop.coordinates.coordinates[0]));
+        bounds.extend(new google.maps.LatLng(info.pings[0].coordinates.coordinates[1],
+                                             info.pings[0].coordinates.coordinates[0]));
+        map.fitBounds(bounds);
+      } 
+    });
 
   }
 ];
+
+// new QRCode(document.getElementById("qr-code-bg"), 'ticket code goes here');
+//   $scope.company = compData;
+//   $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';

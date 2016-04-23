@@ -37,20 +37,7 @@ export default [
           },
           events: {},
           markers: [],
-          lines: [{
-            id: 'routepath',
-            path: [],
-            stroke: { opacity: 0 },
-            icons: [{
-              icon: {
-                path: 'M 0,-1 0,1',
-                strokeOpacity: 1,
-                scale: 2
-              },
-              offset: '0',
-              repeat: '10px'
-            }]
-          }],
+          lines: [],
       }, options || {});
 
       uiGmapGoogleMapApi.then((googleMaps) => {
