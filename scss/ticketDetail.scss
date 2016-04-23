@@ -1,29 +1,25 @@
 /* ---------- TICKETS PAGE ---------- */
 .ticket-detail {
-  ion-content {
-    @include display-flex;
-    @include flex-direction(column);
 
-    .time-column {
-      text-align: right;
-    }
-
-    .route-icon {
-      height: 1.1em;
-      vertical-align: text-bottom;
-    }
-
-    ui-gmap-google-map {
-      @include flex(1, 1, auto);
-      width: 100%;
-      .angular-google-map-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-      }
-    }
-
+  .item {
+    background-color: rgba($light, 0.9);
   }
+
+  .time-column {
+    text-align: right;
+  }
+
+  .route-icon {
+    height: 1.1em;
+    vertical-align: text-bottom;
+  }
+
+  .angular-google-map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+
 }

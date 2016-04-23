@@ -7,8 +7,6 @@ export default [
     TicketService,
     UserService
   ) {
-    console.log('here in tickets controller');
-
     // Track the login state of the user service
     $scope.$watch(function() {
       return UserService.user;

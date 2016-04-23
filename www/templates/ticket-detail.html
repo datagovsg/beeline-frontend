@@ -95,63 +95,6 @@
 			<ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" stroke="p.stroke" icons="p.icons"></ui-gmap-polyline>
 			<ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
     </ui-gmap-google-map>
-
-<!-- 		
-
-										<div id="qr-code-bg"></div>
-									<td colspan="3">{{user.name}}</td>
-									<td class="header ticket">TICKET ID</td>
-									<td class="gap"></td>
-									<td class="header pax">PAX</td>
-								</tr>
-								<tr class="txt">
-									<td>{{tripTicket.id}}</td>
-									<td></td>
-									<td>{{tripTicket.pax}}</td>
-								</tr>
-								<tr class="last">
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-							</table>
-						</div>
-					</td>
-
-
-					<td class="stops">
-						<div class="routeinfo">
-							<div class="title">
-								<div class="busnum">{{route.label || 0}}</div>
-								<div class="name">{{route.description || 'Name of booked trip'}}</div>
-							</div>
-							<div class="stops">
-								<div class="line"></div>
-								<div class="start">
-									<span class="time">{{tripTicket.boardStop.time | date:'h:mm a'}}</span>
-									<span class="desc">{{tripTicket.boardStop.stop.description}} ({{tripTicket.boardStop.stop.type}} ID {{tripTicket.boardStop.stop.label}})</span>
-									<span class="road">{{tripTicket.boardStop.stop.road}}</span>
-								</div>
-								<div class="end">
-									<span class="time">{{tripTicket.alightStop.time | date:'h:mm a'}}</span>
-									<span class="desc">{{tripTicket.alightStop.stop.description}} ({{tripTicket.alightStop.stop.type}} ID {{tripTicket.alightStop.stop.label}})</span>
-									<span class="road">{{tripTicket.alightStop.stop.road}}</span>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
- -->
-     
-      
-    <div class="map">
-        <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" control="map.mapControl" data-tap-disabled="true">
-			<ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" stroke="p.stroke" icons="p.icons"></ui-gmap-polyline>
-			<ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
-        </ui-gmap-google-map>
-    </div>
           
   </ion-content>
 </ion-view>

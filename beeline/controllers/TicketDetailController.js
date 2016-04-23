@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 export default [
   '$scope',
+  '$rootScope',
   '$stateParams',
   '$timeout',
   'uiGmapGoogleMapApi',
@@ -13,6 +14,7 @@ export default [
   'RoutesService',
   function(
     $scope,
+    $rootScope,
     $stateParams,
     $timeout,
     uiGmapGoogleMapApi,
@@ -74,8 +76,6 @@ export default [
     var pingLoop = function(){
       tripPromise.then(function(trip) { return TripService.DriverPings(trip.id); })
       .then((info) => {
-        console.log("got info");
-        console.log(info);
         $scope.info = info;
         pingTimer = $timeout(pingLoop, 15000);
       });
@@ -191,6 +191,19 @@ export default [
                                              info.pings[0].coordinates.coordinates[0]));
         map.fitBounds(bounds);
       } 
+    });
+
+    //////////////////////////////////////////////////////////////////////////
+    // Hack to fix map resizing due to ionic view cacheing
+    // Need to use the rootscope since ionic view enter stuff doesnt seem
+    // to propagate down to child views and scopes
+    //////////////////////////////////////////////////////////////////////////
+    Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) { 
+      var map = values[0];
+      var googleMaps = values[1];
+      $rootScope.$on("$ionicView.enter", function(event, data){
+        googleMaps.event.trigger(map, 'resize');
+      });
     });
 
   }

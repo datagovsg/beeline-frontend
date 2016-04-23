@@ -1,4 +1,4 @@
-export default function($scope, $state, $cordovaGeolocation,
+export default function($scope, $state, $cordovaGeolocation, $rootScope,
                         uiGmapGoogleMapApi, RoutesService, MapOptions) {
   //Gmap default settings
   //Map configuration
@@ -113,28 +113,11 @@ export default function($scope, $state, $cordovaGeolocation,
 
         //////////////////////////////////////////////////////////////////////////
         // Hack to fix map resizing due to ionic view cacheing
-        // TODO find a better way?
+        // Need to use the rootscope since ionic view enter stuff doesnt seem
+        // to propagate down to child views and scopes
         //////////////////////////////////////////////////////////////////////////
-        // googleMaps.event.trigger(gmap, 'resize');
-        // $scope.$on('mapRequireResize', function() {
-        //   googleMaps.event.trigger(gmap, 'resize');
-        // });
-        // $scope.$on("$ionicView.afterEnter", function() {
-        //   console.log('heyo');
-        //   googleMaps.event.trigger(gmap, 'resize');
-        // });
-        $scope.$on("$ionicView.beforeEnter", function(event, data){
-           console.log("before enter");
-        });
-
-        $scope.$on("$ionicView.enter", function(event, data){
-           // handle event
-           console.log("enter");
-        });
-
-        $scope.$on("$ionicView.afterEnter", function(event, data){
-           // handle event
-           console.log("after enter");
+        $rootScope.$on("$ionicView.enter", function(event, data){
+          googleMaps.event.trigger(gmap, 'resize');
         });
         //////////////////////////////////////////////////////////////////////////
 
