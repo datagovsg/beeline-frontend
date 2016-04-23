@@ -4,6 +4,15 @@
     @include display-flex;
     @include flex-direction(column);
 
+    .time-column {
+      text-align: right;
+    }
+
+    .route-icon {
+      height: 1.1em;
+      vertical-align: text-bottom;
+    }
+
     ui-gmap-google-map {
       @include flex(1, 1, auto);
       width: 100%;

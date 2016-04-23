@@ -28,7 +28,7 @@ export default [
     $timeout
   ){
 
-    // Initialize the necessary data
+    // Initialize the necessary basic data data
     $scope.user = UserService.user;
     $scope.map = MapOptions.defaultMapOptions();
     $scope.map.lines = [
@@ -63,9 +63,25 @@ export default [
     var routePromise = tripPromise.then((trip) => {
       return RoutesService.getRoute(trip.routeId);
     });
-    tripPromise.then((trip) => { $scope.trip = trip; });
     ticketPromise.then((ticket) => { $scope.ticket = ticket; });
+    tripPromise.then((trip) => { $scope.trip = trip; });
     routePromise.then((route) => { $scope.route = route; });
+
+    // Loop to get pings from the server every 15s between responses
+    // Using a recursive timeout instead of an interval to avoid backlog
+    // when the server is slow to respond
+    var pingTimer;
+    var pingLoop = function(){
+      tripPromise.then(function(trip) { return TripService.DriverPings(trip.id); })
+      .then((info) => {
+        console.log("got info");
+        console.log(info);
+        $scope.info = info;
+        pingTimer = $timeout(pingLoop, 15000);
+      });
+    };
+    pingLoop();
+    $scope.$on('$destroy', () => { $timeout.cancel(pingTimer); });
 
     // Draw the bus stops on the map
     Promise.all([ticketPromise, uiGmapGoogleMapApi])
@@ -74,7 +90,6 @@ export default [
       var googleMaps = values[1];
       var board = ticket.boardStop.stop.coordinates.coordinates;
       var alight = ticket.alightStop.stop.coordinates.coordinates;
-      // Board marker
       $scope.map.markers.push({
         id: 'boardStop',
         coords: { latitude: board[1], longitude: board[0] },
@@ -84,7 +99,6 @@ export default [
           anchor: new googleMaps.Point(13,13)
         }
       });
-      //Alight marker
       $scope.map.markers.push({
         id: 'alightstop',
         coords: { latitude: alight[1], longitude: alight[0] },
@@ -110,58 +124,41 @@ export default [
       });
     });
 
-    // Method to draw the bus path and location based on driver pings
-    var updateMapWithPings = function() {
-      return tripPromise.then(function(trip) {
-        return TripService.DriverPings(trip.id);
-      })
-      .then(function(info) {
-        // Draw the bus path
-        var busLine = _.find($scope.map.lines, (line) => {
-          return line.id === "busLine";
-        });
-        busLine.path = [];
-        _.each(info.pings, function(ping) {
-          var latLng = info.pings[i].coordinates.coordinates;
-          busLine.path.push({
-            latitude: latLng[1],
-            longitude: latLng[0]
-          });
-        });
-        // Draw the bus icon
-        if (info.pings.length > 0) {
-          var busPosition = info.pings[0].coordinates.coordinates;
-          var locationIndex = _.findIndex($scope.map.markers, (marker) => {
-            marker.id === 'busLocation';
-          });
-          $scope.map.markers[locationIndex] = {
-            id: 'busLocation',
-            coords: {
-              latitude: busPosition[1],
-              longitude: busPosition[0],
-            },
-            icon: {
-              url: 'img/busMarker01.png',
-              scaledSize: new googleMaps.Size(80,80),
-              anchor: new googleMaps.Point(40,73),
-            },
-          };
-        }
+    // Draw the path the bus has taken
+    $scope.$watch('info', function(info) { if (info) {
+      // Draw the bus path
+      var busLine = _.find($scope.map.lines, (line) => {
+        return line.id === "busLine";
       });
-    };
+      busLine.path = [];
+      _.each(info.pings, function(ping) {
+        var latLng = info.pings[i].coordinates.coordinates;
+        busLine.path.push({
+          latitude: latLng[1],
+          longitude: latLng[0]
+        });
+      });
+    }});
 
-    // Set the pings on a timer every 15s between responses
-    // Using a recursive timeout instead of an interval to avoid backlog
-    // when the server is slow to respond
-    var updateTimer;
-    var updateLoopIteration = function(){
-      updateMapWithPings().then(function(){
-        updateTimer = $timeout(updateLoopIteration, 15000);
+    // Draw the icon for latest bus location 
+    $scope.$watch('info', function(info) { if (info && info.pings.length > 0) {
+      var busPosition = info.pings[0].coordinates.coordinates;
+      var locationIndex = _.findIndex($scope.map.markers, (marker) => {
+        marker.id === 'busLocation';
       });
-    };
-    updateLoopIteration();
-    // Cleanup timer when view leaves 
-    $scope.$on('$destroy', () => { $timeout.cancel(updateTimer); });
+      $scope.map.markers[locationIndex] = {
+        id: 'busLocation',
+        coords: {
+          latitude: busPosition[1],
+          longitude: busPosition[0],
+        },
+        icon: {
+          url: 'img/busMarker01.png',
+          scaledSize: new googleMaps.Size(80,80),
+          anchor: new googleMaps.Point(40,73),
+        },
+      };
+    }});
 
     // Pan and zoom to the bus location when the map is ready    
     // Single ping request for updating the map initially
@@ -177,13 +174,13 @@ export default [
       });
     });
     Promise.all([
-      mapPromise,
       updatePromise,
+      mapPromise,
       ticketPromise,
       uiGmapGoogleMapApi
     ]).then((values) => {
-      var map = values[0];
-      var info = values[1];
+      var info = values[0];
+      var map = values[1];
       var ticket = values[2];
       var googleMaps = values[3];
       if (info.pings.length > 0) {
