@@ -2,9 +2,8 @@ import _ from 'lodash';
 
 export default [
   '$scope',
-  '$state',
-  '$interval',
   '$stateParams',
+  '$timeout',
   'uiGmapGoogleMapApi',
   'TicketService',
   'CompanyService',
@@ -12,20 +11,17 @@ export default [
   'UserService',
   'MapOptions',
   'RoutesService',
-  '$timeout',
   function(
     $scope,
-    $state,
-    $interval,
     $stateParams,
+    $timeout,
     uiGmapGoogleMapApi,
     TicketService,
     CompanyService,
     TripService,
     UserService,
     MapOptions,
-    RoutesService,
-    $timeout
+    RoutesService
   ){
 
     // Initialize the necessary basic data data
@@ -63,9 +59,13 @@ export default [
     var routePromise = tripPromise.then((trip) => {
       return RoutesService.getRoute(trip.routeId);
     });
+    var companyPromise = tripPromise.then((trip) => {
+      return CompanyService.getCompany(trip.transportCompanyId);
+    });
     ticketPromise.then((ticket) => { $scope.ticket = ticket; });
     tripPromise.then((trip) => { $scope.trip = trip; });
     routePromise.then((route) => { $scope.route = route; });
+    companyPromise.then((company) => { $scope.company = company; });
 
     // Loop to get pings from the server every 15s between responses
     // Using a recursive timeout instead of an interval to avoid backlog
@@ -195,7 +195,3 @@ export default [
 
   }
 ];
-
-// new QRCode(document.getElementById("qr-code-bg"), 'ticket code goes here');
-//   $scope.company = compData;
-//   $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
