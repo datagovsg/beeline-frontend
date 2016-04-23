@@ -28,7 +28,7 @@ export default [
     $timeout
   ){
 
-    // Initialize the necessary ticket data
+    // Initialize the necessary data
     $scope.user = UserService.user;
     $scope.map = MapOptions.defaultMapOptions();
     var ticketPromise = TicketService.getTicketById(+$stateParams.ticketId);
@@ -68,6 +68,17 @@ export default [
           scaledSize: new googleMaps.Size(25,25),
           anchor: new googleMaps.Point(13,13)
         }
+      });
+    });
+
+    // Draw the planned route
+    routePromise.then((route) => {
+      $scope.map.lines[0].path = [];
+      _.each(route.path, (point) => {
+        $scope.map.lines[0].path.push({
+           latitude: point.lat,
+           longitude: point.lng
+        });
       });
     });
 
@@ -117,6 +128,7 @@ export default [
         updateTimer = $timeout(updateLoopIteration, 15000);
       });
     };
+    // updateLoopIteration();
     // Cleanup timer when view leaves 
     $scope.$on('$destroy', () => { $timeout.cancel(updateTimer); });
 
@@ -134,41 +146,12 @@ export default [
   // 		//generate QR Code
   // new QRCode(document.getElementById("qr-code-bg"), 'ticket code goes here');
 
-  // };
+      // .then(function(compData){
+      //   $scope.company = compData;
+      //   $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
 
 
-  // }
-
-    // .then(function(compData){
-    //   $scope.company = compData;
-    //   $scope.company.logourl = 'http://staging.beeline.sg/companies/'+$scope.company.id+'/logo';
-
-  // 		return uiGmapGoogleMapApi;
-  // 	}).then(function(map) {
-  // 		console.log("map init success");
-
-  //     googleMaps = map;
-
-  // 		//grabbing the very first bundle of ping data
-  // 		return TripService.DriverPings($scope.tripTicket.alightStop.tripId);
-  // 	}).then(function(tripinfo) {
-
-  // 		$scope.info = tripinfo.data;
-
-  // 		gmap = $scope.map.mapControl.getGMap();
-
-  // 		//re-init the routepath and markers
-  // 		$scope.map.lines[1].path = [];
-  // 		$scope.map.markers = [];
-
-  // 		//add points for the Route
-  // 		for(var i=0; i<$scope.route.path.length; i++)
-  // 		{
-  // 			$scope.map.lines[1].path.push({
-  // 				latitude: $scope.route.path[i].lat,
-  // 				longitude: $scope.route.path[i].lng
-  // 			});
-  // 		}
+      //  gmap = $scope.map.mapControl.getGMap();
 
 
   // 		//pan and zoom to bus location
