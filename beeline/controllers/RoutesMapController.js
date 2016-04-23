@@ -115,9 +115,26 @@ export default function($scope, $state, $cordovaGeolocation,
         // Hack to fix map resizing due to ionic view cacheing
         // TODO find a better way?
         //////////////////////////////////////////////////////////////////////////
-        googleMaps.event.trigger(gmap, 'resize');
-        $scope.$on('mapRequireResize', function() {
-          googleMaps.event.trigger(gmap, 'resize');
+        // googleMaps.event.trigger(gmap, 'resize');
+        // $scope.$on('mapRequireResize', function() {
+        //   googleMaps.event.trigger(gmap, 'resize');
+        // });
+        // $scope.$on("$ionicView.afterEnter", function() {
+        //   console.log('heyo');
+        //   googleMaps.event.trigger(gmap, 'resize');
+        // });
+        $scope.$on("$ionicView.beforeEnter", function(event, data){
+           console.log("before enter");
+        });
+
+        $scope.$on("$ionicView.enter", function(event, data){
+           // handle event
+           console.log("enter");
+        });
+
+        $scope.$on("$ionicView.afterEnter", function(event, data){
+           // handle event
+           console.log("after enter");
         });
         //////////////////////////////////////////////////////////////////////////
 
