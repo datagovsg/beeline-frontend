@@ -25,7 +25,7 @@ function transformRouteData(data) {
     route.endTime = firstTripStops[firstTripStops.length - 1].time;
     route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description;
     route.tripsByDate = _.keyBy(route.trips,
-        trip => trip.date.getTime());
+                                trip => trip.date.getTime());
   });
   return data;
 }
