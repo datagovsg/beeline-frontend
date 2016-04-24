@@ -1,7 +1,10 @@
+import assert from 'assert';
+
 export default function TripService(UserService) {
   return {
 
     getTripData: function(id) {
+      assert(typeof id === 'number');
       return UserService.beeline({
         method: 'GET',
         url: '/trips/' + id,
@@ -11,6 +14,7 @@ export default function TripService(UserService) {
     },
 
     DriverPings: function(id) {
+      assert(typeof id === 'number');
       return UserService.beeline({
         method: 'GET',
         url: '/trips/' + id + '/latest_info',

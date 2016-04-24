@@ -7,7 +7,7 @@ import RoutesService from './services/RoutesService.js'; //OK
 import BookingService from './services/BookingService.js';
 import TripService from './services/TripService.js'; //OK
 import SuggestionService from './services/SuggestionService.js';
-import CompanyService from './services/CompanyService.js';
+import CompanyService from './services/CompanyService.js'; //OK
 import TicketService from './services/TicketService.js'; //OK
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';

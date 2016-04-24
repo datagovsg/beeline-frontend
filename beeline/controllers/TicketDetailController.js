@@ -59,10 +59,10 @@ export default [
       return TripService.getTripData(+ticket.alightStop.tripId);
     });
     var routePromise = tripPromise.then((trip) => {
-      return RoutesService.getRoute(trip.routeId);
+      return RoutesService.getRoute(+trip.routeId);
     });
     var companyPromise = tripPromise.then((trip) => {
-      return CompanyService.getCompany(trip.transportCompanyId);
+      return CompanyService.getCompany(+trip.transportCompanyId);
     });
     ticketPromise.then((ticket) => { $scope.ticket = ticket; });
     tripPromise.then((trip) => { $scope.trip = trip; });
@@ -112,9 +112,7 @@ export default [
 
     // Draw the planned route
     routePromise.then((route) => {
-      var routeLine = _.find($scope.map.lines, (line) => {
-        return line.id === "routeLine";
-      });
+      var routeLine = _.find($scope.map.lines, { id: 'routeLine' });
       routeLine.path = [];
       _.each(route.path, (point) => {
         routeLine.path.push({
@@ -124,21 +122,19 @@ export default [
       });
     });
 
-    // Draw the path the bus has taken
-    $scope.$watch('info', function(info) { if (info) {
-      // Draw the bus path
-      var busLine = _.find($scope.map.lines, (line) => {
-        return line.id === "busLine";
-      });
-      busLine.path = [];
-      _.each(info.pings, function(ping) {
-        var latLng = info.pings[i].coordinates.coordinates;
-        busLine.path.push({
-          latitude: latLng[1],
-          longitude: latLng[0]
-        });
-      });
-    }});
+    // // Draw the path the bus has taken
+    // $scope.$watch('info', function(info) { if (info) {
+    //   // Draw the bus path
+    //   var busLine = _.find($scope.map.lines, { id: 'busLine' });
+    //   busLine.path = [];
+    //   _.each(info.pings, function(ping) {
+    //     var latLng = info.pings[i].coordinates.coordinates;
+    //     busLine.path.push({
+    //       latitude: latLng[1],
+    //       longitude: latLng[0]
+    //     });
+    //   });
+    // }});
 
     // Draw the icon for latest bus location 
     $scope.$watch('info', function(info) { if (info && info.pings.length > 0) {

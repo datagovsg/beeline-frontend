@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import assert from 'assert';
 
 export default function TicketService($http, $filter, UserService) {
     var ticketsCache = null;
@@ -16,6 +17,7 @@ export default function TicketService($http, $filter, UserService) {
       },
 
       getTicketById: function(id, ignoreCache) {
+        assert(typeof id === 'number');
         return this.getTickets(ignoreCache).then(function(tickets) {
           return _.find(tickets, { id: id });
         });
