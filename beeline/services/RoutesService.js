@@ -1,5 +1,6 @@
 import querystring from 'querystring';
 import _ from 'lodash';
+import assert from 'assert';
 
 // Adapter function to convert what we get from the server into what we want
 // Ideally shouldn't need this if the server stays up to date
@@ -9,11 +10,11 @@ import _ from 'lodash';
 function transformRouteData(data) {
   _(data).each(function(route) {
     for (let trip of route.trips) {
-      assert(typeof trip.date == 'string');
+      assert(typeof trip.date === 'string');
       trip.date = new Date(trip.date);
 
       for (let tripStop of trip.tripStops) {
-        assert(typeof tripStop.time == 'string');
+        assert(typeof tripStop.time === 'string');
         tripStop.time = new Date(tripStop.time);
       }
     }
@@ -29,7 +30,7 @@ function transformRouteData(data) {
   return data;
 }
 
-export function RoutesService($http, SERVER_URL, UserService) {
+export default function RoutesService($http, SERVER_URL, UserService) {
 
   var routesCache;
   var recentRoutesCache;

@@ -5,7 +5,7 @@ import {companyLogo} from './shared/imageSources';
 import UserService from './services/UserService.js';  //OK
 import RoutesService from './services/RoutesService.js'; //OK
 import BookingService from './services/BookingService.js';
-import TripService from './services/TripService.js';
+import TripService from './services/TripService.js'; //OK
 import SuggestionService from './services/SuggestionService.js';
 import CompanyService from './services/CompanyService.js';
 import TicketService from './services/TicketService.js'; //OK

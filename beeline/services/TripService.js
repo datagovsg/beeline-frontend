@@ -1,20 +1,11 @@
 export default function TripService(UserService) {
   return {
-    
-    getTripData: function(id){
-      return UserService.beeline({
-        method: 'GET',
-        url: `/trips/${id}`,
-      }).then((response) => {
-        return response.data;
-      });
-    },
 
-    getRoutePath: function(id){
+    getTripData: function(id) {
       return UserService.beeline({
         method: 'GET',
-        url: `/routes/${id}`,
-      }).then((response) => {
+        url: '/trips/' + id,
+      }).then(function(response) {
         return response.data;
       });
     },
@@ -22,8 +13,8 @@ export default function TripService(UserService) {
     DriverPings: function(id) {
       return UserService.beeline({
         method: 'GET',
-        url: `/trips/${id}/latest_info`,
-      }).then((response) => {
+        url: '/trips/' + id + '/latest_info',
+      }).then(function(response) {
         return response.data;
       });
     }

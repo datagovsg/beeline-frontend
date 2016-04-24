@@ -1,7 +1,7 @@
 import querystring from 'querystring';
 import uuid from 'uuid';
 
-export function UserService($http, $state, $ionicPopup) {
+export default function UserService($http, $state, $ionicPopup) {
   var preLoginState = null;
   var preLoginParams = null;
   var sessionToken = window.localStorage['sessionToken'] || null;
