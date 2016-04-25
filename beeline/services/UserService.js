@@ -141,23 +141,22 @@ export default function UserService($http, $state, $ionicPopup, $rootScope) {
     // Prompt the user for the phone number and login verification code
     logIn: function() {
 
-      var promptForVerification = function(message) {
+      // Second prompt for verification code after getting a users phone number
+      var promptForVerification = function(telephone, message) {
         return $ionicPopup.prompt({
           title: 'Verification Code',
-          template: 'Enter the verification code sent to your phone',
+          subTitle: 'Enter the verification code sent to your phone',
           inputPlaceholder: 'Enter the verification code here'
-        }).then(function(response) {
-          // Need to explicitly check for undefined to distinguish between empty string
-          // and an actual cancel
-          if (typeof response !== 'undefined') {
-            if (response.length === 6) {
-              console.log('hallelujah');
-            }
-            else promptForVerification("Please enter a valid 6 verification code");
-          }
-        });
+        })        
+        // Need to explicitly check for undefined to distinguish between empty string
+        // and an actual cancel
+        .then(function(response) { if (typeof response !== 'undefined') {
+          if (response.length === 6) instance.verifyTelephone(telephone, response);
+          else promptForVerification(telephone, "Please enter a valid 6 digit verification code");       
+        }});
       };
 
+      // First prompt for the users phone number
       var validPhone = /^[0-9]{8}$/; 
       var promptForPhone = function(message) {
         return $ionicPopup.prompt({
@@ -168,14 +167,18 @@ export default function UserService($http, $state, $ionicPopup, $rootScope) {
           // Need to explicitly check for undefined to distinguish between empty string
           // and an actual cancel
           if (typeof response !== 'undefined') {
-            if (validPhone.test(response)) promptForVerification();
+            if (validPhone.test(response)) {
+              var telephone = response;
+              instance.logOut();
+              instance.sendTelephoneVerificationCode(telephone)
+              .then(function(){ promptForVerification(telephone); })
+            }
             else promptForPhone("Please enter a valid 8 digit phone number");
           }
         });
       };
-      promptForPhone();
 
-
+      promptForPhone("Please enter the your phone number to receive a verification code");
     },
 
     // Return to the page that activated the login
