@@ -128,10 +128,9 @@
   <script id="changes-message.html" type="text/ng-template">
     <div class="changes-message" class="modal">
       <ion-header-bar class="bar-stable">
-          <h1 class="title">Changes to Service #{{book.routeid}}</h1>
-        <a class="item-icon-right" ng-click="closeChangesModal()">
-          <i class="icon ion-android-close"></i>
-        </a>
+        <h1 class="title">Changes to Service #{{book.routeid}}</h1>
+        <button class="button icon ion-android-close button-clear" ng-click="closeChangesModal()">
+        </button>
       </ion-header-bar>
       <ion-content>
         <table class="route-changes-table">
