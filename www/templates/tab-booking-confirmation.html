@@ -1,33 +1,37 @@
-<ion-view view-title="Booking Summary">
+<ion-view view-title="Booking Summary" id="pg_booking-confirmation">
   <ion-content>
+    <ion-item class="item-text-wrap">
       <table id="complete-info">
-            <tr class="info-row">
-                <td class="left-col">
-                    <div class="paid"></div>
-                </td>
-                <td class="right-col">
-                    Success! Your payment has been processed.
-                </td>
-            </tr>
-            <tr class="info-row">
-                <td class="left-col">
-                    <div class="track"></div>
-                </td>
-                <td class="right-col">
-                    Track your bus arrival on the day of the trip with the e-tickets
-                </td>
-            </tr>
-            <tr class="info-row">
-                <td class="left-col">
-                    <div class="showTicket"></div>
-                </td>
-                <td class="right-col">
-                    Show the bus driver the e-ticket when you board.
-                </td>
-            </tr>
-        </table>
-    <button ui-sref="tab.tickets">
+        <tr>
+          <td>
+            <img src="img/BookingComplete_paid.png">
+          </td>
+          <td>
+            Success! Your payment has been processed.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="img/BookingComplete_track.png">
+          </td>
+          <td>
+            Track your bus arrival on the day of the trip with the e-tickets
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="img/BookingComplete_showTicket.png">
+          </td>
+          <td>
+            Show the bus driver the e-ticket when you board.
+          </td>
+        </tr>
+      </table>
+    </ion-item>
+    <ion-item class="button-bar">
+      <button ui-sref="tabs.tickets" class="primary-button button">
         View Tickets
-    </button>
+      </button>
+    </ion-item>
   </ion-content>
 </ion-view>

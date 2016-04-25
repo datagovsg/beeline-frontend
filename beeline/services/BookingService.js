@@ -171,6 +171,10 @@ export default function (UserService, CompanyService, RoutesService, $http) {
       return changes;
     }
 
+    for (let trip of route.trips) {
+      trip.tripStops = _.sortBy(trip.tripStops, ts => ts.time);
+    }
+
     // summarize price/stop/time
     changes.priceChanges = summarizeChanges(route.trips,
       (trip) => trip.price,

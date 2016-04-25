@@ -41,7 +41,7 @@ export function formatUTCDate(date) {
             twoPad(date.getUTCFullYear());
 }
 
-export function formatTime(date) {
+export function formatTime(date, prePadding) {
     if (!date) return '';
     if (typeof date == 'string' || typeof date == 'number') {
         date = new Date(date);
@@ -49,10 +49,13 @@ export function formatTime(date) {
 
     var hours = date.getHours();
 
+    var hourPart = 12 - (24 - hours) % 12
+    hourPart = prePadding ? twoPad(hourPart, 2, '\u2007') : hourPart
+
     /* \u2007 is a figure space */
-    return twoPad(12 - (24 - hours) % 12, 2, '\u2007') + ':' +
+    return hourPart + ':' +
             twoPad(date.getMinutes()) + ' '
-            + (hours > 12 ? 'PM' : 'AM')/*+ ':' +
+            + (hours > 12 ? 'pm' : 'am')/*+ ':' +
             twoPad(date.getSeconds()) */;
 }
 

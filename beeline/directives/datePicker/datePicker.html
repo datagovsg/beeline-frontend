@@ -1,5 +1,23 @@
-<div class="datepicker"  data-tap-disabled="true">
-  <table>
+<div>
+  <div class="month-selector">
+    <i class="icon ion-chevron-left prev" ng-click="previousMonth()"></i>
+
+    <div class="mmyyyy-holder">
+      <select class="mm" ng-model="startMonth"
+        ng-options="i as monthNames[i] for i in displayMonths"
+      >
+      </select>
+
+      <select class="yyyy" ng-model="startYear"
+        ng-options="i for i in displayYears"
+      >
+      </select>
+    </div>
+
+    <i class="icon ion-chevron-right next" ng-click="nextMonth()"></i>
+  </div>
+
+  <table class="dates" data-tap-disabled="true">
     <thead>
       <tr>
         <th>Sun</th>
@@ -31,21 +49,19 @@
       </tr>
     </tbody>
   </table>
-  <div class="monthsel">
-    <i class="icon ion-chevron-left prev" ng-click="previousMonth()"></i>
 
-    <div class="mmyyyy-holder">
-      <select class="mm" ng-model="startMonth"
-        ng-options="i as monthNames[i] for i in displayMonths"
-      >
-      </select>
-
-      <select class="yyyy" ng-model="startYear"
-        ng-options="i for i in displayYears"
-      >
-      </select>
-    </div>
-
-    <i class="icon ion-chevron-right next" ng-click="nextMonth()"></i>
-  </div>
+  <table class="legend" ng-if="showLegend">
+    <tr>
+      <td class="invalid">#</td>
+      <td>Not available / fully booked</td>
+    </tr>
+    <tr>
+      <td class="selected valid">#</td>
+      <td>Selected dates</td>
+    </tr>
+    <tr>
+      <td class="invalid previously-booked">#</td>
+      <td>Prior booking</td>
+    </tr>
+  </table>
 </div>

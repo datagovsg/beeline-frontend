@@ -78,5 +78,29 @@ export default [
       return mapOptions;
     };
 
+    this.locateMe = (mapControl) => function() {
+      var options = {
+        timeout: 5000,
+        enableHighAccuracy: true
+      };
+
+      //promise
+      $cordovaGeolocation
+      .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
+      .then(function(userpos){
+        if (!mapControl.getGMap) return;
+
+        var gmap = mapControl.getGMap();
+
+        gmap.panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude));
+        setTimeout(function(){
+          gmap.setZoom(17);
+        }, 300);
+
+      }, function(err){
+        console.log('ERROR - ' + err);
+      });
+    };
+
   }
 ]

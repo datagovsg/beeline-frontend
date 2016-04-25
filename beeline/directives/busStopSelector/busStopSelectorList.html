@@ -1,17 +1,19 @@
-<ion-modal-view class="stop-selector">
-  <ion-header-bar class="my-header-bar bar bar-stable">
+<ion-modal-view class="stop-selector has-subheader">
+  <ion-header-bar class="bar bar-stable">
     <h1 class="title">
       {{title}}
     </h1>
-    <a class="item-icon-right" ng-click="closeStopSelectModal()">
-      <i class="icon ion-android-close"></i>
-    </a>
+    <button class="button button-clear icon ion-android-close"
+        ng-click="closeStopSelectModal()">
+   </button>
+  </ion-header-bar>
 
+  <div class="bar bar-subheader">
     <ui-gmap-google-map
       center="map.center"
       zoom="map.zoom"
       bounds="map.bounds"
-      control="map.mapControl"
+      control="map.control"
       options="map.options"
       data-tap-disabled="true"
     >
@@ -37,7 +39,8 @@
       </ui-gmap-circle>
     </ui-gmap-google-map>
     <div class="ion-list-header">{{busStops.length}} stops available</div>
-  </ion-header-bar>
+  </div>
+
   <ion-content class="big-container">
     <ion-list class="stops-list">
       <ion-item ng-repeat="stop in busStops">

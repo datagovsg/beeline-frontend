@@ -47,8 +47,8 @@ export default [
       etime: '',
       sroad: '',
       eroad: '',
-      stxt: 'Select your pick-up stop',
-      etxt: 'Select your drop-off stop',
+      stxt: 'Select pick-up stop',
+      etxt: 'Select drop-off stop',
       ptxt: 'No. of passengers',
       transco: {},
       allDataNotFilled: true,
@@ -150,7 +150,7 @@ export default [
      to display the stop id and description */
     $scope.getStopId = (stop) => stop.id;
     $scope.getStopDescription = (stop) =>
-      formatTime(stop.time) + ' \u00a0\u00a0' + stop.description;
+      formatTime(stop.time, true) + ' \u00a0\u00a0' + stop.description;
     $scope.getStopDescription2 = (stop) =>
       stop.road;
 
@@ -163,7 +163,7 @@ export default [
     // 3. Changes to route
     $scope.lastDisplayedRouteId = null; // works if caching
     $scope.displayRouteInfo = function() {
-        RoutesService.getRoute($scope.book.routeId)
+      RoutesService.getRoute(parseInt($scope.book.routeId))
       .then((route) => {
         // 1. Route info
         $scope.routePath = route.path.map(latlng => ({
@@ -190,11 +190,6 @@ export default [
           console.log('Changes detected: diplaying message box');
 
           if ($scope.changesModal) {
-            $scope.changesModal.remove();
-            $scope.changesModal = null;
-          }
-
-          if ($scope.changesModal) {
             $scope.changesModal.show();
           }
           else {
@@ -208,7 +203,7 @@ export default [
             });
           }
         }
-          $scope.lastDisplayedRouteId = $scope.book.routeId;
+        $scope.lastDisplayedRouteId = $scope.book.routeId;
 
         // 2. Fill in the transport company info
         return CompanyService.getCompany(route.trips[0].transportCompanyId)
@@ -225,26 +220,7 @@ export default [
 
     /* ----- Methods ----- */
     //Click function for User Position Icon
-    $scope.getUserLocation = function() {
-      var options = {
-        timeout: 5000,
-        enableHighAccuracy: true
-      };
-
-      //promise
-      $cordovaGeolocation
-      .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
-      .then(function(userpos){
-
-        gmap.panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude));
-        setTimeout(function(){
-          gmap.setZoom(17);
-        }, 300);
-
-      }, function(err){
-        console.log('ERROR - ' + err);
-      });
-    }
+    $scope.getUserLocation = MapOptions.locateMe($scope.map.control);
 
     function computeStops() {
         var trips = $scope.book.route.trips;
@@ -289,8 +265,8 @@ export default [
     //[2] End stop is specified
     //[3] Checkbox is checked
     $scope.$watchGroup([
-        'book.boardStop',
-        'book.alightStop',
+          'book.boardStop',
+          'book.alightStop',
         'book.termsChecked',
       ], function () {
         if ($scope.book.termsChecked == true) {

@@ -3,6 +3,7 @@ import assert from 'assert';
 
 export default function TicketService($http, $filter, UserService) {
   var ticketsCache = null;
+  var ticketsByRouteId = null;
   return {
 
     getTickets: function(ignoreCache) {
@@ -10,14 +11,23 @@ export default function TicketService($http, $filter, UserService) {
       return UserService.beeline({
         method: 'GET',
         url: '/tickets',
-      }).then(function(response) {
+			}).then((response) => {
         ticketsCache = response.data;
+        ticketsByRouteId = _.groupBy(ticketsCache, ticket => ticket.boardStop.trip.routeId);
+
         return ticketsCache;
+			});
+    },
+
+    getTicketsByRouteId(rid) {
+      return this.getTickets()
+      .then(() => {
+        return ticketsByRouteId[rid];
       });
     },
 
     getTicketById: function(id, ignoreCache) {
-      assert(typeof id === 'number');
+      assert.equal(typeof id, 'number');
       return this.getTickets(ignoreCache).then(function(tickets) {
         return _.find(tickets, { id: id });
       });
@@ -40,7 +50,7 @@ export default function TicketService($http, $filter, UserService) {
         });
         return categorizedTickets;
       });
-    }
+		}
 
   };
 }

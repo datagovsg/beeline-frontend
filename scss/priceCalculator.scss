@@ -1,0 +1,23 @@
+
+price-calculator {
+
+  .price-table {
+    width: 100%;
+
+    &.prices {
+      td {
+        width:50%;
+      }
+    }
+
+    &.totals {
+      border-spacing: 5px;
+      border-collapse: separate;
+      td, th{
+        width: 33%;
+        vertical-align: middle;
+      }
+    }
+  }
+
+}

@@ -12,7 +12,7 @@ import TicketService from './services/TicketService.js'; //OK
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
-import MapOptionsService from './services/MapOptions.js'
+import MapOptionsService from './services/MapOptions'
 // Controller Imports
 import IntroSlidesController from './controllers/IntroSlidesController.js'; //OK
 import RoutesController from './controllers/RoutesController.js'; //OK
@@ -36,7 +36,9 @@ import PriceCalculator from './directives/priceCalculator/priceCalculator';
 import BusStopSelector from './directives/busStopSelector/busStopSelector';
 import StartEndPicker from './directives/startEndPicker/startEndPicker';
 import routeItem from './directives/routeItem/routeItem.js';
+import companyTnc from './directives/companyTnc/companyTnc.js';
 import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
+import bookingBreadcrumbs from './directives/bookingBreadcrumbs/bookingBreadcrumbs';
 import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
 import QtyInput from './directives/qtyInput/qtyInput';
 
@@ -117,7 +119,9 @@ var app = angular.module('beeline', [
 .directive('priceCalculator', PriceCalculator)
 .directive('revGeocode', RevGeocode)
 .directive('fancyPrice', FancyPrice)
+.directive('bookingBreadcrumbs', bookingBreadcrumbs)
 .directive('routeItem', routeItem)
+.directive('companyTnc', companyTnc)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');

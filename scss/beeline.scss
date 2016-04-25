@@ -18,10 +18,6 @@
 .item-input input[type="text"] {
   text-align: right;
 }
-.big-yellow-centered {
-  display: block;
-  margin: 0 auto;
-}
 
 .button-block {
   max-width: 80%;
@@ -60,13 +56,82 @@
   display:none;
 }
 
-// .big-yellow {
-//   @include big-yellow();
-// }
+.primary-button {
+  padding: 20px 20px;
+  font-size: 16px;
+  line-height: 0px;
+  background-color: #ffe76e; // FIXME: variables?
+  border: 0px;
+  border-bottom: 4px solid #f7c639;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  color: #333;
+  z-index: 3;
 
-// .big-yellow-fixed {
-//   @include big-yellow-fixed();
-// }
+  &:active {
+    border-bottom: 1px solid #f7c639;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.6);
+  }
+
+  &[disabled="disabled"] {
+    background-color: #d6d6d6;
+    border-bottom: 4px solid #b9b9b9;
+    color: #6f6f6f;
+  }
+}
+
+.primary-button-fixed {
+  margin-left: -130px; /* Can we work around this hack? */
+  width: 260px;
+  left: 50%;
+  position: fixed;
+}
+
+.primary-button-centered {
+  display: block;
+  margin: 0 auto;
+}
+
+th {
+  font-weight: normal;
+  text-align: center;
+  background-color: $table-header-bg;
+  color: $royal;
+  padding: $table-cell-padding;
+  border-bottom: solid $table-header-border-width $royal;
+}
+
+td {
+  padding: $table-cell-padding;
+  text-align: center;
+  border-bottom: $table-cell-border-width solid #CCC;
+  vertical-align: middle;
+}
+
+.bus-number {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  background-color: $royal;
+  color: $light;
+  line-height: 40px;
+  border-radius: 20px;
+}
+
+.locate-me {
+  width: 60px;
+  height: 59px;
+  background: transparent url('../img/MapButtonLocateMe@2x.png') center center no-repeat;
+  background-size: 60px 59px;
+  cursor: pointer;
+
+  &.activated {
+    transform: translateY(2px);
+    opacity: 0.8;
+  }
+}
+
 
 // /* Error messages during form validation */
 // .err {
@@ -102,7 +167,6 @@
 //   border: solid 1px #FFF;
 //   color: #FFF;
 // }
-
 
 // .item a.item-content {
 //   padding: 0;
@@ -349,7 +413,7 @@
 // #pg_tickets #btnloginpls,
 // #pg_login #btnloginnext,
 // .logout.modal #btnlogout {
-//   @include big-yellow-fixed();
+//   @include primary-button-fixed();
 // }
 
 

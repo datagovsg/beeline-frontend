@@ -1,12 +1,12 @@
-<div class="busnum">{{ route.label }}</div>
+<div class="bus-number">{{ route.label }}</div>
 <div class=" stops">
   <div class="line"></div>
   <div class="start">
-    <span class="time">{{ route | routeStartTime | formatTime }}</span>
+    <span class="time">{{ route | routeStartTime | formatTime:true }}</span>
     <span class="road">{{ route | routeStartRoad }}</span>
   </div>
   <div class="end">
-    <span class="time">{{ route | routeEndTime | formatTime }}</span>
+    <span class="time">{{ route | routeEndTime | formatTime:true }}</span>
     <span class="road">{{ route | routeEndRoad }}</span>
   </div>
   <span class="active">active</span>

@@ -10,11 +10,11 @@ import assert from 'assert';
 function transformRouteData(data) {
   _(data).each(function(route) {
     for (let trip of route.trips) {
-      assert(typeof trip.date === 'string');
+      assert.equal(typeof trip.date, 'string');
       trip.date = new Date(trip.date);
 
       for (let tripStop of trip.tripStops) {
-        assert(typeof tripStop.time === 'string');
+        assert.equal(typeof tripStop.time, 'string');
         tripStop.time = new Date(tripStop.time);
       }
     }
@@ -25,7 +25,7 @@ function transformRouteData(data) {
     route.endTime = firstTripStops[firstTripStops.length - 1].time;
     route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description;
     route.tripsByDate = _.keyBy(route.trips,
-                                trip => trip.date.getTime());
+        trip => trip.date.getTime());
   });
   return data;
 }
@@ -40,7 +40,7 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     // Retrive the data on a single route
     // TODO refactor this to match getRoutes and searchRoutes
     getRoute: function(routeId, ignoreCache) {
-      assert(typeof routeId === 'number');
+      assert.equal(typeof routeId, 'number');
       return instance.getRoutes(ignoreCache)
       .then(function(routes) {
         return _.find(routes, { id: routeId });
@@ -51,9 +51,9 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     getRoutes: function(ignoreCache) {
       if (routesCache && !ignoreCache) return Promise.resolve(routesCache);
       return UserService.beeline({
-        method: 'GET',
-        url: '/routes?include_trips=true'
-      })
+          method: 'GET',
+          url: '/routes?include_trips=true'
+        })
       .then(function(response) {
         routesCache = transformRouteData(response.data);
         return routesCache;
@@ -69,29 +69,29 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     @param {Date} search.arrivalTime a Date object where the number of seconds
                   since midnight is the desired arrival time at the destination
     @param {Date} search.startTime A Date object.
-                  Restricts search results to routes with trips
-                  after this time
+                Restricts search results to routes with trips
+                after this time
     @param {Date} search.endTime a Date object.
-                  Restrict search results to routes with trips
-                  before this time
+                Restrict search results to routes with trips
+                before this time
     @return {Promise}
     **/
     searchRoutes: function(search) {
-     //return Promise object
-     return UserService.beeline({
-       method: 'GET',
+      //return Promise object
+      return UserService.beeline({
+        method: 'GET',
        url: '/routes/search_by_latlon?' + querystring.stringify({
-         startLat: search.startLat,
-         startLng: search.startLng,
-         endLat: search.endLat,
-         endLng: search.endLng,
-         arrivalTime: search.arrivalTime,
-         startTime: search.startTime,
-         endTime: search.endTime
-       }),
-     }).then(function(response) {
-       return transformRouteData(response.data);
-     });
+          startLat: search.startLat,
+          startLng: search.startLng,
+          endLat: search.endLat,
+          endLng: search.endLng,
+          arrivalTime: search.arrivalTime,
+          startTime:  search.startTime,
+          endTime: search.endTime
+        }),
+      }).then(function(response) {
+        return transformRouteData(response.data);
+      });
     },
 
     // Retrieves the recent routes for a user
@@ -110,7 +110,6 @@ export default function RoutesService($http, SERVER_URL, UserService) {
         return Promise.resolve([]);
       }
     },
-
   };
 
   return instance;

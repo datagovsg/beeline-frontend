@@ -13,7 +13,7 @@
       margin-bottom: 0.3em;
     }
 
-    stop-time {
+    stop-time, .stop-time {
       flex: 0 0 auto;
     }
     stop-img {
@@ -21,7 +21,7 @@
       text-align: center;
       width: $stopMarkerWidth;
     }
-    stop-stop {
+    stop-stop, .stop-stop {
       flex: 1 1 auto;
       display: block;
       margin-left: $stopMarkerRightMargin;

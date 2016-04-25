@@ -1,12 +1,19 @@
 #pg_summary {
-  .msg {
-    padding: 10px 16px;
-    background-color: #FFF;
-    border-bottom: 1px solid #CCC;
+
+  h3 {
+    color: $hint-color;
+    font-size: 100%;
   }
 
+  .route-info {
+    display: flex;
+  }
+
+  .msg {
+    display: none;
+  }
+/*
   section {
-    border-bottom: 3px solid $stable;
 
     .edit {
       clear: both;
@@ -31,63 +38,10 @@
       color: #333;
       display: inline-block;
     }
-  }
-
-  .ion-list-header {
-    border-bottom: 1px solid #CCC;
-    font-weight: bold;
-    color: #333;
-    font-size: 14px;
-    position: relative;
-    padding-left: 40px;
-
-    .icon {
-      font-size: 30px;
-      margin-right: 5px;
-      color: #000;
-      position: absolute;
-      left: 10px;
-      top: 0px;
-    }
-  }
-
-  .routeinfo {
-    background-color: #FFF;
-    padding: 15px 16px 15px 16px;
-
-    route-item {
-      padding: 10px;
-      width: 100%;
-      height: 60px;
-      background-color: #FFF;
-      z-index: 1;
-
-      .active {
-        display: none;
-      }
-    }
-  }
-
-  .tripdates {
-    background-color: #FFF;
-    padding: 15px 10px;
-
-    .datesnum {
-      padding: 10px 6px 20px 6px;
-
-      span {
-        font-weight: bold;
-        font-size: 20px;
-        margin-bottom: 5px;
-      }
-    }
-
-    .qty-input .btns button{
-      display: none;
-    }
-  }
+  }*/
 
   .promo {
+    display: none;
     background-color: #FFF;
     padding: 15px 16px;
 
@@ -120,18 +74,23 @@
     }
   }
 
-  .paytxt {
-    text-align: center;
+  .booking-tnc {
+    background: #FFF;
+
+    ul {
+      margin: 0.5em 0;
+      li {
+        list-style: disc;
+        margin-left: 1em;
+      }
+    }
+    .signage-example {
+      display: block;
+      margin: 1em 2em;
+    }
   }
 
-  #btnpay {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    margin: 20px 0px;
-
-    &:active {
-      margin-top: 23px;
-    }
+  .paytxt {
+    text-align: center;
   }
 }

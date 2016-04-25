@@ -1,0 +1,10 @@
+booking-breadcrumbs {
+  .item {
+    padding: $content-padding;
+    img {
+      height: $breadcrumbs-height - 2 * $content-padding;
+      display: block;
+      margin: auto;
+    }
+  }
+}
