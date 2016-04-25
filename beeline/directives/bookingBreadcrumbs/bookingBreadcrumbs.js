@@ -5,7 +5,7 @@ export default function breadcrumbs() {
     template:
     `<div class="item"><img src="img/booking-breadcrumbs/{{imgNames[step]}}"></div>`,
     scope: {
-      step: '=',
+      step: '@',
     },
     link: function (scope, elem, attr) {
       scope.imgNames = [

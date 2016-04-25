@@ -1,8 +1,8 @@
 booking-breadcrumbs {
   .item {
-    padding: 5px;
+    padding: $content-padding;
     img {
-      height: $breadcrumbs-height - 10px;
+      height: $breadcrumbs-height - 2 * $content-padding;
       display: block;
       margin: auto;
     }

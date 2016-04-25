@@ -7,7 +7,7 @@
 
     .month-selector {
       background-color: $light;
-      padding: 10px;
+      padding: $content-padding;
 
       .mmyyyy-holder {
         display: inline-block;
@@ -16,7 +16,7 @@
           font-size: 120%;
 
           background-color: $light;
-          border: 1px solid #CCC;
+          border: 1px solid $datepicker-invalid-text;
           border-radius: 5px;
           padding: 5px;
           top: 3px;
@@ -25,8 +25,8 @@
       .icon {
         background-color: $light;
         color: $royal;
-        font-size: 28px;;
-        padding: 10px;
+        font-size: 28px;
+        padding: $content-padding;
       }
     }
 
@@ -58,42 +58,48 @@
         td:nth-of-type(2) {
           text-align: left;
         }
+
+        td {
+          /* !important to override the border settings
+          by other classes
+          */
+          border: solid 1px $datepicker-default-bg !important;
+        }
       }
 
       td.invalid {
-        background-color: #DDD;
-        border-left: 1px solid #DDD;
-        color: #BBB;
+        background-color: $datepicker-default-bg;
+        border-left: 1px solid $datepicker-default-bg;
+        color: $datepicker-invalid-text;
 
         &.first-day-of-month {
-          border-left: 1px solid #CCC;
+          border-left: 1px solid $datepicker-invalid-text;
         }
 
         &.previously-booked {
-          color: #F00;
+          color: $datepicker-previously-booked-text;
         }
       }
       td.valid {
-        background-color: #DDD;
-        border-left: 1px solid #DDD;
-        color: #000;
+        background-color: $datepicker-default-bg;
+        border-left: 1px solid $datepicker-default-bg;
+        color: $datepicker-valid-text;
 
         &.first-day-of-month {
-          border-left: 1px solid #CCC;
+          border-left: 1px solid $datepicker-invalid-text;
         }
 
         /* when selecting */
         &.selected {
-          background-color: #FFF;
-          border-left: 1px solid #FFF;
-          color: #000;
+          background-color: $datepicker-selected-bg;
+          border-left: 1px solid $datepicker-selected-bg;
 
           &.dragged {
-            background-color: #66F;
+            background-color: $datepicker-selected-bg-dragging;
           }
         }
         &.dragged:not(.selected) {
-          background-color: #6AF;
+          background-color: $datepicker-default-bg-dragging;
         }
       }
     }

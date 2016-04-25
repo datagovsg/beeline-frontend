@@ -6,7 +6,6 @@ route-item {
   flex-direction: row;
 
   .bus-number {
-    @include bus-num;
     margin-right: 10px;
     flex: 0 0 auto;
   }

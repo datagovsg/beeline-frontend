@@ -81,7 +81,8 @@ function DatePickerDirective(DateService) {
       var i;
       if ((i = $scope.selectedDates.indexOf(date.time)) == -1) {
         /* Ensure date is valid! */
-        if (date.isValid && !date.isExhausted && !date.isInvalidStop) {
+        if (date.isValid && !date.isExhausted && !date.isInvalidStop
+            && !date.isBookedBefore) {
           $scope.selectedDates.push(date.time);
         }
       }

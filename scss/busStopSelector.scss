@@ -4,10 +4,10 @@ bus-stop-selector {
   background-color: $base-background-color;
 
   .stop-description {
-    height: 34px;
-    line-height: 29px;
-    padding: 3px 1em 2px 38px;
-    border-bottom: 1px solid #CCC;
+    padding: $bus-stop-selector-padding-top 1em
+      $bus-stop-selector-padding-bottom 38px;
+    /* 38px is related to the width of the icon representing stops */
+    border-bottom: 1px solid $item-default-border;
     background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
     background-size: auto 20px;
 
@@ -29,15 +29,6 @@ bus-stop-selector {
   }
 }
 
-.bus-stop-selector-map button {
-  border: solid 1px $stable;
-  display: block;
-  margin: 0 auto;
-  border-radius: 10px;
-  background-color: #FF0;
-  padding: 10px;
-}
-
 /* ---------- BOOKINGS STOPS MODAL ---------- */
 .stop-selector {
   width: calc(100% - 20px);
@@ -51,24 +42,12 @@ bus-stop-selector {
   display: flex;
   flex-direction: column;
 
-  .my-header-bar {
+  .bar-subheader {
     background-color: $stable;
     padding: 0;
     display: flex;
     flex-direction: column;
     height: 300px;
-
-    h1.title {
-      flex: 0 0 auto;
-      left: auto;
-      right: auto;
-      color: white;
-      text-align: center;
-      position: static;
-    }
-    a.item-icon-right {
-      height: 43px;
-    }
 
     ui-gmap-google-map {
       flex: 1 1 auto;
@@ -85,11 +64,12 @@ bus-stop-selector {
       }
     }
   }
+
   ion-content {
-    top: 300px;
-      ion-item.item {
-        padding: 0;
-      }
+    top: $bar-height + 300px;
+    ion-item.item {
+      padding: 0;
+    }
     .stops-list {
       label.item-radio {
         .radio-content {

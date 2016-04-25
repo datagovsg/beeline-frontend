@@ -2,10 +2,6 @@
 $stopMarkerWidth: 30px;
 $stopMarkerRightMargin: 1em;
 
-.busnum {
-  @include bus-num;
-}
-
 .start-end {
   display: flex;
   flex-direction: column;

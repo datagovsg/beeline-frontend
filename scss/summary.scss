@@ -7,9 +7,6 @@
 
   .route-info {
     display: flex;
-    .bus-number {
-      @include bus-num;
-    }
   }
 
   .msg {

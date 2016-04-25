@@ -1,9 +1,9 @@
 <div class="new_suggestion modal" data-tap-disabled=true>
   <ion-header-bar class="bar-stable">
     <h1 class="title">{{newSuggestion.title}}</h1>
-    <button class="item-icon-right" ng-click="cancel()">
-      <span class="icon ion-android-close"></span>
-    </button>
+    <button class="button button-clear icon ion-android-close"
+        ng-click="cancel()">
+   </button>
   </ion-header-bar>
   <ion-content>
     <div class="button-controls" ng-if="newSuggestion.id">

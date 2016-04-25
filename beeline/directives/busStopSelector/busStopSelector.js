@@ -49,9 +49,6 @@ export default [
         scope.selectionModal.show();
       }
 
-      elem[0].firstChild.querySelector('.stop-description')
-          .addEventListener('focus', scope.showList)
-
       scope.$on('$destroy', () => {
         if (scope.selectionModal) {
           scope.selectionModal.remove();

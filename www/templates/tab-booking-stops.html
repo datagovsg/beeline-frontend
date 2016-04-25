@@ -71,7 +71,7 @@
     </ui-gmap-window>
   </ui-gmap-google-map>
 
-  <div id="userpos" ng-click="getUserLocation()"></div>
+  <div class="locate-me" ng-click="getUserLocation()"></div>
 
   <ion-list class="stop-inputs">
     <bus-stop-selector
@@ -113,7 +113,7 @@
   </ion-list>
 
   <div class="item button-bar">
-    <button class="button big-yellow big-yellow-centered"
+    <button class="button primary-button primary-button-centered"
       ui-sref="tabs.booking-dates({
         routeId: book.routeId,
         boardStop: book.boardStop,
@@ -126,7 +126,7 @@
   </ion-content>
 
   <script id="changes-message.html" type="text/ng-template">
-    <div id="changes-message" class="modal">
+    <div class="changes-message" class="modal">
       <ion-header-bar class="bar-stable">
           <h1 class="title">Changes to Service #{{book.routeid}}</h1>
         <a class="item-icon-right" ng-click="closeChangesModal()">

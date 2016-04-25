@@ -99,7 +99,7 @@
 				<td class="stops">
 					<div class="routeinfo">
 						<div class="title">
-							<div class="busnum">{{route.label || 0}}</div>
+							<div class="bus-number">{{route.label || 0}}</div>
 							<div class="name">{{route.description || 'Name of booked trip'}}</div>
 						</div>
 						<div class="stops">
@@ -121,16 +121,16 @@
 		</table>
 
 	</div>
-     
-      
+
+
     <div class="map">
-        
+
         <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" control="map.mapControl" data-tap-disabled="true">
 			<ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" stroke="p.stroke" icons="p.icons"></ui-gmap-polyline>
 			<ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
         </ui-gmap-google-map>
     </div>
-          
-      
+
+
   </ion-content>
 </ion-view>
