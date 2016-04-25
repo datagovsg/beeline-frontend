@@ -5,15 +5,16 @@ import assert from 'assert';
 // Adapter function to convert what we get from the server into what we want
 // Ideally shouldn't need this if the server stays up to date
 // Transforms the data in place rather than making a new array
-// This is to save time since its a deep copy and you wont need the original array anyway
-function transformRouteData(data){
-  _(data).each(function(route){
+// This is to save time since its a deep copy
+// and you wont need the original array anyway
+function transformRouteData(data) {
+  _(data).each(function(route) {
     for (let trip of route.trips) {
-      assert(typeof trip.date == 'string');
+      assert.equal(typeof trip.date, 'string');
       trip.date = new Date(trip.date);
 
       for (let tripStop of trip.tripStops) {
-        assert(typeof tripStop.time == 'string');
+        assert.equal(typeof tripStop.time, 'string');
         tripStop.time = new Date(tripStop.time);
       }
     }
@@ -23,64 +24,57 @@ function transformRouteData(data){
     route.startRoad = firstTripStops[0].stop.description;
     route.endTime = firstTripStops[firstTripStops.length - 1].time;
     route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description;
-    route.tripsByDate =_.keyBy(route.trips,
+    route.tripsByDate = _.keyBy(route.trips,
         trip => trip.date.getTime());
   });
   return data;
 }
 
-export default function($http, SERVER_URL, UserService) {
+export default function RoutesService($http, SERVER_URL, UserService) {
 
-  var routesCachePromise;
-  var routesById;
+  var routesCache;
+  var recentRoutesCache;
 
-  return {
+  var instance = {
 
     // Retrive the data on a single route
     // TODO refactor this to match getRoutes and searchRoutes
-    getRoute: function (routeId) {
-      return this.getRoutes()
-      .then(() => {
-        assert(routesById);
-        return routesById[routeId];
-      })
+    getRoute: function(routeId, ignoreCache) {
+      assert.equal(typeof routeId, 'number');
+      return instance.getRoutes(ignoreCache)
+      .then(function(routes) {
+        return _.find(routes, { id: routeId });
+      });
     },
 
     // Retrive the data on all the routes
-    getRoutes: function() {
-      if (routesCachePromise) {
-        return routesCachePromise;
-      }
-      else {
-        routesCachePromise = UserService.beeline({
+    getRoutes: function(ignoreCache) {
+      if (routesCache && !ignoreCache) return Promise.resolve(routesCache);
+      return UserService.beeline({
           method: 'GET',
           url: '/routes?include_trips=true'
         })
-      .then(function(response){
-          routesById = _.keyBy(response.data, route => route.id);
-
-        return transformRouteData(response.data);
-        })
-
-        return routesCachePromise;
-      }
+      .then(function(response) {
+        routesCache = transformRouteData(response.data);
+        return routesCache;
+      });
     },
 
     /**
-    @param search: search parameters:
-      @prop startLat Starting point latitude
-      @prop startLng Starting point longitude
-      @prop endLat Ending point latitude
-      @prop endLng Ending point longitude
-      @prop arrivalTime a Date object where the number of seconds
-                since midnight is the desired arrival time at the
-                destination
-      @prop startTime A Date object.
+    @param {Object} search - search parameters:
+    @param {number} search.startLat Starting point latitude
+    @param {number} search.startLng Starting point longitude
+    @param {number} search.endLat Ending point latitude
+    @param {number} search.endLng Ending point longitude
+    @param {Date} search.arrivalTime a Date object where the number of seconds
+                  since midnight is the desired arrival time at the destination
+    @param {Date} search.startTime A Date object.
                 Restricts search results to routes with trips
                 after this time
-      @prop endTime a Date object.
+    @param {Date} search.endTime a Date object.
                 Restrict search results to routes with trips
                 before this time
+    @return {Promise}
     **/
     searchRoutes: function(search) {
       //return Promise object
@@ -99,17 +93,24 @@ export default function($http, SERVER_URL, UserService) {
         return transformRouteData(response.data);
       });
     },
-    getRecentRoutes: function() {
-      if (UserService.isLoggedIn()) {
+
+    // Retrieves the recent routes for a user
+    // If not logged in then just returns an empty array
+    getRecentRoutes: function(ignoreCache) {
+      if (UserService.user) {
+        if (recentRoutesCache && !ignoreCache) return recentRoutesCache;
         return UserService.beeline({
           method: 'GET',
           url: '/routes/recent?limit=10'
         }).then(function(response) {
-          return response.data;
+          recentRoutesCache = response.data;
+          return recentRoutesCache;
         });
       } else {
         return Promise.resolve([]);
       }
     },
   };
+
+  return instance;
 }

@@ -1,44 +1,41 @@
 <ion-view class="settings" view-title="Settings">
   <ion-content>
+    <div class="account-section item item-word-wrap">
 
-    <login-item user='data.user' show-log-out=true></login-item>
+      <h2 ng-hide="user">Log in to make and view your bookings</h2>
+      <button ng-hide="user"
+              class="button button-block button-outline button-royal"
+              ng-click="logIn()">Log In</button>
 
+      <h2 ng-show="user">You are currently logged in as {{ user.name }}</h2>
+      <button ng-show="user"
+              class="button button-block button-outline button-royal"
+              ng-click="logOut()">Log Out</button>
+                  
+    </div>
     <div class="list">
 
-      <div class="item item-divider" ng-if="data.user">Account</div>
-      <label class="item" ng-if="data.user"
-       ng-click="updateUserInfo('name')">
-       Name
-        <span class="item-note">{{data.user.name}}</span>
-      </label>
-      <label class="item" ng-if="data.user"
-       ng-click="updateUserInfo('email')">
-        Email
-        <span class="item-note">{{data.user.email}}</span>
-      </label>
-      <label class="item" ng-if="data.user"
-       ng-click="updateTelephone()">
-        Phone Number
-        <span class="item-note">{{data.user.telephone}}</span>
-      </label>
-      <a class="item item-icon-right" ng-if="data.user">
-        Booking History
-        <i class="icon ion-ios-arrow-right"></i>
+      <div ng-show="user" class="item item-divider">Account</div>
+      <div ng-show="user" class="item" on-tap="updateUserInfo('name')">
+        Name <span class="item-note">{{ user.name }}</span>
+      </div>
+      <div ng-show="user" class="item" on-tap="updateUserInfo('email')">
+        Email <span class="item-note">{{ user.email }}</span>
+      </div>
+      <div ng-show="user" class="item" on-tap="updateTelephone()">
+        Phone Number <span class="item-note">{{ user.telephone}}</span>
+      </div>
+      <a ng-show="user" class="item item-icon-right">
+        Booking History <i class="icon ion-ios-arrow-right"></i>
       </a>
 
       <div class="item item-divider">About Beeline</div>
-
       <ion-item ui-sref='intro'>Quick Tour</ion-item>
-      <ion-item ng-click="viewFAQ()">
-        <!-- using Javascript here because we want to enforce
-        viewing a non-local page in inAppBrowser -->
-        FAQ
-      </ion-item>
-      <ion-item ng-click="viewPrivacyPolicy()">Privacy Policy</ion-item>
-      <ion-item ng-click="viewContactUs()">Contact Us
+      <ion-item on-tap="faqModal.show()">FAQ</ion-item>
+      <ion-item on-tap="privacyPolicyModal.show()">Privacy Policy</ion-item>
+      <ion-item on-tap="contactUsModal.show()">Contact Us
       </ion-item>
 
     </div>
-
   </ion-content>
 </ion-view>

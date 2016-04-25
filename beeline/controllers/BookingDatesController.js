@@ -29,7 +29,7 @@ export default [
         $scope.book.boardStopId =  parseInt($stateParams.boardStop);
         $scope.book.alightStopId =  parseInt($stateParams.alightStop);
 
-        RoutesService.getRoute($scope.book.routeId)
+        RoutesService.getRoute(parseInt($scope.book.routeId))
         .then((route) => {
           $scope.book.route = route;
           updateCalendar();

@@ -1,136 +1,100 @@
-<ion-view id="pg_tickdetails">
-  <ion-nav-title>
-      Ticket for {{tripTicket.boardStop.time | date:'d MMM y'}}
-  </ion-nav-title>
-  <ion-content class="padding page-with-map">
-
-    <div id="tickettabs">
-		<div ng-class="{tab: true, selected: currentState == 'ticket'}" ng-click="currentState = 'ticket'">
-			<div class="content">
-				<i class="icon ion-bookmark"></i>
-				<span class="txt">Ticket</span>
-			</div>
-		</div>
-        <div ng-class="{tab: true, selected: currentState == 'driver'}" ng-click="currentState = 'driver'">
-			<div class="content">
-				<i class="icon ion-android-bus"></i>
-				<span class="txt">Driver</span>
-			</div>
-		</div>
-        <div ng-class="{tab: true, selected: currentState == 'stops'}" ng-click="currentState = 'stops'">
-			<div class="content">
-				<i class="icon ion-ios-location"></i>
-				<span class="txt">Stops</span>
-			</div>
-		</div>
-    </div>
-	<div id="ticketinfo">
-		<div class="statusmsg">
-			Your driver is on the way
-			<div id="refresh-bar"></div>
-		</div>
-		<table id="tdholder" ng-class="{ticketsel: currentState == 'ticket', driversel: currentState == 'driver', stopssel: currentState == 'stops'}">
-			<tr>
-				<td class="ticket">
-					<div class="details">
-						<div class="note">
-							<i class="icon ion-alert"></i>
-							Please scan this ticket when you board.
-						</div>
-						<table>
-							<tr>
-								<td colspan="3" class="header">PASSENGER</td>
-								<td rowspan="5" class="gap"></td>
-								<td rowspan="5" class="qrbox">
-									<div id="qr-code-bg"></div>
-								</td>
-							</tr>
-							<tr class="txt">
-								<td colspan="3">{{user.name}}</td>
-							</tr>
-							<tr>
-								<td class="header ticket">TICKET ID</td>
-								<td class="gap"></td>
-								<td class="header pax">PAX</td>
-							</tr>
-							<tr class="txt">
-								<td>{{tripTicket.id}}</td>
-								<td></td>
-								<td>{{tripTicket.pax}}</td>
-							</tr>
-							<tr class="last">
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-						</table>
-					</div>
-				</td>
-
-				<td class="driver">
-					<div class=" details">
-						<table>
-							<tr><td colspan="3" class="header operate">OPERATED BY</td></tr>
-							<tr class="txt">
-								<td colspan="3">
-									<div class="comp" style="background-image:url('{{company.logourl}}')">
-										<div>
-											<div class="cname">{{company.name}}</div>
-											<div class="terms"><a href="#/tabs/tickets/terms/{{company.id}}">Terms and Conditions</a></div>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr><td colspan="3" class="vgap"></td></tr>
-							<tr>
-								<td class="header vplate">VEHICLE</td>
-								<td class="gap"></td>
-								<td class="header dname">DRIVER</td>
-							</tr>
-							<tr class="txt">
-								<td>{{info.trip.vehicle.vehicleNumber}}</td>
-								<td class="gap"></td>
-								<td>{{info.trip.vehicle.driver.name}}</td>
-							</tr>
-						</table>
-					</div>
-				</td>
-
-				<td class="stops">
-					<div class="routeinfo">
-						<div class="title">
-							<div class="bus-number">{{route.label || 0}}</div>
-							<div class="name">{{route.description || 'Name of booked trip'}}</div>
-						</div>
-						<div class="stops">
-							<div class="line"></div>
-							<div class="start">
-								<span class="time">{{tripTicket.boardStop.time | date:'h:mm a'}}</span>
-								<span class="desc">{{tripTicket.boardStop.stop.description}} ({{tripTicket.boardStop.stop.type}} ID {{tripTicket.boardStop.stop.label}})</span>
-								<span class="road">{{tripTicket.boardStop.stop.road}}</span>
-							</div>
-							<div class="end">
-								<span class="time">{{tripTicket.alightStop.time | date:'h:mm a'}}</span>
-								<span class="desc">{{tripTicket.alightStop.stop.description}} ({{tripTicket.alightStop.stop.type}} ID {{tripTicket.alightStop.stop.label}})</span>
-								<span class="road">{{tripTicket.alightStop.stop.road}}</span>
-							</div>
-						</div>
-					</div>
-				</td>
-			</tr>
-		</table>
-
+<ion-view class="ticket-detail" 
+		      view-title="Ticket for {{tripTicket.boardStop.time | date:'d MMM y'}}"
+					ng-init="activeTab=0">
+  <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
+	  <a class="tab-item"
+	  	 on-tap="activeTab=0"
+	  	 ng-class="{active: activeTab===0}">
+			 <i class="icon ion-bookmark"></i>
+	  	 <span class="tab-title">Ticket</span>
+	  </a>
+	  <a class="tab-item"
+	  	 on-tap="activeTab=1"
+	  	 ng-class="{active: activeTab===1}">
+			 <i class="icon ion-android-bus"></i>
+	  	 <span class="tab-title">Driver</span>
+	  </a>
+	  <a class="tab-item"
+	  	 on-tap="activeTab=2"
+	  	 ng-class="{active: activeTab===2}">
+			 <i class="icon ion-ios-location"></i>
+	  	 <span class="tab-title">Stops</span>
+	  </a>
 	</div>
+  <ion-content class="has-tabs-top" scroll=false>
 
+  	<!-- Ticket Tab -->
+  	<div class="item item-text-wrap" ng-show="activeTab===0">
+	  	<div class="row">
+  			<div class="col">
+  				<h4>Passenger</h4>
+	  			<div ng-bind="user.name"></div>
+  			</div>
+  			<div class="col">
+  				<h4>Trip Id</h4>
+	  			<div ng-bind="trip.id"></div>
+  			</div>
+  		</div>
+  	</div>
 
-    <div class="map">
+  	<!-- Driver Tab -->
+  	<div class="item item-text-wrap" ng-show="activeTab===1">
+  		<div class="row">
+  			<div class="col">
+  				<h4>Operated By</h4>
+  				<div ng-bind="company.name"></div>
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col">
+  				<h4>Vehicle Number</h4>
+	  			<div ng-bind="info.trip.vehicle.vehicleNumber"></div>
+  			</div>
+  			<div class="col">
+  				<h4>Driver</h4>
+	  			<div ng-bind="info.trip.vehicle.driver.name"></div>
+  			</div>
+  		</div>
+  	</div>
 
-        <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" control="map.mapControl" data-tap-disabled="true">
+  	<!-- Stops Tab -->
+  	<div class="item item-text-wrap" ng-show="activeTab===2">
+  		<span class="time">{{}}</span>
+  		<div class="row row-top">
+	  		<div class="time-column col col-33">
+	  			<span ng-bind="ticket.boardStop.time | date:'h:mm a'"></span>
+		  		<img class="route-icon" src="./img/RoutePairBigStart@2x.png"/>
+	  		</div>
+	  		<div class="col">
+			  	<span ng-bind="ticket.boardStop.stop.description"></span>, 
+		  		<span ng-bind="ticket.boardStop.stop.road"></span>
+	  		</div>
+  		</div>
+  		<div class="row row-top">
+	  		<div class="time-column col col-33">
+	  			<span ng-bind="ticket.alightStop.time | date:'h:mm a'"></span>
+		  		<img class="route-icon" src="./img/RoutePairBigEnd@2x.png"/>
+	  		</div>
+	  		<div class="col">
+			  	<span ng-bind="ticket.alightStop.stop.description"></span>, 
+		  		<span ng-bind="ticket.alightStop.stop.road"></span>
+	  		</div>
+  		</div>
+  	</div>
+
+    <ui-gmap-google-map center="map.center" 
+    										pan="true" 
+    										zoom="map.zoom" 
+    										options="map.options" 
+    										events="map.events" 
+                        bounds="map.bounds" 
+                        dragging="map.dragging" 
+    										control="map.control" 
+    										data-tap-disabled="true">
+
 			<ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" stroke="p.stroke" icons="p.icons"></ui-gmap-polyline>
 			<ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
-        </ui-gmap-google-map>
-    </div>
-
-
+    </ui-gmap-google-map>
+          
   </ion-content>
 </ion-view>

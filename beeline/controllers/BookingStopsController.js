@@ -163,7 +163,7 @@ export default [
     // 3. Changes to route
     $scope.lastDisplayedRouteId = null; // works if caching
     $scope.displayRouteInfo = function() {
-        RoutesService.getRoute($scope.book.routeId)
+      RoutesService.getRoute(parseInt($scope.book.routeId))
       .then((route) => {
         // 1. Route info
         $scope.routePath = route.path.map(latlng => ({

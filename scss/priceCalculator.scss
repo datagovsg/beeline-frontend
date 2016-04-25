@@ -4,7 +4,7 @@ price-calculator {
   .price-table {
     width: 100%;
 
-    &:not(.totals) {
+    &.prices {
       td {
         width:50%;
       }

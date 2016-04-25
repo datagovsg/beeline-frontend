@@ -102,14 +102,14 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/tickets',
     views: {
       'tab-tickets': {
-        templateUrl: 'templates/tab-tickets.html',
+        templateUrl: 'templates/tickets.html',
         controller: 'TicketsController'
       }
     }
   })
 
   .state('tabs.ticket-detail', {
-    url: '/tickets/:tid',
+    url: '/tickets/:ticketId',
     views: {
       'tab-tickets': {
         templateUrl: 'templates/ticket-detail.html',
@@ -139,7 +139,7 @@ export default function($stateProvider, $urlRouterProvider) {
     controller: 'LoginController'
   })
   .state('login-verify', {
-    url: '/login-verify',
+    url: '/login-verify?telephone',
     templateUrl: 'templates/verify.html',
     controller: 'VerifyController'
   });

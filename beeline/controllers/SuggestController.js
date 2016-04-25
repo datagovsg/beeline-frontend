@@ -39,24 +39,22 @@ function(
   })
 
   $scope.$on('$ionicView.afterEnter', (event) => {
-    UserService.getCurrentUser()
-    .then((user) => {
-      $scope.user = user;
 
-      // if we had anonymous suggestions before, convert them to suggestions
-      // associated with this user
-      if (user) {
+    // if we had anonymous suggestions before, convert them to suggestions
+    // associated with this user
+    $scope.$watch(function() {
+      return UserService.user;
+    }, function(newUser) {
+      if (newUser) {
         UserService.beeline({
           method: 'POST',
           url: '/suggestions/deanonymize',
         })
         .then((response) => {
-          if (response.data > 0) {
-            queryData();
-          }
-        })
+          if (response.data > 0) queryData();
+        });
       }
-    })
+    });
 
     /* Entered from the route search */
     if ($state.params.action == 'submit' &&

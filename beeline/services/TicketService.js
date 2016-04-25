@@ -1,39 +1,22 @@
-export default function TicketService($http,$filter,UserService) {
-  var now = new Date();
-  var today0000 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0).getTime();
-  var today2400 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 24, 0).getTime();
-  var tickets = [];
-  var todaydata = [];
-  var soondata = [];
-  var todayDate = [];
-  var selectedticket = null;
-  var ticketsByRouteId = [];
+import _ from 'lodash';
+import assert from 'assert';
 
+export default function TicketService($http, $filter, UserService) {
+  var ticketsCache = null;
+  var ticketsByRouteId = null;
   return {
-    getTickets: function(){
-      var bearer = UserService.sessionToken;
-      if (!bearer){
-        return Promise.resolve([]);
-      }
+
+    getTickets: function(ignoreCache) {
+      if (ticketsCache && !ignoreCache) return Promise.resolve(ticketsCache);
       return UserService.beeline({
         method: 'GET',
         url: '/tickets',
 			}).then((response) => {
-				tickets = response.data;
-        ticketsByRouteId = _.groupBy(tickets, ticket => ticket.boardStop.trip.routeId);
+        ticketsCache = response.data;
+        ticketsByRouteId = _.groupBy(ticketsCache, ticket => ticket.boardStop.trip.routeId);
 
-				return tickets;
+        return ticketsCache;
 			});
-
-    },
-    getTicketById: function(id){
-      for(var i=0;i<tickets.length;i++){
-        if(tickets[i].id == id){
-          console.log("found ticket 1");
-          return tickets[i];
-        }
-      }
-      return null;
     },
 
     getTicketsByRouteId(rid) {
@@ -43,43 +26,31 @@ export default function TicketService($http,$filter,UserService) {
       });
     },
 
-    splitTickets: function() {
-      todaydata = tickets.filter(ts=> ts.boardStop!== null && new Date(ts.boardStop.time).getTime() > today0000 && new Date(ts.boardStop.time).getTime() < today2400);
-      soondata = tickets.filter(ts=> ts.boardStop!== null && new Date(ts.boardStop.time).getTime() >= today2400);
-    },
-    todayTickets: function() {
-      return todaydata;
-    },
-
-    soonTickets: function() {
-      return soondata;
+    getTicketById: function(id, ignoreCache) {
+      assert.equal(typeof id, 'number');
+      return this.getTickets(ignoreCache).then(function(tickets) {
+        return _.find(tickets, { id: id });
+      });
     },
 
-    get: function(ticketId) {
-      for (var i = 0; i < todaydata.length; i++) {
-        if (todaydata[i].id === ticketId) {
-          return todaydata[i];
-        }
-      }
-      for (var i = 0; i < soondata.length; i++) {
-        if (soondata[i].id === ticketId) {
-          return soondata[i];
-        }
-      }
-      return null;
-    },
+    getCategorizedTickets: function(ignoreCache) {
+      return this.getTickets(ignoreCache).then(function(tickets) {
+        var now = new Date();
+        var lastMidnight = now.setHours(0, 0, 0, 0);
+        var nextMidnight = now.setHours(24, 0, 0, 0);
+        var categorizedTickets = {};
+        categorizedTickets.today = tickets.filter(function(ticket) {
+          return ticket.boardStop !== null &&
+                 Date.parse(ticket.boardStop.time) >= lastMidnight &&
+                 Date.parse(ticket.boardStop.time) < nextMidnight;
+        });
+        categorizedTickets.afterToday = tickets.filter(function(ticket) {
+          return ticket.boardStop !== null &&
+                 Date.parse(ticket.boardStop.time) >= nextMidnight;
+        });
+        return categorizedTickets;
+      });
+		}
 
-    setSelectedTicket: function(ticketId) {
-			for (var i = 0; i < tickets.length; i++) {
-				if (tickets[i].id === ticketId) {
-					selectedticket = tickets[i];
-				}
-			}
-    },
-
-    getSelectedTicket: function() {
-      //need to handle if null
-      return selectedticket;
-    }
   };
 }

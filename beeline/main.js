@@ -2,13 +2,13 @@ import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
 // Service Imports
-import UserService from './services/UserService.js';
+import UserService from './services/UserService.js';  //OK
 import RoutesService from './services/RoutesService.js'; //OK
 import BookingService from './services/BookingService.js';
-import TripService from './services/TripService.js';
+import TripService from './services/TripService.js'; //OK
 import SuggestionService from './services/SuggestionService.js';
-import CompanyService from './services/CompanyService.js';
-import TicketService from './services/TicketService.js';
+import CompanyService from './services/CompanyService.js'; //OK
+import TicketService from './services/TicketService.js'; //OK
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
 import StripeService from './services/StripeService.js'
@@ -30,7 +30,6 @@ import SettingsController from './controllers/SettingsController.js'; //OK
 import LoginController from './controllers/LoginController';
 import VerifyController from './controllers/VerifyController';
 // Directive Imports
-import loginItem from './directives/loginItem/loginItem.js'; //OK
 import RevGeocode from './directives/revGeocode/revGeocode';
 import FancyPrice from './directives/fancyPrice/fancyPrice';
 import PriceCalculator from './directives/priceCalculator/priceCalculator';
@@ -108,7 +107,6 @@ var app = angular.module('beeline', [
 .controller('TicketDetailController', TicketDetailController)
 .controller('LoginController', LoginController)
 .controller('VerifyController', VerifyController)
-.directive('loginItem', loginItem)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)

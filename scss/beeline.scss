@@ -11,9 +11,7 @@
 }
 
 .scroll-content {
-  background-color: $hint-color;
-  background-image: url('../img/bg_beeline.png');
-  background-position: cener;
+  background-color: $stable;
 }
 
 .item-input input:not([type]),
@@ -48,11 +46,15 @@
   @extend .button;
   @extend .button-block;
   @extend .button-energized;
-  position: absolute;
-  bottom: $content-padding;
   @include box-shadow($card-box-shadow);
 }
 
+// Hide the google maps boilerplate annotations 
+.gmnoprint, 
+.gm-style-cc, 
+.gm-style>div:last-child {
+  display:none;
+}
 
 .primary-button {
   padding: 20px 20px;

@@ -37,7 +37,7 @@ export default [
       console.log($scope.book.selectedDates);
       $scope.book.boardStopId  = parseInt($stateParams.boardStop);
       $scope.book.alightStopId = parseInt($stateParams.alightStop);
-      RoutesService.getRoute($scope.book.routeId)
+      RoutesService.getRoute(parseInt($scope.book.routeId))
       .then((route) => {
         $scope.book.route = route;
         $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]]
@@ -51,7 +51,7 @@ export default [
 
     $scope.loginBeforePay = function() {
       // user must log in before pay
-      if (!UserService.isLoggedIn()) {
+      if (!UserService.user) {
         UserService.logIn();
       }
       else {

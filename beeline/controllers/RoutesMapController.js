@@ -1,48 +1,22 @@
-export default function($scope, $state, $cordovaGeolocation,
-                        uiGmapGoogleMapApi, RoutesService) {
+export default function($scope, $state, $cordovaGeolocation, $rootScope,
+                        uiGmapGoogleMapApi, RoutesService, MapOptions) {
   //Gmap default settings
   //Map configuration
-  $scope.map = {
-    // Center the map on Singapore
-    center: { latitude: 1.370244, longitude: 103.823315 },
-    zoom: 11,
-    // Bound the search autocompelte to within Singapore
-    bounds: {
-      northeast: { latitude: 1.485152, longitude: 104.091837 },
-      southwest: { latitude: 1.205764, longitude: 103.589899 }
-    },
-    // State variable which becomes true when map is being dragged
-    dragging: false,
-    // Object that will have the getGMap and refresh methods bound to it
-    control: {},
-    // Hide the default map controls and hide point of information displays
-    options: {
-      disableDefaultUI: true,
-      styles: [{ featureType: 'poi', stylers: [{ visibility: 'off' }] }],
-    },
-    //empty functions - to be overwritten
-    events: {
-      dragstart: function(map, eventName, args) {},
-      zoom_changed: function(map, eventName, args) {},
-      dragend: function(map, eventName, args) {},
-      click: function(map, eventName, args) {}
-    },
-    markers: [],
-    lines: [{
-      id: 'routepath',
-      path: [],
-      stroke: { opacity: 0 },
-      icons: [{
-        icon: {
-          path: 'M 0,-1 0,1',
-          strokeOpacity: 1,
-          scale: 2
-        },
-        offset: '0',
-        repeat: '10px'
-      }]
-    }],
-  };
+  $scope.map = MapOptions.defaultMapOptions();
+  $scope.map.lines = [{
+    id: 'routepath',
+    path: [],
+    stroke: { opacity: 0 },
+    icons: [{
+      icon: {
+        path: 'M 0,-1 0,1',
+        strokeOpacity: 1,
+        scale: 2
+      },
+      offset: '0',
+      repeat: '10px'
+    }]
+  }];
 
   //HTML Elements above the Gmap are hidden at start
   $scope.data = {};
@@ -139,10 +113,10 @@ export default function($scope, $state, $cordovaGeolocation,
 
         //////////////////////////////////////////////////////////////////////////
         // Hack to fix map resizing due to ionic view cacheing
-        // TODO find a better way?
+        // Need to use the rootscope since ionic view enter stuff doesnt seem
+        // to propagate down to child views and scopes
         //////////////////////////////////////////////////////////////////////////
-        googleMaps.event.trigger(gmap, 'resize');
-        $scope.$on('mapRequireResize', function() {
+        $rootScope.$on("$ionicView.enter", function(event, data){
           googleMaps.event.trigger(gmap, 'resize');
         });
         //////////////////////////////////////////////////////////////////////////
@@ -233,16 +207,6 @@ export default function($scope, $state, $cordovaGeolocation,
           if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
             gmap.panTo({ lat: 1.370244, lng: 103.823315 });
             gmap.setZoom(11);
-            // var bounds = gmap.getBounds();
-            // if ($scope.data.pickupCoordinates) {
-            //   bounds.extend(new google.maps.LatLng($scope.data.pickupCoordinates.lat,
-            //                                          $scope.data.pickupCoordinates.lng));
-            // }
-            // if ($scope.data.dropoffCoordinates) {
-            //   bounds.extend(new google.maps.LatLng($scope.data.dropoffCoordinates.lat,
-            //                                        $scope.data.dropoffCoordinates.lng));
-            // }
-            // gmap.fitBounds(bounds);
           }
 
           // // If both pickup and dropoff are chosen then frame around them

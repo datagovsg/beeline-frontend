@@ -17,25 +17,27 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/login-item";
 @import "scss/fancyPrice";
 @import "scss/priceCalculator";
-// @import "scss/startEndPicker";
+@import "scss/startEndPicker";
 @import "scss/startEndStops";
 
 // View specific styles
 @import "scss/intro-slides";
 @import "scss/routes-map";
 @import "scss/routes-list";
+@import "scss/tickets";
 @import "scss/settings";
 @import "scss/bookingStops";
 @import "scss/bookingDates";
 @import "scss/bookingConfirmation";
 @import "scss/bookingBreadcrumbs";
 @import "scss/summary";
-@import "scss/busStopSelector";
-// @import "scss/login";
-// @import "scss/verify";
-// @import "scss/suggestions";
 @import "scss/privacyPolicy";
+
+//Not cleaned up styles
+@import "scss/busStopSelector";
+@import "scss/login";
+@import "scss/verify";
+@import "scss/suggestions";
 @import "scss/routeItem";
-// @import "scss/booking";
-// @import "scss/tickets";
-// @import "scss/ticketDetail";
+@import "scss/summary";
+@import "scss/ticketDetail";

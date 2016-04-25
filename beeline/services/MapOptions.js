@@ -35,6 +35,7 @@ export default [
             startMarker: {},
             endMarker: {},
           },
+          events: {},
           markers: [],
           lines: [],
       }, options || {});

@@ -14,7 +14,7 @@ export default [
     $timeout
   ) {
     $scope.login = {
-      telephone: UserService.telephone || '',
+      telephone: '',
       errorMessage: '',
     };
 
@@ -31,11 +31,10 @@ export default [
 
     $scope.submit = function() {
       UserService.logOut();
-      UserService.telephone = $scope.login.telephone;
-      UserService.sendTelephoneVerificationCode(UserService.telephone)
+      UserService.sendTelephoneVerificationCode($scope.login.telephone)
       .then(function(response) {
         //send user to SMS code input page
-        $state.go('login-verify');
+        $state.go('login-verify', { telephone: $scope.login.telephone });
       }, function(error){
         $ionicPopup.alert({
           title: 'Error',
