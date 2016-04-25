@@ -1,7 +1,7 @@
 import querystring from 'querystring';
 import uuid from 'uuid';
 
-export default function UserService($http, $state, $ionicPopup) {
+export default function UserService($http, $state, $ionicPopup, $rootScope) {
   var preLoginState = null;
   var preLoginParams = null;
   var sessionToken = window.localStorage['sessionToken'] || null;
@@ -138,13 +138,44 @@ export default function UserService($http, $state, $ionicPopup) {
       delete window.localStorage['beelineUser'];
     },
 
-    // Go to the login page
-    // As opposed to a standard ui-sref='login', this
-    // method si aves the page. When login is complete it will return there.
-    logIn(force) {
-      preLoginState = $state.current.name;
-      preLoginParams = $state.params;
-      $state.go('login');
+    // Prompt the user for the phone number and login verification code
+    logIn: function() {
+
+      var promptForVerification = function(message) {
+        return $ionicPopup.prompt({
+          title: 'Verification Code',
+          template: 'Enter the verification code sent to your phone',
+          inputPlaceholder: 'Enter the verification code here'
+        }).then(function(response) {
+          // Need to explicitly check for undefined to distinguish between empty string
+          // and an actual cancel
+          if (typeof response !== 'undefined') {
+            if (response.length === 6) {
+              console.log('hallelujah');
+            }
+            else promptForVerification("Please enter a valid 6 verification code");
+          }
+        });
+      };
+
+      var validPhone = /^[0-9]{8}$/; 
+      var promptForPhone = function(message) {
+        return $ionicPopup.prompt({
+          title: 'Phone Number',
+          subTitle: message,
+          inputPlaceholder: 'Enter your phone number here'
+        }).then(function(response) { 
+          // Need to explicitly check for undefined to distinguish between empty string
+          // and an actual cancel
+          if (typeof response !== 'undefined') {
+            if (validPhone.test(response)) promptForVerification();
+            else promptForPhone("Please enter a valid 8 digit phone number");
+          }
+        });
+      };
+      promptForPhone();
+
+
     },
 
     // Return to the page that activated the login
