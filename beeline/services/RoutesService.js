@@ -97,7 +97,7 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     // Retrieves the recent routes for a user
     // If not logged in then just returns an empty array
     getRecentRoutes: function(ignoreCache) {
-      if (UserService.user) {
+      if (Userservice.getUser()) {
         if (recentRoutesCache && !ignoreCache) return recentRoutesCache;
         return UserService.beeline({
           method: 'GET',

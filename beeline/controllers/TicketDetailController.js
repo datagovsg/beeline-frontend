@@ -27,7 +27,7 @@ export default [
   ){
 
     // Initialize the necessary basic data data
-    $scope.user = UserService.user;
+    $scope.user = Userservice.getUser();
     $scope.map = MapOptions.defaultMapOptions();
     $scope.map.lines = [
       {

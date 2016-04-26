@@ -9,9 +9,9 @@ export default [
   ) {
     // Track the login state of the user service
     $scope.$watch(function() {
-      return UserService.user;
+      return Userservice.getUser();
     }, function(newUser) {
-      $scope.user = UserService.user;
+      $scope.user = newUser;
     });
     $scope.logIn = function() { UserService.promptLogIn(); };
 
