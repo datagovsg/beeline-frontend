@@ -13,7 +13,7 @@ export default [
     }, function(newUser) {
       $scope.user = UserService.user;
     });
-    $scope.logIn = function() { UserService.logIn(); };
+    $scope.logIn = function() { UserService.promptLogIn(); };
 
     // Grab the tickets
     $scope.tickets = {};

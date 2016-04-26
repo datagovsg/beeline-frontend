@@ -17,21 +17,14 @@ export default [
 
     // Track the login state of the user service
     $scope.$watch(function() {
-      return UserService.user;
+      return UserService.getUser();
     }, function(newUser) {
-      $scope.user = UserService.user;
+      $scope.user = newUser;
     });
     
     // Map in the login items
-    $scope.logIn = function() { UserService.logIn(); };
-    $scope.logOut = function() { 
-      $ionicPopup.confirm({
-        title: "Are you sure you want to log out?",
-        subTitle: "You won't be able to see your upcoming trips or make new bookings."
-      }).then(function(response) {
-        if (response) UserService.logOut();
-      });
-    };
+    $scope.logIn = UserService.promptLogIn;
+    $scope.logOut = UserService.promptLogOut; 
 
     // Generic event handler to allow user to update their
     // name, email
@@ -57,36 +50,7 @@ export default [
     }
 
     // Update telephone is distinct from the update user due to verification
-    $scope.updateTelephone = function () {
-      // Start by prompting the user for the desired new telephone number
-      $ionicPopup.prompt({
-        title: `Update telephone`,
-        template: `Enter your new telephone number:`,
-      })
-      // Wait for the update token and verification key
-      .then((telephone) => {
-        if (telephone) {
-          var requestUpdatePromise = UserService.requestUpdateTelephone(telephone);
-          var verificationPromptPromise = $ionicPopup.prompt({
-            title: `Enter verification key`,
-            template: `Please enter the verification key you receive by SMS:`,
-          });
-          return Promise.all([requestUpdatePromise, verificationPromptPromise])
-          .then(function(values){
-            var updateToken = values[0];
-            var verificationKey = values[1];
-            return UserService.updateTelephone(updateToken, verificationKey);
-          });
-        }
-      })
-      // Generic error if something goes wrong
-      .catch((error) => {
-        $ionicPopup.alert({
-          title: 'Error',
-          template: `There was a problem updating your telephone: ${error.status}`
-        })
-      });
-    }
+    $scope.updateTelephone = UserService.promptUpdatePhone;
 
     // Configure modals
     $scope.faqModal = $ionicModal.fromTemplate(
