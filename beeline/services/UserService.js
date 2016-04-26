@@ -141,44 +141,50 @@ export default function UserService($http, $state, $ionicPopup, $rootScope) {
     // Prompt the user for the phone number and login verification code
     logIn: function() {
 
-      // Second prompt for verification code after getting a users phone number
-      var promptForVerification = function(telephone, message) {
-        return $ionicPopup.prompt({
-          title: 'Verification Code',
-          subTitle: 'Enter the verification code sent to your phone',
-          inputPlaceholder: 'Enter the verification code here'
-        })        
-        // Need to explicitly check for undefined to distinguish between empty string
-        // and an actual cancel
-        .then(function(response) { if (typeof response !== 'undefined') {
-          if (response.length === 6) instance.verifyTelephone(telephone, response);
-          else promptForVerification(telephone, "Please enter a valid 6 digit verification code");       
-        }});
-      };
-
       // First prompt for the users phone number
       var validPhone = /^[0-9]{8}$/; 
       var promptForPhone = function(message) {
         return $ionicPopup.prompt({
-          title: 'Phone Number',
+          title: 'Add your phone number',
           subTitle: message,
-          inputPlaceholder: 'Enter your phone number here'
-        }).then(function(response) { 
-          // Need to explicitly check for undefined to distinguish between empty string
-          // and an actual cancel
-          if (typeof response !== 'undefined') {
-            if (validPhone.test(response)) {
-              var telephone = response;
-              instance.logOut();
-              instance.sendTelephoneVerificationCode(telephone)
-              .then(function(){ promptForVerification(telephone); })
-            }
-            else promptForPhone("Please enter a valid 8 digit phone number");
+          inputPlaceholder: 'e.g. 87654321'
+        })        
+        // Need to explicitly check for undefined to distinguish between empty string
+        // and an actual cancel
+        .then(function(response) { if (typeof response !== 'undefined') {
+          if (validPhone.test(response)) {
+            instance.logOut();
+            instance.sendTelephoneVerificationCode(response);
+            return Promise.resolve(response);
           }
-        });
+          // Reprompt with a message if the number given is invalid
+          else return promptForPhone("Please enter a valid 8 digit mobile number");
+        }});
       };
 
-      promptForPhone("Please enter the your phone number to receive a verification code");
+      // Second prompt for verification code after getting a users phone number
+      var validCode = /^[0-9]{6}$/; 
+      var promptForVerification = function(telephone, message) {
+        return $ionicPopup.prompt({
+          title: 'Verification Code',
+          subTitle: message,
+          inputPlaceholder: 'e.g. 123456'
+        })        
+        // Need to explicitly check for undefined to distinguish between empty string
+        // and an actual cancel
+        .then(function(response) { if (typeof response !== 'undefined') {
+          if (validCode.test(response)) {
+            instance.verifyTelephone(telephone, response);
+            return Promise.resolve(response);
+          }
+          else return promptForVerification(telephone, "Please enter a valid 6 digit code sent to " + telephone);       
+        }});
+      };
+
+      promptForPhone("Please enter your mobile number to receive a verification code")
+      .then(function(telephone) {
+        promptForVerification(telephone, 'Enter the 6 digit code sent to ' + telephone);
+      });
     },
 
     // Return to the page that activated the login
