@@ -21,6 +21,7 @@ export default [
     }, function(newUser) {
       $scope.user = UserService.user;
     });
+    
     // Map in the login items
     $scope.logIn = function() { UserService.logIn(); };
     $scope.logOut = function() { 

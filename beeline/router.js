@@ -131,19 +131,6 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-
-
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'LoginController'
-  })
-  .state('login-verify', {
-    url: '/login-verify?telephone',
-    templateUrl: 'templates/verify.html',
-    controller: 'VerifyController'
-  });
-
   // if none of the above states are matched, use this as the fallback
   if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
     $urlRouterProvider.otherwise('/tabs/routes');
