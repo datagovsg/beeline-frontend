@@ -9,10 +9,10 @@ export default function breadcrumbs() {
     },
     link: function (scope, elem, attr) {
       scope.imgNames = [
-        'ProgressBar01_ChooseStops.png',
-        'ProgressBar02_ChooseDates.png',
-        'ProgressBar03_ReviewBooking.png',
-        'ProgressBar04_MakePayment.png',
+        'ProgressBar01_ChooseStops.svg',
+        'ProgressBar02_ChooseDates.svg',
+        'ProgressBar03_ReviewBooking.svg',
+        'ProgressBar04_MakePayment.svg',
       ]
     }
   }
