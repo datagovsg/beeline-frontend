@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="255px" height="24px" viewBox="0 0 255 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="290px" height="69px" viewBox="0 0 290 69" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
     <title>MapPinEnd</title>
     <desc>Created with Sketch.</desc>
-    <defs></defs>
+    <defs>
+        <path d="M146.125,45 L140.5,60 L134.875,45 L130.957194,45 L22.4981312,45 C10.0727564,45 0,34.9291391 0,22.5 C0,10.0735931 10.0685892,0 22.4991984,0 L257.500802,0 C269.926766,0 280,10.0708609 280,22.5 C280,34.9264069 269.928747,45 257.500384,45 L146.125,45 Z" id="path-1"></path>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
     <g id="Main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="1MainTabMap" transform="translate(-60.000000, -385.000000)">
+        <g id="1MainTabMap" transform="translate(-43.000000, -372.000000)">
             <g id="Map" transform="translate(48.000000, 375.000000)">
                 <g id="MapPinEnd">
+                    <g id="Triangle-1">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use stroke="#493762" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.8" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
                     <g id="Group-10" transform="translate(13.000000, 11.000000)">
                         <g id="Next" transform="translate(245.000000, 4.000000)" stroke-linecap="round" stroke-width="1.4" stroke="#493762" stroke-linejoin="round">
                             <polyline transform="translate(4.071429, 7.448864) rotate(-180.000000) translate(-4.071429, -7.448864) " points="8.14285714 -7.99360578e-14 -3.19744231e-14 7.44886364 8.14285714 14.8977273"></polyline>
