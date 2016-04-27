@@ -2,23 +2,23 @@ import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
 // Service Imports
-import UserService from './services/UserService.js';  //OK
-import RoutesService from './services/RoutesService.js'; //OK
+import UserService from './services/UserService.js';  // OK
+import RoutesService from './services/RoutesService.js'; // OK
 import BookingService from './services/BookingService.js';
-import TripService from './services/TripService.js'; //OK
+import TripService from './services/TripService.js'; // OK
 import SuggestionService from './services/SuggestionService.js';
-import CompanyService from './services/CompanyService.js'; //OK
-import TicketService from './services/TicketService.js'; //OK
+import CompanyService from './services/CompanyService.js'; // OK
+import TicketService from './services/TicketService.js'; // OK
 import OneMapService from './services/OneMapService.js';
 import DateService from './services/DateService.js';
-import StripeService from './services/StripeService.js'
-import MapOptionsService from './services/MapOptions'
+import StripeService from './services/StripeService.js';
+import MapOptionsService from './services/MapOptions';
 // Controller Imports
-import IntroSlidesController from './controllers/IntroSlidesController.js'; //OK
-import RoutesController from './controllers/RoutesController.js'; //OK
-import RoutesMapController from './controllers/RoutesMapController.js'; //OK
-import RoutesListController from './controllers/RoutesListController.js'; //OK
-import RoutesResultsController from './controllers/RoutesResultsController.js' //OK
+import IntroSlidesController from './controllers/IntroSlidesController.js'; // OK
+import RoutesController from './controllers/RoutesController.js'; // OK
+import RoutesMapController from './controllers/RoutesMapController.js'; // OK
+import RoutesListController from './controllers/RoutesListController.js'; // OK
+import RoutesResultsController from './controllers/RoutesResultsController.js'; // OK
 import BookingStopsController from './controllers/BookingStopsController.js';
 import BookingDatesController from './controllers/BookingDatesController.js';
 import BookingConfirmationController from './controllers/BookingConfirmationController.js';
@@ -26,7 +26,7 @@ import BookingSummaryController from './controllers/BookingSummaryController.js'
 import SuggestController from './controllers/SuggestController.js';
 import TicketsController from './controllers/TicketsController.js';
 import TicketDetailController from './controllers/TicketDetailController.js';
-import SettingsController from './controllers/SettingsController.js'; //OK
+import SettingsController from './controllers/SettingsController.js'; // OK
 // Directive Imports
 import RevGeocode from './directives/revGeocode/revGeocode';
 import FancyPrice from './directives/fancyPrice/fancyPrice';
@@ -44,22 +44,22 @@ import QtyInput from './directives/qtyInput/qtyInput';
 import configureRoutes from './router.js';
 import AngularGoogleMap from 'angular-google-maps';
 
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 // Non-angular configuration
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 // FIXME: set this in StripeService;
 try {
   Stripe.setPublishableKey('pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm');
 }
 catch (error) {}
 
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 var app = angular.module('beeline', [
-    'ionic',
-    'ngCordova',
-    'uiGmapgoogle-maps'
+  'ionic',
+  'ngCordova',
+  'uiGmapgoogle-maps'
 ])
 .constant('SERVER_URL', 'http://staging.beeline.sg')
 .filter('formatDate', () => formatDate)
@@ -69,15 +69,15 @@ var app = angular.module('beeline', [
 .filter('formatHHMM_ampm', () => formatHHMM_ampm)
 .filter('titleCase', () => titleCase)
 .filter('routeStartTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].time : '')
-.filter('routeEndTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].time : '')
+.filter('routeEndTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length - 1].time : '')
 .filter('routeStartRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].stop.road : '')
-.filter('routeEndRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length-1].stop.road : '')
+.filter('routeEndRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length - 1].stop.road : '')
 .filter('companyLogo', () => companyLogo)
-.filter('monthNames', function () {
-    return function (i) {
-        monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
-        return monthNames[i];
-    };
+.filter('monthNames', function() {
+  return function(i) {
+    monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
+    return monthNames[i];
+  };
 })
 .factory('TicketService', TicketService)
 .factory('UserService', UserService)
@@ -126,12 +126,12 @@ var app = angular.module('beeline', [
   $ionicConfigProvider.scrolling.jsScrolling(true);
 })
 .config(function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
+  uiGmapGoogleMapApiProvider.configure({
 //        client: 'gme-infocommunications',
-        key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
+    key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
 //        v: ', //defaults to latest 3.X anyhow
-        libraries: 'places'
-    });
+    libraries: 'places'
+  });
 })
 .run(function($ionicPlatform, $rootScope, $ionicTabsDelegate) {
   $ionicPlatform.ready(function() {
@@ -148,7 +148,7 @@ var app = angular.module('beeline', [
     }
   });
 
-  $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.hideTabs) {
       $ionicTabsDelegate.showBar(false);
     }

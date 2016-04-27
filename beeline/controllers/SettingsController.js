@@ -13,7 +13,7 @@ export default [
     $ionicModal,
     $ionicPopup
   ) {
-    $scope.data = {}
+    $scope.data = {};
 
     // Track the login state of the user service
     $scope.$watch(function() {
@@ -21,10 +21,10 @@ export default [
     }, function(newUser) {
       $scope.user = newUser;
     });
-    
+
     // Map in the login items
     $scope.logIn = UserService.promptLogIn;
-    $scope.logOut = UserService.promptLogOut; 
+    $scope.logOut = UserService.promptLogOut;
 
     // Generic event handler to allow user to update their
     // name, email
@@ -43,11 +43,11 @@ export default [
             $ionicPopup.alert({
               title: `Error updating ${field}`,
               template: ''
-            })
+            });
           });
         }
       });
-    }
+    };
 
     // Update telephone is distinct from the update user due to verification
     $scope.updateTelephone = UserService.promptUpdatePhone;
@@ -55,15 +55,15 @@ export default [
     // Configure modals
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,
-      { scope: $scope }
+      {scope: $scope}
     );
     $scope.privacyPolicyModal = $ionicModal.fromTemplate(
       privacyPolicyModalTemplate,
-      { scope: $scope }
+      {scope: $scope}
     );
     $scope.contactUsModal = $ionicModal.fromTemplate(
       contactUsModalTemplate,
-      { scope: $scope }
+      {scope: $scope}
     );
     $scope.$on('$destroy', function() {
       $scope.faqModal.destroy();

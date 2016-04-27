@@ -1,5 +1,5 @@
 
-export default function () {
+export default function() {
 
   function linkFn(scope, elem, attrs) {
     scope.currency = scope.currency || '$';
@@ -9,12 +9,12 @@ export default function () {
     scope.$watch('value', function() {
       var floatValue = parseFloat(scope.value);
       if (!isFinite(floatValue)) {
-        [scope.integer, scope.fraction] = ['', '']
+        [scope.integer, scope.fraction] = ['', ''];
       }
       else {
         [scope.integer, scope.fraction] = parseFloat(scope.value).toFixed(2).split('.');
       }
-    })
+    });
   }
 
   return {
@@ -32,4 +32,4 @@ export default function () {
     `,
   };
 
-};
+}

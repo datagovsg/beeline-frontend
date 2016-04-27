@@ -7,13 +7,13 @@ export default function breadcrumbs() {
     scope: {
       step: '@',
     },
-    link: function (scope, elem, attr) {
+    link: function(scope, elem, attr) {
       scope.imgNames = [
         'ProgressBar01_ChooseStops.svg',
         'ProgressBar02_ChooseDates.svg',
         'ProgressBar03_ReviewBooking.svg',
         'ProgressBar04_MakePayment.svg',
-      ]
+      ];
     }
-  }
+  };
 }

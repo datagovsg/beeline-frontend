@@ -11,11 +11,11 @@ export default function TicketService($http, $filter, UserService) {
       return UserService.beeline({
         method: 'GET',
         url: '/tickets',
-			}).then((response) => {
-        ticketsCache = response.data;
-        ticketsByRouteId = _.groupBy(ticketsCache, ticket => ticket.boardStop.trip.routeId);
+			            }).then((response) => {
+  ticketsCache = response.data;
+  ticketsByRouteId = _.groupBy(ticketsCache, ticket => ticket.boardStop.trip.routeId);
 
-        return ticketsCache;
+  return ticketsCache;
 			});
     },
 
@@ -29,7 +29,7 @@ export default function TicketService($http, $filter, UserService) {
     getTicketById: function(id, ignoreCache) {
       assert.equal(typeof id, 'number');
       return this.getTickets(ignoreCache).then(function(tickets) {
-        return _.find(tickets, { id: id });
+        return _.find(tickets, {id: id});
       });
     },
 
@@ -50,7 +50,7 @@ export default function TicketService($http, $filter, UserService) {
         });
         return categorizedTickets;
       });
-		}
+		        }
 
   };
 }

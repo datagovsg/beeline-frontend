@@ -1,10 +1,10 @@
 
-export default function () {
+export default function() {
 
   function linkFn(scope, elem, attrs) {
     scope.default = scope.default || 0;
 
-    scope.valueGetterSetter = function (nv) {
+    scope.valueGetterSetter = function(nv) {
       var newValue = parseInt(nv);
       if (arguments.length == 0)
         return scope.value;
@@ -39,7 +39,7 @@ export default function () {
       scope.value = newValue;
     };
   }
-  
+
   return {
     link: linkFn,
     restrict: 'E',
@@ -53,5 +53,5 @@ export default function () {
     },
     template: require('./qtyInput.html'),
   };
-  
-};
+
+}

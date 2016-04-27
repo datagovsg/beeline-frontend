@@ -7,7 +7,7 @@ export default function companyTnc(CompanyService, $ionicModal) {
     scope: {
       companyId: '=',
     },
-    link: function (scope, elem, attr) {
+    link: function(scope, elem, attr) {
       scope.company = {};
 
       scope.$watch('companyId', function() {
@@ -18,11 +18,11 @@ export default function companyTnc(CompanyService, $ionicModal) {
         CompanyService.getCompany(scope.companyId)
         .then((company) => {
           scope.company = company;
-          company.featuresParsed = JSON.parse(company.features)
-          company.termsParsed = JSON.parse(company.terms)
-          company.termsHTML = company.termsParsed.map(t => t.txt).join('\n')
-        })
-      })
+          company.featuresParsed = JSON.parse(company.features);
+          company.termsParsed = JSON.parse(company.terms);
+          company.termsHTML = company.termsParsed.map(t => t.txt).join('\n');
+        });
+      });
 
       scope.showTerms = function() {
         if (!scope.termsModal) {
@@ -31,10 +31,10 @@ export default function companyTnc(CompanyService, $ionicModal) {
             {
               scope: scope
             }
-          )
+          );
         }
         scope.termsModal.show();
-      }
+      };
     }
-  }
+  };
 }

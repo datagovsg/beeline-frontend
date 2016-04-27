@@ -1,12 +1,12 @@
 export default function($scope, $state, $cordovaGeolocation, $rootScope,
                         uiGmapGoogleMapApi, RoutesService, MapOptions) {
-  //Gmap default settings
-  //Map configuration
+  // Gmap default settings
+  // Map configuration
   $scope.map = MapOptions.defaultMapOptions();
   $scope.map.lines = [{
     id: 'routepath',
     path: [],
-    stroke: { opacity: 0 },
+    stroke: {opacity: 0},
     icons: [{
       icon: {
         path: 'M 0,-1 0,1',
@@ -18,7 +18,7 @@ export default function($scope, $state, $cordovaGeolocation, $rootScope,
     }]
   }];
 
-  //HTML Elements above the Gmap are hidden at start
+  // HTML Elements above the Gmap are hidden at start
   $scope.data = {};
 
   uiGmapGoogleMapApi.then(function(googleMaps) {
@@ -78,7 +78,7 @@ export default function($scope, $state, $cordovaGeolocation, $rootScope,
         // Configure the set my user location button
         $scope.locateMe = function() {
           $cordovaGeolocation
-          .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
+          .getCurrentPosition({timeout: 5000, enableHighAccuracy: true})
           .then(function(userPosition) {
             gmap.panTo(new google.maps.LatLng(userPosition.coords.latitude, userPosition.coords.longitude));
             gmap.setZoom(17);
@@ -90,7 +90,7 @@ export default function($scope, $state, $cordovaGeolocation, $rootScope,
           $scope.data.pickupCoordinates = gmap.getCenter().toJSON();
           geocoder.geocode({latLng: gmap.getCenter()}, function(results, status) {
             if (status === 'OK') {
-              $scope.data.pickupText =  results[0].formatted_address;
+              $scope.data.pickupText = results[0].formatted_address;
             }
           });
         };
@@ -98,7 +98,7 @@ export default function($scope, $state, $cordovaGeolocation, $rootScope,
           $scope.data.dropoffCoordinates = gmap.getCenter().toJSON();
           geocoder.geocode({latLng: gmap.getCenter()}, function(results, status) {
             if (status === 'OK') {
-              $scope.data.dropoffText =  results[0].formatted_address;
+              $scope.data.dropoffText = results[0].formatted_address;
             }
           });
         };
@@ -111,31 +111,31 @@ export default function($scope, $state, $cordovaGeolocation, $rootScope,
           });
         };
 
-        //////////////////////////////////////////////////////////////////////////
+        // ////////////////////////////////////////////////////////////////////////
         // Hack to fix map resizing due to ionic view cacheing
         // Need to use the rootscope since ionic view enter stuff doesnt seem
         // to propagate down to child views and scopes
-        //////////////////////////////////////////////////////////////////////////
-        $rootScope.$on("$ionicView.enter", function(event, data){
+        // ////////////////////////////////////////////////////////////////////////
+        $rootScope.$on("$ionicView.enter", function(event, data) {
           googleMaps.event.trigger(gmap, 'resize');
         });
-        //////////////////////////////////////////////////////////////////////////
+        // ////////////////////////////////////////////////////////////////////////
 
-        //////////////////////////////////////////////////////////////////////////
+        // ////////////////////////////////////////////////////////////////////////
         // Google maps click fix hacks
-        //////////////////////////////////////////////////////////////////////////
-        //Disable the Google link at the bottom left of the map
+        // ////////////////////////////////////////////////////////////////////////
+        // Disable the Google link at the bottom left of the map
         var glink = angular.element(document.getElementsByClassName('gm-style-cc'));
         glink.next().find('a').on('click', function(e) {e.preventDefault(); });
-        //Hack to get autocomplete to work on mobile devices
-        //Normally ionic intercepts the taps this causes the dropdown list
-        //to disappear before the clicked item is registered,
-        //this will disable the click event on the lists' containers
+        // Hack to get autocomplete to work on mobile devices
+        // Normally ionic intercepts the taps this causes the dropdown list
+        // to disappear before the clicked item is registered,
+        // this will disable the click event on the lists' containers
         setTimeout(function() {
           var contain = document.getElementsByClassName('pac-container');
           angular.element(contain).attr('data-tap-disabled', 'true');
         }, 300);
-        //////////////////////////////////////////////////////////////////////////
+        // ////////////////////////////////////////////////////////////////////////
 
         // Configure the UI in accordance with the users set/unset coordinates
         $scope.$watchGroup(['data.pickupCoordinates', 'data.dropoffCoordinates'], function() {
@@ -196,16 +196,16 @@ export default function($scope, $state, $cordovaGeolocation, $rootScope,
           $scope.map.lines[0].path = [];
           if ($scope.data.pickupCoordinates && $scope.data.dropoffCoordinates) {
             $scope.map.lines[0].path = [
-              { latitude: $scope.data.pickupCoordinates.lat,
-                longitude: $scope.data.pickupCoordinates.lng },
-              { latitude: $scope.data.dropoffCoordinates.lat,
-                longitude: $scope.data.dropoffCoordinates.lng }
+              {latitude: $scope.data.pickupCoordinates.lat,
+                longitude: $scope.data.pickupCoordinates.lng},
+              {latitude: $scope.data.dropoffCoordinates.lat,
+                longitude: $scope.data.dropoffCoordinates.lng}
             ];
           }
 
           // Zoom back out to the Singapore level if there's an unchosen point
           if (!$scope.data.pickupCoordinates || !$scope.data.dropoffCoordinates) {
-            gmap.panTo({ lat: 1.370244, lng: 103.823315 });
+            gmap.panTo({lat: 1.370244, lng: 103.823315});
             gmap.setZoom(11);
           }
 

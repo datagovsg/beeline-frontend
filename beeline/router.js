@@ -11,27 +11,27 @@
 export default function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   // Introductory slides
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   .state('intro', {
     url: '/intro',
     templateUrl: 'templates/intro-slides.html',
     controller: 'IntroSlidesController'
   })
 
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   // Main interface
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   .state('tabs', {
     url: '/tabs',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
 
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Routes Tab
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   .state('tabs.routes', {
     url: '/routes',
     views: {
@@ -72,10 +72,10 @@ export default function($stateProvider, $urlRouterProvider) {
   .state('tabs.booking-dates', {
     url: '/routes/:routeId/booking/dates?boardStop&alightStop',
     views: {
-        'tab-routes': {
-            templateUrl: 'templates/tab-booking-dates.html',
-            controller: 'BookingDatesController',
-        },
+      'tab-routes': {
+        templateUrl: 'templates/tab-booking-dates.html',
+        controller: 'BookingDatesController',
+      },
     },
     data: {
       hideTabs: true,
@@ -84,10 +84,10 @@ export default function($stateProvider, $urlRouterProvider) {
   .state('tabs.booking-summary', {
     url: '/routes/:routeId/booking/summary?boardStop&alightStop&selectedDates',
     views: {
-        'tab-routes': {
-            templateUrl: 'templates/tab-booking-summary.html',
-            controller: 'BookingSummaryController',
-        },
+      'tab-routes': {
+        templateUrl: 'templates/tab-booking-summary.html',
+        controller: 'BookingSummaryController',
+      },
     },
     data: {
       hideTabs: true,
@@ -96,19 +96,19 @@ export default function($stateProvider, $urlRouterProvider) {
   .state('tabs.booking-confirmation', {
     url: '/routes/booking/confirmation',
     views: {
-        'tab-routes': {
-            templateUrl: 'templates/tab-booking-confirmation.html',
-            controller: 'BookingConfirmationController',
-        },
+      'tab-routes': {
+        templateUrl: 'templates/tab-booking-confirmation.html',
+        controller: 'BookingConfirmationController',
+      },
     },
     data: {
       hideTabs: true,
     }
   })
 
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Sugesstions Tab
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   .state('tabs.suggest', {
     url: '/suggest/:action',
     views: {
@@ -119,9 +119,9 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Tickets Tab
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   .state('tabs.tickets', {
     url: '/tickets',
     views: {
@@ -142,9 +142,9 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Settings Tab
-  //////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   .state('tabs.settings', {
     url: '/settings',
     views: {
@@ -153,14 +153,14 @@ export default function($stateProvider, $urlRouterProvider) {
         controller: 'SettingsController'
       }
     }
-  })
+  });
 
   // if none of the above states are matched, use this as the fallback
-  if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {
+  if (window.localStorage['sessionToken'] && window.localStorage['sessionToken'] != null) {
     $urlRouterProvider.otherwise('/tabs/routes');
   } else {
     // $urlRouterProvider.otherwise('/tabs/routes/map');
     $urlRouterProvider.otherwise('/intro');
   }
 
-};
+}
