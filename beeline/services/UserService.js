@@ -1,16 +1,15 @@
-/* eslint-env node, mocha */
 import querystring from 'querystring';
 import uuid from 'uuid';
 import requestingVerificationCodeTemplate from '../templates/requesting-verification-code.html';
 import sendingVerificationCodeTemplate from '../templates/sending-verification-code.html';
+const VALID_PHONE_REGEX = /^[0-9]{8}$/;
+const VALID_VERIFICATION_CODE_REGEX = /^[0-9]{6}$/;
 
 export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
 
   // ////////////////////////////////////////////////////////////////////////////
   // Private internal methods and variables
   // ////////////////////////////////////////////////////////////////////////////
-  var VALID_PHONE_REGEX = /^[0-9]{8}$/;
-  var VALID_VERIFICATION_CODE_REGEX = /^[0-9]{6}$/;
   var sessionToken = window.localStorage.sessionToken || null;
   var user = window.localStorage.beelineUser ?
              JSON.parse(window.localStorage.beelineUser) : null;
