@@ -133,7 +133,7 @@ var app = angular.module('beeline', [
         libraries: 'places'
     });
 })
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $ionicTabsDelegate) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -145,6 +145,15 @@ var app = angular.module('beeline', [
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+    }
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+    if (toState.data && toState.data.hideTabs) {
+      $ionicTabsDelegate.showBar(false);
+    }
+    else {
+      $ionicTabsDelegate.showBar(true);
     }
   });
 });
