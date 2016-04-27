@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>MenuRoutesActive</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="1MainTabMap" transform="translate(-32.000000, -616.000000)" stroke="#FFE76E">
+            <g id="Menu-Bar" transform="translate(0.000000, 603.000000)">
+                <g id="Icons" transform="translate(27.000000, 11.500000)">
+                    <g id="MenuRoutes" transform="translate(5.000000, 2.000000)">
+                        <g id="MenuRoutesActive" transform="translate(0.734375, 0.367188)">
+                            <g id="Group-6">
+                                <path d="M3.37104531,16.3351541 L3.37104531,6.90156033 C3.37104531,4.46895096 5.21063802,2.49921658 7.47989948,2.49921658 C9.7503349,2.49921658 11.5887536,4.46895096 11.5887536,6.90156033 L11.5887536,16.9640603 C11.5887536,19.3966697 13.4283464,21.3664041 15.6976078,21.3664041 C17.9680432,21.3664041 19.806462,19.3966697 19.806462,16.9640603 L19.806462,7.53046658" id="Stroke-160"></path>
+                                <path d="M22.885,3.72671875 C22.885,5.4625 21.47625,6.87125 19.7404687,6.87125 C18.0046875,6.87125 16.5959375,5.4625 16.5959375,3.72671875 C16.5959375,1.9909375 18.0046875,0.5821875 19.7404687,0.5821875 C21.47625,0.5821875 22.885,1.9909375 22.885,3.72671875 L22.885,3.72671875 Z" id="Stroke-1104"></path>
+                                <path d="M6.5334375,20.0782813 C6.5334375,21.8140625 5.1246875,23.2228125 3.38890625,23.2228125 C1.653125,23.2228125 0.244375,21.8140625 0.244375,20.0782813 C0.244375,18.3425 1.653125,16.93375 3.38890625,16.93375 C5.1246875,16.93375 6.5334375,18.3425 6.5334375,20.0782813 L6.5334375,20.0782813 Z" id="Stroke-1104"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -59,10 +59,11 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var verifyTelephone = function(telephoneNumber, code) {
     return beelineRequest({
       method: 'POST',
-      url: '/users/verifyTelephone?' + querystring.stringify({
+      url: '/users/verifyTelephone',
+      data: {
         telephone: '+65' + telephoneNumber,
         code: code
-      })
+      }
     })
     .then(function(response) {
       sessionToken = response.data.sessionToken;
