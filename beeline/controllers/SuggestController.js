@@ -43,7 +43,7 @@ export default [
     // if we had anonymous suggestions before, convert them to suggestions
     // associated with this user
     $scope.$watch(function() {
-      return Userservice.getUser();
+      return UserService.getUser();
     }, function(newUser) {
       if (newUser) {
         UserService.beeline({
