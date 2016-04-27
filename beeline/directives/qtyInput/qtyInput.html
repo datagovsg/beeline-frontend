@@ -1,12 +1,16 @@
-<div class="qty-input">
+<div>
   <div class="btns">
-    <button ng-click="down()"> - </button>
+    <button ng-click="down()"
+      class="button button-small button-royal icon ion-minus"
+    ></button>
     <input
       ng-model="valueGetterSetter"
       ng-model-options="{updateOn: 'blur', getterSetter: true}"
       placeholder="{{placeholder}}"
       readonly
       >
-    <button ng-click="up()"> + </button>
+    <button ng-click="up()"
+      class="button button-small button-royal icon ion-plus"
+    ></button>
   </div>
 </div>

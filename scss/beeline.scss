@@ -135,6 +135,13 @@ td {
 }
 
 
+/** FIXES FOR BUGS **/
+/* Fix the wrong colour on Android subtabs */
+.tabs-striped.tabs-royal .tabs.tabs-striped.tabs-light {
+  background-color: $light;
+}
+
+
 // /* Error messages during form validation */
 // .err {
 //  height: 26px;

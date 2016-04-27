@@ -206,7 +206,7 @@ export default [
         $scope.lastDisplayedRouteId = $scope.book.routeId;
 
         // 2. Fill in the transport company info
-        return CompanyService.getCompany(route.trips[0].transportCompanyId)
+        return CompanyService.getCompany(+route.trips[0].transportCompanyId)
         .then(function(result){
             $scope.book.company = result;
         });
