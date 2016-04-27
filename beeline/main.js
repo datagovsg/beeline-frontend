@@ -153,7 +153,6 @@ var app = angular.module('beeline', [
   });
 
   $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-    console.log(toState);
     if (toState.data && toState.data.hideTabs) {
       $ionicTabsDelegate.showBar(false);
     }
