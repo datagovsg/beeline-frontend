@@ -1,18 +1,19 @@
 .nav-text {
-    color: #fff;
+  color: #fff;
   padding-top:  34px;
-
 }
 
 .nav-text:hover, .nav-text:active, .tab-item-active {
     color: #ffe76e;
 }
+
 .nav-routes {
   background: url('../img/menu/MenuRoutesNormal.svg') center 4px no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
+  }
 }
 
 .nav-suggest {
@@ -30,6 +31,7 @@
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuTicketsActive.svg') center 2px no-repeat;
+  }
 }
 
 
@@ -39,4 +41,5 @@
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuSettingsActive.svg') center 3px no-repeat;
+  }
 }
