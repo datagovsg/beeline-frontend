@@ -149,6 +149,30 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // ////////////////////////////////////////////////////////////////////////////
   // UI methods
   // ////////////////////////////////////////////////////////////////////////////
+  var verifiedPrompt = function(verify, options) {
+    var promptScope = $rootScope.$new(true);
+    promptScope.data = {};
+    $ionicPopup.show({
+      template: verifiedPromptTemplate,
+      title: 'Enter Wi-Fi Password',
+      subTitle: 'Please use normal things',
+      scope: promptScope,
+      buttons: [
+        { text: 'Cancel' },
+        {
+          text: 'OK',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (verify(promptScope.data.input)) {
+              return promptScope.data.input;
+            }
+            promptScope.data.error = true;
+            e.preventDefault();
+          }
+        }
+      ]
+    });
+  };
 
   // Prompts the user for a phone number to send a verification code
   // Reprompts the user if the number given isnt a valid 8 digit string
@@ -197,49 +221,53 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
 
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptLogIn = function() {
-    // Start by prompting for the phone number
-    return promptForPhone("Please enter your mobile number to receive a verification code")
-    .then(function(telephone) {
-      // Proceed if we are given a valid number, undefined means a user cancelled
-      // Show show a loding screen while waiting for server reply
-      // If replied successfully then prompt for the verification code
-      if (typeof telephone !== "undefined") {
-        $ionicLoading.show({template: requestingVerificationCodeTemplate});
-        return sendTelephoneVerificationCode(telephone)
-        .then(function() {
-          $ionicLoading.hide();
-          return promptForCode('Enter the 6 digit code sent to ' + telephone);
-        }, function(error) {
-          // If an error occurs make sure to hide the loading stuff before rethrowing it
-          $ionicLoading.hide();
-          return Promise.reject(error);
-        })
-        .then(function(verificationCode) {
-          // Same drill for the verification code
-          // Check to see if its really entered or a user cancel
-          // Then send it to server
-          if (typeof verificationCode !== "undefined") {
-            $ionicLoading.show({template: sendingVerificationCodeTemplate});
-            return verifyTelephone(telephone, verificationCode)
-            .then(function() {
-              $ionicLoading.hide();
-              return Promise.resolve(verificationCode);
-            }, function(error) {
-              // If an error occurs make sure to hide the loading stuff before rethrowing it
-              $ionicLoading.hide();
-              return Promise.reject(error);
-            });
-          }
-        });
-      }
-    })
-    // If an error occurs at any point stop and alert the user
-    .catch(function(error) {
-      $ionicPopup.alert({
-        title: "Error when trying to connect to server",
-        subTitle: error
-      });
+    verifiedPrompt(function(content) {
+      console.log(content);
+      return false;
     });
+    // // Start by prompting for the phone number
+    // return promptForPhone("Please enter your mobile number to receive a verification code")
+    // .then(function(telephone) {
+    //   // Proceed if we are given a valid number, undefined means a user cancelled
+    //   // Show show a loding screen while waiting for server reply
+    //   // If replied successfully then prompt for the verification code
+    //   if (typeof telephone !== "undefined") {
+    //     $ionicLoading.show({template: requestingVerificationCodeTemplate});
+    //     return sendTelephoneVerificationCode(telephone)
+    //     .then(function() {
+    //       $ionicLoading.hide();
+    //       return promptForCode('Enter the 6 digit code sent to ' + telephone);
+    //     }, function(error) {
+    //       // If an error occurs make sure to hide the loading stuff before rethrowing it
+    //       $ionicLoading.hide();
+    //       return Promise.reject(error);
+    //     })
+    //     .then(function(verificationCode) {
+    //       // Same drill for the verification code
+    //       // Check to see if its really entered or a user cancel
+    //       // Then send it to server
+    //       if (typeof verificationCode !== "undefined") {
+    //         $ionicLoading.show({template: sendingVerificationCodeTemplate});
+    //         return verifyTelephone(telephone, verificationCode)
+    //         .then(function() {
+    //           $ionicLoading.hide();
+    //           return Promise.resolve(verificationCode);
+    //         }, function(error) {
+    //           // If an error occurs make sure to hide the loading stuff before rethrowing it
+    //           $ionicLoading.hide();
+    //           return Promise.reject(error);
+    //         });
+    //       }
+    //     });
+    //   }
+    // })
+    // // If an error occurs at any point stop and alert the user
+    // .catch(function(error) {
+    //   $ionicPopup.alert({
+    //     title: "Error when trying to connect to server",
+    //     subTitle: error
+    //   });
+    // });
   };
 
   // Similar to prompt login
