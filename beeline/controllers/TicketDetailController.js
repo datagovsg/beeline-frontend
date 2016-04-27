@@ -55,7 +55,7 @@ export default [
       }
     ];
     var ticketPromise = TicketService.getTicketById(+$stateParams.ticketId);
-    var tripPromise = ticketPromise.then((ticket) => { 
+    var tripPromise = ticketPromise.then((ticket) => {
       return TripService.getTripData(+ticket.alightStop.tripId);
     });
     var routePromise = tripPromise.then((trip) => {
@@ -94,7 +94,7 @@ export default [
         id: 'boardStop',
         coords: { latitude: board[1], longitude: board[0] },
         icon: {
-          url: 'img/MapRoutePickupStop@2x.png',
+          url: 'img/MapRoutePickupStop.svg',
           scaledSize: new googleMaps.Size(25,25),
           anchor: new googleMaps.Point(13,13)
         }
@@ -103,7 +103,7 @@ export default [
         id: 'alightstop',
         coords: { latitude: alight[1], longitude: alight[0] },
         icon: {
-          url: 'img/MapRouteDropoffStop@2x.png',
+          url: 'img/MapRouteDropoffStop.svg',
           scaledSize: new googleMaps.Size(25,25),
           anchor: new googleMaps.Point(13,13)
         }
@@ -136,7 +136,7 @@ export default [
     //   });
     // }});
 
-    // Draw the icon for latest bus location 
+    // Draw the icon for latest bus location
     $scope.$watch('info', function(info) { if (info && info.pings.length > 0) {
       var busPosition = info.pings[0].coordinates.coordinates;
       var locationIndex = _.findIndex($scope.map.markers, (marker) => {
@@ -156,10 +156,10 @@ export default [
       };
     }});
 
-    // Pan and zoom to the bus location when the map is ready    
+    // Pan and zoom to the bus location when the map is ready
     // Single ping request for updating the map initially
     // Duplicates a bit with the update loop but is much cleaner this way
-    // If the load ever gets too much can easily integrate into the 
+    // If the load ever gets too much can easily integrate into the
     // main update loop
     var updatePromise = tripPromise.then(function(trip) {
       return TripService.DriverPings(trip.id);
@@ -186,7 +186,7 @@ export default [
         bounds.extend(new google.maps.LatLng(info.pings[0].coordinates.coordinates[1],
                                              info.pings[0].coordinates.coordinates[0]));
         map.fitBounds(bounds);
-      } 
+      }
     });
 
     //////////////////////////////////////////////////////////////////////////
@@ -194,7 +194,7 @@ export default [
     // Need to use the rootscope since ionic view enter stuff doesnt seem
     // to propagate down to child views and scopes
     //////////////////////////////////////////////////////////////////////////
-    Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) { 
+    Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) {
       var map = values[0];
       var googleMaps = values[1];
       $rootScope.$on("$ionicView.enter", function(event, data){
