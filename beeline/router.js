@@ -1,5 +1,14 @@
-export default function($stateProvider, $urlRouterProvider) {
 
+/**
+  * If you want to hide tabs while maintaining proper back button functionality
+  * then add data: {hideTabs: true} to the state definition. The hiding of the
+  * tabs will be handled globally in main.js ($rootScope.$on('$stateChangeSuccess'))
+  *
+  * I have absolutely no idea what happens if you use subtabs.
+  * The point is, don't use subtabs.
+**/
+
+export default function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
   //////////////////////////////////////////////////////////////////////////////
@@ -39,47 +48,62 @@ export default function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-routes': {
         templateUrl: 'templates/routes-results.html',
-        controller: 'RoutesResultsController'
+        controller: 'RoutesResultsController',
+        data: {
+          hideTabs: true,
+        }
       }
     }
   })
 
   .state('tabs.bookingPickup', {
-    url: '/booking/pickup/:routeId?boardStop&alightStop',
+    url: '/routes/:routeId/booking/stops?boardStop&alightStop',
     views: {
-      'tab-booking': {
+      'tab-routes': {
         templateUrl: 'templates/tab-booking-stops.html',
         controller: 'BookingStopsController',
       }
+    },
+    data: {
+      hideTabs: true,
     }
   })
 
   .state('tabs.booking-dates', {
-    url: '/booking/dates/:routeId?boardStop&alightStop',
+    url: '/routes/:routeId/booking/dates?boardStop&alightStop',
     views: {
-        'tab-booking': {
+        'tab-routes': {
             templateUrl: 'templates/tab-booking-dates.html',
             controller: 'BookingDatesController',
         },
     },
+    data: {
+      hideTabs: true,
+    }
   })
   .state('tabs.booking-summary', {
-    url: '/booking/summary/:routeId?boardStop&alightStop&selectedDates',
+    url: '/routes/:routeId/booking/summary?boardStop&alightStop&selectedDates',
     views: {
-        'tab-booking': {
+        'tab-routes': {
             templateUrl: 'templates/tab-booking-summary.html',
             controller: 'BookingSummaryController',
         },
     },
+    data: {
+      hideTabs: true,
+    }
   })
   .state('tabs.booking-confirmation', {
-    url: '/booking/confirmation',
+    url: '/routes/booking/confirmation',
     views: {
-        'tab-booking': {
+        'tab-routes': {
             templateUrl: 'templates/tab-booking-confirmation.html',
             controller: 'BookingConfirmationController',
         },
     },
+    data: {
+      hideTabs: true,
+    }
   })
 
   //////////////////////////////////////////////////////////////////////////////
@@ -130,19 +154,6 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-
-
-
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'LoginController'
-  })
-  .state('login-verify', {
-    url: '/login-verify?telephone',
-    templateUrl: 'templates/verify.html',
-    controller: 'VerifyController'
-  });
 
   // if none of the above states are matched, use this as the fallback
   if (window.localStorage['sessionToken'] && window.localStorage['sessionToken']!=null) {

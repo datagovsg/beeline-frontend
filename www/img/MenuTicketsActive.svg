@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>MenuTicketsActive</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1MainTabMap" transform="translate(-221.000000, -615.000000)">
+            <g id="Menu-Bar" transform="translate(0.000000, 603.000000)">
+                <g id="Icons" transform="translate(27.000000, 11.500000)">
+                    <g id="MenuTickets" transform="translate(209.000000, 15.500000) rotate(-45.000000) translate(-209.000000, -15.500000) translate(197.000000, 8.000000)">
+                        <g id="MenuTicketsActive" transform="translate(0.000000, -0.000000)">
+                            <path d="M24,10.5 C22.2709565,10.5 20.8695652,9.157 20.8695652,7.5 C20.8695652,5.844 22.2709565,4.5 24,4.5 L24,-2.84217094e-14 L-1.42108547e-13,-2.84217094e-14 L-1.42108547e-13,4.5 C1.728,4.5 3.13043478,5.844 3.13043478,7.5 C3.13043478,9.157 1.728,10.5 -1.42108547e-13,10.5 L-1.42108547e-13,15 L24,15 L24,10.5 L24,10.5 Z" id="Stroke-54" stroke="#FFE76E" stroke-width="1.026" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <polygon id="Fill-55" fill="#FFE76E" points="9.91283478 1.4999 8.86935652 1.4999 8.86935652 2.4999 9.91283478 2.4999"></polygon>
+                            <polygon id="Fill-56" fill="#FFE76E" points="9.91283478 3.4999 8.86935652 3.4999 8.86935652 4.4999 9.91283478 4.4999"></polygon>
+                            <polygon id="Fill-57" fill="#FFE76E" points="9.91283478 5.4999 8.86935652 5.4999 8.86935652 6.4999 9.91283478 6.4999"></polygon>
+                            <polygon id="Fill-58" fill="#FFE76E" points="9.91283478 8.4999 8.86935652 8.4999 8.86935652 9.4999 9.91283478 9.4999"></polygon>
+                            <polygon id="Fill-59" fill="#FFE76E" points="9.91283478 10.4999 8.86935652 10.4999 8.86935652 11.4999 9.91283478 11.4999"></polygon>
+                            <polygon id="Fill-60" fill="#FFE76E" points="9.91283478 12.4999 8.86935652 12.4999 8.86935652 13.4999 9.91283478 13.4999"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
