@@ -4,43 +4,39 @@
 
 }
 
-.nav-text:hover, .nav-text:active {
+.nav-text:hover, .nav-text:active, .tab-item-active {
     color: #ffe76e;
 }
 .nav-routes {
   background: url('../img/menu/MenuRoutesNormal.svg') center 4px no-repeat;
   display: block;
-}
-
-.nav-routes:hover, .nav-routes:active {
-  background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
+  &:hover,
+  &.tab-item-active {
+    background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
 }
 
 .nav-suggest {
   background: url('../img/menu/MenuSuggestNormal.svg') center 4px no-repeat;
   display: block;
+  &:hover,
+  &.tab-item-active {
+    background: url('../img/menu/MenuSuggestActive.svg') center 4px no-repeat;
+  }
 }
-
-.nav-suggest:hover, .nav-suggest:active {
-  background: url('../img/menu/MenuSuggestActive.svg')  center 4px no-repeat;
-}
-
 
 .nav-tickets {
-  background: url('../img/menu/MenuTicketsNormal.svg')  center 2px no-repeat;
+  background: url('../img/menu/MenuTicketsNormal.svg') center 2px no-repeat;
   display: block;
-}
-
-.nav-tickets:hover, .nav-tickets:active {
-  background: url('../img/menu/MenuTicketsActive.svg')  center 2px no-repeat;
+  &:hover,
+  &.tab-item-active {
+    background: url('../img/menu/MenuTicketsActive.svg') center 2px no-repeat;
 }
 
 
 .nav-settings {
-  background: url('../img/menu/MenuSettingsNormal.svg')  center 3px no-repeat;
+  background: url('../img/menu/MenuSettingsNormal.svg') center 3px no-repeat;
   display: block;
-}
-
-.nav-settings:hover, .nav-settings:active {
-  background: url('../img/menu/MenuSettingsActive.svg')  center 3px no-repeat;
+  &:hover,
+  &.tab-item-active {
+    background: url('../img/menu/MenuSettingsActive.svg') center 3px no-repeat;
 }
