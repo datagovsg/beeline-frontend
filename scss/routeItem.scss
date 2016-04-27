@@ -28,17 +28,17 @@ route-item {
     .line {
       width: 2px;
       height: 20px;
-      background: url('../img/dash.png') center center;
+      background: url('../img/RoutePairSmallLine.svg') center center;
       top: 10px;
       left: 4px;
       position: absolute;
     }
 
     .start {
-      background: url('../img/RoutePairSmallStart.png') left center no-repeat;
+      background: url('../img/RoutePairSmallStart.svg') left center no-repeat;
     }
     .end {
-      background: url('../img/RoutePairSmallEnd.png') left center no-repeat;
+      background: url('../img/RoutePairSmallEnd.svg') left center no-repeat;
     }
 
     .start, .end {
