@@ -1,7 +1,6 @@
-/*eslint-env node, mocha */
+/* eslint-env node, mocha */
 import querystring from 'querystring';
 import uuid from 'uuid';
-import _ from 'lodash';
 import requestingVerificationCodeTemplate from '../templates/requesting-verification-code.html';
 import sendingVerificationCodeTemplate from '../templates/sending-verification-code.html';
 
@@ -12,9 +11,9 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
   // ////////////////////////////////////////////////////////////////////////////
   var VALID_PHONE_REGEX = /^[0-9]{8}$/;
   var VALID_VERIFICATION_CODE_REGEX = /^[0-9]{6}$/;
-  var sessionToken = window.localStorage['sessionToken'] || null;
-  var user = window.localStorage['beelineUser'] ?
-             JSON.parse(window.localStorage['beelineUser']) : null;
+  var sessionToken = window.localStorage.sessionToken || null;
+  var user = window.localStorage.beelineUser ?
+             JSON.parse(window.localStorage.beelineUser) : null;
 
   // General purpose wrapper for making http requests to server
   // Adds the appropriate http headers and token if signed in
@@ -49,9 +48,9 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
     return beelineRequest({
       method: 'POST',
       url: '/users/sendTelephoneVerification',
-      data: {'telephone': '+65' + number},
+      data: {telephone: '+65' + number},
       headers: {'Content-Type': 'application/json'}
-    }).then(function(response) {
+    }).then(function() {
       return true;
     });
   };
@@ -83,7 +82,9 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
       method: 'POST',
       data: {newTelephone: '+65' + telephone}
     })
-    .then(function(response) { return response.data.updateToken; });
+    .then(function(response) {
+      return response.data.updateToken;
+    });
   };
 
   // Really tell the server to update the telephone
@@ -111,7 +112,7 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
     return beelineRequest({
       method: 'PUT',
       url: '/user',
-      data: update,
+      data: update
     })
     .then(function(response) {
       user = response.data;
@@ -122,8 +123,8 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
   var logOut = function() {
     sessionToken = null;
     user = null;
-    delete window.localStorage['sessionToken'];
-    delete window.localStorage['beelineUser'];
+    delete window.localStorage.sessionToken;
+    delete window.localStorage.beelineUser;
     return Promise.resolve();
   };
 
@@ -153,27 +154,29 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
       subTitle: message,
       inputPlaceholder: 'e.g. 87654321'
     })
-    // Need to explicitly check for undefined to distinguish between empty string
-    // and an actual cancel
-    .then(function(response) { if (typeof response !== 'undefined') {
-      // If phone number is tested valid locally then transmit to server
-      if (VALID_PHONE_REGEX.test(response)) {
-        var telephone = response;
-        $ionicLoading.show({template: requestingVerificationCodeTemplate});
-        return sendTelephoneVerificationCode(telephone)
-        .then(function() {
-          $ionicLoading.hide();
-          return Promise.resolve(telephone);
-        })
-        // If an error occurs close the loading dialogue before rethrowing it
-        .catch(function(error) {
-          $ionicLoading.hide();
-          return Promise.reject(error);
-        });
+    .then(function(response) {
+      // Need to explicitly check for undefined to distinguish between empty string
+      // and an actual cancel
+      if (typeof response !== 'undefined') {
+        // If phone number is tested valid locally then transmit to server
+        if (VALID_PHONE_REGEX.test(response)) {
+          var telephone = response;
+          $ionicLoading.show({template: requestingVerificationCodeTemplate});
+          return sendTelephoneVerificationCode(telephone)
+          .then(function() {
+            $ionicLoading.hide();
+            return Promise.resolve(telephone);
+          })
+          // If an error occurs close the loading dialogue before rethrowing it
+          .catch(function(error) {
+            $ionicLoading.hide();
+            return Promise.reject(error);
+          });
+        }
+        // Reprompt with a message if the number given is invalid
+        return promptForPhone("Please enter a valid 8 digit mobile number");
       }
-      // Reprompt with a message if the number given is invalid
-      else return promptForPhone("Please enter a valid 8 digit mobile number");
-    }});
+    });
   };
 
   // Prompt the user to enter the verification code sent to the given phone number
@@ -186,23 +189,25 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
     })
     // Need to explicitly check for undefined to distinguish between empty string
     // and an actual cancel
-    .then(function(response) { if (typeof response !== 'undefined') {
-      if (VALID_VERIFICATION_CODE_REGEX.test(response)) {
-        var verificationCode = response;
-        $ionicLoading.show({template: sendingVerificationCodeTemplate});
-        return verifyTelephone(telephone, verificationCode)
-        .then(function() {
-          $ionicLoading.hide();
-          return Promise.resolve(verificationCode);
-        })
-        // If an error occurs close the loading dialogue before rethrowing it
-        .catch(function(error) {
-          $ionicLoading.hide();
-          return Promise.reject(error);
-        });
+    .then(function(response) {
+      if (typeof response !== 'undefined') {
+        if (VALID_VERIFICATION_CODE_REGEX.test(response)) {
+          var verificationCode = response;
+          $ionicLoading.show({template: sendingVerificationCodeTemplate});
+          return verifyTelephone(telephone, verificationCode)
+          .then(function() {
+            $ionicLoading.hide();
+            return Promise.resolve(verificationCode);
+          })
+          // If an error occurs close the loading dialogue before rethrowing it
+          .catch(function(error) {
+            $ionicLoading.hide();
+            return Promise.reject(error);
+          });
+        }
+        return promptForVerification(telephone, "Please enter a valid 6 digit code");
       }
-      else return promptForVerification(telephone, "Please enter a valid 6 digit code");
-    }});
+    });
   };
 
   // The combined prompt for phone number and subsequent prompt for verification code
@@ -230,25 +235,27 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
     })
     // Need to explicitly check for undefined to distinguish between empty string
     // and an actual cancel
-    .then(function(response) { if (typeof response !== 'undefined') {
-      // If phone number is tested valid locally then transmit to server
-      if (VALID_PHONE_REGEX.test(response)) {
-        var telephone = response;
-        $ionicLoading.show({template: requestingVerificationCodeTemplate});
-        return requestUpdateTelephone(telephone)
-        .then(function(token) {
-          $ionicLoading.hide();
-          return Promise.resolve(token);
-        })
-        // If an error occurs close the loading dialogue before rethrowing it
-        .catch(function(error) {
-          $ionicLoading.hide();
-          return Promise.reject(error);
-        });
+    .then(function(response) {
+      if (typeof response !== 'undefined') {
+        // If phone number is tested valid locally then transmit to server
+        if (VALID_PHONE_REGEX.test(response)) {
+          var telephone = response;
+          $ionicLoading.show({template: requestingVerificationCodeTemplate});
+          return requestUpdateTelephone(telephone)
+          .then(function(token) {
+            $ionicLoading.hide();
+            return Promise.resolve(token);
+          })
+          // If an error occurs close the loading dialogue before rethrowing it
+          .catch(function(error) {
+            $ionicLoading.hide();
+            return Promise.reject(error);
+          });
+        }
+        // Reprompt with a message if the number given is invalid
+        return promptForUpdatePhoneNumber("Please enter a valid 8 digit mobile number");
       }
-      // Reprompt with a message if the number given is invalid
-      else return promptForUpdatePhoneNumber("Please enter a valid 8 digit mobile number");
-    }});
+    });
   };
 
   // Smilar to prompt for verification but for updating instead of logging in
@@ -260,23 +267,25 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
     })
     // Need to explicitly check for undefined to distinguish between empty string
     // and an actual cancel
-    .then(function(response) { if (typeof response !== 'undefined') {
-      if (VALID_VERIFICATION_CODE_REGEX.test(response)) {
-        var verificationCode = response;
-        $ionicLoading.show({template: sendingVerificationCodeTemplate});
-        return updateTelephone(token, verificationCode)
-        .then(function() {
-          $ionicLoading.hide();
-          return Promise.resolve(verificationCode);
-        })
-        // If an error occurs close the loading dialogue before rethrowing it
-        .catch(function(error) {
-          $ionicLoading.hide();
-          return Promise.reject(error);
-        });
+    .then(function(response) {
+      if (typeof response !== 'undefined') {
+        if (VALID_VERIFICATION_CODE_REGEX.test(response)) {
+          var verificationCode = response;
+          $ionicLoading.show({template: sendingVerificationCodeTemplate});
+          return updateTelephone(token, verificationCode)
+          .then(function() {
+            $ionicLoading.hide();
+            return Promise.resolve(verificationCode);
+          })
+          // If an error occurs close the loading dialogue before rethrowing it
+          .catch(function(error) {
+            $ionicLoading.hide();
+            return Promise.reject(error);
+          });
+        }
+        return promptForUpdateVerification(token, "Please enter a valid 6 digit code");
       }
-      else return promptForUpdateVerification(token, "Please enter a valid 6 digit code");
-    }});
+    });
   };
 
   // The combined prompt for phone number and subsequent prompt for verification code
@@ -301,7 +310,9 @@ export default function UserService($http, $state, $ionicPopup, $ionicLoading) {
       title: 'Are you sure you want to sign out?',
       subTitle: "You won't be able to make bookings or see your tickets until you sign in again"
     }).then(function(response) {
-      if (response) return logOut();
+      if (response) {
+        return logOut();
+      }
     });
   };
 
