@@ -7,7 +7,7 @@ export default function($state, BookingService) {
     scope: {
       route: '=',
     },
-    link: function (scope, element, attributes) {
+    link: function(scope, element, attributes) {
     },
   };
-};
+}

@@ -1,5 +1,5 @@
-import {NetworkError} from '../shared/errors'
-import {formatDate, formatTime, formatUTCDate,formatHHMM_ampm} from '../shared/format'
+import {NetworkError} from '../shared/errors';
+import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 
 export default [
   '$rootScope',
@@ -32,15 +32,15 @@ export default [
     MapOptions,
     $timeout
   ) {
-    //Gmap default settings
+    // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
 
-    //Default settings for various info used in the page
+    // Default settings for various info used in the page
     $scope.book = {
       routeId: '',
       route: null,
-      boardStops: [], //all board stops for this route
-      alightStops: [], //all alight stops for this route
+      boardStops: [], // all board stops for this route
+      alightStops: [], // all alight stops for this route
       boardStop: undefined,
       alightStop: undefined,
       stime: '',
@@ -78,18 +78,18 @@ export default [
           }
         }
       });
-    })
+    });
 
     $scope.$on('$ionicView.afterEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
-      $scope.book.boardStop  = parseInt($stateParams.boardStop);
+      $scope.book.boardStop = parseInt($stateParams.boardStop);
       $scope.book.alightStop = parseInt($stateParams.alightStop);
       window.setStop = $scope.setStop;
       gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
         $scope.displayRouteInfo();
-      })
+      });
     });
 
     gmapIsReady.then(function() {
@@ -97,23 +97,23 @@ export default [
       $scope.alightMarkerOptions = {
         icon: {
           url: 'img/alight.png',
-          scaledSize: new google.maps.Size(20,20),
-          anchor: new google.maps.Point(5,5),
+          scaledSize: new google.maps.Size(20, 20),
+          anchor: new google.maps.Point(5, 5),
         },
       };
 
       $scope.boardMarkerOptions = {
         icon: {
           url: 'img/board.png',
-          scaledSize: new google.maps.Size(20,20),
-          anchor: new google.maps.Point(5,5),
+          scaledSize: new google.maps.Size(20, 20),
+          anchor: new google.maps.Point(5, 5),
         },
       };
       var timer;
-      timer = $timeout(function(){
-        //Disable the Google link at the bottom left of the map
+      timer = $timeout(function() {
+        // Disable the Google link at the bottom left of the map
         var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
-        glink.next().find('a').on('click', function (e) {
+        glink.next().find('a').on('click', function(e) {
           e.preventDefault();
         });
       }, 300);
@@ -124,34 +124,34 @@ export default [
         if ($scope.changesModal) {
           $scope.changesModal.remove();
         }
-        if (timer){
+        if (timer) {
           $timeout.cancel(timer);
         }
-    });
+      });
 
-    $scope.setStop = function () {
-      var stop = $scope.infoStop;
-      var type = $scope.infoType
+      $scope.setStop = function() {
+        var stop = $scope.infoStop;
+        var type = $scope.infoType;
 
-      $scope.$apply(() => {
+        $scope.$apply(() => {
         if (type == 'board') {
-            $scope.book.boardStop = stop.id;
+          $scope.book.boardStop = stop.id;
         }
         else {
-            $scope.book.alightStop = stop.id;
+          $scope.book.alightStop = stop.id;
         }
         /* Hide the infowindow */
         $scope.infoStop = null;
         $scope.infoType = null;
       });
-    };
+      };
 
     /* These function teaches the <bus-stop-selector> how
      to display the stop id and description */
-    $scope.getStopId = (stop) => stop.id;
-    $scope.getStopDescription = (stop) =>
+      $scope.getStopId = (stop) => stop.id;
+      $scope.getStopDescription = (stop) =>
       formatTime(stop.time, true) + ' \u00a0\u00a0' + stop.description;
-    $scope.getStopDescription2 = (stop) =>
+      $scope.getStopDescription2 = (stop) =>
       stop.road;
 
     // FIXME: start/end marker on selected stops
@@ -161,39 +161,39 @@ export default [
     // 1. Route info
     // 2. Company info
     // 3. Changes to route
-    $scope.lastDisplayedRouteId = null; // works if caching
-    $scope.displayRouteInfo = function() {
-      RoutesService.getRoute(parseInt($scope.book.routeId))
+      $scope.lastDisplayedRouteId = null; // works if caching
+      $scope.displayRouteInfo = function() {
+        RoutesService.getRoute(parseInt($scope.book.routeId))
       .then((route) => {
         // 1. Route info
         $scope.routePath = route.path.map(latlng => ({
           latitude: latlng.lat,
           longitude: latlng.lng,
         }));
-          $scope.book.route = route;
-          console.log($scope.book.route);
+        $scope.book.route = route;
+        console.log($scope.book.route);
         computeStops();
         panToStops();
 
         // 3. Check if we should display changes
-          if ($scope.lastDisplayedRouteId != $scope.book.routeId) {
+        if ($scope.lastDisplayedRouteId != $scope.book.routeId) {
           var changes = BookingService.computeChanges(route);
-            $scope.book.changes = changes;
-            console.log(changes);
+          $scope.book.changes = changes;
+          console.log(changes);
 
           if (changes.priceChanges.length == 0 &&
               changes.stopChanges.length == 0 &&
               changes.timeChanges.length == 0) {
-            return
-          }
+              return;
+            }
 
           console.log('Changes detected: diplaying message box');
 
           if ($scope.changesModal) {
-            $scope.changesModal.show();
-          }
+              $scope.changesModal.show();
+            }
           else {
-            $ionicModal.fromTemplateUrl('changes-message.html', {
+              $ionicModal.fromTemplateUrl('changes-message.html', {
               scope: $scope,
               animation: 'slide-in-up',
             })
@@ -201,88 +201,88 @@ export default [
               $scope.changesModal = modal;
               $scope.changesModal.show();
             });
-          }
+            }
         }
         $scope.lastDisplayedRouteId = $scope.book.routeId;
 
         // 2. Fill in the transport company info
-        return CompanyService.getCompany(route.trips[0].transportCompanyId)
-        .then(function(result){
-            $scope.book.company = result;
+        return CompanyService.getCompany(+route.trips[0].transportCompanyId)
+        .then(function(result) {
+          $scope.book.company = result;
         });
       })
       .then(null, err => console.log(err.stack));
-    };
+      };
 
-    $scope.closeChangesModal = function() {
-      $scope.changesModal.hide();
-    }
+      $scope.closeChangesModal = function() {
+        $scope.changesModal.hide();
+      };
 
     /* ----- Methods ----- */
-    //Click function for User Position Icon
-    $scope.getUserLocation = MapOptions.locateMe($scope.map.control);
+    // Click function for User Position Icon
+      $scope.getUserLocation = MapOptions.locateMe($scope.map.control);
 
-    function computeStops() {
+      function computeStops() {
         var trips = $scope.book.route.trips;
         var stops = BookingService.computeStops(trips);
         $scope.book.boardStops = stops[0];
         $scope.book.alightStops = stops[1];
-      };
+      }
 
-    function panToStops() {
-      var stops = [];
-      stops = $scope.book.boardStops.concat($scope.book.alightStops);
+      function panToStops() {
+        var stops = [];
+        stops = $scope.book.boardStops.concat($scope.book.alightStops);
 
-      if (stops.length == 0) {
+        if (stops.length == 0) {
         return;
       }
-      var bounds = new google.maps.LatLngBounds();
-      for (let s of stops) {
+        var bounds = new google.maps.LatLngBounds();
+        for (let s of stops) {
         bounds.extend(new google.maps.LatLng(
           s.coordinates.coordinates[1],
           s.coordinates.coordinates[0]
         ));
       }
-      $scope.map.control.getGMap().fitBounds(bounds);
-    };
+        $scope.map.control.getGMap().fitBounds(bounds);
+      }
 
-    $scope.tapBoard = function (board) {
+      $scope.tapBoard = function(board) {
       // nconsole.log($state);
-      window.setStop = $scope.setStop;
-      $scope.infoStop = board;
-      $scope.infoType = 'board';
-    };
-    $scope.tapAlight = function (alight) {
-      window.setStop = $scope.setStop;
-      $scope.infoStop = alight;
-      $scope.infoType = 'alight';
-    };
-    $scope.applyTapAlight = (x) => $scope.$apply(() => $scope.tapAlight(x));
-    $scope.applyTapBoard = (x) => $scope.$apply(() => $scope.tapBoard(x));
+        window.setStop = $scope.setStop;
+        $scope.infoStop = board;
+        $scope.infoType = 'board';
+      };
+      $scope.tapAlight = function(alight) {
+        window.setStop = $scope.setStop;
+        $scope.infoStop = alight;
+        $scope.infoType = 'alight';
+      };
+      $scope.applyTapAlight = (x) => $scope.$apply(() => $scope.tapAlight(x));
+      $scope.applyTapBoard = (x) => $scope.$apply(() => $scope.tapBoard(x));
 
-    //Check whether:
-    //[1] Start stop is specified
-    //[2] End stop is specified
-    //[3] Checkbox is checked
-    $scope.$watchGroup([
-          'book.boardStop',
-          'book.alightStop',
+    // Check whether:
+    // [1] Start stop is specified
+    // [2] End stop is specified
+    // [3] Checkbox is checked
+      $scope.$watchGroup([
+        'book.boardStop',
+        'book.alightStop',
         'book.termsChecked',
-      ], function () {
+      ], function() {
         if ($scope.book.termsChecked == true) {
-          $scope.book.errmsg = '';
-            var curr = $scope.book;
+        $scope.book.errmsg = '';
+        var curr = $scope.book;
 
-          if (typeof(curr.boardStop) == 'undefined')
-            $scope.book.errmsg = 'Please specify a Boarding Stop.'
-          else if (typeof(curr.alightStop) == 'undefined')
-            $scope.book.errmsg = 'Please specify a Alighting Stop.'
+        if (typeof (curr.boardStop) == 'undefined')
+            $scope.book.errmsg = 'Please specify a Boarding Stop.';
+        else if (typeof (curr.alightStop) == 'undefined')
+            $scope.book.errmsg = 'Please specify a Alighting Stop.';
           else
           {
-              $scope.book.errmsg = '';
+            $scope.book.errmsg = '';
             $scope.book.allDataNotFilled = false;
           }
-        }
+      }
       });
     });
   }

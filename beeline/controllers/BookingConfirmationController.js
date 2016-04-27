@@ -1,10 +1,10 @@
 
 export default [
-    '$scope',
-    '$state',
-    '$http',
-    'BookingService',
-    function ($scope, $state, $http, BookingService) {
-    },
+  '$scope',
+  '$state',
+  '$http',
+  'BookingService',
+  function($scope, $state, $http, BookingService) {
+  },
 ];
 

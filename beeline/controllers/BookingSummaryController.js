@@ -51,8 +51,8 @@ export default [
 
     $scope.loginBeforePay = function() {
       // user must log in before pay
-      if (!UserService.user) {
-        UserService.logIn();
+      if (!UserService.getUser()) {
+        UserService.promptLogIn();
       }
       else {
         $scope.pay();

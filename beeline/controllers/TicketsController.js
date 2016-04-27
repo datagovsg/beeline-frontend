@@ -9,11 +9,11 @@ export default [
   ) {
     // Track the login state of the user service
     $scope.$watch(function() {
-      return UserService.user;
+      return UserService.getUser();
     }, function(newUser) {
-      $scope.user = UserService.user;
+      $scope.user = newUser;
     });
-    $scope.logIn = function() { UserService.logIn(); };
+    $scope.logIn = function() { UserService.promptLogIn(); };
 
     // Grab the tickets
     $scope.tickets = {};

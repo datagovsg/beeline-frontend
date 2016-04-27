@@ -43,7 +43,7 @@ export default function RoutesService($http, SERVER_URL, UserService) {
       assert.equal(typeof routeId, 'number');
       return instance.getRoutes(ignoreCache)
       .then(function(routes) {
-        return _.find(routes, { id: routeId });
+        return _.find(routes, {id: routeId});
       });
     },
 
@@ -51,9 +51,9 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     getRoutes: function(ignoreCache) {
       if (routesCache && !ignoreCache) return Promise.resolve(routesCache);
       return UserService.beeline({
-          method: 'GET',
-          url: '/routes?include_trips=true'
-        })
+        method: 'GET',
+        url: '/routes?include_trips=true'
+      })
       .then(function(response) {
         routesCache = transformRouteData(response.data);
         return routesCache;
@@ -77,10 +77,10 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     @return {Promise}
     **/
     searchRoutes: function(search) {
-      //return Promise object
+      // return Promise object
       return UserService.beeline({
         method: 'GET',
-       url: '/routes/search_by_latlon?' + querystring.stringify({
+        url: '/routes/search_by_latlon?' + querystring.stringify({
           startLat: search.startLat,
           startLng: search.startLng,
           endLat: search.endLat,
@@ -97,7 +97,7 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     // Retrieves the recent routes for a user
     // If not logged in then just returns an empty array
     getRecentRoutes: function(ignoreCache) {
-      if (UserService.user) {
+      if (UserService.getUser()) {
         if (recentRoutesCache && !ignoreCache) return recentRoutesCache;
         return UserService.beeline({
           method: 'GET',

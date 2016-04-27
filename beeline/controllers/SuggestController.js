@@ -8,7 +8,7 @@ export default [
   'UserService',
   '$ionicModal',
   '$ionicPopup',
-function(
+  function(
   $scope,
   $state,
   $stateParams,
@@ -18,32 +18,32 @@ function(
   $ionicModal,
   $ionicPopup
 ) {
-  $scope.user = null;
+    $scope.user = null;
 
-  $scope.newSuggestion = {
+    $scope.newSuggestion = {
     time: '',
     startPoint: {},
     endPoint: {},
     control: {},
   };
-  $scope.newSuggestionModal = $ionicModal.fromTemplate(
+    $scope.newSuggestionModal = $ionicModal.fromTemplate(
     require('./newSuggestion.html'),
     {
       scope: $scope,
       animation: 'slide-in-up'
     }
-  )
+  );
 
-  $scope.$on('destroy', () => {
+    $scope.$on('destroy', () => {
     $scope.newSuggestionModal.destroy();
-  })
+  });
 
-  $scope.$on('$ionicView.afterEnter', (event) => {
+    $scope.$on('$ionicView.afterEnter', (event) => {
 
     // if we had anonymous suggestions before, convert them to suggestions
     // associated with this user
     $scope.$watch(function() {
-      return UserService.user;
+      return UserService.getUser();
     }, function(newUser) {
       if (newUser) {
         UserService.beeline({
@@ -59,10 +59,10 @@ function(
     /* Entered from the route search */
     if ($state.params.action == 'submit' &&
       Search.data.startLat && Search.data.startLng) {
-      $state.params.action = ''
+      $state.params.action = '';
 
       var arrivalTime = new Date(Search.data.arrivalTime);
-      var secondsSinceMidnight = arrivalTime.getHours() * 60*60 +
+      var secondsSinceMidnight = arrivalTime.getHours() * 60 * 60 +
           arrivalTime.getMinutes() * 60 +
           arrivalTime.getSeconds();
 
@@ -78,12 +78,12 @@ function(
         }
       })
       .then(() => {
-        queryData()
+        queryData();
       })
       .catch((err) => {
         console.log(err);
         alert('You must be logged in to make a suggestion');
-        $state.go('tabs.suggest', {action: ''})
+        $state.go('tabs.suggest', {action: ''});
       });
     }
     else if ($state.params.action == 'new') {
@@ -91,12 +91,12 @@ function(
       queryData();
     }
     else {
-      queryData()
+      queryData();
     }
   });
 
   // populate
-  function queryData() {
+    function queryData() {
     var suggestions;
 
     UserService.beeline({
@@ -110,17 +110,17 @@ function(
         UserService.beeline({
           url: `/suggestions/${suggestion.id}/similar`,
           method: 'GET'
-        }))
+        }));
 
       return Promise.all(countSimilar);
     })
     .then((similars) => {
-      for (var i=0; i<suggestions.length; i++) {
-        suggestions[i].numSimilar = similars[i].data.length
+      for (var i = 0; i < suggestions.length; i++) {
+        suggestions[i].numSimilar = similars[i].data.length;
       }
       return suggestions;
     })
-    .then(function (suggestions) {
+    .then(function(suggestions) {
       /* Need to map the old suggestions to the new suggestions so
       that we don't lose the geocoding */
       // var oldSuggestions = _.keyBy(
@@ -137,29 +137,29 @@ function(
     });
 
     SuggestionService.getSimilar()
-    .then(function () {
+    .then(function() {
       $scope.similarSuggestions = SuggestionService.getSimilarSuggestions();
     });
 
-    $scope.getSuggestionById = function(tid){
+    $scope.getSuggestionById = function(tid) {
       SuggestionService.getSuggestionById(tid);
       $scope.suggestion = SuggestionService.getSelectedSuggestion();
-      console.log("selected suggestion is "+$scope.suggestion.id);
-    }
+      console.log("selected suggestion is " + $scope.suggestion.id);
+    };
   }
 
-  $scope.toggleSelected = function(item) {
+    $scope.toggleSelected = function(item) {
     if ($scope.selectedItem == item) {
-      $scope.selectedItem  = null;
+      $scope.selectedItem = null;
     }
     else {
       $scope.selectedItem = item;
     }
-  }
+  };
 
-  $scope.selectItem = function(item) {
+    $scope.selectItem = function(item) {
     // Show a modal
-    $scope.newSuggestion.title = 'Your Suggestion'
+    $scope.newSuggestion.title = 'Your Suggestion';
     $scope.newSuggestion.id = item.id;
     $scope.newSuggestion.startPoint.coordinates = {
       latitude: item.board.coordinates[1],
@@ -177,9 +177,9 @@ function(
     .then(() => {
       $scope.newSuggestion.control.fitToPoints();
     });
-  }
+  };
 
-  $scope.deleteSuggestion = function(event, id) {
+    $scope.deleteSuggestion = function(event, id) {
     event.stopPropagation();
     $ionicPopup.confirm({
       title: 'Delete suggestion',
@@ -193,16 +193,16 @@ function(
         })
         .then(queryData);
       }
-    })
+    });
   };
-  $scope.promptNewSuggestion = function() {
-    $scope.newSuggestion.title = 'New Suggestion'
-    $scope.newSuggestion.time = ''
-    $scope.newSuggestion.id = false
+    $scope.promptNewSuggestion = function() {
+    $scope.newSuggestion.title = 'New Suggestion';
+    $scope.newSuggestion.time = '';
+    $scope.newSuggestion.id = false;
     $scope.newSuggestion.startPoint.coordinates = null;
-    $scope.newSuggestion.startPoint.text = ''
+    $scope.newSuggestion.startPoint.text = '';
     $scope.newSuggestion.endPoint.coordinates = null;
-    $scope.newSuggestion.endPoint.text = ''
+    $scope.newSuggestion.endPoint.text = '';
     $scope.newSuggestion.setPoint = 'start';
     $scope.newSuggestion.disabled = false;
     $scope.newSuggestionModal.show()
@@ -210,10 +210,10 @@ function(
       $scope.newSuggestion.control.fitToPoints();
     });
   };
-  $scope.submitSuggestion = function (suggestion) {
+    $scope.submitSuggestion = function(suggestion) {
     var arrivalTime = new (
       Date.bind.apply(Date, [{}, 2015, 1, 1].concat(suggestion.time.split(':'))));
-    var secondsSinceMidnight = arrivalTime.getHours() * 60*60 +
+    var secondsSinceMidnight = arrivalTime.getHours() * 60 * 60 +
         arrivalTime.getMinutes() * 60 +
         arrivalTime.getSeconds();
 
@@ -234,7 +234,7 @@ function(
       $scope.newSuggestionModal.hide();
     });
   };
-  $scope.cancel = function (suggestion) {
+    $scope.cancel = function(suggestion) {
     $scope.newSuggestionModal.hide();
   };
-}];
+  }];

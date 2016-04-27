@@ -1,8 +1,8 @@
-import priceCalculatorTemplate from './priceCalculator.html'
+import priceCalculatorTemplate from './priceCalculator.html';
 
 export default [
   'BookingService',
-  function (BookingService) {
+  function(BookingService) {
     return {
       restrict: 'E',
       template: priceCalculatorTemplate,
@@ -11,7 +11,7 @@ export default [
         'readOnly': '=',
       },
       link: function(scope, elem, attr) {
-        scope.$watch('booking', function () {
+        scope.$watch('booking', function() {
           if (!scope.booking.route) {
             return;
           }
@@ -22,4 +22,4 @@ export default [
         }, true);
       }
     };
-  }]
+  }];

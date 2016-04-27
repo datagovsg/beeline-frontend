@@ -1,0 +1,11 @@
+{
+  "extends": "google",
+  "env": {
+      "browser": true
+  },
+  "rules": {
+    "padded-blocks": "off",
+    "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
+    "no-unused-vars": ["warn"]
+  }
+}

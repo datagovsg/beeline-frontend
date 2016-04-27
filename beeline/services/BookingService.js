@@ -1,8 +1,8 @@
-import {NetworkError} from '../shared/errors'
-import {formatDate, formatDateMMMdd, formatTime, formatUTCDate} from '../shared/format'
-import _ from 'lodash'
+import {NetworkError} from '../shared/errors';
+import {formatDate, formatDateMMMdd, formatTime, formatUTCDate} from '../shared/format';
+import _ from 'lodash';
 
-export default function (UserService, CompanyService, RoutesService, $http) {
+export default function(UserService, CompanyService, RoutesService, $http) {
   var rv = {};
 
   rv.prepareTrips = function(booking) {
@@ -78,16 +78,16 @@ export default function (UserService, CompanyService, RoutesService, $http) {
 
     if (dates.length == 0) return [];
 
-    var current = {}
+    var current = {};
     var rv = [];
 
     for (let dt of dates) {
-        current = {
-          startDate: dt,
-          price: booking.route.tripsByDate[dt].price,
-        };
-        rv.push(current);
-      }
+      current = {
+        startDate: dt,
+        price: booking.route.tripsByDate[dt].price,
+      };
+      rv.push(current);
+    }
     console.log(rv);
     return rv;
   };
@@ -113,7 +113,7 @@ export default function (UserService, CompanyService, RoutesService, $http) {
       timeChanges: [],
       priceChanges: [],
       stopChanges: [],
-    }
+    };
 
     /**
       Produce an array of changes.
@@ -212,17 +212,17 @@ export default function (UserService, CompanyService, RoutesService, $http) {
         return messages;
       });
 
-      console.log(route.trips.map(t => t.date).join('\n'))
-      console.log(
+    console.log(route.trips.map(t => t.date).join('\n'));
+    console.log(
         route.trips.map(
           trip => trip.tripStops
-            .map(ts => (ts.time.getTime() % (24*60*60*1000)) + ':' + ts.stop.id)
+            .map(ts => (ts.time.getTime() % (24 * 60 * 60 * 1000)) + ':' + ts.stop.id)
             .sort()
             .join(',')
           ).join('\n'));
-      changes.timeChanges = summarizeChanges(route.trips,
+    changes.timeChanges = summarizeChanges(route.trips,
         trip => trip.tripStops
-              .map(ts => (ts.time.getTime() % (24*60*60*1000)) + ':' + ts.stop.id)
+              .map(ts => (ts.time.getTime() % (24 * 60 * 60 * 1000)) + ':' + ts.stop.id)
               .sort()
               .join(','),
         (bef, aft) => {
@@ -247,24 +247,24 @@ export default function (UserService, CompanyService, RoutesService, $http) {
           }
           return messages;
         });
-      return changes;
+    return changes;
   };
 
-  rv.computeStops = function(trips){
+  rv.computeStops = function(trips) {
     var tripStops = _.flatten(trips.map(trip => trip.tripStops));
-    var uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id)
+    var uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id);
     var stopData = _.keyBy(uniqueStops, ts => ts.stop.id);
 
     var boardStops = uniqueStops.filter(ts => ts.canBoard)
       .map(ts => {
         return _.extend({time: ts.time}, ts.stop);
-      })
+      });
     var alightStops = uniqueStops.filter(ts => ts.canAlight)
       .map(ts => {
         return _.extend({time: ts.time}, ts.stop);
-      })
-    return [boardStops,alightStops];
-  }
+      });
+    return [boardStops, alightStops];
+  };
 
   return rv;
 }

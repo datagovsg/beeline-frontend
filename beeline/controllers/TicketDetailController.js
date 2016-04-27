@@ -24,10 +24,10 @@ export default [
     UserService,
     MapOptions,
     RoutesService
-  ){
+  ) {
 
     // Initialize the necessary basic data data
-    $scope.user = UserService.user;
+    $scope.user = UserService.getUser();
     $scope.map = MapOptions.defaultMapOptions();
     $scope.map.lines = [
       {
@@ -42,7 +42,7 @@ export default [
       {
         id: 'routeLine',
         path:[],
-        stroke: { opacity: 0 },
+        stroke: {opacity: 0},
         icons: [{
           icon: {
             path: 'M 0,-1 0,1',
@@ -55,7 +55,7 @@ export default [
       }
     ];
     var ticketPromise = TicketService.getTicketById(+$stateParams.ticketId);
-    var tripPromise = ticketPromise.then((ticket) => { 
+    var tripPromise = ticketPromise.then((ticket) => {
       return TripService.getTripData(+ticket.alightStop.tripId);
     });
     var routePromise = tripPromise.then((trip) => {
@@ -73,7 +73,7 @@ export default [
     // Using a recursive timeout instead of an interval to avoid backlog
     // when the server is slow to respond
     var pingTimer;
-    var pingLoop = function(){
+    var pingLoop = function() {
       tripPromise.then(function(trip) { return TripService.DriverPings(trip.id); })
       .then((info) => {
         $scope.info = info;
@@ -92,32 +92,32 @@ export default [
       var alight = ticket.alightStop.stop.coordinates.coordinates;
       $scope.map.markers.push({
         id: 'boardStop',
-        coords: { latitude: board[1], longitude: board[0] },
+        coords: {latitude: board[1], longitude: board[0]},
         icon: {
-          url: 'img/MapRoutePickupStop@2x.png',
-          scaledSize: new googleMaps.Size(25,25),
-          anchor: new googleMaps.Point(13,13)
+          url: 'img/MapRoutePickupStop.svg',
+          scaledSize: new googleMaps.Size(25, 25),
+          anchor: new googleMaps.Point(13, 13)
         }
       });
       $scope.map.markers.push({
         id: 'alightstop',
-        coords: { latitude: alight[1], longitude: alight[0] },
+        coords: {latitude: alight[1], longitude: alight[0]},
         icon: {
-          url: 'img/MapRouteDropoffStop@2x.png',
-          scaledSize: new googleMaps.Size(25,25),
-          anchor: new googleMaps.Point(13,13)
+          url: 'img/MapRouteDropoffStop.svg',
+          scaledSize: new googleMaps.Size(25, 25),
+          anchor: new googleMaps.Point(13, 13)
         }
       });
     });
 
     // Draw the planned route
     routePromise.then((route) => {
-      var routeLine = _.find($scope.map.lines, { id: 'routeLine' });
+      var routeLine = _.find($scope.map.lines, {id: 'routeLine'});
       routeLine.path = [];
       _.each(route.path, (point) => {
         routeLine.path.push({
-           latitude: point.lat,
-           longitude: point.lng
+          latitude: point.lat,
+          longitude: point.lng
         });
       });
     });
@@ -136,7 +136,7 @@ export default [
     //   });
     // }});
 
-    // Draw the icon for latest bus location 
+    // Draw the icon for latest bus location
     $scope.$watch('info', function(info) { if (info && info.pings.length > 0) {
       var busPosition = info.pings[0].coordinates.coordinates;
       var locationIndex = _.findIndex($scope.map.markers, (marker) => {
@@ -150,16 +150,16 @@ export default [
         },
         icon: {
           url: 'img/busMarker01.png',
-          scaledSize: new googleMaps.Size(80,80),
-          anchor: new googleMaps.Point(40,73),
+          scaledSize: new googleMaps.Size(80, 80),
+          anchor: new googleMaps.Point(40, 73),
         },
       };
     }});
 
-    // Pan and zoom to the bus location when the map is ready    
+    // Pan and zoom to the bus location when the map is ready
     // Single ping request for updating the map initially
     // Duplicates a bit with the update loop but is much cleaner this way
-    // If the load ever gets too much can easily integrate into the 
+    // If the load ever gets too much can easily integrate into the
     // main update loop
     var updatePromise = tripPromise.then(function(trip) {
       return TripService.DriverPings(trip.id);
@@ -186,18 +186,18 @@ export default [
         bounds.extend(new google.maps.LatLng(info.pings[0].coordinates.coordinates[1],
                                              info.pings[0].coordinates.coordinates[0]));
         map.fitBounds(bounds);
-      } 
+      }
     });
 
-    //////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////////
     // Hack to fix map resizing due to ionic view cacheing
     // Need to use the rootscope since ionic view enter stuff doesnt seem
     // to propagate down to child views and scopes
-    //////////////////////////////////////////////////////////////////////////
-    Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) { 
+    // ////////////////////////////////////////////////////////////////////////
+    Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) {
       var map = values[0];
       var googleMaps = values[1];
-      $rootScope.$on("$ionicView.enter", function(event, data){
+      $rootScope.$on("$ionicView.enter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });
     });
