@@ -1,18 +1,17 @@
 
-var stripeKey;
-
 export default function initStripe(UserService) {
 
-  UserService.beeline({
+  var stripeKeyPromise = UserService.beeline({
     url: '/stripe-key',
     method: 'GET',
   })
   .then((response) => {
-    stripeKey = response.data.publicKey;
+    return response.data.publicKey;
   });
 
   return {
     promptForToken(description, amount) {
+      return stripeKeyPromise.then((stripeKey) => {
         return new Promise((resolve, reject) => {
           var handler = StripeCheckout.configure({
             key: stripeKey,
@@ -30,7 +29,8 @@ export default function initStripe(UserService) {
             amount: amount
           });
         });
-      },
+      })
+    },
     loaded: StripeCheckout ? true : false,
   };
 }
