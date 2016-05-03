@@ -1,9 +1,10 @@
 import querystring from 'querystring';
 import uuid from 'uuid';
+import assert from 'assert';
 import requestingVerificationCodeTemplate from '../templates/requesting-verification-code.html';
 import sendingVerificationCodeTemplate from '../templates/sending-verification-code.html';
 import verifiedPromptTemplate from '../templates/verified-prompt.html';
-const VALID_PHONE_REGEX = /^[0-9]{8}$/;
+const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$/;
 const VALID_VERIFICATION_CODE_REGEX = /^[0-9]{6}$/;
 
 export default function UserService($http, $ionicPopup, $ionicLoading, $rootScope) {
@@ -152,13 +153,18 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var verifiedPrompt = function(verify, options) {
     var promptScope = $rootScope.$new(true);
     promptScope.data = {};
-    $ionicPopup.show({
+    promptScope.data.continue = true;
+    return $ionicPopup.show({
       template: verifiedPromptTemplate,
-      title: 'Enter Wi-Fi Password',
-      subTitle: 'Please use normal things',
+      title: options.title,
+      subTitle: options.subTitle,
       scope: promptScope,
       buttons: [
-        { text: 'Cancel' },
+        { text: 'Cancel',
+          onTap: function(e){
+            return undefined;
+          }
+        },
         {
           text: 'OK',
           type: 'button-positive',
@@ -174,146 +180,56 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
-  // Prompts the user for a phone number to send a verification code
-  // Reprompts the user if the number given isnt a valid 8 digit string
-  // Returns a promise for the telephone number if successful
-  var promptForPhone = function(message) {
-    return $ionicPopup.prompt({
-      title: 'Add your phone number',
-      subTitle: message,
-      inputPlaceholder: 'e.g. 87654321'
-    })
-    .then(function(response) {
-      // Need to explicitly check for undefined to distinguish between empty string
-      // and an actual cancel
-      if (typeof response !== 'undefined') {
-        if (VALID_PHONE_REGEX.test(response)) {
-          return Promise.resolve(response);
-        }
-        // Reprompt with a message if the number given is invalid
-        return promptForPhone("Please enter a valid 8 digit mobile number");
-      }
-    });
-  };
-
-  // Prompts the user for a verification code
-  // Reprompts the user if the number given isnt a valid 6 digit string
-  // Returns a promise for the telephone number if successful
-  // Should be basically the same as promptForPhone but with different regex and strings
-  var promptForCode = function(message) {
-    return $ionicPopup.prompt({
-      title: 'Verification Code',
-      subTitle: message,
-      inputPlaceholder: 'e.g. 123456'
-    })
-    .then(function(response) {
-      // Need to explicitly check for undefined to distinguish between empty string
-      // and an actual cancel
-      if (typeof response !== 'undefined') {
-        if (VALID_VERIFICATION_CODE_REGEX.test(response)) {
-          return Promise.resolve(response);
-        }
-        // Reprompt with a message if the number given is invalid
-        return promptForCode("Please enter a valid 6 digit code");
-      }
-    });
-  };
-
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptLogIn = function() {
-    verifiedPrompt(function(content) {
-      console.log(content);
-      return false;
+
+    return verifiedPrompt((s) => VALID_PHONE_REGEX.test(s),{
+      title: 'Login',
+      subTitle: 'Please enter your 8 digits mobile number to receive a verification code'
+    })
+    .then(async function(telephone) {
+      if (!telephone) return;
+      await sendTelephoneVerificationCode(telephone);
+      var verificationCode = await verifiedPrompt((s)=>VALID_VERIFICATION_CODE_REGEX.test(s), {
+        title: 'verification',
+        subTitle: 'Enter the 6 digit code sent to '+telephone
+      });
+      if (!verificationCode) return;
+      verifyTelephone(telephone, verificationCode);
+    })
+    // If an error occurs at any point stop and alert the user
+    .catch(function(error) {
+      $ionicPopup.alert({
+        title: "Error when trying to connect to server",
+        subTitle: error
+      });
     });
-    // // Start by prompting for the phone number
-    // return promptForPhone("Please enter your mobile number to receive a verification code")
-    // .then(function(telephone) {
-    //   // Proceed if we are given a valid number, undefined means a user cancelled
-    //   // Show show a loding screen while waiting for server reply
-    //   // If replied successfully then prompt for the verification code
-    //   if (typeof telephone !== "undefined") {
-    //     $ionicLoading.show({template: requestingVerificationCodeTemplate});
-    //     return sendTelephoneVerificationCode(telephone)
-    //     .then(function() {
-    //       $ionicLoading.hide();
-    //       return promptForCode('Enter the 6 digit code sent to ' + telephone);
-    //     }, function(error) {
-    //       // If an error occurs make sure to hide the loading stuff before rethrowing it
-    //       $ionicLoading.hide();
-    //       return Promise.reject(error);
-    //     })
-    //     .then(function(verificationCode) {
-    //       // Same drill for the verification code
-    //       // Check to see if its really entered or a user cancel
-    //       // Then send it to server
-    //       if (typeof verificationCode !== "undefined") {
-    //         $ionicLoading.show({template: sendingVerificationCodeTemplate});
-    //         return verifyTelephone(telephone, verificationCode)
-    //         .then(function() {
-    //           $ionicLoading.hide();
-    //           return Promise.resolve(verificationCode);
-    //         }, function(error) {
-    //           // If an error occurs make sure to hide the loading stuff before rethrowing it
-    //           $ionicLoading.hide();
-    //           return Promise.reject(error);
-    //         });
-    //       }
-    //     });
-    //   }
-    // })
-    // // If an error occurs at any point stop and alert the user
-    // .catch(function(error) {
-    //   $ionicPopup.alert({
-    //     title: "Error when trying to connect to server",
-    //     subTitle: error
-    //   });
-    // });
   };
 
   // Similar to prompt login
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptUpdatePhone = function() {
     // Start by prompting for the phone number
-    return promptForPhone("Please enter the new mobile number to receive a verification code")
-    .then(function(telephone) {
+    return verifiedPrompt((s) => VALID_PHONE_REGEX.test(s),{
+      title: 'Update Phone Number',
+      subTitle: 'Please enter the new 8 digits mobile number to receive a verification code'
+    })
+    .then (async function (telephone){
+      if (!telephone) return;
 
-      // Proceed if we are given a valid number, undefined means a user cancelled
-      if (typeof telephone !== "undefined") {
-        // Show the loading screen while requesting the code and hide it when done
-        // Show show a loding screen while waiting for server reply
-        $ionicLoading.show({template: requestingVerificationCodeTemplate});
-        var updateTokenPromise = requestUpdateTelephone(telephone);
-        updateTokenPromise.then(function(token) {
-          $ionicLoading.hide();
-        }, function(error) {
-          $ionicLoading.hide();
-        });
-        // If replied successfully then prompt for the verification code
-        var updateCodePromise = updateTokenPromise.then(function() {
-          return promptForCode('Enter the 6 digit code sent to ' + telephone);
-        });
-        // Once we have the token and the code then submit it to the server
-        return Promise.all([updateTokenPromise, updateCodePromise]).then(function(values) {
-          var token = values[0];
-          var code = values[1];
-          if (typeof code !== "undefined") {
-            // Same as when requesting the code, when submitting the code show a modal
-            // hide it when done
-            $ionicLoading.show({template: sendingVerificationCodeTemplate});
-            return updateTelephone(token, code)
-            .then(function() {
-              $ionicLoading.hide();
-              $ionicPopup.alert({
-                title: "Your phone number has been successfully updated",
-                subTitle: "It is now " + telephone
-              });
-            }, function(error) {
-              $ionicLoading.hide();
-              return Promise.reject(error);
-            });
-          }
-        });
-      }
+      var updateToken = await requestUpdateTelephone(telephone);
+      var updateCode = await verifiedPrompt((s)=>VALID_VERIFICATION_CODE_REGEX.test(s), {
+        title: 'verification',
+        subTitle: 'Enter the 6 digit code sent to '+telephone
+      });
+      if (!updateCode) return;
+
+      var newUserData = await updateTelephone(updateToken, updateCode);
+
+      $ionicPopup.alert({
+        title: "Your phone number has been successfully updated",
+        subTitle: "It is now " + telephone
+      });
     })
     // If an error occurs at any point stop and alert the user
     .catch(function(error) {
