@@ -1,8 +1,16 @@
 
-var stripeKey = 'pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm'; // test
-// var stripeKey = 'pk_live_otlt8I0nKU3BNYPf3doC78iW'; // live
+var stripeKey;
 
-export default function initStripe() {
+export default function initStripe(UserService) {
+
+  UserService.beeline({
+    url: '/stripe-key',
+    method: 'GET',
+  })
+  .then((response) => {
+    stripeKey = response.data.publicKey;
+  });
+
   return {
     promptForToken(description, amount) {
         return new Promise((resolve, reject) => {
