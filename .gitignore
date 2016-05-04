@@ -9,3 +9,4 @@ www/lib/beeline/bundle.js.map
 www/css/ionic.app.css
 www/css/ionic.app.min.css
 .io-config.json
+*.DS_Store

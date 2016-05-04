@@ -1,10 +1,17 @@
 
-var stripeKey = 'pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm'; // test
-// var stripeKey = 'pk_live_otlt8I0nKU3BNYPf3doC78iW'; // live
+export default function initStripe(UserService) {
 
-export default function initStripe() {
+  var stripeKeyPromise = UserService.beeline({
+    url: '/stripe-key',
+    method: 'GET',
+  })
+  .then((response) => {
+    return response.data.publicKey;
+  });
+
   return {
     promptForToken(description, amount) {
+      return stripeKeyPromise.then((stripeKey) => {
         return new Promise((resolve, reject) => {
           var handler = StripeCheckout.configure({
             key: stripeKey,
@@ -22,7 +29,8 @@ export default function initStripe() {
             amount: amount
           });
         });
-      },
+      })
+    },
     loaded: StripeCheckout ? true : false,
   };
 }
