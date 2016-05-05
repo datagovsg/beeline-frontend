@@ -2,6 +2,9 @@
   "name": "beeline2",
   "version": "1.1.1",
   "description": "beeline2: An Ionic project",
+  "scripts": {
+    "heroku-postbuild": "gulp",
+  },
   "dependencies": {
     "express": "^4.13.4"
   },
