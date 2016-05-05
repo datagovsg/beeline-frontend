@@ -2,9 +2,6 @@
   "name": "beeline2",
   "version": "1.1.1",
   "description": "beeline2: An Ionic project",
-  "scripts": {
-    "heroku-postbuild": "gulp"
-  },
   "dependencies": {
     "express": "^4.13.4"
   },
@@ -54,6 +51,8 @@
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    "heroku-prebuild": "echo This runs before Heroku installs your dependencies.",
+    "heroku-postbuild": "echo This runs afterwards."
   },
   "author": "",
   "license": "ISC"
