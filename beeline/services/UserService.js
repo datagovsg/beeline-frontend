@@ -3,7 +3,10 @@ import uuid from 'uuid';
 import verifiedPromptTemplate from '../templates/verified-prompt.html';
 const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$/;
 const VALID_VERIFICATION_CODE_REGEX = /^[0-9]{6}$/;
-const VALID_USER_NAME = /.*\S.*/;
+// user name must be at least 3 characters long, space in front
+// or after non-space characters are ignored e.g. "   a c   ",
+// "exe", "alieo" is valid name
+const VALID_USER_NAME = /^\s*\S.+\S\s*$/;
 
 export default function UserService($http, $ionicPopup, $ionicLoading, $rootScope) {
 
@@ -145,37 +148,31 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
+
   // ////////////////////////////////////////////////////////////////////////////
   // UI methods
   // ////////////////////////////////////////////////////////////////////////////
-  var verifiedPrompt = function(verify, options) {
+  var verifiedPrompt = function(options) {
     var promptScope = $rootScope.$new(true);
+    promptScope.form ={
+      verifiedPromptForm : {}
+    };
     promptScope.data = {};
-    promptScope.data.hasEmail = options.hasEmail || false;
-    promptScope.data.inputPlaceHolder = options.inputPlaceHolder || '';
+    promptScope.data.$inputs = options.inputs || [];
     return $ionicPopup.show({
       template: verifiedPromptTemplate,
-      title: options.title,
-      subTitle: options.subTitle,
+      title: options.title || '',
+      subTitle: options.subTitle || '',
       scope: promptScope,
       buttons: [
-        { text: 'Cancel',
-          onTap: function(e){
-            return undefined;
-          }
-        },
+        { text: 'Cancel'},
         {
           text: 'OK',
           type: 'button-positive',
           onTap: function(e) {
-            if (verify(promptScope.data.input)) {
-              if (!promptScope.data.hasEmail)
-              return promptScope.data.input;
-              else {
-                return [promptScope.data.input, promptScope.data.email];
-              }
+            if (promptScope.form.verifiedPromptForm.$valid) {
+              return promptScope.data;
             }
-            promptScope.data.error = true;
             e.preventDefault();
           }
         }
@@ -183,23 +180,41 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
+  var promptVerificationCode = function(telephone) {
+    return verifiedPrompt({
+      title: 'verification',
+      subTitle: 'Enter the 6 digit code sent to '+telephone,
+      inputs: [
+        {
+          type: 'text',
+          name: 'code',
+          pattern: VALID_VERIFICATION_CODE_REGEX
+        }
+      ]
+    });
+  }
+
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptLogIn = function() {
     var telephoneNumber;
-    return verifiedPrompt((s) => VALID_PHONE_REGEX.test(s),{
+    return verifiedPrompt({
       title: 'Login',
-      subTitle: 'Please enter your 8 digits mobile number to receive a verification code'
+      subTitle: 'Please enter your 8 digits mobile number to receive a verification code',
+      inputs: [
+        {
+          type: 'text',
+          name: 'phone',
+          pattern: VALID_PHONE_REGEX
+        }
+      ]
     })
-    .then(async function(telephone) {
-      if (!telephone) return;
-      telephoneNumber = telephone;
+    .then(async function(response) {
+      if (!response) return;
+      telephoneNumber = response.phone;
       await sendTelephoneVerificationCode(telephoneNumber);
-      var verificationCode = await verifiedPrompt((s)=>VALID_VERIFICATION_CODE_REGEX.test(s), {
-        title: 'verification',
-        subTitle: 'Enter the 6 digit code sent to '+telephoneNumber
-      });
+      var verificationCode = await promptVerificationCode(telephoneNumber);
       if (!verificationCode) return;
-      await verifyTelephone(telephoneNumber, verificationCode);
+      await verifyTelephone(telephoneNumber, verificationCode.code);
     })
     // If an error occurs at any point stop and alert the user
     .catch(function(error) {
@@ -222,29 +237,37 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   };
 
   var promptRegister = function(telephone) {
-    return verifiedPrompt((s) => VALID_USER_NAME.test(s),{
+    return verifiedPrompt({
       title: 'Account Details',
       subTitle: 'Welcome! Look like this is your first login.\
       Please complete the account set up.',
-      hasEmail: true,
-      inputPlaceHolder: 'name'
+      inputs: [
+        {
+          type: 'text',
+          name: 'name',
+          pattern: VALID_USER_NAME,
+          inputPlaceHolder: 'name'
+        },
+        {
+          type: 'email',
+          name: 'email',
+          inputPlaceHolder: 'name@example.com'
+        }
+      ]
     })
     .then (function(response){
       if (!response) return;
       return register({
-        name: response[0],
-        email: response[1],
+        name: response.name,
+        email: response.email,
         telephone: telephone
       })
       .then(async function(response){
         if (!response) return;
         await sendTelephoneVerificationCode(telephone);
-        var verificationCode = await verifiedPrompt((s)=>VALID_VERIFICATION_CODE_REGEX.test(s), {
-          title: 'verification',
-          subTitle: 'Enter the 6 digit code sent to '+telephone
-        });
+        var verificationCode = await promptVerificationCode(telephone);
         if (!verificationCode) return;
-        await verifyTelephone(telephone, verificationCode);
+        await verifyTelephone(telephone, verificationCode.code);
       })
       // If an error occurs at any point stop and alert the user
       .catch(function(error) {
@@ -260,21 +283,25 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptUpdatePhone = function() {
     // Start by prompting for the phone number
-    return verifiedPrompt((s) => VALID_PHONE_REGEX.test(s),{
+    return verifiedPrompt({
       title: 'Update Phone Number',
-      subTitle: 'Please enter the new 8 digits mobile number to receive a verification code'
+      subTitle: 'Please enter the new 8 digits mobile number to receive a verification code',
+      inputs: [
+        {
+          type: 'text',
+          name: 'phone',
+          pattern: VALID_PHONE_REGEX
+        }
+      ]
     })
-    .then (async function (telephone){
-      if (!telephone) return;
-
+    .then (async function (response){
+      if (!response) return;
+      var telephone = response.phone;
       var updateToken = await requestUpdateTelephone(telephone);
-      var updateCode = await verifiedPrompt((s)=>VALID_VERIFICATION_CODE_REGEX.test(s), {
-        title: 'verification',
-        subTitle: 'Enter the 6 digit code sent to '+telephone
-      });
+      var updateCode = await promptVerificationCode(telephone);
       if (!updateCode) return;
 
-      await updateTelephone(updateToken, updateCode);
+      await updateTelephone(updateToken, updateCode.code);
 
       $ionicPopup.alert({
         title: "Your phone number has been successfully updated",
