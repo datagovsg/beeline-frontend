@@ -2,8 +2,6 @@ import faqModalTemplate from '../templates/faq-modal.html';
 import privacyPolicyModalTemplate from '../templates/privacy-policy-modal.html';
 import contactUsModalTemplate from '../templates/contact-us-modal.html';
 
-import verifiedPromptTemplate from '../templates/verified-prompt.html';
-
 export default [
   '$scope',
   'UserService',
