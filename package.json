@@ -3,7 +3,10 @@
   "version": "1.1.1",
   "description": "beeline2: An Ionic project",
   "dependencies": {
-    "angular-google-maps": "git+http://daniel.ssq89@www.ida-gds.com/stash/scm/~daniel.ssq89/angular-ui-google-maps.git#232-patched",
+    "express": "^4.13.4"
+  },
+  "devDependencies": {
+    "angular-google-maps": "^2.3.2",
     "angular-simple-logger": "^0.1.7",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.4",
@@ -12,25 +15,23 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-stage-3": "^6.5.0",
     "babel-runtime": "^6.6.1",
+    "bower": "^1.3.3",
+    "eslint": "^2.8.0",
+    "eslint-config-google": "^0.5.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^0.3.13",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^2.2.14",
     "html-loader": "^0.4.3",
     "lodash": "^4.5.1",
     "q": "^1.4.1",
+    "shelljs": "^0.3.0",
     "uuid": "^2.0.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.1.0"
-  },
-  "devDependencies": {
-    "bower": "^1.3.3",
-    "eslint": "^2.8.0",
-    "eslint-config-google": "^0.5.0",
-    "gulp-util": "^2.2.14",
-    "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
