@@ -1,9 +1,11 @@
 .intro-slides {
   background-color: $royal;
   color: $light;
-  ion-slides {
+  .swiper-slide  {
+    @include display-flex;
+    @include flex-direction(column);
+    @include justify-content(center);
     text-align: center;
-    padding-top: 40%;
     h2 {
       color: $energized;
     }
