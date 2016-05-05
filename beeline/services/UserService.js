@@ -168,7 +168,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         { text: 'Cancel'},
         {
           text: 'OK',
-          type: 'button-positive',
           onTap: function(e) {
             if (promptScope.form.verifiedPromptForm.$valid) {
               return promptScope.data;
@@ -180,7 +179,21 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
-  var promptVerificationCode = function(telephone) {
+  var promptTelephoneNumber = function(title, subtitle){
+    return verifiedPrompt({
+      title: title,
+      subTitle: subtitle,
+      inputs: [
+        {
+          type: 'text',
+          name: 'phone',
+          pattern: VALID_PHONE_REGEX
+        }
+      ]
+    })
+  }
+
+  var promptVerificationCode = function(telephone){
     return verifiedPrompt({
       title: 'verification',
       subTitle: 'Enter the 6 digit code sent to '+telephone,
@@ -197,17 +210,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptLogIn = function() {
     var telephoneNumber;
-    return verifiedPrompt({
-      title: 'Login',
-      subTitle: 'Please enter your 8 digits mobile number to receive a verification code',
-      inputs: [
-        {
-          type: 'text',
-          name: 'phone',
-          pattern: VALID_PHONE_REGEX
-        }
-      ]
-    })
+    return promptTelephoneNumber('Login','Please enter your 8 digits mobile number to receive a verification code')
     .then(async function(response) {
       if (!response) return;
       telephoneNumber = response.phone;
@@ -283,26 +286,14 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptUpdatePhone = function() {
     // Start by prompting for the phone number
-    return verifiedPrompt({
-      title: 'Update Phone Number',
-      subTitle: 'Please enter the new 8 digits mobile number to receive a verification code',
-      inputs: [
-        {
-          type: 'text',
-          name: 'phone',
-          pattern: VALID_PHONE_REGEX
-        }
-      ]
-    })
+    return promptTelephoneNumber('Update Phone Number','Please enter the new 8 digits mobile number to receive a verification code')
     .then (async function (response){
       if (!response) return;
       var telephone = response.phone;
       var updateToken = await requestUpdateTelephone(telephone);
       var updateCode = await promptVerificationCode(telephone);
       if (!updateCode) return;
-
       await updateTelephone(updateToken, updateCode.code);
-
       $ionicPopup.alert({
         title: "Your phone number has been successfully updated",
         subTitle: "It is now " + telephone
@@ -316,6 +307,40 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       });
     });
   };
+
+  var promptUpdateUserInfo = function(field) {
+    var filedInput;
+    if (field === 'name'){
+      filedInput = {
+        type: 'text',
+        name:  'name',
+        pattern: VALID_USER_NAME,
+      }
+    }
+    if (field === 'email'){
+      filedInput = {
+        type: 'email',
+        name:  'email',
+      }
+    }
+    return verifiedPrompt({
+      title: 'Update '+field,
+      subTitle: 'Enter your new '+field,
+      inputs: [filedInput]
+    })
+    .then(function(response){
+      if (!response)return;
+      var update={};
+      update[field] = response[field];
+      return updateUserInfo(update);
+    })
+    .catch(function(error){
+      $ionicPopup.alert({
+        title: `Error updating ${field}`,
+        template: ''
+      });
+    })
+  }
 
   // Shows a confirmation dialogue asking if the user is sure they want to log out
   var promptLogOut = function() {
@@ -340,9 +365,9 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   return {
     getUser: function() { return (user); },
     beeline: beelineRequest,
-    updateUserInfo: updateUserInfo,
     promptLogIn: promptLogIn,
     promptUpdatePhone: promptUpdatePhone,
+    promptUpdateUserInfo: promptUpdateUserInfo,
     promptLogOut: promptLogOut,
     verifySession: verifySession
   };

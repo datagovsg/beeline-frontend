@@ -2,16 +2,20 @@ import faqModalTemplate from '../templates/faq-modal.html';
 import privacyPolicyModalTemplate from '../templates/privacy-policy-modal.html';
 import contactUsModalTemplate from '../templates/contact-us-modal.html';
 
+import verifiedPromptTemplate from '../templates/verified-prompt.html';
+
 export default [
   '$scope',
   'UserService',
   '$ionicModal',
   '$ionicPopup',
+  '$timeout',
   function(
     $scope,
     UserService,
     $ionicModal,
-    $ionicPopup
+    $ionicPopup,
+    $timeout
   ) {
     $scope.data = {};
 
@@ -29,25 +33,9 @@ export default [
     // Generic event handler to allow user to update their
     // name, email
     // FIXME: Get Yixin to review the user info update flow.
-    $scope.updateUserInfo = function(field) {
-      $ionicPopup.prompt({
-        title: `Update ${field}`,
-        template: `Enter your new ${field}`,
-      })
-      .then((newVal) => {
-        if (newVal) {
-          var update = {};
-          update[field] = newVal;
-          return UserService.updateUserInfo(update)
-          .catch(() => {
-            $ionicPopup.alert({
-              title: `Error updating ${field}`,
-              template: ''
-            });
-          });
-        }
-      });
-    };
+    $scope.updateUserInfo = function(field){
+      return UserService.promptUpdateUserInfo(field);
+    }
 
     // Update telephone is distinct from the update user due to verification
     $scope.updateTelephone = UserService.promptUpdatePhone;
