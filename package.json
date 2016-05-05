@@ -4,9 +4,7 @@
   "description": "beeline2: An Ionic project",
   "dependencies": {
     "express": "^4.13.4",
-    "gulp": "^3.9.1"
-  },
-  "devDependencies": {
+    "gulp": "^3.9.1",
     "angular-google-maps": "^2.3.2",
     "angular-simple-logger": "^0.1.7",
     "babel-core": "^6.5.2",
@@ -32,6 +30,8 @@
     "uuid": "^2.0.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.1.0"
+  },
+  "devDependencies": {
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
