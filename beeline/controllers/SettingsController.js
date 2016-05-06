@@ -29,25 +29,9 @@ export default [
     // Generic event handler to allow user to update their
     // name, email
     // FIXME: Get Yixin to review the user info update flow.
-    $scope.updateUserInfo = function(field) {
-      $ionicPopup.prompt({
-        title: `Update ${field}`,
-        template: `Enter your new ${field}`,
-      })
-      .then((newVal) => {
-        if (newVal) {
-          var update = {};
-          update[field] = newVal;
-          return UserService.updateUserInfo(update)
-          .catch(() => {
-            $ionicPopup.alert({
-              title: `Error updating ${field}`,
-              template: ''
-            });
-          });
-        }
-      });
-    };
+    $scope.updateUserInfo = function(field){
+      return UserService.promptUpdateUserInfo(field);
+    }
 
     // Update telephone is distinct from the update user due to verification
     $scope.updateTelephone = UserService.promptUpdatePhone;
