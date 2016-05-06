@@ -7,13 +7,11 @@ export default [
   'UserService',
   '$ionicModal',
   '$ionicPopup',
-  '$timeout',
   function(
     $scope,
     UserService,
     $ionicModal,
-    $ionicPopup,
-    $timeout
+    $ionicPopup
   ) {
     $scope.data = {};
 

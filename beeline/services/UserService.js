@@ -4,6 +4,7 @@ import _ from 'lodash';
 import verifiedPromptTemplate from '../templates/verified-prompt.html';
 import requestingVerificationCodeTemplate from '../templates/requesting-verification-code.html';
 import sendingVerificationCodeTemplate from '../templates/sending-verification-code.html';
+import registeringWithServerTemplate from '../templates/registering-with-server.html';
 const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$/;
 const VALID_VERIFICATION_CODE_REGEX = /^[0-9]{6}$/;
 // user name must be at least 3 characters long, space in front
@@ -160,15 +161,12 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     promptScope.form ={
       verifiedPromptForm : {}
     };
-    promptScope.data = _.defaultsDeep(options,{
-      inputs : [],
-      title : '',
-      subTitle: '',
-    });
-    return $ionicPopup.show({
+    promptScope.data = {};
+    promptScope.data.inputs = options.inputs || [];
+    _.defaultsDeep(options,{
       template: verifiedPromptTemplate,
-      title: promptScope.data.title,
-      subTitle: promptScope.data.subTitle,
+      title: '',
+      subTitle: '',
       scope: promptScope,
       buttons: [
         { text: 'Cancel'},
@@ -183,6 +181,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         }
       ]
     });
+    return $ionicPopup.show(options);
   };
 
   var promptTelephoneNumber = function(title, subtitle){
@@ -216,12 +215,11 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptLogIn = async function() {
     try {
-      var telephoneNumber;
       var telephoneResponse = await promptTelephoneNumber('Login',
         'Please enter your 8 digit mobile number to receive a verification code')
       if (!telephoneResponse) return;
       $ionicLoading.show({template: requestingVerificationCodeTemplate});
-      telephoneNumber = telephoneResponse.phone;
+      var telephoneNumber = telephoneResponse.phone;
       await sendTelephoneVerificationCode(telephoneNumber);
       $ionicLoading.hide();
       var verificationCode = await promptVerificationCode(telephoneNumber);
@@ -251,8 +249,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     })
     .then(function(response) {
       return true;
-    }, function(error) {
-      return false;
     });
   };
 
@@ -277,11 +273,13 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         ]
       });
       if (!accountResponse) return;
+      $ionicLoading.show({template: registeringWithServerTemplate});
       var registerResponse = await register({
         name: accountResponse.name,
         email: accountResponse.email,
         telephone: telephone
       });
+      $ionicLoading.hide();
       if (!registerResponse) return;
       $ionicLoading.show({template: requestingVerificationCodeTemplate});
       await sendTelephoneVerificationCode(telephone);
