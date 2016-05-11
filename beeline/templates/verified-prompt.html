@@ -1,0 +1,14 @@
+<form name="form.verifiedPromptForm">
+  <input  ng-repeat-start="input in data.inputs"
+          placeholder={{input.inputPlaceHolder}}
+          ng-required="true"
+          type="{{input.type}}"
+          ng-pattern="input.pattern"
+          ng-model="data[input.name]"
+          name="{{input.name}}" />
+  <div  ng-repeat-end
+        ng-show="form.verifiedPromptForm[input.name].$invalid
+          && form.verifiedPromptForm[input.name].$dirty">
+          Your {{input.name}} is invalid
+  </div>
+</form>

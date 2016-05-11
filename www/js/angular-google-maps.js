@@ -1,4 +1,4 @@
-/*! angular-google-maps 2.3.2 2016-04-06
+/*! angular-google-maps 2.3.2 2016-02-11
  *  AngularJS directives for Google Maps
  *  git: https://github.com/angular-ui/angular-google-maps.git
  */
@@ -6640,8 +6640,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
         eventOpts: '=',
         styles: '=',
         bounds: '=',
-        update: '=',
-        ready: '@'
+        update: '='
       };
 
       Map.prototype.link = function(scope, element, attrs) {
@@ -6723,11 +6722,6 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
               scope.deferred.resolve(_gMap);
               return resolveSpawned();
             }));
-            if (angular.isDefined(scope.ready)) {
-              scope.$applyAsync(function() {
-                return scope.$parent.$eval(scope.ready);
-              });
-            }
             disabledEvents = attrs.events && (((ref = scope.events) != null ? ref.blacklist : void 0) != null) ? scope.events.blacklist : [];
             if (_.isString(disabledEvents)) {
               disabledEvents = [disabledEvents];

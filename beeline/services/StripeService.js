@@ -1,17 +1,18 @@
 
 export default function initStripe(UserService) {
-  var stripePromise = UserService.beeline({
+  var stripeKeyPromise = UserService.beeline({
+    url: '/stripe-key',
     method: 'GET',
-    url: '/stripe-key'
   })
   .then((response) => {
     Stripe.setPublishableKey(response.data.publicKey);
-    return response.data.publicKey
-  })
+    return response.data.publicKey;
+  });
 
   return {
     promptForToken(description, amount) {
-        return stripePromise.then((stripeKey) => {
+      return stripeKeyPromise.then((stripeKey) => {
+        return new Promise((resolve, reject) => {
           var handler = StripeCheckout.configure({
             key: stripeKey,
             locale: 'auto',
@@ -29,7 +30,8 @@ export default function initStripe(UserService) {
             email: UserService.getUser().email,
           });
         });
-      },
+      })
+    },
     loaded: StripeCheckout ? true : false,
   };
 }

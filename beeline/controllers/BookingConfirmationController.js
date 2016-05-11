@@ -4,7 +4,10 @@ export default [
   '$state',
   '$http',
   'BookingService',
-  function($scope, $state, $http, BookingService) {
+  '$ionicHistory',
+  function($scope, $state, $http, BookingService, $ionicHistory) {
+    $scope.$on('$ionicView.afterEnter', () => {
+      $ionicHistory.clearHistory()
+    });
   },
 ];
-
