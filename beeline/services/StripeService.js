@@ -1,11 +1,17 @@
 
-var stripeKey = 'pk_test_vYuCaJbm9vZr0NCEMpzJ3KFm'; // test
-// var stripeKey = 'pk_live_otlt8I0nKU3BNYPf3doC78iW'; // live
+export default function initStripe(UserService) {
+  var stripePromise = UserService.beeline({
+    method: 'GET',
+    url: '/stripe-key'
+  })
+  .then((response) => {
+    Stripe.setPublishableKey(response.data.publicKey);
+    return response.data.publicKey
+  })
 
-export default function initStripe() {
   return {
     promptForToken(description, amount) {
-        return new Promise((resolve, reject) => {
+        return stripePromise.then((stripeKey) => {
           var handler = StripeCheckout.configure({
             key: stripeKey,
             locale: 'auto',
@@ -19,7 +25,8 @@ export default function initStripe() {
           handler.open({
             name: 'Beeline',
             description: description,
-            amount: amount
+            amount: amount,
+            email: UserService.getUser().email,
           });
         });
       },
