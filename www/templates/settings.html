@@ -25,7 +25,8 @@
       <div ng-show="user" class="item" on-tap="updateTelephone()">
         Phone Number <span class="item-note">{{ user.telephone.slice(3)}}</span>
       </div>
-      <a ng-show="user" class="item item-icon-right">
+      <a ng-show="user" class="item item-icon-right"
+          ui-sref="tabs.booking-history">
         Booking History <i class="icon ion-ios-arrow-right"></i>
       </a>
 
@@ -33,8 +34,7 @@
       <ion-item ui-sref='intro'>Quick Tour</ion-item>
       <ion-item on-tap="faqModal.show()">FAQ</ion-item>
       <ion-item on-tap="privacyPolicyModal.show()">Privacy Policy</ion-item>
-      <ion-item on-tap="contactUsModal.show()">Contact Us
-      </ion-item>
+      <ion-item on-tap="contactUsModal.show()">Contact Us</ion-item>
 
     </div>
   </ion-content>

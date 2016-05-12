@@ -23,6 +23,7 @@ import BookingStopsController from './controllers/BookingStopsController.js';
 import BookingDatesController from './controllers/BookingDatesController.js';
 import BookingConfirmationController from './controllers/BookingConfirmationController.js';
 import BookingSummaryController from './controllers/BookingSummaryController.js';
+import BookingHistoryController from './controllers/BookingHistoryController.js';
 import SuggestController from './controllers/SuggestController.js';
 import TicketsController from './controllers/TicketsController.js';
 import TicketDetailController from './controllers/TicketDetailController.js';
@@ -94,6 +95,7 @@ var app = angular.module('beeline', [
 .controller('SettingsController', SettingsController)
 .controller('TicketsController', TicketsController)
 .controller('TicketDetailController', TicketDetailController)
+.controller('BookingHistoryController', BookingHistoryController)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)

@@ -1,0 +1,48 @@
+
+<ion-view title="Booking History">
+  <ion-content>
+
+    <ion-list>
+
+      <ion-item ng-repeat="transaction in transactions track by transaction.id">
+        <h3 ng-if="!transaction.committed">FAILED</h3>
+        <h3 ng-if="transaction.$items.ticketSale">Tickets Purchased</h3>
+        {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
+          <dl ng-repeat="ti in transaction.$items.ticketSale track by ti.id"
+          >
+            <dt>Route</dt>
+            <dd>
+              {{routesById[ti.ticketSale.boardStop.trip.routeId].label}}:
+              {{routesById[ti.ticketSale.boardStop.trip.routeId].from}}
+              &mdash;
+              {{routesById[ti.ticketSale.boardStop.trip.routeId].to}}
+            </dd>
+
+            <dt>Pickup / Dropoff</dt>
+            <dd>
+              {{ti.ticketSale.boardStop.stop.description}} /
+              {{ti.ticketSale.alightStop.stop.description}}
+            </dd>
+          </dl>
+
+        <h3 ng-if="transaction.$items.payment">Payment</h3>
+        <ul ng-if="transaction.$items.payment">
+          <li ng-repeat="payment in transaction.$items.payment track by payment.id"
+          >
+            ${{payment.debit | number:'2'}}
+          </li>
+        </ul>
+
+      </ion-item>
+
+    </ion-list>
+
+    <ion-infinite-scroll
+      on-infinite="loadMore()"
+      ng-if="hasMoreData"
+    >
+
+    </ion-infinite-scroll>
+
+  </ion-content>
+</ion-view>
