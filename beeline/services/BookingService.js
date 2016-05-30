@@ -21,7 +21,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
                 .tripStops
                 .filter(ts => booking.alightStopId == ts.stop.id)
                 [0].id,
-        qty: booking.qty,
+        // qty: booking.qty,
       });
     }
     return trips;
