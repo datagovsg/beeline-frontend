@@ -1,11 +1,11 @@
 
 export default function initStripe(UserService) {
-
   var stripeKeyPromise = UserService.beeline({
     url: '/stripe-key',
     method: 'GET',
   })
   .then((response) => {
+    Stripe.setPublishableKey(response.data.publicKey);
     return response.data.publicKey;
   });
 
@@ -26,7 +26,8 @@ export default function initStripe(UserService) {
           handler.open({
             name: 'Beeline',
             description: description,
-            amount: amount
+            amount: amount,
+            email: UserService.getUser().email,
           });
         });
       })
