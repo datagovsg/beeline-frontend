@@ -3,8 +3,6 @@
   "version": "1.1.1",
   "description": "beeline2: An Ionic project",
   "dependencies": {
-    "express": "^4.13.4",
-    "gulp": "^3.9.1",
     "angular-google-maps": "^2.3.2",
     "angular-simple-logger": "^0.1.7",
     "babel-core": "^6.5.2",
@@ -17,6 +15,8 @@
     "bower": "^1.3.3",
     "eslint": "^2.8.0",
     "eslint-config-google": "^0.5.0",
+    "express": "^4.13.4",
+    "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^0.3.13",
     "gulp-rename": "^1.2.0",
@@ -24,6 +24,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^2.2.14",
     "html-loader": "^0.4.3",
+    "json-loader": "^0.5.4",
     "lodash": "^4.5.1",
     "q": "^1.4.1",
     "shelljs": "^0.3.0",
@@ -31,8 +32,7 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.1.0"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",

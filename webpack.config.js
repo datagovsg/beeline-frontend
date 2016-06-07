@@ -1,4 +1,10 @@
 var path = require('path');
+var fs = require('fs');
+
+var env = {
+    BACKEND_URL: process.env.BACKEND_URL || 'https://api.beeline.sg',
+}
+fs.writeFileSync(`${__dirname}/beeline/env.json`, JSON.stringify(env))
 
 module.exports = {
   devtool: 'source-map',
@@ -18,6 +24,10 @@ module.exports = {
         loader: 'babel',
         exclude: /node_modules/,
         include: path.resolve('.'),
+      },
+      {
+        test: /\.json$/,
+        loader: 'json',
       },
     ],
   },
