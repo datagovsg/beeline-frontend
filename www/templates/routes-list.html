@@ -31,7 +31,7 @@
         Active Routes
       </div>
       <ion-item
-        ng-repeat="route in data.filteredActiveRoutes"
+        ng-repeat="route in data.filteredActiveRoutes | orderBy:'label'"
         ui-sref="tabs.bookingPickup({ routeId: route.id})"
         class="item-icon-right"
         >

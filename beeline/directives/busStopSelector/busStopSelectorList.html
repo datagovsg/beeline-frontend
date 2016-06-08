@@ -45,11 +45,10 @@
     <ion-list class="stops-list">
       <ion-item ng-repeat="stop in busStops">
         <ion-radio
-                  ng-model="model"
-                  ng-value="stop.id"
-                  icon="ion-ios-circle-outline"
-                  ng-click="selectStop($event, stop)"
-                  >
+              ng-model="model"
+              ng-value="stop.id"
+              ng-click="selectStop($event, stop)"
+              >
           <div class="time">{{stop.time | formatTime}}</div>
           <div class="details">
             <div>{{stop.description}}</div>

@@ -79,7 +79,7 @@ var app = angular.module('beeline', [
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
   /* non-JS scrolling does not work on some devices */
-  // $ionicConfigProvider.scrolling.jsScrolling(true);
+  $ionicConfigProvider.scrolling.jsScrolling(false);
 })
 .config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({

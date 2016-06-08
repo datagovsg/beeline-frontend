@@ -1,125 +1,141 @@
 <ion-view id="pg_summary" view-title="Booking Summary">
   <ion-content>
     <booking-breadcrumbs step="2"></booking-breadcrumbs>
-	<div class="revtxt msg">
-		Please review the route and bus stop selections you have made for this booking.<br />
-		To change any of the selections, please click its corresponding <b>Edit</b> button.
-	</div>
-	<section class="item">
-    <h3>
-      Selected Route
-    </h3>
-		<div class="route-info">
-      <!-- FIXME we need to show the SELECTED STOPS not the route
-        itself.
+  	<div class="item item-text-wrap" ng-if="false">
+  		Please review the route and bus stop selections you have made for this booking.<br />
+  		To change any of the selections, please click its corresponding <b>Edit</b> button.
+  	</div>
 
-        Unfortunatley current version of angular (1.4) bundled with Ionic
-        does not support multi-slot translcusion so this is a headache.
+  	<section class="card">
+      <h3 class="item item-divider">
+        Selected Route
+      </h3>
+  		<div class="item route-info">
+        <!-- FIXME we need to show the SELECTED STOPS not the route
+          itself.
 
-        <route-item-x
-        route="book.route"
-        board-stop="book.boardStopId"
-        alight-stop="book.alightStopId">
-        <start-time>
-          wTF
-          {{book.boardStop}}
-          {{book.boardStop.time | formatTime}}
-        </start-time>
-        <end-time>
-          wTF2
-          {{book.boardStop}}
-          {{book.boardStop.time | formatTime}}
-        </end-time>
-        </route-item-x>
-      -->
-        <div class="bus-number">{{book.route.label}}</div>
+          Unfortunatley current version of angular (1.4) bundled with Ionic
+          does not support multi-slot translcusion so this is a headache.
 
-        <div class="start-end">
-          <div class="start">
-            <stop-time>
-              {{book.boardStop.time | formatTime:true}}
-            </stop-time>
+          <route-item-x
+          route="book.route"
+          board-stop="book.boardStopId"
+          alight-stop="book.alightStopId">
+          <start-time>
+            wTF
+            {{book.boardStop}}
+            {{book.boardStop.time | formatTime}}
+          </start-time>
+          <end-time>
+            wTF2
+            {{book.boardStop}}
+            {{book.boardStop.time | formatTime}}
+          </end-time>
+          </route-item-x>
+        -->
+          <div class="bus-number">{{book.route.label}}</div>
 
-            <stop-img>
-              <img src="img/RoutePairSmallStart.svg">
-            </stop-img>
+          <div class="start-end">
+            <div class="start">
+              <stop-time>
+                {{book.boardStop.time | formatTime:true}}
+              </stop-time>
 
-            <stop-stop>
-              <h4>Pick up at</h4>
-              {{book.boardStop.stop.description}}<br/>
-              {{book.boardStop.stop.label}}<br/>
-              {{book.boardStop.stop.road}}<br/>
-              <br/>
-            </stop-stop>
-         </div>
-         <div class="end">
-           <stop-time>
-             {{book.alightStop.time | formatTime:true}}
-           </stop-time>
+              <stop-img>
+                <img src="img/RoutePairSmallStart.svg">
+              </stop-img>
 
-           <stop-img>
-             <img src="img/RoutePairSmallEnd.svg">
-           </stop-img>
+              <stop-stop>
+                <h4>Pick up at</h4>
+                {{book.boardStop.stop.description}}<br/>
+                {{book.boardStop.stop.label}}<br/>
+                {{book.boardStop.stop.road}}<br/>
+                <br/>
+              </stop-stop>
+           </div>
+           <div class="end">
+             <stop-time>
+               {{book.alightStop.time | formatTime:true}}
+             </stop-time>
 
-           <stop-stop>
-             <h4>Pick up at</h4>
-             {{book.alightStop.stop.description}}<br/>
-             {{book.alightStop.stop.label}}<br/>
-             {{book.alightStop.stop.road}}<br/>
-             <br/>
-            </stop-stop>
-         </div>
-      </div> <!-- start-end -->
-		</div>
-	</section>
-	<section class="item dates">
-    <h3>
-      Selected Dates
-    </h3>
-  	<price-calculator
-      booking="book"
-      read-only="true"></price-calculator>
-		<!-- <ul>
-			<li ng-repeat="dt in book.selectedDates">
-				{{dt | formatDateMMMdd}}
-			</li>
-		</ul> -->
-	</section>
-	<section class="item promo">
-    <h3>
-      Promo Code
-    </h3>
-		<ol>
-			<li ng-repeat="pc in book.promoCodes">
-			 {{pc}}
-			</li>
-		</ol>
-		<form ng-submit="addPromoCode()">
-			<input id="promocode" type="text" placeholder="Enter your code here" />
-			<button type="submit">Add Code</button>
-		</form>
-	</section>
+             <stop-img>
+               <img src="img/RoutePairSmallEnd.svg">
+             </stop-img>
 
-  <section class="item item-text-wrap booking-tnc">
-		<h3>
-			Terms and Conditions of Booking
-		</h3>
-    <company-tnc company-id="book.route.transportCompanyId"></company-tnc>
-    <ion-checkbox class="confirm" ng-model="book.termsChecked">
-      Yes, I have read and agree to the Terms and Conditions of booking.
-    </ion-checkbox>
-  </section>
+             <stop-stop>
+               <h4>Pick up at</h4>
+               {{book.alightStop.stop.description}}<br/>
+               {{book.alightStop.stop.label}}<br/>
+               {{book.alightStop.stop.road}}<br/>
+               <br/>
+              </stop-stop>
+           </div>
+        </div> <!-- start-end -->
+  		</div>
+  	</section>
 
 
-	<div class="item">
-		Please ensure that your credit card is ready for the next step in the booking process.
+  	<section class="card">
+      <h3 class="item item-divider">
+        Selected Dates
+      </h3>
+    	<price-calculator
+        class="item"
+        booking="book"
+        read-only="true"></price-calculator>
+  		<!-- <ul>
+  			<li ng-repeat="dt in book.selectedDates">
+  				{{dt | formatDateMMMdd}}
+  			</li>
+  		</ul> -->
+  	</section>
 
-		<button class="primary-button-centered primary-button"
-        ng-click="loginBeforePay()"
-        ng-disabled="!book.termsChecked || waitingForPaymentResult">
-			CONFIRM AND PAY
-		</button>
-	</div>
+  	<section class="card" ng-if="false">
+      <h3 class="item item-divider">
+        Promo Code
+      </h3>
+  		<ol>
+  			<li ng-repeat="pc in book.promoCodes track by $index" class="item">
+  			 {{pc}}
+  			</li>
+  		</ol>
+  		<form ng-submit="addPromoCode()" class="item" name="promoCode">
+        <label class="item item-input">
+          Promo Code
+    			<input
+                type="text"
+                placeholder="Enter your code here"
+                ng-required="true"
+                name="promocode"
+                ng-model="book.currentPromoCode"
+                />
+        </label>
+  			<button type="submit"
+              class="button button-block button-royal"
+              ng-disabled="promoCode.$invalid"
+              >Add Code</button>
+  		</form>
+  	</section>
+
+    <section class="card">
+  		<h3 class="item item-divider">
+  			Terms and Conditions of Booking
+  		</h3>
+      <company-tnc company-id="book.route.transportCompanyId"></company-tnc>
+      <ion-checkbox class="item" ng-model="book.termsChecked">
+        Yes, I have read and agree to the Terms and Conditions of booking.
+      </ion-checkbox>
+    </section>
+
+  	<section class="item item-text-wrap">
+  		Please ensure that your credit card is ready for the next step in the booking process.
+
+  		<button class="button button-block button-royal"
+          ng-click="loginBeforePay()"
+          ng-disabled="!book.termsChecked || waitingForPaymentResult">
+  			CONFIRM AND PAY
+  		</button>
+  	</section>
 
   </ion-content>
 </ion-view>

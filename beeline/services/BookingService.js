@@ -9,7 +9,6 @@ export default function(UserService, CompanyService, RoutesService, $http) {
     // create a list of trips
     var trips = [];
 
-    console.log(booking);
     for (let dt of booking.selectedDates) {
       trips.push({
         tripId: booking.route.tripsByDate[dt].id,
