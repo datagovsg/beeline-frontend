@@ -59,9 +59,11 @@
     </ion-list>
   </ion-content>
   <ion-footer-bar>
-    <button class="big-yellow"
-            ng-disabled="!model"
-            ng-click="selectStop($event, selectedStop)"
-    >{{title}}</button>
+    <div class="buttons">
+      <button class="button button-block button-positive"
+              ng-disabled="!model"
+              ng-click="selectStop($event, selectedStop)"
+      >{{title}}</button>
+    </div>
   </ion-footer-bar>
 </ion-modal-view>

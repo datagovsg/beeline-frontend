@@ -1,5 +1,7 @@
 import busStopSelectorTemplate from './busStopSelector.html'
 import busStopSelectorListTemplate from './busStopSelectorList.html'
+import {formatTime} from '../../shared/format'
+
 export default [
     '$state',
     '$ionicModal',
@@ -32,6 +34,8 @@ export default [
       button: '@',
       markerOptions: '=',
       pinOptions: '=',
+      ngRequired: '=',
+      name: '=',
     },
     link: function (scope, elem, attrs) {
       scope.map = MapOptions.defaultMapOptions();
@@ -54,6 +58,8 @@ export default [
           scope.selectionModal.remove();
         }
       });
+
+      scope.formatTime = formatTime;
 
       scope.fitMap = async () =>  {
         await uiGmapGoogleMapApi;

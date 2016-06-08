@@ -1,15 +1,27 @@
-<div
+<span
     class="stop-description"
-    ng-click="showList()"
     editable="false"
     >
-    <span ng-if="!selectedStop"
+    <label class="input-label">
+      <span class="stop-icon"></span>
+      {{placeholder}}
+    </label>
+    <!-- ng-click="showList()" -->
+
+    <select ng-options="stop.id as (formatTime(stop.time) + ' - ' + stop.description + ' ' + stop.road) for stop in busStops"
+      ng-model="model"
+      ng-required="ngRequired"
+      name="name"
+      >
+    </select>
+    <!-- <span ng-if="!selectedStop"
         class="placeholder">
       {{placeholder}}
     </span>
     <span ng-if="selectedStop">
       {{displayFn(selectedStop)}} &mdash;
       {{displayFn2(selectedStop)}}
-    </span>
-    <i class="icon ion-ios-arrow-down"></i>
-</div>
+    </span> -->
+    <!-- <i class="icon stop-icon"></i> -->
+    <!-- <i class="icon ion-ios-arrow-down"></i> -->
+</span>

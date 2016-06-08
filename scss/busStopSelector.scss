@@ -1,30 +1,22 @@
 
 bus-stop-selector {
-  display: block;
+  display: inline;
   background-color: $base-background-color;
 
   .stop-description {
-    padding: $bus-stop-selector-padding-top 1em
-      $bus-stop-selector-padding-bottom 38px;
     /* 38px is related to the width of the icon representing stops */
-    border-bottom: 1px solid $item-default-border;
-    background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
-    background-size: auto 20px;
 
-    .placeholder {
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    .stop-icon {
+      background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
+      background-size: auto 20px;
+      width: 24px;
+      height: 24px;
       display: inline-block;
-      overflow: hidden;
+      vertical-align: bottom;
     }
 
     .placeholder {
       color: #828282;
-    }
-
-    .icon {
-      float: right;
-      font-size: 120%;
     }
   }
 }

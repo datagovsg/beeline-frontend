@@ -14,16 +14,18 @@
         show-legend="true"
     ></date-picker>
 
+  <h4 class="item item-divider">Price</h4>
+
 	<div class="bookdetails item">
-    <h4>Selected Dates</h4>
 		<price-calculator
       booking="book"
       read-only="true"
       ></price-calculator>
 	</div>
+
   <div class="item">
     <button
-          class="primary-button-centered primary-button"
+          class="button primary-button"
           ng-disabled="book.selectedDates.length == 0"
           ui-sref="tabs.booking-summary({
             routeId: book.routeId,

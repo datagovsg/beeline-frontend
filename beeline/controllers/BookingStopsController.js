@@ -260,30 +260,20 @@ export default [
       $scope.applyTapAlight = (x) => $scope.$apply(() => $scope.tapAlight(x));
       $scope.applyTapBoard = (x) => $scope.$apply(() => $scope.tapBoard(x));
 
-    // Check whether:
-    // [1] Start stop is specified
-    // [2] End stop is specified
-    // [3] Checkbox is checked
+      // Extract the coordinates of the selected stops
       $scope.$watchGroup([
         'book.boardStop',
         'book.alightStop',
-        'book.termsChecked',
-      ], function() {
-        if ($scope.book.termsChecked == true) {
-        $scope.book.errmsg = '';
-        var curr = $scope.book;
+      ], function () {
+        $scope.book.boardStopStop = $scope.book.boardStop ?
+          $scope.book.boardStops.find(x => x.id == $scope.book.boardStop)
+          : null;
+        $scope.book.alightStopStop = $scope.book.alightStop ?
+          $scope.book.alightStops.find(x => x.id == $scope.book.alightStop)
+          : null;
+        console.log($scope.book)
+      })
 
-        if (typeof (curr.boardStop) == 'undefined')
-            $scope.book.errmsg = 'Please specify a Boarding Stop.';
-        else if (typeof (curr.alightStop) == 'undefined')
-            $scope.book.errmsg = 'Please specify a Alighting Stop.';
-          else
-          {
-            $scope.book.errmsg = '';
-            $scope.book.allDataNotFilled = false;
-          }
-      }
-      });
     });
   }
 ];

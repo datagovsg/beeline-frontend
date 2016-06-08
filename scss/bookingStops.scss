@@ -8,9 +8,21 @@
   map: whatever's remaining
   button-container: 60px
   */
-  .scroll, .angular-google-map-container {
+  .scroll {
     width: 100%;
     height: 100%;
+  }
+
+  .flex-col {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .flex-shrink {
+    flex: 0 0 auto;
+  }
+  .flex-grow {
+    flex: 1 1 auto;
   }
 
   .route-info {
@@ -41,21 +53,21 @@
     }
   }
 
-  ui-gmap-google-map {
-    top: $route-info-height + $breadcrumbs-height;
-    bottom: $button-bar-height;
+  .map-window {
+    position: relative;
+  }
+
+  .angular-google-map, .angular-google-map-container {
     width: 100%;
-    left: 0;
+    height: 100%;
+    display: block;
     position: absolute;
+    left: 0;
+    top: 0;
 
-    .angular-google-map {
-      width: 100%;
-      height: 100%;
-
-      /* Hides the terms of use */
-      .gmnoprint, .gm-style-cc {
-        display: none;
-      }
+    /* Hides the terms of use */
+    .gmnoprint, .gm-style-cc {
+      display: none;
     }
   }
 
@@ -68,34 +80,18 @@
   }
 
   ion-list.stop-inputs {
-    bottom: $button-bar-height + $list-offset;
+    bottom: 0px;
     position: absolute;
     width: 90%;
     left: 5%;
-    box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
 
-    .item {
-      padding: 5px 5px;
-    }
-
-    /* FIXME this is just arbitrarily positioned */
-    .line {
-      width: 2px;
-      height: 30px;
-      background: url('../img/RoutePairSmallLine.svg') center center;
-      top: 27px;
-      left: 18px;
-      position: absolute;
-      z-index: 5;
-    }
-
-    bus-stop-selector:nth-of-type(1) .stop-description {
-      background: url('../img/RoutePairBigStart.svg') left 7px center no-repeat transparent;
+    bus-stop-selector:nth-of-type(1) .stop-icon {
+      background: url('../img/RoutePairBigStart.svg') 0 0 no-repeat transparent;
       background-size: 24px 24px;
     }
 
-    bus-stop-selector:nth-of-type(2) .stop-description {
-      background: url('../img/RoutePairBigEnd.svg') left 7px center no-repeat transparent;
+    bus-stop-selector:nth-of-type(2) .stop-icon {
+      background: url('../img/RoutePairBigEnd.svg') 0 0 no-repeat transparent;
       background-size: 24px 24px;
     }
   }
