@@ -96,9 +96,9 @@
     }
   }
 
-  .locate-me {
-    top: 16px;
-    right: 16px;
+  .locate-button {
+    top: $content-padding;
+    right: $content-padding;
     position: absolute;
   }
 }
