@@ -1,40 +1,84 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="290px" height="69px" viewBox="0 0 290 69" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
-    <title>MapPinStart</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <path d="M146.125,45 L140.5,60 L134.875,45 L130.957194,45 L22.4981312,45 C10.0727564,45 0,34.9291391 0,22.5 C0,10.0735931 10.0685892,0 22.4991984,0 L257.500802,0 C269.926766,0 280,10.0708609 280,22.5 C280,34.9264069 269.928747,45 257.500384,45 L146.125,45 Z" id="path-1"></path>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
-            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
-            <feOffset dx="0" dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
-            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
-        </filter>
-    </defs>
-    <g id="Main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="1MainTabMap" transform="translate(-43.000000, -372.000000)">
-            <g id="Map" transform="translate(48.000000, 375.000000)">
-                <g id="MapPinStart">
-                    <g id="Triangle-1">
-                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-                        <use stroke="#493762" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill-opacity="0.8" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
-                    </g>
-                    <g id="Group-10" transform="translate(13.000000, 11.000000)">
-                        <g id="Next" transform="translate(245.000000, 4.000000)" stroke-linecap="round" stroke-width="1.4" stroke="#493762" stroke-linejoin="round">
-                            <polyline transform="translate(4.071429, 7.448864) rotate(-180.000000) translate(-4.071429, -7.448864) " points="8.14285714 -7.99360578e-14 -3.19744231e-14 7.44886364 8.14285714 14.8977273"></polyline>
-                        </g>
-                        <g id="Location" stroke="#493762" stroke-linejoin="round">
-                            <path d="M22,11 C22,17.0748696 17.0758261,22 11,22 C4.92417391,22 0,17.0748696 0,11 C0,4.92417391 4.92417391,0 11,0 C17.0758261,0 22,4.92417391 22,11 L22,11 Z" id="Stroke-365"></path>
-                            <path d="M11,14.3478261 C9.15104348,14.3478261 7.65217391,12.8489565 7.65217391,11 C7.65217391,9.15104348 9.15104348,7.65217391 11,7.65217391 C12.849913,7.65217391 14.3478261,9.15104348 14.3478261,11 C14.3478261,12.8489565 12.849913,14.3478261 11,14.3478261 Z" id="Stroke-972" stroke-linecap="round" fill="#00C4A5"></path>
-                        </g>
-                        <text id="Button" font-family="Lato-Regular, Lato" font-size="17" font-weight="normal" line-spacing="24" fill="#493762">
-                            <tspan x="37.9105" y="18">SET PICK-UP LOCATION</tspan>
-                        </text>
-                    </g>
-                </g>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 281 61">
+  <defs>
+    <style>
+      .cls-1 {
+        filter: url(#filter-2);
+      }
+
+      .cls-2 {
+        fill: #fff;
+        fill-opacity: 0.8;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5 {
+        stroke: #493762;
+        stroke-linejoin: round;
+      }
+
+      .cls-2, .cls-3, .cls-5 {
+        stroke-linecap: round;
+      }
+
+      .cls-3, .cls-4 {
+        fill: none;
+      }
+
+      .cls-3 {
+        stroke-width: 1.4px;
+      }
+
+      .cls-5 {
+        fill: #00c4a5;
+      }
+
+      .cls-6, .cls-7 {
+        isolation: isolate;
+      }
+
+      .cls-7 {
+        font-size: 16px;
+        fill: #493762;
+        font-family: Lato, sans-serif;
+      }
+
+      .cls-8 {
+        letter-spacing: -1px;
+
+      }
+    </style>
+    <filter id="filter-2" x="-54.5" y="-52.5" width="200" height="200" name="filter-2">
+      <feMorphology result="shadowSpreadOuter1" operator="dilate" radius="0.5" in="SourceAlpha"/>
+      <feOffset result="shadowOffsetOuter1" dy="2" in="shadowSpreadOuter1"/>
+      <feGaussianBlur result="shadowBlurOuter1" stdDeviation="2" in="shadowOffsetOuter1"/>
+      <feComposite result="shadowBlurOuter1" operator="out" in="shadowBlurOuter1" in2="SourceAlpha"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowBlurOuter1"/>
+    </filter>
+  </defs>
+  <title>MapPinStart</title>
+  <g id="Main">
+    <g id="_1MainTabMap" data-name="1MainTabMap">
+      <g id="Map">
+        <g id="MapPinStart">
+          <g id="Triangle-1">
+            <g class="cls-1">
+              <path id="path-1" d="M151.13,48L145.5,63l-5.62-15H27.5a22.5,22.5,0,0,1,0-45h235a22.5,22.5,0,0,1,0,45H151.13Z" transform="translate(-4.5 -2.5)"/>
             </g>
+            <path id="path-1-2" data-name="path-1" class="cls-2" d="M151.13,48L145.5,63l-5.62-15H27.5a22.5,22.5,0,0,1,0-45h235a22.5,22.5,0,0,1,0,45H151.13Z" transform="translate(-4.5 -2.5)"/>
+          </g>
+          <g id="Group-10">
+            <g id="Next">
+              <polyline class="cls-3" points="258.5 30.4 266.64 22.95 258.5 15.5"/>
+            </g>
+            <g id="Location">
+              <path id="Stroke-365" class="cls-4" d="M40,25A11,11,0,1,1,29,14,11,11,0,0,1,40,25h0Z" transform="translate(-4.5 -2.5)"/>
+              <path id="Stroke-972" class="cls-5" d="M29,28.35A3.35,3.35,0,1,1,32.35,25,3.35,3.35,0,0,1,29,28.35Z" transform="translate(-4.5 -2.5)"/>
+            </g>
+            <g id="Button" class="cls-6">
+              <text class="cls-7" transform="translate(48.00 29.5)">SET PICK-UP LOCATION</text>
+            </g>
+          </g>
         </g>
+      </g>
     </g>
+  </g>
 </svg>
