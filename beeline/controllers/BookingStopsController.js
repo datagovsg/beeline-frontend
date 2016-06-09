@@ -189,19 +189,23 @@ export default [
 
           console.log('Changes detected: diplaying message box');
 
-          if ($scope.changesModal) {
-              $scope.changesModal.show();
-            }
-          else {
-              $ionicModal.fromTemplateUrl('changes-message.html', {
-              scope: $scope,
-              animation: 'slide-in-up',
-            })
-            .then(modal => {
-              $scope.changesModal = modal;
-              $scope.changesModal.show();
-            });
-            }
+          // FIXME: We are hiding this for now, until
+          // we get the UI right. We should be pulling
+          // the announcements from RouteAnnouncements instead
+
+          // if ($scope.changesModal) {
+          //     $scope.changesModal.show();
+          //   }
+          // else {
+          //   $ionicModal.fromTemplateUrl('changes-message.html', {
+          //     scope: $scope,
+          //     animation: 'slide-in-up',
+          //   })
+          //   .then(modal => {
+          //     $scope.changesModal = modal;
+          //     $scope.changesModal.show();
+          //   });
+          // }
         }
         $scope.lastDisplayedRouteId = $scope.book.routeId;
 
