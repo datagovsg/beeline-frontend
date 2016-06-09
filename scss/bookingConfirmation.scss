@@ -1,17 +1,21 @@
 
+.booking-content{
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left:0;
+  padding-top: 25%;
+}
 
-#pg_booking-confirmation {
-  table {
-    width: 100%;
-    margin: auto;
-    tr {
-      td:first-child {
-        width: 80px;
-        img {
-          width: 80px;
-          height: 80px;
-        }
-      }
-    }
-  }
+.success-image {
+  padding-left: 8%;
+}
+
+.success-text {
+  padding-right: 8%;
+  padding-left: 5%;
+}
+
+.success-button {
+  margin-top: 15%
 }
