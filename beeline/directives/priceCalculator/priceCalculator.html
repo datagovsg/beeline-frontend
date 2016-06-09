@@ -20,7 +20,7 @@
       <td>
         {{pinfo.startDate | formatDateMMMdd}}
       </td>
-      <td>${{pinfo.price.toFixed(2)}}</td>
+      <td>${{pinfo.price | number:2}}</td>
     </tr>
   </tbody>
 </table>
