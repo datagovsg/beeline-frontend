@@ -11,7 +11,13 @@
       height: 100%;
       width: 100%;
       text-align: center;
-      p { max-width: 14em; }
+          p {
+            max-width: 18em;
+          }
     }
-  }  
+  }
+}
+
+.space{
+  padding-top: 10%;
 }

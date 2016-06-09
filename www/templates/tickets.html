@@ -1,38 +1,46 @@
 <ion-view class="tickets" view-title="Tickets">
-  
+
   <ion-content ng-if="!user"
                class="no-tickets" scroll=false>
     <div class="item item-text-wrap">
       <img src="./img/bgTickets.svg">
+      <div class="row">
+        <br />
+      </div>
       <h2>You are not logged in</h2>
+
       <p>Log in to see your upcoming trips!</p>
-      <button class="primary-button" on-tap="logIn()">
+
+      <button class="primary-button space" on-tap="logIn()">
         Log In
-      </button>  
+      </button>
     </div>
   </ion-content>
 
   <ion-content ng-if="user &&
-                      tickets.today.length === 0 && 
+                      tickets.today.length === 0 &&
                       tickets.soon.length === 0"
                class="no-tickets" scroll=false>
     <div class="item item-text-wrap">
       <img src="./img/bgTickets.svg">
+      <div class="row">
+        <br />
+      </div>
       <h2>No upcoming trips</h2>
       <p>Your tickets will appear here when you book a trip!</p>
-      <button class="primary-button" ui-sref="tabs.routes">
+      <button class="primary-button space" ui-sref="tabs.routes">
         Search For Routes
-      </button>  
+      </button>
     </div>
   </ion-content>
 
-  <!-- 
-  Need to wrap the ion-content in a div since ng-if doesnt play nice 
+  <!--
+  Need to wrap the ion-content in a div since ng-if doesnt play nice
   with a scrolling ion-content as of ionic version 1.4
   -->
   <div ng-if="user &&
               tickets.today.length > 0 ||
-              tickets.soon.length > 0"> 
+              tickets.soon.length > 0">
     <ion-content>
       <div class="list">
         <div ng-if="tickets.today.length > 0"
@@ -45,7 +53,7 @@
           {{ ticket.boardStop.time | date:'h:mm a' }}
           <i class="icon ion-chevron-right icon-accessory"></i>
         </a>
-        <div ng-if="tickets.soon.length > 0" 
+        <div ng-if="tickets.soon.length > 0"
              class="item item-divider">Upcoming Trips</div>
         <a ng-if="tickets.soon.length > 0"
              class="item item-icon-right"
