@@ -9,7 +9,7 @@
     height: 24px;
     display: inline-block;
     vertical-align: bottom;
-    margin: 0 5px 0 5px;
+    margin: 0 5px 0 0px;
   }
 
   .placeholder {
@@ -24,9 +24,6 @@
   height: 100%;
   left: 0;
   top: 0;
-
-  display: flex;
-  flex-direction: column;
 
   .bar-subheader {
     padding: 0;
@@ -52,6 +49,7 @@
 
   ion-content {
     top: 50%;
+    bottom: $bar-height + 2*$item-padding;
 
     div.time, div.details {
       display: inline-block;
@@ -59,9 +57,17 @@
     }
   }
 
-  .bar.bar-footer button {
-    flex: 1 1 auto;
-    position: static;
+  .bar.bar-footer {
+    /* overriding because the bar-footer is otherwise
+      fixed-height, but we want padding around the button
+      */
+    height: $bar-height + 2*$item-padding;
+    padding: $item-padding;
+    button {
+      flex: 1 1 auto;
+      position: static;
+      max-width: none;
+    }
   }
 
   .gmnoprint, .gm-style-cc {
