@@ -25,14 +25,15 @@
       <div ng-show="user" class="item" on-tap="updateTelephone()">
         Phone Number <span class="item-note">{{ user.telephone.slice(3)}}</span>
       </div>
-      <a ng-show="user" class="item item-icon-right">
-        Booking History <i class="icon ion-ios-arrow-right"></i>
-      </a>
+    <!--   <a ng-show="user" class="item item-icon-right">
+      Booking History <i class="icon ion-ios-arrow-right"></i>
+    </a> -->
 
       <div class="item item-divider">About Beeline</div>
       <ion-item ui-sref='intro'>Quick Tour</ion-item>
       <ion-item on-tap="faqModal.show()">FAQ</ion-item>
       <ion-item on-tap="privacyPolicyModal.show()">Privacy Policy</ion-item>
+      <ion-item on-tap="termsOfUseModal.show()">Terms of Use</ion-item>
       <ion-item on-tap="contactUsModal.show()">Contact Us
       </ion-item>
 
