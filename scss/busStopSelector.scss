@@ -1,45 +1,38 @@
 
-bus-stop-selector {
-  display: inline;
-  background-color: $base-background-color;
+.bus-stop-selector {
+  /* 38px is related to the width of the icon representing stops */
 
-  .stop-description {
-    /* 38px is related to the width of the icon representing stops */
+  .stop-icon {
+    background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
+    background-size: auto 20px;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 0 5px 0 5px;
+  }
 
-    .stop-icon {
-      background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
-      background-size: auto 20px;
-      width: 24px;
-      height: 24px;
-      display: inline-block;
-      vertical-align: bottom;
-    }
-
-    .placeholder {
-      color: #828282;
-    }
+  .placeholder {
+    color: #828282;
   }
 }
 
 /* ---------- BOOKINGS STOPS MODAL ---------- */
 .stop-selector {
-  width: calc(100% - 20px);
-  min-height: calc(100% - 40px);
-  left: 9px;
-  top: 19px;
-  border-radius: 10px;
-  box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
-  border: 1px solid #999;
+  /* force full window */
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
 
   display: flex;
   flex-direction: column;
 
   .bar-subheader {
-    background-color: $stable;
     padding: 0;
     display: flex;
     flex-direction: column;
-    height: 300px;
+    height: calc(50% - #{$bar-height});
 
     ui-gmap-google-map {
       flex: 1 1 auto;
@@ -58,15 +51,12 @@ bus-stop-selector {
   }
 
   ion-content {
-    top: $bar-height + 300px;
-    ion-item.item {
-      padding: 0;
+    top: 50%;
+
+    div.time, div.details {
+      display: inline-block;
+      vertical-align: top;
     }
-  }
-  ion-footer-bar {
-    text-align: center;
-    display: block;
-    height: 49px;
   }
   .gmnoprint, .gm-style-cc {
     display:none;

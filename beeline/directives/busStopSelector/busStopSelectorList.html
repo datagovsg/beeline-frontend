@@ -43,19 +43,18 @@
 
   <ion-content class="big-container">
     <ion-list class="stops-list">
-      <ion-item ng-repeat="stop in busStops">
-        <ion-radio
-              ng-model="model"
-              ng-value="stop.id"
-              ng-click="selectStop($event, stop)"
-              >
-          <div class="time">{{stop.time | formatTime}}</div>
-          <div class="details">
-            <div>{{stop.description}}</div>
-            <div>{{stop.road}}</div>
-          </div>
-        </ion-radio>
-      </ion-item>
+      <ion-radio
+          ng-repeat="stop in busStops"
+          ng-model="model"
+          ng-value="stop.id"
+          ng-click="selectStop($event, stop)"
+          >
+        <div class="time">{{stop.time | formatTime}}</div>
+        <div class="details">
+          <div>{{stop.description}}</div>
+          <div>{{stop.road}}</div>
+        </div>
+      </ion-radio>
     </ion-list>
   </ion-content>
   <ion-footer-bar>
@@ -63,7 +62,9 @@
       <button class="button button-block button-positive"
               ng-disabled="!model"
               ng-click="selectStop($event, selectedStop)"
-      >{{title}}</button>
+      >
+        {{title}}
+      </button>
     </div>
   </ion-footer-bar>
 </ion-modal-view>

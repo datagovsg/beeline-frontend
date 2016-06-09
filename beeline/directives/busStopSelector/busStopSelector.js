@@ -20,7 +20,7 @@ export default [
 
   return {
     restrict: 'E',
-    transclude: true,
+    replace: true,
     template: busStopSelectorTemplate,
     scope: {
       busStops: '=',

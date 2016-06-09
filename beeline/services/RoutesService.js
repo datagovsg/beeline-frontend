@@ -50,9 +50,17 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     // Retrive the data on all the routes
     getRoutes: function(ignoreCache) {
       if (routesCache && !ignoreCache) return Promise.resolve(routesCache);
+
+      /* always start at midnight? */
+      // FIXME: might be more sensible to conduct a date-based search.
+      var d = new Date();
+      d.setHours(3,0,0,0,0)
+
+      var e = new Date(d.getTime() + 30*24*60*60*1000);
+
       return UserService.beeline({
         method: 'GET',
-        url: '/routes?include_trips=true'
+        url: `/routes?include_trips=true&start_date=${d.getTime()}&end_date=${e.getTime()}`
       })
       .then(function(response) {
         routesCache = transformRouteData(response.data);

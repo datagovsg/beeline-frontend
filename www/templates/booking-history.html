@@ -4,10 +4,19 @@
 
     <ion-list>
 
-      <ion-item ng-repeat="transaction in transactions track by transaction.id">
-        <h3 ng-if="!transaction.committed">FAILED</h3>
-        <h3 ng-if="transaction.$items.ticketSale">Tickets Purchased</h3>
-        {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
+      <div class="card" ng-repeat="transaction in transactions track by transaction.id">
+        <div class="item">
+          Transaction Date:
+          <span class="item-note">
+            {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
+          </span>
+        </div>
+
+        <h3 class="item item-divider" ng-if="transaction.$items.ticketSale">
+          Tickets Purchased
+          <span ng-if="!transaction.committed">(FAILED)</span>
+        </h3>
+
           <dl ng-repeat="ti in transaction.$items.ticketSale track by ti.id"
           >
             <dt>Route</dt>
@@ -16,6 +25,11 @@
               {{routesById[ti.ticketSale.boardStop.trip.routeId].from}}
               &mdash;
               {{routesById[ti.ticketSale.boardStop.trip.routeId].to}}
+            </dd>
+
+            <dt>Date</dt>
+            <dd>
+              {{ti.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
             </dd>
 
             <dt>Pickup / Dropoff</dt>
@@ -33,7 +47,7 @@
           </li>
         </ul>
 
-      </ion-item>
+      </div>
 
     </ion-list>
 
