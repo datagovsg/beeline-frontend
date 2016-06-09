@@ -58,6 +58,12 @@
       vertical-align: top;
     }
   }
+
+  .bar.bar-footer button {
+    flex: 1 1 auto;
+    position: static;
+  }
+
   .gmnoprint, .gm-style-cc {
     display:none;
   }

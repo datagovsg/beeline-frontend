@@ -57,14 +57,12 @@
       </ion-radio>
     </ion-list>
   </ion-content>
-  <ion-footer-bar>
-    <div class="buttons">
-      <button class="button button-block button-positive"
-              ng-disabled="!model"
-              ng-click="selectStop($event, selectedStop)"
-      >
-        {{title}}
-      </button>
-    </div>
+  <ion-footer-bar align-title="center">
+    <button class="title button button-clear button-royal"
+            ng-disabled="!model"
+            ng-click="selectStop($event, selectedStop)"
+    >
+      {{title}}
+    </button>
   </ion-footer-bar>
 </ion-modal-view>
