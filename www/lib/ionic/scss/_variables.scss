@@ -616,7 +616,7 @@ $sheet-options-border-color:      #d1d3d6 !default;
 // Popups
 // -------------------------------
 
-$popup-width:                     250px !default;
+$popup-width:                     80% !default; /* 250px default */
 $popup-enter-animation:           superScaleIn !default;
 $popup-enter-animation-duration:  0.2s !default;
 $popup-leave-animation-duration:  0.1s !default;
