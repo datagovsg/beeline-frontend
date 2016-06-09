@@ -205,7 +205,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       subTitle: 'Enter the 6 digit code sent to '+telephone,
       inputs: [
         {
-          type: 'text',
+          type: 'number',
           name: 'code',
           pattern: VALID_VERIFICATION_CODE_REGEX
         }
