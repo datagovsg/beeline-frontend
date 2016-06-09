@@ -43,6 +43,8 @@ export default function($scope, $state, RoutesService) {
   // This cascades the region filter from the previous block
   recentRoutesPromise.then(function(recentRoutes) {
     $scope.$watch('data.filteredActiveRoutes', function(newActiveRoutes) {
+      $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
+      
       $scope.data.filteredRecentRoutes = _.filter(newActiveRoutes, function(route) {
         return _.some(recentRoutes, {'id': route.id});
       });

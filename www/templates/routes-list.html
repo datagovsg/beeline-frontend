@@ -19,7 +19,11 @@
       </div>
       <ion-item
         ng-repeat="route in data.filteredRecentRoutes"
-        ui-sref="tabs.bookingPickup({ routeId: route.id})"
+        ui-sref="tabs.bookingPickup({
+          routeId: route.id,
+          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
+          alightStop: data.recentRoutesById[route.id].alightStopStopId,
+        })"
         class="item-icon-right"
         >
         <route-item route="route"></route-item>
