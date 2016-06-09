@@ -11,6 +11,7 @@ const VALID_VERIFICATION_CODE_REGEX = /^[0-9]{6}$/;
 // or after non-space characters are ignored e.g. "   a c   ",
 // "exe", "alieo" is valid name
 const VALID_USER_NAME = /^\s*\S.+\S\s*$/;
+const env = require('../env')
 
 export default function UserService($http, $ionicPopup, $ionicLoading, $rootScope) {
 
@@ -24,7 +25,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // General purpose wrapper for making http requests to server
   // Adds the appropriate http headers and token if signed in
   var beelineRequest = function(options) {
-    options.url = 'http://staging.beeline.sg' + options.url;
+    options.url = env.BACKEND_URL + options.url;
     options.headers = options.headers || {};
     // Attach the session token if logged in
     if (sessionToken) {

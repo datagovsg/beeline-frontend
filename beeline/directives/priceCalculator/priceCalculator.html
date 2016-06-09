@@ -24,18 +24,11 @@
 <table class="price-table totals" ng-if="booking.selectedDates.length > 0">
     <tr>
       <th>Total Trips</th>
-      <th>Passengers</th>
       <th>Total Amount</th>
     </tr>
     <tr>
       <td>
         {{priceInfo.tripCount || 0}}
-      </td>
-      <td ng-if="!readOnly">
-        <qty-input ng-model="booking.qty"></qty-input>
-      </td>
-      <td ng-if="readOnly">
-        {{booking.qty}}
       </td>
       <td>
         ${{priceInfo.totalDue.toFixed(2) || '0.00'}}
