@@ -3,3 +3,17 @@
     text-align: center;
   }
 }
+
+/* Contact us modal style */
+.contact-us {
+    padding-top: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    p{
+      font-size: $font-size-base;
+      color: $base-color;
+      padding-bottom: 30px;
+    }
+
+}
