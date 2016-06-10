@@ -8,5 +8,6 @@ www/lib/beeline/bundle.js
 www/lib/beeline/bundle.js.map
 www/css/ionic.app.css
 www/css/ionic.app.min.css
+beeline/env.json
 .io-config.json
 *.DS_Store
