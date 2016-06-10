@@ -101,15 +101,6 @@
       pin-options="map.markerOptions.endMarker"
       >
     </bus-stop-selector>
-    <div class="item">
-      Number of Passengers
-      <qty-input
-        placeholder="{{book.ptxt}}"
-        ng-model="book.qty"
-        class="item-note"
-        >
-      </qty-input>
-    </div>
   </ion-list>
 
   <div class="item button-bar">
@@ -119,7 +110,7 @@
         boardStop: book.boardStop,
         alightStop: book.alightStop
       })"
-      ng-disabled="!book.alightStop || !book.boardStop || !book.qty">
+      ng-disabled="!book.alightStop || !book.boardStop">
       Continue
     </button>
   </div>
