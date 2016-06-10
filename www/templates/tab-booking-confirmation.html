@@ -1,25 +1,19 @@
-<ion-view view-title="Booking Summary" class="booking-bg">
-  <ion-content>
-    <ion-item class="item item-text-wrap booking-content">
+<ion-view view-title="Booking Summary">
+  <ion-content class="booking-content" scroll=false>
+    <ion-item class="item item-text-wrap">
       <div class="row">
         <div class="col-33 success-image"><img src="img/paymentComplete_paid.svg"></div>
         <div class="col-67 success-text">Success! Your payment has been processed.</div>
-      </div>
-      <div>
-        <br /><br />
       </div>
       <div class="row">
         <div class="col-33 success-image" ><img src="img/paymentComplete_track.svg"></div>
         <div class="col-67 success-text" >Track your bus arrival on the day of the trip with the e-tickets</div>
       </div>
-      <div>
-        <br /><br />
-      </div>
       <div class="row">
         <div class="col-33 success-image" ><img src="img/paymentComplete_showTicket.svg"></div>
         <div class="col-67 success-text" >Track your bus arrival on the day of the trip with the e-tickets</div>
       </div>
-      <button class="success-button primary-button button" ui-sref="tabs.tickets">
+      <button class="primary-button button" ui-sref="tabs.tickets">
         View Tickets
       </button>
     </ion-item>

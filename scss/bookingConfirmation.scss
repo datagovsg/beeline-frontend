@@ -1,25 +1,29 @@
-.booking-bg {
-  background-color: #fff;
-}
 
-.booking-content{
-  top: 0;
-  left:0;
-  padding-top: 25%;
-  padding-left: 8%;
-  padding-right: 12%;
-  border-bottom: 0px;
-  background-color: transparent;
-}
+  .booking-content {
+      .item {
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding-top: 30px;
+          height: 100%;
+          width: 100%;
 
-.success-image {
-  text-align: center;
-}
+            .row {
+                margin-top: 30px;
+                margin-bottom: 30px;
 
-.success-text {
-  padding-left: 5%;
-}
+                  .success-image {
+                    text-align: center;
+                  }
+                  .success-text {
+                    padding-left: 5%;
+                  }
 
-.success-button {
-  margin-top: 15%
-}
+              }
+
+            .button {
+              margin-top: 15%;
+            }
+
+          }
+  }
