@@ -1,9 +1,7 @@
 
 <ion-view title="Booking History">
   <ion-content>
-
     <ion-list>
-
       <div class="card" ng-repeat="transaction in transactions track by transaction.id">
         <div class="item">
           Transaction Date:
@@ -17,45 +15,38 @@
           <span ng-if="!transaction.committed">(FAILED)</span>
         </h3>
 
-          <dl ng-repeat="ti in transaction.$items.ticketSale track by ti.id"
-          >
-            <dt>Route</dt>
-            <dd>
-              {{routesById[ti.ticketSale.boardStop.trip.routeId].label}}:
-              {{routesById[ti.ticketSale.boardStop.trip.routeId].from}}
-              &mdash;
-              {{routesById[ti.ticketSale.boardStop.trip.routeId].to}}
-            </dd>
+        <dl ng-repeat="ti in transaction.$items.ticketSale track by ti.id">
+          <dt>Route</dt>
+          <dd>
+          {{transactionItem.route.label}}:
+          {{transactionItem.route.from}}
+            &mdash;
+          {{transactionItem.route.to}}
+          </dd>
 
-            <dt>Date</dt>
-            <dd>
-              {{ti.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
-            </dd>
+          <dt>Date</dt>
+          <dd>
+            {{ti.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
+          </dd>
 
-            <dt>Pickup / Dropoff</dt>
-            <dd>
-              {{ti.ticketSale.boardStop.stop.description}} /
-              {{ti.ticketSale.alightStop.stop.description}}
-            </dd>
-          </dl>
+          <dt>Pickup / Dropoff</dt>
+          <dd>
+          {{transactionItem.ticketSale.boardStop.stop.description}} /
+          {{transactionItem.ticketSale.alightStop.stop.description}}
+          </dd>
+        </dl>
 
-        <h3 ng-if="transaction.$items.payment">Payment</h3>
-        <ul ng-if="transaction.$items.payment">
-          <li ng-repeat="payment in transaction.$items.payment track by payment.id"
-          >
+        <h3 ng-if="transaction.itemsByType.payment">Payment</h3>
+        <ul ng-if="transaction.itemsByType.payment">
+          <li ng-repeat="payment in transaction.itemsByType.payment track by payment.id">
             ${{payment.debit | number:'2'}}
           </li>
         </ul>
-
+        <!-- FIXME: show the other transaction types -- refunds, free tickets -->
       </div>
-
     </ion-list>
 
-    <ion-infinite-scroll
-      on-infinite="loadMore()"
-      ng-if="hasMoreData"
-    >
-
+    <ion-infinite-scroll on-infinite="loadMore()" ng-if="hasMoreData">
     </ion-infinite-scroll>
 
   </ion-content>

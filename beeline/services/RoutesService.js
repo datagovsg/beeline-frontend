@@ -48,23 +48,36 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     },
 
     // Retrive the data on all the routes
-    getRoutes: function(ignoreCache) {
-      if (routesCache && !ignoreCache) return Promise.resolve(routesCache);
+    getRoutes: function(ignoreCache, options) {
+      if (routesCache && !ignoreCache && !options) return Promise.resolve(routesCache);
 
-      /* always start at midnight? */
-      // FIXME: might be more sensible to conduct a date-based search.
-      var d = new Date();
-      d.setHours(3,0,0,0,0)
+      var url = '/routes?include_trips=true';
 
-      var e = new Date(d.getTime() + 30*24*60*60*1000);
+      // Start at midnight to avoid cut trips in the middle
+      // FIXME: use date-based search instead
+      var startDate = new Date();
+      startDate.setHours(3,0,0,0,0)
+      var endDate = new Date(startDate.getTime() + 30*24*60*60*1000);
+
+      var options = _.assign({
+        start_date: startDate.getTime(),
+        end_date: endDate.getTime(),
+      }, {})
+
+      if (options) {
+        url += '&' + querystring.stringify(options)
+      }
 
       return UserService.beeline({
         method: 'GET',
-        url: `/routes?include_trips=true&start_date=${d.getTime()}&end_date=${e.getTime()}`
+        url: url,
       })
       .then(function(response) {
-        routesCache = transformRouteData(response.data);
-        return routesCache;
+        transformRouteData(response.data)
+        if (!options) {
+          routesCache = response.data;
+        }
+        return response.data;
       });
     },
 
