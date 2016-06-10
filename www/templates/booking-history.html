@@ -1,46 +1,40 @@
 
 <ion-view title="Booking History">
   <ion-content>
-
     <ion-list>
-
       <ion-item ng-repeat="transaction in transactions track by transaction.id">
         <h3 ng-if="!transaction.committed">FAILED</h3>
-        <h3 ng-if="transaction.$items.ticketSale">Tickets Purchased</h3>
+        <h3 ng-if="transaction.itemsByType.ticketSale">Tickets Purchased</h3>
         {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
-          <dl ng-repeat="ti in transaction.$items.ticketSale track by ti.id"
-          >
+          <dl ng-repeat="transactionItem in transaction.itemsByType.ticketSale track by transactionItem.id">
             <dt>Route</dt>
             <dd>
-              {{routesById[ti.ticketSale.boardStop.trip.routeId].label}}:
-              {{routesById[ti.ticketSale.boardStop.trip.routeId].from}}
+              {{transactionItem.route.label}}:
+              {{transactionItem.route.from}}
               &mdash;
-              {{routesById[ti.ticketSale.boardStop.trip.routeId].to}}
+              {{transactionItem.route.to}}
             </dd>
 
             <dt>Pickup / Dropoff</dt>
             <dd>
-              {{ti.ticketSale.boardStop.stop.description}} /
-              {{ti.ticketSale.alightStop.stop.description}}
+              {{transactionItem.ticketSale.boardStop.stop.description}} /
+              {{transactionItem.ticketSale.alightStop.stop.description}}
             </dd>
           </dl>
 
-        <h3 ng-if="transaction.$items.payment">Payment</h3>
-        <ul ng-if="transaction.$items.payment">
-          <li ng-repeat="payment in transaction.$items.payment track by payment.id"
-          >
+        <h3 ng-if="transaction.itemsByType.payment">Payment</h3>
+        <ul ng-if="transaction.itemsByType.payment">
+          <li ng-repeat="payment in transaction.itemsByType.payment track by payment.id">
             ${{payment.debit | number:'2'}}
           </li>
         </ul>
-
+        <!-- FIXME: show the other transaction types -- refunds, free tickets -->
       </ion-item>
-
     </ion-list>
 
     <ion-infinite-scroll
       on-infinite="loadMore()"
-      ng-if="hasMoreData"
-    >
+      ng-if="hasMoreData">
 
     </ion-infinite-scroll>
 
