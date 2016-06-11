@@ -1,23 +1,26 @@
 .tickets {
-  .no-tickets {
-    .item {
-      @include display-flex;
-      @include flex-direction(column);
-      @include justify-content(center);
-      @include align-items(center);
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      text-align: center;
-          p {
-            max-width: 18em;
-          }
+    .no-tickets {
+        .item {
+            @include display-flex;
+            @include flex-direction(column);
+            @include justify-content(center);
+            @include align-items(center);
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            h2 {
+                margin-top: 30px;
+            }
+            p {
+                margin-top: 5px;
+                max-width: 18em;
+            }
+            .primary-button {
+                margin-top: 20px;
+            }
+        }
     }
-  }
-}
-
-.space{
-  padding-top: 10px;
 }
