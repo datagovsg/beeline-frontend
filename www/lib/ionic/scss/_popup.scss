@@ -42,7 +42,6 @@
     width: $popup-width;
     max-width: 100%;
     max-height: 90%;
-    padding: 0;
     border-radius: $popup-border-radius;
     background-color: $popup-background-color;
 
@@ -65,7 +64,6 @@
   margin: 0;
   padding: 0;
   font-size: 15px;
-  font-weight: bold;
 }
 .popup-sub-title {
   margin: 5px 0 0 0;
