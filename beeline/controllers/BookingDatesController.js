@@ -16,7 +16,6 @@ export default [
     $scope.book = {
       routeId: '',
       route: null,
-      qty: '',
       boardStopId: undefined,
       alightStopId: undefined,
       priceInfo: {},
@@ -72,7 +71,7 @@ export default [
 
         for (let time of Object.keys($scope.disp.availabilityDays)) {
           time = parseInt(time)
-          if ($scope.disp.availabilityDays <= 0) {
+          if ($scope.disp.availabilityDays[time] <= 0) {
             $scope.disp.highlightDays.push({
               date: time,
               css: 'sold-out',
@@ -106,8 +105,6 @@ export default [
       if ($scope.book.route) {
         $scope.book.selectedDates =
               $scope.book.selectedDates || [];
-        $scope.book.qty =
-              $scope.book.qty || 1;
       }
 
       // reset

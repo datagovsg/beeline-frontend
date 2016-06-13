@@ -1,8 +1,34 @@
 #pg_bookdate {
+  .date-selection {
+    padding: 0 1em;
+  }
+
   .sold-out {
-    color: #0F0;
+    background: repeating-linear-gradient(
+      135deg,
+      #FFF,
+      #FFF 2px,
+      #CCC 2px,
+      #CCC 4px
+    );
   }
   .previously-booked {
     color: #F00;
+  }
+
+  .legend-table {
+    margin: 1em auto;
+
+    td {
+      padding: 2px;
+    }
+
+    .exemplar {
+      width: 2em;
+    }
+    .label {
+      text-align: left;
+      padding-right: 1em;
+    }
   }
 }
