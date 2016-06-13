@@ -75,6 +75,7 @@ var app = angular.module('beeline', [
 .directive('bookingBreadcrumbs', require('./directives/bookingBreadcrumbs/bookingBreadcrumbs').default)
 .directive('routeItem', require('./directives/routeItem/routeItem.js').default)
 .directive('companyTnc', require('./directives/companyTnc/companyTnc.js').default)
+.directive('tripCode', require('./directives/tripCode/tripCode.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');

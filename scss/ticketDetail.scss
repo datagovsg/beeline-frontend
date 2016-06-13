@@ -1,8 +1,9 @@
 /* ---------- TICKETS PAGE ---------- */
 .ticket-detail {
 
-  .item {
+  .item.trip-info {
     background-color: rgba($light, 0.9);
+    padding: 0;
   }
 
   .time-column {
@@ -22,4 +23,9 @@
     width: 100%;
   }
 
+  h3.service-cancellation {
+    color: $assertive;
+    text-align: center;
+    font-weight: bold;
+  }
 }
