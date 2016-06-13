@@ -3,17 +3,14 @@
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
 
     <ion-spinner ng-if="disp.dataLoading"></ion-spinner>
-    
-    <div class="date-selection">
-      <multiple-date-picker
-        ng-model="disp.selectedDatesLocal"
-        days-allowed="disp.daysAllowed"
-        highlight-days="disp.highlightDays"
-        disallow-back-past-months="true"
-        disable-days-before="disp.today"
-        >
-      </multiple-date-picker>
-    </div>
+
+    <multiple-date-picker
+      ng-model="disp.selectedDatesLocal"
+      days-allowed="disp.daysAllowed"
+      highlight-days="disp.highlightDays"
+      disallow-back-past-months="true"
+      disable-days-before="disp.today">
+    </multiple-date-picker>
 
     <div>
       <table class="table legend-table">
@@ -49,13 +46,13 @@
       </table>
     </div>
 
-  	<div class="bookdetails item">
+    <div class="item">
       <h4>Selected Dates</h4>
-  		<price-calculator
+      <price-calculator
         booking="book"
         read-only="true"
         ></price-calculator>
-  	</div>
+    </div>
     <div class="item">
       <button
             class="primary-button-centered primary-button"

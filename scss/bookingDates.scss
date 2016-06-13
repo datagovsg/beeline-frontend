@@ -1,6 +1,7 @@
 #pg_bookdate {
-  .date-selection {
-    padding: 0 1em;
+  multiple-date-picker {
+    margin: 0 1em;
+    display: block;
   }
 
   .sold-out {

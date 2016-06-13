@@ -40,6 +40,8 @@ export default [
         $scope.book.alightStopId = parseInt($stateParams.alightStop);
 
         $scope.disp.dataLoading = true;
+        $scope.disp.availabilityDays = {};
+        $scope.disp.previouslyBookedDays = {};
 
         RoutesService.getRoute(parseInt($scope.book.routeId), true, {include_availability: true})
         .then((route) => {
@@ -61,9 +63,8 @@ export default [
       // multiple-date-picker gives us the
       // date in midnight local time
       // Need to convert to UTC
-      $scope.book.selectedDates = $scope.disp.selectedDatesLocal
-          .map(m => moment(m).add(m.utcOffset(), 'minutes').valueOf())
-      console.log($scope.book.selectedDates)
+      $scope.book.selectedDates = $scope.disp.selectedDatesLocal.map(
+        m => moment(m).add(m.utcOffset(), 'minutes').valueOf())
     }, true)
 
     $scope.$watchGroup(['disp.availabilityDays', 'disp.previouslyBookedDays'],
@@ -103,12 +104,6 @@ export default [
         return;
       }
 
-      // set up the valid days
-      if ($scope.book.route) {
-        $scope.book.selectedDates =
-              $scope.book.selectedDates || [];
-      }
-
       // reset
       $scope.disp.availabilityDays = {}
 
@@ -116,11 +111,11 @@ export default [
         // FIXME: disable today if past the booking window
 
         // Make it available, only if the stop is valid for this trip
-        var tripStops_stopIds = trip.tripStops.map(ts => ts.stop.id);
+        var stopIds = trip.tripStops.map(ts => ts.stop.id);
         if (_.intersection([$scope.book.boardStopId],
-                           tripStops_stopIds).length == 0 ||
+                           stopIds).length === 0 ||
             _.intersection([$scope.book.alightStopId],
-                           tripStops_stopIds).length == 0
+                           stopIds).length === 0
             ) {
           continue;
         }
