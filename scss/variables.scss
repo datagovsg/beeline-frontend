@@ -56,7 +56,7 @@ $font-family-light-sans-serif:    "Lato", '-apple-system', "HelveticaNeue-Light"
 // $font-family-monospace:           monospace !default;
 
 // $font-family-base:                $font-family-sans-serif !default;
-$font-size-base:                  15px !default;
+$font-size-base:                  15px;
 // $font-size-large:                 18px !default;
 // $font-size-small:                 11px !default;
 
@@ -264,8 +264,8 @@ $bar-height:                      45px !default;
 // // Tabs
 // // -------------------------------
 
-$tabs-height:                     52px !default;
-$tabs-height-short:               40px !default;
+$tabs-height:                     52px;
+$tabs-height-short:               40px;
 // $tabs-text-font-size:             14px !default;
 // $tabs-text-font-size-side-icon:   10px !default;
 // $tabs-icon-size:                  32px !default;
@@ -323,7 +323,7 @@ $tab-item-max-width:              400px;
 // // Items
 // // -------------------------------
 
-$item-font-size:                  15px !default;
+$item-font-size:                  15px;
 // $item-border-width:               1px !default;
 // $item-padding:                    16px !default;
 
