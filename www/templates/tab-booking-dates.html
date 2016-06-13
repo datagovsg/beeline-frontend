@@ -2,6 +2,8 @@
   <ion-content>
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
 
+    <ion-spinner ng-if="disp.dataLoading"></ion-spinner>
+    
     <div class="date-selection">
       <multiple-date-picker
         ng-model="disp.selectedDatesLocal"

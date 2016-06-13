@@ -39,6 +39,8 @@ export default [
         $scope.book.boardStopId = parseInt($stateParams.boardStop);
         $scope.book.alightStopId = parseInt($stateParams.alightStop);
 
+        $scope.disp.dataLoading = true;
+
         RoutesService.getRoute(parseInt($scope.book.routeId), true, {include_availability: true})
         .then((route) => {
           $scope.book.route = route;
@@ -125,6 +127,8 @@ export default [
 
         $scope.disp.availabilityDays[trip.date.getTime()] = trip.availability.seatsAvailable;
       }
+
+      $scope.disp.dataLoading = false;
     }
   },
 ];
