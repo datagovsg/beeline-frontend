@@ -153,6 +153,15 @@ export default function($stateProvider, $urlRouterProvider) {
         controller: 'SettingsController'
       }
     }
+  })
+  .state('tabs.booking-history', {
+    url: '/settings/booking-history',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/booking-history.html',
+        controller: 'BookingHistoryController'
+      }
+    }
   });
 
   // if none of the above states are matched, use this as the fallback

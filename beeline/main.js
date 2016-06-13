@@ -59,6 +59,7 @@ var app = angular.module('beeline', [
 .controller('SettingsController', require('./controllers/SettingsController.js').default)
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
+.controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)
@@ -78,8 +79,6 @@ var app = angular.module('beeline', [
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
-  /* non-JS scrolling does not work on some devices */
-  // $ionicConfigProvider.scrolling.jsScrolling(true);
 })
 .config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({

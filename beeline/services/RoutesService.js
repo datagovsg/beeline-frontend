@@ -48,15 +48,24 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     },
 
     // Retrive the data on all the routes
-    getRoutes: function(ignoreCache) {
-      if (routesCache && !ignoreCache) return Promise.resolve(routesCache);
+    getRoutes: function(ignoreCache, options) {
+      if (routesCache && !ignoreCache && !options) return Promise.resolve(routesCache);
+
+      var url = '/routes?include_trips=true';
+      if (options) {
+        url += '&' + querystring.stringify(options)
+      }
+
       return UserService.beeline({
         method: 'GET',
-        url: '/routes?include_trips=true'
+        url: url,
       })
       .then(function(response) {
-        routesCache = transformRouteData(response.data);
-        return routesCache;
+        transformRouteData(response.data)
+        if (!options) {
+          routesCache = response.data;
+        }
+        return response.data;
       });
     },
 
