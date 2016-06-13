@@ -27,9 +27,16 @@
   margin-right: auto;
 }
 
+//menu tab
 .tab-title {
   text-transform: uppercase;
 }
+
+//routes page tab menu
+.tab-title-large {
+    font-size: $font-size-base;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // New global styles
@@ -139,11 +146,6 @@ td {
 
 .item-note {
   font-size: $item-font-size;
-}
-
-.tab-title-large {
-    font-size: $font-size-base;
-    text-transform: uppercase;
 }
 
 
