@@ -12,6 +12,7 @@ export default function($scope, $stateParams, RoutesService) {
   $scope.$on('$ionicView.beforeEnter', function() {
     updateSearch();
 
+    $scope.data.activeRoutes = null;
     RoutesService.searchRoutes({
       startLat: $stateParams.pickupLat,
       startLng: $stateParams.pickupLng,

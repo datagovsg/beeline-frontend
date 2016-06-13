@@ -1,5 +1,6 @@
 <ion-view view-title="Search Results">
   <ion-content>
+    <ion-spinner ng-if="!data.activeRoutes"></ion-spinner>
 
     <div class="item item-text-wrap" ng-if="data.activeRoutes.length === 0">
       <p>Sorry! There are no matching routes corresponding to your Start and End locations.</p>
