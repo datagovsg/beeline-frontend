@@ -1,7 +1,18 @@
 <ion-view id="pg_bookdate" view-title="Select Dates">
   <ion-content>
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
-    <date-picker
+
+    <div>
+      <multiple-date-picker
+        ng-model="disp.selectedDatesLocal"
+        days-allowed="disp.daysAllowed"
+        highlight-days="disp.highlightDays"
+        disallow-back-past-months="true"
+        disable-days-before="disp.today"
+        >
+      </multiple-date-picker>
+    </div>
+    <!-- <date-picker
         class="item"
         valid-dates="book.validDates"
         exhausted-dates="book.soldOutDates"
@@ -12,7 +23,7 @@
         dates="book.selectedDates"
         booked-dates="book.bookedDates"
         show-legend="true"
-    ></date-picker>
+    ></date-picker> -->
 
 	<div class="bookdetails item">
     <h4>Selected Dates</h4>

@@ -39,9 +39,9 @@ export default function RoutesService($http, SERVER_URL, UserService) {
 
     // Retrive the data on a single route
     // TODO refactor this to match getRoutes and searchRoutes
-    getRoute: function(routeId, ignoreCache) {
+    getRoute: function(routeId, ignoreCache, options) {
       assert.equal(typeof routeId, 'number');
-      return instance.getRoutes(ignoreCache)
+      return instance.getRoutes(ignoreCache, options)
       .then(function(routes) {
         return _.find(routes, {id: routeId});
       });
