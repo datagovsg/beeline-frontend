@@ -85,12 +85,12 @@
     width: 90%;
     left: 5%;
 
-    .bus-stop-selector:nth-of-type(1) .stop-icon {
+    bus-stop-selector:nth-of-type(1) .stop-icon {
       background: url('../img/RoutePairBigStart.svg') 0 0 no-repeat transparent;
       background-size: 24px 24px;
     }
 
-    .bus-stop-selector:nth-of-type(2) .stop-icon {
+    bus-stop-selector:nth-of-type(2) .stop-icon {
       background: url('../img/RoutePairBigEnd.svg') 0 0 no-repeat transparent;
       background-size: 24px 24px;
     }
