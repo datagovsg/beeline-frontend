@@ -1,5 +1,6 @@
 import faqModalTemplate from '../templates/faq-modal.html';
 import privacyPolicyModalTemplate from '../templates/privacy-policy-modal.html';
+import termsOfUseModalTemplate from '../templates/terms-of-use-modal.html';
 import contactUsModalTemplate from '../templates/contact-us-modal.html';
 
 export default [
@@ -45,6 +46,10 @@ export default [
       privacyPolicyModalTemplate,
       {scope: $scope}
     );
+    $scope.termsOfUseModal = $ionicModal.fromTemplate(
+      termsOfUseModalTemplate,
+      {scope: $scope}
+    );
     $scope.contactUsModal = $ionicModal.fromTemplate(
       contactUsModalTemplate,
       {scope: $scope}
@@ -52,6 +57,7 @@ export default [
     $scope.$on('$destroy', function() {
       $scope.faqModal.destroy();
       $scope.privacyPolicyModal.destroy();
+      $scope.termsOfUseModal.destroy();
       $scope.contactUsModal.destroy();
     });
 

@@ -1,36 +1,19 @@
-<ion-view view-title="Booking Summary" id="pg_booking-confirmation">
-  <ion-content>
-    <ion-item class="item-text-wrap">
-      <table id="complete-info">
-        <tr>
-          <td>
-            <img src="img/paymentComplete_paid.svg">
-          </td>
-          <td>
-            Success! Your payment has been processed.
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <img src="img/paymentComplete_track.svg">
-          </td>
-          <td>
-            Track your bus arrival on the day of the trip with the e-tickets
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <img src="img/paymentComplete_showTicket.svg">
-          </td>
-          <td>
-            Show the bus driver the e-ticket when you board.
-          </td>
-        </tr>
-      </table>
-    </ion-item>
-    <ion-item class="button-bar">
-      <button class="primary-button button"
-          ui-sref="tabs.tickets">
+<ion-view view-title="Booking Summary">
+  <ion-content class="booking-content" scroll=false>
+    <ion-item class="item item-text-wrap">
+      <div class="row">
+        <div class="col-33 success-image"><img src="img/paymentComplete_paid.svg"></div>
+        <div class="col-67 success-text">Success! Your payment has been processed.</div>
+      </div>
+      <div class="row">
+        <div class="col-33 success-image"><img src="img/paymentComplete_track.svg"></div>
+        <div class="col-67 success-text">Track your bus arrival on the day of the trip with the e-tickets</div>
+      </div>
+      <div class="row">
+        <div class="col-33 success-image"><img src="img/paymentComplete_showTicket.svg"></div>
+        <div class="col-67 success-text">Track your bus arrival on the day of the trip with the e-tickets</div>
+      </div>
+      <button class="primary-button button" ui-sref="tabs.tickets">
         View Tickets
       </button>
     </ion-item>

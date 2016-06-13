@@ -218,7 +218,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptLogIn = async function() {
     try {
       var telephoneResponse = await promptTelephoneNumber('Login',
-        'Please enter your 8 digit mobile number to receive a verification code')
+        'Please enter your 8 digit mobile number to receive a verification code.')
       if (!telephoneResponse) return;
       $ionicLoading.show({template: requestingVerificationCodeTemplate});
       var telephoneNumber = telephoneResponse.phone;
@@ -237,7 +237,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         promptRegister(telephoneNumber);
       }
       else $ionicPopup.alert({
-        title: "Error when trying to connect to server",
+        title: "Error while trying to connect to server.",
         subTitle: error
       });
     };
@@ -258,8 +258,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     try {
       var accountResponse = await verifiedPrompt({
         title: 'Account Details',
-        subTitle: 'Welcome! Look like this is your first login.\
-        Please complete the account set up.',
+        subTitle: 'Welcome! Looks like this is your first login.\
+        Please complete the account setup.',
         inputs: [
           {
             type: 'text',
@@ -296,7 +296,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     catch(error) {
       $ionicLoading.hide();
       $ionicPopup.alert({
-        title: "Error when trying to connect to server",
+        title: "Error while trying to connect to server.",
         subTitle: error
       });
     };
@@ -308,7 +308,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     try{
       // Start by prompting for the phone number
       var telephoneResponse = await promptTelephoneNumber('Update Phone Number',
-        'Please enter the new 8 digit mobile number to receive a verification code');
+        'Please enter your new 8-digit mobile number to receive a verification code.');
       if (!telephoneResponse) return;
       $ionicLoading.show({template: requestingVerificationCodeTemplate});
       var telephone = telephoneResponse.phone;
@@ -320,7 +320,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       await updateTelephone(updateToken, updateCode.code);
       $ionicLoading.hide();
       $ionicPopup.alert({
-        title: "Your phone number has been successfully updated",
+        title: "Your phone number has been successfully updated.",
         subTitle: "It is now " + telephone
       });
     }
@@ -328,7 +328,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     catch(error){
       $ionicLoading.hide();
       $ionicPopup.alert({
-        title: "Error when trying to connect to server",
+        title: "Error while trying to connect to server.",
         subTitle: error
       });
     };
@@ -362,7 +362,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     }
     catch(error){
       $ionicPopup.alert({
-        title: `Error updating ${field}`,
+        title: `Error updating ${field}.`,
         template: ''
       });
     }
@@ -371,8 +371,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // Shows a confirmation dialogue asking if the user is sure they want to log out
   var promptLogOut = function() {
     $ionicPopup.confirm({
-      title: 'Are you sure you want to sign out?',
-      subTitle: "You won't be able to make bookings or see your tickets until you sign in again"
+      title: 'Are you sure?',
+      subTitle: "You won't be able to make bookings or see your tickets if you don't sign in."
     }).then(function(response) {
       if (response) {
         return logOut();
