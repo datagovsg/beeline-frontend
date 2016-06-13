@@ -134,6 +134,19 @@ td {
   }
 }
 
+// Font-size overrides
+// -------------------------------
+
+.item-note {
+  font-size: $item-font-size;
+}
+
+.tab-title-large {
+    font-size: $font-size-base;
+    text-transform: uppercase;
+}
+
+
 
 /** FIXES FOR BUGS **/
 /* Fix the wrong colour on Android subtabs */
