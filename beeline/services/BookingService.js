@@ -261,6 +261,4 @@ export default function(UserService, CompanyService, RoutesService, $http) {
       });
     return [boardStops, alightStops];
   };
-
-  return rv;
 }
