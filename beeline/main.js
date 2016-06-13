@@ -1,45 +1,9 @@
 import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
-// Service Imports
-import UserService from './services/UserService.js';  // OK
-import RoutesService from './services/RoutesService.js'; // OK
-import BookingService from './services/BookingService.js';
-import TripService from './services/TripService.js'; // OK
-import SuggestionService from './services/SuggestionService.js';
-import CompanyService from './services/CompanyService.js'; // OK
-import TicketService from './services/TicketService.js'; // OK
-import OneMapService from './services/OneMapService.js';
-import DateService from './services/DateService.js';
-import StripeService from './services/StripeService.js';
-import MapOptionsService from './services/MapOptions';
-// Controller Imports
-import IntroSlidesController from './controllers/IntroSlidesController.js'; // OK
-import RoutesController from './controllers/RoutesController.js'; // OK
-import RoutesMapController from './controllers/RoutesMapController.js'; // OK
-import RoutesListController from './controllers/RoutesListController.js'; // OK
-import RoutesResultsController from './controllers/RoutesResultsController.js'; // OK
-import BookingStopsController from './controllers/BookingStopsController.js';
-import BookingDatesController from './controllers/BookingDatesController.js';
-import BookingConfirmationController from './controllers/BookingConfirmationController.js';
-import BookingSummaryController from './controllers/BookingSummaryController.js';
-import BookingHistoryController from './controllers/BookingHistoryController.js';
-import SuggestController from './controllers/SuggestController.js';
-import TicketsController from './controllers/TicketsController.js';
-import TicketDetailController from './controllers/TicketDetailController.js';
-import SettingsController from './controllers/SettingsController.js'; // OK
+
 // Directive Imports
-import RevGeocode from './directives/revGeocode/revGeocode';
-import FancyPrice from './directives/fancyPrice/fancyPrice';
-import PriceCalculator from './directives/priceCalculator/priceCalculator';
-import BusStopSelector from './directives/busStopSelector/busStopSelector';
-import StartEndPicker from './directives/startEndPicker/startEndPicker';
-import routeItem from './directives/routeItem/routeItem.js';
-import companyTnc from './directives/companyTnc/companyTnc.js';
-import SuggestionViewer from './directives/suggestionViewer/suggestionViewer';
-import bookingBreadcrumbs from './directives/bookingBreadcrumbs/bookingBreadcrumbs';
 import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
-import QtyInput from './directives/qtyInput/qtyInput';
 
 // Configuration Imports
 import configureRoutes from './router.js';
@@ -71,52 +35,50 @@ var app = angular.module('beeline', [
     return monthNames[i];
   };
 })
-.factory('TicketService', TicketService)
-.factory('UserService', UserService)
-.factory('TripService', TripService)
-.factory('CompanyService', CompanyService)
-.factory('SuggestionService', SuggestionService)
-.factory('RoutesService', RoutesService)
-.factory('BookingService', BookingService)
-.factory('OneMapService', OneMapService)
-.factory('DateService', DateService)
-.factory('StripeService', StripeService)
-.service('MapOptions', MapOptionsService)
-.controller('IntroSlidesController', IntroSlidesController)
-.controller('RoutesController', RoutesController)
-.controller('RoutesMapController', RoutesMapController)
-.controller('RoutesListController', RoutesListController)
-.controller('RoutesResultsController', RoutesResultsController)
-.controller('BookingStopsController', BookingStopsController)
-.controller('BookingDatesController', BookingDatesController)
-.controller('BookingSummaryController', BookingSummaryController)
-.controller('BookingConfirmationController', BookingConfirmationController)
-.controller('SuggestController', SuggestController)
-.controller('SettingsController', SettingsController)
-.controller('TicketsController', TicketsController)
-.controller('TicketDetailController', TicketDetailController)
-.controller('BookingHistoryController', BookingHistoryController)
+.factory('TicketService', require('./services/TicketService.js').default)
+.factory('UserService', require('./services/UserService.js').default)
+.factory('TripService', require('./services/TripService.js').default)
+.factory('CompanyService', require('./services/CompanyService.js').default)
+.factory('SuggestionService', require('./services/SuggestionService.js').default)
+.factory('RoutesService', require('./services/RoutesService.js').default)
+.factory('BookingService', require('./services/BookingService.js').default)
+.factory('OneMapService', require('./services/OneMapService.js').default)
+.factory('DateService', require('./services/DateService.js').default)
+.factory('StripeService', require('./services/StripeService.js').default)
+.service('MapOptions', require('./services/MapOptions').default)
+.controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
+.controller('RoutesController', require('./controllers/RoutesController.js').default)
+.controller('RoutesMapController', require('./controllers/RoutesMapController.js').default)
+.controller('RoutesListController', require('./controllers/RoutesListController.js').default)
+.controller('RoutesResultsController', require('./controllers/RoutesResultsController.js').default)
+.controller('BookingStopsController', require('./controllers/BookingStopsController.js').default)
+.controller('BookingDatesController', require('./controllers/BookingDatesController.js').default)
+.controller('BookingSummaryController', require('./controllers/BookingSummaryController.js').default)
+.controller('BookingConfirmationController', require('./controllers/BookingConfirmationController.js').default)
+.controller('SuggestController', require('./controllers/SuggestController.js').default)
+.controller('SettingsController', require('./controllers/SettingsController.js').default)
+.controller('TicketsController', require('./controllers/TicketsController.js').default)
+.controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
+.controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
 .directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)
 .directive('myTouchmove', TouchMove)
 .directive('myMousemove', MouseMove)
-.directive('qtyInput', QtyInput)
-.directive('suggestionViewer', SuggestionViewer)
-.directive('startEndPicker', StartEndPicker)
-.directive('busStopSelector', BusStopSelector)
-.directive('priceCalculator', PriceCalculator)
-.directive('revGeocode', RevGeocode)
-.directive('fancyPrice', FancyPrice)
-.directive('bookingBreadcrumbs', bookingBreadcrumbs)
-.directive('routeItem', routeItem)
-.directive('companyTnc', companyTnc)
+.directive('qtyInput', require('./directives/qtyInput/qtyInput').default)
+.directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
+.directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
+.directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
+.directive('priceCalculator', require('./directives/priceCalculator/priceCalculator').default)
+.directive('revGeocode', require('./directives/revGeocode/revGeocode').default)
+.directive('fancyPrice', require('./directives/fancyPrice/fancyPrice').default)
+.directive('bookingBreadcrumbs', require('./directives/bookingBreadcrumbs/bookingBreadcrumbs').default)
+.directive('routeItem', require('./directives/routeItem/routeItem.js').default)
+.directive('companyTnc', require('./directives/companyTnc/companyTnc.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
-  /* non-JS scrolling does not work on some devices */
-  $ionicConfigProvider.scrolling.jsScrolling(true);
 })
 .config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
