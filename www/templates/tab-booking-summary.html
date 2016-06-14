@@ -1,37 +1,22 @@
 <ion-view id="pg_summary" view-title="Booking Summary">
   <ion-content>
     <booking-breadcrumbs step="2"></booking-breadcrumbs>
-  	<div class="item item-text-wrap" ng-if="false">
-  		Please review the route and bus stop selections you have made for this booking.<br />
-  		To change any of the selections, please click its corresponding <b>Edit</b> button.
-  	</div>
+    <div class="item item-text-wrap" ng-if="false">
+      Please review the route and bus stop selections you have made for this booking.<br />
+      To change any of the selections, please click its corresponding <b>Edit</b> button.
+    </div>
 
-  	<section class="card">
+    <section class="card">
       <h3 class="item item-divider">
         Selected Route
       </h3>
-  		<div class="item route-info">
+      <div class="item route-info">
         <!-- FIXME we need to show the SELECTED STOPS not the route
           itself.
 
           Unfortunatley current version of angular (1.4) bundled with Ionic
           does not support multi-slot translcusion so this is a headache.
 
-          <route-item-x
-          route="book.route"
-          board-stop="book.boardStopId"
-          alight-stop="book.alightStopId">
-          <start-time>
-            wTF
-            {{book.boardStop}}
-            {{book.boardStop.time | formatTime}}
-          </start-time>
-          <end-time>
-            wTF2
-            {{book.boardStop}}
-            {{book.boardStop.time | formatTime}}
-          </end-time>
-          </route-item-x>
         -->
           <div class="bus-number">{{book.route.label}}</div>
 
@@ -71,38 +56,38 @@
               </stop-stop>
            </div>
         </div> <!-- start-end -->
-  		</div>
-  	</section>
+      </div>
+    </section>
 
 
-  	<section class="card">
+    <section class="card">
       <h3 class="item item-divider">
         Selected Dates
       </h3>
-    	<price-calculator
+      <price-calculator
         class="item"
         booking="book"
         read-only="true"></price-calculator>
-  		<!-- <ul>
-  			<li ng-repeat="dt in book.selectedDates">
-  				{{dt | formatDateMMMdd}}
-  			</li>
-  		</ul> -->
-  	</section>
+      <!-- <ul>
+        <li ng-repeat="dt in book.selectedDates">
+          {{dt | formatDateMMMdd}}
+        </li>
+      </ul> -->
+    </section>
 
-  	<section class="card" ng-if="false">
+    <section class="card" ng-if="false">
       <h3 class="item item-divider">
         Promo Code
       </h3>
-  		<ol>
-  			<li ng-repeat="pc in book.promoCodes track by $index" class="item">
-  			 {{pc}}
-  			</li>
-  		</ol>
-  		<form ng-submit="addPromoCode()" class="item" name="promoCode">
+      <ol>
+        <li ng-repeat="pc in book.promoCodes track by $index" class="item">
+         {{pc}}
+        </li>
+      </ol>
+      <form ng-submit="addPromoCode()" class="item" name="promoCode">
         <label class="item item-input">
           Promo Code
-    			<input
+          <input
                 type="text"
                 placeholder="Enter your code here"
                 ng-required="true"
@@ -110,32 +95,32 @@
                 ng-model="book.currentPromoCode"
                 />
         </label>
-  			<button type="submit"
+        <button type="submit"
               class="button button-block button-royal"
               ng-disabled="promoCode.$invalid"
               >Add Code</button>
-  		</form>
-  	</section>
+      </form>
+    </section>
 
     <section class="card">
-  		<h3 class="item item-divider">
-  			Terms and Conditions of Booking
-  		</h3>
+      <h3 class="item item-divider">
+        Terms and Conditions of Booking
+      </h3>
       <company-tnc company-id="book.route.transportCompanyId"></company-tnc>
       <ion-checkbox class="item" ng-model="book.termsChecked">
         Yes, I have read and agree to the Terms and Conditions of booking.
       </ion-checkbox>
     </section>
 
-  	<section class="item item-text-wrap">
-  		Please ensure that your credit card is ready for the next step in the booking process.
+    <section class="item item-text-wrap">
+      Please ensure that your credit card is ready for the next step in the booking process.
 
-  		<button class="button primary-button"
+      <button class="button primary-button"
           ng-click="loginBeforePay()"
           ng-disabled="!book.termsChecked || waitingForPaymentResult">
-  			Confirm and Pay
-  		</button>
-  	</section>
+        Confirm and Pay
+      </button>
+    </section>
 
   </ion-content>
 </ion-view>
