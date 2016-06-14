@@ -1,14 +1,14 @@
 .booking-content {
   .item {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding-top: 30px;
+    @include display-flex;
+    @include flex-direction(column);
+    @include justify-content(center);
+    @include align-items(center);
     height: 100%;
     width: 100%;
     .row {
-      margin-top: 30px;
-      margin-bottom: 30px;
+      margin-top: 20px;
+      margin-bottom: 20px;
       .success-image {
         text-align: center;
       }
@@ -17,7 +17,7 @@
       }
     }
     .button {
-      margin-top: 15%;
+      margin-top: 10%;
     }
   }
 }
