@@ -1,5 +1,14 @@
 <ion-view class="routes-list" view-title="Explore Routes - List">
-  <ion-content has-bouncing="false">
+  <ion-content>
+    <ion-refresher pulling-text="Pull to refresh..."
+                   on-refresh="requery(true)">
+    </ion-refresher>
+
+    <div class="item item-text-wrap" ng-if="errorMessage">
+      <i class="icon ion-alert-circled"></i>
+      There was a problem fetching the routes from the server.
+      Please try again later.
+    </div>
 
     <!-- Region Filter  -->
     <label class="item item-input item-select region-filter">
