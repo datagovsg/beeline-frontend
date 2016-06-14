@@ -12,6 +12,12 @@
     <tr class="nosel" ng-if="booking.selectedDates.length == 0">
       <td colspan="2">- Please select your trip dates -</td>
     </tr>
+    <tr ng-if="errorMessage">
+      <td colspan="2">
+        <i class="icon ion-alert-circled"></i>
+        {{errorMessage}}
+      </td>
+    </tr>
     <tr class="sel" ng-if="booking.selectedDates.length > 0"
       ng-repeat="pinfo in priceInfo.pricesPerTrip">
       <td>
