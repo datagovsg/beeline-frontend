@@ -187,8 +187,6 @@ export default [
               return;
             }
 
-          console.log('Changes detected: diplaying message box');
-
           // FIXME: We are hiding this for now, until
           // we get the UI right. We should be pulling
           // the announcements from RouteAnnouncements instead
@@ -275,7 +273,6 @@ export default [
         $scope.book.alightStopStop = $scope.book.alightStop ?
           $scope.book.alightStops.find(x => x.id == $scope.book.alightStop)
           : null;
-        console.log($scope.book)
       })
 
     });
