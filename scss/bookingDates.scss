@@ -1,35 +1,133 @@
+//overrides to the multiple-date-picker style imported
+
+/* .multiple-date-picker {
+  user-select: none;
+} */
+
+.multiple-date-picker,
+.picker-days-row,
+.picker-days-week-row,
+.picker-top-row {
+  width: 100%;
+  background-color: $picker-header-bg;
+}
+
+/* .picker-top-row {
+  div {
+    display: inline-block;
+  }
+}
+.picker-navigate {
+  width: 16.66%;
+}
+.picker-navigate:hover {
+  cursor: pointer;
+}
+.picker-navigate.disabled,
+.picker-navigate.disabled:hover {
+  color: #ddd;
+  cursor: default;
+}
+.picker-month {
+  width: 66.66%;
+} */
+
+.picker-days-week-row {
+  div {
+    //width: 14.28%;
+    //display: inline-block;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+/* .picker-days-row {
+  div {
+    width: 14.28%;
+    display: inline-block;
+  }
+}
+.picker-days-row {
+  div {
+    width: 14.28%;
+    display: inline-block;
+  }
+}
+.picker-day,
+.picker-top-row {
+  padding: 10px 0;
+} */
+
+.picker-day {
+  background-color: $pickable-day-non-picked-background;
+  border: 1px solid transparent;
+  //box-sizing: border-box;
+  //color: $pickable-day-non-picked-color;
+}
+
+.picker-day.today,
+.picker-day.today.picker-selected,
+.picker-day.today:hover {
+  color: $picker-day-today;
+  font-weight: bold;
+}
+
+.picker-day.today.picker-off,
+.picker-day.today.picker-off:hover {
+  color: $non-pickable-day-color;
+  font-weight: bold;
+}
+
+.picker-day:not(.picker-off):not(.picker-empty):hover {
+  background-color: $pickable-day-picked-background;
+  color: $pickable-day-picked-color;
+  cursor: pointer;
+}
+.picker-day.picker-selected {
+  background-color: $pickable-day-picked-background;
+  color: $pickable-day-picked-color;
+  border: 0px;
+}
+.picker-day.picker-off,
+.picker-day.picker-off:hover {
+  background-color: $non-pickable-day-background;
+  color: $non-pickable-day-color;
+  //cursor: default;
+}
+.picker-day.picker-empty,
+.picker-day.picker-empty:hover {
+  background-color: $empty-day-background;
+  //cursor: default;
+}
+
+//legend stuff
 #pg_bookdate {
   multiple-date-picker {
-    margin: 0 1em;
+    margin: 0;
     display: block;
   }
-
   .sold-out {
-    background: repeating-linear-gradient(
-      135deg,
-      #FFF,
-      #FFF 2px,
-      #CCC 2px,
-      #CCC 4px
-    );
+    background: repeating-linear-gradient( 135deg, #eee, #eee 3px, #ddd 3px, #ddd 6px );
+    color: $non-pickable-day-color;
+    border: 1px solid $empty-day-background;
   }
   .previously-booked {
-    color: #F00;
+    color: $assertive;
   }
-
   .legend-table {
     margin: 1em auto;
-
     td {
       padding: 2px;
+      border: 0;
     }
-
     .exemplar {
       width: 2em;
     }
     .label {
       text-align: left;
       padding-right: 1em;
+      padding-left: 10px;
+      font-size: $font-size-small;
     }
   }
 }
