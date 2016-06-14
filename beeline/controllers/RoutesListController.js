@@ -47,11 +47,11 @@ export default function($scope, $state, RoutesService, $q) {
 
     Promise.all([allRoutesPromise, recentRoutesPromise]).then(() => {
       $scope.$broadcast('scroll.refreshComplete');
-      $scope.errorMessage = null;
+      $scope.error = null;
     })
     .then(null, () => {
       $scope.$broadcast('scroll.refreshComplete');
-      $scope.errorMessage = true;
+      $scope.error = true;
     })
   }
 

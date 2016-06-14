@@ -18,11 +18,23 @@ export default [
     // Grab the tickets
     $scope.tickets = {};
     $scope.$on('$ionicView.beforeEnter', () => {
-      TicketService.getCategorizedTickets(true).then((categorizedTickets) => {
-        $scope.tickets.today = categorizedTickets.today;
-        $scope.tickets.soon = categorizedTickets.afterToday;
-      });
+      $scope.requery(true);
     });
 
+    function requery(ignoreCache) {
+      TicketService.getCategorizedTickets(ignoreCache).then((categorizedTickets) => {
+        $scope.tickets.today = categorizedTickets.today;
+        $scope.tickets.soon = categorizedTickets.afterToday;
+
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.error = false;
+      })
+      .then(null, (error) => {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.error = true;
+      });
+    }
+
+    $scope.requery = requery;
   }
 ];
