@@ -56,13 +56,13 @@ export default function($scope, $state, RoutesService, $q) {
   }
 
   // Filter the displayed routes by selected region
-  $scope.$watchGroup(['data.routes', 'data.selectedRegionId'], function() {
-    $scope.data.filteredActiveRoutes = filterRoutesByRegionId($scope.data.routes, +$scope.data.selectedRegionId);
+  $scope.$watchGroup(['data.routes', 'data.selectedRegionId'], function([routes, selectedRegionId]) {
+    $scope.data.filteredActiveRoutes = filterRoutesByRegionId(routes, +selectedRegionId);
   });
 
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block
-  $scope.$watch(['data.filteredActiveRoutes', 'data.recentRoutes'], function(newActiveRoutes) {
+  $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes'], function([newActiveRoutes, recentRoutes]) {
     $scope.data.filteredRecentRoutes = _.filter(newActiveRoutes, function(route) {
       return _.some(recentRoutes, {'id': route.id});
     });
