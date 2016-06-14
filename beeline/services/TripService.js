@@ -17,7 +17,7 @@ export default function TripService(UserService) {
       assert(typeof id === 'number');
       return UserService.beeline({
         method: 'GET',
-        url: '/trips/' + id + '/latest_info',
+        url: '/trips/' + id + '/latestInfo',
       }).then(function(response) {
         return response.data;
       });
