@@ -18,6 +18,7 @@
     height: 100%;
     width: 100%;
   }
+  
   .service-cancellation {
     @include display-flex;
     @include flex-direction(column);
