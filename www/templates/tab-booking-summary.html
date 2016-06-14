@@ -64,10 +64,8 @@
       <h3 class="item item-divider">
         Selected Dates
       </h3>
-      <price-calculator
-        class="item"
-        booking="book"
-        read-only="true"></price-calculator>
+      <price-calculator class="item" booking="book" read-only="true">
+      </price-calculator>
     </section>
 
     <section class="card" ng-if="false">
@@ -111,8 +109,8 @@
       Please ensure that your credit card is ready for the next step in the booking process.
 
       <button class="button primary-button"
-          ng-click="loginBeforePay()"
-          ng-disabled="!book.termsChecked || waitingForPaymentResult">
+              ng-click="loginBeforePay()"
+              ng-disabled="!book.termsChecked || waitingForPaymentResult">
         Confirm and Pay
       </button>
     </section>
