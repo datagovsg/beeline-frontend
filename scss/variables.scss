@@ -20,18 +20,6 @@ $bus-stop-selector-padding-bottom: 5px;
 $stopMarkerWidth: 30px;
 $stopMarkerRightMargin: 1em;
 
-//datepicker variables in bookingDates.scss
-
-$picker-header-bg: #fff;
-$empty-day-background: #eee;
-$picker-day-today: #000;
-$non-pickable-day-background: #eee;
-$non-pickable-day-color: #bbb;
-$pickable-day-non-picked-background: #eee;
-$pickable-day-non-picked-color: #000;
-$pickable-day-picked-background: $royal;
-$pickable-day-picked-color: #fff;
-
 ////////////////////////////////////////////////////////////////////////////////
 // Ionic variables to be overriden
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +35,20 @@ $energized:                       #ffe76e;
 // $assertive:                       #ef473a !default;
 $royal:                           #4b3863;
 $dark:                            #444 !default;
+
+
+//datepicker variables in bookingDates.scss
+
+$picker-header-bg: #fff;
+$empty-day-background: #eee;
+$picker-day-today: #000;
+$non-pickable-day-background: #eee;
+$non-pickable-day-color: #bbb;
+$pickable-day-non-picked-background: #eee;
+$pickable-day-non-picked-color: #000;
+$pickable-day-picked-background: $royal;
+$pickable-day-picked-color: #fff;
+
 
 // // Base
 // // -------------------------------
