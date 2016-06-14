@@ -27,9 +27,16 @@
   margin-right: auto;
 }
 
+//menu tab
 .tab-title {
   text-transform: uppercase;
 }
+
+//routes page tab menu
+.tab-title-large {
+  font-size: $font-size-base;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // New global styles
@@ -133,6 +140,56 @@ td {
     opacity: 0.8;
   }
 }
+
+.tabs-sub {
+  height: $tabs-height-short;
+}
+
+// Font-size overrides
+// -------------------------------
+
+.item-note {
+  font-size: $item-font-size;
+}
+
+
+// popup overrides
+// -------------------------------
+
+
+.popup-title {
+  padding: 30px 20px 10px;
+  font-size: $font-size-large;
+  font-weight: bold;
+}
+.popup-sub-title {
+  margin-bottom: 20px;
+  padding: 0 10px;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+}
+
+
+// input overrides
+// -------------------------------
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"] {
+  padding-left: 10px;
+}
+
 
 
 /** FIXES FOR BUGS **/

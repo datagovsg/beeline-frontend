@@ -1,5 +1,35 @@
+/* Style for modal in login status in settings page - contact us and FAQ */
 .settings {
   .account-section {
     text-align: center;
+  }
+}
+/* Style for modals in settings - contact us and FAQ */
+.settings-modal {
+  padding-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  p {
+    font-size: $font-size-base;
+    color: $base-color;
+    padding-bottom: 30px;
+  }
+}
+/* Style for the legal modals in settings - Terms of Use and Privacy Policy */
+.legal {
+  h2 {
+    padding-top: 30px;
+  }
+  ol {
+    list-style-type: decimal;
+  }
+  ol,
+  ul {
+    padding-top: 10px;
+    padding-left: 15px;
+    li {
+      padding-top: 20px;
+      padding-left: 10px;
+    }
   }
 }

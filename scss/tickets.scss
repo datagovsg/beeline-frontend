@@ -11,13 +11,16 @@
       height: 100%;
       width: 100%;
       text-align: center;
-          p {
-            max-width: 18em;
-          }
+      h2 {
+        margin-top: 30px;
+      }
+      p {
+        margin-top: 5px;
+        max-width: 18em;
+      }
+      .primary-button {
+        margin-top: 20px;
+      }
     }
   }
-}
-
-.space{
-  padding-top: 10px;
 }

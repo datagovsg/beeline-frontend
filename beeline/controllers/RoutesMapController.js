@@ -116,7 +116,7 @@ export default function($scope, $state, $cordovaGeolocation, $rootScope,
         // Need to use the rootscope since ionic view enter stuff doesnt seem
         // to propagate down to child views and scopes
         // ////////////////////////////////////////////////////////////////////////
-        $rootScope.$on("$ionicView.enter", function(event, data) {
+        $scope.$on("mapRequireResize", function(event, data) {
           googleMaps.event.trigger(gmap, 'resize');
         });
         // ////////////////////////////////////////////////////////////////////////
