@@ -82,18 +82,18 @@
       <form ng-submit="addPromoCode()" class="item" name="promoCode">
         <label class="item item-input">
           Promo Code
-          <input
-                type="text"
-                placeholder="Enter your code here"
-                ng-required="true"
-                name="promocode"
-                ng-model="book.currentPromoCode"
-                />
+          <input type="text"
+                 placeholder="Enter your code here"
+                 ng-required="true"
+                 name="promocode"
+                 ng-model="book.currentPromoCode"
+                 />
         </label>
         <button type="submit"
-              class="button button-block button-royal"
-              ng-disabled="promoCode.$invalid"
-              >Add Code</button>
+                class="button button-block button-royal"
+                ng-disabled="promoCode.$invalid">
+            Add Code
+        </button>
       </form>
     </section>
 
