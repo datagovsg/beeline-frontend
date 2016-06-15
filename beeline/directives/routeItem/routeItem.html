@@ -3,11 +3,11 @@
   <div class="line"></div>
   <div class="start">
     <span class="time">{{ route | routeStartTime | formatTime:true }}</span>
-    <span class="road">{{ route | routeStartRoad }}</span>
+    <span class="road">{{ route.from }}</span>
   </div>
   <div class="end">
     <span class="time">{{ route | routeEndTime | formatTime:true }}</span>
-    <span class="road">{{ route | routeEndRoad }}</span>
+    <span class="road">{{ route.to }}</span>
   </div>
   <span class="active">active</span>
 </div>
