@@ -1,6 +1,12 @@
 .tickets {
-  .no-tickets {
-    .item {
+  .scroll {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    .no-tickets.item {
       @include display-flex;
       @include flex-direction(column);
       @include justify-content(center);
