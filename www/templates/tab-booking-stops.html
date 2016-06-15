@@ -1,7 +1,7 @@
 <ion-view id="pg_booking" view-title="Select Pick-up and Drop-off Points">
-  <ion-content class="fullscreen-map" has-bouncing="false">
+  <ion-content class="fullscreen-map" scroll="false">
     <form class="flex-col" name="stopsForm">
-      <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs>
+      <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
 
       <div class="route-info flex-shrink">
         <route-item route="book.route"></route-item>
@@ -16,15 +16,14 @@
 
       <!-- contains the map, the stop selectors
         and the locate me button -->
-      <div class="map-window flex-grow">
-        <ui-gmap-google-map
-          center="map.center"
-          zoom="map.zoom"
-          bounds="map.bounds"
-          control="map.control"
-          options="map.options"
-          data-tap-disabled="true"
-          >
+      <div class="map-area flex-grow">
+          <ui-gmap-google-map
+            center="map.center"
+            zoom="map.zoom"
+            bounds="map.bounds"
+            control="map.control"
+            options="map.options"
+            data-tap-disabled="true">
           <ui-gmap-marker
             ng-repeat="stop in book.boardStops"
             idKey="stop.id"

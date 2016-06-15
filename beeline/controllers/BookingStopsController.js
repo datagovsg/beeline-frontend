@@ -226,9 +226,16 @@ export default [
 
       function computeStops() {
         var trips = $scope.book.route.trips;
-        var stops = BookingService.computeStops(trips);
-        $scope.book.boardStops = stops[0];
-        $scope.book.alightStops = stops[1];
+        var [boardStops, alightStops] = BookingService.computeStops(trips);
+        $scope.book.boardStops = boardStops;
+        $scope.book.alightStops = alightStops;
+
+        if (boardStops.length == 1) {
+          $scope.book.boardStop = boardStops[0].id;
+        }
+        if (alightStops.length == 1) {
+          $scope.book.alightStop = alightStops[0].id;
+        }
       }
 
       function panToStops() {
