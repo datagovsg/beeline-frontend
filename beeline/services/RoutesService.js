@@ -62,7 +62,7 @@ export default function RoutesService($http, SERVER_URL, UserService) {
       var options = _.assign({
         start_date: startDate.getTime(),
         end_date: endDate.getTime(),
-      }, {})
+      }, options)
 
       if (options) {
         url += '&' + querystring.stringify(options)
