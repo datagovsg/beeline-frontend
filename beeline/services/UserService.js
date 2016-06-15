@@ -147,10 +147,18 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     })
     .then(function(response) {
       user = response.data;
+
+      if (!user) {
+        logOut(); // user not found
+        return false;
+      }
+
       return true;
     }, function(error) {
-      logOut();
-      return false;
+      if (error.status == 403 || error.status == 401) {
+        logOut();
+        return false;
+      }
     });
   };
 
