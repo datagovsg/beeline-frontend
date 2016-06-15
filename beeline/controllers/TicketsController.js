@@ -18,10 +18,10 @@ export default [
     // Grab the tickets
     $scope.tickets = {};
     $scope.$on('$ionicView.beforeEnter', () => {
-      $scope.requery(true);
+      $scope.refreshTickets(true);
     });
 
-    function requery(ignoreCache) {
+    function refreshTickets(ignoreCache) {
       TicketService.getCategorizedTickets(ignoreCache).then((categorizedTickets) => {
         $scope.tickets.today = categorizedTickets.today;
         $scope.tickets.soon = categorizedTickets.afterToday;
@@ -29,12 +29,12 @@ export default [
         $scope.$broadcast('scroll.refreshComplete');
         $scope.error = false;
       })
-      .then(null, (error) => {
+      .catch((error) => {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.error = true;
       });
     }
 
-    $scope.requery = requery;
+    $scope.refreshTickets = refreshTickets;
   }
 ];

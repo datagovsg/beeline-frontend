@@ -2,7 +2,7 @@
   <ion-content>
     <ion-refresher ng-if="error"
                    pulling-text="Pull to refresh..."
-                   on-refresh="requery(true)">
+                   on-refresh="refreshTickets(true)">
     </ion-refresher>
 
     <div class="item item-text-wrap no-tickets" ng-if="!user">

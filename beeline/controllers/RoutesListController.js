@@ -31,7 +31,7 @@ export default function($scope, $state, RoutesService, $q) {
     filteredActiveRoutes: [],
   };
 
-  $scope.requery = function (ignoreCache) {
+  $scope.refreshRoutes = function (ignoreCache) {
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
 
@@ -49,7 +49,7 @@ export default function($scope, $state, RoutesService, $q) {
       $scope.$broadcast('scroll.refreshComplete');
       $scope.error = null;
     })
-    .then(null, () => {
+    .catch(() => {
       $scope.$broadcast('scroll.refreshComplete');
       $scope.error = true;
     })
@@ -68,5 +68,5 @@ export default function($scope, $state, RoutesService, $q) {
     });
   });
 
-  $scope.requery();
+  $scope.refreshRoutes();
 }
