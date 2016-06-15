@@ -27,10 +27,13 @@
 .picker-navigate.disabled:hover {
   color: #ddd;
   cursor: default;
-}
-.picker-month {
-  width: 66.66%;
 } */
+
+.picker-month {
+  //width: 66.66%;
+  font-weight: bold;
+  font-size: $font-size-base;
+}
 
 .picker-days-week-row {
   div {
@@ -105,6 +108,7 @@
 
 //legend stuff
 #pg_bookdate {
+
   multiple-date-picker {
     margin: 0;
     display: block;
@@ -117,8 +121,10 @@
   .previously-booked {
     color: $assertive;
   }
+
   .legend-table {
-    margin: 1em auto;
+    margin: 0 auto;
+
     td {
       padding: 2px;
       border: 0;
@@ -133,4 +139,15 @@
       font-size: $font-size-small;
     }
   }
+}
+
+.datepicker {
+  background-color: $empty-day-background;
+  padding: 1em 0;
+
+}
+
+.picker-navigate-right-arrow,
+.picker-navigate-left-arrow {
+  font-size: 2em;
 }
