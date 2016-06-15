@@ -211,10 +211,10 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptVerificationCode = function(telephone){
     return verifiedPrompt({
       title: 'Verification',
-      subTitle: 'Enter the 6 digit code sent to '+telephone,
+      subTitle: 'Enter the 6-digit code sent to '+telephone,
       inputs: [
         {
-          type: 'text',
+          type: 'tel',
           name: 'code',
           pattern: VALID_VERIFICATION_CODE_REGEX
         }
