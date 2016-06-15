@@ -25,43 +25,54 @@
   left: 0;
   top: 0;
 
-  .bar-subheader {
-    padding: 0;
+  ion-content {
     display: flex;
     flex-direction: column;
-    height: calc(50% - #{$bar-height});
+    
+    /* Our button bar has a custom height */
+    bottom: $bar-height + 2 * $item-padding;
 
-    ui-gmap-google-map {
+    .map-area {
+      flex: 0 0 45%;
+
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+
+      ui-gmap-google-map {
+        flex: 1 1 auto;
+        position: relative;
+
+        div.angular-google-map {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+        }
+        .angular-google-map-container {
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+
+    .stops-list {
       flex: 1 1 auto;
-      position: relative;
+      /* Hide the scroll-bar in browsers */
+      overflow: hidden;
 
-      div.angular-google-map {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-      }
-      .angular-google-map-container {
-        height: 100%;
-        width: 100%;
+      div.time, div.details {
+        display: inline-block;
+        vertical-align: top;
       }
     }
   }
 
-  ion-content {
-    top: 50%;
-    bottom: $bar-height + 2*$item-padding;
-
-    div.time, div.details {
-      display: inline-block;
-      vertical-align: top;
-    }
-  }
 
   .bar.bar-footer {
     /* overriding because the bar-footer is otherwise
       fixed-height, but we want padding around the button
       */
-    height: $bar-height + 2*$item-padding;
+    height: $bar-height + 2 * $item-padding;
     padding: $item-padding;
     button {
       flex: 1 1 auto;
