@@ -83,7 +83,10 @@
   color: $pickable-day-picked-color;
   cursor: pointer;
 }
-.picker-day.picker-selected {
+
+.picker-day.picker-selected,
+.picker-day.today.picker-selected,
+.picker-day.today.picker-selected:hover {
   background-color: $pickable-day-picked-background;
   color: $pickable-day-picked-color;
   border: 0px;
