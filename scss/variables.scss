@@ -36,16 +36,19 @@ $assertive:                       #ff6c6a;
 $royal:                           #4b3863;
 $dark:                            #444;
 
-////////////////////////////////////////////////////////////////////////////////
-// Date Picker colours
-////////////////////////////////////////////////////////////////////////////////
-$datepicker-default-bg: #DDD;
-$datepicker-invalid-text: #BBB;
-$datepicker-valid-text: #000;
-$datepicker-previously-booked-text: #F00;
-$datepicker-selected-bg: #FFF;
-$datepicker-selected-bg-dragging: 0.5 * $royal + #888 * 0.5;
-$datepicker-default-bg-dragging: 0.5 * $royal + #FFF * 0.5;
+
+//datepicker variables in bookingDates.scss
+
+$picker-header-bg: #fff;
+$empty-day-background: #eee;
+$picker-day-today: #000;
+$non-pickable-day-background: #eee;
+$non-pickable-day-color: #bbb;
+$pickable-day-non-picked-background: #eee;
+$pickable-day-non-picked-color: #000;
+$pickable-day-picked-background: $royal;
+$pickable-day-picked-color: #fff;
+
 
 // // Base
 // // -------------------------------
@@ -56,7 +59,7 @@ $font-family-light-sans-serif:    "Lato", '-apple-system', "HelveticaNeue-Light"
 // $font-family-monospace:           monospace !default;
 
 // $font-family-base:                $font-family-sans-serif !default;
-// $font-size-base:                  14px !default;
+$font-size-base:                  15px;
 // $font-size-large:                 18px !default;
 // $font-size-small:                 11px !default;
 
@@ -190,7 +193,7 @@ $button-energized-text:           $dark;
 // // Bars
 // // -------------------------------
 
-// $bar-height:                      44px !default;
+$bar-height:                      45px;
 // $bar-title-font-size:             17px !default;
 // $bar-padding-portrait:            5px !default;
 // $bar-padding-landscape:           5px !default;
@@ -264,7 +267,8 @@ $button-energized-text:           $dark;
 // // Tabs
 // // -------------------------------
 
-// $tabs-height:                     49px !default;
+$tabs-height:                     52px;
+$tabs-height-short:               40px;
 // $tabs-text-font-size:             14px !default;
 // $tabs-text-font-size-side-icon:   10px !default;
 // $tabs-icon-size:                  32px !default;
@@ -322,7 +326,7 @@ $tab-item-max-width:              400px;
 // // Items
 // // -------------------------------
 
-// $item-font-size:                  16px !default;
+$item-font-size:                  15px;
 // $item-border-width:               1px !default;
 // $item-padding:                    16px !default;
 
@@ -649,7 +653,7 @@ $input-color-placeholder:         $hint-color;
 // // Popups
 // // -------------------------------
 
-// $popup-width:                     250px !default;
+$popup-width:                     80%;
 // $popup-enter-animation:           superScaleIn !default;
 // $popup-enter-animation-duration:  0.2s !default;
 // $popup-leave-animation-duration:  0.1s !default;

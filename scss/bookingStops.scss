@@ -3,16 +3,6 @@
   $button-bar-height: 85px;
   $list-offset: 10px;
 
-  /*
-  route-info: 60px;
-  map: whatever's remaining
-  button-container: 60px
-  */
-  .scroll {
-    width: 100%;
-    height: 100%;
-  }
-
   .flex-col {
     display: flex;
     flex-direction: column;
@@ -25,81 +15,90 @@
     flex: 1 1 auto;
   }
 
-  .route-info {
-    display: flex;
-    flex-direction: row;
-    background: white;
-    height: $route-info-height;
-
-    route-item {
-      padding: 10px;
-      width: 100%;
-      background-color: $light;
-      flex: 1 1 auto;
-
-      .active {
-        display: none;
-      }
-    }
-    .price {
-      padding: 3px 5px;
+  ion-content {
+    .route-info {
       flex: 0 0 auto;
-      align-self: flex-end;
+      display: flex;
+      flex-direction: row;
+      background: white;
+      height: $route-info-height;
 
-      .from {
-        color: $hint-color;
-        padding: 3px 0px;
+      route-item {
+        padding: 10px;
+        background-color: $light;
+        flex: 1 1 auto;
+        overflow-x: hidden;
+
+        .active {
+          display: none;
+        }
+      }
+      .price {
+        padding: 3px 5px;
+        flex: 0 0 auto;
+        align-self: flex-end;
+
+        .from {
+          color: $hint-color;
+          padding: 3px 0px;
+        }
       }
     }
-  }
 
-  .map-window {
-    position: relative;
-  }
+    .map-area {
+      flex: 1 1 auto;
+      position: relative;
 
-  .angular-google-map, .angular-google-map-container {
-    width: 100%;
-    height: 100%;
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
+      ui-gmap-google-map {
+        display: block;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        position: absolute;
 
-    /* Hides the terms of use */
-    .gmnoprint, .gm-style-cc {
-      display: none;
+        .angular-google-map, .angular-google-map-container {
+          width: 100%;
+          height: 100%;
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 0;
+
+          /* Hides the terms of use */
+          .gmnoprint, .gm-style-cc {
+            display: none;
+          }
+        }
+      } /* ui-gmap-google-map */
+      
+      .stop-inputs {
+        bottom: $content-padding;
+        position: absolute;
+        width: 90%;
+        left: 5%;
+
+        .bus-stop-selector:nth-of-type(1) .stop-icon {
+          background: url('../img/RoutePairBigStart.svg') 0 0 no-repeat transparent;
+          background-size: 24px 24px;
+        }
+
+        .bus-stop-selector:nth-of-type(2) .stop-icon {
+          background: url('../img/RoutePairBigEnd.svg') 0 0 no-repeat transparent;
+          background-size: 24px 24px;
+        }
+      }
+
+      .locate-button {
+        top: $content-padding;
+        right: $content-padding;
+        position: absolute;
+      }
     }
-  }
 
-  .button-bar { /* where the "Continue" button is */
-    position: absolute;
-    height: $button-bar-height;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-  }
-
-  ion-list.stop-inputs {
-    bottom: 0px;
-    position: absolute;
-    width: 90%;
-    left: 5%;
-
-    .bus-stop-selector:nth-of-type(1) .stop-icon {
-      background: url('../img/RoutePairBigStart.svg') 0 0 no-repeat transparent;
-      background-size: 24px 24px;
+    .button-bar { /* where the "Continue" button is */
+      flex: 0 0 auto;
     }
-
-    .bus-stop-selector:nth-of-type(2) .stop-icon {
-      background: url('../img/RoutePairBigEnd.svg') 0 0 no-repeat transparent;
-      background-size: 24px 24px;
-    }
-  }
-
-  .locate-button {
-    top: $content-padding;
-    right: $content-padding;
-    position: absolute;
   }
 }
 

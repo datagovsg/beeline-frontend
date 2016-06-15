@@ -39,9 +39,9 @@ export default function RoutesService($http, SERVER_URL, UserService) {
 
     // Retrive the data on a single route
     // TODO refactor this to match getRoutes and searchRoutes
-    getRoute: function(routeId, ignoreCache) {
+    getRoute: function(routeId, ignoreCache, options) {
       assert.equal(typeof routeId, 'number');
-      return instance.getRoutes(ignoreCache)
+      return instance.getRoutes(ignoreCache, options)
       .then(function(routes) {
         return _.find(routes, {id: routeId});
       });
@@ -62,7 +62,7 @@ export default function RoutesService($http, SERVER_URL, UserService) {
       var options = _.assign({
         start_date: startDate.getTime(),
         end_date: endDate.getTime(),
-      }, {})
+      }, options)
 
       if (options) {
         url += '&' + querystring.stringify(options)
@@ -119,7 +119,7 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     // If not logged in then just returns an empty array
     getRecentRoutes: function(ignoreCache) {
       if (UserService.getUser()) {
-        if (recentRoutesCache && !ignoreCache) return recentRoutesCache;
+        if (recentRoutesCache && !ignoreCache) return Promise.resolve(recentRoutesCache);
         return UserService.beeline({
           method: 'GET',
           url: '/routes/recent?limit=10'

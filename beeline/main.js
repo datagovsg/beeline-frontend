@@ -5,9 +5,12 @@ import {companyLogo} from './shared/imageSources';
 // Directive Imports
 import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
 
+global.moment = require('moment')
+
 // Configuration Imports
 import configureRoutes from './router.js';
 import AngularGoogleMap from 'angular-google-maps';
+import MultipleDatePicker from 'multiple-date-picker/multipleDatePicker';
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -15,7 +18,8 @@ import AngularGoogleMap from 'angular-google-maps';
 var app = angular.module('beeline', [
   'ionic',
   'ngCordova',
-  'uiGmapgoogle-maps'
+  'uiGmapgoogle-maps',
+  'multipleDatePicker',
 ])
 .constant('SERVER_URL', 'http://staging.beeline.sg')
 .filter('formatDate', () => formatDate)
@@ -60,12 +64,10 @@ var app = angular.module('beeline', [
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
 .controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
-.directive('datePicker', DatePicker)
 .directive('myTouchstart', TouchStart)
 .directive('myTouchend', TouchEnd)
 .directive('myTouchmove', TouchMove)
 .directive('myMousemove', MouseMove)
-.directive('qtyInput', require('./directives/qtyInput/qtyInput').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
@@ -80,8 +82,6 @@ var app = angular.module('beeline', [
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.navBar.alignTitle('center');
-  /* non-JS scrolling does not work on some devices */
-  $ionicConfigProvider.scrolling.jsScrolling(false);
 })
 .config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({

@@ -63,16 +63,14 @@
 }
 .popup-title {
   margin: 0;
-  padding: 30px 20px 10px;
-  font-size: 18px;
-  font-weight: bold;
+  padding: 0;
+  font-size: 15px;
 }
 .popup-sub-title {
-  margin-bottom: 20px;
-  padding: 0 10px;
+  margin: 5px 0 0 0;
+  padding: 0;
   font-weight: normal;
-  font-size: 15px;
-  line-height: $line-height-base;
+  font-size: 11px;
 }
 .popup-body {
   padding: 10px;
