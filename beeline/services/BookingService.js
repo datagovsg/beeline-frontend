@@ -3,13 +3,10 @@ import {formatDate, formatDateMMMdd, formatTime, formatUTCDate} from '../shared/
 import _ from 'lodash';
 
 export default function(UserService, CompanyService, RoutesService, $http) {
-  var rv = {};
-
-  rv.prepareTrips = function(booking) {
+  this.prepareTrips = function(booking) {
     // create a list of trips
     var trips = [];
 
-    console.log(booking);
     for (let dt of booking.selectedDates) {
       trips.push({
         tripId: booking.route.tripsByDate[dt].id,
@@ -21,7 +18,6 @@ export default function(UserService, CompanyService, RoutesService, $http) {
                 .tripStops
                 .filter(ts => booking.alightStopId == ts.stop.id)
                 [0].id,
-        // qty: booking.qty,
       });
     }
     return trips;
@@ -30,7 +26,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
   /* If a booking has selectedDates array, then it
     checks the prices.
   */
-  rv.computePriceInfo = function(booking) {
+  this.computePriceInfo = function(booking) {
     if (!booking.selectedDates ||
           booking.selectedDates.length == 0) {
       return Promise.resolve({
@@ -68,7 +64,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
     }
   };
 
-  rv.summarizePrices = function(booking) {
+  this.summarizePrices = function(booking) {
     console.log(booking);
     if (!booking.selectedDates) {
       return [];
@@ -92,7 +88,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
     return rv;
   };
 
-  rv.computeChanges = function(route) {
+  this.computeChanges = function(route) {
     // convert dates (should be in ISO format therefore sortable)
     route.trips = _.sortBy(route.trips, trip => trip.date);
 
@@ -250,7 +246,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
     return changes;
   };
 
-  rv.computeStops = function(trips) {
+  this.computeStops = function(trips) {
     var tripStops = _.flatten(trips.map(trip => trip.tripStops));
     var uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id);
     var stopData = _.keyBy(uniqueStops, ts => ts.stop.id);
@@ -265,6 +261,4 @@ export default function(UserService, CompanyService, RoutesService, $http) {
       });
     return [boardStops, alightStops];
   };
-
-  return rv;
 }
