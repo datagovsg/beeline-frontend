@@ -146,89 +146,96 @@ export default [
       });
       };
 
-    /* These function teaches the <bus-stop-selector> how
-     to display the stop id and description */
+      /* These function teaches the <bus-stop-selector> how
+       to display the stop id and description */
       $scope.getStopId = (stop) => stop.id;
       $scope.getStopDescription = (stop) =>
       formatTime(stop.time, true) + ' \u00a0\u00a0' + stop.description;
       $scope.getStopDescription2 = (stop) =>
       stop.road;
 
-    // FIXME: start/end marker on selected stops
+      // FIXME: start/end marker on selected stops
 
-    // Load the data for the selected route
-    // Which data?
-    // 1. Route info
-    // 2. Company info
-    // 3. Changes to route
+      // Load the data for the selected route
+      // Which data?
+      // 1. Route info
+      // 2. Company info
+      // 3. Changes to route
       $scope.lastDisplayedRouteId = null; // works if caching
       $scope.displayRouteInfo = function() {
         RoutesService.getRoute(parseInt($scope.book.routeId))
-      .then((route) => {
-        // 1. Route info
-        $scope.routePath = route.path.map(latlng => ({
-          latitude: latlng.lat,
-          longitude: latlng.lng,
-        }));
-        $scope.book.route = route;
-        console.log($scope.book.route);
-        computeStops();
-        panToStops();
+        .then((route) => {
+          // 1. Route info
+          $scope.routePath = route.path.map(latlng => ({
+            latitude: latlng.lat,
+            longitude: latlng.lng,
+          }));
+          $scope.book.route = route;
+          console.log($scope.book.route);
+          computeStops();
+          panToStops();
 
-        // 3. Check if we should display changes
-        if ($scope.lastDisplayedRouteId != $scope.book.routeId) {
-          var changes = BookingService.computeChanges(route);
-          $scope.book.changes = changes;
-          console.log(changes);
+          // 3. Check if we should display changes
+          if ($scope.lastDisplayedRouteId != $scope.book.routeId) {
+            var changes = BookingService.computeChanges(route);
+            $scope.book.changes = changes;
+            console.log(changes);
 
-          if (changes.priceChanges.length == 0 &&
-              changes.stopChanges.length == 0 &&
-              changes.timeChanges.length == 0) {
-              return;
-            }
+            if (changes.priceChanges.length == 0 &&
+                changes.stopChanges.length == 0 &&
+                changes.timeChanges.length == 0) {
+                return;
+              }
 
-          // FIXME: We are hiding this for now, until
-          // we get the UI right. We should be pulling
-          // the announcements from RouteAnnouncements instead
+            // FIXME: We are hiding this for now, until
+            // we get the UI right. We should be pulling
+            // the announcements from RouteAnnouncements instead
 
-          // if ($scope.changesModal) {
-          //     $scope.changesModal.show();
-          //   }
-          // else {
-          //   $ionicModal.fromTemplateUrl('changes-message.html', {
-          //     scope: $scope,
-          //     animation: 'slide-in-up',
-          //   })
-          //   .then(modal => {
-          //     $scope.changesModal = modal;
-          //     $scope.changesModal.show();
-          //   });
-          // }
-        }
-        $scope.lastDisplayedRouteId = $scope.book.routeId;
+            // if ($scope.changesModal) {
+            //     $scope.changesModal.show();
+            //   }
+            // else {
+            //   $ionicModal.fromTemplateUrl('changes-message.html', {
+            //     scope: $scope,
+            //     animation: 'slide-in-up',
+            //   })
+            //   .then(modal => {
+            //     $scope.changesModal = modal;
+            //     $scope.changesModal.show();
+            //   });
+            // }
+          }
+          $scope.lastDisplayedRouteId = $scope.book.routeId;
 
-        // 2. Fill in the transport company info
-        return CompanyService.getCompany(+route.trips[0].transportCompanyId)
-        .then(function(result) {
-          $scope.book.company = result;
-        });
-      })
-      .then(null, err => console.log(err.stack));
+          // 2. Fill in the transport company info
+          return CompanyService.getCompany(+route.trips[0].transportCompanyId)
+          .then(function(result) {
+            $scope.book.company = result;
+          });
+        })
+        .then(null, err => console.log(err.stack));
       };
 
       $scope.closeChangesModal = function() {
         $scope.changesModal.hide();
       };
 
-    /* ----- Methods ----- */
-    // Click function for User Position Icon
+      /* ----- Methods ----- */
+      // Click function for User Position Icon
       $scope.getUserLocation = MapOptions.locateMe($scope.map.control);
 
       function computeStops() {
         var trips = $scope.book.route.trips;
-        var stops = BookingService.computeStops(trips);
-        $scope.book.boardStops = stops[0];
-        $scope.book.alightStops = stops[1];
+        var [boardStops, alightStops] = BookingService.computeStops(trips);
+        $scope.book.boardStops = boardStops;
+        $scope.book.alightStops = alightStops;
+
+        if (boardStops.length == 1) {
+          $scope.book.boardStop = boardStops[0].id;
+        }
+        if (alightStops.length == 1) {
+          $scope.book.alightStop = alightStops[0].id;
+        }
       }
 
       function panToStops() {
@@ -240,11 +247,11 @@ export default [
       }
         var bounds = new google.maps.LatLngBounds();
         for (let s of stops) {
-        bounds.extend(new google.maps.LatLng(
-          s.coordinates.coordinates[1],
-          s.coordinates.coordinates[0]
-        ));
-      }
+          bounds.extend(new google.maps.LatLng(
+            s.coordinates.coordinates[1],
+            s.coordinates.coordinates[0]
+          ));
+        }
         $scope.map.control.getGMap().fitBounds(bounds);
       }
 

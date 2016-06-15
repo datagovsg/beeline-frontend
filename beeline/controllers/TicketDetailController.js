@@ -28,32 +28,38 @@ export default [
 
     // Initialize the necessary basic data data
     $scope.user = UserService.getUser();
-    $scope.map = MapOptions.defaultMapOptions();
-    $scope.map.lines = [
-      {
-        id: 'busLine',
-        path: [],
-        stroke: {
-          color: '#333',
-          opacity: 1.0,
-          weight: 3,
-        },
-      },
-      {
-        id: 'routeLine',
-        path:[],
-        stroke: {opacity: 0},
-        icons: [{
-          icon: {
-            path: 'M 0,-1 0,1',
-            strokeOpacity: 0.5,
-            scale: 3
+    $scope.map = MapOptions.defaultMapOptions({
+      lines: [
+        {
+          id: 'busLine',
+          path: [],
+          stroke: {
+            color: '#333',
+            opacity: 1.0,
+            weight: 3,
           },
-          offset: '0',
-          repeat: '20px'
-        }]
+        },
+        {
+          id: 'routeLine',
+          path:[],
+          stroke: {opacity: 0},
+          icons: [{
+            icon: {
+              path: 'M 0,-1 0,1',
+              strokeOpacity: 0.5,
+              scale: 3
+            },
+            offset: '0',
+            repeat: '20px'
+          }]
+        }
+      ],
+      busLocation: {
+        coordinates: null,
+        icon: null,
       }
-    ];
+    });
+
     var ticketPromise = TicketService.getTicketById(+$stateParams.ticketId);
     var tripPromise = ticketPromise.then((ticket) => {
       return TripService.getTripData(+ticket.alightStop.tripId);
@@ -122,39 +128,29 @@ export default [
       });
     });
 
-    // // Draw the path the bus has taken
-    // $scope.$watch('info', function(info) { if (info) {
-    //   // Draw the bus path
-    //   var busLine = _.find($scope.map.lines, { id: 'busLine' });
-    //   busLine.path = [];
-    //   _.each(info.pings, function(ping) {
-    //     var latLng = info.pings[i].coordinates.coordinates;
-    //     busLine.path.push({
-    //       latitude: latLng[1],
-    //       longitude: latLng[0]
-    //     });
-    //   });
-    // }});
-
-    // Draw the icon for latest bus location
-    $scope.$watch('info', function(info) { if (info && info.pings.length > 0) {
-      var busPosition = info.pings[0].coordinates.coordinates;
-      var locationIndex = _.findIndex($scope.map.markers, (marker) => {
-        marker.id === 'busLocation';
-      });
-      $scope.map.markers[locationIndex] = {
-        id: 'busLocation',
-        coords: {
-          latitude: busPosition[1],
-          longitude: busPosition[0],
-        },
-        icon: {
+    uiGmapGoogleMapApi.then((googleMaps) => {
+      $scope.map.busLocation.icon = {
           url: 'img/busMarker01.png',
           scaledSize: new googleMaps.Size(80, 80),
           anchor: new googleMaps.Point(40, 73),
-        },
-      };
-    }});
+        };
+    })
+
+    // Draw the icon for latest bus location
+    $scope.$watch('info', function(info) {
+      if (info && info.pings.length > 0) {
+        var busPosition = info.pings[0].coordinates.coordinates;
+        $scope.map.busLocation.coordinates = {
+          latitude: busPosition[1],
+          longitude: busPosition[0],
+        };
+
+        $scope.map.lines[0].path = info.pings.map(ping => ({
+          latitude: ping.coordinates.coordinates[1],
+          longitude: ping.coordinates.coordinates[0],
+        }));
+      }
+    });
 
     // Pan and zoom to the bus location when the map is ready
     // Single ping request for updating the map initially

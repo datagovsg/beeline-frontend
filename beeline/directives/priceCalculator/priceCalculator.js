@@ -31,8 +31,13 @@ export default [
             if (promise != latestRequest)
               return;
             scope.priceInfo = priceInfo;
+            scope.errorMessage = null;
           })
-          .then(stopCalculating, stopCalculating);
+          .catch((error) => {
+            scope.priceInfo = [];
+            scope.errorMessage = error.data.message;
+          })
+          .then(stopCalculating);
 
           latestRequest = promise;
         }, true);
