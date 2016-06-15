@@ -146,21 +146,21 @@ export default [
       });
       };
 
-    /* These function teaches the <bus-stop-selector> how
-     to display the stop id and description */
+      /* These function teaches the <bus-stop-selector> how
+       to display the stop id and description */
       $scope.getStopId = (stop) => stop.id;
       $scope.getStopDescription = (stop) =>
       formatTime(stop.time, true) + ' \u00a0\u00a0' + stop.description;
       $scope.getStopDescription2 = (stop) =>
       stop.road;
 
-    // FIXME: start/end marker on selected stops
+      // FIXME: start/end marker on selected stops
 
-    // Load the data for the selected route
-    // Which data?
-    // 1. Route info
-    // 2. Company info
-    // 3. Changes to route
+      // Load the data for the selected route
+      // Which data?
+      // 1. Route info
+      // 2. Company info
+      // 3. Changes to route
       $scope.lastDisplayedRouteId = null; // works if caching
       $scope.displayRouteInfo = function() {
         RoutesService.getRoute(parseInt($scope.book.routeId))
@@ -187,21 +187,23 @@ export default [
                 return;
               }
 
-            console.log('Changes detected: diplaying message box');
+            // FIXME: We are hiding this for now, until
+            // we get the UI right. We should be pulling
+            // the announcements from RouteAnnouncements instead
 
-            if ($scope.changesModal) {
-                $scope.changesModal.show();
-              }
-            else {
-                $ionicModal.fromTemplateUrl('changes-message.html', {
-                scope: $scope,
-                animation: 'slide-in-up',
-              })
-              .then(modal => {
-                $scope.changesModal = modal;
-                $scope.changesModal.show();
-              });
-              }
+            // if ($scope.changesModal) {
+            //     $scope.changesModal.show();
+            //   }
+            // else {
+            //   $ionicModal.fromTemplateUrl('changes-message.html', {
+            //     scope: $scope,
+            //     animation: 'slide-in-up',
+            //   })
+            //   .then(modal => {
+            //     $scope.changesModal = modal;
+            //     $scope.changesModal.show();
+            //   });
+            // }
           }
           $scope.lastDisplayedRouteId = $scope.book.routeId;
 
@@ -218,8 +220,8 @@ export default [
         $scope.changesModal.hide();
       };
 
-    /* ----- Methods ----- */
-    // Click function for User Position Icon
+      /* ----- Methods ----- */
+      // Click function for User Position Icon
       $scope.getUserLocation = MapOptions.locateMe($scope.map.control);
 
       function computeStops() {
@@ -267,30 +269,19 @@ export default [
       $scope.applyTapAlight = (x) => $scope.$apply(() => $scope.tapAlight(x));
       $scope.applyTapBoard = (x) => $scope.$apply(() => $scope.tapBoard(x));
 
-      // Check whether:
-      // [1] Start stop is specified
-      // [2] End stop is specified
-      // [3] Checkbox is checked
+      // Extract the coordinates of the selected stops
       $scope.$watchGroup([
         'book.boardStop',
         'book.alightStop',
-        'book.termsChecked',
-      ], function() {
-        if ($scope.book.termsChecked == true) {
-        $scope.book.errmsg = '';
-        var curr = $scope.book;
+      ], function () {
+        $scope.book.boardStopStop = $scope.book.boardStop ?
+          $scope.book.boardStops.find(x => x.id == $scope.book.boardStop)
+          : null;
+        $scope.book.alightStopStop = $scope.book.alightStop ?
+          $scope.book.alightStops.find(x => x.id == $scope.book.alightStop)
+          : null;
+      })
 
-        if (typeof (curr.boardStop) == 'undefined')
-            $scope.book.errmsg = 'Please specify a Boarding Stop.';
-        else if (typeof (curr.alightStop) == 'undefined')
-            $scope.book.errmsg = 'Please specify a Alighting Stop.';
-          else
-          {
-            $scope.book.errmsg = '';
-            $scope.book.allDataNotFilled = false;
-          }
-      }
-      });
     });
   }
 ];
