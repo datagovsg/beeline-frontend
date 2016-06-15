@@ -18,6 +18,11 @@ export default [
           BookingService.computePriceInfo(scope.booking)
           .then((priceInfo) => {
             scope.priceInfo = priceInfo;
+            scope.errorMessage = null;
+          })
+          .then(null, (error) => {
+            scope.priceInfo = [];
+            scope.errorMessage = error.data.message;
           });
         }, true);
       }

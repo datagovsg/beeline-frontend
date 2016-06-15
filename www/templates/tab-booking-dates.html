@@ -1,38 +1,56 @@
 <ion-view id="pg_bookdate" view-title="Select Dates">
   <ion-content>
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
-    <date-picker
-        class="item"
-        valid-dates="book.validDates"
-        exhausted-dates="book.soldOutDates"
-        invalid-stop-dates="book.invalidStopDates"
-        min-date="book.minDate"
-        max-date="book.maxDate"
-        start-date="book.minDate"
-        dates="book.selectedDates"
-        booked-dates="book.bookedDates"
-        show-legend="true"
-    ></date-picker>
 
-	<div class="bookdetails item">
-    <h4>Selected Dates</h4>
-		<price-calculator
-      booking="book"
-      read-only="true"
-      ></price-calculator>
-	</div>
-  <div class="item">
-    <button
-          class="primary-button-centered primary-button"
-          ng-disabled="book.selectedDates.length == 0"
-          ui-sref="tabs.booking-summary({
-            routeId: book.routeId,
-            boardStop: book.boardStopId,
-            alightStop: book.alightStopId,
-            selectedDates: book.selectedDates
-          })">
-      Review Booking
-    </button>
-  </div>
+    <ion-spinner ng-if="disp.dataLoading"></ion-spinner>
+
+    <multiple-date-picker ng-model="disp.selectedDatesLocal" days-allowed="disp.daysAllowed" highlight-days="disp.highlightDays" disallow-back-past-months="true" disable-days-before="disp.today">
+    </multiple-date-picker>
+
+    <div class="datepicker">
+      <table class="table legend-table">
+        <tr>
+          <td class="picker-day exemplar">
+            #
+          </td>
+          <td class="label">Available</td>
+          <td class="picker-day picker-off exemplar">
+            #
+          </td>
+          <td class="label">Not Available</td>
+        </tr>
+        <tr>
+          <td class="picker-day picker-selected activated exemplar">
+            #
+          </td>
+          <td class="label">Selected dates</td>
+          <td class="picker-day picker-off previously-booked exemplar">
+            #
+          </td>
+          <td class="label">Prior booking(s)</td>
+        </tr>
+        <tr>
+          <td class="picker-day picker-off sold-out examplar">
+            #
+          </td>
+          <td class="label">Sold out</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="item">
+      <h4>Selected Dates</h4>
+      <price-calculator booking="book" read-only="true"></price-calculator>
+    </div>
+    <div class="item">
+      <button class="primary-button-centered primary-button" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.booking-summary({
+              routeId: book.routeId,
+              boardStop: book.boardStopId,
+              alightStop: book.alightStopId,
+              selectedDates: book.selectedDates
+            })">
+        Review Booking
+      </button>
+    </div>
   </ion-content>
 </ion-view>

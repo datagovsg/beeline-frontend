@@ -1,107 +1,133 @@
+//overrides to the multiple-date-picker style imported
+
+/* .multiple-date-picker {
+  user-select: none;
+} */
+
+.multiple-date-picker,
+.picker-days-row,
+.picker-days-week-row,
+.picker-top-row {
+  width: 100%;
+  background-color: $picker-header-bg;
+}
+
+/* .picker-top-row {
+  div {
+    display: inline-block;
+  }
+}
+.picker-navigate {
+  width: 16.66%;
+}
+.picker-navigate:hover {
+  cursor: pointer;
+}
+.picker-navigate.disabled,
+.picker-navigate.disabled:hover {
+  color: #ddd;
+  cursor: default;
+}
+.picker-month {
+  width: 66.66%;
+} */
+
+.picker-days-week-row {
+  div {
+    //width: 14.28%;
+    //display: inline-block;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+/* .picker-days-row {
+  div {
+    width: 14.28%;
+    display: inline-block;
+  }
+}
+.picker-days-row {
+  div {
+    width: 14.28%;
+    display: inline-block;
+  }
+}
+.picker-day,
+.picker-top-row {
+  padding: 10px 0;
+} */
+
+.picker-day {
+  background-color: $pickable-day-non-picked-background;
+  border: 1px solid transparent;
+  //box-sizing: border-box;
+  //color: $pickable-day-non-picked-color;
+}
+
+.picker-day.today,
+.picker-day.today.picker-selected,
+.picker-day.today:hover {
+  color: $picker-day-today;
+  font-weight: bold;
+}
+
+.picker-day.today.picker-off,
+.picker-day.today.picker-off:hover {
+  color: $non-pickable-day-color;
+  font-weight: bold;
+}
+
+.picker-day:not(.picker-off):not(.picker-empty):hover {
+  background-color: $pickable-day-picked-background;
+  color: $pickable-day-picked-color;
+  cursor: pointer;
+}
+.picker-day.picker-selected {
+  background-color: $pickable-day-picked-background;
+  color: $pickable-day-picked-color;
+  border: 0px;
+}
+.picker-day.picker-off,
+.picker-day.picker-off:hover {
+  background-color: $non-pickable-day-background;
+  color: $non-pickable-day-color;
+  //cursor: default;
+}
+.picker-day.picker-empty,
+.picker-day.picker-empty:hover {
+  background-color: $empty-day-background;
+  //cursor: default;
+}
+
+//legend stuff
 #pg_bookdate {
-  date-picker.item {
+  multiple-date-picker {
+    margin: 0;
     display: block;
-    background-color: $light;
-    text-align: center;
-    padding: 0;
-
-    .month-selector {
-      background-color: $light;
-      padding: $content-padding;
-
-      .mmyyyy-holder {
-        display: inline-block;
-        select {
-          min-width: 100px;
-          font-size: 120%;
-
-          background-color: $light;
-          border: 1px solid $datepicker-invalid-text;
-          border-radius: 5px;
-          padding: 5px;
-          top: 3px;
-        }
-      }
-      .icon {
-        background-color: $light;
-        color: $royal;
-        font-size: 28px;
-        padding: $content-padding;
-      }
+  }
+  .sold-out {
+    background: repeating-linear-gradient( 135deg, #eee, #eee 3px, #ddd 3px, #ddd 6px );
+    color: $non-pickable-day-color;
+    border: 1px solid $empty-day-background;
+  }
+  .previously-booked {
+    color: $assertive;
+  }
+  .legend-table {
+    margin: 1em auto;
+    td {
+      padding: 2px;
+      border: 0;
     }
-
-    table {
-      padding: 0px;
-      margin: 0px;
-      border-spacing: 0px;
-
-      &.dates {
-        width: 100%;
-
-        td {
-          width: 14.2%;
-          padding: 10px 5px 10px 5px;
-          text-align: center;
-        }
-      }
-
-      &.legend {
-        width: 80%;
-        max-width: 400px;
-        min-width: 200px;
-        margin: 1em auto;
-
-        td:nth-of-type(1) {
-          width: 30%;
-          max-width: 50px;
-        }
-        td:nth-of-type(2) {
-          text-align: left;
-        }
-
-        td {
-          /* !important to override the border settings
-          by other classes
-          */
-          border: solid 1px $datepicker-default-bg !important;
-        }
-      }
-
-      td.invalid {
-        background-color: $datepicker-default-bg;
-        border-left: 1px solid $datepicker-default-bg;
-        color: $datepicker-invalid-text;
-
-        &.first-day-of-month {
-          border-left: 1px solid $datepicker-invalid-text;
-        }
-
-        &.previously-booked {
-          color: $datepicker-previously-booked-text;
-        }
-      }
-      td.valid {
-        background-color: $datepicker-default-bg;
-        border-left: 1px solid $datepicker-default-bg;
-        color: $datepicker-valid-text;
-
-        &.first-day-of-month {
-          border-left: 1px solid $datepicker-invalid-text;
-        }
-
-        /* when selecting */
-        &.selected {
-          background-color: $datepicker-selected-bg;
-          border-left: 1px solid $datepicker-selected-bg;
-
-          &.dragged {
-            background-color: $datepicker-selected-bg-dragging;
-          }
-        }
-        &.dragged:not(.selected) {
-          background-color: $datepicker-default-bg-dragging;
-        }
-      }
+    .exemplar {
+      width: 2em;
+    }
+    .label {
+      text-align: left;
+      padding-right: 1em;
+      padding-left: 10px;
+      font-size: $font-size-small;
     }
   }
 }
