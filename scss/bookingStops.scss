@@ -11,99 +11,104 @@
   .scroll, .angular-google-map-container {
     width: 100%;
     height: 100%;
-  }
-
-  .route-info {
     display: flex;
-    flex-direction: row;
-    background: white;
-    height: $route-info-height;
+    flex-direction: column;
 
-    route-item {
-      padding: 10px;
-      background-color: $light;
-      flex: 1 1 auto;
-      overflow-x: hidden;
-
-      .active {
-        display: none;
-      }
-    }
-    .price {
-      padding: 3px 5px;
+    .route-info {
       flex: 0 0 auto;
-      align-self: flex-end;
+      display: flex;
+      flex-direction: row;
+      background: white;
+      height: $route-info-height;
 
-      .from {
-        color: $hint-color;
-        padding: 3px 0px;
+      route-item {
+        padding: 10px;
+        background-color: $light;
+        flex: 1 1 auto;
+        overflow-x: hidden;
+
+        .active {
+          display: none;
+        }
+      }
+      .price {
+        padding: 3px 5px;
+        flex: 0 0 auto;
+        align-self: flex-end;
+
+        .from {
+          color: $hint-color;
+          padding: 3px 0px;
+        }
       }
     }
-  }
 
-  ui-gmap-google-map {
-    top: $route-info-height + $breadcrumbs-height;
-    bottom: $button-bar-height;
-    width: 100%;
-    left: 0;
-    position: absolute;
+    .map-area {
+      flex: 1 1 auto;
+      position: relative;
 
-    .angular-google-map {
-      width: 100%;
-      height: 100%;
+      ui-gmap-google-map {
+        display: block;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        position: absolute;
 
-      /* Hides the terms of use */
-      .gmnoprint, .gm-style-cc {
-        display: none;
+        .angular-google-map {
+          width: 100%;
+          height: 100%;
+
+          /* Hides the terms of use */
+          .gmnoprint, .gm-style-cc {
+            display: none;
+          }
+        }
+      }
+
+      ion-list.stop-inputs {
+        bottom: $content-padding;
+        position: absolute;
+        width: 90%;
+        left: 5%;
+        box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+
+        .item {
+          padding: 5px 5px;
+        }
+
+        /* FIXME this is just arbitrarily positioned */
+        .line {
+          width: 2px;
+          height: 30px;
+          background: url('../img/RoutePairSmallLine.svg') center center;
+          top: 27px;
+          left: 18px;
+          position: absolute;
+          z-index: 5;
+        }
+
+        bus-stop-selector:nth-of-type(1) .stop-description {
+          background: url('../img/RoutePairBigStart.svg') left 7px center no-repeat transparent;
+          background-size: 24px 24px;
+        }
+
+        bus-stop-selector:nth-of-type(2) .stop-description {
+          background: url('../img/RoutePairBigEnd.svg') left 7px center no-repeat transparent;
+          background-size: 24px 24px;
+        }
+      }
+
+      .locate-me {
+        top: $content-padding;
+        right: $content-padding;
+        position: absolute;
       }
     }
-  }
 
-  .button-bar { /* where the "Continue" button is */
-    position: absolute;
-    height: $button-bar-height;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-  }
-
-  ion-list.stop-inputs {
-    bottom: $button-bar-height + $list-offset;
-    position: absolute;
-    width: 90%;
-    left: 5%;
-    box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
-
-    .item {
-      padding: 5px 5px;
+    .button-bar { /* where the "Continue" button is */
+      flex: 0 0 auto;
     }
-
-    /* FIXME this is just arbitrarily positioned */
-    .line {
-      width: 2px;
-      height: 30px;
-      background: url('../img/RoutePairSmallLine.svg') center center;
-      top: 27px;
-      left: 18px;
-      position: absolute;
-      z-index: 5;
-    }
-
-    bus-stop-selector:nth-of-type(1) .stop-description {
-      background: url('../img/RoutePairBigStart.svg') left 7px center no-repeat transparent;
-      background-size: 24px 24px;
-    }
-
-    bus-stop-selector:nth-of-type(2) .stop-description {
-      background: url('../img/RoutePairBigEnd.svg') left 7px center no-repeat transparent;
-      background-size: 24px 24px;
-    }
-  }
-
-  .locate-me {
-    bottom: 230px;
-    right: 16px;
-    position: absolute;
   }
 }
 
