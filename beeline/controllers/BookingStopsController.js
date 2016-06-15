@@ -164,54 +164,54 @@ export default [
       $scope.lastDisplayedRouteId = null; // works if caching
       $scope.displayRouteInfo = function() {
         RoutesService.getRoute(parseInt($scope.book.routeId))
-      .then((route) => {
-        // 1. Route info
-        $scope.routePath = route.path.map(latlng => ({
-          latitude: latlng.lat,
-          longitude: latlng.lng,
-        }));
-        $scope.book.route = route;
-        console.log($scope.book.route);
-        computeStops();
-        panToStops();
+        .then((route) => {
+          // 1. Route info
+          $scope.routePath = route.path.map(latlng => ({
+            latitude: latlng.lat,
+            longitude: latlng.lng,
+          }));
+          $scope.book.route = route;
+          console.log($scope.book.route);
+          computeStops();
+          panToStops();
 
-        // 3. Check if we should display changes
-        if ($scope.lastDisplayedRouteId != $scope.book.routeId) {
-          var changes = BookingService.computeChanges(route);
-          $scope.book.changes = changes;
-          console.log(changes);
+          // 3. Check if we should display changes
+          if ($scope.lastDisplayedRouteId != $scope.book.routeId) {
+            var changes = BookingService.computeChanges(route);
+            $scope.book.changes = changes;
+            console.log(changes);
 
-          if (changes.priceChanges.length == 0 &&
-              changes.stopChanges.length == 0 &&
-              changes.timeChanges.length == 0) {
-              return;
-            }
+            if (changes.priceChanges.length == 0 &&
+                changes.stopChanges.length == 0 &&
+                changes.timeChanges.length == 0) {
+                return;
+              }
 
-          console.log('Changes detected: diplaying message box');
+            console.log('Changes detected: diplaying message box');
 
-          if ($scope.changesModal) {
-              $scope.changesModal.show();
-            }
-          else {
-              $ionicModal.fromTemplateUrl('changes-message.html', {
-              scope: $scope,
-              animation: 'slide-in-up',
-            })
-            .then(modal => {
-              $scope.changesModal = modal;
-              $scope.changesModal.show();
-            });
-            }
-        }
-        $scope.lastDisplayedRouteId = $scope.book.routeId;
+            if ($scope.changesModal) {
+                $scope.changesModal.show();
+              }
+            else {
+                $ionicModal.fromTemplateUrl('changes-message.html', {
+                scope: $scope,
+                animation: 'slide-in-up',
+              })
+              .then(modal => {
+                $scope.changesModal = modal;
+                $scope.changesModal.show();
+              });
+              }
+          }
+          $scope.lastDisplayedRouteId = $scope.book.routeId;
 
-        // 2. Fill in the transport company info
-        return CompanyService.getCompany(+route.trips[0].transportCompanyId)
-        .then(function(result) {
-          $scope.book.company = result;
-        });
-      })
-      .then(null, err => console.log(err.stack));
+          // 2. Fill in the transport company info
+          return CompanyService.getCompany(+route.trips[0].transportCompanyId)
+          .then(function(result) {
+            $scope.book.company = result;
+          });
+        })
+        .then(null, err => console.log(err.stack));
       };
 
       $scope.closeChangesModal = function() {
@@ -224,9 +224,16 @@ export default [
 
       function computeStops() {
         var trips = $scope.book.route.trips;
-        var stops = BookingService.computeStops(trips);
-        $scope.book.boardStops = stops[0];
-        $scope.book.alightStops = stops[1];
+        var [boardStops, alightStops] = BookingService.computeStops(trips);
+        $scope.book.boardStops = boardStops;
+        $scope.book.alightStops = alightStops;
+
+        if (boardStops.length == 1) {
+          $scope.book.boardStop = boardStops[0].id;
+        }
+        if (alightStops.length == 1) {
+          $scope.book.alightStop = alightStops[0].id;
+        }
       }
 
       function panToStops() {
@@ -238,11 +245,11 @@ export default [
       }
         var bounds = new google.maps.LatLngBounds();
         for (let s of stops) {
-        bounds.extend(new google.maps.LatLng(
-          s.coordinates.coordinates[1],
-          s.coordinates.coordinates[0]
-        ));
-      }
+          bounds.extend(new google.maps.LatLng(
+            s.coordinates.coordinates[1],
+            s.coordinates.coordinates[0]
+          ));
+        }
         $scope.map.control.getGMap().fitBounds(bounds);
       }
 
@@ -260,10 +267,10 @@ export default [
       $scope.applyTapAlight = (x) => $scope.$apply(() => $scope.tapAlight(x));
       $scope.applyTapBoard = (x) => $scope.$apply(() => $scope.tapBoard(x));
 
-    // Check whether:
-    // [1] Start stop is specified
-    // [2] End stop is specified
-    // [3] Checkbox is checked
+      // Check whether:
+      // [1] Start stop is specified
+      // [2] End stop is specified
+      // [3] Checkbox is checked
       $scope.$watchGroup([
         'book.boardStop',
         'book.alightStop',
