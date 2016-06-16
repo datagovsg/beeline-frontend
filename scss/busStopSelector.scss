@@ -28,7 +28,7 @@
   ion-content {
     display: flex;
     flex-direction: column;
-    
+
     /* Our button bar has a custom height */
     bottom: $bar-height + 2 * $item-padding;
 
@@ -84,4 +84,5 @@
     display:none;
   }
 
+}
 }
