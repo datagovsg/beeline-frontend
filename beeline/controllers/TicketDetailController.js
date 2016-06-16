@@ -30,29 +30,29 @@ export default [
     $scope.user = UserService.getUser();
     $scope.map = MapOptions.defaultMapOptions({
       lines: [
-        {
-          id: 'busLine',
-          path: [],
-          stroke: {
-            color: '#333',
-            opacity: 1.0,
-            weight: 3,
-          },
+      {
+        id: 'busLine',
+        path: [],
+        stroke: {
+          color: '#333',
+          opacity: 1.0,
+          weight: 3,
         },
-        {
-          id: 'routeLine',
-          path:[],
-          stroke: {opacity: 0},
-          icons: [{
-            icon: {
-              path: 'M 0,-1 0,1',
-              strokeOpacity: 0.5,
-              scale: 3
-            },
-            offset: '0',
-            repeat: '20px'
-          }]
-        }
+      },
+      {
+        id: 'routeLine',
+        path:[],
+        stroke: {opacity: 0},
+        icons: [{
+          icon: {
+            path: 'M 0,-1 0,1',
+            strokeOpacity: 0.5,
+            scale: 3
+          },
+          offset: '0',
+          repeat: '20px'
+        }]
+      }
       ],
       busLocation: {
         coordinates: null,
@@ -79,14 +79,17 @@ export default [
     // Using a recursive timeout instead of an interval to avoid backlog
     // when the server is slow to respond
     var pingTimer;
-    var pingLoop = function() {
-      tripPromise.then(function(trip) { return TripService.DriverPings(trip.id); })
+    function pingLoop() {
+      TripService.DriverPings($scope.trip.id)
       .then((info) => {
         $scope.info = info;
+      })
+      .then(null, () => {}) // catch all errors
+      .then(() => {
         pingTimer = $timeout(pingLoop, 15000);
       });
     };
-    pingLoop();
+    tripPromise.then(pingLoop);
     $scope.$on('$destroy', () => { $timeout.cancel(pingTimer); });
 
     // Draw the bus stops on the map
@@ -139,11 +142,11 @@ export default [
     // Draw the icon for latest bus location
     $scope.$watch('info', function(info) {
       if (info && info.pings.length > 0) {
-        var busPosition = info.pings[0].coordinates.coordinates;
+      var busPosition = info.pings[0].coordinates.coordinates;
         $scope.map.busLocation.coordinates = {
           latitude: busPosition[1],
           longitude: busPosition[0],
-        };
+      };
 
         $scope.map.lines[0].path = info.pings.map(ping => ({
           latitude: ping.coordinates.coordinates[1],
@@ -171,10 +174,8 @@ export default [
       ticketPromise,
       uiGmapGoogleMapApi
     ]).then((values) => {
-      var info = values[0];
-      var map = values[1];
-      var ticket = values[2];
-      var googleMaps = values[3];
+      var [info, map, ticket, googleMaps] = values;
+
       if (info.pings.length > 0) {
         var bounds = new googleMaps.LatLngBounds();
         bounds.extend(new google.maps.LatLng(ticket.boardStop.stop.coordinates.coordinates[1],
@@ -191,8 +192,8 @@ export default [
     // to propagate down to child views and scopes
     // ////////////////////////////////////////////////////////////////////////
     Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) {
-      var map = values[0];
-      var googleMaps = values[1];
+      var [map, googleMaps] = values;
+
       $rootScope.$on("$ionicView.enter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });

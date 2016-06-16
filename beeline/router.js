@@ -139,6 +139,9 @@ export default function($stateProvider, $urlRouterProvider) {
         templateUrl: 'templates/ticket-detail.html',
         controller: 'TicketDetailController'
       }
+    },
+    data: {
+      hideTabs: true,
     }
   })
 

@@ -45,7 +45,7 @@ var app = angular.module('beeline', [
 .factory('CompanyService', require('./services/CompanyService.js').default)
 .factory('SuggestionService', require('./services/SuggestionService.js').default)
 .factory('RoutesService', require('./services/RoutesService.js').default)
-.factory('BookingService', require('./services/BookingService.js').default)
+.service('BookingService', require('./services/BookingService.js').default)
 .factory('OneMapService', require('./services/OneMapService.js').default)
 .factory('DateService', require('./services/DateService.js').default)
 .factory('StripeService', require('./services/StripeService.js').default)
@@ -77,6 +77,7 @@ var app = angular.module('beeline', [
 .directive('bookingBreadcrumbs', require('./directives/bookingBreadcrumbs/bookingBreadcrumbs').default)
 .directive('routeItem', require('./directives/routeItem/routeItem.js').default)
 .directive('companyTnc', require('./directives/companyTnc/companyTnc.js').default)
+.directive('tripCode', require('./directives/tripCode/tripCode.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');

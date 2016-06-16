@@ -63,6 +63,7 @@ export default function($scope, $state, RoutesService, $q) {
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block
   $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes'], function([newActiveRoutes, recentRoutes]) {
+    $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
     $scope.data.filteredRecentRoutes = _.filter(newActiveRoutes, function(route) {
       return _.some(recentRoutes, {'id': route.id});
     });

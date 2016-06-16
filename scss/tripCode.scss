@@ -1,0 +1,44 @@
+
+
+trip-code {
+  font-size: $font-size-base * 2;
+  font-weight: bold;
+  display: inline-block;
+  position: relative;
+  height: $font-size-base;
+
+  .ch.shrink {
+    // font-size: 80%;
+    transform: scale(0.8, 0.8);
+    transition: 1s linear all;
+  }
+  .ch:not(.shrink) {
+    // font-size: 100%;
+    transform: scale(1,1);
+    transition: 1s linear all;
+  }
+  .c0 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $font-size-base * 2;
+  }
+  .c1 {
+    position: absolute;
+    top: 0;
+    left: $font-size-base * 2;
+    width: $font-size-base * 2;
+  }
+  .c2 {
+    position: absolute;
+    top: 0;
+    left: $font-size-base * 4;
+    width: $font-size-base * 2;
+  }
+  .c3 {
+    top: 0;
+    position: absolute;
+    left: $font-size-base * 6;
+    width: $font-size-base * 2;
+  }
+}
