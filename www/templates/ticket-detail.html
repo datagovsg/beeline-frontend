@@ -1,44 +1,39 @@
-<ion-view class="ticket-detail"
-          view-title="Ticket for {{tripTicket.boardStop.time | date:'d MMM y'}}"
-          ng-init="activeTab=0">
+<ion-view class="ticket-detail" view-title="Ticket for {{ticket.boardStop.time | date:'d MMM y'}}" ng-init="activeTab=0">
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
-    <a class="tab-item"
-       on-tap="activeTab=0"
-       ng-class="{active: activeTab===0}">
-       <i class="icon ion-bookmark"></i>
-       <span class="tab-title">Ticket</span>
+    <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
+      <i class="icon ion-bookmark"></i>
+      <span class="tab-title">Ticket</span>
     </a>
-    <a class="tab-item"
-       on-tap="activeTab=1"
-       ng-class="{active: activeTab===1}">
-       <i class="icon ion-android-bus"></i>
-       <span class="tab-title">Driver</span>
+    <a class="tab-item" on-tap="activeTab=1" ng-class="{active: activeTab===1}">
+      <i class="icon ion-android-bus"></i>
+      <span class="tab-title">Driver</span>
     </a>
-    <a class="tab-item"
-       on-tap="activeTab=2"
-       ng-class="{active: activeTab===2}">
-       <i class="icon ion-ios-location"></i>
-       <span class="tab-title">Stops</span>
+    <a class="tab-item" on-tap="activeTab=2" ng-class="{active: activeTab===2}">
+      <i class="icon ion-ios-location"></i>
+      <span class="tab-title">Stops</span>
     </a>
   </div>
   <ion-content class="has-tabs-top" scroll=false>
 
     <!-- Ticket Tab -->
-    <div class="item item-text-wrap" ng-show="activeTab===0">
+    <div class="trip-info item item-text-wrap" ng-show="activeTab===0">
       <div class="row">
+        <div class="col">
+          <h4>Trip Code</h4>
+          <trip-code class="trip-code" code="info.code || 'XXXX'">
+          </trip-code>
+          <!-- <div class="trip-code"
+            ng-bind="info.trip.id"></div> -->
+        </div>
         <div class="col">
           <h4>Passenger</h4>
           <div ng-bind="user.name"></div>
-        </div>
-        <div class="col">
-          <h4>Trip Id</h4>
-          <div ng-bind="trip.id"></div>
         </div>
       </div>
     </div>
 
     <!-- Driver Tab -->
-    <div class="item item-text-wrap" ng-show="activeTab===1">
+    <div class="trip-info item item-text-wrap" ng-show="activeTab===1">
       <div class="row">
         <div class="col">
           <h4>Operated By</h4>
@@ -58,12 +53,12 @@
     </div>
 
     <!-- Stops Tab -->
-    <div class="item item-text-wrap" ng-show="activeTab===2">
+    <div class="trip-info item item-text-wrap" ng-show="activeTab===2">
       <span class="time">{{}}</span>
       <div class="row row-top">
         <div class="time-column col col-33">
           <span ng-bind="ticket.boardStop.time | date:'h:mm a'"></span>
-          <img class="route-icon" src="./img/RoutePairBigStart.svg"/>
+          <img class="route-icon" src="./img/RoutePairBigStart.svg" />
         </div>
         <div class="col">
           <span ng-bind="ticket.boardStop.stop.description"></span>,
@@ -73,7 +68,7 @@
       <div class="row row-top">
         <div class="time-column col col-33">
           <span ng-bind="ticket.alightStop.time | date:'h:mm a'"></span>
-          <img class="route-icon" src="./img/RoutePairBigEnd.svg"/>
+          <img class="route-icon" src="./img/RoutePairBigEnd.svg" />
         </div>
         <div class="col">
           <span ng-bind="ticket.alightStop.stop.description"></span>,
@@ -92,5 +87,21 @@
       ></ui-gmap-markers>
     </ui-gmap-google-map>
 
+    <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
+    <div class="item item-text-wrap service-cancellation" ng-if="info.trip.status == 'cancelled'">
+      <div class="cancellation-content">
+        <h2>Service is Cancelled</h2>
+        <img src="./img/Emergency.svg">
+        <p>Sorry for the inconvenience caused.</p>
+        <p>Today's trip has been cancelled.</p>
+        <p>
+          Please make alternative transport arrangements. <bold>{{company.name}}</bold> will contact you and refund today's fare.
+        </p>
+        <p>
+          For enquiries, please contact <bold>{{company.contactNo}}</bold>.
+        </p>
+      </div>
+    </div>
+    <!-- Service cancellation section ends -->
   </ion-content>
 </ion-view>
