@@ -60,10 +60,9 @@
       /* Hide the scroll-bar in browsers */
       overflow: hidden;
 
-      div.time, div.details {
-        display: inline-block;
-        vertical-align: top;
-      }
+    .time, .details {
+      display: inline-block;
+      vertical-align: top;
     }
   }
 
