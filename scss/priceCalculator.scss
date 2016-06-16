@@ -21,10 +21,11 @@ price-calculator {
     }
   }
 }
-.table-title {
-  padding-bottom: 20px;
-  p {
-    padding: 10px 0;
+.date-price-calculator{
+  h3 {
+    color: $normal-grey;
+    padding-top: 20px;
+    padding-bottom: 10px;
   }
   table {
     margin-bottom: 10px;
