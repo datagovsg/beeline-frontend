@@ -52,6 +52,18 @@ export default function RoutesService($http, SERVER_URL, UserService) {
       if (routesCache && !ignoreCache && !options) return Promise.resolve(routesCache);
 
       var url = '/routes?include_trips=true';
+
+      // Start at midnight to avoid cut trips in the middle
+      // FIXME: use date-based search instead
+      var startDate = new Date();
+      startDate.setHours(3,0,0,0,0)
+      var endDate = new Date(startDate.getTime() + 30*24*60*60*1000);
+
+      var options = _.assign({
+        start_date: startDate.getTime(),
+        end_date: endDate.getTime(),
+      }, options)
+
       if (options) {
         url += '&' + querystring.stringify(options)
       }

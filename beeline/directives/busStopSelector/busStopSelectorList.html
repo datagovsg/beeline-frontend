@@ -9,33 +9,28 @@
   </ion-header-bar>
 
   <div class="bar bar-subheader">
-    <ui-gmap-google-map
-      center="map.center"
-      zoom="map.zoom"
-      bounds="map.bounds"
-      control="map.control"
-      options="map.options"
-      data-tap-disabled="true"
-    >
-      <ui-gmap-marker
-        ng-repeat="stop in busStops"
-        idkey="stop.id"
-        coords="{
-          latitude: stop.coordinates.coordinates[1],
-          longitude: stop.coordinates.coordinates[0],
-        }"
-        options="markerOptions"
-        ng-click="selectStop($event, stop)"
-      ></ui-gmap-marker>
+    <ui-gmap-google-map center="map.center"
+                        zoom="map.zoom"
+                        bounds="map.bounds"
+                        control="map.control"
+                        options="map.options"
+                        data-tap-disabled="true">
+      <ui-gmap-marker ng-repeat="stop in busStops"
+                      idkey="stop.id"
+                      coords="{
+                        latitude: stop.coordinates.coordinates[1],
+                        longitude: stop.coordinates.coordinates[0],
+                      }"
+                      options="markerOptions"
+                      ng-click="selectStop($event, stop)"></ui-gmap-marker>
 
-      <ui-gmap-marker
-        ng-if="selectedStop"
-        idkey="'ohhalalala'"
-        coords="{
-          latitude:  selectedStop.coordinates.coordinates[1],
-          longitude: selectedStop.coordinates.coordinates[0],
-        }"
-        options="pinOptions">
+      <ui-gmap-marker ng-if="selectedStop"
+                      idkey="'selectedStopPin'"
+                      coords="{
+                        latitude:  selectedStop.coordinates.coordinates[1],
+                        longitude: selectedStop.coordinates.coordinates[0],
+                      }"
+                      options="pinOptions">
       </ui-gmap-circle>
     </ui-gmap-google-map>
     <div class="ion-list-header">{{busStops.length}} stops available</div>
@@ -43,26 +38,23 @@
 
   <ion-content class="big-container">
     <ion-list class="stops-list">
-      <ion-item ng-repeat="stop in busStops">
-        <ion-radio
+      <ion-radio  ng-repeat="stop in busStops"
                   ng-model="model"
                   ng-value="stop.id"
-                  icon="ion-ios-circle-outline"
-                  ng-click="selectStop($event, stop)"
-                  >
-          <div class="time">{{stop.time | formatTime}}</div>
-          <div class="details">
-            <div>{{stop.description}}</div>
-            <div>{{stop.road}}</div>
-          </div>
-        </ion-radio>
-      </ion-item>
+                  ng-click="selectStop($event, stop)">
+        <div class="time">{{stop.time | formatTime}}</div>
+        <div class="details">
+          <div>{{stop.description}}</div>
+          <div>{{stop.road}}</div>
+        </div>
+      </ion-radio>
     </ion-list>
   </ion-content>
-  <ion-footer-bar>
-    <button class="big-yellow"
+  <ion-footer-bar align-title="center">
+    <button class="title button primary-button"
             ng-disabled="!model"
-            ng-click="selectStop($event, selectedStop)"
-    >{{title}}</button>
+            ng-click="selectStop($event, selectedStop)">
+      {{title}}
+    </button>
   </ion-footer-bar>
 </ion-modal-view>
