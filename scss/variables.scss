@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 $hint-color: #888;
 $breadcrumbs-height: 54px;
+$light-grey: #eee;
 
 $table-cell-padding: 8px;
 $table-cell-border-width: 1px;
@@ -40,11 +41,11 @@ $dark:                            #444;
 //datepicker variables in bookingDates.scss
 
 $picker-header-bg: #fff;
-$empty-day-background: #eee;
+$empty-day-background: $light-grey;
 $picker-day-today: #000;
-$non-pickable-day-background: #eee;
+$non-pickable-day-background: $light-grey;
 $non-pickable-day-color: #bbb;
-$pickable-day-non-picked-background: #eee;
+$pickable-day-non-picked-background: $light-grey;
 $pickable-day-non-picked-color: #000;
 $pickable-day-picked-background: $royal;
 $pickable-day-picked-color: #fff;

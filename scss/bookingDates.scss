@@ -101,7 +101,7 @@
     display: block;
   }
   .sold-out {
-    background: repeating-linear-gradient( 135deg, #eee, #eee 3px, #ddd 3px, #ddd 6px );
+    background: repeating-linear-gradient( 135deg, $empty-day-background, $empty-day-background 3px, #ddd 3px, #ddd 6px );
     color: $non-pickable-day-color;
     border: 1px solid $empty-day-background;
   }
