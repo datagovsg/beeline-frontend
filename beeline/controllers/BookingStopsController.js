@@ -82,8 +82,8 @@ export default [
 
     $scope.$on('$ionicView.afterEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
-      $scope.book.boardStop = parseInt($stateParams.boardStop);
-      $scope.book.alightStop = parseInt($stateParams.alightStop);
+      $scope.book.boardStopId = parseInt($stateParams.boardStop);
+      $scope.book.alightStopId = parseInt($stateParams.alightStop);
       window.setStop = $scope.setStop;
       gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
@@ -135,10 +135,10 @@ export default [
 
         $scope.$apply(() => {
         if (type == 'board') {
-          $scope.book.boardStop = stop.id;
+          $scope.book.boardStopId = stop.id;
         }
         else {
-          $scope.book.alightStop = stop.id;
+          $scope.book.alightStopId = stop.id;
         }
         /* Hide the infowindow */
         $scope.infoStop = null;
@@ -231,10 +231,10 @@ export default [
         $scope.book.alightStops = alightStops;
 
         if (boardStops.length == 1) {
-          $scope.book.boardStop = boardStops[0].id;
+          $scope.book.boardStopId = boardStops[0].id;
         }
         if (alightStops.length == 1) {
-          $scope.book.alightStop = alightStops[0].id;
+          $scope.book.alightStopId = alightStops[0].id;
         }
       }
 
@@ -271,14 +271,14 @@ export default [
 
       // Extract the coordinates of the selected stops
       $scope.$watchGroup([
-        'book.boardStop',
-        'book.alightStop',
+        'book.boardStopId',
+        'book.alightStopId',
       ], function () {
-        $scope.book.boardStopStop = $scope.book.boardStop ?
-          $scope.book.boardStops.find(x => x.id == $scope.book.boardStop)
+        $scope.book.boardStop = $scope.book.boardStopId ?
+          $scope.book.boardStops.find(x => x.id == $scope.book.boardStopId)
           : null;
-        $scope.book.alightStopStop = $scope.book.alightStop ?
-          $scope.book.alightStops.find(x => x.id == $scope.book.alightStop)
+        $scope.book.alightStop = $scope.book.alightStopId ?
+          $scope.book.alightStops.find(x => x.id == $scope.book.alightStopId)
           : null;
       })
 
