@@ -38,15 +38,13 @@
       </table>
     </div>
 
-    <div class="item">
-      <h4>Selected Dates</h4>
+    <div class="item table-title">
+      <p>Selected Dates</p>
       <price-calculator booking="book" read-only="true"></price-calculator>
     </div>
 
     <div class="item">
-      <button class="button primary-button"
-              ng-disabled="book.selectedDates.length == 0"
-              ui-sref="tabs.booking-summary({
+      <button class="button primary-button" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.booking-summary({
                 routeId: book.routeId,
                 boardStop: book.boardStopId,
                 alightStop: book.alightStopId,
