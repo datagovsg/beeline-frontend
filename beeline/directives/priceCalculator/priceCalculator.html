@@ -1,50 +1,51 @@
-<div id="price-calculator">
-<!--Selected Dates<br>-->
-<b>{{booking.selectedDates.length}} day(s)</b> were selected.
-<ion-spinner ng-show="isCalculating"></ion-spinner>
-<table class="price-table prices">
-  <thead>
-    <tr ng-if="booking.selectedDates.length != 0">
-      <th>Dates</th>
-      <th>
-        Price per trip
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="nosel" ng-if="booking.selectedDates.length == 0">
-      <td colspan="2">- Please select your trip dates -</td>
-    </tr>
-    <tr ng-if="errorMessage">
-      <td colspan="2">
-        <i class="icon ion-alert-circled"></i>
-        {{errorMessage}}
-      </td>
-    </tr>
-    <tr class="sel" ng-if="booking.selectedDates.length > 0"
-      ng-repeat="pinfo in priceInfo.pricesPerTrip">
-      <td>
-        {{pinfo.startDate | formatDateMMMdd}}
-      </td>
-      <td>${{pinfo.price | number:2}}</td>
-    </tr>
-  </tbody>
-</table>
-<table class="price-table totals" ng-if="booking.selectedDates.length > 0">
-  <tbody>
-    <tr>
-      <th>Total Trips</th>
-      <th>Total Amount</th>
-    </tr>
-    <tr>
-      <td>
-        {{priceInfo.tripCount || 0}}
-      </td>
-      <td>
-        ${{priceInfo.totalDue.toFixed(2) || '0.00'}}
-      </td>
-    </tr>
-    <!-- FIXME: include vouchers, discounts here -->
-  </tbody>
-</table>
+<div id="price-calculator" class="date-price-calculator">
+  <!--Selected Dates<br>-->
+  <div><b>{{booking.selectedDates.length}} day(s)</b> were selected.</div>
+  <ion-spinner ng-show="isCalculating"></ion-spinner>
+    <h3>Selected Dates</h3>
+  <table class="price-table prices">
+    <thead>
+      <tr ng-if="booking.selectedDates.length != 0">
+        <th>Selected Dates</th>
+        <th>
+          Price per trip
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-if="booking.selectedDates.length == 0">
+        <td colspan="2">Please select your trip dates</td>
+      </tr>
+      <tr ng-if="errorMessage">
+        <td colspan="2" class="text-left">
+          <i class="icon ion-alert-circled padding-right"></i>
+            {{errorMessage}}
+        </td>
+      </tr>
+      <tr ng-if="booking.selectedDates.length > 0" ng-repeat="pinfo in priceInfo.pricesPerTrip">
+        <td>
+          {{pinfo.startDate | formatDateMMMdd}}
+        </td>
+        <td>${{pinfo.price | number:2}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Price Calculator </h3>
+  <table class="price-table totals" ng-if="booking.selectedDates.length > 0">
+    <tbody>
+      <tr>
+        <th>Total Trips</th>
+        <th>Total Amount</th>
+      </tr>
+      <tr>
+        <td>
+          {{priceInfo.tripCount || 0}}
+        </td>
+        <td>
+          ${{priceInfo.totalDue.toFixed(2) || '0.00'}}
+        </td>
+      </tr>
+      <!-- FIXME: include vouchers, discounts here -->
+    </tbody>
+  </table>
 </div>
