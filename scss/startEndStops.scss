@@ -25,6 +25,12 @@
       flex: 1 1 auto;
       display: block;
       margin-left: $stopMarkerRightMargin;
+
+      h4{
+        padding-top:3px;
+        line-height: $line-height-base;
+        color: $normal-grey;
+      }
     }
   }
   .start {
