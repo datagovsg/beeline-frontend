@@ -71,12 +71,12 @@
           }
         }
       } /* ui-gmap-google-map */
-      
+
       .stop-inputs {
-        bottom: $content-padding;
+        bottom: 0;
         position: absolute;
-        width: 90%;
-        left: 5%;
+        width: calc(100% - #{2 * $card-padding});
+        left: 0;
 
         .bus-stop-selector:nth-of-type(1) .stop-icon {
           background: url('../img/RoutePairBigStart.svg') 0 0 no-repeat transparent;
