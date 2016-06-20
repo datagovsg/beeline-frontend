@@ -41,22 +41,10 @@ export default [
       route: null,
       boardStops: [], // all board stops for this route
       alightStops: [], // all alight stops for this route
-      boardStop: undefined,
-      alightStop: undefined,
-      stime: '',
-      etime: '',
-      sroad: '',
-      eroad: '',
-      stxt: 'Select pick-up stop',
-      etxt: 'Select drop-off stop',
-      ptxt: 'No. of passengers',
-      transco: {},
-      allDataNotFilled: true,
-      termsChecked: false,
-      errmsg: '',
+      boardStop: null,
+      alightStop: null,
       changes: {},
       company: {},
-      qty: ''
     };
 
     // @hongyi
@@ -266,22 +254,28 @@ export default [
         $scope.infoStop = alight;
         $scope.infoType = 'alight';
       };
-      $scope.applyTapAlight = (x) => $scope.$apply(() => $scope.tapAlight(x));
-      $scope.applyTapBoard = (x) => $scope.$apply(() => $scope.tapBoard(x));
-
-      // Extract the coordinates of the selected stops
-      $scope.$watchGroup([
-        'book.boardStopId',
-        'book.alightStopId',
-      ], function () {
-        $scope.book.boardStop = $scope.book.boardStopId ?
-          $scope.book.boardStops.find(x => x.id == $scope.book.boardStopId)
-          : null;
-        $scope.book.alightStop = $scope.book.alightStopId ?
-          $scope.book.alightStops.find(x => x.id == $scope.book.alightStopId)
-          : null;
-      })
-
+      $scope.applyTapAlight = (marker, event, model) => {
+        $scope.$apply(() => $scope.tapAlight(model))
+      };
+      $scope.applyTapBoard = (marker, event, model) => {
+        $scope.$apply(() => $scope.tapBoard(model))
+      };
     });
+
+    // Extract the coordinates of the selected stops
+    $scope.$watch('book.boardStopId', (stopId) => {
+      if (!stopId || !$scope.book.boardStops) return;
+
+      $scope.book.boardStop = stopId ?
+        $scope.book.boardStops.find(x => x.id == stopId)
+        : null;
+    })
+    $scope.$watch('book.alightStopId', (stopId) => {
+      if (!stopId || !$scope.book.alightStops) return;
+
+      $scope.book.alightStop = stopId ?
+        $scope.book.alightStops.find(x => x.id == stopId)
+        : null;
+    })
   }
 ];
