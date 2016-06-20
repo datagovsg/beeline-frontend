@@ -190,7 +190,13 @@ input[type="color"] {
   padding-left: 10px;
 }
 
+.swiper-container-horizontal > .swiper-pagination {
+  bottom: 30px;
+}
 
+.swiper-pagination-bullet{
+  background-color: #fff;
+}
 
 /** FIXES FOR BUGS **/
 /* Fix the wrong colour on Android subtabs */
