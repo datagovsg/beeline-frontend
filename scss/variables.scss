@@ -77,8 +77,8 @@ $font-size-base:                  15px;
 // $base-background-color:           #fff !default;
 // $base-color:                      #000 !default;
 
-// $link-color:                      $positive !default;
-// $link-hover-color:                darken($link-color, 15%) !default;
+$link-color:                      lighten($royal,5%);
+$link-hover-color:                lighten($link-color, 15%) !default;
 
 // $content-padding:                 10px !default;
 
