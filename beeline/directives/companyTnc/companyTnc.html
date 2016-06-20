@@ -1,12 +1,18 @@
 <h4 class="item item-divider">Operated By:</h4>
 
 <div class="item">
-  <img ng-src="{{company.id | companyLogo}}">
-  <div class="name">{{company.name}}</div>
-  <div class="email">{{company.email}}</div>
+  <div class="row">
+  <div class="col-33">
+    <img ng-src="{{company.id | companyLogo}}">
+  </div>
+  <div class="col-67 padding-left">
+    <div class="name">{{company.name}}</div>
+    <div class="email">{{company.email}}</div>
+  </div>
+  </div>
 </div>
 
-<h4 class="item item-divider">Features</h4>
+<h4 class="item item-divider">Important Notes</h4>
 <ul>
   <li ng-repeat="feature in company.featuresParsed track by $index">
     {{feature.txt}}
@@ -17,7 +23,7 @@
   <div>
   Signage example:
   </div>
-  <div>
+  <div class="signage">
     <img ng-src="img/terms-sign.png" width="200">
   </div>
   <div>
