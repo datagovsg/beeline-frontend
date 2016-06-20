@@ -2,7 +2,10 @@
 .ticket-detail {
   .item.trip-info {
     background-color: rgba($light, 0.9);
-    padding: 0;
+    h4 {
+      color: $normal-grey;
+      padding-bottom: 5px;
+    }
   }
   .time-column {
     text-align: right;
@@ -18,14 +21,14 @@
     height: 100%;
     width: 100%;
   }
-  
   .service-cancellation {
     @include display-flex;
     @include flex-direction(column);
     @include justify-content(center);
     @include align-items(center);
-    height: 90%;
+    height: auto;
     .cancellation-content {
+      margin: 20px 0;
       text-align: center;
       h2 {
         color: $assertive;
@@ -39,9 +42,9 @@
       p {
         text-align: left;
         padding: 5px 10px;
-         bold{
-           font-weight: bold;
-         }
+        bold {
+          font-weight: bold;
+        }
       }
     }
   }
