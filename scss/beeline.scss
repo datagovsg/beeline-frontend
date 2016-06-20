@@ -117,13 +117,12 @@ td {
 }
 
 .bus-number {
-  width: 40px;
-  height: 40px;
   text-align: center;
   background-color: $royal;
   color: $light;
-  line-height: 40px;
-  border-radius: 20px;
+  padding: ceil($font-size-base/3);
+  margin: ceil($font-size-base/3) 0;
+  border-radius: ceil($font-size-base/3);
 }
 
 .locate-button {
