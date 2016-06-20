@@ -72,27 +72,28 @@
         }
       } /* ui-gmap-google-map */
 
-      .stop-inputs {
-        bottom: 0;
-        position: absolute;
-        width: calc(100% - #{2 * $card-padding});
-        left: 0;
-
-        .bus-stop-selector:nth-of-type(1) .stop-icon {
-          background: url('../img/RoutePairBigStart.svg') 0 0 no-repeat transparent;
-          background-size: 24px 24px;
-        }
-
-        .bus-stop-selector:nth-of-type(2) .stop-icon {
-          background: url('../img/RoutePairBigEnd.svg') 0 0 no-repeat transparent;
-          background-size: 24px 24px;
-        }
-      }
-
       .locate-button {
         top: $content-padding;
         right: $content-padding;
         position: absolute;
+      }
+    }
+
+
+    .stop-inputs {
+      // bottom: 0;
+      // position: absolute;
+      // width: calc(100% - #{2 * $card-padding});
+      // left: 0;
+
+      .bus-stop-selector:nth-of-type(1) .stop-icon {
+        background: url('../img/RoutePairBigStart.svg') 0 0 no-repeat transparent;
+        background-size: 24px 24px;
+      }
+
+      .bus-stop-selector:nth-of-type(2) .stop-icon {
+        background: url('../img/RoutePairBigEnd.svg') 0 0 no-repeat transparent;
+        background-size: 24px 24px;
       }
     }
 

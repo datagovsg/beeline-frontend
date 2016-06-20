@@ -146,11 +146,11 @@ export default [
       });
       };
 
-      /* These function teaches the <bus-stop-selector> how
+      /* These functions teach the <bus-stop-selector> how
        to display the stop id and description */
       $scope.getStopId = (stop) => stop.id;
       $scope.getStopDescription = (stop) =>
-      formatTime(stop.time, true) + ' \u00a0\u00a0' + stop.description;
+      formatTime(stop.time) + ' \u00a0\u00a0' + stop.description;
       $scope.getStopDescription2 = (stop) =>
       stop.road;
 
