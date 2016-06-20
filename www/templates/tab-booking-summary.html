@@ -105,15 +105,26 @@
       </ion-checkbox>
     </section>
 
-    <section class="item item-text-wrap">
+    <section class="item item-text-wrap"
+             ng-if="!isLoggedIn">
+      You are not logged in. Please enter your mobile number to complete booking.
+
+      <button class="button primary-button"
+              ng-click="login()"
+              ng-disabled="!book.termsChecked || waitingForPaymentResult">
+        Enter Mobile No.
+      </button>
+    </section>
+
+    <section class="item item-text-wrap"
+             ng-if="isLoggedIn">
       Please ensure that your credit card is ready for the next step in the booking process.
 
       <button class="button primary-button"
-              ng-click="loginBeforePay()"
+              ng-click="pay()"
               ng-disabled="!book.termsChecked || waitingForPaymentResult">
         Confirm and Pay
       </button>
     </section>
-
   </ion-content>
 </ion-view>

@@ -281,7 +281,6 @@ export default [
           $scope.book.alightStops.find(x => x.id == $scope.book.alightStopId)
           : null;
       })
-
     });
   }
 ];
