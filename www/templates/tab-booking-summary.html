@@ -5,12 +5,11 @@
       Please review the route and bus stop selections you have made for this booking.<br />
       To change any of the selections, please click its corresponding <b>Edit</b> button.
     </div> -->
-
     <section class="card">
       <h3 class="item item-divider">
         Selected Route
       </h3>
-      <div class="item route-info">
+      <div class="item item-text-wrap route-info">
         <!-- FIXME we need to show the SELECTED STOPS not the route
           itself.
 
@@ -32,7 +31,7 @@
 
               <stop-stop>
                 <h4>Pick up at</h4>
-                {{book.boardStop.stop.description}}<br/>
+                <strong>{{book.boardStop.stop.description}}</strong><br/>
                 {{book.boardStop.stop.label}}<br/>
                 {{book.boardStop.stop.road}}<br/>
                 <br/>
@@ -48,8 +47,8 @@
              </stop-img>
 
              <stop-stop>
-               <h4>Pick up at</h4>
-               {{book.alightStop.stop.description}}<br/>
+               <h4>Drop off at</h4>
+               <strong>{{book.alightStop.stop.description}}</strong><br/>
                {{book.alightStop.stop.label}}<br/>
                {{book.alightStop.stop.road}}<br/>
                <br/>
@@ -95,18 +94,15 @@
       </form>
     </section> -->
 
-    <section class="card">
-      <h3 class="item item-divider">
-        Terms and Conditions of Booking
-      </h3>
+    <section class="card tnc">
       <company-tnc company-id="book.route.transportCompanyId"></company-tnc>
-      <ion-checkbox class="item" ng-model="book.termsChecked">
-        Yes, I have read and agree to the Terms and Conditions of booking.
+      <ion-checkbox class="item item-text-wrap" ng-model="book.termsChecked">
+        Yes, I have read and agree to the {{company.name}}'s Terms and Conditions of booking.
       </ion-checkbox>
     </section>
 
-    <section class="item item-text-wrap">
-      Please ensure that your credit card is ready for the next step in the booking process.
+    <section class="item item-text-wrap confirm-pay">
+      Please ensure that you have your credit card ready for payment on the next screen.
 
       <button class="button primary-button"
               ng-click="loginBeforePay()"
