@@ -36,7 +36,6 @@
     @include flex-direction(column);
     @include justify-content(center);
     @include align-items(center);
-    height: auto;
     .cancellation-content {
       margin: 20px 0;
       text-align: center;
