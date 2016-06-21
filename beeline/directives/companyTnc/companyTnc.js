@@ -1,6 +1,6 @@
 
 
-export default function companyTnc(CompanyService, $ionicModal) {
+export default function companyTnc(CompanyService, $ionicModal, $q) {
   return {
     template: require('./companyTnc.html'),
     replace: false,
@@ -12,19 +12,25 @@ export default function companyTnc(CompanyService, $ionicModal) {
 
       scope.$watch('companyId', function() {
         if (!scope.companyId) {
-          scope.company = {};
+          scope.company = null;
           return;
         }
-        CompanyService.getCompany(scope.companyId)
+
+        var companyPromise = CompanyService.getCompany(scope.companyId)
         .then((company) => {
           scope.company = company;
-          company.featuresParsed = JSON.parse(company.features);
-          company.termsParsed = JSON.parse(company.terms);
-          company.termsHTML = company.termsParsed.map(t => t.txt).join('\n');
+        });
+
+        var featuresPromise = CompanyService.getFeatures(scope.companyId)
+        $q.all([featuresPromise, companyPromise])
+        .then(([features, company]) => {
+          company.featuresHTML = features;
         });
       });
 
       scope.showTerms = function() {
+        if (!scope.company) return;
+
         if (!scope.termsModal) {
           scope.termsModal = $ionicModal.fromTemplate(
             require('./termsModal.html'),
@@ -32,8 +38,16 @@ export default function companyTnc(CompanyService, $ionicModal) {
               scope: scope
             }
           );
+          var termsPromise = CompanyService.getTerms(scope.company.id);
+
+          termsPromise.then((terms) => {
+            scope.company.termsHTML = terms;
+            scope.termsModal.show();
+          })
         }
-        scope.termsModal.show();
+        else {
+          scope.termsModal.show();
+        }
       };
     }
   };

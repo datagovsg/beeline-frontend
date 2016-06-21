@@ -7,11 +7,7 @@
 </div>
 
 <h4 class="item item-divider">Features</h4>
-<ul>
-  <li ng-repeat="feature in company.featuresParsed track by $index">
-    {{feature.txt}}
-  </li>
-</ul>
+<div class="item" ng-bind-html="company.featuresHTML"></div>
 
 <div class="item item-text-wrap">
   <div>

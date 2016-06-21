@@ -9,8 +9,7 @@
   </ion-header-bar>
 
   <ion-content has-bouncing="false">
-    <div ng-repeat="clause in company.termsParsed"
-        ng-bind-html="clause.txt">
+    <div ng-bind-html="company.termsHTML">
     </div>
   </ion-content>
 
