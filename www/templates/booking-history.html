@@ -1,80 +1,51 @@
 <ion-view title="Booking History" class="booking-history">
   <ion-content>
     <ion-list>
-      <div class="card" ng-repeat="transaction in transactions track by transaction.id" ng-class="{ 'cancelled': !transaction.committed }">
+      <div class="card" ng-repeat="transaction in transactions track by transaction.id">
         <div class="item item-divider">
-          Transaction # {{transaction.id}} <span ng-if="!transaction.committed" class="padding-left">(failed)</span>
+          Transaction # {{transaction.id}}
+          <span ng-if="transaction.committed" class="item-note balanced">Success</span>
+          <span ng-if="!transaction.committed" class="item-note assertive">Failed</span>
         </div>
-        <!--   <div class="item item-divider" ng-if="transaction.itemsByType.payment">Payment</div> -->
-<div class="item">
-  <table>
-    <tr>
-      <td>
-        Transaction Date
-      </td>
-      <td>
-        fffff
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Amount
-      </td>
-      <td>
-        fkfkfkfkgn
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Credit Card
-      </td>
-      <td>
-        fkfkfkfkgn
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Charge ID
-      </td>
-      <td>
-        jdfjdhf
-      </td>
-    </tr>
-  </table>
-</div>
-
+        <!--<div class="item item-divider" ng-if="transaction.itemsByType.payment">Payment</div> -->
         <div class="item">
-          Transaction Date:
-          <span class="item-note">
-            {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
-          </span>
+          <table>
+            <tr>
+              <td>
+                <strong>Transaction Date</strong>
+              </td>
+              <td>
+                {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
+              </td>
+            </tr>
+            <tr ng-repeat-start="payment in transaction.itemsByType.payment track by payment.id">
+              <td>
+                <strong>Amount</strong>
+              </td>
+              <td>
+                ${{payment.debit | number:'2'}}
+              </td>
+            </tr>
+            <tr ng-if="payment.payment.data.source.funding === 'credit'" ng-repeat-end>
+              <td>
+                <strong>Credit Card</strong>
+              </td>
+              <td>
+                XXXX XXXX XXXX {{payment.payment.data.source.last4}}
+              </td>
+            </tr>
+          </table>
         </div>
-        <div class="item" ng-repeat-start="payment in transaction.itemsByType.payment track by payment.id">Amount
-          <span class="item-note">
-            ${{payment.debit | number:'2'}}
-          </span> </div>
-        <div class="item" ng-if="payment.payment.data.source.funding === 'credit'">
-          Credit Card:
-          <span class="item-note" ng-if="payment.payment.data.source.funding === 'credit'">
-            XXXX XXXX XXXX {{payment.payment.data.source.last4}}
-          </span></div>
-        <div class="item" ng-repeat-end>
-          Charge ID:
-          <span class="item-note">
-              {{payment.payment.paymentResource}}
-            </span>
-        </div>
-
         <!-- FIXME: show the other transaction types -- refunds, free tickets -->
         <div class="item item-divider" ng-if="transaction.itemsByType.ticketSale">
-          Tickets Purchased
+          Tickets Selected
         </div>
 
         <div ng-repeat="ti in transaction.itemsByType.ticketSale track by ti.id" class="item item-text-wrap">
           <table>
             <tr>
               <td>
-                <stong>Route</stong>
+                <strong>Route</strong>
               </td>
               <td>
                 {{ti.route.label}}: {{ti.route.from}} &mdash; {{ti.route.to}}
@@ -82,7 +53,7 @@
             </tr>
             <tr>
               <td>
-                <stong>Date</stong>
+                <strong>Date</strong>
               </td>
               <td>
                 {{ti.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
@@ -90,18 +61,18 @@
             </tr>
             <tr>
               <td>
-                <stong>Pick-up</stong>
+                <strong>Pick-up</strong>
               </td>
               <td>
-                {{ti.ticketSale.boardStop.time | date:'h:mm a'}} - {{ti.ticketSale.boardStop.stop.description}}
+                {{ti.ticketSale.boardStop.time | date:'h:mm a'}}&nbsp {{ti.ticketSale.boardStop.stop.description}}
               </td>
             </tr>
             <tr>
               <td>
-                <stong>Drop-off</stong>
+                <strong>Drop-off</strong>
               </td>
               <td>
-                {{ti.ticketSale.alightStop.time | date:'h:mm a'}} - {{ti.ticketSale.alightStop.stop.description}}
+                {{ti.ticketSale.alightStop.time | date:'h:mm a'}}&nbsp {{ti.ticketSale.alightStop.stop.description}}
               </td>
             </tr>
           </table>

@@ -1,20 +1,18 @@
-
-
 .booking-history {
-  .cancelled {
-    .item{
-      //background-color: $light-grey !important ;
-      //color: $normal-grey !important ;
-      opacity: 0.6;
-      //text-decoration: line-through;
-    }
+  .item-note {
+    font-size: $font-size-small;
   }
-  table{
-    tr,td{
+  table {
+    width: 100%;
+    td,
+    tr {
       text-align: left;
       font-size: $font-size-small;
       padding: 5px;
       vertical-align: top;
+      strong {
+        white-space: nowrap;
+      }
     }
   }
 }
