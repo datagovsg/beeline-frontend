@@ -37,7 +37,7 @@
       <div class="row">
         <div class="col">
           <h4>Operated By</h4>
-          <div><span ng-bind="company.name"></span><a class="padding-left">Terms and Conditions</a></div>
+          <div><span ng-bind="company.name"></span><a class="tnc">Terms and Conditions</a></div>
         </div>
       </div>
       <div class="row">
@@ -61,7 +61,8 @@
           <img class="route-icon" src="./img/RoutePairBigStart.svg" />
         </div>
         <div class="col">
-          <strong ng-bind="ticket.boardStop.stop.description"></strong><br />
+          <span class="stop-description" ng-bind="ticket.boardStop.stop.description"></span>
+          <br />
           <span ng-bind="ticket.boardStop.stop.road"></span>
         </div>
       </div>
@@ -71,7 +72,8 @@
           <img class="route-icon" src="./img/RoutePairBigEnd.svg" />
         </div>
         <div class="col">
-          <strong ng-bind="ticket.alightStop.stop.description"></strong><br />
+          <span class="stop-description" ng-bind="ticket.alightStop.stop.description"></span>
+          <br />
           <span ng-bind="ticket.alightStop.stop.road"></span>
         </div>
       </div>
@@ -80,11 +82,7 @@
     <ui-gmap-google-map ng-if="info.trip.status != 'cancelled'" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
       <ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" stroke="p.stroke" icons="p.icons"></ui-gmap-polyline>
       <ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
-      <ui-gmap-marker ng-if="map.busLocation.coordinates"
-                      idkey="bus-location"
-                      coords="map.busLocation.coordinates"
-                      icon="map.busLocation.icon"
-      ></ui-gmap-markers>
+      <ui-gmap-marker ng-if="map.busLocation.coordinates" idkey="bus-location" coords="map.busLocation.coordinates" icon="map.busLocation.icon"></ui-gmap-markers>
     </ui-gmap-google-map>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
@@ -95,10 +93,12 @@
         <p>Sorry for the inconvenience caused.</p>
         <p>Today's trip has been cancelled.</p>
         <p>
-          Please make alternative transport arrangements. <bold>{{company.name}}</bold> will contact you and refund today's fare.
+          Please make alternative transport arrangements.
+          <bold>{{company.name}}</bold> will contact you and refund today's fare.
         </p>
         <p>
-          For enquiries, please contact <bold>{{company.contactNo}}</bold>.
+          For enquiries, please contact
+          <bold>{{company.contactNo}}</bold>.
         </p>
       </div>
     </div>

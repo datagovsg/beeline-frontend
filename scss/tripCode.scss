@@ -5,9 +5,7 @@ trip-code {
   font-weight: bold;
   display: inline-block;
   position: relative;
-  height: $font-size-base;
-  margin: 5px 0;
-
+  height: 20px;
   .ch.shrink {
     // font-size: 80%;
     transform: scale(0.8, 0.8);
