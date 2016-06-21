@@ -3,15 +3,15 @@
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
     <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
       <i class="icon ion-bookmark"></i>
-      <span class="tab-title">Ticket</span>
+      <span class="tab-title-large">Ticket</span>
     </a>
     <a class="tab-item" on-tap="activeTab=1" ng-class="{active: activeTab===1}">
       <i class="icon ion-android-bus"></i>
-      <span class="tab-title">Driver</span>
+      <span class="tab-title-large">Driver</span>
     </a>
     <a class="tab-item" on-tap="activeTab=2" ng-class="{active: activeTab===2}">
       <i class="icon ion-ios-location"></i>
-      <span class="tab-title">Stops</span>
+      <span class="tab-title-large">Stops</span>
     </a>
   </div>
   <ion-content class="has-tabs-top" scroll=false>
@@ -38,8 +38,11 @@
       <div class="row">
         <div class="col">
           <h4>Operated By</h4>
-          <div ng-bind="company.name"></div>
-        </div>
+          <span ng-bind="company.name"></span><br>
+          <span class="tnc">
+            <i class="icon ion-information-circled"></i><span><a>Terms and Conditions</a></span>
+          </span>
+            </div>
       </div>
       <div class="row">
         <div class="col">
@@ -57,22 +60,24 @@
     <div class="trip-info item item-text-wrap" ng-show="activeTab===2">
       <span class="time">{{}}</span>
       <div class="row row-top">
-        <div class="time-column col col-33">
+        <div class="time-column col col-25">
           <span ng-bind="ticket.boardStop.time | date:'h:mm a'"></span>
           <img class="route-icon" src="./img/RoutePairBigStart.svg" />
         </div>
         <div class="col">
-          <span ng-bind="ticket.boardStop.stop.description"></span>,
+          <span class="stop-description" ng-bind="ticket.boardStop.stop.description"></span>
+          <br />
           <span ng-bind="ticket.boardStop.stop.road"></span>
         </div>
       </div>
       <div class="row row-top">
-        <div class="time-column col col-33">
+        <div class="time-column col col-25">
           <span ng-bind="ticket.alightStop.time | date:'h:mm a'"></span>
           <img class="route-icon" src="./img/RoutePairBigEnd.svg" />
         </div>
         <div class="col">
-          <span ng-bind="ticket.alightStop.stop.description"></span>,
+          <span class="stop-description" ng-bind="ticket.alightStop.stop.description"></span>
+          <br />
           <span ng-bind="ticket.alightStop.stop.road"></span>
         </div>
       </div>
@@ -81,11 +86,7 @@
     <ui-gmap-google-map ng-if="info.trip.status != 'cancelled'" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
       <ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" stroke="p.stroke" icons="p.icons"></ui-gmap-polyline>
       <ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
-      <ui-gmap-marker ng-if="map.busLocation.coordinates"
-                      idkey="bus-location"
-                      coords="map.busLocation.coordinates"
-                      icon="map.busLocation.icon"
-      ></ui-gmap-markers>
+      <ui-gmap-marker ng-if="map.busLocation.coordinates" idkey="bus-location" coords="map.busLocation.coordinates" icon="map.busLocation.icon"></ui-gmap-markers>
     </ui-gmap-google-map>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
@@ -96,10 +97,12 @@
         <p>Sorry for the inconvenience caused.</p>
         <p>Today's trip has been cancelled.</p>
         <p>
-          Please make alternative transport arrangements. <bold>{{company.name}}</bold> will contact you and refund today's fare.
+          Please make alternative transport arrangements.
+          <bold>{{company.name}}</bold> will contact you and refund today's fare.
         </p>
         <p>
-          For enquiries, please contact <bold>{{company.contactNo}}</bold>.
+          For enquiries, please contact
+          <bold>{{company.contactNo}}</bold>.
         </p>
       </div>
     </div>
