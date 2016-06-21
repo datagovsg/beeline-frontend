@@ -1,7 +1,9 @@
 import assert from 'assert';
 
-export default function CompanyService(UserService) {
+export default function CompanyService(UserService, $ionicModal, $rootScope) {
   var companyCache = {};
+  var termsModal, termsScope;
+
   return {
     getCompany: function(id, ignoreCache) {
       assert(typeof id === 'number');
@@ -25,6 +27,28 @@ export default function CompanyService(UserService) {
       .then(function(response) {
         return response.data;
       });
+    },
+    showTerms: function (id) {
+      if (!termsModal) {
+        termsScope = $rootScope.$new();
+        termsScope.termsModal = termsModal = $ionicModal.fromTemplate(
+          require('../templates/termsModal.html'),
+          {
+            scope: termsScope
+          }
+        );
+        var termsPromise = this.getTerms(id);
+
+        termsPromise.then((terms) => {
+          termsScope.company = {
+            termsHTML: terms
+          }
+          termsModal.show();
+        })
+      }
+      else {
+        termsModal.show();
+      }
     },
     getFeatures: function(id) {
       assert(typeof id === 'number');

@@ -1,6 +1,6 @@
 
 
-export default function companyTnc(CompanyService, $ionicModal, $q) {
+export default function companyTnc(CompanyService, $q) {
   return {
     template: require('./companyTnc.html'),
     replace: false,
@@ -19,6 +19,7 @@ export default function companyTnc(CompanyService, $ionicModal, $q) {
         var companyPromise = CompanyService.getCompany(scope.companyId)
         .then((company) => {
           scope.company = company;
+          return company;
         });
 
         var featuresPromise = CompanyService.getFeatures(scope.companyId)
@@ -28,27 +29,11 @@ export default function companyTnc(CompanyService, $ionicModal, $q) {
         });
       });
 
-      scope.showTerms = function() {
+      scope.showTerms = () => {
         if (!scope.company) return;
 
-        if (!scope.termsModal) {
-          scope.termsModal = $ionicModal.fromTemplate(
-            require('./termsModal.html'),
-            {
-              scope: scope
-            }
-          );
-          var termsPromise = CompanyService.getTerms(scope.company.id);
-
-          termsPromise.then((terms) => {
-            scope.company.termsHTML = terms;
-            scope.termsModal.show();
-          })
-        }
-        else {
-          scope.termsModal.show();
-        }
-      };
+        CompanyService.showTerms(scope.company.id);
+      }
     }
   };
 }
