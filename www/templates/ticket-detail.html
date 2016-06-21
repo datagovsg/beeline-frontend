@@ -40,7 +40,8 @@
           <h4>Operated By</h4>
           <span ng-bind="company.name"></span><br>
           <span class="tnc">
-            <i class="icon ion-information-circled"></i><span><a>Terms and Conditions</a></span>
+            <i class="icon ion-information-circled"></i><span>
+            <a ng-click="showTerms(company.id)">Terms and Conditions</a></span>
           </span>
             </div>
       </div>
