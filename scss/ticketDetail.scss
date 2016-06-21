@@ -2,10 +2,10 @@
 .ticket-detail {
   .item.trip-info {
     background-color: rgba($light, 0.9);
-    padding: 5px;
+    padding: $item-padding-small;
     h4 {
       color: $normal-grey;
-      padding-bottom: 5px;
+      padding-bottom: $item-padding-small;
     }
   }
   .time-column {
@@ -42,7 +42,7 @@
       }
       p {
         text-align: left;
-        padding: 5px 10px;
+        padding: $item-padding-small 10px;
         bold {
           font-weight: bold;
         }
