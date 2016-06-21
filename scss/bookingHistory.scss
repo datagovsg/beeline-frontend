@@ -4,4 +4,12 @@
   .cancelled {
     text-decoration: line-through;
   }
+  table{
+    tr,td{
+      text-align: left;
+      font-size: $font-size-small;
+      padding: 5px;
+      vertical-align: top;
+    }
+  }
 }
