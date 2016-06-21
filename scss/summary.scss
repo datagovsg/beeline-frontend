@@ -1,12 +1,20 @@
 #pg_summary {
   .route-info {
-    display: flex;
-
-    .bus-number {
-      flex: 0 0 auto;
-    }
     .start-end {
-      flex: 1 1 auto;
+      margin-top: 5px;
+    }
+  }
+  .signage {
+    img {
+      margin: 15px 0;
+      padding: 1px;
+      border: 1px solid lighten($normal-grey, 50%);
+    }
+  }
+  .bus-logo{
+    img {
+      padding: 1px;
+      border: 1px solid lighten($normal-grey, 50%);
     }
   }
 }
