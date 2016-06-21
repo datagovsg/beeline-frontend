@@ -37,10 +37,7 @@
       <div class="row">
         <div class="col">
           <h4>Operated By</h4>
-          <span ng-bind="company.name"></span><br>
-          <span class="tnc">
-            <i class="icon ion-information-circled"></i><span><a>Terms and Conditions</a></span>
-          </span>
+          <span ng-bind="company.name"></span><i class="icon ion-information-circled tnc"></i>
             </div>
       </div>
       <div class="row">
@@ -89,22 +86,23 @@
     </ui-gmap-google-map>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
-    <div class="item item-text-wrap service-cancellation" ng-if="info.trip.status == 'cancelled'">
-      <div class="cancellation-content">
-        <h2>Service is Cancelled</h2>
-        <img src="./img/Emergency.svg">
-        <p>Sorry for the inconvenience caused.</p>
-        <p>Today's trip has been cancelled.</p>
-        <p>
-          Please make alternative transport arrangements.
-          <bold>{{company.name}}</bold> will contact you and refund today's fare.
-        </p>
-        <p>
-          For enquiries, please contact
-          <bold>{{company.contactNo}}</bold>.
-        </p>
+    <ion-scroll class="service-cancellation">
+      <div class="item item-text-wrap" ng-if="info.trip.status == 'cancelled'">
+        <div class="cancellation-content">
+          <h2>Service is Cancelled</h2>
+          <i class="icon ion-alert-circled"></i>
+          <p>Today's trip has been cancelled. Sorry for the inconvenience caused. </p>
+          <p>
+            Please make alternative transport arrangements.
+            <bold>{{company.name}}</bold> will contact you and refund today's fare.
+          </p>
+          <p>
+            For enquiries, please contact
+            <bold>{{company.contactNo}}</bold>.
+          </p>
+        </div>
       </div>
-    </div>
+    </ion-scroll>
     <!-- Service cancellation section ends -->
   </ion-content>
 </ion-view>
