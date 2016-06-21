@@ -111,6 +111,7 @@ td {
 }
 
 .bus-number {
+  display: inline;
   text-align: center;
   font-size: $font-size-small;
   background-color: $royal;
