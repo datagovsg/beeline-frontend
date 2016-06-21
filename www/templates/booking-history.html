@@ -1,84 +1,110 @@
-
 <ion-view title="Booking History" class="booking-history">
   <ion-content>
     <ion-list>
-      <div class="card" ng-repeat="transaction in transactions track by transaction.id"
-        ng-class="{ 'cancelled': !transaction.committed }">
-
+      <div class="card" ng-repeat="transaction in transactions track by transaction.id" ng-class="{ 'cancelled': !transaction.committed }">
         <div class="item item-divider">
-          Transaction #
-            {{transaction.id}}
+          Transaction # {{transaction.id}} <span ng-if="!transaction.committed" class="padding-left">(failed)</span>
         </div>
+        <!--   <div class="item item-divider" ng-if="transaction.itemsByType.payment">Payment</div> -->
+<div class="item">
+  <table>
+    <tr>
+      <td>
+        Transaction Date
+      </td>
+      <td>
+        fffff
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Amount
+      </td>
+      <td>
+        fkfkfkfkgn
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Credit Card
+      </td>
+      <td>
+        fkfkfkfkgn
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Charge ID
+      </td>
+      <td>
+        jdfjdhf
+      </td>
+    </tr>
+  </table>
+</div>
+
         <div class="item">
           Transaction Date:
           <span class="item-note">
             {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
           </span>
         </div>
-
-      <!--   <div class="item item-divider" ng-if="transaction.itemsByType.payment">Payment</div> -->
-
-          <div class="item" ng-repeat-start="payment in transaction.itemsByType.payment track by payment.id">Amount
+        <div class="item" ng-repeat-start="payment in transaction.itemsByType.payment track by payment.id">Amount
           <span class="item-note">
             ${{payment.debit | number:'2'}}
           </span> </div>
-          <div class="item" ng-if="payment.payment.data.source.funding === 'credit'">
-            Credit Card:
+        <div class="item" ng-if="payment.payment.data.source.funding === 'credit'">
+          Credit Card:
           <span class="item-note" ng-if="payment.payment.data.source.funding === 'credit'">
             XXXX XXXX XXXX {{payment.payment.data.source.last4}}
           </span></div>
-          <div class="item" ng-repeat-end>
-            Charge ID:
-            <span class="item-note" >
+        <div class="item" ng-repeat-end>
+          Charge ID:
+          <span class="item-note">
               {{payment.payment.paymentResource}}
             </span>
-          </div>
-        <!-- FIXME: show the other transaction types -- refunds, free tickets -->
-
-        <div class="item item-divider" ng-if="transaction.itemsByType.ticketSale">
-          Tickets Purchased
-          <span ng-if="!transaction.committed">(FAILED)</span>
         </div>
 
-        <div ng-repeat="ti in transaction.itemsByType.ticketSale track by ti.id"
-            class="item item-text-wrap">
-            <table>
-              <tr>
-                <td>
-                  <stong>Route</stong>
-                </td>
-                <td>
-                  {{ti.route.label}}:
-                  {{ti.route.from}}
-                    &mdash;
-                  {{ti.route.to}}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <stong>Date</stong>
-                </td>
-                <td>
-                  {{ti.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <stong>Pick-up</stong>
-                </td>
-                <td>
-                  {{ti.ticketSale.boardStop.time | date:'h:mm a'}} -  {{ti.ticketSale.boardStop.stop.description}}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <stong>Drop-off</stong>
-                </td>
-                <td>
-                  {{ti.ticketSale.alightStop.time | date:'h:mm a'}} - {{ti.ticketSale.alightStop.stop.description}}
-                </td>
-              </tr>
-            </table>
+        <!-- FIXME: show the other transaction types -- refunds, free tickets -->
+        <div class="item item-divider" ng-if="transaction.itemsByType.ticketSale">
+          Tickets Purchased
+        </div>
+
+        <div ng-repeat="ti in transaction.itemsByType.ticketSale track by ti.id" class="item item-text-wrap">
+          <table>
+            <tr>
+              <td>
+                <stong>Route</stong>
+              </td>
+              <td>
+                {{ti.route.label}}: {{ti.route.from}} &mdash; {{ti.route.to}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <stong>Date</stong>
+              </td>
+              <td>
+                {{ti.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <stong>Pick-up</stong>
+              </td>
+              <td>
+                {{ti.ticketSale.boardStop.time | date:'h:mm a'}} - {{ti.ticketSale.boardStop.stop.description}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <stong>Drop-off</stong>
+              </td>
+              <td>
+                {{ti.ticketSale.alightStop.time | date:'h:mm a'}} - {{ti.ticketSale.alightStop.stop.description}}
+              </td>
+            </tr>
+          </table>
 
         </div>
       </div>

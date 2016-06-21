@@ -2,7 +2,12 @@
 
 .booking-history {
   .cancelled {
-    text-decoration: line-through;
+    .item{
+      //background-color: $light-grey !important ;
+      //color: $normal-grey !important ;
+      opacity: 0.6;
+      //text-decoration: line-through;
+    }
   }
   table{
     tr,td{
