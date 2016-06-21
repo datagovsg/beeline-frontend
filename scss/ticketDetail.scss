@@ -9,6 +9,10 @@
     }
     .tnc{
       padding-left: $item-padding-base;
+      .ion-information-circled{
+        color: $royal;
+        padding: 0 $item-padding-small;
+      }
     }
     .stop-description{
       font-weight: bold;
