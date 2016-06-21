@@ -5,6 +5,7 @@
       Please review the route and bus stop selections you have made for this booking.<br />
       To change any of the selections, please click its corresponding <b>Edit</b> button.
     </div> -->
+
     <section class="card">
       <h3 class="item item-divider">
         Selected Route
@@ -31,7 +32,7 @@
 
               <stop-stop>
                 <h4>Pick up at</h4>
-                <strong>{{book.boardStop.stop.description}}</strong><br/>
+                {{book.boardStop.stop.description}}<br/>
                 {{book.boardStop.stop.label}}<br/>
                 {{book.boardStop.stop.road}}<br/>
                 <br/>
@@ -47,8 +48,8 @@
              </stop-img>
 
              <stop-stop>
-               <h4>Drop off at</h4>
-               <strong>{{book.alightStop.stop.description}}</strong><br/>
+               <h4>Pick up at</h4>
+               {{book.alightStop.stop.description}}<br/>
                {{book.alightStop.stop.label}}<br/>
                {{book.alightStop.stop.road}}<br/>
                <br/>
@@ -94,22 +95,36 @@
       </form>
     </section> -->
 
-    <section class="card tnc">
+    <section class="card">
+      <h3 class="item item-divider">
+        Terms and Conditions of Booking
+      </h3>
       <company-tnc company-id="book.route.transportCompanyId"></company-tnc>
-      <ion-checkbox class="item item-text-wrap" ng-model="book.termsChecked">
-        Yes, I have read and agree to the {{company.name}}'s Terms and Conditions of booking.
+      <ion-checkbox class="item" ng-model="book.termsChecked">
+        Yes, I have read and agree to the Terms and Conditions of booking.
       </ion-checkbox>
     </section>
 
-    <section class="item item-text-wrap">
-      Please ensure that you have your credit card ready for payment on the next screen.
+    <section class="item item-text-wrap"
+             ng-if="!isLoggedIn">
+      You are not logged in. Please enter your mobile number to complete booking.
 
       <button class="button primary-button"
-              ng-click="loginBeforePay()"
+              ng-click="login()"
+              ng-disabled="!book.termsChecked || waitingForPaymentResult">
+        Enter Mobile No.
+      </button>
+    </section>
+
+    <section class="item item-text-wrap"
+             ng-if="isLoggedIn">
+      Please ensure that your credit card is ready for the next step in the booking process.
+
+      <button class="button primary-button"
+              ng-click="pay()"
               ng-disabled="!book.termsChecked || waitingForPaymentResult">
         Confirm and Pay
       </button>
     </section>
-
   </ion-content>
 </ion-view>

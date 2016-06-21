@@ -36,8 +36,8 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/routes',
     views: {
       'tab-routes': {
-        templateUrl: 'templates/routes.html',
-        controller: 'RoutesController'
+        templateUrl: 'templates/routes-list.html',
+        controller: 'RoutesListController'
       }
     }
   })

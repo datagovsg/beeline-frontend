@@ -60,29 +60,29 @@
       /* Hide the scroll-bar in browsers */
       overflow: hidden;
 
-    .time, .details {
-      display: inline-block;
-      vertical-align: top;
+      .details {
+        .road {
+          color: $hint-color;
+        }
+      }
+    }
+
+
+    .bar.bar-footer {
+      /* overriding because the bar-footer is otherwise
+        fixed-height, but we want padding around the button
+        */
+      height: $bar-height + 2 * $item-padding;
+      padding: $item-padding;
+      button {
+        flex: 1 1 auto;
+        position: static;
+        max-width: none;
+      }
+    }
+
+    .gmnoprint, .gm-style-cc {
+      display:none;
     }
   }
-
-
-  .bar.bar-footer {
-    /* overriding because the bar-footer is otherwise
-      fixed-height, but we want padding around the button
-      */
-    height: $bar-height + 2 * $item-padding;
-    padding: $item-padding;
-    button {
-      flex: 1 1 auto;
-      position: static;
-      max-width: none;
-    }
-  }
-
-  .gmnoprint, .gm-style-cc {
-    display:none;
-  }
-
-}
 }

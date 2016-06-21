@@ -54,14 +54,12 @@ export default [
       $scope.book.promoCodes.push($scope.book.currentPromoCode);
     }
 
-    $scope.loginBeforePay = function() {
-      // user must log in before pay
-      if (!UserService.getUser()) {
-        UserService.promptLogIn();
-      }
-      else {
-        $scope.pay();
-      }
+    $scope.$watch(() => UserService.getUser(), (user) => {
+      $scope.isLoggedIn = user ? true : false;
+    })
+
+    $scope.login = function () {
+      UserService.promptLogIn()
     }
 
     // methods

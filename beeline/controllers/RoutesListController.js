@@ -21,7 +21,7 @@ function filterRoutesByRegionId(routes, regionId) {
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
-export default function($scope, $state, RoutesService, $q) {
+export default function($scope, $state, UserService, RoutesService, $q) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -68,6 +68,8 @@ export default function($scope, $state, RoutesService, $q) {
       return _.some(recentRoutes, {'id': route.id});
     });
   });
+
+  $scope.$watch(() => UserService.getUser(), $scope.refreshRoutes);
 
   $scope.refreshRoutes();
 }

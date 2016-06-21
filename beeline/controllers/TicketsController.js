@@ -13,7 +13,10 @@ export default [
     }, function(newUser) {
       $scope.user = newUser;
     });
-    $scope.logIn = function() { UserService.promptLogIn(); };
+    $scope.logIn = function() {
+      UserService.promptLogIn()
+    };
+    $scope.$watch(() => UserService.getUser(), refreshTickets);
 
     // Grab the tickets
     $scope.tickets = {};
