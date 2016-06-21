@@ -1,5 +1,12 @@
 #pg_summary {
   .route-info {
     display: flex;
+
+    .bus-number {
+      flex: 0 0 auto;
+    }
+    .start-end {
+      flex: 1 1 auto;
+    }
   }
 }
