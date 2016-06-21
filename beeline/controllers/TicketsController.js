@@ -15,8 +15,8 @@ export default [
     });
     $scope.logIn = function() {
       UserService.promptLogIn()
-      .then(refreshTickets);
     };
+    $scope.$watch(() => UserService.getUser(), refreshTickets);
 
     // Grab the tickets
     $scope.tickets = {};
