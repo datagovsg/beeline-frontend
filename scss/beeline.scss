@@ -191,11 +191,11 @@ input[type="color"] {
 }
 
 .swiper-container-horizontal > .swiper-pagination {
-  bottom: 30px;
+  bottom: $padding-xlarge-vertical;
 }
 
 .swiper-pagination-bullet{
-  background-color: #fff;
+  background-color: $base-background-color;
 }
 
 /** FIXES FOR BUGS **/
