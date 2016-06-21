@@ -49,6 +49,12 @@
           <dd>
             ${{payment.debit | number:'2'}}
           </dd>
+          <dt ng-if="payment.payment.data.source.funding === 'credit'">
+            Credit Card:
+          </dt>
+          <dd ng-if="payment.payment.data.source.funding === 'credit'">
+            XXXX XXXX XXXX {{payment.payment.data.source.last4}}
+          </dd>
           <dt>
             Charge ID:
           </dt>
