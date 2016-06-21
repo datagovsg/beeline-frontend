@@ -15,12 +15,10 @@
     .tnc {
       padding: 0 $item-padding-base;
     }
-
     .ion-information-circled {
       color: $royal;
       font-size: 1.5em;
     }
-
     .stop-description {
       font-weight: bold;
     }
@@ -41,10 +39,6 @@
   }
   .service-cancellation {
     flex: 1 1 auto;
-    .ion-alert-circled {
-      font-size: 6em;
-      color: $assertive;
-    }
     .cancellation-content {
       margin: 10px 0;
       text-align: center;
@@ -55,7 +49,7 @@
         padding: $item-padding-base 0;
       }
       img {
-        padding-bottom: 20px;
+        padding: 20px 0;
       }
       p {
         text-align: left;
