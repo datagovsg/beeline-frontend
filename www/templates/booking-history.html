@@ -1,8 +1,14 @@
 
-<ion-view title="Booking History">
+<ion-view title="Booking History" class="booking-history">
   <ion-content>
     <ion-list>
-      <div class="card" ng-repeat="transaction in transactions track by transaction.id">
+      <div class="card" ng-repeat="transaction in transactions track by transaction.id"
+        ng-class="{ 'cancelled': !transaction.committed }">
+
+        <div class="item item-divider">
+          Transaction #
+            {{transaction.id}}
+        </div>
         <div class="item">
           Transaction Date:
           <span class="item-note">
@@ -10,18 +16,19 @@
           </span>
         </div>
 
-        <h3 class="item item-divider" ng-if="transaction.$items.ticketSale">
+        <h3 class="item item-divider" ng-if="transaction.itemsByType.ticketSale">
           Tickets Purchased
           <span ng-if="!transaction.committed">(FAILED)</span>
         </h3>
 
-        <dl ng-repeat="ti in transaction.$items.ticketSale track by ti.id">
+        <dl ng-repeat="ti in transaction.itemsByType.ticketSale track by ti.id"
+            class="item item-text-wrap">
           <dt>Route</dt>
           <dd>
-          {{transactionItem.route.label}}:
-          {{transactionItem.route.from}}
+          {{ti.route.label}}:
+          {{ti.route.from}}
             &mdash;
-          {{transactionItem.route.to}}
+          {{ti.route.to}}
           </dd>
 
           <dt>Date</dt>
@@ -31,17 +38,24 @@
 
           <dt>Pickup / Dropoff</dt>
           <dd>
-          {{transactionItem.ticketSale.boardStop.stop.description}} /
-          {{transactionItem.ticketSale.alightStop.stop.description}}
+          {{ti.ticketSale.boardStop.stop.description}} /
+          {{ti.ticketSale.alightStop.stop.description}}
           </dd>
         </dl>
 
-        <h3 ng-if="transaction.itemsByType.payment">Payment</h3>
-        <ul ng-if="transaction.itemsByType.payment">
-          <li ng-repeat="payment in transaction.itemsByType.payment track by payment.id">
+        <h3 class="item item-divider" ng-if="transaction.itemsByType.payment">Payment</h3>
+        <dl ng-if="transaction.itemsByType.payment" class="item item-text-wrap">
+          <dt ng-repeat-start="payment in transaction.itemsByType.payment track by payment.id">Amount</dt>
+          <dd>
             ${{payment.debit | number:'2'}}
-          </li>
-        </ul>
+          </dd>
+          <dt>
+            Charge ID:
+          </dt>
+          <dd ng-repeat-end>
+            {{payment.payment.paymentResource}}
+          </dd>
+        </dl>
         <!-- FIXME: show the other transaction types -- refunds, free tickets -->
       </div>
     </ion-list>
