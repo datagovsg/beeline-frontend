@@ -43,7 +43,12 @@ export default [
         $scope.disp.availabilityDays = {};
         $scope.disp.previouslyBookedDays = {};
 
-        RoutesService.getRoute(parseInt($scope.book.routeId), true, {include_availability: true})
+        // FIXME: Need to handle booking windows correctly
+        RoutesService.getRoute(parseInt($scope.book.routeId), true, {
+          include_availability: true,
+          start_date: Date.now(),
+          end_date: Date.now() + 365*24*3600*1000,
+        })
         .then((route) => {
           $scope.book.route = route;
           updateCalendar();
