@@ -19,9 +19,6 @@
       color: $royal;
       font-size: 1.5em;
     }
-    .stop-description {
-      font-weight: bold;
-    }
   }
   .time-column {
     text-align: right;
@@ -29,6 +26,7 @@
   .route-icon {
     height: 1.1em;
     vertical-align: text-bottom;
+    padding-left: $item-padding-small;
   }
   .angular-google-map-container {
     position: absolute;
