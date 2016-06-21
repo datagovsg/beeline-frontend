@@ -1,11 +1,9 @@
 /* ---------- TICKETS PAGE ---------- */
 .ticket-detail {
-
   ion-content {
     display: flex;
     flex-direction: column;
   }
-
   .item.trip-info {
     flex: 0 0 auto;
     background-color: rgba($light, 0.9);
@@ -14,12 +12,16 @@
       color: $normal-grey;
       padding-bottom: $item-padding-small;
     }
-    .tnc{
+    .tnc {
       padding: 0 $item-padding-base;
-      color: $hint-color;
-      }
     }
-    .stop-description{
+
+    .ion-information-circled {
+      color: $royal;
+      font-size: 1.5em;
+    }
+
+    .stop-description {
       font-weight: bold;
     }
   }
@@ -39,7 +41,7 @@
   }
   .service-cancellation {
     flex: 1 1 auto;
-    .ion-alert-circled{
+    .ion-alert-circled {
       font-size: 6em;
       color: $assertive;
     }
@@ -58,9 +60,6 @@
       p {
         text-align: left;
         padding: $item-padding-small 10px;
-        bold {
-          font-weight: bold;
-        }
       }
     }
   }
