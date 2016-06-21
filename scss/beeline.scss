@@ -120,9 +120,8 @@ td {
   text-align: center;
   background-color: $royal;
   color: $light;
-  padding: ceil($font-size-base/3);
-  margin: ceil($font-size-base/3) 0;
-  border-radius: ceil($font-size-base/3);
+  padding: $padding-small-vertical;
+  border-radius: $border-radius-large;
 }
 
 .locate-button {
