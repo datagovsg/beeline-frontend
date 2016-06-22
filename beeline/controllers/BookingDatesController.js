@@ -47,7 +47,6 @@ export default [
         RoutesService.getRoute(parseInt($scope.book.routeId), true, {
           include_availability: true,
           start_date: Date.now(),
-          end_date: Date.now() + 365*24*3600*1000,
         })
         .then((route) => {
           $scope.book.route = route;
