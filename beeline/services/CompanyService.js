@@ -41,18 +41,15 @@ export default function CompanyService(UserService, $ionicModal, $rootScope, $q)
             scope: termsScope
           }
         );
+      }
 
-        this.getCompany(id)
-        .then((company) => {
-          termsScope.company = {
-            termsHTML: writer.render(reader.parse(company.terms))
-          };
-          termsModal.show();
-        })
-      }
-      else {
+      this.getCompany(id)
+      .then((company) => {
+        termsScope.company = {
+          termsHTML: writer.render(reader.parse(company.terms))
+        };
         termsModal.show();
-      }
+      })
     },
     getFeatures: function(id) {
       assert(typeof id === 'number');
