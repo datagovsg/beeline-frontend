@@ -21,7 +21,6 @@ var app = angular.module('beeline', [
   'uiGmapgoogle-maps',
   'multipleDatePicker',
 ])
-.constant('SERVER_URL', 'http://staging.beeline.sg')
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
