@@ -38,12 +38,9 @@
       <div class="row">
         <div class="col">
           <h4>Operated By</h4>
-          <span ng-bind="company.name"></span><br>
-          <span class="tnc">
-            <i class="icon ion-information-circled"></i><span>
-            <a ng-click="showTerms(company.id)">Terms and Conditions</a></span>
-          </span>
-            </div>
+          <span ng-bind="company.name"></span>
+          <a ng-click="showTerms(company.id)"><i class="icon ion-information-circled tnc"></i></a>
+        </div>
       </div>
       <div class="row">
         <div class="col">
@@ -66,7 +63,7 @@
           <img class="route-icon" src="./img/RoutePairBigStart.svg" />
         </div>
         <div class="col">
-          <span class="stop-description" ng-bind="ticket.boardStop.stop.description"></span>
+          <span ng-bind="ticket.boardStop.stop.description"></span>
           <br />
           <span ng-bind="ticket.boardStop.stop.road"></span>
         </div>
@@ -77,7 +74,7 @@
           <img class="route-icon" src="./img/RoutePairBigEnd.svg" />
         </div>
         <div class="col">
-          <span class="stop-description" ng-bind="ticket.alightStop.stop.description"></span>
+          <span ng-bind="ticket.alightStop.stop.description"></span>
           <br />
           <span ng-bind="ticket.alightStop.stop.road"></span>
         </div>
@@ -91,22 +88,24 @@
     </ui-gmap-google-map>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
-    <div class="item item-text-wrap service-cancellation" ng-if="info.trip.status == 'cancelled'">
-      <div class="cancellation-content">
-        <h2>Service is Cancelled</h2>
-        <img src="./img/Emergency.svg">
-        <p>Sorry for the inconvenience caused.</p>
-        <p>Today's trip has been cancelled.</p>
-        <p>
-          Please make alternative transport arrangements.
-          <bold>{{company.name}}</bold> will contact you and refund today's fare.
-        </p>
-        <p>
-          For enquiries, please contact
-          <bold>{{company.contactNo}}</bold>.
-        </p>
+    <ion-scroll class="service-cancellation">
+      <div class="item item-text-wrap" ng-if="info.trip.status == 'cancelled'">
+        <div class="cancellation-content">
+          <h2>Service is Cancelled</h2>
+          <img src="../img/TicketCancelledTrip.svg" />
+          <!-- <i class="icon ion-alert-circled"></i> -->
+          <p>Today's trip has been cancelled. Sorry for the inconvenience caused. </p>
+          <p>
+            Please make alternative transport arrangements.
+            <strong>{{company.name}}</strong> will contact you and refund today's fare.
+          </p>
+          <p>
+            For enquiries, please contact
+            <strong>{{company.contactNo}}</strong>.
+          </p>
+        </div>
       </div>
-    </div>
+    </ion-scroll>
     <!-- Service cancellation section ends -->
   </ion-content>
 </ion-view>
