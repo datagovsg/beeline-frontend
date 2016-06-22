@@ -3,7 +3,7 @@
   <div><b>{{booking.selectedDates.length}} day(s)</b> were selected.</div>
   <ion-spinner ng-show="isCalculating"></ion-spinner>
     <h3>Selected Dates</h3>
-  <table class="price-table prices">
+  <table class="price-table prices booking-info">
     <thead>
       <tr ng-if="booking.selectedDates.length != 0">
         <th>Selected Dates</th>
@@ -31,7 +31,7 @@
     </tbody>
   </table>
   <h3>Price Calculator </h3>
-  <table class="price-table totals" ng-if="booking.selectedDates.length > 0">
+  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
         <th>Total Trips</th>

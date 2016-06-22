@@ -164,6 +164,9 @@ export default function($stateProvider, $urlRouterProvider) {
         templateUrl: 'templates/booking-history.html',
         controller: 'BookingHistoryController'
       }
+    },
+    data: {
+      hideTabs: true,
     }
   });
 
