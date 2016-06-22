@@ -100,20 +100,22 @@
   margin: 0 auto;
 }
 
-th {
-  font-weight: normal;
-  text-align: center;
-  background-color: $table-header-bg;
-  color: $royal;
-  padding: $table-cell-padding;
-  border-bottom: solid $table-header-border-width $royal;
-}
+table.booking-info {
+  th {
+    font-weight: normal;
+    text-align: center;
+    background-color: $table-header-bg;
+    color: $royal;
+    padding: $table-cell-padding;
+    border-bottom: solid $table-header-border-width $royal;
+  }
 
-td {
-  padding: $table-cell-padding;
-  text-align: center;
-  border-bottom: $table-cell-border-width solid $light-grey;
-  vertical-align: middle;
+  td {
+    padding: $table-cell-padding;
+    text-align: center;
+    border-bottom: $table-cell-border-width solid $light-grey;
+    vertical-align: middle;
+  }
 }
 
 .bus-number {
