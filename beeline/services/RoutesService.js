@@ -30,7 +30,7 @@ function transformRouteData(data) {
   return data;
 }
 
-export default function RoutesService($http, SERVER_URL, UserService) {
+export default function RoutesService($http, SERVER_URL, UserService, uiGmapGoogleMapApi, $q) {
 
   var routesCache;
   var recentRoutesCache;
@@ -131,6 +131,21 @@ export default function RoutesService($http, SERVER_URL, UserService) {
         return Promise.resolve([]);
       }
     },
+
+    decodeRoutePath: function (path) {
+      if (typeof path === 'string') {
+        return uiGmapGoogleMapApi.then((googleMaps) => {
+          // Array of LatLng objects
+          return googleMaps.geometry.encoding.decodePath(path);
+        })
+      }
+      else if (path instanceof Array) {
+        return $q.resolve(path.map(latLng => new googleMaps.LatLng(latLng)));
+      }
+      else {
+        throw new Error("path is not a String nor an Array!")
+      }
+    }
   };
 
   return instance;
