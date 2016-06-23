@@ -20,8 +20,9 @@
       <div class="row">
         <div class="col">
           <h4>Trip Code</h4>
-          <trip-code class="trip-code" code="info.code || 'XXXX'">
+          <trip-code class="trip-code" code="info.code" ng-if="info.code">
           </trip-code>
+          <span ng-if="!info.code">Not available</span>
           <!-- <div class="trip-code"
             ng-bind="info.trip.id"></div> -->
         </div>
