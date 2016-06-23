@@ -30,8 +30,7 @@ function transformRouteData(data) {
   return data;
 }
 
-export default function RoutesService($http, SERVER_URL, UserService, uiGmapGoogleMapApi, $q) {
-
+export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q) {
   var routesCache;
   var recentRoutesCache;
 
