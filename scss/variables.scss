@@ -61,7 +61,7 @@ $font-family-light-sans-serif:    "Lato", '-apple-system', "HelveticaNeue-Light"
 // $font-family-monospace:           monospace !default;
 
 // $font-family-base:                $font-family-sans-serif !default;
-$font-size-base:                  15px;
+$font-size-base:                  14px;
 // $font-size-large:                 18px !default;
 $font-size-small:                 12px;
 
@@ -328,7 +328,7 @@ $tab-item-max-width:              400px;
 // // Items
 // // -------------------------------
 
-$item-font-size:                  15px;
+$item-font-size:                  $font-size-base;
 // $item-border-width:               1px !default;
 // $item-padding:                    16px !default;
 

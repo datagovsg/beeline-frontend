@@ -33,3 +33,16 @@
     }
   }
 }
+/* Style for the faq modal in settings*/
+.faq {
+  .question {
+    color: $royal;
+  }
+  .answer {
+    padding: $padding-large-vertical $padding-large-vertical*2;
+    li {
+      font-size: $font-size-base;
+      color: $normal-grey;
+    }
+  }
+}
