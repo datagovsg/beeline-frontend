@@ -1,7 +1,7 @@
-
+const env = require('../env.json')
 
 export function companyLogo(i) {
   if (!i)
     return '';
-  return `http://staging.beeline.sg/companies/${i}/logo`;
+  return `${env.BACKEND_URL}/companies/${i}/logo`;
 }

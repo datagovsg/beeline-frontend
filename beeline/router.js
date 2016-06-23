@@ -36,8 +36,8 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/routes',
     views: {
       'tab-routes': {
-        templateUrl: 'templates/routes.html',
-        controller: 'RoutesController'
+        templateUrl: 'templates/routes-list.html',
+        controller: 'RoutesListController'
       }
     }
   })
@@ -164,6 +164,9 @@ export default function($stateProvider, $urlRouterProvider) {
         templateUrl: 'templates/booking-history.html',
         controller: 'BookingHistoryController'
       }
+    },
+    data: {
+      hideTabs: true,
     }
   });
 

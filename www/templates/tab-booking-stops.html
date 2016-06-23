@@ -17,7 +17,7 @@
       <!-- contains the map, the stop selectors
         and the locate me button -->
       <div class="map-area flex-grow">
-          <ui-gmap-google-map
+        <ui-gmap-google-map
             center="map.center"
             zoom="map.zoom"
             bounds="map.bounds"
@@ -55,30 +55,19 @@
           </ui-gmap-polyline>
 
           <ui-gmap-marker
-            ng-if="book.boardStopId"
             idkey="'selectedStop-boarding'"
-            coords="{
-              latitude:  book.boardStopStop.coordinates.coordinates[1],
-              longitude: book.boardStopStop.coordinates.coordinates[0],
-            }"
+            coords="book.boardStop.coordinates"
             options="map.markerOptions.startMarker">
 
           <ui-gmap-marker
-            ng-if="book.alightStopId"
             idkey="'selectedStop-alighting'"
-            coords="{
-              latitude:  book.alightStop.coordinates.coordinates[1],
-              longitude: book.alightStop.coordinates.coordinates[0],
-            }"
+            coords="book.alightStop.coordinates"
             options="map.markerOptions.endMarker">
 
           <ui-gmap-window
             ng-if="infoStop"
             show="infoStop"
-            coords="{
-              latitude: infoStop.coordinates.coordinates[1],
-              longitude: infoStop.coordinates.coordinates[0],
-            }"
+            coords="infoStop.coordinates"
             >
             <div class="booking-stops-infowindow">
               <b>{{infoStop.time | formatTime}}</b><br/>
@@ -92,46 +81,43 @@
             </div>
           </ui-gmap-window>
         </ui-gmap-google-map>
-
-
-        <div class="locate-button" ng-click="getUserLocation()"></div>
-
-        <ion-list class="card stop-inputs">
-          <bus-stop-selector
-            model="book.boardStopId"
-            bus-stops="book.boardStops"
-            value="getStopId"
-            display="getStopDescription"
-            display2="getStopDescription2"
-            placeholder="{{book.stxt}}"
-            title="{{book.stxt}}"
-            button="{{book.stxt}}"
-            marker-options="map.markerOptions.boardMarker"
-            pin-options="map.markerOptions.startMarker"
-            ng-required="true"
-            name="boardStop"
-            >
-          </bus-stop-selector>
-          <bus-stop-selector
-            model="book.alightStopId"
-            bus-stops="book.alightStops"
-            value="getStopId"
-            display="getStopDescription"
-            display2="getStopDescription2"
-            placeholder="{{book.etxt}}"
-            title="{{book.etxt}}"
-            button="{{book.etxt}}"
-            marker-options="map.markerOptions.alightMarker"
-            pin-options="map.markerOptions.endMarker"
-            ng-required="true"
-            name="alightStop"
-            >
-          </bus-stop-selector>
-        </ion-list>
       </div>
 
+      <ion-list class="stop-inputs flex-shrink">
+        <bus-stop-selector
+          model="book.boardStopId"
+          bus-stops="book.boardStops"
+          value="getStopId"
+          display="getStopDescription"
+          display2="getStopDescription2"
+          placeholder="Select pick-up stop"
+          title="Select pick-up stop"
+          button="Select pick-up stop"
+          marker-options="map.markerOptions.boardMarker"
+          pin-options="map.markerOptions.startMarker"
+          ng-required="true"
+          name="boardStop"
+          >
+        </bus-stop-selector>
+        <bus-stop-selector
+          model="book.alightStopId"
+          bus-stops="book.alightStops"
+          value="getStopId"
+          display="getStopDescription"
+          display2="getStopDescription2"
+          placeholder="Select drop-off stop"
+          title="Select drop-off stop"
+          button="Select drop-off stop"
+          marker-options="map.markerOptions.alightMarker"
+          pin-options="map.markerOptions.endMarker"
+          ng-required="true"
+          name="alightStop"
+          >
+        </bus-stop-selector>
+      </ion-list>
+
       <div class="item flex-shrink">
-        <button class="button primary-button"
+        <button class="button primary-button button-item"
           ui-sref="tabs.booking-dates({
             routeId: book.routeId,
             boardStop: book.boardStopId,

@@ -1,4 +1,5 @@
-<ion-view class="ticket-detail" view-title="Ticket for {{ticket.boardStop.time | date:'d MMM y'}}" ng-init="activeTab=0">
+<ion-view class="ticket-detail" ng-init="activeTab=0">
+  <ion-nav-title>Ticket for {{ticket.boardStop.time | date:'d MMM y'}}</ion-nav-title>
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
     <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
       <i class="icon ion-bookmark"></i>

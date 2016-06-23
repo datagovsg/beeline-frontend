@@ -1,19 +1,17 @@
-
 .start-end {
   display: flex;
   flex-direction: column;
-
-  .start, .end {
+  .end,
+  .start {
     flex: 0 0 auto;
     display: flex;
     flex-direction: row;
-
     .label {
       color: $hint-color;
       margin-bottom: 0.3em;
     }
-
-    stop-time, .stop-time {
+    .stop-time,
+    stop-time {
       flex: 0 0 auto;
     }
     stop-img {
@@ -21,10 +19,15 @@
       text-align: center;
       width: $stopMarkerWidth;
     }
-    stop-stop, .stop-stop {
+    .stop-stop,
+    stop-stop {
       flex: 1 1 auto;
       display: block;
-      margin-left: $stopMarkerRightMargin;
+      h4 {
+        padding-top: 3px;
+        line-height: $line-height-base;
+        color: $normal-grey;
+      }
     }
   }
   .start {

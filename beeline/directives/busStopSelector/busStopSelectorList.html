@@ -42,19 +42,20 @@
         <ion-radio  ng-repeat="stop in busStops"
                     ng-model="model"
                     ng-value="stop.id"
-                    ng-click="selectStop($event, stop)">
+                    ng-click="selectStop($event, stop)"
+                    class="item-text-wrap">
           <div class="time">{{stop.time | formatTime}}</div>
           <div class="details">
-            <div>{{stop.description}}</div>
-            <div>{{stop.road}}</div>
+            <div class="description">{{stop.description}}</div>
+            <div class="road">{{stop.road}}</div>
           </div>
         </ion-radio>
       </ion-list>
     </ion-scroll>
 
   </ion-content>
-  <ion-footer-bar align-title="center">
-    <button class="title button primary-button"
+  <ion-footer-bar>
+    <button class="button primary-button"
             ng-disabled="!model"
             ng-click="selectStop($event, selectedStop)">
       {{title}}

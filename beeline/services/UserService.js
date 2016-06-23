@@ -244,10 +244,13 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       if (error.status === 400) {
         promptRegister(telephoneNumber);
       }
-      else $ionicPopup.alert({
-        title: "Error while trying to connect to server.",
-        subTitle: error
-      });
+      else {
+        $ionicPopup.alert({
+          title: "Error while trying to connect to server.",
+          subTitle: error
+        });
+      }
+      throw error; // Allow the calling function to catch the error
     };
   };
 

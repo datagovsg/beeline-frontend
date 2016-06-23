@@ -10,7 +10,7 @@
       <h3 class="item item-divider">
         Selected Route
       </h3>
-      <div class="item route-info">
+      <div class="item item-text-wrap route-info">
         <!-- FIXME we need to show the SELECTED STOPS not the route
           itself.
 
@@ -19,7 +19,6 @@
 
         -->
           <div class="bus-number">{{book.route.label}}</div>
-
           <div class="start-end">
             <div class="start">
               <stop-time>
@@ -31,9 +30,8 @@
               </stop-img>
 
               <stop-stop>
-                <h4>Pick up at</h4>
+                <h4>Pick-up at</h4>
                 {{book.boardStop.stop.description}}<br/>
-                {{book.boardStop.stop.label}}<br/>
                 {{book.boardStop.stop.road}}<br/>
                 <br/>
               </stop-stop>
@@ -48,9 +46,8 @@
              </stop-img>
 
              <stop-stop>
-               <h4>Pick up at</h4>
+               <h4>Drop-off at</h4>
                {{book.alightStop.stop.description}}<br/>
-               {{book.alightStop.stop.label}}<br/>
                {{book.alightStop.stop.road}}<br/>
                <br/>
               </stop-stop>
@@ -105,15 +102,26 @@
       </ion-checkbox>
     </section>
 
-    <section class="item item-text-wrap">
+    <section class="item item-text-wrap"
+             ng-if="!isLoggedIn">
+      You are not logged in. Please enter your mobile number to complete booking.
+
+      <button class="button primary-button"
+              ng-click="login()"
+              ng-disabled="!book.termsChecked || waitingForPaymentResult">
+        Enter Mobile No.
+      </button>
+    </section>
+
+    <section class="item item-text-wrap"
+             ng-if="isLoggedIn">
       Please ensure that your credit card is ready for the next step in the booking process.
 
       <button class="button primary-button"
-              ng-click="loginBeforePay()"
+              ng-click="pay()"
               ng-disabled="!book.termsChecked || waitingForPaymentResult">
         Confirm and Pay
       </button>
     </section>
-
   </ion-content>
 </ion-view>

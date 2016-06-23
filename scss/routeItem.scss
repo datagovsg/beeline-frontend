@@ -2,44 +2,37 @@
 /* ----- General styling for route information listings ----- */
 route-item {
   position: relative;
-  display: flex;
-  flex-direction: row;
+  display: block;
 
   .bus-number {
     margin-right: 10px;
-    flex: 0 0 auto;
-    font-size: $font-size-small;
+    display: inline;
+  }
+  .schedule {
+    color: $hint-color;
   }
 
   .stops {
-    flex: 1 1 auto;
+    display: block;
+    margin: 0.5em 0;
     position: relative;
 
-    .active {
-      background-color: #bdbdbd;
-      color: #FFF;
-      font-size: 0.8em;
-      line-height: 0.9em;
-      padding: 5px;
-      border-radius: 4px;
-      margin: 5px 0px 0px 10px;
-      display: inline-block;
-    }
 
     .line {
       width: 2px;
-      height: 20px;
+      height: 100%;
       background: url('../img/RoutePairSmallLine.svg') center center;
-      top: 10px;
+      top: 4px;
       left: 4px;
       position: absolute;
+      transform: translate(0, 6px);
     }
 
     .start {
-      background: url('../img/RoutePairSmallStart.svg') left center no-repeat;
+      background: url('../img/RoutePairSmallStart.svg') left 6px no-repeat;
     }
     .end {
-      background: url('../img/RoutePairSmallEnd.svg') left center no-repeat;
+      background: url('../img/RoutePairSmallEnd.svg') left 6px no-repeat;
     }
 
     .start, .end {
@@ -48,18 +41,19 @@ route-item {
       padding-left: 15px;
       z-index: 5;
       position: relative;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      white-space: normal;
+      display: flex;
 
-    .time {
-      text-transform: lowercase;
-      margin-right: 7px;
-    }
+      .time {
+        text-transform: lowercase;
+        margin-right: 7px;
+        flex: 0 0 auto;
+      }
 
-    .road {
-      text-transform: capitalize;
+      .road {
+        text-transform: capitalize;
+        flex: 1 1 auto;
+      }
     }
   }
 }
