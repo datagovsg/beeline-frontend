@@ -114,4 +114,9 @@ var app = angular.module('beeline', [
       $ionicTabsDelegate.showBar(true);
     }
   });
+})
+.run(function (RoutesService) {
+  // Pre-fetch the routes
+  RoutesService.getRoutes();
+  RoutesService.getRecentRoutes();
 });

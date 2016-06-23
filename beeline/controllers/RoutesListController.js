@@ -29,6 +29,7 @@ export default function($scope, $state, UserService, RoutesService, $q) {
     recentRoutes: [],
     selectedRegionId: undefined,
     filteredActiveRoutes: [],
+    filteredRecentRoutes: [],
   };
 
   $scope.refreshRoutes = function (ignoreCache) {
@@ -45,7 +46,7 @@ export default function($scope, $state, UserService, RoutesService, $q) {
       $scope.data.recentRoutes = recentRoutes;
     });
 
-    Promise.all([allRoutesPromise, recentRoutesPromise]).then(() => {
+    $q.all([allRoutesPromise, recentRoutesPromise]).then(() => {
       $scope.$broadcast('scroll.refreshComplete');
       $scope.error = null;
     })
@@ -69,7 +70,7 @@ export default function($scope, $state, UserService, RoutesService, $q) {
     });
   });
 
-  $scope.$watch(() => UserService.getUser(), $scope.refreshRoutes);
+  $scope.$watch(() => UserService.getUser(), () => $scope.refreshRoutes(true));
 
   $scope.refreshRoutes();
 }
