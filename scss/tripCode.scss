@@ -3,9 +3,11 @@
 trip-code {
   font-size: $font-size-base * 3;
   font-weight: bold;
-  display: inline-block;
   position: relative;
-  height: 20px;
+  display: block;
+  padding-bottom: $item-padding-base*3;
+  margin-top: $item-padding-base;
+
   .ch.shrink {
     // font-size: 80%;
     transform: scale(0.8, 0.8);
