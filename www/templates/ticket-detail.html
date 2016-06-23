@@ -43,11 +43,11 @@
       <div class="row">
         <div class="col">
           <h4>Vehicle Number</h4>
-          <div ng-bind="info.trip.vehicle.vehicleNumber"></div>
+          <div ng-bind="info.trip.vehicle.vehicleNumber || 'Not provided'"></div>
         </div>
         <div class="col">
           <h4>Driver</h4>
-          <div ng-bind="info.trip.vehicle.driver.name"></div>
+          <div ng-bind="info.trip.vehicle.driver.name  || 'Not provided'"></div>
         </div>
       </div>
     </div>
