@@ -83,6 +83,13 @@ export default [
       TripService.DriverPings($scope.trip.id)
       .then((info) => {
         $scope.info = info;
+
+        for (let ping of info.pings) {
+          ping.time = new Date(ping.time);
+        }
+
+        var now = Date.now();
+        $scope.recentPings = _(info.pings).filter(ping => now - ping.time.getTime() < 2*60*60*1000)
       })
       .then(null, () => {}) // catch all errors
       .then(() => {
@@ -140,15 +147,15 @@ export default [
     })
 
     // Draw the icon for latest bus location
-    $scope.$watch('info', function(info) {
-      if (info && info.pings.length > 0) {
-      var busPosition = info.pings[0].coordinates.coordinates;
-        $scope.map.busLocation.coordinates = {
-          latitude: busPosition[1],
-          longitude: busPosition[0],
-      };
+    $scope.$watch('recentPings', function(recentPings) {
+      if (recentPings && recentPings.length > 0) {
+        var busPosition = recentPings[0].coordinates.coordinates;
+          $scope.map.busLocation.coordinates = {
+            latitude: busPosition[1],
+            longitude: busPosition[0],
+        };
 
-        $scope.map.lines[0].path = info.pings.map(ping => ({
+        $scope.map.lines[0].path = recentPings.map(ping => ({
           latitude: ping.coordinates.coordinates[1],
           longitude: ping.coordinates.coordinates[0],
         }));
