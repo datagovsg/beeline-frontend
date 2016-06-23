@@ -25,7 +25,6 @@ export default function() {
       }
 
       (async function() {
-        console.log(elem)
         while (true) {
           for (var i=0; i<4; i++) {
             let charElem = elem[0].querySelector(`.c${i}`)
