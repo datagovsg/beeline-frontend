@@ -17,9 +17,11 @@
 
     <!-- Ticket Tab -->
     <div class="trip-info item item-text-wrap" ng-show="activeTab===0">
+      <span><span class="bus-number">{{route.label}}</span>
+        {{route.from}} -- {{route.to}}</span>
       <div class="row">
         <div class="col">
-          <h4>Trip Code</h4>
+          <h4>Trip Code </h4>
           <trip-code class="trip-code" code="info.code" ng-if="info.code">
           </trip-code>
           <span ng-if="!info.code">Not available</span>
@@ -35,6 +37,8 @@
 
     <!-- Driver Tab -->
     <div class="trip-info item item-text-wrap" ng-show="activeTab===1">
+      <span><span class="bus-number">{{route.label}}</span>
+        {{route.from}} -- {{route.to}}</span>
       <div class="row">
         <div class="col">
           <h4>Operated By</h4>
@@ -55,7 +59,8 @@
 
     <!-- Stops Tab -->
     <div class="trip-info item item-text-wrap" ng-show="activeTab===2">
-      <span class="time">{{}}</span>
+      <span><span class="bus-number">{{route.label}}</span>
+        {{route.from}} -- {{route.to}}</span>
       <div class="row row-top">
         <div class="time-column col col-25">
           <span ng-bind="ticket.boardStop.time | date:'h:mm a'"></span>
