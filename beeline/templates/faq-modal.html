@@ -4,6 +4,11 @@
     <button class="button button-clear icon ion-ios-close-outline" ng-click="faqModal.hide()">
     </button>
   </ion-header-bar>
-  <ion-content class="faq">
+  <ion-content>
+    <div ng-if="error">
+      <i class="icon ion-alert-circled"></i> There was a problem loading the FAQ. Please check your Internet connection.
+    </div>
+    <div class="faq" ng-bind-html="html">
+    </div>
   </ion-content>
 </ion-modal-view>
