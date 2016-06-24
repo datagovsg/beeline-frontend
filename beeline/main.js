@@ -91,7 +91,7 @@ var app = angular.module('beeline', [
     libraries: 'places'
   });
 })
-.run(function($ionicPlatform, $rootScope, $ionicTabsDelegate) {
+.run(function($ionicPlatform, $rootScope, $ionicTabsDelegate, RoutesService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -106,6 +106,7 @@ var app = angular.module('beeline', [
     }
   });
 
+  // hide/show tabs bar depending on how the route is configured
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.hideTabs) {
       $ionicTabsDelegate.showBar(false);
@@ -114,8 +115,7 @@ var app = angular.module('beeline', [
       $ionicTabsDelegate.showBar(true);
     }
   });
-})
-.run(function (RoutesService) {
+
   // Pre-fetch the routes
   RoutesService.getRoutes();
   RoutesService.getRecentRoutes();
