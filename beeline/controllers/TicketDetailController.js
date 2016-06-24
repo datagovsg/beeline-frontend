@@ -60,6 +60,10 @@ export default [
       }
     });
 
+    $scope.showTerms = (companyId) => {
+      CompanyService.showTerms(companyId);
+    };
+
     var ticketPromise = TicketService.getTicketById(+$stateParams.ticketId);
     var tripPromise = ticketPromise.then((ticket) => {
       return TripService.getTripData(+ticket.alightStop.tripId);
