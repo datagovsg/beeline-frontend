@@ -88,8 +88,10 @@ export default [
           ping.time = new Date(ping.time);
         }
 
+        /* Only show pings from the last two hours */
         var now = Date.now();
-        $scope.recentPings = _(info.pings).filter(ping => now - ping.time.getTime() < 2*60*60*1000)
+        $scope.recentPings = _.filter(info.pings,
+          ping => now - ping.time.getTime() < 2*60*60*1000)
       })
       .then(null, () => {}) // catch all errors
       .then(() => {
