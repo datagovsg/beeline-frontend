@@ -21,17 +21,6 @@ export default function CompanyService(UserService, $ionicModal, $rootScope, $q)
         return companyCache[id];
       });
     },
-    getTerms: function(id) {
-      assert.strictEqual(typeof id, 'number');
-
-      return UserService.beeline({
-        url: '/companies/' + id + '/html/terms',
-        method: 'GET',
-      })
-      .then(function(response) {
-        return response.data;
-      });
-    },
     showTerms: function (id) {
       if (!termsModal) {
         termsScope = $rootScope.$new();
@@ -50,17 +39,6 @@ export default function CompanyService(UserService, $ionicModal, $rootScope, $q)
         };
         termsModal.show();
       })
-    },
-    getFeatures: function(id) {
-      assert(typeof id === 'number');
-
-      return UserService.beeline({
-        url: '/companies/' + id + '/html/features',
-        method: 'GET',
-      })
-      .then(function(response) {
-        return response.data;
-      });
     },
   };
 }
