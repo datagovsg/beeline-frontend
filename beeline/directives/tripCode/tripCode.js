@@ -20,14 +20,15 @@ export default function() {
         }
       })
 
+      var exit = false;
       function delay(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
+      scope.$on('$destroy', () => exit = true);
 
       (async function() {
-        console.log(elem)
-        while (true) {
-          for (var i=0; i<4; i++) {
+        while (!exit) {
+          for (var i=0; i<4 && !exit; i++) {
             let charElem = elem[0].querySelector(`.c${i}`)
 
             if (charElem.classList.contains('shrink')) {
