@@ -30,8 +30,7 @@ function transformRouteData(data) {
   return data;
 }
 
-export default function RoutesService($http, SERVER_URL, UserService, $q) {
-
+export default function RoutesService($http, UserService, $q) {
   var routesCache;
   var recentRoutesCache;
 

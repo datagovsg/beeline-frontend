@@ -1,0 +1,15 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-modalhead">
+    <h1 class="title">
+      Terms and Conditions
+    </h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="termsModal.hide()">
+    </button>
+  </ion-header-bar>
+
+  <ion-content has-bouncing="false">
+    <div ng-bind-html="company.termsHTML" class="legal">
+    </div>
+  </ion-content>
+
+</ion-modal-view>

@@ -1,6 +1,9 @@
+import commonmark from 'commonmark';
 
+var reader = new commonmark.Parser({safe: true});
+var writer = new commonmark.HtmlRenderer({safe: true});
 
-export default function companyTnc(CompanyService, $ionicModal) {
+export default function companyTnc(CompanyService, $q) {
   return {
     template: require('./companyTnc.html'),
     replace: false,
@@ -12,29 +15,23 @@ export default function companyTnc(CompanyService, $ionicModal) {
 
       scope.$watch('companyId', function() {
         if (!scope.companyId) {
-          scope.company = {};
+          scope.company = null;
           return;
         }
-        CompanyService.getCompany(scope.companyId)
+
+        var companyPromise = CompanyService.getCompany(scope.companyId)
         .then((company) => {
+          company.featuresHTML = writer.render(reader.parse(company.features));
           scope.company = company;
-          company.featuresParsed = JSON.parse(company.features);
-          company.termsParsed = JSON.parse(company.terms);
-          company.termsHTML = company.termsParsed.map(t => t.txt).join('\n');
+          return company;
         });
       });
 
-      scope.showTerms = function() {
-        if (!scope.termsModal) {
-          scope.termsModal = $ionicModal.fromTemplate(
-            require('./termsModal.html'),
-            {
-              scope: scope
-            }
-          );
-        }
-        scope.termsModal.show();
-      };
+      scope.showTerms = () => {
+        if (!scope.company) return;
+
+        CompanyService.showTerms(scope.company.id);
+      }
     }
   };
 }

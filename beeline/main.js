@@ -2,9 +2,6 @@ import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
 
-// Directive Imports
-import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
-
 global.moment = require('moment')
 
 // Configuration Imports
@@ -21,7 +18,6 @@ var app = angular.module('beeline', [
   'uiGmapgoogle-maps',
   'multipleDatePicker',
 ])
-.constant('SERVER_URL', 'http://staging.beeline.sg')
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
@@ -64,10 +60,6 @@ var app = angular.module('beeline', [
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
 .controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
-.directive('myTouchstart', TouchStart)
-.directive('myTouchend', TouchEnd)
-.directive('myTouchmove', TouchMove)
-.directive('myMousemove', MouseMove)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
