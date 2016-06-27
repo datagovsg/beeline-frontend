@@ -25,6 +25,7 @@ export default function($scope, $state, UserService, RoutesService, $q) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
+    regions: [],
     routes: [],
     recentRoutes: [],
     selectedRegionId: undefined,
