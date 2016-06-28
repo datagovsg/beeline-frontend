@@ -24,6 +24,7 @@ export default [
     };
     // Display Logic;
     $scope.disp = {
+      month: moment(),
       validDates: [],
       soldOutDates: [],
       bookedDates: [],
@@ -107,6 +108,9 @@ export default [
       if (!$scope.book.route) {
         return;
       }
+
+      // discover which month to show
+      $scope.disp.month = moment(_.min($scope.book.route.trips.map(t => t.date)));
 
       // reset
       $scope.disp.availabilityDays = {}
