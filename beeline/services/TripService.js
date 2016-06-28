@@ -19,6 +19,9 @@ export default function TripService(UserService) {
         method: 'GET',
         url: '/trips/' + id + '/latestInfo',
       }).then(function(response) {
+        for (let ping of response.data.pings) {
+          ping.time = new Date(ping.time);
+        }
         return response.data;
       });
     }

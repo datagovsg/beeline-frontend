@@ -84,10 +84,6 @@ export default [
       .then((info) => {
         $scope.info = info;
 
-        for (let ping of info.pings) {
-          ping.time = new Date(ping.time);
-        }
-
         /* Only show pings from the last two hours */
         var now = Date.now();
         $scope.recentPings = _.filter(info.pings,
