@@ -8,8 +8,9 @@ export default [
   'RoutesService',
   '$stateParams',
   'TicketService',
+  'loadingSpinner',
   function($scope, $state, $http, BookingService,
-    RoutesService, $stateParams, TicketService) {
+    RoutesService, $stateParams, TicketService, loadingSpinner) {
     var now = new Date();
 
     // Data logic;
@@ -44,23 +45,23 @@ export default [
         $scope.disp.previouslyBookedDays = {};
 
         // FIXME: Need to handle booking windows correctly
-        RoutesService.getRoute(parseInt($scope.book.routeId), true, {
+        loadingSpinner(RoutesService.getRoute(parseInt($scope.book.routeId), true, {
           include_availability: true,
           start_date: Date.now(),
         })
         .then((route) => {
           $scope.book.route = route;
           updateCalendar();
-        });
+        }));
 
-        TicketService.getTicketsByRouteId($scope.book.routeId)
+        loadingSpinner(TicketService.getTicketsByRouteId($scope.book.routeId)
         .then((tickets) => {
           if (!tickets) {
             $scope.disp.previouslyBookedDays = {};
             return;
           }
           $scope.disp.previouslyBookedDays = _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
-        });
+        }));
       });
 
     $scope.$watch('disp.selectedDatesLocal', () => {

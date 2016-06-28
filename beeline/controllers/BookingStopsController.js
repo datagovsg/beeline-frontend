@@ -16,6 +16,7 @@ export default [
   'uiGmapGoogleMapApi',
   'MapOptions',
   '$timeout',
+  'loadingSpinner',
   function(
     $rootScope,
     $scope,
@@ -30,7 +31,8 @@ export default [
     CompanyService,
     uiGmapGoogleMapApi,
     MapOptions,
-    $timeout
+    $timeout,
+    loadingSpinner
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -73,11 +75,12 @@ export default [
       $scope.book.boardStopId = parseInt($stateParams.boardStop);
       $scope.book.alightStopId = parseInt($stateParams.alightStop);
       window.setStop = $scope.setStop;
-      gmapIsReady.then(() => {
+
+      loadingSpinner(gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
         $scope.displayRouteInfo();
-      });
+      }));
     });
 
     gmapIsReady.then(function() {
@@ -151,7 +154,7 @@ export default [
       // 3. Changes to route
       $scope.lastDisplayedRouteId = null; // works if caching
       $scope.displayRouteInfo = function() {
-        RoutesService.getRoute(parseInt($scope.book.routeId))
+        var routesPromise = RoutesService.getRoute(parseInt($scope.book.routeId))
         .then((route) => {
           // 1. Route info
           $scope.routePath = route.path.map(latlng => ({
@@ -202,6 +205,8 @@ export default [
           });
         })
         .then(null, err => console.log(err.stack));
+
+        loadingSpinner(routesPromise);
       };
 
       $scope.closeChangesModal = function() {
