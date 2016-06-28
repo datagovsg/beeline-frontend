@@ -132,18 +132,11 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     },
 
     decodeRoutePath: function (path) {
-      if (typeof path === 'string') {
-        return uiGmapGoogleMapApi.then((googleMaps) => {
-          // Array of LatLng objects
-          return googleMaps.geometry.encoding.decodePath(path);
-        })
-      }
-      else if (path instanceof Array) {
-        return $q.resolve(path.map(latLng => new googleMaps.LatLng(latLng)));
-      }
-      else {
-        throw new Error("path is not a String nor an Array!")
-      }
+      assert.strictEqual(typeof path, 'string');
+      return uiGmapGoogleMapApi.then((googleMaps) => {
+        // Array of LatLng objects
+        return googleMaps.geometry.encoding.decodePath(path);
+      })
     }
   };
 
