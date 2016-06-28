@@ -26,6 +26,7 @@ export default [
       alightStopId: undefined,
       boardStop: undefined,
       alightStop: undefined,
+      price: undefined,
     };
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
@@ -81,19 +82,21 @@ export default [
           if (cardDetails == null) return;
 
           var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
-              number:     cardDetails["card_number"],
-              cvc:        cardDetails["cvv"],
-              exp_month:  cardDetails["expiry_month"],
-              exp_year:   cardDetails["expiry_year"],
+            number:     cardDetails["card_number"],
+            cvc:        cardDetails["cvv"],
+            exp_month:  cardDetails["expiry_month"],
+            exp_year:   cardDetails["expiry_year"],
           }, (statusCode, response) => {
-              if (response.error)
-                  reject(response.error.message);
-              else
-                  resolve(response);
+            if (response.error)
+                reject(response.error.message);
+            else
+                resolve(response);
           }));
         }
         else if (StripeService.loaded) { // Use Stripe Checkout
-          var stripeToken = await StripeService.promptForToken();
+          var stripeToken = await StripeService.promptForToken(
+              undefined, /* description */
+              isFinite($scope.book.price) ? $scope.book.price * 100 : '');
           if (stripeToken == null)
             return;
         }
@@ -111,8 +114,8 @@ export default [
           method: 'POST',
           url: '/transactions/payment_ticket_sale',
           data: {
-              stripeToken: stripeToken.id,
-              trips: BookingService.prepareTrips($scope.book),
+            stripeToken: stripeToken.id,
+            trips: BookingService.prepareTrips($scope.book),
           },
         });
 

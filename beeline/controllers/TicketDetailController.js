@@ -126,13 +126,9 @@ export default [
     // Draw the planned route
     routePromise.then((route) => {
       var routeLine = _.find($scope.map.lines, {id: 'routeLine'});
-      routeLine.path = [];
-      _.each(route.path, (point) => {
-        routeLine.path.push({
-          latitude: point.lat,
-          longitude: point.lng
-        });
-      });
+
+      RoutesService.decodeRoutePath(route.path)
+      .then((path) => routeLine.path = path);
     });
 
     uiGmapGoogleMapApi.then((googleMaps) => {
