@@ -33,3 +33,32 @@
     }
   }
 }
+/* Style for the faq modal in settings*/
+.faq {
+  padding: $padding-large-vertical*3;
+
+  p{
+    font-size: $font-size-base;
+    color: $dark;
+  }
+
+  hr{
+    width: 100%;
+    border: none; //because margins does not work for hr
+    border-bottom: 1px solid $card-border-color;
+    height: 20px;
+  }
+
+  h2{
+    padding-top: $padding-large-vertical;
+    font-size: $font-size-small;
+    text-transform: uppercase;
+    color: $dark;
+  }
+
+  h3{
+    padding-top: $padding-large-vertical*2;
+    font-size: $font-size-large;
+    color: $royal;
+  }
+}
