@@ -116,6 +116,9 @@ export default [
       $scope.disp.availabilityDays = {}
 
       for (let trip of $scope.book.route.trips) {
+        if (trip.status === 'cancelled')
+          continue;
+
         // FIXME: disable today if past the booking window
 
         // Make it available, only if the stop is valid for this trip
