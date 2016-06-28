@@ -21,5 +21,4 @@ export default function($ionicLoading) {
 
     p.then(hide, hide)
   }
-  hide()
 }
