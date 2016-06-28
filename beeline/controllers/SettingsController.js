@@ -46,7 +46,7 @@ export default [
     // Load the pages only when requested.
     function assetScope(assetName) {
       var newScope = $scope.$new();
-      newScope.data = null;
+      newScope.error = newScope.html = null;
       newScope.$on('modal.shown', () => {
         UserService.beeline({
           method: 'GET',
