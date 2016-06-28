@@ -88,9 +88,9 @@ export default [
             exp_year:   cardDetails["expiry_year"],
           }, (statusCode, response) => {
             if (response.error)
-                reject(response.error.message);
+              reject(response.error.message);
             else
-                resolve(response);
+              resolve(response);
           }));
         }
         else if (StripeService.loaded) { // Use Stripe Checkout
