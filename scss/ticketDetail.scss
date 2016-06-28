@@ -38,7 +38,7 @@
   .service-cancellation {
     flex: 1 1 auto;
     .cancellation-content {
-      margin: 10px 0;
+      margin: $padding-large-vertical 0;
       text-align: center;
       h2 {
         color: $normal-grey;
@@ -47,11 +47,11 @@
         padding: $item-padding-base 0;
       }
       img {
-        padding: 20px 0;
+        padding: $line-height-computed 0;
       }
       p {
         text-align: left;
-        padding: $item-padding-small 10px;
+        padding: $padding-base-vertical $padding-base-horizontal;
       }
     }
   }

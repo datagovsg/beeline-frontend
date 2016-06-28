@@ -6,30 +6,29 @@
 }
 /* Style for modals in settings - contact us and FAQ */
 .settings-modal {
-  padding-top: 30px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: $padding-large-vertical;
+  padding-left: $padding-large-horizontal;
+  padding-right: $padding-large-horizontal;
   p {
     font-size: $font-size-base;
     color: $base-color;
-    padding-bottom: 30px;
+    padding-bottom: $line-height-computed + $padding-large-vertical;
   }
 }
 /* Style for the legal modals in settings - Terms of Use and Privacy Policy */
 .legal {
   h2 {
-    padding-top: 30px;
+    padding-top: $line-height-computed + $padding-large-vertical;
   }
   ol {
     list-style-type: decimal;
   }
-  ol,
-  ul {
-    padding-top: 10px;
-    padding-left: 15px;
+  ol, ul {
+    padding-top: $padding-large-vertical;
+    padding-left: $padding-large-horizontal;
     li {
-      padding-top: 20px;
-      padding-left: 10px;
+      padding-top: $line-height-computed;
+      padding-left: $padding-large-horizontal;
     }
   }
 }
