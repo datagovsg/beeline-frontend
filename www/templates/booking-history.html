@@ -1,7 +1,7 @@
 <ion-view title="Booking History" class="booking-history">
   <ion-content>
     <ion-list>
-      <div ng-if="transactions.length === 0">
+      <div class="item text-center" ng-if="transactions.length === 0">
         You have no bookings in our records.
       </div>
       <div class="card" ng-repeat="transaction in transactions track by transaction.id">
