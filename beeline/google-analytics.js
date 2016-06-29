@@ -8,8 +8,20 @@ export default function() {
   return ga;
 }
 
+var devicePromise = new Promise((resolve, reject) => {
+  if (window.cordova) {
+    document.addEventListener('deviceready', resolve, false);
+  }
+  else {
+    console.log('No cordova detected')
+    resolve();
+  }
+})
+
 angular.module('beeline')
-.run(function ($rootScope) {
+.run(['$rootScope', async function ($rootScope) {
+  await devicePromise;
+
   if (window.cordova) {
     const GA_LOCAL_STORAGE_KEY = 'ga:clientId';
     // Set up cordova to use localstorage over cookies (file:/// doesn't
@@ -30,18 +42,18 @@ angular.module('beeline')
   }
   // The first page view
   ga('send', 'pageview', {
-    page: window.location.hash.substr(1)
+    page: window.location.hash.substr(1),
   })
 
   $rootScope.$on('$stateChangeSuccess', (evt, state) => {
     ga('send', 'pageview', {
-      page: window.location.hash.substr(1)
+      page: window.location.hash.substr(1),
     })
   })
 
   if (window.cordova) {
     window.cordova.getAppVersion.getVersionNumber().then((version) => {
-      ga('set', 'appVersion', `${version}-${device.platform}`)
+      ga('set', 'appVersion', version)
     })
     window.cordova.getAppVersion.getAppName().then((appName) => {
       ga('set', 'appName', appName)
@@ -51,4 +63,4 @@ angular.module('beeline')
     ga('set', 'appVersion', window.location.origin)
     ga('set', 'appName', 'Beeline Web')
   }
-})
+}])
