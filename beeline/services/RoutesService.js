@@ -30,8 +30,7 @@ function transformRouteData(data) {
   return data;
 }
 
-export default function RoutesService($http, SERVER_URL, UserService) {
-
+export default function RoutesService($http, UserService, $q) {
   var routesCache;
   var recentRoutesCache;
 
@@ -49,24 +48,38 @@ export default function RoutesService($http, SERVER_URL, UserService) {
 
     // Retrive the data on all the routes
     getRoutes: function(ignoreCache, options) {
-      if (routesCache && !ignoreCache && !options) return Promise.resolve(routesCache);
+      if (routesCache && !ignoreCache && !options) return routesCache;
 
       var url = '/routes?include_trips=true';
-      if (options) {
-        url += '&' + querystring.stringify(options)
-      }
 
-      return UserService.beeline({
+      // Start at midnight to avoid cut trips in the middle
+      // FIXME: use date-based search instead
+      var startDate = new Date();
+      startDate.setHours(3,0,0,0,0)
+      var endDate = new Date(startDate.getTime() + 30*24*60*60*1000);
+
+      var finalOptions = _.assign({
+        start_date: startDate.getTime(),
+        end_date: endDate.getTime(),
+      }, options)
+
+      url += '&' + querystring.stringify(finalOptions)
+
+      var routesPromise = UserService.beeline({
         method: 'GET',
         url: url,
       })
       .then(function(response) {
         transformRouteData(response.data)
-        if (!options) {
-          routesCache = response.data;
-        }
         return response.data;
       });
+
+      // Cache the promise -- prevents two requests from being
+      // in flight together
+      if (!options)
+        routesCache = routesPromise;
+
+      return routesPromise;
     },
 
     /**
@@ -107,16 +120,15 @@ export default function RoutesService($http, SERVER_URL, UserService) {
     // If not logged in then just returns an empty array
     getRecentRoutes: function(ignoreCache) {
       if (UserService.getUser()) {
-        if (recentRoutesCache && !ignoreCache) return Promise.resolve(recentRoutesCache);
-        return UserService.beeline({
+        if (recentRoutesCache && !ignoreCache) return recentRoutesCache;
+        return recentRoutesCache = UserService.beeline({
           method: 'GET',
           url: '/routes/recent?limit=10'
         }).then(function(response) {
-          recentRoutesCache = response.data;
-          return recentRoutesCache;
+          return response.data
         });
       } else {
-        return Promise.resolve([]);
+        return $q.resolve([]);
       }
     },
   };

@@ -41,22 +41,10 @@ export default [
       route: null,
       boardStops: [], // all board stops for this route
       alightStops: [], // all alight stops for this route
-      boardStop: undefined,
-      alightStop: undefined,
-      stime: '',
-      etime: '',
-      sroad: '',
-      eroad: '',
-      stxt: 'Select pick-up stop',
-      etxt: 'Select drop-off stop',
-      ptxt: 'No. of passengers',
-      transco: {},
-      allDataNotFilled: true,
-      termsChecked: false,
-      errmsg: '',
+      boardStop: null,
+      alightStop: null,
       changes: {},
       company: {},
-      qty: ''
     };
 
     // @hongyi
@@ -82,8 +70,8 @@ export default [
 
     $scope.$on('$ionicView.afterEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
-      $scope.book.boardStop = parseInt($stateParams.boardStop);
-      $scope.book.alightStop = parseInt($stateParams.alightStop);
+      $scope.book.boardStopId = parseInt($stateParams.boardStop);
+      $scope.book.alightStopId = parseInt($stateParams.alightStop);
       window.setStop = $scope.setStop;
       gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
@@ -135,10 +123,10 @@ export default [
 
         $scope.$apply(() => {
         if (type == 'board') {
-          $scope.book.boardStop = stop.id;
+          $scope.book.boardStopId = stop.id;
         }
         else {
-          $scope.book.alightStop = stop.id;
+          $scope.book.alightStopId = stop.id;
         }
         /* Hide the infowindow */
         $scope.infoStop = null;
@@ -146,21 +134,21 @@ export default [
       });
       };
 
-    /* These function teaches the <bus-stop-selector> how
-     to display the stop id and description */
+      /* These functions teach the <bus-stop-selector> how
+       to display the stop id and description */
       $scope.getStopId = (stop) => stop.id;
       $scope.getStopDescription = (stop) =>
-      formatTime(stop.time, true) + ' \u00a0\u00a0' + stop.description;
+      formatTime(stop.time) + ' \u00a0\u00a0' + stop.description;
       $scope.getStopDescription2 = (stop) =>
       stop.road;
 
-    // FIXME: start/end marker on selected stops
+      // FIXME: start/end marker on selected stops
 
-    // Load the data for the selected route
-    // Which data?
-    // 1. Route info
-    // 2. Company info
-    // 3. Changes to route
+      // Load the data for the selected route
+      // Which data?
+      // 1. Route info
+      // 2. Company info
+      // 3. Changes to route
       $scope.lastDisplayedRouteId = null; // works if caching
       $scope.displayRouteInfo = function() {
         RoutesService.getRoute(parseInt($scope.book.routeId))
@@ -187,21 +175,23 @@ export default [
                 return;
               }
 
-            console.log('Changes detected: diplaying message box');
+            // FIXME: We are hiding this for now, until
+            // we get the UI right. We should be pulling
+            // the announcements from RouteAnnouncements instead
 
-            if ($scope.changesModal) {
-                $scope.changesModal.show();
-              }
-            else {
-                $ionicModal.fromTemplateUrl('changes-message.html', {
-                scope: $scope,
-                animation: 'slide-in-up',
-              })
-              .then(modal => {
-                $scope.changesModal = modal;
-                $scope.changesModal.show();
-              });
-              }
+            // if ($scope.changesModal) {
+            //     $scope.changesModal.show();
+            //   }
+            // else {
+            //   $ionicModal.fromTemplateUrl('changes-message.html', {
+            //     scope: $scope,
+            //     animation: 'slide-in-up',
+            //   })
+            //   .then(modal => {
+            //     $scope.changesModal = modal;
+            //     $scope.changesModal.show();
+            //   });
+            // }
           }
           $scope.lastDisplayedRouteId = $scope.book.routeId;
 
@@ -218,8 +208,8 @@ export default [
         $scope.changesModal.hide();
       };
 
-    /* ----- Methods ----- */
-    // Click function for User Position Icon
+      /* ----- Methods ----- */
+      // Click function for User Position Icon
       $scope.getUserLocation = MapOptions.locateMe($scope.map.control);
 
       function computeStops() {
@@ -229,10 +219,10 @@ export default [
         $scope.book.alightStops = alightStops;
 
         if (boardStops.length == 1) {
-          $scope.book.boardStop = boardStops[0].id;
+          $scope.book.boardStopId = boardStops[0].id;
         }
         if (alightStops.length == 1) {
-          $scope.book.alightStop = alightStops[0].id;
+          $scope.book.alightStopId = alightStops[0].id;
         }
       }
 
@@ -264,33 +254,28 @@ export default [
         $scope.infoStop = alight;
         $scope.infoType = 'alight';
       };
-      $scope.applyTapAlight = (x) => $scope.$apply(() => $scope.tapAlight(x));
-      $scope.applyTapBoard = (x) => $scope.$apply(() => $scope.tapBoard(x));
-
-      // Check whether:
-      // [1] Start stop is specified
-      // [2] End stop is specified
-      // [3] Checkbox is checked
-      $scope.$watchGroup([
-        'book.boardStop',
-        'book.alightStop',
-        'book.termsChecked',
-      ], function() {
-        if ($scope.book.termsChecked == true) {
-        $scope.book.errmsg = '';
-        var curr = $scope.book;
-
-        if (typeof (curr.boardStop) == 'undefined')
-            $scope.book.errmsg = 'Please specify a Boarding Stop.';
-        else if (typeof (curr.alightStop) == 'undefined')
-            $scope.book.errmsg = 'Please specify a Alighting Stop.';
-          else
-          {
-            $scope.book.errmsg = '';
-            $scope.book.allDataNotFilled = false;
-          }
-      }
-      });
+      $scope.applyTapAlight = (marker, event, model) => {
+        $scope.$apply(() => $scope.tapAlight(model))
+      };
+      $scope.applyTapBoard = (marker, event, model) => {
+        $scope.$apply(() => $scope.tapBoard(model))
+      };
     });
+
+    // Extract the coordinates of the selected stops
+    $scope.$watch('book.boardStopId', (stopId) => {
+      if (!stopId || !$scope.book.boardStops) return;
+
+      $scope.book.boardStop = stopId ?
+        $scope.book.boardStops.find(x => x.id == stopId)
+        : null;
+    })
+    $scope.$watch('book.alightStopId', (stopId) => {
+      if (!stopId || !$scope.book.alightStops) return;
+
+      $scope.book.alightStop = stopId ?
+        $scope.book.alightStops.find(x => x.id == stopId)
+        : null;
+    })
   }
 ];

@@ -1,0 +1,27 @@
+.booking-history {
+  .item-note {
+    font-size: $font-size-small;
+  }
+}
+
+
+table.booking-history {
+  width: 100%;
+  font-size: $font-size-small ;
+  th {
+    font-weight: bold;
+    text-align: left;
+    color: $royal;
+    padding: $table-cell-padding;
+    border-bottom: $table-cell-border-width solid $light-grey;
+    white-space: nowrap;
+
+  }
+
+  td {
+    padding: $table-cell-padding;
+    text-align: left;
+    border-bottom: $table-cell-border-width solid $light-grey;
+    vertical-align: top;
+  }
+}

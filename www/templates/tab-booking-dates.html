@@ -1,14 +1,12 @@
 <ion-view id="pg_bookdate" view-title="Select Dates">
   <ion-content>
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
-
     <ion-spinner ng-if="disp.dataLoading"></ion-spinner>
-
     <multiple-date-picker ng-model="disp.selectedDatesLocal" days-allowed="disp.daysAllowed" highlight-days="disp.highlightDays" disallow-back-past-months="true" disable-days-before="disp.today">
     </multiple-date-picker>
 
     <div class="datepicker">
-      <table class="table legend-table">
+      <table class="table legend-table booking-info">
         <tr>
           <td class="picker-day exemplar">
             #
@@ -39,16 +37,16 @@
     </div>
 
     <div class="item">
-      <h4>Selected Dates</h4>
       <price-calculator booking="book" read-only="true"></price-calculator>
     </div>
+
     <div class="item">
-      <button class="primary-button-centered primary-button" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.booking-summary({
-              routeId: book.routeId,
-              boardStop: book.boardStopId,
-              alightStop: book.alightStopId,
-              selectedDates: book.selectedDates
-            })">
+      <button class="button primary-button button-item" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.booking-summary({
+                routeId: book.routeId,
+                boardStop: book.boardStopId,
+                alightStop: book.alightStopId,
+                selectedDates: book.selectedDates
+              })">
         Review Booking
       </button>
     </div>

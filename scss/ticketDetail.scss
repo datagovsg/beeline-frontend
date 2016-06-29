@@ -1,19 +1,38 @@
 /* ---------- TICKETS PAGE ---------- */
 .ticket-detail {
-
-  .item {
-    background-color: rgba($light, 0.9);
+  ion-content {
+    display: flex;
+    flex-direction: column;
   }
-
+  .item.trip-info {
+    flex: 0 0 auto;
+    background-color: rgba($light, 0.9);
+    padding: $item-padding-small;
+    h4 {
+      color: $normal-grey;
+    }
+    .tnc {
+      padding: 0 $item-padding-base;
+    }
+    .ion-information-circled {
+      color: $royal;
+      font-size: 1.5em;
+    }
+    .route-info{
+      margin: $padding-small-vertical 0;
+    }
+    .bus-number{
+      margin-right: $padding-small-vertical;
+    }
+  }
   .time-column {
     text-align: right;
   }
-
   .route-icon {
     height: 1.1em;
     vertical-align: text-bottom;
+    padding-left: $item-padding-small;
   }
-
   .angular-google-map-container {
     position: absolute;
     top: 0;
@@ -21,5 +40,24 @@
     height: 100%;
     width: 100%;
   }
-
+  .service-cancellation {
+    flex: 1 1 auto;
+    .cancellation-content {
+      margin: $padding-large-vertical 0;
+      text-align: center;
+      h2 {
+        color: $normal-grey;
+        text-align: center;
+        font-weight: bold;
+        padding: $item-padding-base 0;
+      }
+      img {
+        padding: $line-height-computed 0;
+      }
+      p {
+        text-align: left;
+        padding: $padding-base-vertical $padding-base-horizontal;
+      }
+    }
+  }
 }

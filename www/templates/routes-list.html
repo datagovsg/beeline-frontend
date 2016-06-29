@@ -21,16 +21,19 @@
     </label>
 
     <ul class="list">
-    <!-- Recent Routes Section -->
+      <!-- Recent Routes Section -->
+      <!-- ng-show doesn't work 100% reliably. angular bug? -->
       <div class="item item-divider"
-          ng-show="data.filteredRecentRoutes.length > 0">
+          ng-if="data.filteredRecentRoutes.length > 0">
         Recently Booked Routes
       </div>
-      <ion-item
-        ng-repeat="route in data.filteredRecentRoutes"
-        ui-sref="tabs.bookingPickup({ routeId: route.id})"
-        class="item-icon-right"
-        >
+      <ion-item ng-repeat="route in data.filteredRecentRoutes"
+                ui-sref="tabs.bookingPickup({
+                  routeId: route.id,
+                  boardStop:  data.recentRoutesById[route.id].boardStopStopId,
+                  alightStop: data.recentRoutesById[route.id].alightStopStopId,
+                })"
+                class="item-icon-right">
         <route-item route="route"></route-item>
         <button class="button button-clear icon ion-ios-arrow-right"></button>
       </ion-item>
@@ -39,11 +42,9 @@
       <div class="item item-divider">
         Available Routes
       </div>
-      <ion-item
-        ng-repeat="route in data.filteredActiveRoutes"
-        ui-sref="tabs.bookingPickup({ routeId: route.id})"
-        class="item-icon-right"
-        >
+      <ion-item ng-repeat="route in data.filteredActiveRoutes | orderBy:'label'"
+                ui-sref="tabs.bookingPickup({ routeId: route.id})"
+                class="item-icon-right">
         <route-item route="route"></route-item>
         <button class="button button-clear icon ion-ios-arrow-right"></button>
       </ion-item>

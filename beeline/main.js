@@ -2,9 +2,6 @@ import {formatDate, formatDateMMMdd, formatTime,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
 
-// Directive Imports
-import {DatePicker, TouchStart, TouchEnd, TouchMove, MouseMove} from './directives/datePicker/datePicker';
-
 global.moment = require('moment')
 
 // Configuration Imports
@@ -21,7 +18,6 @@ var app = angular.module('beeline', [
   'uiGmapgoogle-maps',
   'multipleDatePicker',
 ])
-.constant('SERVER_URL', 'http://staging.beeline.sg')
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
@@ -45,7 +41,7 @@ var app = angular.module('beeline', [
 .factory('CompanyService', require('./services/CompanyService.js').default)
 .factory('SuggestionService', require('./services/SuggestionService.js').default)
 .factory('RoutesService', require('./services/RoutesService.js').default)
-.factory('BookingService', require('./services/BookingService.js').default)
+.service('BookingService', require('./services/BookingService.js').default)
 .factory('OneMapService', require('./services/OneMapService.js').default)
 .factory('DateService', require('./services/DateService.js').default)
 .factory('StripeService', require('./services/StripeService.js').default)
@@ -65,10 +61,6 @@ var app = angular.module('beeline', [
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
 .controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
-.directive('myTouchstart', TouchStart)
-.directive('myTouchend', TouchEnd)
-.directive('myTouchmove', TouchMove)
-.directive('myMousemove', MouseMove)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
@@ -78,6 +70,7 @@ var app = angular.module('beeline', [
 .directive('bookingBreadcrumbs', require('./directives/bookingBreadcrumbs/bookingBreadcrumbs').default)
 .directive('routeItem', require('./directives/routeItem/routeItem.js').default)
 .directive('companyTnc', require('./directives/companyTnc/companyTnc.js').default)
+.directive('tripCode', require('./directives/tripCode/tripCode.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
@@ -91,7 +84,7 @@ var app = angular.module('beeline', [
     libraries: 'places'
   });
 })
-.run(function($ionicPlatform, $rootScope, $ionicTabsDelegate) {
+.run(function($ionicPlatform, $rootScope, $ionicTabsDelegate, RoutesService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -106,6 +99,7 @@ var app = angular.module('beeline', [
     }
   });
 
+  // hide/show tabs bar depending on how the route is configured
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.hideTabs) {
       $ionicTabsDelegate.showBar(false);
@@ -114,4 +108,8 @@ var app = angular.module('beeline', [
       $ionicTabsDelegate.showBar(true);
     }
   });
+
+  // Pre-fetch the routes
+  RoutesService.getRoutes();
+  RoutesService.getRecentRoutes();
 });

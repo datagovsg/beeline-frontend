@@ -1,42 +1,44 @@
 <ion-view class="settings" view-title="Settings">
-    <ion-content>
-        <div class="account-section item item-word-wrap">
+  <ion-content>
+    <div class="account-section item item-word-wrap">
 
-            <p ng-hide="user">Log in to make and view your bookings.</p>
-            <button ng-hide="user"
-                    class="button button-block button-outline button-royal"
-                    ng-click="logIn()">Log In</button>
+      <p ng-hide="user">Log in to make and view your bookings.</p>
+      <button ng-hide="user"
+              class="button button-block button-outline button-royal"
+              ng-click="logIn()">Log In</button>
 
 
-            <p ng-show="user">You are currently logged in as {{ user.name }}.</p>
+      <p ng-show="user">You are currently logged in as {{ user.name }}.</p>
 
-            <button ng-show="user"
-                    class="button button-block button-outline button-royal"
-                    ng-click="logOut()">Log Out</button>
+      <button ng-show="user"
+              class="button button-block button-outline button-royal"
+              ng-click="logOut()">Log Out</button>
 
-        </div>
-        <div class="list">
+    </div>
+    <div class="list">
 
-            <div ng-show="user" class="item item-divider">Account</div>
-            <div ng-show="user" class="item" on-tap="updateUserInfo('name')">
-                Name <span class="item-note">{{ user.name }}</span>
-            </div>
-            <div ng-show="user" class="item" on-tap="updateUserInfo('email')">
-                Email <span class="item-note">{{ user.email }}</span>
-            </div>
-            <div ng-show="user" class="item" on-tap="updateTelephone()">
-                Phone Number <span class="item-note">{{ user.telephone.slice(3)}}</span>
-            </div>
-            <div ng-show="user" class="item item-icon-right" ui-sref="tabs.booking-history">
-                Booking History <i class="icon ion-ios-arrow-right"></i>
-            </div>
-            <div class="item item-divider">About Beeline</div>
-            <ion-item ui-sref='intro'>Quick Tour</ion-item>
-            <ion-item on-tap="faqModal.show()">FAQ</ion-item>
-            <ion-item on-tap="privacyPolicyModal.show()">Privacy Policy</ion-item>
-            <ion-item on-tap="termsOfUseModal.show()">Terms of Use</ion-item>
-            <ion-item on-tap="contactUsModal.show()">Contact Us</ion-item>
+      <div ng-show="user" class="item item-divider">Account</div>
+      <div ng-show="user" class="item" on-tap="updateUserInfo('name')">
+        Name <span class="item-note">{{ user.name }}</span>
+      </div>
+      <div ng-show="user" class="item" on-tap="updateUserInfo('email')">
+        Email <span class="item-note">{{ user.email }}</span>
+      </div>
+      <div ng-show="user" class="item" on-tap="updateTelephone()">
+        Phone Number <span class="item-note">{{ user.telephone.slice(3)}}</span>
+      </div>
+      <div ng-show="user"
+           class="item item-icon-right"
+           ui-sref="tabs.booking-history">
+          Booking History <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-divider">About Beeline</div>
+      <ion-item ui-sref='intro'>Quick Tour</ion-item>
+      <ion-item on-tap="faqModal.show()">FAQ</ion-item>
+      <ion-item on-tap="privacyPolicyModal.show()">Privacy Policy</ion-item>
+      <ion-item on-tap="termsOfUseModal.show()">Terms of Use</ion-item>
+      <ion-item on-tap="contactUsModal.show()">Contact Us</ion-item>
 
-        </div>
-    </ion-content>
+    </div>
+  </ion-content>
 </ion-view>

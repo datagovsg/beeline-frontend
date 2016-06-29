@@ -21,14 +21,16 @@ function filterRoutesByRegionId(routes, regionId) {
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
-export default function($scope, $state, RoutesService, $q) {
+export default function($scope, $state, UserService, RoutesService, $q) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
+    regions: [],
     routes: [],
     recentRoutes: [],
     selectedRegionId: undefined,
     filteredActiveRoutes: [],
+    filteredRecentRoutes: [],
   };
 
   $scope.refreshRoutes = function (ignoreCache) {
@@ -45,7 +47,7 @@ export default function($scope, $state, RoutesService, $q) {
       $scope.data.recentRoutes = recentRoutes;
     });
 
-    Promise.all([allRoutesPromise, recentRoutesPromise]).then(() => {
+    $q.all([allRoutesPromise, recentRoutesPromise]).then(() => {
       $scope.$broadcast('scroll.refreshComplete');
       $scope.error = null;
     })
@@ -63,10 +65,13 @@ export default function($scope, $state, RoutesService, $q) {
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block
   $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes'], function([newActiveRoutes, recentRoutes]) {
+    $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
     $scope.data.filteredRecentRoutes = _.filter(newActiveRoutes, function(route) {
       return _.some(recentRoutes, {'id': route.id});
     });
   });
+
+  $scope.$watch(() => UserService.getUser(), () => $scope.refreshRoutes(true));
 
   $scope.refreshRoutes();
 }

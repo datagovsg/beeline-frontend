@@ -1,147 +1,88 @@
 
-bus-stop-selector {
-  display: block;
-  background-color: $base-background-color;
+.bus-stop-selector {
+  /* 38px is related to the width of the icon representing stops */
 
-  .stop-description {
-    padding: $bus-stop-selector-padding-top 1em
-      $bus-stop-selector-padding-bottom 38px;
-    /* 38px is related to the width of the icon representing stops */
-    border-bottom: 1px solid $item-default-border;
+  .stop-icon {
     background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
     background-size: auto 20px;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 0 5px 0 0px;
+  }
 
-    .placeholder {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      display: inline-block;
-      overflow: hidden;
-    }
-
-    .placeholder {
-      color: #828282;
-    }
-
-    .icon {
-      float: right;
-      font-size: 120%;
-    }
+  .placeholder {
+    color: $hint-color;
   }
 }
 
 /* ---------- BOOKINGS STOPS MODAL ---------- */
 .stop-selector {
-  width: calc(100% - 20px);
-  min-height: calc(100% - 40px);
-  left: 9px;
-  top: 19px;
-  border-radius: 10px;
-  box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
-  border: 1px solid #999;
-
-  display: flex;
-  flex-direction: column;
-
-  .bar-subheader {
-    background-color: $stable;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 300px;
-
-    ui-gmap-google-map {
-      flex: 1 1 auto;
-      position: relative;
-
-      div.angular-google-map {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-      }
-      .angular-google-map-container {
-        height: 100%;
-        width: 100%;
-      }
-    }
-  }
+  /* force full window */
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
 
   ion-content {
-    top: $bar-height + 300px;
-    ion-item.item {
+    display: flex;
+    flex-direction: column;
+
+    /* Our button bar has a custom height */
+    bottom: $bar-height + 2 * $item-padding;
+
+    .map-area {
+      flex: 0 0 45%;
+
       padding: 0;
-    }
-    .stops-list {
-      label.item-radio {
-        .radio-content {
-          height: 60px;
-          font-size: 14px;
+      display: flex;
+      flex-direction: column;
 
-          display: flex;
-          flex-direction: row;
-          align-items: stretch;
+      ui-gmap-google-map {
+        flex: 1 1 auto;
+        position: relative;
 
-          .item-content {
-            padding: 0px;
-            flex: 1 1 auto;
-            display: flex;
-            align-items: center;
-            order: 2;
-
-            .time {
-              flex: 0 0 auto;
-              width: 6em;
-              align-self: center;
-            }
-
-            .details {
-              flex: 1 1 auto;
-              width: 6em;
-            }
-          }
-
-          .radio-icon {
-            padding: 10px;
-            flex: 0 0 auto;
-            order: 0;
-
-            display: flex;
-            flex-direction: row;
-            position: static;
-
-            &:before {
-              visibility: visible;
-              display: block;
-              width: 15px;
-              height: 15px;
-              font-size: 16px;
-              background-color: #d6d6d6;
-              border-radius: 9px;
-              line-height: 1;
-              box-shadow: inset 2px 2px 2px rgba(0,0,0,0.2);
-              content: '';
-              align-self: center;
-            }
-          }
+        div.angular-google-map {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+        }
+        .angular-google-map-container {
+          height: 100%;
+          width: 100%;
         }
       }
+    }
 
-      label.item-radio input:checked + .radio-content .item-content,
-      label.item-radio input:checked + .radio-content .radio-icon
-      {
-        background: #f7f7f7;
-      }
-      label.item-radio input:checked + .radio-content .radio-icon:before {
-        background-color: $stable;
+    .stops-list {
+      flex: 1 1 auto;
+      /* Hide the scroll-bar in browsers */
+      overflow: hidden;
+
+      .details {
+        .road {
+          color: $hint-color;
+        }
       }
     }
-  }
-  ion-footer-bar {
-    text-align: center;
-    display: block;
-    height: 49px;
-  }
-  .gmnoprint, .gm-style-cc {
-    display:none;
-  }
 
+
+    .bar.bar-footer {
+      /* overriding because the bar-footer is otherwise
+        fixed-height, but we want padding around the button
+        */
+      height: $bar-height + 2 * $item-padding;
+      padding: $item-padding;
+      button {
+        flex: 1 1 auto;
+        position: static;
+        max-width: none;
+      }
+    }
+
+    .gmnoprint, .gm-style-cc {
+      display:none;
+    }
+  }
 }

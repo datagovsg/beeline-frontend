@@ -19,7 +19,8 @@ export default [
       route: null,
       qty: 1,
       waitingForPaymentResult : false,
-      promoCodes: undefined,
+      promoCodes: [],
+      currentPromoCode: undefined,
       selectedDates: [],
       boardStopId: undefined,
       alightStopId: undefined,
@@ -49,14 +50,16 @@ export default [
       });
     });
 
-    $scope.loginBeforePay = function() {
-      // user must log in before pay
-      if (!UserService.getUser()) {
-        UserService.promptLogIn();
-      }
-      else {
-        $scope.pay();
-      }
+    $scope.addPromoCode = function() {
+      $scope.book.promoCodes.push($scope.book.currentPromoCode);
+    }
+
+    $scope.$watch(() => UserService.getUser(), (user) => {
+      $scope.isLoggedIn = user ? true : false;
+    })
+
+    $scope.login = function () {
+      UserService.promptLogIn()
     }
 
     // methods

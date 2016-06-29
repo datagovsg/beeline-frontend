@@ -5,12 +5,13 @@
     </button>
   </ion-header-bar>
   <ion-content>
-    <ion-item class="item item-text-wrap">
-      <div class="settings-modal">
-        <p>
-          Placeholder Content
-        </p>
-      </div>
-    </ion-item>
+    <div ng-if="!error && !html" class="faq">
+      FAQ is loading... <ion-spinner icon="ios"></ion-spinner>
+    </div>
+    <div ng-if="error">
+      <i class="icon ion-alert-circled"></i> There was a problem loading the FAQ. Please check your Internet connection.
+    </div>
+    <div class="faq" ng-bind-html="html">
+    </div>
   </ion-content>
 </ion-modal-view>

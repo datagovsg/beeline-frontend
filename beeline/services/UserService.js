@@ -147,10 +147,18 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     })
     .then(function(response) {
       user = response.data;
+
+      if (!user) {
+        logOut(); // user not found
+        return false;
+      }
+
       return true;
     }, function(error) {
-      logOut();
-      return false;
+      if (error.status == 403 || error.status == 401) {
+        logOut();
+        return false;
+      }
     });
   };
 
@@ -203,10 +211,10 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptVerificationCode = function(telephone){
     return verifiedPrompt({
       title: 'Verification',
-      subTitle: 'Enter the 6 digit code sent to '+telephone,
+      subTitle: 'Enter the 6-digit code sent to '+telephone,
       inputs: [
         {
-          type: 'text',
+          type: 'tel',
           name: 'code',
           pattern: VALID_VERIFICATION_CODE_REGEX
         }
@@ -236,10 +244,13 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       if (error.status === 400) {
         promptRegister(telephoneNumber);
       }
-      else $ionicPopup.alert({
-        title: "Error while trying to connect to server.",
-        subTitle: error
-      });
+      else {
+        $ionicPopup.alert({
+          title: "Error while trying to connect to server.",
+          subTitle: error
+        });
+      }
+      throw error; // Allow the calling function to catch the error
     };
   };
 

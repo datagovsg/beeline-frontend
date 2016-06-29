@@ -8,17 +8,25 @@
 ////////////////////////////////////////////////////////////////////////////////
 $hint-color: #888;
 $breadcrumbs-height: 54px;
+$light-grey: #eee;
+$normal-grey: #666;
 
-$table-cell-padding: 10px;
+$item-padding-base: 10px;
+$item-padding-small: 5px;
+$item-padding-zero: 0px;
+
+$table-cell-padding: 8px;
 $table-cell-border-width: 1px;
-$table-header-border-width: 2px;
+$table-header-border-width: 1px;
 $table-header-bg: #f5f5f5;
 
-$bus-stop-selector-padding-top: 5px;
-$bus-stop-selector-padding-bottom: 5px;
+$bus-stop-selector-padding-top: $item-padding-small;
+$bus-stop-selector-padding-bottom: $item-padding-small;
 
-$stopMarkerWidth: 30px;
-$stopMarkerRightMargin: 1em;
+$stopMarkerWidth: 20px;
+$stopMarkerRightMargin: 0.5em;
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ionic variables to be overriden
@@ -32,19 +40,19 @@ $stopMarkerRightMargin: 1em;
 // $calm:                            #11c1f3 !default;
 // $balanced:                        #33cd5f !default;
 $energized:                       #ffe76e;
-// $assertive:                       #ef473a !default;
+$assertive:                       #ff6c6a;
 $royal:                           #4b3863;
-$dark:                            #444 !default;
+$dark:                            #444;
 
 
 //datepicker variables in bookingDates.scss
 
 $picker-header-bg: #fff;
-$empty-day-background: #eee;
+$empty-day-background: $light-grey;
 $picker-day-today: #000;
-$non-pickable-day-background: #eee;
+$non-pickable-day-background: $light-grey;
 $non-pickable-day-color: #bbb;
-$pickable-day-non-picked-background: #eee;
+$pickable-day-non-picked-background: $light-grey;
 $pickable-day-non-picked-color: #000;
 $pickable-day-picked-background: $royal;
 $pickable-day-picked-color: #fff;
@@ -59,9 +67,9 @@ $font-family-light-sans-serif:    "Lato", '-apple-system', "HelveticaNeue-Light"
 // $font-family-monospace:           monospace !default;
 
 // $font-family-base:                $font-family-sans-serif !default;
-$font-size-base:                  15px;
+$font-size-base:                  14px;
 // $font-size-large:                 18px !default;
-// $font-size-small:                 11px !default;
+$font-size-small:                 12px;
 
 // $line-height-base:                1.428571429 !default; // 20/14
 // $line-height-computed:            floor($font-size-base * $line-height-base) !default; // ~20px
@@ -75,8 +83,8 @@ $font-size-base:                  15px;
 // $base-background-color:           #fff !default;
 // $base-color:                      #000 !default;
 
-// $link-color:                      $positive !default;
-// $link-hover-color:                darken($link-color, 15%) !default;
+$link-color:                      lighten($royal,5%);
+$link-hover-color:                lighten($link-color, 15%) !default;
 
 // $content-padding:                 10px !default;
 
@@ -326,7 +334,7 @@ $tab-item-max-width:              400px;
 // // Items
 // // -------------------------------
 
-$item-font-size:                  15px;
+$item-font-size:                  $font-size-base;
 // $item-border-width:               1px !default;
 // $item-padding:                    16px !default;
 

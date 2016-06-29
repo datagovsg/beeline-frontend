@@ -1,30 +1,33 @@
-<div class="coinfo">
-  <h4>Operated By:</h4>
-  <div class="contact">
-    <img ng-src="{{company.id | companyLogo}}">
-    <div class="name">{{company.name}}</div>
-    <div class="email">{{company.email}}</div>
+<h4 class="item item-divider">Operated By:</h4>
+
+<div class="item">
+  <div class="row">
+    <div class="col-33 bus-logo">
+      <img ng-src="{{company.id | companyLogo}}">
+    </div>
+    <div class="col-67 padding-left col-center">
+      <div class="name">{{company.name}}</div>
+      <div class="email">{{company.email}}</div>
+    </div>
   </div>
 </div>
-<div>
-  <h4>Features</h4>
-  <ul>
-    <li ng-repeat="feature in company.featuresParsed track by $index">
-      {{feature.txt}}
-    </li>
-  </ul>
 
-  <div class="sign">
-    <div class="img">Signage example:
-    <img ng-src="img/terms-sign.png" width="200" class="signage-example"></div>
+<h4 class="item item-divider">Important Notes</h4>
+<div class="item item-text-wrap features" ng-bind-html="company.featuresHTML"></div>
+
+<div class="item item-text-wrap">
+  <div>
+    Signage example:
+  </div>
+  <div class="signage">
+    <img ng-src="img/terms-sign.png" width="200">
+  </div>
+  <div>
     Please look out for the Beeline sign at the front of the bus.
-    <div class="clear"></div>
   </div>
-  <div class="item"
-      ng-click="showTerms()">
-    Terms and Conditions of Booking
-    <a class="item-icon-right">
-      <i class="icon ion-ios-arrow-right"></i>
-    </a>
-  </div>
+</div>
+
+<div class="item item-icon-right" ng-click="showTerms()">
+  Terms and Conditions of Booking
+  <i class="icon ion-ios-arrow-right"></i>
 </div>
