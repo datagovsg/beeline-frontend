@@ -30,6 +30,8 @@ export default [
       alightStop: undefined,
       price: undefined,
     };
+    $scope.disp = {};
+    
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
       if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
