@@ -4,18 +4,38 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-79537959-1', 'auto');
-
 export default function() {
   return ga;
 }
 
 angular.module('beeline')
 .run(function ($rootScope) {
+  if (window.cordova) {
+    const GA_LOCAL_STORAGE_KEY = 'ga:clientId';
+    // Set up cordova to use localstorage over cookies (file:/// doesn't
+    // support cookies)
+    ga('create', 'UA-79537959-1', {
+      storage: 'none',
+      clientId: localStorage.getItem(GA_LOCAL_STORAGE_KEY)
+    });
+    ga((tracker) => {
+      localStorage.setItem(GA_LOCAL_STORAGE_KEY, tracker.get('clientId'));
+    });
+
+    // We have a file:/// URL, but tell GA to ignore it
+    ga('set', 'checkProtocolTask', null);
+  }
+  else {
+    ga('create', 'UA-79537959-1', 'auto');
+  }
+  // The first page view
+  ga('send', 'pageview', {
+    page: window.location.hash.substr(1)
+  })
+
   $rootScope.$on('$stateChangeSuccess', (evt, state) => {
-    // ga()
     ga('send', 'pageview', {
-      page: state.url
+      page: window.location.hash.substr(1)
     })
   })
 
@@ -23,7 +43,7 @@ angular.module('beeline')
     window.cordova.getAppVersion.getVersionNumber().then((version) => {
       ga('set', 'appVersion', `${version}-${device.platform}`)
     })
-    window.cordova.getAppName.getAppName().then((appName) => {
+    window.cordova.getAppVersion.getAppName().then((appName) => {
       ga('set', 'appName', appName)
     })
   }
