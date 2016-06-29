@@ -1,4 +1,5 @@
 import assert from 'assert';
+import processingPaymentsTemplate from '../templates/processing-payments.html';
 
 export default [
   '$scope',
@@ -112,10 +113,7 @@ export default [
         }
 
         $ionicLoading.show({
-          template: `Please wait while we process the payment...
-          <br/>
-          <ion-spinner icon="ios"></ion-spinner>
-          `
+          template: processingPaymentsTemplate
         })
         var result = await UserService.beeline({
           method: 'POST',
