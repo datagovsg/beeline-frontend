@@ -7,7 +7,7 @@ export default [
       restrict: 'E',
       template: priceCalculatorTemplate,
       scope: {
-        'booking': '<',
+        'booking': '=',
         'price': '=?',
       },
       link: function(scope, elem, attr) {

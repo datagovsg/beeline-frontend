@@ -34,7 +34,7 @@ export default [
       previouslyBookedDays: {},
       highlightDays: [],
       daysAllowed: [Date.UTC(2016,5,15)],
-      selectedDatesLocal: [],
+      selectedDatesMoments: [],
     };
     $scope.$on('$ionicView.beforeEnter', () => {
         $scope.book.routeId = $stateParams.routeId;
@@ -67,12 +67,13 @@ export default [
         loadingSpinner(Promise.all([ticketsPromise, routesPromise]));
       });
 
-    $scope.$watch('disp.selectedDatesLocal', () => {
+    $scope.$watch('disp.selectedDatesMoments', () => {
       // multiple-date-picker gives us the
       // date in midnight local time
       // Need to convert to UTC
-      $scope.book.selectedDates = $scope.disp.selectedDatesLocal.map(
-        m => moment(m).add(m.utcOffset(), 'minutes').valueOf())
+      $scope.book.selectedDates = $scope.disp.selectedDatesMoments.map(
+        m => m.valueOf()
+      )
     }, true)
 
     $scope.$watchGroup(['disp.availabilityDays', 'disp.previouslyBookedDays'],
@@ -115,8 +116,8 @@ export default [
       // ensure cancelled trips are not shown
       var runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
 
-      // discover which month to show
-      $scope.disp.month = moment(_.min(runningTrips.map(t => t.date)));
+      // discover which month to show. Use UTC timezone
+      $scope.disp.month = moment(_.min(runningTrips.map(t => t.date))).utcOffset(0);
 
       // reset
       $scope.disp.availabilityDays = {}
