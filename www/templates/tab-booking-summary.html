@@ -61,7 +61,8 @@
       <h3 class="item item-divider">
         Selected Dates
       </h3>
-      <price-calculator class="item" booking="book" read-only="true">
+      <price-calculator class="item" booking="book" read-only="true"
+                        price="book.price">
       </price-calculator>
     </section>
 
@@ -97,7 +98,7 @@
         Terms and Conditions of Booking
       </h3>
       <company-tnc company-id="book.route.transportCompanyId"></company-tnc>
-      <ion-checkbox class="item" ng-model="book.termsChecked">
+      <ion-checkbox class="item item-text-wrap" ng-model="book.termsChecked">
         Yes, I have read and agree to the Terms and Conditions of booking.
       </ion-checkbox>
     </section>
