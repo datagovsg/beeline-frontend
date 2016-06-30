@@ -1,4 +1,5 @@
 import assert from 'assert';
+import processingPaymentsTemplate from '../templates/processing-payments.html';
 
 export default [
   '$scope',
@@ -7,11 +8,12 @@ export default [
   '$ionicPopup',
   'BookingService',
   'UserService',
+  '$ionicLoading',
   'StripeService',
   '$stateParams',
   'RoutesService',
   function ($scope, $state, $http, $ionicPopup,
-    BookingService, UserService,
+    BookingService, UserService, $ionicLoading,
     StripeService, $stateParams, RoutesService) {
 
     $scope.book = {
@@ -28,6 +30,8 @@ export default [
       alightStop: undefined,
       price: undefined,
     };
+    $scope.disp = {};
+    
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
       if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
@@ -109,6 +113,9 @@ export default [
           return;
         }
 
+        $ionicLoading.show({
+          template: processingPaymentsTemplate
+        })
         var result = await UserService.beeline({
           method: 'POST',
           url: '/transactions/payment_ticket_sale',
@@ -117,15 +124,17 @@ export default [
             trips: BookingService.prepareTrips($scope.book),
           },
         });
+        $ionicLoading.hide();
 
         // This gives us the transaction items
         assert(result.status == 200);
 
         $state.go('tabs.booking-confirmation');
       } catch (err) {
+        $ionicLoading.hide();
         await $ionicPopup.alert({
           title: 'Error processing payment',
-          template: err,
+          template: err.data.message,
         })
       } finally {
         $scope.$apply(() => {
