@@ -29,9 +29,6 @@
     display: flex;
     flex-direction: column;
 
-    /* Our button bar has a custom height */
-    bottom: $bar-height + 2 * $item-padding;
-
     .map-area {
       flex: 0 0 45%;
 
@@ -67,18 +64,9 @@
       }
     }
 
-
-    .bar.bar-footer {
-      /* overriding because the bar-footer is otherwise
-        fixed-height, but we want padding around the button
-        */
-      height: $bar-height + 2 * $item-padding;
-      padding: $item-padding;
-      button {
-        flex: 1 1 auto;
-        position: static;
-        max-width: none;
-      }
+    .num-stops,
+    .select-button {
+      flex: none;
     }
 
     .gmnoprint, .gm-style-cc {

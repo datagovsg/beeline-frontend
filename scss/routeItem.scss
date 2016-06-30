@@ -5,48 +5,63 @@ route-item {
   display: block;
 
   .bus-number {
-    margin-right: 10px;
+    margin-right: $padding-small-horizontal;
     display: inline;
   }
   .schedule {
+    font-size: $font-size-small;
     color: $hint-color;
   }
 
   .stops {
     display: block;
-    margin: 0.5em 0;
+    /* Determines the amount of vertical spacing
+       between the .bus-number and the stops */
+    margin-top: 0.5em;
     position: relative;
 
-
-    .line {
-      width: 2px;
-      height: 100%;
-      background: url('../img/RoutePairSmallLine.svg') center center;
-      top: 4px;
-      left: 4px;
-      position: absolute;
-      transform: translate(0, 6px);
+    .stop-icon {
+      /* this value depends on the width of the image -- leaving as a constant */
+      width: 15px;
+      flex: 0 0 auto;
     }
+    .start .stop-icon {
+      background: url('../img/RoutePairSmallStart.svg') left ($font-size-base / 2) no-repeat;
+      position: relative;
 
-    .start {
-      background: url('../img/RoutePairSmallStart.svg') left 6px no-repeat;
+      /*
+        we want line to be:
+            - the height of .start (=> height: 100%),
+            - displace the left of the line to the middle of the circle
+               the image is 10x10 hence left: 4px (to account for width=2px)
+            - .start is inline, so it's height = $line-height-computed.
+              Image is centered vertically => top = $line-height-computed / 2
+              N.B. overflow must be "visible" on .start for this to work
+            - positioned relative to the stop icon => .start { position: relative }
+      */
+      .line {
+        width: 2px;
+        height: 100%;
+        background: url('../img/RoutePairSmallLine.svg') center center;
+        top: $line-height-computed / 2;
+        left: 4px;
+        position: absolute;
+        display: block;
+      }
     }
-    .end {
-      background: url('../img/RoutePairSmallEnd.svg') left 6px no-repeat;
+    .end .stop-icon {
+      background: url('../img/RoutePairSmallEnd.svg') left ($font-size-base / 2) no-repeat;
     }
 
     .start, .end {
-      line-height: 20px;
-      background-size: 10px 10px;
-      padding-left: 15px;
-      z-index: 5;
+      line-height: $line-height-base;
       position: relative;
       white-space: normal;
       display: flex;
 
       .time {
         text-transform: lowercase;
-        margin-right: 7px;
+        margin-right: 0.5em;
         flex: 0 0 auto;
       }
 

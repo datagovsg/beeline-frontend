@@ -4,10 +4,16 @@ import {companyLogo} from './shared/imageSources';
 
 global.moment = require('moment')
 
-// Configuration Imports
-import configureRoutes from './router.js';
+// node imports
+import compareVersions from 'compare-versions';
+import assert from 'assert';
+
+// Angular imports
 import AngularGoogleMap from 'angular-google-maps';
 import MultipleDatePicker from 'multiple-date-picker/multipleDatePicker';
+
+// Configuration Imports
+import configureRoutes from './router.js';
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -45,6 +51,8 @@ var app = angular.module('beeline', [
 .factory('OneMapService', require('./services/OneMapService.js').default)
 .factory('DateService', require('./services/DateService.js').default)
 .factory('StripeService', require('./services/StripeService.js').default)
+.factory('loadingSpinner', require('./services/LoadingSpinner.js').default)
+.factory('GoogleAnalytics', require('./services/GoogleAnalytics.js').default)
 .service('MapOptions', require('./services/MapOptions').default)
 .controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
 .controller('RoutesController', require('./controllers/RoutesController.js').default)
@@ -83,7 +91,7 @@ var app = angular.module('beeline', [
     libraries: 'places,geometry'
   });
 })
-.run(function($ionicPlatform, $rootScope, $ionicTabsDelegate, RoutesService) {
+.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -97,7 +105,8 @@ var app = angular.module('beeline', [
       StatusBar.styleDefault();
     }
   });
-
+})
+.run(function($rootScope, $ionicTabsDelegate) {
   // hide/show tabs bar depending on how the route is configured
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.hideTabs) {
@@ -107,8 +116,54 @@ var app = angular.module('beeline', [
       $ionicTabsDelegate.showBar(true);
     }
   });
-
+})
+.run(function (RoutesService) {
   // Pre-fetch the routes
   RoutesService.getRoutes();
   RoutesService.getRecentRoutes();
-});
+})
+
+var devicePromise = window.cordova ?
+  new Promise((resolve) => {
+    document.addEventListener('deviceready', resolve, false);
+  }) : null;
+
+app.run(['UserService', '$ionicPopup', async function (UserService, $ionicPopup) {
+  // Version check, if we're in an app
+  if (!window.cordova)
+    return;
+
+  await devicePromise;
+
+  assert(window.cordova.InAppBrowser);
+  assert(window.cordova.getAppVersion);
+  assert(window.device);
+
+  var versionNumberPromise = cordova.getAppVersion.getVersionNumber();
+
+  var versionRequirementsPromise = UserService.beeline({
+    method: 'GET',
+    url: '/versionRequirements',
+  })
+
+  var [versionNumber, versionRequirementsResponse] = await Promise.all([
+    versionNumberPromise, versionRequirementsPromise
+  ]);
+
+  var appRequirements = versionRequirementsResponse.data.commuterApp;
+  assert(appRequirements);
+
+  if (compareVersions(versionNumber, appRequirements.minVersion) < 0) {
+    while (true) {
+      await $ionicPopup.alert({
+        title: 'Update required',
+        template: `Your version of the app is too old. Please visit the app
+        store to upgrade your app.`,
+      })
+
+      if (appRequirements.upgradeUrl) {
+        cordova.InAppBrowser.open(appRequirements.upgradeUrl[device.platform], '_system');
+      }
+    }
+  }
+}])

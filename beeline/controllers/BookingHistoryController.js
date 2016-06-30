@@ -15,7 +15,7 @@ export default function($scope, UserService, RoutesService) {
       hasMoreData: true,
       page: 1,
       perPage: 20,
-      transactions: [],
+      transactions: null,
     })
 
     routesPromise = RoutesService.getRoutes(true, {
@@ -73,7 +73,8 @@ export default function($scope, UserService, RoutesService) {
         }
       })
 
-      $scope.transactions = $scope.transactions.concat(newTransactions)
+      $scope.transactions = $scope.transactions || [];
+      $scope.transactions = $scope.transactions.concat(newTransactions);
       $scope.$broadcast('scroll.infiniteScrollComplete');
     })
     .then(null, (error) => {

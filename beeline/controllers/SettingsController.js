@@ -2,6 +2,10 @@ import faqModalTemplate from '../templates/faq-modal.html';
 import privacyPolicyModalTemplate from '../templates/privacy-policy-modal.html';
 import termsOfUseModalTemplate from '../templates/terms-of-use-modal.html';
 import contactUsModalTemplate from '../templates/contact-us-modal.html';
+import commonmark from 'commonmark';
+
+var reader = new commonmark.Parser({safe: true});
+var writer = new commonmark.HtmlRenderer({safe: true});
 
 export default [
   '$scope',
@@ -38,9 +42,32 @@ export default [
     $scope.updateTelephone = UserService.promptUpdatePhone;
 
     // Configure modals
+
+    // Load the pages only when requested.
+    function assetScope(assetName) {
+      var newScope = $scope.$new();
+      newScope.error = newScope.html = null;
+      newScope.$on('modal.shown', () => {
+        UserService.beeline({
+          method: 'GET',
+          url: `/assets/${assetName}`
+        })
+        .then((response) => {
+          newScope.html = writer.render(reader.parse(response.data.data));
+          newScope.error = false;
+        })
+        .catch((error) => {
+          console.log(error)
+          newScope.html = "";
+          newScope.error = error;
+        })
+      })
+      return newScope;
+    }
+
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,
-      {scope: $scope}
+      {scope: assetScope('FAQ')}
     );
     $scope.privacyPolicyModal = $ionicModal.fromTemplate(
       privacyPolicyModalTemplate,

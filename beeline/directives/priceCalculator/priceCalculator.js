@@ -8,7 +8,7 @@ export default [
       template: priceCalculatorTemplate,
       scope: {
         'booking': '=',
-        'readOnly': '=',
+        'price': '=?',
       },
       link: function(scope, elem, attr) {
         scope.isCalculating = 0;
@@ -31,10 +31,12 @@ export default [
             if (promise != latestRequest)
               return;
             scope.priceInfo = priceInfo;
+            scope.price = priceInfo.totalDue;
             scope.errorMessage = null;
           })
           .catch((error) => {
             scope.priceInfo = [];
+            scope.price = undefined;
             scope.errorMessage = error.data.message;
           })
           .then(stopCalculating);
