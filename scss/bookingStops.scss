@@ -22,6 +22,7 @@
       flex-direction: row;
       background: white;
       height: $route-info-height;
+      margin: $padding-base-vertical 0;
 
       route-item {
         padding: 10px;
@@ -49,9 +50,10 @@
         }
       }
       .price {
-        padding: 3px 5px;
+        padding: 5px 0px;
         flex: 0 0 auto;
         align-self: flex-end;
+        margin-right: $content-padding;
 
         .from {
           color: $hint-color;
