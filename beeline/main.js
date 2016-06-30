@@ -45,7 +45,7 @@ var app = angular.module('beeline', [
 .factory('OneMapService', require('./services/OneMapService.js').default)
 .factory('DateService', require('./services/DateService.js').default)
 .factory('StripeService', require('./services/StripeService.js').default)
-.factory('GoogleAnalytics', require('./google-analytics').default)
+.factory('GoogleAnalytics', require('./services/GoogleAnalytics.js').default)
 .service('MapOptions', require('./services/MapOptions').default)
 .controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
 .controller('RoutesController', require('./controllers/RoutesController.js').default)
