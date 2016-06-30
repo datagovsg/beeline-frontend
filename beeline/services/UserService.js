@@ -182,6 +182,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         { text: 'Cancel'},
         {
           text: 'OK',
+          type: 'button-positive',
           onTap: function(e) {
             if (promptScope.form.verifiedPromptForm.$valid) {
               return promptScope.data;
