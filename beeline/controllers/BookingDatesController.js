@@ -45,23 +45,25 @@ export default [
         $scope.disp.previouslyBookedDays = {};
 
         // FIXME: Need to handle booking windows correctly
-        loadingSpinner(RoutesService.getRoute(parseInt($scope.book.routeId), true, {
+        var routesPromise = RoutesService.getRoute(parseInt($scope.book.routeId), true, {
           include_availability: true,
           start_date: Date.now(),
         })
         .then((route) => {
           $scope.book.route = route;
           updateCalendar();
-        }));
+        });
 
-        loadingSpinner(TicketService.getTicketsByRouteId($scope.book.routeId)
+        var ticketsPromise = TicketService.getTicketsByRouteId($scope.book.routeId)
         .then((tickets) => {
           if (!tickets) {
             $scope.disp.previouslyBookedDays = {};
             return;
           }
           $scope.disp.previouslyBookedDays = _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
-        }));
+        });
+
+        loadingSpinner(Promise.all([ticketsPromise, routesPromise]));
       });
 
     $scope.$watch('disp.selectedDatesLocal', () => {

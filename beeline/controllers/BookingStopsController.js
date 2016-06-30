@@ -12,7 +12,6 @@ export default [
   '$cordovaGeolocation',
   'BookingService',
   'RoutesService',
-  'CompanyService',
   'uiGmapGoogleMapApi',
   'MapOptions',
   '$timeout',
@@ -28,7 +27,6 @@ export default [
     $cordovaGeolocation,
     BookingService,
     RoutesService,
-    CompanyService,
     uiGmapGoogleMapApi,
     MapOptions,
     $timeout,
@@ -46,7 +44,6 @@ export default [
       boardStop: null,
       alightStop: null,
       changes: {},
-      company: {},
     };
 
     // @hongyi
@@ -79,7 +76,7 @@ export default [
       loadingSpinner(gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
-        $scope.displayRouteInfo();
+        return $scope.displayRouteInfo(); // hide the spinner only after routes are processed
       }));
     });
 
@@ -150,11 +147,10 @@ export default [
       // Load the data for the selected route
       // Which data?
       // 1. Route info
-      // 2. Company info
-      // 3. Changes to route
+      // 2. Changes to route
       $scope.lastDisplayedRouteId = null; // works if caching
       $scope.displayRouteInfo = function() {
-        var routesPromise = RoutesService.getRoute(parseInt($scope.book.routeId))
+        return RoutesService.getRoute(parseInt($scope.book.routeId))
         .then((route) => {
           // 1. Route info
           RoutesService.decodeRoutePath(route.path)
@@ -195,16 +191,8 @@ export default [
             // }
           }
           $scope.lastDisplayedRouteId = $scope.book.routeId;
-
-          // 2. Fill in the transport company info
-          return CompanyService.getCompany(+route.trips[0].transportCompanyId)
-          .then(function(result) {
-            $scope.book.company = result;
-          });
         })
         .then(null, err => console.log(err.stack));
-
-        loadingSpinner(routesPromise);
       };
 
       $scope.closeChangesModal = function() {

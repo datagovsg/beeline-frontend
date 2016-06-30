@@ -1,6 +1,26 @@
 import loadingTemplate from '../templates/loading.html';
+import assert from 'assert';
 
+/**
+
+loadingSpinner(promise1);
+loadingSpinner(promise2);
+
+Equivalent to: loadingSpinner(Promise.all([promise1, promise2]))
+
+loadingSpinner(promise)
+
+Almost equivalent to (but subject to the above):
+try {
+  $ionicLoading.show(...);
+  await promise;
+} finally {
+  $ionicLoading.hide();
+}
+
+**/
 export default function($ionicLoading) {
+  /* Number of promises being watched by loading spinner */
   var count = 0;
 
   function hide() {
@@ -17,8 +37,13 @@ export default function($ionicLoading) {
   }
 
   return function (p) {
-    show()
+    assert.strictEqual(typeof p.then, 'function');
+    show();
 
-    p.then(hide, hide)
+    p.then(hide, (err) => {
+      hide();
+      throw err;
+    })
+    return p;
   }
 }
