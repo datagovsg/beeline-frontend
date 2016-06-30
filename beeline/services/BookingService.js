@@ -100,10 +100,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
     }
 
     // summarize trips by date
-    route.tripsByDate = {};
-    for (let trip of route.trips) {
-      route.tripsByDate[trip.date.getTime()] = trip;
-    }
+    route.tripsByDate = _.keyBy(route.trips, t => t.date.getTime())
 
     var changes = {
       timeChanges: [],
