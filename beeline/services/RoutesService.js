@@ -30,7 +30,7 @@ function transformRouteData(data) {
   return data;
 }
 
-export default function RoutesService($http, UserService, $q) {
+export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q) {
   var routesCache;
   var recentRoutesCache;
 
@@ -131,6 +131,14 @@ export default function RoutesService($http, UserService, $q) {
         return $q.resolve([]);
       }
     },
+
+    decodeRoutePath: function (path) {
+      assert.strictEqual(typeof path, 'string');
+      return uiGmapGoogleMapApi.then((googleMaps) => {
+        // Array of LatLng objects
+        return googleMaps.geometry.encoding.decodePath(path);
+      })
+    }
   };
 
   return instance;
