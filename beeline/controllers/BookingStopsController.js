@@ -43,18 +43,13 @@ export default [
       alightStops: [], // all alight stops for this route
       boardStop: null,
       alightStop: null,
+      alightStopId: undefined,
+      boardStopId: undefined,
       changes: {},
     };
 
-    // @hongyi
-    // if $ionicView.afterEnter is set from
-    // within uiGmapGoogleMapApi.then(() => {}) and the map api
-    // resolves AFTER the page enters, the afterEnter event will
-    // never be fired.
-    //
-    // So afterEnter is set from within the main scope function
-    // However, it must then wait for the map to be ready.'
-    // Hence this promise.
+
+    // Resolved when the map is initialized
     var gmapIsReady = new Promise((resolve, reject) => {
       var resolved = false;
       $scope.$watch('map.control.getGMap', function() {
@@ -69,8 +64,12 @@ export default [
 
     $scope.$on('$ionicView.afterEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
-      $scope.book.boardStopId = parseInt($stateParams.boardStop);
-      $scope.book.alightStopId = parseInt($stateParams.alightStop);
+      if ($stateParams.boardStop) {
+        $scope.book.boardStopId = parseInt($stateParams.boardStop);
+      }
+      if ($stateParams.alightStop) {
+        $scope.book.alightStopId = parseInt($stateParams.alightStop);
+      }
       window.setStop = $scope.setStop;
 
       loadingSpinner(gmapIsReady.then(() => {
@@ -208,6 +207,19 @@ export default [
         var [boardStops, alightStops] = BookingService.computeStops(trips);
         $scope.book.boardStops = boardStops;
         $scope.book.alightStops = alightStops;
+
+        // Check that the boardStopIds are still valid
+        if (typeof($scope.book.boardStopId) === 'number') {
+          if (!boardStops.find(ts => ts.id === $scope.book.boardStopId)) {
+            $scope.book.boardStopId = undefined;
+          }
+        }
+        // Check that the boardStopIds are still valid
+        if (typeof($scope.book.alightStopId) === 'number') {
+          if (!alightStops.find(ts => ts.id === $scope.book.alightStopId)) {
+            $scope.book.alightStopId = undefined;
+          }
+        }
 
         if (boardStops.length == 1) {
           $scope.book.boardStopId = boardStops[0].id;
