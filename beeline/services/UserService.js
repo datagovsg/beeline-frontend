@@ -200,7 +200,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       subTitle: subtitle,
       inputs: [
         {
-          type: 'text',
+          type: 'tel',
           name: 'phone',
           pattern: VALID_PHONE_REGEX
         }

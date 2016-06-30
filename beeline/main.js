@@ -81,7 +81,7 @@ var app = angular.module('beeline', [
 //        client: 'gme-infocommunications',
     key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
 //        v: ', //defaults to latest 3.X anyhow
-    libraries: 'places'
+    libraries: 'places,geometry'
   });
 })
 .run(function($ionicPlatform, $rootScope, $ionicTabsDelegate, RoutesService) {

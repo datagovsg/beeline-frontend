@@ -157,12 +157,10 @@ export default [
         var routesPromise = RoutesService.getRoute(parseInt($scope.book.routeId))
         .then((route) => {
           // 1. Route info
-          $scope.routePath = route.path.map(latlng => ({
-            latitude: latlng.lat,
-            longitude: latlng.lng,
-          }));
+          RoutesService.decodeRoutePath(route.path)
+          .then((path) => $scope.routePath = path);
+
           $scope.book.route = route;
-          console.log($scope.book.route);
           computeStops();
           panToStops();
 
