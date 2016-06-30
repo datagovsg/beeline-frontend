@@ -8,8 +8,9 @@ export default [
   'RoutesService',
   '$stateParams',
   'TicketService',
+  'loadingSpinner',
   function($scope, $state, $http, BookingService,
-    RoutesService, $stateParams, TicketService) {
+    RoutesService, $stateParams, TicketService, loadingSpinner) {
     var now = new Date();
 
     // Data logic;
@@ -24,6 +25,7 @@ export default [
     };
     // Display Logic;
     $scope.disp = {
+      month: moment(),
       validDates: [],
       soldOutDates: [],
       bookedDates: [],
@@ -44,7 +46,7 @@ export default [
         $scope.disp.previouslyBookedDays = {};
 
         // FIXME: Need to handle booking windows correctly
-        RoutesService.getRoute(parseInt($scope.book.routeId), true, {
+        var routesPromise = RoutesService.getRoute(parseInt($scope.book.routeId), true, {
           include_availability: true,
           start_date: Date.now(),
         })
@@ -53,7 +55,7 @@ export default [
           updateCalendar();
         });
 
-        TicketService.getTicketsByRouteId($scope.book.routeId)
+        var ticketsPromise = TicketService.getTicketsByRouteId($scope.book.routeId)
         .then((tickets) => {
           if (!tickets) {
             $scope.disp.previouslyBookedDays = {};
@@ -61,6 +63,8 @@ export default [
           }
           $scope.disp.previouslyBookedDays = _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
         });
+
+        loadingSpinner(Promise.all([ticketsPromise, routesPromise]));
       });
 
     $scope.$watch('disp.selectedDatesLocal', () => {
@@ -108,10 +112,16 @@ export default [
         return;
       }
 
+      // ensure cancelled trips are not shown
+      var runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
+
+      // discover which month to show
+      $scope.disp.month = moment(_.min(runningTrips.map(t => t.date)));
+
       // reset
       $scope.disp.availabilityDays = {}
 
-      for (let trip of $scope.book.route.trips) {
+      for (let trip of runningTrips) {
         // FIXME: disable today if past the booking window
 
         // Make it available, only if the stop is valid for this trip

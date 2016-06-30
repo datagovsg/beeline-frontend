@@ -12,10 +12,10 @@ export default [
   '$cordovaGeolocation',
   'BookingService',
   'RoutesService',
-  'CompanyService',
   'uiGmapGoogleMapApi',
   'MapOptions',
   '$timeout',
+  'loadingSpinner',
   function(
     $rootScope,
     $scope,
@@ -27,10 +27,10 @@ export default [
     $cordovaGeolocation,
     BookingService,
     RoutesService,
-    CompanyService,
     uiGmapGoogleMapApi,
     MapOptions,
-    $timeout
+    $timeout,
+    loadingSpinner
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -44,7 +44,6 @@ export default [
       boardStop: null,
       alightStop: null,
       changes: {},
-      company: {},
     };
 
     // @hongyi
@@ -73,11 +72,12 @@ export default [
       $scope.book.boardStopId = parseInt($stateParams.boardStop);
       $scope.book.alightStopId = parseInt($stateParams.alightStop);
       window.setStop = $scope.setStop;
-      gmapIsReady.then(() => {
+
+      loadingSpinner(gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
-        $scope.displayRouteInfo();
-      });
+        return $scope.displayRouteInfo(); // hide the spinner only after routes are processed
+      }));
     });
 
     gmapIsReady.then(function() {
@@ -147,19 +147,16 @@ export default [
       // Load the data for the selected route
       // Which data?
       // 1. Route info
-      // 2. Company info
-      // 3. Changes to route
+      // 2. Changes to route
       $scope.lastDisplayedRouteId = null; // works if caching
       $scope.displayRouteInfo = function() {
-        RoutesService.getRoute(parseInt($scope.book.routeId))
+        return RoutesService.getRoute(parseInt($scope.book.routeId))
         .then((route) => {
           // 1. Route info
-          $scope.routePath = route.path.map(latlng => ({
-            latitude: latlng.lat,
-            longitude: latlng.lng,
-          }));
+          RoutesService.decodeRoutePath(route.path)
+          .then((path) => $scope.routePath = path);
+
           $scope.book.route = route;
-          console.log($scope.book.route);
           computeStops();
           panToStops();
 
@@ -194,12 +191,6 @@ export default [
             // }
           }
           $scope.lastDisplayedRouteId = $scope.book.routeId;
-
-          // 2. Fill in the transport company info
-          return CompanyService.getCompany(+route.trips[0].transportCompanyId)
-          .then(function(result) {
-            $scope.book.company = result;
-          });
         })
         .then(null, err => console.log(err.stack));
       };

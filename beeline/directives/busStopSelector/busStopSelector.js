@@ -74,11 +74,14 @@ export default [
         // Pan to the bus stops
         var bounds = new google.maps.LatLngBounds();
         for (let bs of scope.busStops) {
-            bounds.extend(new google.maps.LatLng(
-                bs.coordinates.coordinates[1],
-                bs.coordinates.coordinates[0]));
+          bounds.extend(new google.maps.LatLng(
+              bs.coordinates.coordinates[1],
+              bs.coordinates.coordinates[0]));
         }
         scope.map.control.getGMap().fitBounds(bounds);
+        if (scope.map.control.getGMap().getZoom() > 17) {
+          scope.map.control.getGMap().setZoom(17);
+        }
       };
 
       scope.selectStop = (e, stop) => {
