@@ -136,7 +136,6 @@ export default [
         await $ionicPopup.alert({
           title: 'Error processing payment',
           template: err.data.message,
-          okType: 'button-royal',
         })
       } finally {
         $scope.$apply(() => {
