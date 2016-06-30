@@ -36,7 +36,6 @@ export default [
       $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
           return parseInt(item);
       });
-      console.log($scope.book.selectedDates);
       $scope.book.boardStopId  = parseInt($stateParams.boardStop);
       $scope.book.alightStopId = parseInt($stateParams.alightStop);
       RoutesService.getRoute(parseInt($scope.book.routeId))
