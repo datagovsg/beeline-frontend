@@ -1,7 +1,6 @@
 <ion-view id="pg_bookdate" view-title="Select Dates">
   <ion-content>
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
-    <ion-spinner ng-if="disp.dataLoading"></ion-spinner>
     <multiple-date-picker ng-model="disp.selectedDatesLocal"
                           days-allowed="disp.daysAllowed"
                           month="disp.month"
