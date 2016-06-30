@@ -1,11 +1,17 @@
 import assert from 'assert';
+import commonmark from 'commonmark';
 
-export default function CompanyService(UserService) {
+var reader = new commonmark.Parser({safe: true});
+var writer = new commonmark.HtmlRenderer({safe: true});
+
+export default function CompanyService(UserService, $ionicModal, $rootScope, $q) {
   var companyCache = {};
+  var termsModal, termsScope;
+
   return {
     getCompany: function(id, ignoreCache) {
       assert(typeof id === 'number');
-      if (companyCache[id] && !ignoreCache) return companyCache[id];
+      if (companyCache[id] && !ignoreCache) return $q.resolve(companyCache[id]);
       return UserService.beeline({
         url: '/companies/' + id,
         method: 'GET',
@@ -14,6 +20,25 @@ export default function CompanyService(UserService) {
         companyCache[id] = response.data;
         return companyCache[id];
       });
+    },
+    showTerms: function (id) {
+      if (!termsModal) {
+        termsScope = $rootScope.$new();
+        termsScope.termsModal = termsModal = $ionicModal.fromTemplate(
+          require('../templates/termsModal.html'),
+          {
+            scope: termsScope
+          }
+        );
+      }
+
+      this.getCompany(id)
+      .then((company) => {
+        termsScope.company = {
+          termsHTML: writer.render(reader.parse(company.terms))
+        };
+        termsModal.show();
+      })
     },
   };
 }
