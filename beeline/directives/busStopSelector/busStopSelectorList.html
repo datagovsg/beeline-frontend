@@ -34,8 +34,9 @@
                         options="pinOptions">
         </ui-gmap-circle>
       </ui-gmap-google-map>
-      <div class="ion-list-header">{{busStops.length}} stops available</div>
     </div>
+
+    <div class="item item-divider num-stops">{{busStops.length}} stops available</div>
 
     <ion-scroll class="stops-list">
       <ion-list>
@@ -53,12 +54,13 @@
       </ion-list>
     </ion-scroll>
 
+    <div class="item select-button">
+      <button class="button primary-button button-item"
+              ng-disabled="!model"
+              ng-click="selectStop($event, selectedStop)">
+        {{title}}
+      </button>
+    </div>
+
   </ion-content>
-  <ion-footer-bar>
-    <button class="button primary-button"
-            ng-disabled="!model"
-            ng-click="selectStop($event, selectedStop)">
-      {{title}}
-    </button>
-  </ion-footer-bar>
 </ion-modal-view>

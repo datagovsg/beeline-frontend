@@ -1,4 +1,5 @@
 import assert from 'assert';
+import processingPaymentsTemplate from '../templates/processing-payments.html';
 
 export default [
   '$scope',
@@ -7,11 +8,12 @@ export default [
   '$ionicPopup',
   'BookingService',
   'UserService',
+  '$ionicLoading',
   'StripeService',
   '$stateParams',
   'RoutesService',
   function ($scope, $state, $http, $ionicPopup,
-    BookingService, UserService,
+    BookingService, UserService, $ionicLoading,
     StripeService, $stateParams, RoutesService) {
 
     $scope.book = {
@@ -26,7 +28,10 @@ export default [
       alightStopId: undefined,
       boardStop: undefined,
       alightStop: undefined,
+      price: undefined,
     };
+    $scope.disp = {};
+    
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
       if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
@@ -35,7 +40,6 @@ export default [
       $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
           return parseInt(item);
       });
-      console.log($scope.book.selectedDates);
       $scope.book.boardStopId  = parseInt($stateParams.boardStop);
       $scope.book.alightStopId = parseInt($stateParams.alightStop);
       RoutesService.getRoute(parseInt($scope.book.routeId))
@@ -81,19 +85,21 @@ export default [
           if (cardDetails == null) return;
 
           var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
-              number:     cardDetails["card_number"],
-              cvc:        cardDetails["cvv"],
-              exp_month:  cardDetails["expiry_month"],
-              exp_year:   cardDetails["expiry_year"],
+            number:     cardDetails["card_number"],
+            cvc:        cardDetails["cvv"],
+            exp_month:  cardDetails["expiry_month"],
+            exp_year:   cardDetails["expiry_year"],
           }, (statusCode, response) => {
-              if (response.error)
-                  reject(response.error.message);
-              else
-                  resolve(response);
+            if (response.error)
+              reject(response.error.message);
+            else
+              resolve(response);
           }));
         }
         else if (StripeService.loaded) { // Use Stripe Checkout
-          var stripeToken = await StripeService.promptForToken();
+          var stripeToken = await StripeService.promptForToken(
+              undefined, /* description */
+              isFinite($scope.book.price) ? $scope.book.price * 100 : '');
           if (stripeToken == null)
             return;
         }
@@ -107,23 +113,28 @@ export default [
           return;
         }
 
+        $ionicLoading.show({
+          template: processingPaymentsTemplate
+        })
         var result = await UserService.beeline({
           method: 'POST',
           url: '/transactions/payment_ticket_sale',
           data: {
-              stripeToken: stripeToken.id,
-              trips: BookingService.prepareTrips($scope.book),
+            stripeToken: stripeToken.id,
+            trips: BookingService.prepareTrips($scope.book),
           },
         });
+        $ionicLoading.hide();
 
         // This gives us the transaction items
         assert(result.status == 200);
 
         $state.go('tabs.booking-confirmation');
       } catch (err) {
+        $ionicLoading.hide();
         await $ionicPopup.alert({
           title: 'Error processing payment',
-          template: err,
+          template: err.data.message,
         })
       } finally {
         $scope.$apply(() => {

@@ -91,11 +91,11 @@
     </ui-gmap-google-map>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
-    <ion-scroll class="service-cancellation">
-      <div class="item item-text-wrap" ng-if="info.trip.status == 'cancelled'">
+    <ion-scroll class="service-cancellation" ng-if="info.trip.status == 'cancelled'">
+      <div class="item item-text-wrap">
         <div class="cancellation-content">
           <h2>Service is Cancelled</h2>
-          <img src="../img/TicketCancelledTrip.svg" />
+          <img src="img/TicketCancelledTrip.svg" />
           <!-- <i class="icon ion-alert-circled"></i> -->
           <p>Today's trip has been cancelled. Sorry for the inconvenience caused. </p>
           <p>
