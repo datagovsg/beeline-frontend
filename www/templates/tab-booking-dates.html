@@ -1,7 +1,12 @@
 <ion-view id="pg_bookdate" view-title="Select Dates">
   <ion-content>
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
-    <multiple-date-picker ng-model="disp.selectedDatesLocal" days-allowed="disp.daysAllowed" highlight-days="disp.highlightDays" disallow-back-past-months="true" disable-days-before="disp.today">
+    <multiple-date-picker ng-model="disp.selectedDatesLocal"
+                          days-allowed="disp.daysAllowed"
+                          month="disp.month"
+                          highlight-days="disp.highlightDays"
+                          disallow-back-past-months="true"
+                          disable-days-before="disp.today">
     </multiple-date-picker>
 
     <div class="datepicker">
