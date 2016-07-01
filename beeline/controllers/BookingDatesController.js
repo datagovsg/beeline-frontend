@@ -83,27 +83,28 @@ export default [
 
         for (let time of Object.keys($scope.disp.availabilityDays)) {
           time = parseInt(time)
+          let timeMoment = moment(time).utcOffset(0);
           if ($scope.disp.availabilityDays[time] <= 0) {
             $scope.disp.highlightDays.push({
-              date: time,
+              date: timeMoment,
               css: 'sold-out',
               selectable: false,
             })
           }
           else if (time in $scope.disp.previouslyBookedDays) {
             $scope.disp.highlightDays.push({
-              date: time,
+              date: timeMoment,
               css: 'previously-booked',
               selectable: false,
             })
           }
           else {
             $scope.disp.highlightDays.push({
-              date: time,
+              date: timeMoment,
               css: '',
               selectable: true,
             })
-            $scope.disp.daysAllowed.push(moment(time))
+            $scope.disp.daysAllowed.push(timeMoment)
           }
         }
       })

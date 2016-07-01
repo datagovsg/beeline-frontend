@@ -18,31 +18,33 @@ export default [
         }
 
         var latestRequest = null;
-        scope.$watch('booking', function() {
-          if (!scope.booking.route) {
-            return;
-          }
-
-          scope.isCalculating++;
-          var promise = BookingService.computePriceInfo(scope.booking)
-          .then((priceInfo) => {
-            // Check to ensure that the order of
-            // replies don't affect the result
-            if (promise != latestRequest)
+        scope.$watch(
+          () => _.pick(scope.booking, ['selectedDates' /* qty, promoCode */]),
+          function() {
+            if (!scope.booking.route) {
               return;
-            scope.priceInfo = priceInfo;
-            scope.price = priceInfo.totalDue;
-            scope.errorMessage = null;
-          })
-          .catch((error) => {
-            scope.priceInfo = [];
-            scope.price = undefined;
-            scope.errorMessage = error.data.message;
-          })
-          .then(stopCalculating);
+            }
 
-          latestRequest = promise;
-        }, true);
+            scope.isCalculating++;
+            var promise = BookingService.computePriceInfo(scope.booking)
+            .then((priceInfo) => {
+              // Check to ensure that the order of
+              // replies don't affect the result
+              if (promise != latestRequest)
+                return;
+              scope.priceInfo = priceInfo;
+              scope.price = priceInfo.totalDue;
+              scope.errorMessage = null;
+            })
+            .catch((error) => {
+              scope.priceInfo = [];
+              scope.price = undefined;
+              scope.errorMessage = error.data.message;
+            })
+            .then(stopCalculating);
+
+            latestRequest = promise;
+          }, true);
       }
     };
   }];

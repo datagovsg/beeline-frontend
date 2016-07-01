@@ -254,19 +254,21 @@ export default [
     });
 
     // Extract the coordinates of the selected stops
-    $scope.$watch('book.boardStopId', (stopId) => {
-      if (!stopId || !$scope.book.boardStops) return;
-
-      $scope.book.boardStop = stopId ?
-        $scope.book.boardStops.find(x => x.id == stopId)
-        : null;
-    })
-    $scope.$watch('book.alightStopId', (stopId) => {
-      if (!stopId || !$scope.book.alightStops) return;
-
-      $scope.book.alightStop = stopId ?
-        $scope.book.alightStops.find(x => x.id == stopId)
-        : null;
-    })
+    $scope.$watch(
+      () => _.pick($scope.book, ['boardStopId', 'boardStops']),
+      ({boardStopId, boardStops}) => {
+        if (!boardStopId || !boardStops) return;
+        $scope.book.boardStop = boardStopId ?
+          boardStops.find(x => x.id == boardStopId)
+          : null;
+      }, true)
+    $scope.$watch(
+      () => _.pick($scope.book, ['alightStopId', 'alightStops']),
+      ({alightStopId, alightStops}) => {
+        if (!alightStopId || !alightStops) return;
+        $scope.book.alightStop = alightStopId ?
+          alightStops.find(x => x.id == alightStopId)
+          : null;
+      }, true)
   }
 ];
