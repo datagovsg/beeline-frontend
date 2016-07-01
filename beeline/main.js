@@ -10,7 +10,7 @@ import assert from 'assert';
 
 // Angular imports
 import AngularGoogleMap from 'angular-google-maps';
-import MultipleDatePicker from 'multiple-date-picker/multipleDatePicker';
+import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 
 // Configuration Imports
 import configureRoutes from './router.js';
