@@ -1,16 +1,4 @@
-<ion-view id="pg_bookdate" view-title="Select Dates"
-  hide-back-button="true">
-  <ion-nav-buttons>
-    <button class="button button-clear back-button"
-       ui-sref="tabs.bookingPickup({
-        boardStop: book.boardStopId,
-        alightStop: book.alightStopId,
-        routeId: book.routeId
-      })">
-       <i class="icon ion-ios-arrow-back"></i> Back
-    </button>
-  </ion-nav-buttons>
-
+<ion-view id="pg_bookdate" view-title="Select Dates">
   <ion-content>
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
     <multiple-date-picker ng-model="disp.selectedDatesMoments"
