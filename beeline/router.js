@@ -43,6 +43,7 @@ export default function($stateProvider, $urlRouterProvider) {
     // abstract: true,
     templateUrl: 'templates/tabs.html',
     controller: ($scope, $ionicHistory, $state, $stateParams) => {
+      $scope.hideBack = true;
       $scope.$watchGroup(
         () => [
           $state.current.data && $state.current.data.back,
