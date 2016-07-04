@@ -1,5 +1,12 @@
 <ion-view id="pg_booking" view-title="Select Pick-up and Drop-off Points"
-  hide-back-button="false">
+  hide-back-button="true">
+  <ion-nav-buttons>
+    <button class="button button-clear back-button"
+       ui-sref="tabs.routes">
+       <i class="icon ion-ios-arrow-back"></i> Routes
+    </button>
+  </ion-nav-buttons>
+
   <ion-content class="fullscreen-map" scroll="false">
     <form class="flex-col" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->

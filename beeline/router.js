@@ -40,28 +40,8 @@ export default function($stateProvider, $urlRouterProvider) {
       **/
   .state('tabs', {
     url: '/tabs',
-    // abstract: true,
+    abstract: true,
     templateUrl: 'templates/tabs.html',
-    controller: ($scope, $ionicHistory, $state, $stateParams) => {
-      $scope.hideBack = true;
-      $scope.$watch(
-        () => [
-          ($state.current.data && $state.current.data.back) ? true : false,
-          $ionicHistory.backView() ? true : false,
-        ],
-        ([hasDefaultBack, hasBackView]) => {
-          console.log(hasDefaultBack, hasBackView)
-          $scope.hideBack = hasDefaultBack ? false : hasBackView ? false : true
-        }, true);
-      $scope.$backOrDefault = function () {
-        if ($ionicHistory.backView()) {
-          $ionicHistory.goBack();
-        }
-        else if ($state.current.data && $state.current.data.back){
-          $state.go(...$state.current.data.back($state.params));
-        }
-      }
-    }
   })
 
   // ////////////////////////////////////////////////////////////////////////////
