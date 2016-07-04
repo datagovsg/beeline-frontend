@@ -81,6 +81,7 @@ var app = angular.module('beeline', [
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
+  $ionicConfigProvider.tabs.style('standard');
   $ionicConfigProvider.navBar.alignTitle('center');
 })
 .config(function(uiGmapGoogleMapApiProvider) {
