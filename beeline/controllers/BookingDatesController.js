@@ -46,10 +46,7 @@ export default [
         $scope.disp.previouslyBookedDays = {};
 
         // FIXME: Need to handle booking windows correctly
-        var routesPromise = RoutesService.getRoute(parseInt($scope.book.routeId), true, {
-          include_availability: true,
-          start_date: Date.now(),
-        })
+        var routesPromise = RoutesService.getRoute(parseInt($scope.book.routeId))
         .then((route) => {
           $scope.book.route = route;
           updateCalendar();
@@ -123,16 +120,18 @@ export default [
       // reset
       $scope.disp.availabilityDays = {}
 
+      // booking window restriction
+      var now = Date.now();
+
       for (let trip of runningTrips) {
         // FIXME: disable today if past the booking window
 
         // Make it available, only if the stop is valid for this trip
-        var stopIds = trip.tripStops.map(ts => ts.stop.id);
-        if (_.intersection([$scope.book.boardStopId],
-                           stopIds).length === 0 ||
-            _.intersection([$scope.book.alightStopId],
-                           stopIds).length === 0
-            ) {
+        var stopIds = trip.tripStops
+          .filter(t => t.time.getTime() > now)
+          .map(ts => ts.stop.id);
+        if (stopIds.indexOf($scope.book.boardStopId) === -1 ||
+            stopIds.indexOf($scope.book.alightStopId) === -1) {
           continue;
         }
 
