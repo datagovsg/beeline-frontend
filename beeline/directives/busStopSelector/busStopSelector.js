@@ -63,11 +63,8 @@ export default [
 
       scope.fitMap = async () =>  {
         await uiGmapGoogleMapApi;
-        //Disable the Google link at the bottom left of the map
-        var glink = angular.element(document.getElementsByClassName("gm-style-cc"));
-        glink.next().find('a').on('click', function (e) {
-          e.preventDefault();
-        });
+        MapOptions.disableMapLinks();
+
         if (!scope.map.control || !scope.busStops ||
                 scope.busStops.length == 0)
             return;

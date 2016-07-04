@@ -1,9 +1,8 @@
 var googleMaps;
 
 export default [
-  'uiGmapGoogleMapApi',
-  '$cordovaGeolocation',
-  function(uiGmapGoogleMapApi, $cordovaGeolocation) {
+  'uiGmapGoogleMapApi', '$cordovaGeolocation', '$timeout',
+  function(uiGmapGoogleMapApi, $cordovaGeolocation, $timeout) {
     this.defaultMapOptions = function(options) {
       var mapOptions = _.assign({
         center: {latitude: 1.370244, longitude: 103.823315},
@@ -101,6 +100,20 @@ export default [
         console.log('ERROR - ' + err);
       });
     };
+
+    this.disableMapLinks = function () {
+      $timeout(function() {
+        var anchorElems = document.querySelectorAll('ui-gmap-google-map a[href]')
+
+        for (let i=0; i<anchorElems.length; i++) {
+          let anchorElem = anchorElems[i];
+          if (!anchorElem.dataset['clickDisabled']) {
+            anchorElem.addEventListener('click', e => e.preventDefault());
+            anchorElem.dataset['clickDisabled'] = true;
+          }
+        }
+      }, 300);
+    }
 
   }
 ];

@@ -10,7 +10,15 @@ navigation history that also transitions its views in and out.
              class="nav-text nav-routes"
              href="#/tabs/routes">
       <ion-nav-bar class="bar-royal">
-        <ion-nav-back-button>Back</ion-nav-back-button>
+        <!-- <ion-nav-back-button ng-click="backOrDefault()">
+        </ion-nav-back-button> -->
+        <ion-nav-buttons>
+          <button ng-click="$backOrDefault()" class="button button-clear back-button"
+            ng-show="!hideBack">
+            <i class="icon ion-ios-arrow-back"></i>
+            Back
+          </button>
+        </ion-nav-buttons>
       </ion-nav-bar>
       <ion-nav-view name="tab-routes"></ion-nav-view>
     </ion-tab>
