@@ -57,6 +57,18 @@
       /* Hide the scroll-bar in browsers */
       overflow: hidden;
 
+      .item-radio{
+        .radio-icon {
+          color: $royal;
+          font-size: 30px;
+          left: 0px;
+        }
+      }
+
+      .fullStopDetails{
+        margin-left: $item_padding_base*4;
+      }
+
       .details {
         .road {
           color: $hint-color;

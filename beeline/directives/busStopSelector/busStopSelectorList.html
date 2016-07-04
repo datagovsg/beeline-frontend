@@ -39,16 +39,19 @@
     <div class="item item-divider num-stops">{{busStops.length}} stops available</div>
 
     <ion-scroll class="stops-list">
-      <ion-list>
+      <ion-list class="item-icon-left item-radio">
         <ion-radio  ng-repeat="stop in busStops"
                     ng-model="model"
                     ng-value="stop.id"
                     ng-click="selectStop($event, stop)"
-                    class="item-text-wrap">
-          <div class="time">{{stop.time | formatTime}}</div>
-          <div class="details">
-            <div class="description">{{stop.description}}</div>
-            <div class="road">{{stop.road}}</div>
+                    class="item-text-wrap"
+                    icon="icon ion-ios-checkmark">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
           </div>
         </ion-radio>
       </ion-list>
