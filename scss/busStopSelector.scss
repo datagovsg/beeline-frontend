@@ -63,17 +63,25 @@
           font-size: 30px;
           left: 0px;
         }
+        .item-radio .item-content{
+          padding-right: $item-padding * 1;
+          /* extend content space, override ionic default since the checkmark is no longer on the right */
+        }
       }
 
       .fullStopDetails{
         margin-left: $item_padding_base*4;
-      }
-
-      .details {
-        .road {
-          color: $hint-color;
+        .time{
+          font-weight: bold;
+        }
+        .details {
+          .road {
+            color: $hint-color;
+          }
         }
       }
+
+
     }
 
     .num-stops,
