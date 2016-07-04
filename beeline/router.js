@@ -81,9 +81,6 @@ export default function($stateProvider, $urlRouterProvider) {
     },
     data: {
       hideTabs: true,
-      back(stateParams) {
-        return ['tabs.routes']
-      }
     }
   })
 
@@ -97,10 +94,6 @@ export default function($stateProvider, $urlRouterProvider) {
     },
     data: {
       hideTabs: true,
-      back(stateParams) {
-        return ['tabs.bookingPickup',
-                _.pick(stateParams, ['routeId', 'boardStop', 'alightStop'])]
-      }
     }
   })
   .state('tabs.booking-summary', {
@@ -113,10 +106,6 @@ export default function($stateProvider, $urlRouterProvider) {
     },
     data: {
       hideTabs: true,
-      back(stateParams) {
-        return ['tabs.booking-dates',
-                _.pick(stateParams, ['routeId', 'boardStop', 'alightStop'])]
-      }
     }
   })
   .state('tabs.booking-confirmation', {
