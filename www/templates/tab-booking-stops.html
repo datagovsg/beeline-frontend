@@ -35,30 +35,22 @@
           <ui-gmap-marker
             ng-repeat="stop in book.boardStops"
             idKey="stop.id"
-            coords="{
-              latitude: stop.coordinates.coordinates[1],
-              longitude: stop.coordinates.coordinates[0],
-            }"
+            coords="stop.coordinates"
             options="map.markerOptions.boardMarker"
             click="applyTapBoard(stop)"
           ></ui-gmap-marker>
           <ui-gmap-marker
             ng-repeat="stop in book.alightStops"
             idKey="stop.id"
-            coords="{
-              latitude: stop.coordinates.coordinates[1],
-              longitude: stop.coordinates.coordinates[0],
-            }"
+            coords="stop.coordinates"
             options="map.markerOptions.alightMarker"
             click="applyTapAlight(stop)"
           ></ui-gmap-marker>
 
           <ui-gmap-polyline
             path="routePath"
-            stroke="{
-              color: '#4b3863',
-              weight: 3.0,
-            }"
+            static="true"
+            stroke="map.uiOptions.routePathStroke"
           >
           </ui-gmap-polyline>
 
@@ -72,7 +64,7 @@
             coords="book.alightStop.coordinates"
             options="map.markerOptions.endMarker">
 
-          <ui-gmap-window
+          <!-- <ui-gmap-window
             ng-if="infoStop"
             show="infoStop"
             coords="infoStop.coordinates"
@@ -87,7 +79,7 @@
               Select {{infoType == 'board'? 'pick-up' : 'drop-off'}} stop
               </button>
             </div>
-          </ui-gmap-window>
+          </ui-gmap-window> -->
         </ui-gmap-google-map>
       </div>
 

@@ -8,9 +8,9 @@ export default [
   'RoutesService',
   '$stateParams',
   'TicketService',
-  'loadingSpinner',
+  'loadingSpinner', '$q',
   function($scope, $state, $http, BookingService,
-    RoutesService, $stateParams, TicketService, loadingSpinner) {
+    RoutesService, $stateParams, TicketService, loadingSpinner, $q) {
     var now = new Date();
 
     // Data logic;
@@ -33,7 +33,7 @@ export default [
       availabilityDays: {},
       previouslyBookedDays: {},
       highlightDays: [],
-      daysAllowed: [Date.UTC(2016,5,15)],
+      daysAllowed: [],
       selectedDatesMoments: [],
     };
     $scope.$on('$ionicView.beforeEnter', () => {
@@ -46,25 +46,30 @@ export default [
         $scope.disp.previouslyBookedDays = {};
 
         // FIXME: Need to handle booking windows correctly
-        var routesPromise = RoutesService.getRoute(parseInt($scope.book.routeId))
-        .then((route) => {
-          $scope.book.route = route;
-          updateCalendar();
-        });
-
+        var routePromise = RoutesService.getRoute(parseInt($scope.book.routeId))
         var ticketsPromise = TicketService.getTicketsByRouteId($scope.book.routeId)
-        .then((tickets) => {
+          .catch((err) => null)
+
+        // Cause all the updates to the $watch-ed elements to be assigned
+        // together, reducing the number of digests.
+        loadingSpinner($q.all([routePromise, ticketsPromise]).then(([route, tickets]) => {
+          // Route
+          $scope.book.route = route;
+          updateCalendar(); // updates availabilityDays
+
+          // Tickets
           if (!tickets) {
             $scope.disp.previouslyBookedDays = {};
             return;
           }
           $scope.disp.previouslyBookedDays = _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
-        });
-
-        loadingSpinner(Promise.all([ticketsPromise, routesPromise]));
+        }));
       });
 
-    $scope.$watch('disp.selectedDatesMoments', () => {
+    $scope.$watch(
+      /* Don't watch the entire moment objects, just their value */
+      () => $scope.disp.selectedDatesMoments.map(m => m.valueOf()),
+      () => {
       // multiple-date-picker gives us the
       // date in midnight local time
       // Need to convert to UTC
@@ -107,10 +112,6 @@ export default [
       })
 
     function updateCalendar() {
-      if (!$scope.book.route) {
-        return;
-      }
-
       // ensure cancelled trips are not shown
       var runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
 

@@ -1,8 +1,8 @@
 var googleMaps;
 
 export default [
-  'uiGmapGoogleMapApi', '$cordovaGeolocation', '$timeout',
-  function(uiGmapGoogleMapApi, $cordovaGeolocation, $timeout) {
+  'uiGmapGoogleMapApi', '$cordovaGeolocation',
+  function(uiGmapGoogleMapApi, $cordovaGeolocation) {
     this.defaultMapOptions = function(options) {
       var mapOptions = _.assign({
         center: {latitude: 1.370244, longitude: 103.823315},
@@ -84,6 +84,7 @@ export default [
       };
 
       // promise
+      // FIXME: use navigator.geoLocation
       $cordovaGeolocation
       .getCurrentPosition({timeout: 5000, enableHighAccuracy: true})
       .then(function(userpos) {
@@ -102,7 +103,7 @@ export default [
     };
 
     this.disableMapLinks = function () {
-      $timeout(function() {
+      setTimeout(function() {
         var anchorElems = document.querySelectorAll('ui-gmap-google-map a[href]')
 
         for (let i=0; i<anchorElems.length; i++) {

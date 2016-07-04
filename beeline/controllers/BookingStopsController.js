@@ -14,7 +14,6 @@ export default [
   'RoutesService',
   'uiGmapGoogleMapApi',
   'MapOptions',
-  '$timeout',
   'loadingSpinner',
   function(
     $rootScope,
@@ -29,11 +28,17 @@ export default [
     RoutesService,
     uiGmapGoogleMapApi,
     MapOptions,
-    $timeout,
     loadingSpinner
   ) {
     // Gmap default settings
-    $scope.map = MapOptions.defaultMapOptions();
+    $scope.map = MapOptions.defaultMapOptions({
+      uiOptions: {
+        routePathStroke: {
+          color: '#4b3863',
+          weight: 3.0,
+        }
+      }
+    });
 
     // Default settings for various info used in the page
     $scope.book = {
@@ -104,23 +109,6 @@ export default [
         $scope.$apply(() => $scope.tapBoard(model))
       };
     }
-    function initializeMarkerOptions() {
-      $scope.alightMarkerOptions = {
-        icon: {
-          url: 'img/alight.png',
-          scaledSize: new google.maps.Size(20, 20),
-          anchor: new google.maps.Point(5, 5),
-        },
-      };
-
-      $scope.boardMarkerOptions = {
-        icon: {
-          url: 'img/board.png',
-          scaledSize: new google.maps.Size(20, 20),
-          anchor: new google.maps.Point(5, 5),
-        },
-      };
-    }
     function initializeStopSelectorOptions() {
       /* These functions teach the <bus-stop-selector> how
        to display the stop id and description */
@@ -150,7 +138,6 @@ export default [
       var gmap = $scope.map.control.getGMap();
 
       initializeMapOptions();
-      initializeMarkerOptions();
       MapOptions.disableMapLinks();
       initializeStopSelectorOptions();
 
@@ -191,10 +178,6 @@ export default [
       $scope.displayRouteInfo = function() {
         return RoutesService.getRoute(parseInt($scope.book.routeId))
         .then((route) => {
-          // 1. Route info
-          RoutesService.decodeRoutePath(route.path)
-          .then((path) => $scope.routePath = path);
-
           $scope.book.route = route;
           computeStops();
           panToStops();
@@ -268,20 +251,41 @@ export default [
 
     // Extract the coordinates of the selected stops
     $scope.$watch(
-      () => _.pick($scope.book, ['boardStopId', 'boardStops']),
-      ({boardStopId, boardStops}) => {
-        if (!boardStopId || !boardStops) return;
-        $scope.book.boardStop = boardStopId ?
-          boardStops.find(x => x.id == boardStopId)
+      () => [
+        $scope.book.boardStopId,
+        $scope.book.boardStops && $scope.book.boardStops.map(bs => bs.id)
+      ],
+      () => {
+        var stopId = $scope.book.boardStopId;
+        var stops = $scope.book.boardStops;
+
+        if (!stopId || !stops) return;
+        $scope.book.boardStop = stopId ?
+          stops.find(x => x.id == stopId)
           : null;
       }, true)
     $scope.$watch(
-      () => _.pick($scope.book, ['alightStopId', 'alightStops']),
-      ({alightStopId, alightStops}) => {
-        if (!alightStopId || !alightStops) return;
-        $scope.book.alightStop = alightStopId ?
-          alightStops.find(x => x.id == alightStopId)
+      () => [
+        $scope.book.alightStopId,
+        $scope.book.alightStops && $scope.book.alightStops.map(bs => bs.id)
+      ],
+      () => {
+        var stopId = $scope.book.alightStopId;
+        var stops = $scope.book.alightStops;
+
+        if (!stopId || !stops) return;
+        $scope.book.alightStop = stopId ?
+          stops.find(x => x.id == stopId)
           : null;
-      }, true)
+      }, true);
+    $scope.$watch('book.route.path', (path) => {
+      if (!path) {
+        $scope.routePath = [];
+      }
+      else {
+        RoutesService.decodeRoutePath(path)
+        .then((decodedPath) => $scope.routePath = decodedPath);
+      }
+    })
   }
 ];

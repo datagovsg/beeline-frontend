@@ -84,6 +84,9 @@ var app = angular.module('beeline', [
   $ionicConfigProvider.tabs.style('standard');
   $ionicConfigProvider.navBar.alignTitle('center');
 })
+.config(function ($httpProvider) {
+  $httpProvider.useApplyAsync(true);
+})
 .config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
 //        client: 'gme-infocommunications',
@@ -122,6 +125,18 @@ var app = angular.module('beeline', [
   // Pre-fetch the routes
   RoutesService.getRoutes();
   RoutesService.getRecentRoutes();
+})
+.run(function ($templateCache) {
+  $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))
+  $templateCache.put('templates/settings.html', require('../www/templates/settings.html'))
+  $templateCache.put('templates/routes-results.html', require('../www/templates/routes-results.html'))
+  $templateCache.put('templates/routes-list.html', require('../www/templates/routes-list.html'))
+  $templateCache.put('templates/tickets.html', require('../www/templates/tickets.html'))
+  $templateCache.put('templates/ticket-detail.html', require('../www/templates/ticket-detail.html'))
+  $templateCache.put('templates/tab-booking-stops.html', require('../www/templates/tab-booking-stops.html'))
+  $templateCache.put('templates/tab-booking-dates.html', require('../www/templates/tab-booking-dates.html'))
+  $templateCache.put('templates/tab-booking-summary.html', require('../www/templates/tab-booking-summary.html'))
+  $templateCache.put('templates/tab-booking-confirmation.html', require('../www/templates/tab-booking-confirmation.html'))
 })
 
 var devicePromise = window.cordova ?

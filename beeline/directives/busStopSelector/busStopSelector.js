@@ -3,20 +3,8 @@ import busStopSelectorListTemplate from './busStopSelectorList.html'
 import {formatTime} from '../../shared/format'
 
 export default [
-    '$state',
-    '$ionicModal',
-    '$http',
-    'uiGmapGoogleMapApi',
-    'MapOptions',
-    '$timeout'
-  , function (
-    $state,
-    $ionicModal,
-    $http,
-    uiGmapGoogleMapApi,
-    MapOptions,
-    $timeout
-    ) {
+    '$state', '$ionicModal', '$http', 'uiGmapGoogleMapApi', 'MapOptions',
+    function ($state, $ionicModal, $http, uiGmapGoogleMapApi, MapOptions) {
 
   return {
     restrict: 'E',
@@ -46,7 +34,7 @@ export default [
       });
 
       scope.showList = function () {
-        $timeout(() => {
+        setTimeout(() => {
             scope.fitMap();
         }, 300);
         window.setStop = scope.setStop;
