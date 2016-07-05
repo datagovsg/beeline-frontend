@@ -43,7 +43,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
     // Retrive the data on a single route, but pulls a lot more data
     // Pulls all the trips plus the route path
-
+    // getRoute() will return the heavier stuff (all trips, availability, path)
     getRoute: function(routeId, ignoreCache, options) {
       assert.equal(typeof routeId, 'number');
 
@@ -79,6 +79,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
     // Retrive the data on all the routes
     // But limits the amount of data retrieved
+    // getRoutes() now returns a list of routes, but with very limited
+    // trip data (limited to 5 trips, no path)
     getRoutes: function(ignoreCache, options) {
       if (routesCache && !ignoreCache && !options) return routesCache;
 
