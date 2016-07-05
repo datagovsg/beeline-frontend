@@ -36,9 +36,8 @@
     <ion-scroll class="stops-list">
       <ion-list>
         <ion-radio  ng-repeat="stop in busStops"
-                    ng-model="selectedStop"
+                    ng-model="data.selectedStop"
                     ng-value="stop"
-                    ng-click="selectStop($event, stop)"
                     class="item-text-wrap">
           <div class="time">{{stop.time | formatTime}}</div>
           <div class="details">
