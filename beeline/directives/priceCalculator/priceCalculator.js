@@ -15,6 +15,7 @@ export default [
 
         function stopCalculating() {
           scope.isCalculating = Math.max(0, scope.isCalculating - 1);
+          scope.$emit('priceCalculator.done')
         }
 
         var latestRequest = null;

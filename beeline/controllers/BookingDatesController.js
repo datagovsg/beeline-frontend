@@ -8,9 +8,10 @@ export default [
   'RoutesService',
   '$stateParams',
   'TicketService',
-  'loadingSpinner', '$q',
+  'loadingSpinner', '$q', '$ionicScrollDelegate',
   function($scope, $state, $http, BookingService,
-    RoutesService, $stateParams, TicketService, loadingSpinner, $q) {
+    RoutesService, $stateParams, TicketService, loadingSpinner, $q,
+  $ionicScrollDelegate) {
     var now = new Date();
 
     // Data logic;
@@ -110,6 +111,10 @@ export default [
           }
         }
       })
+
+    $scope.$on('priceCalculator.done', () => {
+      $ionicScrollDelegate.resize();
+    })
 
     function updateCalendar() {
       // ensure cancelled trips are not shown
