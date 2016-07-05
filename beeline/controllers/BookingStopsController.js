@@ -208,13 +208,6 @@ export default [
         var [boardStops, alightStops] = BookingService.computeStops(trips);
         $scope.book.boardStops = boardStops;
         $scope.book.alightStops = alightStops;
-
-        if (boardStops.length == 1) {
-          $scope.book.boardStopId = boardStops[0].id;
-        }
-        if (alightStops.length == 1) {
-          $scope.book.alightStopId = alightStops[0].id;
-        }
       }
 
       function panToStops() {
