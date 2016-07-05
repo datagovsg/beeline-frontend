@@ -82,12 +82,10 @@ export default [
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
         panToStops();
-        showChanges();
       }));
     });
 
     gmapIsReady.then(function() {
-      initializeMapOptions();
       MapOptions.disableMapLinks();
       $scope.routePath = [];
     });
@@ -102,46 +100,6 @@ export default [
       }
     })
 
-    /* Sets up the event handlers for the locate me button,
-       and the buttons within the info windows */
-    function initializeMapOptions() {
-      // Currently these functions cannot be used
-      // because data-tap-disabled="true" messes up the markers'
-      // response to taps
-      $scope.setStop = function() {
-        var stop = $scope.infoStop;
-        var type = $scope.infoType;
-
-        $scope.$apply(() => {
-          if (type == 'board') {
-            $scope.book.boardStop = stop;
-          }
-          else {
-            $scope.book.alightStop = stop;
-          }
-          /* Hide the infowindow */
-          $scope.infoStop = null;
-          $scope.infoType = null;
-        });
-      };
-      $scope.tapBoard = function(board) {
-      // nconsole.log($state);
-        window.setStop = $scope.setStop;
-        $scope.infoStop = board;
-        $scope.infoType = 'board';
-      };
-      $scope.tapAlight = function(alight) {
-        window.setStop = $scope.setStop;
-        $scope.infoStop = alight;
-        $scope.infoType = 'alight';
-      };
-      $scope.applyTapAlight = (marker, event, model) => {
-        $scope.$apply(() => $scope.tapAlight(model))
-      };
-      $scope.applyTapBoard = (marker, event, model) => {
-        $scope.$apply(() => $scope.tapBoard(model))
-      };
-    }
     /* Pans to the stops on the screen */
     function panToStops() {
       var stops = [];
@@ -158,52 +116,6 @@ export default [
         ));
       }
       $scope.map.control.getGMap().fitBounds(bounds);
-    }
-
-    /* Show the list of changes for the route. Don't display
-      if previously displayed */
-    var lastDisplayedRouteId = null;
-    function showChanges() {
-      $scope.$on('$destroy', () => {
-        if ($scope.changesModal) {
-          $scope.changesModal.remove();
-        }
-      });
-
-      // 3. Check if we should display changes
-      if (lastDisplayedRouteId != $scope.book.routeId) {
-        var changes = BookingService.computeChanges($scope.book.route);
-        $scope.book.changes = changes;
-
-        if (changes.priceChanges.length == 0 &&
-            changes.stopChanges.length == 0 &&
-            changes.timeChanges.length == 0) {
-            return;
-          }
-
-        // FIXME: We are hiding this for now, until
-        // we get the UI right. We should be pulling
-        // the announcements from RouteAnnouncements instead
-
-        // if ($scope.changesModal) {
-        //     $scope.changesModal.show();
-        //   }
-        // else {
-        //   $ionicModal.fromTemplateUrl('changes-message.html', {
-        //     scope: $scope,
-        //     animation: 'slide-in-up',
-        //   })
-        //   .then(modal => {
-        //     $scope.changesModal = modal;
-        //     $scope.changesModal.show();
-        //
-        //     $scope.closeChangesModal = function() {
-        //       $scope.changesModal.hide();
-        //     };
-        //   });
-        // }
-      }
-      lastDisplayedRouteId = $scope.book.routeId;
     }
 
     /** Summarizes the stops from trips by comparing their stop location and time */
