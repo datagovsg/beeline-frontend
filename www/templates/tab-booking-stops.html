@@ -70,11 +70,8 @@
 
       <ion-list class="stop-inputs flex-shrink">
         <bus-stop-selector
-          model="book.boardStopId"
+          ng-model="book.boardStop"
           bus-stops="book.boardStops"
-          value="getStopId"
-          display="getStopDescription"
-          display2="getStopDescription2"
           placeholder="Select pick-up stop"
           title="Select pick-up stop"
           button="Select pick-up stop"
@@ -85,11 +82,8 @@
           >
         </bus-stop-selector>
         <bus-stop-selector
-          model="book.alightStopId"
+          ng-model="book.alightStop"
           bus-stops="book.alightStops"
-          value="getStopId"
-          display="getStopDescription"
-          display2="getStopDescription2"
           placeholder="Select drop-off stop"
           title="Select drop-off stop"
           button="Select drop-off stop"

@@ -77,10 +77,15 @@ export default [
       }
       window.setStop = $scope.setStop;
 
+      var stopOptions = {
+        initialBoardStopId: $scope.book.boardStopId,
+        initialAlightStopId: $scope.book.alightStopId,
+      };
+
       loadingSpinner(gmapIsReady.then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
-        return $scope.displayRouteInfo(); // hide the spinner only after routes are processed
+        return $scope.displayRouteInfo(stopOptions); // hide the spinner only after routes are processed
       }));
     });
 
@@ -109,14 +114,6 @@ export default [
         $scope.$apply(() => $scope.tapBoard(model))
       };
     }
-    function initializeStopSelectorOptions() {
-      /* These functions teach the <bus-stop-selector> how
-       to display the stop id and description */
-      $scope.getStopId = (stop) => stop.id;
-      $scope.getStopDescription = (stop) =>
-      formatTime(stop.time) + ' \u00a0\u00a0' + stop.description;
-      $scope.getStopDescription2 = (stop) => stop.road;
-    }
     function panToStops() {
       var stops = [];
       stops = $scope.book.boardStops.concat($scope.book.alightStops);
@@ -139,7 +136,6 @@ export default [
 
       initializeMapOptions();
       MapOptions.disableMapLinks();
-      initializeStopSelectorOptions();
 
       $scope.routePath = [];
 
@@ -175,11 +171,11 @@ export default [
       // 1. Route info
       // 2. Changes to route
       $scope.lastDisplayedRouteId = null; // works if caching
-      $scope.displayRouteInfo = function() {
+      $scope.displayRouteInfo = function(options) {
         return RoutesService.getRoute(parseInt($scope.book.routeId))
         .then((route) => {
           $scope.book.route = route;
-          computeStops();
+          computeStops(options);
           panToStops();
 
           // 3. Check if we should display changes
@@ -221,63 +217,40 @@ export default [
       };
 
       /** Summarizes the stops from trips by comparing their stop location and time */
-      function computeStops() {
+      function computeStops({initialBoardStopId, initialAlightStopId}) {
         var trips = $scope.book.route.trips;
         var [boardStops, alightStops] = BookingService.computeStops(trips);
         $scope.book.boardStops = boardStops;
         $scope.book.alightStops = alightStops;
 
         // Check that the boardStopIds are still valid
-        if (typeof($scope.book.boardStopId) === 'number') {
-          if (!boardStops.find(ts => ts.id === $scope.book.boardStopId)) {
-            $scope.book.boardStopId = undefined;
-          }
+        if (typeof(initialBoardStopId) === 'number') {
+          $scope.book.boardStop = boardStops.find(ts =>
+              ts.id === initialBoardStopId);
         }
         // Check that the boardStopIds are still valid
-        if (typeof($scope.book.alightStopId) === 'number') {
-          if (!alightStops.find(ts => ts.id === $scope.book.alightStopId)) {
-            $scope.book.alightStopId = undefined;
-          }
+        if (typeof(initialAlightStopId) === 'number') {
+          $scope.book.alightStop = alightStops.find(ts =>
+              ts.id === initialAlightStopId);
         }
 
         if (boardStops.length == 1) {
-          $scope.book.boardStopId = boardStops[0].id;
+          $scope.book.boardStop = boardStops[0];
         }
         if (alightStops.length == 1) {
-          $scope.book.alightStopId = alightStops[0].id;
+          $scope.book.alightStop = alightStops[0];
         }
       }
     });
 
     // Extract the coordinates of the selected stops
-    $scope.$watch(
-      () => [
-        $scope.book.boardStopId,
-        $scope.book.boardStops && $scope.book.boardStops.map(bs => bs.id)
-      ],
-      () => {
-        var stopId = $scope.book.boardStopId;
-        var stops = $scope.book.boardStops;
+    $scope.$watch('book.boardStop', (stop) => {
+      $scope.book.boardStopId = stop ? stop.id : null;
+    });
+    $scope.$watch('book.alightStop', (stop) => {
+      $scope.book.alightStopId = stop ? stop.id : null;
+    });
 
-        if (!stopId || !stops) return;
-        $scope.book.boardStop = stopId ?
-          stops.find(x => x.id == stopId)
-          : null;
-      }, true)
-    $scope.$watch(
-      () => [
-        $scope.book.alightStopId,
-        $scope.book.alightStops && $scope.book.alightStops.map(bs => bs.id)
-      ],
-      () => {
-        var stopId = $scope.book.alightStopId;
-        var stops = $scope.book.alightStops;
-
-        if (!stopId || !stops) return;
-        $scope.book.alightStop = stopId ?
-          stops.find(x => x.id == stopId)
-          : null;
-      }, true);
     $scope.$watch('book.route.path', (path) => {
       if (!path) {
         $scope.routePath = [];

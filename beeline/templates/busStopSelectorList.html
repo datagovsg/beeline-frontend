@@ -4,7 +4,7 @@
       {{title}}
     </h1>
     <button class="button button-clear icon ion-android-close"
-        ng-click="closeStopSelectModal()">
+        ng-click="close()">
    </button>
   </ion-header-bar>
 
@@ -18,21 +18,16 @@
                           data-tap-disabled="true">
         <ui-gmap-marker ng-repeat="stop in busStops"
                         idkey="stop.id"
-                        coords="{
-                          latitude: stop.coordinates.coordinates[1],
-                          longitude: stop.coordinates.coordinates[0],
-                        }"
+                        coords="stop.coordinates"
                         options="markerOptions"
-                        ng-click="selectStop($event, stop)"></ui-gmap-marker>
+                        ng-click="selectStop($event, stop)">
+        </ui-gmap-marker>
 
         <ui-gmap-marker ng-if="selectedStop"
                         idkey="'selectedStopPin'"
-                        coords="{
-                          latitude:  selectedStop.coordinates.coordinates[1],
-                          longitude: selectedStop.coordinates.coordinates[0],
-                        }"
+                        coords="selectedStop.coordinates"
                         options="pinOptions">
-        </ui-gmap-circle>
+        </ui-gmap-marker>
       </ui-gmap-google-map>
     </div>
 
@@ -41,8 +36,8 @@
     <ion-scroll class="stops-list">
       <ion-list>
         <ion-radio  ng-repeat="stop in busStops"
-                    ng-model="model"
-                    ng-value="stop.id"
+                    ng-model="selectedStop"
+                    ng-value="stop"
                     ng-click="selectStop($event, stop)"
                     class="item-text-wrap">
           <div class="time">{{stop.time | formatTime}}</div>
@@ -56,8 +51,8 @@
 
     <div class="item select-button">
       <button class="button primary-button button-item"
-              ng-disabled="!model"
-              ng-click="selectStop($event, selectedStop)">
+              ng-disabled="!selectedStop"
+              ng-click="close()">
         {{title}}
       </button>
     </div>
