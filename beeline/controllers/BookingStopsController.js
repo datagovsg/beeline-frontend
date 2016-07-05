@@ -87,7 +87,6 @@ export default [
 
     gmapIsReady.then(function() {
       MapOptions.disableMapLinks();
-      $scope.routePath = [];
     });
 
     $scope.$watch('book.route.path', (path) => {
@@ -96,7 +95,7 @@ export default [
       }
       else {
         RoutesService.decodeRoutePath(path)
-        .then((decodedPath) => $scope.routePath = decodedPath);
+        .then((decodedPath) => $scope.routePath = decodedPath)
       }
     })
 
