@@ -32,6 +32,7 @@ export default [
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
+    $scope.routePath = [];
 
     // Default settings for various info used in the page
     $scope.book = {
