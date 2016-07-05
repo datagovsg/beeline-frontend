@@ -20,6 +20,26 @@ price-calculator {
       white-space: normal;
     }
   }
+
+
+  .spinner-block {
+    background: $light;
+    position: absolute;
+    text-align: center;
+    padding: 1em 0;
+    width: 100%;
+    left: auto;
+    top: auto;
+
+    .spinner {
+      display: block;
+      svg {
+        height: 20vmin;
+        width: 20vmin;
+      }
+    }
+  }
+
 }
 .date-price-calculator{
   h3 {

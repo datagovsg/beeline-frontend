@@ -22,21 +22,38 @@
       flex-direction: row;
       background: white;
       height: $route-info-height;
+      margin: $padding-base-vertical 0;
 
       route-item {
         padding: 10px;
         background-color: $light;
         flex: 1 1 auto;
         overflow-x: hidden;
+        display: flex;
+        flex-direction: row;
 
-        .active {
+        .route-overview {
           display: none;
+          align-self: flex-start;
+          .bus-number {
+            display: none;
+          }
+          .schedule {
+            display: none;
+          }
+        }
+        .start, .end {
+          white-space: nowrap;
+        }
+        .stops {
+          margin: 0;
         }
       }
       .price {
-        padding: 3px 5px;
+        padding: $padding-small-vertical 0;
         flex: 0 0 auto;
         align-self: flex-end;
+        margin-right: $content-padding;
 
         .from {
           color: $hint-color;

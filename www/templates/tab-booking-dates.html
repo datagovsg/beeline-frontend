@@ -1,8 +1,12 @@
 <ion-view id="pg_bookdate" view-title="Select Dates">
   <ion-content>
     <booking-breadcrumbs step="1"></booking-breadcrumbs>
-    <ion-spinner ng-if="disp.dataLoading"></ion-spinner>
-    <multiple-date-picker ng-model="disp.selectedDatesLocal" days-allowed="disp.daysAllowed" highlight-days="disp.highlightDays" disallow-back-past-months="true" disable-days-before="disp.today">
+    <multiple-date-picker ng-model="disp.selectedDatesMoments"
+                          days-allowed="disp.daysAllowed"
+                          month="disp.month"
+                          highlight-days="disp.highlightDays"
+                          disallow-back-past-months="true"
+                          disable-days-before="disp.today">
     </multiple-date-picker>
 
     <div class="datepicker">
@@ -37,7 +41,7 @@
     </div>
 
     <div class="item">
-      <price-calculator booking="book" read-only="true"></price-calculator>
+      <price-calculator booking="book"></price-calculator>
     </div>
 
     <div class="item">

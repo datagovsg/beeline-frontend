@@ -8,7 +8,6 @@ export default [
       template: priceCalculatorTemplate,
       scope: {
         'booking': '=',
-        'readOnly': '=',
         'price': '=?',
       },
       link: function(scope, elem, attr) {

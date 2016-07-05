@@ -61,8 +61,7 @@
       <h3 class="item item-divider">
         Selected Dates
       </h3>
-      <price-calculator class="item" booking="book" read-only="true"
-                        price="book.price">
+      <price-calculator class="item" booking="book" price="book.price">
       </price-calculator>
     </section>
 
@@ -98,7 +97,7 @@
         Terms and Conditions of Booking
       </h3>
       <company-tnc company-id="book.route.transportCompanyId"></company-tnc>
-      <ion-checkbox class="item item-text-wrap" ng-model="book.termsChecked">
+      <ion-checkbox class="item item-text-wrap" ng-model="disp.termsChecked">
         Yes, I have read and agree to the Terms and Conditions of booking.
       </ion-checkbox>
     </section>
@@ -109,7 +108,7 @@
 
       <button class="button primary-button"
               ng-click="login()"
-              ng-disabled="!book.termsChecked || waitingForPaymentResult">
+              ng-disabled="!disp.termsChecked || waitingForPaymentResult">
         Enter Mobile No.
       </button>
     </section>
@@ -120,7 +119,7 @@
 
       <button class="button primary-button"
               ng-click="pay()"
-              ng-disabled="!book.termsChecked || waitingForPaymentResult">
+              ng-disabled="!disp.termsChecked || waitingForPaymentResult">
         Confirm and Pay
       </button>
     </section>
