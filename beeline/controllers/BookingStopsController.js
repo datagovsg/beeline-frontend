@@ -31,14 +31,7 @@ export default [
     loadingSpinner
   ) {
     // Gmap default settings
-    $scope.map = MapOptions.defaultMapOptions({
-      uiOptions: {
-        routePathStroke: {
-          color: '#4b3863',
-          weight: 3.0,
-        }
-      }
-    });
+    $scope.map = MapOptions.defaultMapOptions();
 
     // Default settings for various info used in the page
     $scope.book = {
@@ -48,8 +41,6 @@ export default [
       alightStops: [], // all alight stops for this route
       boardStop: null,
       alightStop: null,
-      alightStopId: undefined,
-      boardStopId: undefined,
       changes: {},
     };
 
@@ -69,17 +60,11 @@ export default [
 
     $scope.$on('$ionicView.afterEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
-      if ($stateParams.boardStop) {
-        $scope.book.boardStopId = parseInt($stateParams.boardStop);
-      }
-      if ($stateParams.alightStop) {
-        $scope.book.alightStopId = parseInt($stateParams.alightStop);
-      }
       window.setStop = $scope.setStop;
 
       var stopOptions = {
-        initialBoardStopId: $scope.book.boardStopId,
-        initialAlightStopId: $scope.book.alightStopId,
+        initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
+        initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
       };
 
       loadingSpinner(gmapIsReady.then(() => {
@@ -151,10 +136,10 @@ export default [
 
         $scope.$apply(() => {
           if (type == 'board') {
-            $scope.book.boardStopId = stop.id;
+            $scope.book.boardStop = stop;
           }
           else {
-            $scope.book.alightStopId = stop.id;
+            $scope.book.alightStop = stop;
           }
           /* Hide the infowindow */
           $scope.infoStop = null;
@@ -241,14 +226,6 @@ export default [
           $scope.book.alightStop = alightStops[0];
         }
       }
-    });
-
-    // Extract the coordinates of the selected stops
-    $scope.$watch('book.boardStop', (stop) => {
-      $scope.book.boardStopId = stop ? stop.id : null;
-    });
-    $scope.$watch('book.alightStop', (stop) => {
-      $scope.book.alightStopId = stop ? stop.id : null;
     });
 
     $scope.$watch('book.route.path', (path) => {

@@ -85,9 +85,20 @@
     </div>
 
     <ui-gmap-google-map ng-if="info.trip.status != 'cancelled'" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
-      <ui-gmap-polyline ng-repeat="p in map.lines" path="p.path" stroke="p.stroke" icons="p.icons"></ui-gmap-polyline>
-      <ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'" options="'options'"></ui-gmap-markers>
-      <ui-gmap-marker ng-if="map.busLocation.coordinates" idkey="bus-location" coords="map.busLocation.coordinates" icon="map.busLocation.icon"></ui-gmap-markers>
+      <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
+      <ui-gmap-polyline path="map.lines.actualPath.path" stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
+      <ui-gmap-marker idkey="'boardstop'"
+                      ng-if="map.markers.boardStop.stop"
+                      coords="map.markers.boardStop.stop.coordinates"
+                      options="map.markerOptions.boardMarker"></ui-gmap-marker>
+      <ui-gmap-marker idkey="'alightstop'"
+                      ng-if="map.markers.alightStop.stop"
+                      coords="map.markers.alightStop.stop.coordinates"
+                      options="map.markerOptions.alightMarker"></ui-gmap-marker>
+      <ui-gmap-marker ng-if="map.busLocation.coordinates"
+                      idkey="bus-location"
+                      coords="map.busLocation.coordinates"
+                      icon="map.busLocation.icon"></ui-gmap-markers>
     </ui-gmap-google-map>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->

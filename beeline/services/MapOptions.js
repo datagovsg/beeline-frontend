@@ -3,6 +3,55 @@ var googleMaps;
 export default [
   'uiGmapGoogleMapApi', '$cordovaGeolocation',
   function(uiGmapGoogleMapApi, $cordovaGeolocation) {
+    var markerOptionsPromise = uiGmapGoogleMapApi.then((googleMaps) => {
+      return {
+        markerOptions: {
+          boardMarker: {
+            icon: {
+              url: 'img/map/MapRoutePickupStop@2x.png',
+              scaledSize: new googleMaps.Size(26, 25),
+              anchor: new googleMaps.Point(13, 13),
+            },
+          },
+          alightMarker: {
+            icon: {
+              url: 'img/map/MapRouteDropoffStop@2x.png',
+              scaledSize: new googleMaps.Size(26, 25),
+              anchor: new googleMaps.Point(13, 13),
+            },
+          },
+          startMarker: {
+            icon: {
+              url: 'img/map/SelectedPinStart@2x.png',
+              scaledSize: new googleMaps.Size(34, 46),
+              anchor: new googleMaps.Point(17, 41),
+            },
+            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+          },
+          endMarker: {
+            icon: {
+              url: 'img/map/SelectedPinStop@2x.png',
+              scaledSize: new googleMaps.Size(34, 46),
+              anchor: new googleMaps.Point(17, 41),
+            },
+            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+          },
+        },
+        pathOptions: {
+          routePath: {
+            color: '#4b3863',
+            weight: 3.0,
+            opacity: 0.7
+          },
+          actualPath: {
+            color: '#000000',
+            weight: 3.0,
+            opacity: 1.0
+          }
+        }
+      };
+    });
+
     this.defaultMapOptions = function(options) {
       var mapOptions = _.assign({
         center: {latitude: 1.370244, longitude: 103.823315},
@@ -39,40 +88,9 @@ export default [
         lines: [],
       }, options || {});
 
-      uiGmapGoogleMapApi.then((googleMaps) => {
-        mapOptions.markerOptions.boardMarker = ({
-          icon: {
-            url: 'img/map/MapRoutePickupStop@2x.png',
-            scaledSize: new googleMaps.Size(26, 25),
-            anchor: new googleMaps.Point(13, 13),
-          },
-        });
-        mapOptions.markerOptions.alightMarker = ({
-          icon: {
-            url: 'img/map/MapRouteDropoffStop@2x.png',
-            scaledSize: new googleMaps.Size(26, 25),
-            anchor: new googleMaps.Point(13, 13),
-          },
-        });
-
-        mapOptions.markerOptions.startMarker = {
-          icon: {
-            url: 'img/map/SelectedPinStart@2x.png',
-            scaledSize: new googleMaps.Size(34, 46),
-            anchor: new googleMaps.Point(17, 41),
-          },
-          zIndex: google.maps.Marker.MAX_ZINDEX + 1,
-        };
-
-        mapOptions.markerOptions.endMarker = {
-          icon: {
-            url: 'img/map/SelectedPinStop@2x.png',
-            scaledSize: new googleMaps.Size(34, 46),
-            anchor: new googleMaps.Point(17, 41),
-          },
-          zIndex: google.maps.Marker.MAX_ZINDEX + 1,
-        };
-      });
+      markerOptionsPromise.then((options) => {
+        _.assign(mapOptions, options);
+      })
 
       return mapOptions;
     };
