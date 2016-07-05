@@ -58,28 +58,13 @@
             idkey="'bs'"
             coords="book.boardStop.coordinates"
             options="map.markerOptions.startMarker">
+          </ui-gmap-marker>
 
           <ui-gmap-marker
             idkey="'as'"
             coords="book.alightStop.coordinates"
             options="map.markerOptions.endMarker">
-
-          <!-- <ui-gmap-window
-            ng-if="infoStop"
-            show="infoStop"
-            coords="infoStop.coordinates"
-            >
-            <div class="booking-stops-infowindow">
-              <b>{{infoStop.time | formatTime}}</b><br/>
-              {{infoStop.description}}
-              <br>{{infoStop.label}}
-              <br>{{infoStop.road}}
-              <br/>
-              <button onclick="setStop()">
-              Select {{infoType == 'board'? 'pick-up' : 'drop-off'}} stop
-              </button>
-            </div>
-          </ui-gmap-window> -->
+          </ui-gmap-marker>
         </ui-gmap-google-map>
       </div>
 
