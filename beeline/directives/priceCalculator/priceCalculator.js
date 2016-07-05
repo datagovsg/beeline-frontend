@@ -25,6 +25,12 @@ export default [
               return;
             }
 
+            // Provide a price summary first (don't count total due)
+            // This allows the page to resize earlier, so that when
+            // users scroll down the bounce works ok.
+            scope.priceInfo = scope.priceInfo || {};
+            scope.priceInfo.pricesPerTrip = BookingService.summarizePrices(scope.booking);
+
             scope.isCalculating++;
             var promise = BookingService.computePriceInfo(scope.booking)
             .then((priceInfo) => {
@@ -37,7 +43,7 @@ export default [
               scope.errorMessage = null;
             })
             .catch((error) => {
-              scope.priceInfo = [];
+              scope.priceInfo = {};
               scope.price = undefined;
               scope.errorMessage = error.data.message;
             })
