@@ -85,8 +85,7 @@ var app = angular.module('beeline', [
 })
 .config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
-//        client: 'gme-infocommunications',
-    key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
+    client: 'gme-infocommunications',
 //        v: ', //defaults to latest 3.X anyhow
     libraries: 'places,geometry'
   });
