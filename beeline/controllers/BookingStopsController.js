@@ -96,6 +96,7 @@ export default [
       else {
         RoutesService.decodeRoutePath(path)
         .then((decodedPath) => $scope.routePath = decodedPath)
+        .catch(() => $scope.routePath = []);
       }
     })
 
