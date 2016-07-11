@@ -98,6 +98,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         include_trips: true,
         limit_trips: 5,
         include_path: false,
+        tags: ['public'],
       }, options)
 
       url += querystring.stringify(finalOptions)
@@ -146,7 +147,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           endLng: search.endLng,
           arrivalTime: search.arrivalTime,
           startTime:  search.startTime,
-          endTime: search.endTime
+          endTime: search.endTime,
+          tags: ['public']
         }),
       }).then(function(response) {
         return transformRouteData(response.data);
