@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 /**
   * If you want to hide tabs while maintaining proper back button functionality
@@ -6,6 +7,15 @@
   *
   * I have absolutely no idea what happens if you use subtabs.
   * The point is, don't use subtabs.
+**/
+
+/**
+  * The other parameters we define is
+    @prop data.back : stateParams -> Array
+      A function that returns a state array [state name, state params]
+      given a state params. The state array represents the "default back page"
+      for a given state, thus preventing the user from getting "stucK".
+
 **/
 
 export default function($stateProvider, $urlRouterProvider) {
@@ -23,10 +33,15 @@ export default function($stateProvider, $urlRouterProvider) {
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface
   // ////////////////////////////////////////////////////////////////////////////
+  /** Instead of using abstract: true, we make this page not abstract, because
+      we want to provide the $backOrDefault method to the tabs scope.
+      When our back button is clicked, this method will be called.
+      (We are overriding the default back button. cf tabs.html)
+      **/
   .state('tabs', {
     url: '/tabs',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/tabs.html',
   })
 
   // ////////////////////////////////////////////////////////////////////////////

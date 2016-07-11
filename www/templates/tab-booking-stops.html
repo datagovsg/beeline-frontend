@@ -1,4 +1,18 @@
-<ion-view id="pg_booking" view-title="Select Pick-up and Drop-off Points">
+<ion-view id="pg_booking" view-title="Select Pick-up and Drop-off Points"
+  hide-back-button="true">
+  <ion-nav-buttons side="primary">
+    <button class="button button-clear back-button"
+       ui-sref="tabs.routes">
+       <i class="icon ion-ios-arrow-back"></i> Routes
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="secondary">
+    <button class="button button-clear"
+       ui-sref="tabs.routes">
+       <i class="icon ion-ios-close-outline"></i>
+    </button>
+  </ion-nav-buttons>
+
   <ion-content class="fullscreen-map" scroll="false">
     <form class="flex-col" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
@@ -132,9 +146,9 @@
 
   <script id="changes-message.html" type="text/ng-template">
     <div class="changes-message modal">
-      <ion-header-bar class="bar-stable">
+      <ion-header-bar class="bar-royal">
         <h1 class="title">Changes to Service #{{book.routeid}}</h1>
-        <button class="button icon ion-android-close button-clear" ng-click="closeChangesModal()">
+        <button class="button icon ion-ios-close-outline button-clear" ng-click="closeChangesModal()">
         </button>
       </ion-header-bar>
       <ion-content>

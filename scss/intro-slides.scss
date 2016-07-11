@@ -1,13 +1,14 @@
 .intro-slides {
-  background-color: $royal;
-  color: $light;
-  .swiper-slide  {
+  background-color: $light;
+  color: $dark;
+  .swiper-slide {
     @include display-flex;
     @include flex-direction(column);
     @include justify-content(center);
     text-align: center;
+    margin-bottom: $padding-large-vertical*2;
     h2 {
-      color: $energized;
+      color: $royal;
     }
     img {
       margin-top: 50px;
@@ -19,22 +20,29 @@
       margin-left: auto;
       margin-right: auto;
       max-width: 70%;
-      font-size: $font-size-large;
+      font-size: $font-size-base;
       line-height: $line-height-base;
     }
 
-    .swiper-pagination-bullet {
-      background: $light;
-    }
-    .swiper-pagination-bullet-active {
-      background: $light;
-
-    }
   }
+
   button {
     position: absolute;
-    right: $content-padding;
+    right: $content-padding*2;
     bottom: $content-padding;
     z-index: $z-index-bar;
+  }
+
+  .swiper-container-horizontal {
+      bottom: $padding-large-vertical*2;
+  }
+
+  .swiper-pagination-bullet {
+    background: $royal;
+  }
+  
+  .ion-ios-upload-outline {
+    margin: 0 $item-padding-small;
+    font-size: $font-size-large;
   }
 }
