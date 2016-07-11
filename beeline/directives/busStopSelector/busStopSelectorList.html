@@ -44,11 +44,14 @@
                     ng-model="model"
                     ng-value="stop.id"
                     ng-click="selectStop($event, stop)"
-                    class="item-text-wrap">
-          <div class="time">{{stop.time | formatTime}}</div>
-          <div class="details">
-            <div class="description">{{stop.description}}</div>
-            <div class="road">{{stop.road}}</div>
+                    class="item-text-wrap item-icon-left"
+                    icon="icon ion-ios-checkmark">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
           </div>
         </ion-radio>
       </ion-list>

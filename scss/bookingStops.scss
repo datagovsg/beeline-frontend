@@ -1,5 +1,4 @@
 #pg_booking {
-  $route-info-height: 60px;
   $button-bar-height: 85px;
   $list-offset: 10px;
 
@@ -20,17 +19,17 @@
       flex: 0 0 auto;
       display: flex;
       flex-direction: row;
-      background: white;
-      height: $route-info-height;
-      margin: $padding-base-vertical 0;
+      background: $light;
+      padding: $padding-base-vertical 0;
 
       route-item {
-        padding: 10px;
+        display: flex;
+        padding: $item-padding-base;
         background-color: $light;
         flex: 1 1 auto;
         overflow-x: hidden;
-        display: flex;
         flex-direction: row;
+        align-items: center;
 
         .route-overview {
           display: none;

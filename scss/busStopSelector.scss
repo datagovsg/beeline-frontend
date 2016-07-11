@@ -57,11 +57,31 @@
       /* Hide the scroll-bar in browsers */
       overflow: hidden;
 
-      .details {
-        .road {
-          color: $hint-color;
+      .item-radio{
+        .radio-icon {
+          color: $royal;
+          font-size: 30px;
+          left: 0px;
+        }
+        .item-content{
+          padding-right: $item-padding * 1;
+          /* extend content space, override ionic default since the checkmark is no longer on the right */
         }
       }
+
+      .fullStopDetails{
+        padding-left: $item_padding_base*4;
+        .time{
+          font-weight: bold;
+        }
+        .details {
+          .road {
+            color: $hint-color;
+          }
+        }
+      }
+
+
     }
 
     .num-stops,
