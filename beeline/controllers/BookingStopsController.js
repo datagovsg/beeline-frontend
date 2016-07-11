@@ -256,13 +256,6 @@ export default [
             $scope.book.alightStopId = undefined;
           }
         }
-
-        if (boardStops.length == 1) {
-          $scope.book.boardStopId = boardStops[0].id;
-        }
-        if (alightStops.length == 1) {
-          $scope.book.alightStopId = alightStops[0].id;
-        }
       }
     });
 
