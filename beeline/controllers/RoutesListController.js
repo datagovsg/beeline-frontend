@@ -72,6 +72,4 @@ export default function($scope, $state, UserService, RoutesService, $q) {
   });
 
   $scope.$watch(() => UserService.getUser(), () => $scope.refreshRoutes(true));
-
-  $scope.refreshRoutes();
 }

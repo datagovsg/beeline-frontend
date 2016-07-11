@@ -27,7 +27,7 @@
       </tr>
       <tr ng-if="booking.selectedDates.length > 0" ng-repeat="pinfo in priceInfo.pricesPerTrip">
         <td>
-          {{pinfo.startDate | formatDateMMMdd}}
+          {{pinfo.startDate | date:'MMM dd'}}
         </td>
         <td>${{pinfo.price | number:2}}</td>
       </tr>
@@ -45,7 +45,7 @@
           {{priceInfo.tripCount || 0}}
         </td>
         <td>
-          ${{priceInfo.totalDue.toFixed(2) || '0.00'}}
+          ${{priceInfo.totalDue | number:2}}
         </td>
       </tr>
       <!-- FIXME: include vouchers, discounts here -->

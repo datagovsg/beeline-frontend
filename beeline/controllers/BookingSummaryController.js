@@ -4,10 +4,10 @@ import processingPaymentsTemplate from '../templates/processing-payments.html';
 export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
-  'RoutesService',
+  'RoutesService', '$ionicScrollDelegate',
   function ($scope, $state, $http, $ionicPopup,
     BookingService, UserService, $ionicLoading,
-    StripeService, $stateParams, RoutesService) {
+    StripeService, $stateParams, RoutesService, $ionicScrollDelegate) {
 
     $scope.book = {
       routeId: '',
@@ -58,6 +58,10 @@ export default [
     $scope.login = function () {
       UserService.promptLogIn()
     }
+
+    $scope.$on('priceCalculator.done', () => {
+      $ionicScrollDelegate.resize();
+    })
 
     // methods
     $scope.pay = async function() {

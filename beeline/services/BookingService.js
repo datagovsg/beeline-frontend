@@ -65,7 +65,6 @@ export default function(UserService, CompanyService, RoutesService, $http) {
   };
 
   this.summarizePrices = function(booking) {
-    console.log(booking);
     if (!booking.selectedDates) {
       return [];
     }
@@ -84,7 +83,6 @@ export default function(UserService, CompanyService, RoutesService, $http) {
       };
       rv.push(current);
     }
-    console.log(rv);
     return rv;
   };
 

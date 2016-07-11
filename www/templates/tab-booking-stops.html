@@ -14,10 +14,10 @@
   </ion-nav-buttons>
 
   <ion-content class="fullscreen-map" scroll="false">
-    <form class="flex-col" name="stopsForm">
+    <form class="stops-form" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
 
-      <div class="route-info flex-shrink">
+      <div class="route-info">
         <route-item route="book.route"></route-item>
 
         <div class="price">
@@ -30,7 +30,7 @@
 
       <!-- contains the map, the stop selectors
         and the locate me button -->
-      <div class="map-area flex-grow">
+      <div class="map-area">
         <ui-gmap-google-map
             center="map.center"
             zoom="map.zoom"
@@ -41,69 +41,43 @@
           <ui-gmap-marker
             ng-repeat="stop in book.boardStops"
             idKey="stop.id"
-            coords="{
-              latitude: stop.coordinates.coordinates[1],
-              longitude: stop.coordinates.coordinates[0],
-            }"
+            coords="stop.coordinates"
             options="map.markerOptions.boardMarker"
             click="applyTapBoard(stop)"
           ></ui-gmap-marker>
           <ui-gmap-marker
             ng-repeat="stop in book.alightStops"
             idKey="stop.id"
-            coords="{
-              latitude: stop.coordinates.coordinates[1],
-              longitude: stop.coordinates.coordinates[0],
-            }"
+            coords="stop.coordinates"
             options="map.markerOptions.alightMarker"
             click="applyTapAlight(stop)"
           ></ui-gmap-marker>
 
           <ui-gmap-polyline
             path="routePath"
-            stroke="{
-              color: '#4b3863',
-              weight: 3.0,
-            }"
+            static="true"
+            stroke="map.pathOptions.routePath"
           >
           </ui-gmap-polyline>
 
           <ui-gmap-marker
-            idkey="'selectedStop-boarding'"
+            idkey="'bs'"
             coords="book.boardStop.coordinates"
             options="map.markerOptions.startMarker">
+          </ui-gmap-marker>
 
           <ui-gmap-marker
-            idkey="'selectedStop-alighting'"
+            idkey="'as'"
             coords="book.alightStop.coordinates"
             options="map.markerOptions.endMarker">
-
-          <ui-gmap-window
-            ng-if="infoStop"
-            show="infoStop"
-            coords="infoStop.coordinates"
-            >
-            <div class="booking-stops-infowindow">
-              <b>{{infoStop.time | formatTime}}</b><br/>
-              {{infoStop.description}}
-              <br>{{infoStop.label}}
-              <br>{{infoStop.road}}
-              <br/>
-              <button onclick="setStop()">
-              Select {{infoType == 'board'? 'pick-up' : 'drop-off'}} stop
-              </button>
-            </div>
-          </ui-gmap-window>
+          </ui-gmap-marker>
         </ui-gmap-google-map>
       </div>
 
-      <ion-list class="stop-inputs flex-shrink">
+      <ion-list class="stop-inputs">
         <bus-stop-selector
-          model="book.boardStopId"
+          ng-model="book.boardStop"
           bus-stops="book.boardStops"
-          value="getStopId"
-          display="getStopDescription"
-          display2="getStopDescription2"
           placeholder="Select pick-up stop"
           title="Select pick-up stop"
           button="Select pick-up stop"
@@ -114,11 +88,8 @@
           >
         </bus-stop-selector>
         <bus-stop-selector
-          model="book.alightStopId"
+          ng-model="book.alightStop"
           bus-stops="book.alightStops"
-          value="getStopId"
-          display="getStopDescription"
-          display2="getStopDescription2"
           placeholder="Select drop-off stop"
           title="Select drop-off stop"
           button="Select drop-off stop"
@@ -130,12 +101,12 @@
         </bus-stop-selector>
       </ion-list>
 
-      <div class="item flex-shrink">
+      <div class="item continue-button-item">
         <button class="button primary-button button-item"
           ui-sref="tabs.booking-dates({
             routeId: book.routeId,
-            boardStop: book.boardStopId,
-            alightStop: book.alightStopId
+            boardStop: book.boardStop.id,
+            alightStop: book.alightStop.id
           })"
           ng-disabled="stopsForm.$invalid">
           Continue

@@ -29,34 +29,17 @@ export default [
     // Initialize the necessary basic data data
     $scope.user = UserService.getUser();
     $scope.map = MapOptions.defaultMapOptions({
-      lines: [
-      {
-        id: 'busLine',
-        path: [],
-        stroke: {
-          color: '#333',
-          opacity: 1.0,
-          weight: 3,
-        },
+      lines: {
+        route: { path: [] },
+        actualPath: { path: [] },
       },
-      {
-        id: 'routeLine',
-        path:[],
-        stroke: {opacity: 0},
-        icons: [{
-          icon: {
-            path: 'M 0,-1 0,1',
-            strokeOpacity: 0.5,
-            scale: 3
-          },
-          offset: '0',
-          repeat: '20px'
-        }]
-      }
-      ],
       busLocation: {
         coordinates: null,
         icon: null,
+      },
+      markers: {
+        boardStop: {},
+        alightStop: {},
       }
     });
 
@@ -102,38 +85,20 @@ export default [
     $scope.$on('$destroy', () => { $timeout.cancel(pingTimer); });
 
     // Draw the bus stops on the map
-    Promise.all([ticketPromise, uiGmapGoogleMapApi])
+    Promise.all([ticketPromise])
     .then(function(values) {
       var ticket = values[0];
-      var googleMaps = values[1];
-      var board = ticket.boardStop.stop.coordinates.coordinates;
-      var alight = ticket.alightStop.stop.coordinates.coordinates;
-      $scope.map.markers.push({
-        id: 'boardStop',
-        coords: {latitude: board[1], longitude: board[0]},
-        icon: {
-          url: 'img/MapRoutePickupStop.svg',
-          scaledSize: new googleMaps.Size(25, 25),
-          anchor: new googleMaps.Point(13, 13)
-        }
-      });
-      $scope.map.markers.push({
-        id: 'alightstop',
-        coords: {latitude: alight[1], longitude: alight[0]},
-        icon: {
-          url: 'img/MapRouteDropoffStop.svg',
-          scaledSize: new googleMaps.Size(25, 25),
-          anchor: new googleMaps.Point(13, 13)
-        }
-      });
+      $scope.map.markers.boardStop = ticket.boardStop;
+      $scope.map.markers.alightStop = ticket.alightStop;
     });
 
     // Draw the planned route
     routePromise.then((route) => {
-      var routeLine = _.find($scope.map.lines, {id: 'routeLine'});
-
       RoutesService.decodeRoutePath(route.path)
-      .then((path) => routeLine.path = path);
+      .then((path) => $scope.map.lines.route.path = path)
+      .catch((err) => {
+        console.error(err);
+      });
     });
 
     uiGmapGoogleMapApi.then((googleMaps) => {
@@ -153,7 +118,7 @@ export default [
           longitude: busPosition[0],
         };
 
-        $scope.map.lines[0].path = recentPings.map(ping => ({
+        $scope.map.lines.actualPath.path = recentPings.map(ping => ({
           latitude: ping.coordinates.coordinates[1],
           longitude: ping.coordinates.coordinates[0],
         }));

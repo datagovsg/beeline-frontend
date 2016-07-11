@@ -54,7 +54,7 @@ export function formatTime(date, prePadding) {
 
     /* \u2007 is a figure space */
   return hourPart + ':' +
-            twoPad(date.getMinutes()) + ' '
+            twoPad(date.getMinutes()) + '\u00a0' /* non-breaking space */
             + (hours > 12 ? 'pm' : 'am')/* + ':' +
             twoPad(date.getSeconds()) */;
 }
