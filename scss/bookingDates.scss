@@ -53,12 +53,14 @@
 .picker-top-row {
   padding: 10px 0;
 } */
+/* When hovering over android phones */
+.picker-day:not(.picker-off):not(.picker-empty):hover,
 .picker-day {
   background-color: $pickable-day-non-picked-background;
   border: 1px solid transparent;
   font-weight: bold;
   //box-sizing: border-box;
-  //color: $pickable-day-non-picked-color;
+  color: $pickable-day-non-picked-color;
 }
 .picker-day.today,
 .picker-day.today.picker-selected,
@@ -70,11 +72,13 @@
 .picker-day.today.picker-off:hover {
   color: $non-pickable-day-color;
 }
-.picker-day:not(.picker-off):not(.picker-empty):hover {
-  background-color: $pickable-day-picked-background;
-  color: $pickable-day-picked-color;
-  cursor: pointer;
-}
+/* Android phones may keep the hover lingering, which is bad */
+// .picker-day:not(.picker-off):not(.picker-empty):hover {
+//   background-color: $pickable-day-picked-background;
+//   color: $pickable-day-picked-color;
+//   cursor: pointer;
+// }
+.picker-day:not(.picker-off):not(.picker-empty).picker-selected:hover,
 .picker-day.picker-selected,
 .picker-day.today.picker-selected,
 .picker-day.today.picker-selected:hover {

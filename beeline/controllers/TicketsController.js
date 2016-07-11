@@ -8,15 +8,15 @@ export default [
     UserService
   ) {
     // Track the login state of the user service
-    $scope.$watch(function() {
-      return UserService.getUser();
-    }, function(newUser) {
-      $scope.user = newUser;
-    });
     $scope.logIn = function() {
       UserService.promptLogIn()
     };
-    $scope.$watch(() => UserService.getUser(), refreshTickets);
+    $scope.$watch(() => UserService.getUser(), (user) => {
+      if (user) {
+        refreshTickets()
+      }
+      $scope.user = user;
+    });
 
     // Grab the tickets
     $scope.tickets = {};

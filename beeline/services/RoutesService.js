@@ -31,26 +31,60 @@ function transformRouteData(data) {
 }
 
 export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q) {
+  // For all routes
   var routesCache;
   var recentRoutesCache;
 
+  // For single routes
+  var lastRouteId = null;
+  var lastPromise = null;
+
   var instance = {
 
-    // Retrive the data on a single route
-    // TODO refactor this to match getRoutes and searchRoutes
+    // Retrive the data on a single route, but pulls a lot more data
+    // Pulls all the trips plus the route path
+    // getRoute() will return the heavier stuff (all trips, availability, path)
     getRoute: function(routeId, ignoreCache, options) {
       assert.equal(typeof routeId, 'number');
-      return instance.getRoutes(ignoreCache, options)
-      .then(function(routes) {
-        return _.find(routes, {id: routeId});
+
+      if (!ignoreCache && !options && lastRouteId === routeId) {
+        console.log(`Using route ${routeId} from cache`)
+        return lastPromise;
+      }
+
+      var startDate = new Date();
+      startDate.setHours(3,0,0,0,0)
+      var endDate = new Date(startDate.getTime() + 30*24*60*60*1000);
+
+      var finalOptions = _.assign({
+        start_date: startDate.getTime(),
+        end_date: endDate.getTime(),
+        include_trips: true,
+        include_availability: true,
+      }, options)
+
+      lastRouteId = routeId;
+      return lastPromise = UserService.beeline({
+        method: 'GET',
+        url: `/routes/${routeId}?${querystring.stringify(finalOptions)}`,
+      })
+      .then(function(response) {
+        transformRouteData([response.data]);
+        return response.data;
+      })
+      .catch((err) => {
+        console.error(err);
       });
     },
 
     // Retrive the data on all the routes
+    // But limits the amount of data retrieved
+    // getRoutes() now returns a list of routes, but with very limited
+    // trip data (limited to 5 trips, no path)
     getRoutes: function(ignoreCache, options) {
       if (routesCache && !ignoreCache && !options) return routesCache;
 
-      var url = '/routes?include_trips=true';
+      var url = '/routes?';
 
       // Start at midnight to avoid cut trips in the middle
       // FIXME: use date-based search instead
@@ -61,9 +95,12 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       var finalOptions = _.assign({
         start_date: startDate.getTime(),
         end_date: endDate.getTime(),
+        include_trips: true,
+        limit_trips: 5,
+        include_path: false,
       }, options)
 
-      url += '&' + querystring.stringify(finalOptions)
+      url += querystring.stringify(finalOptions)
 
       var routesPromise = UserService.beeline({
         method: 'GET',

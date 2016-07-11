@@ -217,6 +217,7 @@ export default [
             }
           }
           else {
+            // FIXME: optimize this using a $parse
             scope.$parent.$eval(scope.onsubmit)
           }
         };

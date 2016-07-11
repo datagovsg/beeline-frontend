@@ -15,34 +15,43 @@ export default [
 
         function stopCalculating() {
           scope.isCalculating = Math.max(0, scope.isCalculating - 1);
+          scope.$emit('priceCalculator.done')
         }
 
         var latestRequest = null;
-        scope.$watch('booking', function() {
-          if (!scope.booking.route) {
-            return;
-          }
-
-          scope.isCalculating++;
-          var promise = BookingService.computePriceInfo(scope.booking)
-          .then((priceInfo) => {
-            // Check to ensure that the order of
-            // replies don't affect the result
-            if (promise != latestRequest)
+        scope.$watch(
+          () => _.pick(scope.booking, ['selectedDates' /* qty, promoCode */]),
+          function() {
+            if (!scope.booking.route) {
               return;
-            scope.priceInfo = priceInfo;
-            scope.price = priceInfo.totalDue;
-            scope.errorMessage = null;
-          })
-          .catch((error) => {
-            scope.priceInfo = [];
-            scope.price = undefined;
-            scope.errorMessage = error.data.message;
-          })
-          .then(stopCalculating);
+            }
 
-          latestRequest = promise;
-        }, true);
+            // Provide a price summary first (don't count total due)
+            // This allows the page to resize earlier, so that when
+            // users scroll down the bounce works ok.
+            scope.priceInfo = scope.priceInfo || {};
+            scope.priceInfo.pricesPerTrip = BookingService.summarizePrices(scope.booking);
+
+            scope.isCalculating++;
+            var promise = BookingService.computePriceInfo(scope.booking)
+            .then((priceInfo) => {
+              // Check to ensure that the order of
+              // replies don't affect the result
+              if (promise != latestRequest)
+                return;
+              scope.priceInfo = priceInfo;
+              scope.price = priceInfo.totalDue;
+              scope.errorMessage = null;
+            })
+            .catch((error) => {
+              scope.priceInfo = {};
+              scope.price = undefined;
+              scope.errorMessage = error.data.message;
+            })
+            .then(stopCalculating);
+
+            latestRequest = promise;
+          }, true);
       }
     };
   }];

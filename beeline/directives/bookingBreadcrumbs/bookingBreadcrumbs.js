@@ -3,7 +3,7 @@
 export default function breadcrumbs() {
   return {
     template:
-    `<div class="item"><img src="img/booking-breadcrumbs/{{imgNames[step]}}"></div>`,
+    `<div class="item"><img ng-src="img/booking-breadcrumbs/{{imgNames[step]}}"></div>`,
     scope: {
       step: '@',
     },
