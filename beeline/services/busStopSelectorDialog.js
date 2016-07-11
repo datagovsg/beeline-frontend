@@ -37,6 +37,10 @@ export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi
     @method close -- closes the modal
   **/
   function initializeScope(scope) {
+    scope.data = {
+      selectedStop: scope.selectedStop
+    };
+
     scope.map = MapOptions.defaultMapOptions();
 
     scope.fitMap = async () =>  {
@@ -93,6 +97,10 @@ export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi
       }
     }
 
-    scope.$watch('selectedStop', panToStop);
+    // BECAUSE ANGULAR SCOPES ARE STUPID
+    scope.$watch('data.selectedStop', (stop) => {
+      panToStop(stop);
+      scope.selectedStop = stop;
+    });
   }
 }
