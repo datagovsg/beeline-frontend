@@ -1,6 +1,6 @@
 <ion-view id="pg_bookdate" view-title="Select Dates"
   hide-back-button="true">
-  <ion-nav-buttons>
+  <ion-nav-buttons side="primary">
     <button class="button button-clear back-button"
        ui-sref="tabs.bookingPickup({
         boardStop: book.boardStopId,
@@ -8,6 +8,12 @@
         routeId: book.routeId
       })">
        <i class="icon ion-ios-arrow-back"></i> Stops
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="secondary">
+    <button class="button button-clear"
+       ui-sref="tabs.routes">
+       <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
 
@@ -37,11 +43,11 @@
           <td class="picker-day picker-selected activated exemplar">
             #
           </td>
-          <td class="label">Selected dates</td>
+          <td class="label">Dates Selected</td>
           <td class="picker-day picker-off previously-booked exemplar">
             #
           </td>
-          <td class="label">Prior booking(s)</td>
+          <td class="label">Your Previous Bookings</td>
         </tr>
         <tr>
           <td class="picker-day picker-off sold-out examplar">

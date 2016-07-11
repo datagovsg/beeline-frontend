@@ -1,6 +1,6 @@
 <ion-view id="pg_summary" view-title="Booking Summary"
   hide-back-button="true">
-  <ion-nav-buttons>
+  <ion-nav-buttons side="primary">
     <button class="button button-clear back-button"
        ui-sref="tabs.booking-dates({
         boardStop: book.boardStopId,
@@ -8,6 +8,12 @@
         routeId: book.routeId
       })">
        <i class="icon ion-ios-arrow-back"></i> Dates
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="secondary">
+    <button class="button button-clear"
+       ui-sref="tabs.routes">
+       <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
   <ion-content>
@@ -120,7 +126,7 @@
       <button class="button primary-button"
               ng-click="login()"
               ng-disabled="!disp.termsChecked || waitingForPaymentResult">
-        Enter Mobile No.
+        Log In
       </button>
     </section>
 

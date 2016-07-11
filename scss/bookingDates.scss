@@ -24,12 +24,11 @@
 .picker-navigate.disabled:hover {
   color: #ddd;
   cursor: default;
-} */
-.picker-month {
-  //width: 66.66%;
-  font-weight: bold;
-  font-size: $font-size-base;
 }
+.picker-month {
+}
+*/
+
 .picker-days-week-row {
   div {
     //width: 14.28%;
@@ -59,6 +58,7 @@
 .picker-day {
   background-color: $pickable-day-non-picked-background;
   border: 1px solid transparent;
+  font-weight: bold;
   //box-sizing: border-box;
   color: $pickable-day-non-picked-color;
 }
@@ -66,12 +66,11 @@
 .picker-day.today.picker-selected,
 .picker-day.today:hover {
   color: $picker-day-today;
-  font-weight: bold;
+  text-decoration: underline;
 }
 .picker-day.today.picker-off,
 .picker-day.today.picker-off:hover {
   color: $non-pickable-day-color;
-  font-weight: bold;
 }
 /* Android phones may keep the hover lingering, which is bad */
 // .picker-day:not(.picker-off):not(.picker-empty):hover {
@@ -85,7 +84,6 @@
 .picker-day.today.picker-selected:hover {
   background-color: $pickable-day-picked-background;
   color: $pickable-day-picked-color;
-  border: 0;
 }
 .picker-day.picker-off,
 .picker-day.picker-off:hover {

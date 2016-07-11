@@ -135,13 +135,6 @@ export default [
         $scope.book.alightStop = alightStops.find(ts =>
             ts.id === initialAlightStopId);
       }
-
-      if (boardStops.length == 1) {
-        $scope.book.boardStop = boardStops[0];
-      }
-      if (alightStops.length == 1) {
-        $scope.book.alightStop = alightStops[0];
-      }
     }
   }
 ];

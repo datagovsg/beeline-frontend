@@ -1,9 +1,9 @@
 <ion-modal-view class="stop-selector">
-  <ion-header-bar class="bar bar-stable">
+  <ion-header-bar class="bar bar-royal">
     <h1 class="title">
       {{title}}
     </h1>
-    <button class="button button-clear icon ion-android-close"
+    <button class="button button-clear icon ion-ios-close-outline"
         ng-click="close()">
    </button>
   </ion-header-bar>
@@ -36,13 +36,17 @@
     <ion-scroll class="stops-list">
       <ion-list>
         <ion-radio  ng-repeat="stop in busStops"
-                    ng-model="data.selectedStop"
-                    ng-value="stop"
-                    class="item-text-wrap">
-          <div class="time">{{stop.time | formatTime}}</div>
-          <div class="details">
-            <div class="description">{{stop.description}}</div>
-            <div class="road">{{stop.road}}</div>
+                    ng-model="model"
+                    ng-value="stop.id"
+                    ng-click="selectStop($event, stop)"
+                    class="item-text-wrap item-icon-left"
+                    icon="icon ion-ios-checkmark">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
           </div>
         </ion-radio>
       </ion-list>
