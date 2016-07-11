@@ -2,15 +2,8 @@ import assert from 'assert';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 
 export default [
-  '$scope',
-  '$state',
-  '$http',
-  '$ionicPopup',
-  'BookingService',
-  'UserService',
-  '$ionicLoading',
-  'StripeService',
-  '$stateParams',
+  '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
+  'UserService', '$ionicLoading', 'StripeService', '$stateParams',
   'RoutesService',
   function ($scope, $state, $http, $ionicPopup,
     BookingService, UserService, $ionicLoading,
@@ -31,7 +24,7 @@ export default [
       price: undefined,
     };
     $scope.disp = {};
-    
+
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.book.routeId = $stateParams.routeId;
       if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
