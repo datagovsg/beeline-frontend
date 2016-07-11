@@ -27,6 +27,7 @@ export default function initStripe(UserService) {
             name: 'Beeline',
             description: description,
             amount: amount,
+            currency: 'SGD',
             email: UserService.getUser().email,
           });
         });
