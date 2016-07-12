@@ -1,16 +1,19 @@
-.routes-list {
+.routes-list ion-content {
+  display: flex;
+  flex-direction: column;
+
   // Get the Region filter to be center aligned
   // Use % widths on both components to get them roughly to the center
   // Using this method since it's easily compatible with the ionic structure
   .item-select {
     $input-label-width: 43%;
-    .input-label { 
+    .input-label {
       width: $input-label-width;
       max-width: none;
       text-align: right;
     }
     // Get the select option to center align too
-    select { 
+    select {
       top: 3px; // Alignment hack to get it aligned with the label
                 // Can't use vertical align cos of the ionic structure
       width: 100% - $input-label-width;
@@ -19,5 +22,12 @@
     }
     // Hide the "down caret" dropdown icon
     &:after { display: none; }
+  }
+
+  .item {
+    flex: none;
+  }
+  .list {
+    flex: 1 1 auto;
   }
 }
