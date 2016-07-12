@@ -71,10 +71,15 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tabs.booking', {
+    url: '/booking',
+    abstract: true
+  })
+
   .state('tabs.bookingPickup', {
-    url: '/routes/:routeId/booking/stops?boardStop&alightStop',
+    url: '/booking/:routeId/stops?boardStop&alightStop',
     views: {
-      'tab-routes': {
+      'tab-booking': {
         templateUrl: 'templates/tab-booking-stops.html',
         controller: 'BookingStopsController',
       }
@@ -85,9 +90,9 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.booking-dates', {
-    url: '/routes/:routeId/booking/dates?boardStop&alightStop',
+    url: '/booking/:routeId/dates?boardStop&alightStop',
     views: {
-      'tab-routes': {
+      'tab-booking': {
         templateUrl: 'templates/tab-booking-dates.html',
         controller: 'BookingDatesController',
       },
@@ -97,9 +102,9 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
   .state('tabs.booking-summary', {
-    url: '/routes/:routeId/booking/summary?boardStop&alightStop&selectedDates',
+    url: '/booking/:routeId/summary?boardStop&alightStop&selectedDates',
     views: {
-      'tab-routes': {
+      'tab-booking': {
         templateUrl: 'templates/tab-booking-summary.html',
         controller: 'BookingSummaryController',
       },
@@ -109,9 +114,9 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
   .state('tabs.booking-confirmation', {
-    url: '/routes/booking/confirmation',
+    url: '/booking/confirmation',
     views: {
-      'tab-routes': {
+      'tab-booking': {
         templateUrl: 'templates/tab-booking-confirmation.html',
         controller: 'BookingConfirmationController',
       },
