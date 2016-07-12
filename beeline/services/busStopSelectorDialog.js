@@ -17,9 +17,9 @@ export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi
     }, 300);
 
     _.assign(scope, _.pick(options, [
-      'busStops',
-      'markerOptions', 'title', 'button', 'pinOptions', 'selectedStop',
+      'busStops', 'markerOptions', 'title', 'button', 'pinOptions',
     ]))
+    scope.data.selectedStop = options.selectedStop;
 
     return new Promise((resolve, reject) => {
       // Initialize the selected stop
@@ -37,10 +37,7 @@ export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi
     @method close -- closes the modal
   **/
   function initializeScope(scope) {
-    scope.data = {
-      selectedStop: scope.selectedStop
-    };
-
+    scope.data = {};
     scope.map = MapOptions.defaultMapOptions();
 
     scope.fitMap = async () =>  {
@@ -63,23 +60,9 @@ export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi
       }
     };
 
-    scope.selectStop = (e, stop) => {
-      //prevent firing twice
-      if (e.target.tagName == 'INPUT'
-          || e.target.tagName == 'BUTTON'
-        ) {
-        if (stop === scope.selectedStop) {
-          scope.close();
-        }
-        else {
-          scope.selectedStop = stop;
-        }
-      }
-    };
-
     scope.close = () => {
       scope.selectionModal.hide();
-      scope.resolve(scope.selectedStop);
+      scope.resolve(scope.data.selectedStop);
     }
 
     function panToStop(stop) {
@@ -92,15 +75,11 @@ export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi
           lng: stop.coordinates.coordinates[0],
         })
       }
-      else {
-        scope.selectedStop = undefined;
-      }
     }
 
     // BECAUSE ANGULAR SCOPES ARE STUPID
     scope.$watch('data.selectedStop', (stop) => {
       panToStop(stop);
-      scope.selectedStop = stop;
     });
   }
 }

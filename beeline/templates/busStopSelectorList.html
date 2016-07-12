@@ -23,9 +23,9 @@
                         ng-click="selectStop($event, stop)">
         </ui-gmap-marker>
 
-        <ui-gmap-marker ng-if="selectedStop"
+        <ui-gmap-marker ng-if="data.selectedStop"
                         idkey="'selectedStopPin'"
-                        coords="selectedStop.coordinates"
+                        coords="data.selectedStop.coordinates"
                         options="pinOptions">
         </ui-gmap-marker>
       </ui-gmap-google-map>
@@ -36,8 +36,8 @@
     <ion-scroll class="stops-list">
       <ion-list>
         <ion-radio  ng-repeat="stop in busStops"
-                    ng-model="model"
-                    ng-value="stop.id"
+                    ng-model="data.selectedStop"
+                    ng-value="stop"
                     class="item-text-wrap item-icon-left"
                     icon="icon ion-ios-checkmark">
           <div class="fullStopDetails">
@@ -53,7 +53,7 @@
 
     <div class="item select-button">
       <button class="button primary-button button-item"
-              ng-disabled="!selectedStop"
+              ng-disabled="!data.selectedStop"
               ng-click="close()">
         {{title}}
       </button>
