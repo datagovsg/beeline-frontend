@@ -9,8 +9,12 @@ export default [
     BookingService, UserService, $ionicLoading,
     StripeService, $stateParams, RoutesService, $ionicScrollDelegate) {
 
+    // Booking session logic
+    $scope.session = {
+      routeId: null,
+      sessionId: null,
+    };
     $scope.book = {
-      routeId: '',
       route: null,
       qty: 1,
       waitingForPaymentResult : false,
@@ -26,7 +30,9 @@ export default [
     $scope.disp = {};
 
     $scope.$on('$ionicView.beforeEnter', () => {
-      $scope.book.routeId = $stateParams.routeId;
+      $scope.session.routeId = +$stateParams.routeId;
+      $scope.session.sessionId = +$stateParams.sessionId;
+
       if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
         $stateParams.selectedDates = [$stateParams.selectedDates]
       }
@@ -35,7 +41,7 @@ export default [
       });
       $scope.book.boardStopId  = parseInt($stateParams.boardStop);
       $scope.book.alightStopId = parseInt($stateParams.alightStop);
-      RoutesService.getRoute(parseInt($scope.book.routeId))
+      RoutesService.getRoute(parseInt($scope.session.routeId))
       .then((route) => {
         $scope.book.route = route;
         $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]]
@@ -46,6 +52,11 @@ export default [
               .filter(ts => $scope.book.alightStopId == ts.stop.id)[0]
       });
     });
+
+    // New session -- reset inputs on this page
+    $scope.$watchCollection('session', () => {
+      $scope.book.promoCodes = [];
+    })
 
     $scope.addPromoCode = function() {
       $scope.book.promoCodes.push($scope.book.currentPromoCode);

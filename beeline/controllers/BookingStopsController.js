@@ -34,9 +34,13 @@ export default [
     $scope.map = MapOptions.defaultMapOptions();
     $scope.routePath = [];
 
+    // Booking session logic
+    $scope.session = {
+      routeId: null,
+      sessionId: null,
+    };
     // Default settings for various info used in the page
     $scope.book = {
-      routeId: '',
       route: null,
       boardStops: [], // all board stops for this route
       alightStops: [], // all alight stops for this route
@@ -60,16 +64,15 @@ export default [
 
     var routePromise;
     $scope.$on('$ionicView.beforeEnter', () => {
-      $scope.book.routeId = $stateParams.routeId;
-      window.setStop = $scope.setStop;
+      $scope.session.sessionId = +$stateParams.sessionId;
+      $scope.session.routeId = +$stateParams.routeId;
+
+      routePromise = RoutesService.getRoute($scope.session.routeId);
 
       var stopOptions = {
         initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
         initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
       };
-
-      routePromise = RoutesService.getRoute(parseInt($scope.book.routeId));
-
       routePromise.then((route) => {
         $scope.book.route = route;
         computeStops(stopOptions);

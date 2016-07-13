@@ -5,15 +5,24 @@ export default [
   '$state',
   '$http',
   'BookingService',
+  'UserService',
   'RoutesService',
   '$stateParams',
   'TicketService',
   'loadingSpinner', '$q', '$ionicScrollDelegate',
-  function($scope, $state, $http, BookingService,
+  function($scope, $state, $http, BookingService, UserService,
     RoutesService, $stateParams, TicketService, loadingSpinner, $q,
   $ionicScrollDelegate) {
     var now = new Date();
 
+    // Booking session logic.
+    // Defines the set of variables that, when changed, all user inputs
+    // on this page should be cleared.
+    $scope.session = {
+      routeId: null,
+      sessionId: null,
+      userId: null,
+    }
     // Data logic;
     $scope.book = {
       routeId: '',
@@ -37,35 +46,41 @@ export default [
       daysAllowed: [],
       selectedDatesMoments: [],
     };
+
     $scope.$on('$ionicView.beforeEnter', () => {
-        $scope.book.routeId = $stateParams.routeId;
-        $scope.book.boardStopId = parseInt($stateParams.boardStop);
-        $scope.book.alightStopId = parseInt($stateParams.alightStop);
+      $scope.session.sessionId = $stateParams.sessionId;
+      $scope.session.routeId = +$stateParams.routeId;
+      $scope.session.userId = UserService.getUser().id;
 
-        $scope.disp.dataLoading = true;
-        $scope.disp.availabilityDays = {};
-        $scope.disp.previouslyBookedDays = {};
+      $scope.book.boardStopId = parseInt($stateParams.boardStop);
+      $scope.book.alightStopId = parseInt($stateParams.alightStop);
 
-        // FIXME: Need to handle booking windows correctly
-        var routePromise = RoutesService.getRoute(parseInt($scope.book.routeId))
-        var ticketsPromise = TicketService.getTicketsByRouteId($scope.book.routeId)
-          .catch((err) => null)
+      $scope.disp.availabilityDays = {};
+      $scope.disp.previouslyBookedDays = {};
 
-        // Cause all the updates to the $watch-ed elements to be assigned
-        // together, reducing the number of digests.
-        loadingSpinner($q.all([routePromise, ticketsPromise]).then(([route, tickets]) => {
-          // Route
-          $scope.book.route = route;
-          updateCalendar(); // updates availabilityDays
+      var routePromise = RoutesService.getRoute($scope.session.routeId)
+      var ticketsPromise = TicketService.getTicketsByRouteId($scope.session.routeId)
+        .catch((err) => null)
 
-          // Tickets
-          if (!tickets) {
-            $scope.disp.previouslyBookedDays = {};
-            return;
-          }
-          $scope.disp.previouslyBookedDays = _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
-        }));
-      });
+      // Cause all the updates to the $watch-ed elements to be assigned
+      // together, reducing the number of digests.
+      loadingSpinner($q.all([routePromise, ticketsPromise]).then(([route, tickets]) => {
+        // Route
+        $scope.book.route = route;
+        updateCalendar(); // updates availabilityDays
+
+        // Tickets
+        if (!tickets) {
+          $scope.disp.previouslyBookedDays = {};
+          return;
+        }
+        $scope.disp.previouslyBookedDays = _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
+      }));
+    });
+
+    $scope.$watchCollection('session', (session) => {
+      $scope.book.selectedDates = [];
+    })
 
     $scope.$watch(
       /* Don't watch the entire moment objects, just their value */
@@ -143,8 +158,6 @@ export default [
 
         $scope.disp.availabilityDays[trip.date.getTime()] = trip.availability.seatsAvailable;
       }
-
-      $scope.disp.dataLoading = false;
     }
   },
 ];

@@ -5,7 +5,8 @@
        ui-sref="tabs.bookingPickup({
         boardStop: book.boardStopId,
         alightStop: book.alightStopId,
-        routeId: book.routeId
+        routeId: book.route.id,
+        sessionId: session.sessionId,
       })">
        <i class="icon ion-ios-arrow-back"></i> Stops
     </button>
@@ -64,10 +65,11 @@
 
     <div class="item">
       <button class="button primary-button button-item" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.booking-summary({
-                routeId: book.routeId,
+                routeId: book.route.id,
                 boardStop: book.boardStopId,
                 alightStop: book.alightStopId,
-                selectedDates: book.selectedDates
+                selectedDates: book.selectedDates,
+                sessionId: session.sessionId
               })">
         Review Booking
       </button>

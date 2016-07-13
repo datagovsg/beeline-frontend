@@ -104,9 +104,10 @@
       <div class="item continue-button-item">
         <button class="button primary-button button-item"
           ui-sref="tabs.booking-dates({
-            routeId: book.routeId,
+            routeId: book.route.id,
             boardStop: book.boardStop.id,
-            alightStop: book.alightStop.id
+            alightStop: book.alightStop.id,
+            sessionId: session.sessionId
           })"
           ng-disabled="stopsForm.$invalid">
           Continue

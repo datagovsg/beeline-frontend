@@ -21,7 +21,8 @@ function filterRoutesByRegionId(routes, regionId) {
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
-export default function($scope, $state, UserService, RoutesService, $q) {
+export default function($scope, $state, UserService, RoutesService, $q,
+  BookingService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -31,7 +32,12 @@ export default function($scope, $state, UserService, RoutesService, $q) {
     selectedRegionId: undefined,
     filteredActiveRoutes: [],
     filteredRecentRoutes: [],
+    nextSessionId: null,
   };
+
+  $scope.$on('$ionicView.afterEnter', () => {
+    $scope.data.nextSessionId = BookingService.newSession();
+  })
 
   $scope.refreshRoutes = function (ignoreCache) {
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
