@@ -51,7 +51,7 @@ gulp.task('webpack', function() {
 
 gulp.task('watch', ['sass', 'webpack'], function() {
   gulp.watch(paths.sass, ['sass']);
-  gulp.watch(['beeline/**/*.js', 'beeline/**/*.html'], ['webpack']);
+  gulp.watch(['www/templates/*.html', 'beeline/**/*.js', 'beeline/**/*.html'], ['webpack']);
 });
 
 //gulp.task('install', ['git-check'], function() {
