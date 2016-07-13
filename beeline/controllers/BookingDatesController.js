@@ -1,4 +1,5 @@
 var moment = require('moment');
+import _ from 'lodash'
 
 export default [
   '$scope',
@@ -19,7 +20,6 @@ export default [
     // Defines the set of variables that, when changed, all user inputs
     // on this page should be cleared.
     $scope.session = {
-      routeId: null,
       sessionId: null,
       userId: null,
     }
@@ -48,18 +48,19 @@ export default [
     };
 
     $scope.$on('$ionicView.beforeEnter', () => {
+
+      $scope.book.routeId = +$stateParams.routeId;
       $scope.session.sessionId = $stateParams.sessionId;
-      $scope.session.routeId = +$stateParams.routeId;
-      $scope.session.userId = UserService.getUser().id;
+      $scope.session.userId = UserService.getUser() ? UserService.getUser().id : null;
 
       $scope.book.boardStopId = parseInt($stateParams.boardStop);
       $scope.book.alightStopId = parseInt($stateParams.alightStop);
 
-      $scope.disp.availabilityDays = {};
-      $scope.disp.previouslyBookedDays = {};
+      $scope.disp.availabilityDays = undefined;
+      $scope.disp.previouslyBookedDays = undefined;
 
-      var routePromise = RoutesService.getRoute($scope.session.routeId)
-      var ticketsPromise = TicketService.getTicketsByRouteId($scope.session.routeId)
+      var routePromise = RoutesService.getRoute($scope.book.routeId)
+      var ticketsPromise = TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId)
         .catch((err) => null)
 
       // Cause all the updates to the $watch-ed elements to be assigned
@@ -68,36 +69,40 @@ export default [
         // Route
         $scope.book.route = route;
         updateCalendar(); // updates availabilityDays
-
-        // Tickets
-        if (!tickets) {
-          $scope.disp.previouslyBookedDays = {};
-          return;
-        }
-        $scope.disp.previouslyBookedDays = _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
+        $scope.disp.previouslyBookedDays = tickets || {};
       }));
     });
 
+
     $scope.$watchCollection('session', (session) => {
-      $scope.book.selectedDates = [];
+      var ticketsPromise = TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
+        .catch((err) => null)
+      loadingSpinner($q.all([ticketsPromise]).then(([tickets]) => {
+        $scope.disp.previouslyBookedDays = tickets || {};
+      }));
     })
 
     $scope.$watch(
-      /* Don't watch the entire moment objects, just their value */
-      () => $scope.disp.selectedDatesMoments.map(m => m.valueOf()),
-      () => {
-      // multiple-date-picker gives us the
-      // date in midnight local time
-      // Need to convert to UTC
-      $scope.book.selectedDates = $scope.disp.selectedDatesMoments.map(
-        m => m.valueOf()
-      )
-    }, true)
+           /* Don't watch the entire moment objects, just their value */
+           () => $scope.disp.selectedDatesMoments.map(m => m.valueOf()),
+           () => {
+           // multiple-date-picker gives us the
+           // date in midnight local time
+           // Need to convert to UTC
+           $scope.book.selectedDates = $scope.disp.selectedDatesMoments.map(
+             m => m.valueOf()
+           )
+         }, true)
+
 
     $scope.$watchGroup(['disp.availabilityDays', 'disp.previouslyBookedDays'],
-      () => {
+      ([availabilityDays, previouslyBookedDays]) => {
         $scope.disp.highlightDays = [];
         $scope.disp.daysAllowed = [];
+
+        if (!availabilityDays || !previouslyBookedDays) {
+          return;
+        }
 
         for (let time of Object.keys($scope.disp.availabilityDays)) {
           time = parseInt(time)
@@ -125,6 +130,12 @@ export default [
             $scope.disp.daysAllowed.push(timeMoment)
           }
         }
+
+        $scope.disp.selectedDatesMoments = _.intersectionBy(
+          $scope.disp.selectedDatesMoments,
+          $scope.disp.daysAllowed,
+          m => m.valueOf()
+        )
       })
 
     $scope.$on('priceCalculator.done', () => {

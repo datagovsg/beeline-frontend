@@ -1,15 +1,15 @@
 <ion-view id="pg_bookdate" view-title="Select Dates"
   hide-back-button="true">
   <ion-nav-buttons side="left">
-    <button class="button button-clear back-button"
+    <a class="button button-clear back-button"
        ui-sref="tabs.bookingPickup({
         boardStop: book.boardStopId,
         alightStop: book.alightStopId,
-        routeId: book.route.id,
+        routeId: book.routeId,
         sessionId: session.sessionId,
-      })">
+      })" nav-direction="back">
        <i class="icon ion-ios-arrow-back"></i> Stops
-    </button>
+    </a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <button class="button button-clear"
@@ -65,7 +65,7 @@
 
     <div class="item">
       <button class="button primary-button button-item" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.booking-summary({
-                routeId: book.route.id,
+                routeId: book.routeId,
                 boardStop: book.boardStopId,
                 alightStop: book.alightStopId,
                 selectedDates: book.selectedDates,

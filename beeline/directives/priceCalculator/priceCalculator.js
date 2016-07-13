@@ -1,8 +1,9 @@
 import priceCalculatorTemplate from './priceCalculator.html';
+import assert from 'assert';
 
 export default [
-  'BookingService',
-  function(BookingService) {
+  'BookingService', 'RoutesService',
+  function(BookingService, RoutesService) {
     return {
       restrict: 'E',
       template: priceCalculatorTemplate,
@@ -21,9 +22,10 @@ export default [
         var latestRequest = null;
         scope.$watch(
           () => _.pick(scope.booking, ['selectedDates' /* qty, promoCode */]),
-          function() {
+          async function () {
+            assert(scope.booking.routeId);
             if (!scope.booking.route) {
-              return;
+              scope.booking.route = await RoutesService.getRoute(scope.booking.routeId)
             }
 
             // Provide a price summary first (don't count total due)

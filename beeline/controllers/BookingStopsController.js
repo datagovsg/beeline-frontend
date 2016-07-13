@@ -36,11 +36,11 @@ export default [
 
     // Booking session logic
     $scope.session = {
-      routeId: null,
       sessionId: null,
     };
     // Default settings for various info used in the page
     $scope.book = {
+      routeId: null,
       route: null,
       boardStops: [], // all board stops for this route
       alightStops: [], // all alight stops for this route
@@ -65,9 +65,9 @@ export default [
     var routePromise;
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.session.sessionId = +$stateParams.sessionId;
-      $scope.session.routeId = +$stateParams.routeId;
+      $scope.book.routeId = +$stateParams.routeId;
 
-      routePromise = RoutesService.getRoute($scope.session.routeId);
+      routePromise = RoutesService.getRoute($scope.book.routeId);
 
       var stopOptions = {
         initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
