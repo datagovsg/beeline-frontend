@@ -1,9 +1,5 @@
 <ion-view class="routes-list" view-title="Routes">
-  <ion-content>
-    <ion-refresher pulling-text="Pull to refresh..."
-                   on-refresh="refreshRoutes(true)">
-    </ion-refresher>
-
+  <ion-content scroll="false">
     <div class="item item-text-wrap" ng-if="error">
       <i class="icon ion-alert-circled"></i>
       There was a problem fetching the routes from the server.
@@ -14,13 +10,17 @@
     <label class="item item-input item-select region-filter">
       <div class="input-label">Filter By</div>
         <select ng-model="data.selectedRegionId">
-        <option value="" disabled selected>Select A Region</option>
+          <option value="" disabled selected>Select A Region</option>
           <option value="">All Regions</option>
           <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
         </select>
     </label>
 
-    <ul class="list">
+    <ion-content class="list">
+      <ion-refresher pulling-text="Pull to refresh..."
+                     on-refresh="refreshRoutes(true)">
+      </ion-refresher>
+
       <!-- Recent Routes Section -->
       <!-- ng-show doesn't work 100% reliably. angular bug? -->
       <div class="item item-divider"
@@ -38,7 +38,7 @@
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
-    <!-- Available Routes Section -->
+      <!-- Available Routes Section -->
       <div class="item item-divider">
         Available Routes
       </div>
@@ -48,6 +48,6 @@
         <route-item route="route"></route-item>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
-    </ul>
+    </ion-content>
   </ion-content>
 </ion-view>
