@@ -16,7 +16,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-if="booking.selectedDates.length == 0">
+      <tr ng-if="booking.selectedDates.length == 0 && !isCalculating">
         <td colspan="2">Please select your trip dates</td>
       </tr>
       <tr ng-if="errorMessage">
