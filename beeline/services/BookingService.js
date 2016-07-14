@@ -256,4 +256,9 @@ export default function(UserService, CompanyService, RoutesService, $http) {
       });
     return [boardStops, alightStops];
   };
+
+  // Sets up booking sessions
+  var session = Date.now();
+  this.newSession = () => ++session;
+  this.getSession = () => session;
 }

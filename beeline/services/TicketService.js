@@ -7,23 +7,30 @@ export default function TicketService($http, $filter, UserService) {
   return {
 
     getTickets: function(ignoreCache) {
-      if (ticketsCache && !ignoreCache) return Promise.resolve(ticketsCache);
-      return UserService.beeline({
+      if (ticketsCache && !ignoreCache) return ticketsCache;
+      return ticketsCache = UserService.beeline({
         method: 'GET',
         url: '/tickets',
-			            }).then((response) => {
-  ticketsCache = response.data;
-  ticketsByRouteId = _.groupBy(ticketsCache, ticket => ticket.boardStop.trip.routeId);
-
-  return ticketsCache;
+      }).then((response) => {
+        ticketsByRouteId = _.groupBy(response.data, ticket => ticket.boardStop.trip.routeId);
+        return response.data;
 			});
     },
 
-    getTicketsByRouteId(rid) {
-      return this.getTickets()
+    getTicketsByRouteId(rid, ignoreCache) {
+      return this.getTickets(ignoreCache)
       .then(() => {
         return ticketsByRouteId[rid];
       });
+    },
+
+    getPreviouslyBookedDaysByRouteId(rid, ignoreCache) {
+      return this.getTicketsByRouteId(rid, ignoreCache)
+      .then((tickets) => {
+        var dates =  _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
+        console.log(dates);
+        return dates || {};
+      })
     },
 
     getTicketById: function(id, ignoreCache) {

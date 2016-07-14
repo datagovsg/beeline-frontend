@@ -5,7 +5,8 @@
        ui-sref="tabs.booking-dates({
         boardStop: book.boardStopId,
         alightStop: book.alightStopId,
-        routeId: book.routeId
+        routeId: book.routeId,
+        sessionId: session.sessionId
       })">
        <i class="icon ion-ios-arrow-back"></i> Dates
     </button>
@@ -130,13 +131,18 @@
       </button>
     </section>
 
+    <section class="item item-text-wrap assertive"
+             ng-if="isLoggedIn && book.hasInvalidDate">
+      You have invalid booking dates. Please re-select your dates.
+    </section>
+
     <section class="item item-text-wrap"
              ng-if="isLoggedIn">
       Please ensure that your credit card is ready for the next step in the booking process.
 
       <button class="button primary-button"
               ng-click="pay()"
-              ng-disabled="!disp.termsChecked || waitingForPaymentResult">
+              ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
         Confirm and Pay
       </button>
     </section>

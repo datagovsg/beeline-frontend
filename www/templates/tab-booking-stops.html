@@ -106,7 +106,8 @@
           ui-sref="tabs.booking-dates({
             routeId: book.routeId,
             boardStop: book.boardStop.id,
-            alightStop: book.alightStop.id
+            alightStop: book.alightStop.id,
+            sessionId: session.sessionId
           })"
           ng-disabled="stopsForm.$invalid">
           Continue
@@ -118,7 +119,7 @@
   <script id="changes-message.html" type="text/ng-template">
     <div class="changes-message modal">
       <ion-header-bar class="bar-royal">
-        <h1 class="title">Changes to Service #{{book.routeid}}</h1>
+        <h1 class="title">Changes to Service #{{book.routeId}}</h1>
         <button class="button icon ion-ios-close-outline button-clear" ng-click="closeChangesModal()">
         </button>
       </ion-header-bar>
