@@ -17,6 +17,7 @@
 }
 /* Style for the legal modals in settings - Terms of Use and Privacy Policy */
 .legal {
+  padding: $content-padding $content-padding*3;
   h2 {
     padding-top: $line-height-computed + $padding-large-vertical;
   }

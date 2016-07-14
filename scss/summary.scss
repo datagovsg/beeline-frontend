@@ -19,4 +19,11 @@
       max-heigth: 100px;
     }
   }
+
+  .features {
+    ul {
+        list-style: disc;
+        padding-left: $content-padding*2;
+    }
+  }
 }

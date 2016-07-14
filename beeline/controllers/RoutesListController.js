@@ -22,7 +22,7 @@ function filterRoutesByRegionId(routes, regionId) {
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
-  BookingService) {
+  BookingService, $ionicScrollDelegate) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -54,12 +54,13 @@ export default function($scope, $state, UserService, RoutesService, $q,
     });
 
     $q.all([allRoutesPromise, recentRoutesPromise]).then(() => {
-      $scope.$broadcast('scroll.refreshComplete');
       $scope.error = null;
     })
     .catch(() => {
-      $scope.$broadcast('scroll.refreshComplete');
       $scope.error = true;
+    })
+    .then(() => {
+      $scope.$broadcast('scroll.refreshComplete');
     })
   }
 
@@ -76,6 +77,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
       return _.some(recentRoutes, {'id': route.id});
     });
   });
+
+  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes'],
+    () => {
+      $ionicScrollDelegate.resize();
+    });
 
   $scope.$watch(() => UserService.getUser(), () => $scope.refreshRoutes(true));
 }
