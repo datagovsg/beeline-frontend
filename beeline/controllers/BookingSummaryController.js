@@ -32,35 +32,27 @@ export default [
     };
     $scope.disp = {};
 
-    $scope.$on('$ionicView.beforeEnter', () => {
-      $scope.book.routeId = +$stateParams.routeId;
-      $scope.session.sessionId = +$stateParams.sessionId;
+    $scope.book.routeId = +$stateParams.routeId;
+    $scope.session.sessionId = +$stateParams.sessionId;
 
-      if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
-        $stateParams.selectedDates = [$stateParams.selectedDates]
-      }
-      $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
-          return parseInt(item);
-      });
-      $scope.book.boardStopId  = parseInt($stateParams.boardStop);
-      $scope.book.alightStopId = parseInt($stateParams.alightStop);
-      RoutesService.getRoute(parseInt($scope.book.routeId))
-      .then((route) => {
-        $scope.book.route = route;
-        $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]]
-              .tripStops
-              .filter(ts => $scope.book.boardStopId == ts.stop.id)[0];
-        $scope.book.alightStop = route.tripsByDate[$scope.book.selectedDates[0]]
-              .tripStops
-              .filter(ts => $scope.book.alightStopId == ts.stop.id)[0]
-      });
+    if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
+      $stateParams.selectedDates = [$stateParams.selectedDates]
+    }
+    $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
+        return parseInt(item);
     });
-
-    // New session -- reset inputs on this page
-    $scope.$watchCollection('session', () => {
-      $scope.book.promoCodes = [];
-      $scope.book.hasInvalidDate = false;
-    })
+    $scope.book.boardStopId  = parseInt($stateParams.boardStop);
+    $scope.book.alightStopId = parseInt($stateParams.alightStop);
+    RoutesService.getRoute(parseInt($scope.book.routeId))
+    .then((route) => {
+      $scope.book.route = route;
+      $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]]
+            .tripStops
+            .filter(ts => $scope.book.boardStopId == ts.stop.id)[0];
+      $scope.book.alightStop = route.tripsByDate[$scope.book.selectedDates[0]]
+            .tripStops
+            .filter(ts => $scope.book.alightStopId == ts.stop.id)[0]
+    });
 
     $scope.addPromoCode = function() {
       $scope.book.promoCodes.push($scope.book.currentPromoCode);

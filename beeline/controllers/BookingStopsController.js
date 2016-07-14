@@ -63,20 +63,19 @@ export default [
     });
 
     var routePromise;
-    $scope.$on('$ionicView.beforeEnter', () => {
-      $scope.session.sessionId = +$stateParams.sessionId;
-      $scope.book.routeId = +$stateParams.routeId;
 
-      routePromise = RoutesService.getRoute($scope.book.routeId);
+    $scope.session.sessionId = +$stateParams.sessionId;
+    $scope.book.routeId = +$stateParams.routeId;
 
-      var stopOptions = {
-        initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
-        initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
-      };
-      routePromise.then((route) => {
-        $scope.book.route = route;
-        computeStops(stopOptions);
-      });
+    routePromise = RoutesService.getRoute($scope.book.routeId);
+
+    var stopOptions = {
+      initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
+      initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
+    };
+    routePromise.then((route) => {
+      $scope.book.route = route;
+      computeStops(stopOptions);
     });
 
     $scope.$on('$ionicView.afterEnter', () => {

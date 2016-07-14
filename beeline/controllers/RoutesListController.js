@@ -35,7 +35,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     nextSessionId: null,
   };
 
-  $scope.$on('$ionicView.afterEnter', () => {
+  $scope.$on('$ionicView.beforeEnter', () => {
     $scope.data.nextSessionId = BookingService.newSession();
   })
 

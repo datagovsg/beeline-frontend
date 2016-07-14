@@ -40,59 +40,34 @@ export default [
       soldOutDates: [],
       bookedDates: [],
       today: moment(),
-      availabilityDays: {},
-      previouslyBookedDays: {},
+      availabilityDays: undefined,
+      previouslyBookedDays: undefined,
       highlightDays: [],
       daysAllowed: [],
       selectedDatesMoments: [],
     };
+    $scope.book.routeId = +$stateParams.routeId;
+    $scope.session.sessionId = $stateParams.sessionId;
+    $scope.book.boardStopId = parseInt($stateParams.boardStop);
+    $scope.book.alightStopId = parseInt($stateParams.alightStop);
 
-    $scope.$on('$ionicView.beforeEnter', () => {
+    loadTickets();
 
-      $scope.book.routeId = +$stateParams.routeId;
-      $scope.session.sessionId = $stateParams.sessionId;
-      $scope.session.userId = UserService.getUser() ? UserService.getUser().id : null;
+    loadRoutes();
 
-      $scope.book.boardStopId = parseInt($stateParams.boardStop);
-      $scope.book.alightStopId = parseInt($stateParams.alightStop);
-
-      $scope.disp.availabilityDays = undefined;
-      $scope.disp.previouslyBookedDays = undefined;
-
-      var routePromise = RoutesService.getRoute($scope.book.routeId)
-      var ticketsPromise = TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId)
-        .catch((err) => null)
-
-      // Cause all the updates to the $watch-ed elements to be assigned
-      // together, reducing the number of digests.
-      loadingSpinner($q.all([routePromise, ticketsPromise]).then(([route, tickets]) => {
-        // Route
-        $scope.book.route = route;
-        updateCalendar(); // updates availabilityDays
-        $scope.disp.previouslyBookedDays = tickets || {};
-      }));
-    });
-
-
-    $scope.$watchCollection('session', (session) => {
-      var ticketsPromise = TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
-        .catch((err) => null)
-      loadingSpinner($q.all([ticketsPromise]).then(([tickets]) => {
-        $scope.disp.previouslyBookedDays = tickets || {};
-      }));
-    })
+    $scope.$watch(()=>UserService.getUser(), loadTickets);
 
     $scope.$watch(
-           /* Don't watch the entire moment objects, just their value */
-           () => $scope.disp.selectedDatesMoments.map(m => m.valueOf()),
-           () => {
-           // multiple-date-picker gives us the
-           // date in midnight local time
-           // Need to convert to UTC
-           $scope.book.selectedDates = $scope.disp.selectedDatesMoments.map(
-             m => m.valueOf()
-           )
-         }, true)
+       /* Don't watch the entire moment objects, just their value */
+       () => $scope.disp.selectedDatesMoments.map(m => m.valueOf()),
+       () => {
+       // multiple-date-picker gives us the
+       // date in midnight local time
+       // Need to convert to UTC
+       $scope.book.selectedDates = $scope.disp.selectedDatesMoments.map(
+         m => m.valueOf()
+       )
+     }, true)
 
 
     $scope.$watchGroup(['disp.availabilityDays', 'disp.previouslyBookedDays'],
@@ -142,6 +117,22 @@ export default [
       $ionicScrollDelegate.resize();
     })
 
+    function loadTickets() {
+      var ticketsPromise = TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
+        .catch((err) => null)
+
+      loadingSpinner($q.all([ticketsPromise]).then(([tickets]) => {
+        $scope.disp.previouslyBookedDays = tickets || {};
+      }));
+    }
+    function loadRoutes() {
+      var routePromise = RoutesService.getRoute($scope.book.routeId, true)
+      loadingSpinner(routePromise.then((route) => {
+        // Route
+        $scope.book.route = route;
+        updateCalendar(); // updates availabilityDays
+      }));
+    }
     function updateCalendar() {
       // ensure cancelled trips are not shown
       var runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
