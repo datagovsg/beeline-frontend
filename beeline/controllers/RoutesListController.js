@@ -78,5 +78,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $ionicScrollDelegate.resize();
     });
 
-  $scope.$watch(() => UserService.getUser(), () => $scope.refreshRoutes(true));
+  // Don't override the caching in main.js
+  var firstRun = true;
+  $scope.$watch(() => UserService.getUser(), () => {
+    $scope.refreshRoutes(!firstRun);
+    firstRun = false;
+  });
 }
