@@ -11,3 +11,6 @@ www/css/ionic.app.min.css
 beeline/env.json
 .io-config.json
 *.DS_Store
+
+build
+.tmp-commit-message
