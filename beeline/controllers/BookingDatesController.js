@@ -92,6 +92,8 @@ export default [
               date: timeMoment,
               css: 'sold-out',
               selectable: false,
+              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
+                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
             })
           }
           else if (time in $scope.disp.previouslyBookedDays) {
@@ -99,6 +101,8 @@ export default [
               date: timeMoment,
               css: 'previously-booked',
               selectable: false,
+              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
+                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
             })
           }
           else {
