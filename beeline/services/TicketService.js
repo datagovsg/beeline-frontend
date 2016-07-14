@@ -25,7 +25,6 @@ export default function TicketService($http, $filter, UserService) {
     },
 
     getPreviouslyBookedDaysByRouteId(rid, ignoreCache) {
-      console.log("ticketsCache is "+ignoreCache)
       return this.getTicketsByRouteId(rid, ignoreCache)
       .then((tickets) => {
         var dates =  _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());

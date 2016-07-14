@@ -1,6 +1,6 @@
 import assert from 'assert';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
-import registeringWithServerTemplate from '../templates/registering-with-server.html';
+import loadingTemplate from '../templates/loading.html';
 import _ from 'lodash';
 
 export default [
@@ -58,13 +58,15 @@ export default [
       $scope.book.promoCodes.push($scope.book.currentPromoCode);
     }
 
-    $scope.$watch(() => UserService.getUser(), (user) => {
+    $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
-      $ionicLoading.show({
-        template: registeringWithServerTemplate
-      })
-      $scope.checkValidDate();
-      $ionicLoading.hide();
+      if ($scope.isLoggedIn) {
+        $ionicLoading.show({
+          template: loadingTemplate
+        })
+        await $scope.checkValidDate();
+        $ionicLoading.hide();
+      }
     })
 
     $scope.login = function () {
@@ -78,17 +80,11 @@ export default [
     $scope.checkValidDate = async function () {
 
       var previouslyBookedDays = await TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true);
-      var joint = _.intersection(
+      var selectedAndInvalid = _.intersection(
         $scope.book.selectedDates, // list of integers
         Object.keys(previouslyBookedDays).map(s => parseInt(s))
       );
-      if (joint.length==0){
-        $scope.book.hasInvalidDate = false;
-      }
-      else{
-        $scope.book.hasInvalidDate = true;
-      }
-
+      $scope.book.hasInvalidDate = (selectedAndInvalid.length > 0)
     }
 
     // methods
