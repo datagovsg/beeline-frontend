@@ -106,6 +106,8 @@ export default [
               date: timeMoment,
               css: '',
               selectable: true,
+              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
+                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
             })
             $scope.disp.daysAllowed.push(timeMoment)
           }

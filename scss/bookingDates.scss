@@ -135,3 +135,18 @@
 .picker-navigate-right-arrow {
   font-size: 2em;
 }
+
+
+.picker-day {
+  position: relative;
+
+  .annotation {
+    width: 0px;
+    height: 0px;
+    border-top: solid 1em $picker-notes-bg;
+    border-left: solid 1em transparent;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

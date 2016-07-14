@@ -80,6 +80,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
       current = {
         startDate: dt,
         price: booking.route.tripsByDate[dt].price,
+        bookingInfo: booking.route.tripsByDate[dt].bookingInfo
       };
       rv.push(current);
     }
