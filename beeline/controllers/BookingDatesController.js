@@ -82,18 +82,22 @@ export default [
         for (let time of Object.keys($scope.disp.availabilityDays)) {
           time = parseInt(time)
           let timeMoment = moment(time).utcOffset(0);
-          if ($scope.disp.availabilityDays[time] <= 0) {
-            $scope.disp.highlightDays.push({
-              date: timeMoment,
-              css: 'sold-out',
-              selectable: false,
-            })
-          }
-          else if (time in $scope.disp.previouslyBookedDays) {
+          if (time in $scope.disp.previouslyBookedDays) {
             $scope.disp.highlightDays.push({
               date: timeMoment,
               css: 'previously-booked',
               selectable: false,
+              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
+                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
+            })
+          }
+          else if ($scope.disp.availabilityDays[time] <= 0) {
+            $scope.disp.highlightDays.push({
+              date: timeMoment,
+              css: 'sold-out',
+              selectable: false,
+              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
+                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
             })
           }
           else {
@@ -101,6 +105,8 @@ export default [
               date: timeMoment,
               css: '',
               selectable: true,
+              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
+                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
             })
             $scope.disp.daysAllowed.push(timeMoment)
           }
