@@ -53,7 +53,7 @@ function webpackPrefix(PREFIX, done) {
 }
 
 gulp.task('webpack', function(done) {
-  return webpackPrefix(done);
+  return webpackPrefix(null,done);
 });
 
 gulp.task('watch', ['sass', 'webpack'], function() {
