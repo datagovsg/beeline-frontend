@@ -173,6 +173,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     };
     promptScope.data = {};
     promptScope.data.inputs = options.inputs || [];
+    promptScope.data.bodyText = options.bodyText || '';
     _.defaultsDeep(options,{
       template: verifiedPromptTemplate,
       title: '',
@@ -270,20 +271,20 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     try {
       var accountResponse = await verifiedPrompt({
         title: 'Account Details',
-        subTitle: 'Welcome! Looks like this is your first login.\
+        bodyText: 'Welcome! This looks like your first login.\
         Please complete the account setup.',
         inputs: [
           {
             type: 'text',
             name: 'name',
             pattern: VALID_USER_NAME,
-            inputPlaceHolder: 'name'
+            inputPlaceHolder: 'Name'
           },
           {
             type: 'email',
             name: 'email',
             inputPlaceHolder: 'name@example.com'
-          }
+          },
         ]
       });
       if (!accountResponse) return;
