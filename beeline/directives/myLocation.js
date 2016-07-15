@@ -34,7 +34,7 @@ export default function(uiGmapGoogleMapApi) {
       uiGmapGoogleMapApi.then((googleMaps) => {
         scope.markerOptions.icon = {
           url: 'img/userLocation.svg',
-          anchor: new googleMaps.Point(12,12),
+          anchor: new googleMaps.Point(6,6),
         }
 
         var watch = navigator.geolocation.watchPosition(
