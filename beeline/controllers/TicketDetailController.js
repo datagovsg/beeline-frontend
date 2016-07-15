@@ -125,6 +125,17 @@ export default [
       }
     });
 
+    //
+    $scope.$watch('map.markerOptions.boardMarker.icon', (icon) => {
+      if (!icon) return;
+      tripPromise.then((trip) => {
+        for (let ts of trip.tripStops) {
+          ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
+                                   $scope.map.markerOptions.alightMarker;
+        }
+      })
+    })
+
     // Pan and zoom to the bus location when the map is ready
     // Single ping request for updating the map initially
     // Duplicates a bit with the update loop but is much cleaner this way
