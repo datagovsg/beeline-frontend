@@ -41,10 +41,10 @@
 
           <ui-gmap-window ng-if="disp.popupStop" coords="disp.popupStop.coordinates"
             show="disp.popupStop">
-            <div>
-              <b>{{disp.popupStop.time | date:'hh:mm'}}</b><br/>
-              {{disp.popupStop.description}}<br/>
-              <a class="button button-positive button-small"
+            <div class="popUpStopSelect">
+              <b>{{disp.popupStop.time | formatTime }}</b><br/>
+              {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
+              <a class="button button-block button-outline button-royal"
                 ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
                 Set {{disp.popupStopType === 'pickup' ? 'pick-up' : 'drop-off'}} stop
               </a>
