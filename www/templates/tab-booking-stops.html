@@ -36,9 +36,21 @@
             zoom="map.zoom"
             bounds="map.bounds"
             control="map.control"
-            options="map.options"
-            data-tap-disabled="true">
+            options="map.options">
           <my-location></my-location>
+
+          <ui-gmap-window ng-if="disp.popupStop" coords="disp.popupStop.coordinates"
+            show="disp.popupStop">
+            <div>
+              <b>{{disp.popupStop.time | date:'hh:mm'}}</b><br/>
+              {{disp.popupStop.description}}<br/>
+              <a class="button button-positive button-small"
+                ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
+                Set {{disp.popupStopType === 'pickup' ? 'pick-up' : 'drop-off'}} stop
+              </a>
+            </div>
+          </ui-gmap-window>
+
           <ui-gmap-marker
             ng-repeat="stop in book.boardStops"
             idKey="stop.id"
@@ -72,6 +84,7 @@
             coords="book.alightStop.coordinates"
             options="map.markerOptions.endMarker">
           </ui-gmap-marker>
+
         </ui-gmap-google-map>
       </div>
 
