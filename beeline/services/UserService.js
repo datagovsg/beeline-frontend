@@ -248,7 +248,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       else {
         $ionicPopup.alert({
           title: "Error while trying to connect to server.",
-          subTitle: error
+          subTitle: error.data && error.data.message
         });
       }
       throw error; // Allow the calling function to catch the error
@@ -309,7 +309,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       $ionicLoading.hide();
       $ionicPopup.alert({
         title: "Error while trying to connect to server.",
-        subTitle: error
+        subTitle: error.data && error.data.message
       });
     };
   };
@@ -341,7 +341,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       $ionicLoading.hide();
       $ionicPopup.alert({
         title: "Error while trying to connect to server.",
-        subTitle: error
+        subTitle: error.data && error.data.message
       });
     };
   };
