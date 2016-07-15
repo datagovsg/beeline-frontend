@@ -199,7 +199,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptTelephoneNumber = function(title, subtitle){
     return verifiedPrompt({
       title: title,
-      subTitle: subtitle,
+      bodyText: subtitle,
       inputs: [
         {
           type: 'tel',
@@ -213,7 +213,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptVerificationCode = function(telephone){
     return verifiedPrompt({
       title: 'Verification',
-      subTitle: 'Enter the 6-digit code sent to '+telephone,
+      bodyText: 'Enter the 6-digit code sent to '+telephone,
       inputs: [
         {
           type: 'tel',
@@ -365,7 +365,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       }
       var verifiedResponse = await verifiedPrompt({
         title: 'Update '+field,
-        subTitle: 'Enter your new '+field,
+        bodyText: 'Enter your new '+field,
         inputs: [filedInput]
       })
       if (!verifiedResponse) return;
