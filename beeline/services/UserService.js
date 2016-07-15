@@ -173,6 +173,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     };
     promptScope.data = {};
     promptScope.data.inputs = options.inputs || [];
+    promptScope.data.bodyText = options.bodyText || '';
     _.defaultsDeep(options,{
       template: verifiedPromptTemplate,
       title: '',
@@ -198,7 +199,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptTelephoneNumber = function(title, subtitle){
     return verifiedPrompt({
       title: title,
-      subTitle: subtitle,
+      bodyText: subtitle,
       inputs: [
         {
           type: 'tel',
@@ -212,7 +213,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptVerificationCode = function(telephone){
     return verifiedPrompt({
       title: 'Verification',
-      subTitle: 'Enter the 6-digit code sent to '+telephone,
+      bodyText: 'Enter the 6-digit code sent to '+telephone,
       inputs: [
         {
           type: 'tel',
@@ -270,20 +271,20 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     try {
       var accountResponse = await verifiedPrompt({
         title: 'Account Details',
-        subTitle: 'Welcome! Looks like this is your first login.\
+        bodyText: 'Welcome! This looks like your first login.\
         Please complete the account setup.',
         inputs: [
           {
             type: 'text',
             name: 'name',
             pattern: VALID_USER_NAME,
-            inputPlaceHolder: 'name'
+            inputPlaceHolder: 'Name'
           },
           {
             type: 'email',
             name: 'email',
             inputPlaceHolder: 'name@example.com'
-          }
+          },
         ]
       });
       if (!accountResponse) return;
@@ -364,7 +365,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       }
       var verifiedResponse = await verifiedPrompt({
         title: 'Update '+field,
-        subTitle: 'Enter your new '+field,
+        bodyText: 'Enter your new '+field,
         inputs: [filedInput]
       })
       if (!verifiedResponse) return;
