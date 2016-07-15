@@ -31,7 +31,6 @@
       <!-- contains the map, the stop selectors
         and the locate me button -->
       <div class="map-area">
-        <my-location></my-location>
         <ui-gmap-google-map
             center="map.center"
             zoom="map.zoom"
@@ -39,6 +38,7 @@
             control="map.control"
             options="map.options"
             data-tap-disabled="true">
+          <my-location></my-location>
           <ui-gmap-marker
             ng-repeat="stop in book.boardStops"
             idKey="stop.id"
