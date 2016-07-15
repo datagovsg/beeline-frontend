@@ -154,6 +154,16 @@ export default [
                                              info.pings[0].coordinates.coordinates[0]));
         map.fitBounds(bounds);
       }
+      else {
+        // Just show the boarding stops
+        var bounds = new googleMaps.LatLngBounds();
+        for (let tripStop of $scope.trip.tripStops) {
+          if (!tripStop.canBoard) continue;
+          bounds.extend(new google.maps.LatLng(tripStop.stop.coordinates.coordinates[1],
+                                               tripStop.stop.coordinates.coordinates[0]));
+        }
+        map.fitBounds(bounds);
+      }
     });
 
     // ////////////////////////////////////////////////////////////////////////
