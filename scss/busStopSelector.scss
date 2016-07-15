@@ -25,12 +25,12 @@
   left: 0;
   top: 0;
 
-  ion-content {
+  ion-content.stops-list-main {
     display: flex;
     flex-direction: column;
 
     .map-area {
-      flex: 0 0 45%;
+      flex: 0 0.5 45vh;
 
       padding: 0;
       display: flex;
@@ -52,10 +52,9 @@
       }
     }
 
-    .stops-list {
+    ion-content.stops-list {
       flex: 1 1 auto;
-      /* Hide the scroll-bar in browsers */
-      overflow: hidden;
+      position: static;
 
       .item-radio{
         .radio-icon {
@@ -80,8 +79,6 @@
           }
         }
       }
-
-
     }
 
     .num-stops,
