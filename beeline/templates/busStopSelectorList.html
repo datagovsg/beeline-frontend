@@ -8,7 +8,7 @@
    </button>
   </ion-header-bar>
 
-  <ion-content scroll="false">
+  <ion-content class="stops-list-main" scroll="false">
     <div class="map-area">
       <ui-gmap-google-map center="map.center"
                           zoom="map.zoom"
@@ -33,7 +33,7 @@
 
     <div class="item item-divider num-stops">{{busStops.length}} stops available</div>
 
-    <ion-scroll class="stops-list">
+    <ion-content class="stops-list">
       <ion-list>
         <ion-radio  ng-repeat="stop in busStops"
                     ng-model="data.selectedStop"
@@ -49,7 +49,7 @@
           </div>
         </ion-radio>
       </ion-list>
-    </ion-scroll>
+    </ion-content>
 
     <div class="item select-button">
       <button class="button primary-button button-item"
