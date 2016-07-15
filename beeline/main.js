@@ -79,6 +79,7 @@ var app = angular.module('beeline', [
 .directive('routeItem', require('./directives/routeItem/routeItem.js').default)
 .directive('companyTnc', require('./directives/companyTnc/companyTnc.js').default)
 .directive('tripCode', require('./directives/tripCode/tripCode.js').default)
+.directive('myLocation', require('./directives/myLocation.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
