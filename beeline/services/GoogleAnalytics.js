@@ -5,7 +5,9 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 export default function() {
-  return ga;
+  return function () {
+    window.ga.apply(window, arguments);
+  }
 }
 
 var devicePromise = new Promise((resolve, reject) => {
