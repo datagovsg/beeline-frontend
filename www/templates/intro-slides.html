@@ -1,32 +1,35 @@
-<ion-view class="intro-slides">
-  <ion-slides options="options">
+<ion-view class="intro-slides" cache-view="false">
+  <ion-content scroll="false">
+    <ion-slides options="options" slider="data.slider">
 
-    <ion-slide-page>
-      <h2>Add to home screen</h2>
-      <img src="img/introHomeScreen.svg">
-      <p>
-        Tap <i class="icon ion-ios-upload-outline"></i> or go to your browser settings and select <strong>"Add to Home Screen"</strong> to quickly access Beeline on your home screen.
-      </p>
-    </ion-slide-page>
+      <ion-slide-page>
+        <h2>Add to home screen</h2>
+        <img src="img/introHomeScreen.svg">
+        <p>
+          Tap <i class="icon ion-ios-upload-outline"></i> or go to your browser settings and select <strong>"Add to Home Screen"</strong> to quickly access Beeline on your home screen.
+        </p>
+      </ion-slide-page>
 
-    <ion-slide-page>
-      <h2>Best viewed on mobile</h2>
-      <img src="img/introSuggest.svg">
-      <p>
-        This web application is designed for mobile experience. We regret that desktop experience may be less optimal.
-      </p>
-    </ion-slide-page>
+      <ion-slide-page>
+        <h2>Best viewed on mobile</h2>
+        <img src="img/introSuggest.svg">
+        <p>
+          This web application is designed for mobile experience. We regret that desktop experience may be less optimal.
+        </p>
+      </ion-slide-page>
 
-    <ion-slide-page>
-      <h2>Book a ride</h2>
-      <img src="img/introActivate.svg">
-      <p>
-        Browse for your routes and book a guaranteed seat on a
-        direct bus to your destination.
-      </p>
-    </ion-slide-page>
+      <ion-slide-page>
+        <h2>Book a ride</h2>
+        <img src="img/introActivate.svg">
+        <p>
+          Browse for your routes and book a guaranteed seat on a
+          direct bus to your destination.
+        </p>
+      </ion-slide-page>
 
-  </ion-slides>
-  <button class="button button-large button-clear button-royal"
-          ui-sref='tabs.routes'>SKIP</button>
+    </ion-slides>
+
+    <button class="button button-large button-clear button-royal"
+            ui-sref='tabs.routes'>{{data.buttonLabel}}</button>
+  </ion-content>
 </ion-view>
