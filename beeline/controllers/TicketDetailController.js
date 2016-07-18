@@ -125,6 +125,17 @@ export default [
       }
     });
 
+    //
+    $scope.$watch('map.markerOptions.boardMarker.icon', (icon) => {
+      if (!icon) return;
+      tripPromise.then((trip) => {
+        for (let ts of trip.tripStops) {
+          ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
+                                   $scope.map.markerOptions.alightMarker;
+        }
+      })
+    })
+
     // Pan and zoom to the bus location when the map is ready
     // Single ping request for updating the map initially
     // Duplicates a bit with the update loop but is much cleaner this way
@@ -152,6 +163,16 @@ export default [
                                              ticket.boardStop.stop.coordinates.coordinates[0]));
         bounds.extend(new google.maps.LatLng(info.pings[0].coordinates.coordinates[1],
                                              info.pings[0].coordinates.coordinates[0]));
+        map.fitBounds(bounds);
+      }
+      else {
+        // Just show the boarding stops
+        var bounds = new googleMaps.LatLngBounds();
+        for (let tripStop of $scope.trip.tripStops) {
+          if (!tripStop.canBoard) continue;
+          bounds.extend(new google.maps.LatLng(tripStop.stop.coordinates.coordinates[1],
+                                               tripStop.stop.coordinates.coordinates[0]));
+        }
         map.fitBounds(bounds);
       }
     });

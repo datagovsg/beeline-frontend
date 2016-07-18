@@ -171,9 +171,10 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     promptScope.form ={
       verifiedPromptForm : {}
     };
-    promptScope.data = {};
-    promptScope.data.inputs = options.inputs || [];
-    promptScope.data.bodyText = options.bodyText || '';
+    promptScope.data = {
+      inputs: options.inputs || [],
+      bodyText: options.bodyText || ''
+    };
     _.defaultsDeep(options,{
       template: verifiedPromptTemplate,
       title: '',

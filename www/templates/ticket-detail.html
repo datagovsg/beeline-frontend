@@ -91,15 +91,22 @@
       <ui-gmap-marker idkey="'boardstop'"
                       ng-if="map.markers.boardStop.stop"
                       coords="map.markers.boardStop.stop.coordinates"
-                      options="map.markerOptions.boardMarker"></ui-gmap-marker>
+                      options="map.markerOptions.startMarker"></ui-gmap-marker>
       <ui-gmap-marker idkey="'alightstop'"
                       ng-if="map.markers.alightStop.stop"
                       coords="map.markers.alightStop.stop.coordinates"
-                      options="map.markerOptions.alightMarker"></ui-gmap-marker>
+                      options="map.markerOptions.endMarker"></ui-gmap-marker>
       <ui-gmap-marker ng-if="map.busLocation.coordinates"
                       idkey="bus-location"
                       coords="map.busLocation.coordinates"
-                      icon="map.busLocation.icon"></ui-gmap-markers>
+                      icon="map.busLocation.icon"></ui-gmap-marker>
+
+      <ui-gmap-markers  ng-if="trip.tripStops"
+                        models="trip.tripStops"
+                        idkey="'id'"
+                        options="'_markerOptions'"
+                        coords="'stop.coordinates'"
+                        ></ui-gmap-markers>
     </ui-gmap-google-map>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
