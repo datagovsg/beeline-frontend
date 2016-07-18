@@ -51,7 +51,7 @@
          ng-repeat="ticket in tickets.today"
          ui-sref="tabs.ticket-detail({ ticketId: ticket.id })">
         <span class="date">{{ ticket.boardStop.time | date:'d MMM y' }}</span> {{ ticket.boardStop.time | date:'h:mm a' }}
-        <i class="icon ion-chevron-right icon-accessory"></i>
+        <i class="icon ion-ios-arrow-right icon-accessory"></i>
       </a>
       <div ng-if="tickets.soon.length > 0"
            class="item item-divider">Upcoming Trips</div>
@@ -60,7 +60,7 @@
          ng-repeat="ticket in tickets.soon"
          ui-sref="tabs.ticket-detail({ ticketId: ticket.id })">
         <span class="date">{{ ticket.boardStop.time | date:'d MMM y' }}</span> {{ ticket.boardStop.time | date:'h:mm a' }}
-        <i class="icon ion-chevron-right icon-accessory"></i>
+        <i class="icon ion-ios-arrow-right icon-accessory"></i>
       </a>
     </div>
   </ion-content>

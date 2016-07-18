@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="66px" height="86px" viewBox="0 0 66 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>BusMarker</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M26.8918764,0 C12.0412331,0 0,12.2243346 0,27.2936285 C0,40.4202583 9.13374674,51.3762419 21.2983661,53.9900082 L26.8918764,73.8533477 L32.4853867,53.9900082 C44.6500061,51.3762419 53.7837529,40.4202583 53.7837529,27.2936285 C53.7837529,12.2243346 41.7425197,0 26.8918764,0 Z" id="path-1"></path>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="1.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="5" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Tickets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="6TicketDriver" transform="translate(-223.000000, -476.000000)">
+            <g id="BusMarker" transform="translate(229.000000, 478.000000)">
+                <g id="User-Location">
+                    <g id="Stroke-128-+-Stroke-130">
+                        <g id="Stroke-128">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                            <use stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#493762" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        </g>
+                    </g>
+                </g>
+                <g id="Group" transform="translate(13.000000, 13.000000)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23.5333333,25 L4.46666667,25 C3.6556,25 3,24.3777778 3,23.6111111 L3,4.86111111 C3,2.175 5.2968,0 8.13333333,0 L19.8666667,0 C22.7017333,0 25,2.175 25,4.86111111 L25,23.6111111 C25,24.3777778 24.3429333,25 23.5333333,25 Z" id="Stroke-1433" fill="#FFFFFF"></path>
+                    <polygon id="Stroke-1434" fill="#FFFFFF" points="7 28 4 28 4 25 7 25"></polygon>
+                    <polygon id="Stroke-1435" fill="#FFFFFF" points="24 28 21 28 21 25 24 25"></polygon>
+                    <polygon id="Stroke-1436" fill="#493762" points="24 18 4 18 4 6 24 6"></polygon>
+                    <polygon id="Stroke-1437" fill="#493762" points="17 4 10 4 10 1 17 1"></polygon>
+                    <polygon id="Stroke-1440" fill="#FFFFFF" points="0 12 3 12 3 8 0 8"></polygon>
+                    <polygon id="Stroke-1441" fill="#FFFFFF" points="25 12 28 12 28 8 25 8"></polygon>
+                </g>
+                <path d="M20.5,37 C21.8807119,37 23,35.8807119 23,34.5 C23,33.1192881 21.8807119,32 20.5,32 C19.1192881,32 18,33.1192881 18,34.5 C18,35.8807119 19.1192881,37 20.5,37 Z" id="Oval-19" stroke="#FFFFFF" fill="#493762"></path>
+                <circle id="Oval-19" stroke="#FFFFFF" fill="#493762" cx="33.5" cy="34.5" r="2.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>
