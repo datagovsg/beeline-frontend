@@ -24,10 +24,11 @@
     .bus-number{
       margin-right: $padding-small-vertical;
     }
+    .vehicleNo{
+      text-transform: uppercase;
+    }
   }
-  .time-column {
-    text-align: right;
-  }
+
   .route-icon {
     height: 1.1em;
     vertical-align: text-bottom;
