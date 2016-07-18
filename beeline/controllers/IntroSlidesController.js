@@ -12,11 +12,10 @@ export default['$scope',function($scope) {
 
   $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
     // note: the indexes are 0-based
-    $scope.activeIndex = data.slider.activeIndex;
-    if ($scope.activeIndex !== 2) {
+    if (!data.slider.isEnd) {
       $scope.data.buttonLabel = 'SKIP'
     }
-    if ($scope.activeIndex === 2) {
+    else {
       $scope.data.buttonLabel = 'DONE'
     }
     $scope.$digest();
