@@ -1,4 +1,12 @@
-<ion-view class="ticket-detail" ng-init="activeTab=0">
+<ion-view class="ticket-detail" ng-init="activeTab=0"
+  hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+       ui-sref="tabs.tickets">
+       <i class="icon ion-ios-arrow-back"></i> Tickets
+    </button>
+  </ion-nav-buttons>
+
   <ion-nav-title>Ticket for {{ticket.boardStop.time | date:'d MMM y'}}</ion-nav-title>
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
     <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
