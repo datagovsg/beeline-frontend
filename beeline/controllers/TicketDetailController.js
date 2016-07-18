@@ -164,6 +164,7 @@ export default [
     Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) {
       var [map, googleMaps] = values;
 
+      MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });
