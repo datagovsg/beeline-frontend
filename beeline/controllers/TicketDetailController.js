@@ -103,8 +103,9 @@ export default [
 
     uiGmapGoogleMapApi.then((googleMaps) => {
       $scope.map.busLocation.icon = {
-          url: 'img/busMarker.svg',
-          scaledSize: new googleMaps.Size(44, 57),
+          url: 'img/busMarker01.png',
+          scaledSize: new googleMaps.Size(80, 80),
+          anchor: new googleMaps.Point(40, 73),
         };
     })
 
