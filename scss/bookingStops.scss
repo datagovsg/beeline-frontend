@@ -80,8 +80,8 @@
         position: absolute;
 
         .popUpStopSelect{
-          min-width: 250px;
-          min-height: 100px;
+          min-width: $popUpStopSelectMinWidth;
+          min-height: $popUpStopSelectMinHeight;
           padding-left: $content-padding*2;
           padding-top: $content-padding;
 
