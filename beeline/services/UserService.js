@@ -206,8 +206,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
           type: 'tel',
           name: 'phone',
           pattern: VALID_PHONE_REGEX,
-          errorMsg: 'The phone number you provide does not appear to be in the correct format. \
-          Please provide a valid 8 digit phone number starting with the number 8 or 9.'
+          errorMsg: 'The phone no. you provide does not appear to be in the correct format. \
+          Please provide a valid 8-digit phone no. starting with the number 8 or 9.'
         }
       ]
     })
@@ -282,14 +282,14 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
             name: 'name',
             pattern: VALID_USER_NAME,
             inputPlaceHolder: 'Name',
-            errorMsg: 'Please provide a user name not less than 3 characters.'
+            errorMsg: 'Please provide a name with 3 or more characters.'
           },
           {
             type: 'email',
             name: 'email',
             inputPlaceHolder: 'name@example.com',
-            errorMsg: 'Email address doesn\'t appear to be in the correct format. \
-            Please provide a valid email address so that you can receive your ticket via email.'
+            errorMsg: 'Email address does not appear to be in the correct format. \
+            Please provide a valid email address.'
           },
         ]
       });
@@ -361,7 +361,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
           type: 'text',
           name:  'name',
           pattern: VALID_USER_NAME,
-          errorMsg: 'Please provide a user name not less than 3 characters.'
+          errorMsg: 'Please provide a name with 3 or more characters.'
         }
       }
       if (field === 'email'){
@@ -393,8 +393,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // Shows a confirmation dialogue asking if the user is sure they want to log out
   var promptLogOut = function() {
     $ionicPopup.confirm({
-      title: 'Are you sure you want to logout?',
-      subTitle: "You will not be able to make any bookings and view your tickets after you have logout."
+      title: 'Are you sure you want to log out?',
+      subTitle: "You will not be able to make any bookings and view your tickets after you log out."
     }).then(function(response) {
       if (response) {
         return logOut();
