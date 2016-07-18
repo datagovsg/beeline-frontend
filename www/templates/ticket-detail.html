@@ -1,4 +1,12 @@
-<ion-view class="ticket-detail" ng-init="activeTab=0">
+<ion-view class="ticket-detail" ng-init="activeTab=0"
+  hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+       ui-sref="tabs.tickets">
+       <i class="icon ion-ios-arrow-back"></i> Tickets
+    </button>
+  </ion-nav-buttons>
+
   <ion-nav-title>Ticket for {{ticket.boardStop.time | date:'d MMM y'}}</ion-nav-title>
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
     <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
@@ -79,7 +87,9 @@
     <ui-gmap-google-map ng-if="info.trip.status != 'cancelled'" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
       <my-location></my-location>
       <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
-      <ui-gmap-polyline path="map.lines.actualPath.path" stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
+      <ui-gmap-polyline ng-if="map.lines.actualPath.path.length"
+                        path="map.lines.actualPath.path"
+                        stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
       <ui-gmap-marker idkey="'boardstop'"
                       ng-if="map.markers.boardStop.stop"
                       coords="map.markers.boardStop.stop.coordinates"
@@ -89,10 +99,9 @@
                       coords="map.markers.alightStop.stop.coordinates"
                       options="map.markerOptions.endMarker"></ui-gmap-marker>
       <ui-gmap-marker ng-if="map.busLocation.coordinates"
-                      idkey="bus-location"
+                      idkey="'bus-location'"
                       coords="map.busLocation.coordinates"
                       icon="map.busLocation.icon"></ui-gmap-marker>
-
       <ui-gmap-markers  ng-if="trip.tripStops"
                         models="trip.tripStops"
                         idkey="'id'"
