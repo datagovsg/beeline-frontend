@@ -8,7 +8,7 @@ export default['$scope','$rootScope',function($scope, $rootScope) {
   $scope.data = {
     slider: null,
     buttonLabel: 'SKIP',
-    showHome: $rootScope.showHome
+    showHome: $rootScope.showHome || false
   }
 
   $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
