@@ -103,7 +103,6 @@ var app = angular.module('beeline', [
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
-
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
@@ -112,6 +111,8 @@ var app = angular.module('beeline', [
   });
 })
 .run(function($rootScope, $ionicTabsDelegate) {
+  //if has cordova no need to show first 2 slides in intro
+  $rootScope.showHome = window.cordova ? false : true
   // hide/show tabs bar depending on how the route is configured
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.hideTabs) {

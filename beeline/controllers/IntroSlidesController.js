@@ -1,4 +1,4 @@
-export default['$scope',function($scope) {
+export default['$scope','$rootScope',function($scope, $rootScope) {
   $scope.options = {
     loop: false,
     effect: 'slide',
@@ -7,8 +7,16 @@ export default['$scope',function($scope) {
 
   $scope.data = {
     slider: null,
-    buttonLabel: 'SKIP'
+    buttonLabel: 'SKIP',
+    showHome: $rootScope.showHome
   }
+
+  $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
+    //only has 1 slide
+    if (data.slider.isBeginning && data.slider.isEnd) {
+      $scope.data.buttonLabel = 'DONE'
+    }
+  });
 
   $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
     // note: the indexes are 0-based
