@@ -48,6 +48,11 @@ export default [
       alightStop: null,
       changes: {},
     };
+    $scope.disp = {
+      popupStop: null,
+      popupStopType: null,
+      parentScope: $scope,
+    }
 
     // Resolved when the map is initialized
     var gmapIsReady = new Promise((resolve, reject) => {
@@ -101,6 +106,26 @@ export default [
         .catch(() => $scope.routePath = []);
       }
     })
+
+    $scope.applyTapBoard = function (stop) {
+      $scope.disp.popupStopType = "pickup";
+      $scope.disp.popupStop = stop;
+      $scope.$digest();
+    }
+    $scope.applyTapAlight = function (stop) {
+      $scope.disp.popupStopType = "dropoff";
+      $scope.disp.popupStop = stop;
+      $scope.$digest();
+    }
+    $scope.setStop = function (stop, type) {
+      if (type === 'pickup') {
+        $scope.book.boardStop = stop;
+      }
+      else {
+        $scope.book.alightStop = stop;
+      }
+      $scope.disp.popupStop = null;
+    }
 
     /* Pans to the stops on the screen */
     function panToStops() {
