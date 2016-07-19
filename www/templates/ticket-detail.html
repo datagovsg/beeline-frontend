@@ -124,7 +124,7 @@
           </p>
           <p>
             For enquiries, please contact
-            <strong>{{company.contactNo}}</strong>.
+            <strong>{{company.email}}</strong> <strong>{{company.contactNo==="NA" || !company.contactNo ? '' : " &#40; Tel: " + company.contactNo+ " &#41; "}} </strong>
           </p>
         </div>
       </div>
