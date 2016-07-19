@@ -201,3 +201,10 @@ input[type="color"] {
 .tabs-striped.tabs-royal .tabs.tabs-striped.tabs-light {
   background-color: $light;
 }
+/* Fix tabs in IE when screen > 1200px. This is actually the **correct**
+  markup for the flexbox. max-width should not be used with flexbox
+  because there is a flexbox-based alternative for that */
+.tab-nav.tabs .tab-item {
+  max-width: none;
+  flex: 0 1 400px;
+}
