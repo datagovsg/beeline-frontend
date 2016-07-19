@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="21px" height="22px" viewBox="0 0 21 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>TicketDetail_MoreInfo</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Tickets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-5" transform="translate(-2.000000, -1.000000)">
+            <g id="Group-11">
+                <g id="TicketDetail_MoreInfo">
+                    <rect id="Rectangle-48" x="0" y="0" width="24" height="24"></rect>
+                    <g id="Group" transform="translate(3.000000, 2.000000)" stroke="#493762" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16.0233333,17.9157895 L3.39888889,17.9157895 C2.86186444,17.9157895 2.42777778,17.4819368 2.42777778,16.9473684 L2.42777778,3.87368421 C2.42777778,2.00075789 3.94853778,0.484210526 5.82666667,0.484210526 L13.5955556,0.484210526 C15.4727133,0.484210526 16.9944444,2.00075789 16.9944444,3.87368421 L16.9944444,16.9473684 C16.9944444,17.4819368 16.5593867,17.9157895 16.0233333,17.9157895 Z" id="Stroke-1433"></path>
+                        <polygon id="Stroke-1434" points="5.34111111 19.8526316 3.39888889 19.8526316 3.39888889 17.9157895 5.34111111 17.9157895"></polygon>
+                        <polygon id="Stroke-1435" points="16.0233333 19.8526316 14.0811111 19.8526316 14.0811111 17.9157895 16.0233333 17.9157895"></polygon>
+                        <polygon id="Stroke-1436" points="16.9944444 12.1052632 2.42777778 12.1052632 2.42777778 6.29473684 16.9944444 6.29473684"></polygon>
+                        <polygon id="Stroke-1437" points="12.1388889 4.35789474 7.28333333 4.35789474 7.28333333 2.42105263 12.1388889 2.42105263"></polygon>
+                        <path d="M4.37,15.0105263 L7.28333333,15.0105263" id="Stroke-1438"></path>
+                        <path d="M12.1388889,15.0105263 L15.0522222,15.0105263" id="Stroke-1439"></path>
+                        <polygon id="Stroke-1440" points="0.485555556 8.23157895 2.42777778 8.23157895 2.42777778 4.35789474 0.485555556 4.35789474"></polygon>
+                        <polygon id="Stroke-1441" points="16.9944444 8.23157895 18.9366667 8.23157895 18.9366667 4.35789474 16.9944444 4.35789474"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

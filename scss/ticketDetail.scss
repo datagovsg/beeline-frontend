@@ -61,4 +61,31 @@
       }
     }
   }
+
+  .tab-item {
+    &.active {
+      .ticket-nav-ticket,
+      .ticket-nav-moreInfo {
+        opacity: 1;
+      }
+    }
+    &:not(.active) {
+      .ticket-nav-ticket,
+      .ticket-nav-moreInfo {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  .ticket-nav-ticket {
+    content: url('../img/ticketdetail_ticket_normal.svg');
+    padding-right: $padding_small_horizontal*0.5;
+    vertical-align: sub;
+  }
+
+  .ticket-nav-moreInfo {
+    content: url('../img/ticketdetail_moreinfo_normal.svg');
+    padding-right: $padding_small_horizontal*0.5;
+    vertical-align: sub;
+  }
 }
