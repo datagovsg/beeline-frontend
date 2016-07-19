@@ -29,11 +29,12 @@
         padding: $item-padding-small;
         .time{
           white-space: nowrap;
+          flex: 0 0 5em;
         }
         .route-icon {
           position: relative;
           vertical-align: top;
-          padding: 0 $item-padding-small;
+          padding-right: $item-padding-base;
           top: $item-padding-small;
         }
       }
