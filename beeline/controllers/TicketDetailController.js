@@ -112,18 +112,24 @@ export default [
     // Draw the icon for latest bus location
     $scope.$watch('recentPings', function(recentPings) {
       if (recentPings && recentPings.length > 0) {
-        var busPosition = recentPings[0].coordinates.coordinates;
-        $scope.map.busLocation.coordinates = {
-          latitude: busPosition[1],
-          longitude: busPosition[0],
-        };
-
+        $scope.map.busLocation.coordinates = recentPings[0].coordinates;
         $scope.map.lines.actualPath.path = recentPings.map(ping => ({
           latitude: ping.coordinates.coordinates[1],
-          longitude: ping.coordinates.coordinates[0],
+          longitude: ping.coordinates.coordinates[0]
         }));
       }
     });
+
+    //
+    $scope.$watch('map.markerOptions.boardMarker.icon', (icon) => {
+      if (!icon) return;
+      tripPromise.then((trip) => {
+        for (let ts of trip.tripStops) {
+          ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
+                                   $scope.map.markerOptions.alightMarker;
+        }
+      })
+    })
 
     // Pan and zoom to the bus location when the map is ready
     // Single ping request for updating the map initially
@@ -174,6 +180,7 @@ export default [
     Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) {
       var [map, googleMaps] = values;
 
+      MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });
