@@ -57,13 +57,8 @@
       .price {
         padding: $padding-small-vertical 0;
         flex: 0 0 auto;
-        align-self: flex-end;
+        align-self: center;
         margin-right: $content-padding;
-
-        .from {
-          color: $hint-color;
-          padding: 3px 0px;
-        }
       }
     }
 
