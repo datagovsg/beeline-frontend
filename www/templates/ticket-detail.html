@@ -41,12 +41,12 @@
         <div class="route-info">
           <div class="start">
             <span class="time" ng-bind="ticket.boardStop.time | date:'h:mm a'"></span><img class="route-icon" src="./img/RoutePairSmallStart.svg" />
-              <span>
-                {{ticket.boardStop.stop.description}}, {{ticket.boardStop.stop.road}}</span>
+              <div class="routeDetailDesc">
+                {{ticket.boardStop.stop.description}}, {{ticket.boardStop.stop.road}}</div>
           </div>
             <div class="end">
             <span class="time" ng-bind="ticket.alightStop.time | date:'h:mm a'"></span><img class="route-icon" src="./img/RoutePairSmallEnd.svg" />
-              <span>{{ticket.alightStop.stop.description}}, {{ticket.alightStop.stop.road}}</span>
+              <div class="routeDetailDesc">{{ticket.alightStop.stop.description}}, {{ticket.alightStop.stop.road}}</div>
           </div>
         </div>
       </div>

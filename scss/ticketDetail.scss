@@ -27,14 +27,18 @@
         flex-direction: row;
         align-items: flex-start;
         padding: $item-padding-small;
+        .routeDetailDesc{
+          flex: 1 1 auto;
+        }
         .time{
           white-space: nowrap;
-          flex: 0 0 5em;
+          flex: 0 0 4em;
         }
         .route-icon {
           position: relative;
           vertical-align: top;
-          padding-right: $item-padding-base;
+          padding-left: $content-padding*0.5;
+          padding-right: $content-padding;
           top: $item-padding-small;
         }
       }
