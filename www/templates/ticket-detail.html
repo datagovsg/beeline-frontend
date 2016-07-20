@@ -10,13 +10,11 @@
   <ion-nav-title>Ticket for {{ticket.boardStop.time | date:'d MMM y'}}</ion-nav-title>
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
     <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
-      <i class="icon ion-bookmark"></i>
-      <span class="tab-title-large">Ticket</span>
-    </a>
-    <a class="tab-item" on-tap="activeTab=1" ng-class="{active: activeTab===1}">
-      <i class="icon ion-android-bus"></i>
-      <span class="tab-title-large">More Info</span>
-    </a>
+      <span class="tab-title-large"><i class="ticket-nav-ticket"></i>Ticket</a>
+    </span>
+      <a class="tab-item" on-tap="activeTab=1" ng-class="{active: activeTab===1}">
+        <span class="tab-title-large"><i class="ticket-nav-moreInfo"></i>More Info</span>
+      </a>
   </div>
   <ion-content class="has-tabs-top" scroll=false>
 
@@ -24,7 +22,6 @@
     <div class="trip-info item item-text-wrap" ng-show="activeTab===0">
       <div class="row">
         <div class="col col-20">
-          <h4>Route </h4>
           <span class="bus-number" ng-show="route.label">{{route.label}}</span>
         </div>
         <div class="col">
@@ -40,25 +37,17 @@
           <div class="vehicleNo" ng-bind="info.trip.vehicle.vehicleNumber || 'Not provided'"></div>
         </div>
       </div>
-      <div class="row row-top">
-        <div class="col col-25">
-          <span ng-bind="ticket.boardStop.time | date:'h:mm a'"></span>
-          <img class="route-icon" src="./img/RoutePairSmallStart.svg" />
-        </div>
-        <div class="col">
-          <span ng-bind="ticket.boardStop.stop.description"></span>,
-          <span ng-bind="ticket.boardStop.stop.road"></span>
-        </div>
-      </div>
-      <div class="row row-top">
-        <div class="col col-25">
-          <span ng-bind="ticket.alightStop.time | date:'h:mm a'"></span>
-          <img class="route-icon" src="./img/RoutePairSmallEnd.svg" />
-
-        </div>
-        <div class="col">
-          <span ng-bind="ticket.alightStop.stop.description"></span>,
-          <span ng-bind="ticket.alightStop.stop.road"></span>
+      <div class="row">
+        <div class="route-info">
+          <div class="start">
+            <span class="time" ng-bind="ticket.boardStop.time | date:'h:mm a'"></span><img class="route-icon" src="./img/RoutePairSmallStart.svg" />
+              <div class="routeDetailDesc">
+                {{ticket.boardStop.stop.description}}, {{ticket.boardStop.stop.road}}</div>
+          </div>
+            <div class="end">
+            <span class="time" ng-bind="ticket.alightStop.time | date:'h:mm a'"></span><img class="route-icon" src="./img/RoutePairSmallEnd.svg" />
+              <div class="routeDetailDesc">{{ticket.alightStop.stop.description}}, {{ticket.alightStop.stop.road}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -124,7 +113,8 @@
           </p>
           <p>
             For enquiries, please contact
-            <strong>{{company.contactNo}}</strong>.
+            <strong>{{company.email}}</strong>
+            <strong ng-if="company.contactNo">(Tel: {{company.contactNo}})</strong>
           </p>
         </div>
       </div>

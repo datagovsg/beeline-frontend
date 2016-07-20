@@ -5,9 +5,12 @@
     </button>
   </ion-header-bar>
   <ion-content>
-    <div ng-if="!error && !html" class="faq">
-      FAQ is loading... <ion-spinner icon="ios"></ion-spinner>
-    </div>
+      <div class="item item-text-wrap text-center" ng-if="!error && !html">
+        <p class="padding-bottom">
+          FAQ is loading...
+        </p>
+        <ion-spinner icon="ios"></ion-spinner>
+      </div>
     <div class="item item-text-wrap" ng-if="error">
       <i class="icon ion-alert-circled"></i> There was a problem loading the FAQ. Please check your Internet connection.
     </div>

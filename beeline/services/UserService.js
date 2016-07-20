@@ -369,7 +369,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
           type: 'email',
           name:  'email',
           errorMsg: 'Email address doesn\'t appear to be in the correct format. \
-          Please provide a valid email address so that you can receive your ticket via email.'
+          Please provide a valid email address.'
         }
       }
       var verifiedResponse = await verifiedPrompt({
