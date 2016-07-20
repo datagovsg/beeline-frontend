@@ -124,7 +124,8 @@
           </p>
           <p>
             For enquiries, please contact
-            <strong>{{company.email}}</strong> <strong>{{company.contactNo==="NA" || !company.contactNo ? '' : " &#40; Tel: " + company.contactNo+ " &#41; "}} </strong>
+            <strong>{{company.email}}</strong>
+            <strong ng-if="company.contactNo && company.contactNo!=='NA' ">{{" &#40; Tel: " + company.contactNo+ " &#41; "}} </strong>
           </p>
         </div>
       </div>
