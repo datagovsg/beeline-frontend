@@ -105,6 +105,7 @@ export default [
       $scope.map.busLocation.icon = {
           url: 'img/busMarker.svg',
           scaledSize: new googleMaps.Size(68, 86),
+          anchor: new googleMaps.Point(34, 78),
         };
     })
 

@@ -20,6 +20,28 @@
     }
     .route-info{
       margin: $padding-small-vertical 0;
+      display: flex;
+      flex-direction: column;
+      .start, .end{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: $item-padding-small;
+        .routeDetailDesc{
+          flex: 1 1 auto;
+        }
+        .time{
+          white-space: nowrap;
+          flex: 0 0 4em;
+        }
+        .route-icon {
+          position: relative;
+          vertical-align: top;
+          padding-left: $content-padding*0.5;
+          padding-right: $content-padding;
+          top: $item-padding-small;
+        }
+      }
     }
     .bus-number{
       margin-right: $padding-small-vertical;
@@ -27,13 +49,10 @@
     .vehicleNo{
       text-transform: uppercase;
     }
+
   }
 
-  .route-icon {
-    height: 1.1em;
-    vertical-align: text-bottom;
-    padding-left: $item-padding-small;
-  }
+
   .angular-google-map-container {
     position: absolute;
     top: 0;
@@ -60,5 +79,32 @@
         padding: $padding-base-vertical $padding-base-horizontal;
       }
     }
+  }
+
+  .tab-item {
+    &.active {
+      .ticket-nav-ticket,
+      .ticket-nav-moreInfo {
+        opacity: 1;
+      }
+    }
+    &:not(.active) {
+      .ticket-nav-ticket,
+      .ticket-nav-moreInfo {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  .ticket-nav-ticket {
+    content: url('../img/ticketdetail_ticket_normal.svg');
+    padding-right: $padding_small_horizontal*0.5;
+    vertical-align: sub;
+  }
+
+  .ticket-nav-moreInfo {
+    content: url('../img/ticketdetail_moreinfo_normal.svg');
+    padding-right: $padding_small_horizontal*0.5;
+    vertical-align: sub;
   }
 }
