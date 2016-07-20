@@ -54,11 +54,9 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
       var startDate = new Date();
       startDate.setHours(3,0,0,0,0)
-      var endDate = new Date(startDate.getTime() + 30*24*60*60*1000);
 
       var finalOptions = _.assign({
         start_date: startDate.getTime(),
-        end_date: endDate.getTime(),
         include_trips: true,
         include_availability: true,
       }, options)
@@ -90,11 +88,9 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       // FIXME: use date-based search instead
       var startDate = new Date();
       startDate.setHours(3,0,0,0,0)
-      var endDate = new Date(startDate.getTime() + 30*24*60*60*1000);
 
       var finalOptions = _.assign({
         start_date: startDate.getTime(),
-        end_date: endDate.getTime(),
         include_trips: true,
         limit_trips: 5,
         include_path: false,
