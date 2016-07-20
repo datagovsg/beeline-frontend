@@ -113,7 +113,8 @@
           </p>
           <p>
             For enquiries, please contact
-            <strong>{{company.contactNo}}</strong>.
+            <strong>{{company.email}}</strong>
+            <strong ng-if="company.contactNo">(Tel: {{company.contactNo}})</strong>
           </p>
         </div>
       </div>
