@@ -175,6 +175,14 @@ table.booking-info {
   }
 }
 
+.button-bar {
+  .button:last-child {
+    border-radius: 0;
+  }
+  .button:first-child {
+    border-radius: 0;
+  }
+}
 
 // input overrides
 // -------------------------------

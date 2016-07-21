@@ -2,29 +2,32 @@ import loginModalTemplate from '../templates/login-modal.html';
 const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$/;
 
 export default function ($rootScope, $ionicModal, Legalese) {
-  var scope = $rootScope.$new();
-
-  var loginModal = $ionicModal.fromTemplate(
-    loginModalTemplate,
-    {scope: scope}
-  );
-
-  scope.modal = loginModal;
-  scope.phonePattern = VALID_PHONE_REGEX;
-  scope.showPrivacyPolicy = () => Legalese.showPrivacyPolicy();
-  scope.showTermsOfUse = () => Legalese.showTermsOfUse();
-
-  scope.$on('modal.hidden', () => {
-    if (scope.reject)
-      scope.reject();
-    scope.accept = scope.reject = null;
-  })
-
   this.show = () => {
+    var scope = $rootScope.$new();
+    var loginModal = $ionicModal.fromTemplate(
+      loginModalTemplate,
+      {scope: scope}
+    );
+
+    scope.modal = loginModal;
+    scope.phonePattern = VALID_PHONE_REGEX;
+    scope.showPrivacyPolicy = () => Legalese.showPrivacyPolicy();
+    scope.showTermsOfUse = () => Legalese.showTermsOfUse();
+
     scope.data = {};
     scope.form = {};
 
-    return new Promise((resolve, reject) => {
+    function cleanup() {
+      loginModal.destroy();
+    }
+
+    var loginPromise = new Promise((resolve, reject) => {
+      scope.$on('modal.hidden', () => {
+        if (scope.reject)
+          scope.reject();
+        scope.accept = scope.reject = null;
+      })
+
       scope.accept = () => {
         scope.accept = scope.reject = null;
         loginModal.hide();
@@ -32,5 +35,9 @@ export default function ($rootScope, $ionicModal, Legalese) {
       };
       loginModal.show();
     })
+
+    loginPromise.then(cleanup, cleanup);
+
+    return loginPromise;
   }
 }

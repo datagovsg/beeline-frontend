@@ -32,13 +32,13 @@
       </ion-checkbox>
     </ion-item>
 
-    <ion-item class="item-text-wrap">
-      <button class="button-positive button button-block" ng-click="accept()"
+    <ion-item class="button-bar">
+      <button class="button-default button" ng-click="modal.hide()">
+        Cancel
+      </button>
+      <button class="button-positive button" ng-click="accept()"
           ng-disabled="form.validation.$invalid">
           Log in
-      </button>
-      <button class="button-default button button-block" ng-click="modal.hide()">
-        Cancel
       </button>
     </ion-item>
 
