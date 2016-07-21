@@ -33,12 +33,14 @@
         .time{
           white-space: nowrap;
           flex: 0 0 4em;
+          margin-right: $content-padding;
         }
         .route-icon {
           position: relative;
+          flex: none;
           vertical-align: top;
-          padding-left: $content-padding*0.5;
-          padding-right: $content-padding;
+          margin-left: 0;
+          margin-right: $content-padding*0.5;
           top: $item-padding-small;
         }
       }
