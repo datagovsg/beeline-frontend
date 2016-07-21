@@ -1,4 +1,4 @@
-<div class="item item-icon-right bus-stop-selector"
+<div class="item item-text-wrap item-icon-left item-icon-right bus-stop-selector"
      ng-click="showList()">
   <select ng-options="stop.id as (formatTime(stop.time) + ' - ' + stop.description + ' ' + stop.road) for stop in busStops"
           ng-model="ngModel"
@@ -7,7 +7,7 @@
           hidden
           aria-hidden="true">
   </select>
-  <span class="stop-icon"></span>
+  <span class="icon stop-icon"></span>
   <span ng-if="!ngModel" class="placeholder">
     {{placeholder}}
   </span>
