@@ -3,24 +3,19 @@ import termsOfUseModalTemplate from '../templates/terms-of-use-modal.html';
 
 export default function ($rootScope, $ionicModal) {
 
-  function buildModal(template) {
+  function showModal(template) {
     var scope = $rootScope.$new();
     var modal = $ionicModal.fromTemplate(
       template,
       {scope: scope}
     );
+    modal.show();
+
     scope.modal = modal;
-    return {
-      show() {
-        modal.show();
-      }
-    }
+    scope.$on('modal.hidden', () => modal.remove())
   }
 
-  var privacyPolicyModal = buildModal(privacyPolicyModalTemplate)
-    , termsOfUseModal = buildModal(termsOfUseModalTemplate);
-
-  this.showPrivacyPolicy = () => privacyPolicyModal.show();
-  this.showTermsOfUse = () => termsOfUseModal.show();
+  this.showPrivacyPolicy = () => showModal(privacyPolicyModalTemplate)
+  this.showTermsOfUse = () => showModal(termsOfUseModalTemplate)
 
 }
