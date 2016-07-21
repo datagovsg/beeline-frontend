@@ -34,7 +34,11 @@
         </div>
         <div class="col">
           <h4>Vehicle No.</h4>
-          <div class="vehicleNo" ng-bind="info.trip.vehicle.vehicleNumber || 'Not provided'"></div>
+          <div ng-if="info.trip.vehicle.vehicleNumber" class="vehicleNo" ng-bind="info.trip.vehicle.vehicleNumber">
+          </div>
+          <div ng-if="!info.trip.vehicle.vehicleNumber">
+            Not provided
+          </div>
         </div>
       </div>
       <div class="row">
