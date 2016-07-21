@@ -18,7 +18,6 @@ export default function ($rootScope, $ionicModal, Legalese) {
     scope.form = {};
 
     function cleanup() {
-      console.log('CleanuP!')
       loginModal.remove();
     }
 
