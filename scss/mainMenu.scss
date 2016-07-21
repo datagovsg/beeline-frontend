@@ -10,7 +10,10 @@
 .nav-routes {
   background: url('../img/menu/MenuRoutesNormal.svg') center 4px no-repeat;
   display: block;
-  &:hover,
+  &:hover{
+    background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
+    opacity: 0.2;
+  }
   &.tab-item-active {
     background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
   }
@@ -19,7 +22,10 @@
 .nav-suggest {
   background: url('../img/menu/MenuSuggestNormal.svg') center 4px no-repeat;
   display: block;
-  &:hover,
+  &:hover{
+    background: url('../img/menu/MenuSuggestActive.svg') center 4px no-repeat;
+    opacity: 0.5;
+  }
   &.tab-item-active {
     background: url('../img/menu/MenuSuggestActive.svg') center 4px no-repeat;
   }
@@ -28,7 +34,10 @@
 .nav-tickets {
   background: url('../img/menu/MenuTicketsNormal.svg') center 2px no-repeat;
   display: block;
-  &:hover,
+  &:hover{
+    background: url('../img/menu/MenuTicketsActive.svg') center 2px no-repeat;
+    opacity: 0.5;
+  }
   &.tab-item-active {
     background: url('../img/menu/MenuTicketsActive.svg') center 2px no-repeat;
   }
@@ -38,7 +47,10 @@
 .nav-settings {
   background: url('../img/menu/MenuSettingsNormal.svg') center 3px no-repeat;
   display: block;
-  &:hover,
+  &:hover{
+    background: url('../img/menu/MenuSettingsActive.svg') center 3px no-repeat;
+    opacity: 0.5;
+  }
   &.tab-item-active {
     background: url('../img/menu/MenuSettingsActive.svg') center 3px no-repeat;
   }
