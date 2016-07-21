@@ -95,6 +95,10 @@
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  &.activated{
+    border-color: #f7c639;
+  }
 }
 
 table.booking-info {
