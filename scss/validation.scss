@@ -1,7 +1,9 @@
 
 .has-error {
-  border-top: solid $assertive 2px;
-  color: $assertive;
+  padding: $content-padding;
+  margin: $content-padding 0;
+  color: darken($assertive, 40%);
+  background-color: lighten($assertive, 25%);
 
   &.ng-hide {
     display: block;

@@ -1,117 +1,21 @@
-#pg_login {
-  .terms {
-    text-align: center;
+.login {
+  p {
+    padding: $content-padding*2 0;
   }
-
-	.scroll {
-		height: 100%;
-		padding: 10px 16px;
-		background-color: $stable;
-		color: #FFF;
-	}
-
-	.content {
-    @include narrow-content();
-
-		a {
-			color: #e8d16b;
-			text-decoration: underline;
-			cursor: pointer;
-		}
-
-		.ng-hide-remove.err {
-			-webkit-animation:0.3s growanim;
-			animation:0.3s growanim;
-		}
-
-		.ng-hide-add.err  {
-			-webkit-animation:0.3s shrinkanim;
-			animation:0.3s shrinkanim;
-		}
-
-		.holder {
-			background-color: #FFF;
-			padding: 10px;
-			font-size: 20px;
-			line-height: 30px;
-		}
-
-		input {
-			width: calc(100% - 95px);
-			height: 30px;
-			border: none;
-			position: absolute;
-			background-color: transparent;
-			font-size: 20px;
-			line-height: 30px;
-			margin-left: 75px;
-		}
-
-		.phtxt {
-			color: #8e8e8e;
-			padding-left: 30px;
-
-			.icon {
-				font-size: 30px;
-				position: absolute;
-				left: 16px;
-			}
-		}
-
-		.loginqn {
-			display: block;
-			margin: 10px 0px 20px 0px;
-			padding-left: 30px;
-			line-height: 24px;
-
-			.icon {
-				font-size: 24px;
-				position: absolute;
-				left: 5px;
-			}
-
-		}
-	}
-}
-
-.loginfaq.modal {
-  .scroll {
-    height: 100%;
-    padding: 10px 16px;
-    background-color: #FFF;
-
-    h4 {
-      font-weight: bold;
-      margin: 0px;
-      padding: 10px 0px 20px 0px;
-    }
-
-    section {
-      margin: 0px 0px 20px 0px;
-
-      ul {
-        padding-left: 25px;
-
-        li {
-          background-color: #E5E5E5;
-          padding: 5px 10px;
-          border-radius: 5px;
-          list-style-type: decimal-leading-zero;
-          margin-bottom: 10px;
-        }
-      }
-    }
-
-    .title {
-      font-weight: bold;
-      font-size: 16px;
-      border-bottom: 1px solid #333;
-      margin-bottom: 10px;
-
-      .icon {
-        margin-right: 5px;
-        padding-left: 5px;
-      }
+  .checkPolicy {
+    margin: $content-padding*2 0;
+  }
+  .item-checkbox {
+    border: none;
+    padding: 0;
+    margin:0;
+    padding-left: 60px;
+  }
+  .button-bar {
+    border: 0;
+    margin: $content-padding*2 0;
+    .button {
+      border: 0;
     }
   }
 }
