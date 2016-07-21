@@ -99,14 +99,20 @@
   }
 
   .ticket-nav-ticket {
-    content: url('../img/ticketdetail_ticket_normal.svg');
-    padding-right: $padding_small_horizontal*0.5;
+    background-image: url('../img/ticketdetail_ticket_normal.svg');
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: $padding_small_horizontal*0.5;
     vertical-align: sub;
   }
 
   .ticket-nav-moreInfo {
-    content: url('../img/ticketdetail_moreinfo_normal.svg');
-    padding-right: $padding_small_horizontal*0.5;
+    background-image: url('../img/ticketdetail_moreinfo_normal.svg');
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: $padding_small_horizontal*0.5;
     vertical-align: sub;
   }
 }
