@@ -1,21 +1,29 @@
-.login {
-  p {
-    padding: $content-padding*2 0;
+.loginContent{
+  p{
+    margin: $content-padding 0px;
   }
-  .checkPolicy {
-    margin: $content-padding*2 0;
+  label{
+    margin: $content-padding 0;
   }
-  .item-checkbox {
-    border: none;
-    padding: 0;
-    margin:0;
-    padding-left: 60px;
-  }
-  .button-bar {
-    border: 0;
-    margin: $content-padding*2 0;
-    .button {
-      border: 0;
+  .checkPolicy{
+    margin-top: $content-padding*3;
+    margin-bottom: $content-padding*2;
+    padding: $item-padding-small;
+    a{
+      text-decoration: underline;
     }
+    .item.item-checkbox{
+      border: none;
+      padding: 0;
+      padding-left: $content-padding*4;
+      margin: $content-padding 0;
+      .checkbox{
+        position: absolute;
+        left:-8px; /*undo ionic default*/
+      }
+    }
+  }
+  .primary-button{
+    margin-bottom: $content-padding*3;
   }
 }
