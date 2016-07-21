@@ -18,15 +18,18 @@ export default function ($rootScope, $ionicModal, Legalese) {
     scope.form = {};
 
     function cleanup() {
-      loginModal.destroy();
+      console.log('CleanuP!')
+      loginModal.remove();
     }
 
     var loginPromise = new Promise((resolve, reject) => {
       scope.$on('modal.hidden', () => {
         if (scope.reject)
-          scope.reject();
+          scope.reject(null);
         scope.accept = scope.reject = null;
       })
+
+      scope.reject = resolve;
 
       scope.accept = () => {
         scope.accept = scope.reject = null;
