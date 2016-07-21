@@ -3,10 +3,9 @@
   /* 38px is related to the width of the icon representing stops */
 
   .stop-icon {
-    background: url('../img/icon-stop-big.png') left 7px center no-repeat transparent;
     background-size: auto 20px;
     width: 24px;
-    height: 24px;
+    /* height: 24px; */
     display: inline-block;
     vertical-align: bottom;
     margin: 0 5px 0 0px;
