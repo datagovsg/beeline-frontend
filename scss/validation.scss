@@ -1,0 +1,20 @@
+
+.has-error {
+  border-top: solid $assertive 2px;
+  color: $assertive;
+
+  &.ng-hide {
+    display: block;
+    max-height: 0px;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: 0.1s linear all;
+  }
+
+  &:not(.ng-hide) {
+    max-height: 500px;
+    transition: 0.1s linear all;
+  }
+}
