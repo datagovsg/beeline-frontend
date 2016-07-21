@@ -1,6 +1,7 @@
 import querystring from 'querystring';
 import uuid from 'uuid';
 import _ from 'lodash';
+import assert from 'assert';
 import verifiedPromptTemplate from '../templates/verified-prompt.html';
 import requestingVerificationCodeTemplate from '../templates/requesting-verification-code.html';
 import sendingVerificationCodeTemplate from '../templates/sending-verification-code.html';
@@ -142,16 +143,12 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // If the session is invalid then log out
   var verifySession = function() {
     return beelineRequest({
-      url: '/user',
-      method: 'GET'
+      url: '/users/auth/renew',
+      method: 'POST'
     })
     .then(function(response) {
-      user = response.data;
-
-      if (!user) {
-        logOut(); // user not found
-        return false;
-      }
+      assert(response.data.sessionToken);
+      window.localStorage.setItem('sessionToken', response.data.sessionToken);
 
       return true;
     }, function(error) {
@@ -259,16 +256,31 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     };
   };
 
-  var register = function(newUser) {
+  function register(newUser) {
     return beelineRequest({
       method: 'POST',
-      url: '/user',
+      url: '/users',
       data: newUser
     })
     .then(function(response) {
-      return true;
+      return response.data
     });
   };
+
+  function verifyUserCreation(token, code) {
+    return beelineRequest({
+      method: 'POST',
+      url: '/users/verifyCreate',
+      data: {token, code}
+    })
+    .then((response) => {
+      sessionToken = response.data.sessionToken;
+      window.localStorage.setItem('sessionToken', sessionToken);
+      user = response.data.user;
+      window.localStorage.setItem('beelineUser', JSON.stringify(user));
+      return user;
+    })
+  }
 
   var promptRegister = async function(telephone) {
     try {
@@ -300,15 +312,12 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         email: accountResponse.email,
         telephone: telephone
       });
-      $ionicLoading.hide();
-      if (!registerResponse) return;
-      $ionicLoading.show({template: requestingVerificationCodeTemplate});
-      await sendTelephoneVerificationCode(telephone);
+      assert(registerResponse.token);
       $ionicLoading.hide();
       var verificationCode = await promptVerificationCode(telephone);
       if (!verificationCode) return;
       $ionicLoading.show({template: sendingVerificationCodeTemplate});
-      await verifyTelephone(telephone, verificationCode.code);
+      await verifyUserCreation(registerResponse.token, verificationCode.code);
       $ionicLoading.hide();
     }
     // If an error occurs at any point stop and alert the user
