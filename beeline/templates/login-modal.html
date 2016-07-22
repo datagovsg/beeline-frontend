@@ -5,43 +5,29 @@
     </button>
   </ion-header-bar>
   <ion-content ng-form="form.validation">
-    <ion-item class="item-text-wrap item item-divider">
-      Please log in with your telephone number
-    </ion-item>
+    <div class="item item-text-wrap loginContent">
+      <div class="list list-inset">
+        <p>
+          Please enter your telephone number.
+        </p>
+        <label class="item item-input loginTel">
+          <i class="icon ion-ios-telephone placeholder-icon"></i><span class="telPrefix">+65</span>
+          <input ng-model="data.telephone" name="telephone" ng-required="true" ng-pattern="phonePattern" placeholder="91234567" type="tel">
+        </label>
+        <div class="has-error" ng-show="form.validation.telephone.$invalid
+                  && form.validation.telephone.$dirty">
+          The phone no. you provide does not appear to be in the correct format. Please provide a valid 8-digit phone no. starting with the number 8 or 9.
+        </div>
+        <div class="checkTerms">
+            Please read Beeline's <a ng-click="showPrivacyPolicy()">Privacy Policy</a> and <a ng-click="showTermsOfUse()">Terms of Use</a>.
+          <ion-checkbox ng-model="acceptPolicy" ng-required="true">I read and agree to the above terms and would like to proceed using Beeline.
+          </ion-checkbox>
+          </div>
+          <button class="primary-button button" ng-click="accept()" ng-disabled="form.validation.$invalid">
+            Log in
+          </button>
 
-    <ion-item class="item-input item-icon-left">
-      <i class="ionicon ion-ios-telephone"></i> +65
-      <input ng-model="data.telephone" name="telephone" ng-required="true"
-          ng-pattern="phonePattern" placeholder="XXXX XXXX" type="tel">
-    </ion-item>
-
-    <div class="item item-text-wrap has-error" ng-show="form.validation.telephone.$invalid
-            && form.validation.telephone.$dirty">
-      The phone no. you provide does not appear to be in the correct format.
-      Please provide a valid 8-digit phone no. starting with the number 8 or 9.
+      </div>
     </div>
-
-    <ion-item class="item item-text-wrap">
-      This use of this app is subject to our
-        <a ng-click="showPrivacyPolicy()">Privacy Policy</a>
-        and
-        <a ng-click="showTermsOfUse()">Terms of Use</a>.
-        <br/>
-        <br/>
-      <ion-checkbox ng-model="acceptPolicy" ng-required="true">
-        I accept the Privacy Policy and Terms of Use
-      </ion-checkbox>
-    </ion-item>
-
-    <ion-item class="button-bar">
-      <button class="button-default button" ng-click="modal.hide()">
-        Cancel
-      </button>
-      <button class="button-positive button" ng-click="accept()"
-          ng-disabled="form.validation.$invalid">
-          Log in
-      </button>
-    </ion-item>
-
   </ion-content>
 </ion-modal-view>
