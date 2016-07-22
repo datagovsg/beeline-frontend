@@ -49,9 +49,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.routes = _.sortBy(allRoutes, (route) => {
         var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
 
-        var timeSinceMidnight = new Date(firstTripStop.time.getTime());
-        timeSinceMidnight.setHours(0,0,0,0);
-        return firstTripStop.time.getTime() - timeSinceMidnight.getTime();
+        var midnightOfTrip = new Date(firstTripStop.time.getTime());
+        midnightOfTrip.setHours(0,0,0,0);
+        return firstTripStop.time.getTime() - midnightOfTrip.getTime();
       });
     });
 
