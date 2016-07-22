@@ -15,8 +15,6 @@
     }
     // Get the select option to center align too
     select {
-      top: 3px; // Alignment hack to get it aligned with the label
-                // Can't use vertical align cos of the ionic structure
       width: 100% - $input-label-width;
       padding-right: 0; // Remove right padding since we're centre aligning now
       direction: ltr;
