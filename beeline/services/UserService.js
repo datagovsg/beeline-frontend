@@ -1,6 +1,7 @@
 import querystring from 'querystring';
 import uuid from 'uuid';
 import _ from 'lodash';
+import assert from 'assert';
 import verifiedPromptTemplate from '../templates/verified-prompt.html';
 import requestingVerificationCodeTemplate from '../templates/requesting-verification-code.html';
 import sendingVerificationCodeTemplate from '../templates/sending-verification-code.html';
@@ -117,7 +118,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   };
 
   // Updates user fields
-  var updateUserInfo = function(update) {
+  function updateUserInfo(update) {
     return beelineRequest({
       method: 'PUT',
       url: '/user',
@@ -230,45 +231,51 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // The combined prompt for phone number and subsequent prompt for verification code
   var promptLogIn = async function() {
     try {
+      // Ask for telephone number
       var telephoneNumber = await LoginDialog.show()
       if (!telephoneNumber) return;
       $ionicLoading.show({template: requestingVerificationCodeTemplate});
       await sendTelephoneVerificationCode(telephoneNumber);
       $ionicLoading.hide();
+
+      // Ask for verification code
       var verificationCode = await promptVerificationCode(telephoneNumber);
       if (!verificationCode) return;
       $ionicLoading.show({template: sendingVerificationCodeTemplate});
-      await verifyTelephone(telephoneNumber, verificationCode.code);
+      var user = await verifyTelephone(telephoneNumber, verificationCode.code);
       $ionicLoading.hide();
+
+      // Is the user name null?
+      checkNewUser(user);
     }
     // If an error occurs at any point stop and alert the user
     catch(error) {
       $ionicLoading.hide();
-      if (error.status === 400) {
-        promptRegister(telephoneNumber);
-      }
-      else {
-        $ionicPopup.alert({
-          title: "Error while trying to connect to server.",
-          subTitle: error && error.data && error.data.message
-        });
-      }
+      $ionicPopup.alert({
+        title: "Error while trying to connect to server.",
+        subTitle: error && error.data && error.data.message
+      });
       throw error; // Allow the calling function to catch the error
     };
   };
 
-  var register = function(newUser) {
+  function register(newUser) {
     return beelineRequest({
       method: 'POST',
-      url: '/user',
+      url: '/users',
       data: newUser
     })
     .then(function(response) {
-      return true;
+      return response.data
     });
   };
 
-  var promptRegister = async function(telephone) {
+  async function checkNewUser(user) {
+    if (user.name || user.email) {
+      // Not a new user
+      return;
+    }
+
     try {
       var accountResponse = await verifiedPrompt({
         title: 'Account Details',
@@ -289,24 +296,14 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
             errorMsg: 'Email address does not appear to be in the correct format. \
             Please provide a valid email address.'
           },
-        ]
+        ],
       });
       if (!accountResponse) return;
       $ionicLoading.show({template: registeringWithServerTemplate});
-      var registerResponse = await register({
+      var updateResponse = await updateUserInfo({
         name: accountResponse.name,
         email: accountResponse.email,
-        telephone: telephone
       });
-      $ionicLoading.hide();
-      if (!registerResponse) return;
-      $ionicLoading.show({template: requestingVerificationCodeTemplate});
-      await sendTelephoneVerificationCode(telephone);
-      $ionicLoading.hide();
-      var verificationCode = await promptVerificationCode(telephone);
-      if (!verificationCode) return;
-      $ionicLoading.show({template: sendingVerificationCodeTemplate});
-      await verifyTelephone(telephone, verificationCode.code);
       $ionicLoading.hide();
     }
     // If an error occurs at any point stop and alert the user
@@ -314,7 +311,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       $ionicLoading.hide();
       $ionicPopup.alert({
         title: "Error while trying to connect to server.",
-        subTitle: error
+        subTitle: error && error.data && error.data.message
       });
     };
   };
