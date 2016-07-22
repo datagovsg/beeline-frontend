@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.beeline2133464" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>beeline2</name>
+<!-- iOS build -->
+<widget id="sg.beeline.beeline" version="3.0.0" android-versionCode="300000" ios-CFBundleVersion="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<!-- android build -->
+<!-- <widget id="sg.beeline" version="3.0.0" android-versionCode="300000" ios-CFBundleVersion="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"> -->
+  <name>Beeline</name>
   <description>
-        An Ionic Framework and Cordova project.
-    </description>
-  <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
-    </author>
+    Beeline
+  </description>
+  <author email="feedback@beeline.sg" href="https://beeline.sg/">
+    Beeline
+  </author>
   <content src="index.html"/>
   <access origin="*"/>
   <allow-navigation href="https://js.stripe.com/*" />
@@ -20,7 +23,10 @@
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="SplashScreenDelay" value="2000"/>
+  <preference name="FadeSplashScreen" value="false" />
+  <preference name="SplashMaintainAspectRatio" value="true"/>
+  <preference name="SplashReloadOnOrientationChange" value="true"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
