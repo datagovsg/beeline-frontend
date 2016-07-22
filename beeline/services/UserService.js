@@ -253,7 +253,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       $ionicLoading.hide();
       $ionicPopup.alert({
         title: "Error while trying to connect to server.",
-          subTitle: error.data && error.data.message
+        subTitle: error && error.data && error.data.message
       });
       throw error; // Allow the calling function to catch the error
     };
@@ -291,20 +291,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
           },
           {
             type: 'email',
-            nam[difftool "kdiff3"]
-    path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
-    trustExitCode = false
-[difftool]
-    prompt = false
-[diff]
-    tool = kdiff3
-[mergetool "kdiff3"]
-    path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
-    trustExitCode = false
-[mergetool]
-    keepBackup = false
-[merge]
-    tool = kdiff3e: 'email',
+            name: 'email',
             inputPlaceHolder: 'name@example.com',
             errorMsg: 'Email address does not appear to be in the correct format. \
             Please provide a valid email address.'
@@ -324,7 +311,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       $ionicLoading.hide();
       $ionicPopup.alert({
         title: "Error while trying to connect to server.",
-        subTitle: error.data && error.data.message
+        subTitle: error && error.data && error.data.message
       });
     };
   };
@@ -356,7 +343,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       $ionicLoading.hide();
       $ionicPopup.alert({
         title: "Error while trying to connect to server.",
-        subTitle: error.data && error.data.message
+        subTitle: error && error.data && error.data.message
       });
     };
   };
