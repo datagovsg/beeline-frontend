@@ -104,8 +104,9 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         url: url,
       })
       .then(function(response) {
-        transformRouteData(response.data)
-        return response.data;
+        var routes = response.data.filter(r => r.trips);
+        transformRouteData(routes)
+        return routes;
       });
 
       // Cache the promise -- prevents two requests from being
