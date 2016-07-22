@@ -6,11 +6,12 @@
   // Use % widths on both components to get them roughly to the center
   // Using this method since it's easily compatible with the ionic structure
   .item-select {
-    $input-label-width: 43%;
+    $input-label-width: 40%;
     .input-label {
       width: $input-label-width;
       max-width: none;
       text-align: right;
+      font-size: $font_size_base;
     }
     // Get the select option to center align too
     select {

@@ -2,7 +2,8 @@ import busStopSelectorListTemplate from '../templates/busStopSelectorList.html';
 import {formatTime} from '../shared/format'
 import _ from 'lodash';
 
-export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi) {
+export default function ($rootScope, $ionicModal, MapOptions,
+  uiGmapGoogleMapApi) {
   var scope = $rootScope.$new();
 
   initializeScope(scope);
@@ -12,10 +13,6 @@ export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi
   });
 
   this.show = function (options) {
-    setTimeout(() => {
-      scope.fitMap();
-    }, 300);
-
     _.assign(scope, _.pick(options, [
       'busStops', 'markerOptions', 'title', 'button', 'pinOptions',
     ]))
@@ -23,7 +20,10 @@ export default function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi
 
     return new Promise((resolve, reject) => {
       // Initialize the selected stop
-      scope.selectionModal.show();
+      scope.selectionModal.show()
+      .then(() => {
+        scope.fitMap();
+      });
       scope.resolve = resolve;
     })
   }

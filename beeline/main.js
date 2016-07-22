@@ -55,6 +55,8 @@ var app = angular.module('beeline', [
 .factory('GoogleAnalytics', require('./services/GoogleAnalytics.js').default)
 .service('MapOptions', require('./services/MapOptions').default)
 .service('busStopSelectorDialog', require('./services/busStopSelectorDialog.js').default)
+.service('Legalese', require('./services/legalese.js').default)
+.service('LoginDialog', require('./services/login.js').default)
 .controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
 .controller('RoutesController', require('./controllers/RoutesController.js').default)
 .controller('RoutesMapController', require('./controllers/RoutesMapController.js').default)
@@ -79,6 +81,7 @@ var app = angular.module('beeline', [
 .directive('routeItem', require('./directives/routeItem/routeItem.js').default)
 .directive('companyTnc', require('./directives/companyTnc/companyTnc.js').default)
 .directive('tripCode', require('./directives/tripCode/tripCode.js').default)
+.directive('myLocation', require('./directives/myLocation.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
@@ -102,7 +105,6 @@ var app = angular.module('beeline', [
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
-
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required

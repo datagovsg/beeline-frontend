@@ -23,7 +23,7 @@ export default function() {
     transclude: true,
     scope: {
       value: '=value',
-      currency: '=',
+      currency: '=?',
     },
     template: `
 <span class="currency">{{currency}}</span>

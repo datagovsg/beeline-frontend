@@ -103,27 +103,33 @@ export default [
 
     uiGmapGoogleMapApi.then((googleMaps) => {
       $scope.map.busLocation.icon = {
-          url: 'img/busMarker01.png',
-          scaledSize: new googleMaps.Size(80, 80),
-          anchor: new googleMaps.Point(40, 73),
+          url: 'img/busMarker.svg',
+          scaledSize: new googleMaps.Size(68, 86),
+          anchor: new googleMaps.Point(34, 78),
         };
     })
 
     // Draw the icon for latest bus location
     $scope.$watch('recentPings', function(recentPings) {
       if (recentPings && recentPings.length > 0) {
-        var busPosition = recentPings[0].coordinates.coordinates;
-        $scope.map.busLocation.coordinates = {
-          latitude: busPosition[1],
-          longitude: busPosition[0],
-        };
-
+        $scope.map.busLocation.coordinates = recentPings[0].coordinates;
         $scope.map.lines.actualPath.path = recentPings.map(ping => ({
           latitude: ping.coordinates.coordinates[1],
-          longitude: ping.coordinates.coordinates[0],
+          longitude: ping.coordinates.coordinates[0]
         }));
       }
     });
+
+    //
+    $scope.$watch('map.markerOptions.boardMarker.icon', (icon) => {
+      if (!icon) return;
+      tripPromise.then((trip) => {
+        for (let ts of trip.tripStops) {
+          ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
+                                   $scope.map.markerOptions.alightMarker;
+        }
+      })
+    })
 
     // Pan and zoom to the bus location when the map is ready
     // Single ping request for updating the map initially
@@ -154,6 +160,16 @@ export default [
                                              info.pings[0].coordinates.coordinates[0]));
         map.fitBounds(bounds);
       }
+      else {
+        // Just show the boarding stops
+        var bounds = new googleMaps.LatLngBounds();
+        for (let tripStop of $scope.trip.tripStops) {
+          if (!tripStop.canBoard) continue;
+          bounds.extend(new google.maps.LatLng(tripStop.stop.coordinates.coordinates[1],
+                                               tripStop.stop.coordinates.coordinates[0]));
+        }
+        map.fitBounds(bounds);
+      }
     });
 
     // ////////////////////////////////////////////////////////////////////////
@@ -164,6 +180,7 @@ export default [
     Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) {
       var [map, googleMaps] = values;
 
+      MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });

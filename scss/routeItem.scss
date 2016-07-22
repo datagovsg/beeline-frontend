@@ -19,6 +19,7 @@ route-item {
        between the .bus-number and the stops */
     margin-top: 0.5em;
     position: relative;
+    flex: 1 1 auto;
 
     .stop-icon {
       /* this value depends on the width of the image -- leaving as a constant */
@@ -67,6 +68,7 @@ route-item {
       .road {
         text-transform: capitalize;
         flex: 1 1 auto;
+        white-space: initial;
       }
     }
   }

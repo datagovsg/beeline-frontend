@@ -1,5 +1,3 @@
-@import "node_modules/multiple-date-picker/dist/multiple-date-picker";
-
 // Start with our variables
 // To customize Ionic override the variables in ionic's _variables.scss file.
 @import "scss/variables";
@@ -14,6 +12,7 @@ $ionicons-font-path: "../lib/ionic/fonts";
 
 // General styles across the site
 @import "scss/beeline";
+@import "scss/validation";
 
 // Directive styles
 @import "scss/login-item";

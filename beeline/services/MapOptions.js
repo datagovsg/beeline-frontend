@@ -12,6 +12,7 @@ export default [
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },
+            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
           },
           alightMarker: {
             icon: {
@@ -19,6 +20,7 @@ export default [
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },
+            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
           },
           startMarker: {
             icon: {
@@ -26,7 +28,7 @@ export default [
               scaledSize: new googleMaps.Size(34, 46),
               anchor: new googleMaps.Point(17, 41),
             },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+            zIndex: google.maps.Marker.MAX_ZINDEX + 2,
           },
           endMarker: {
             icon: {
@@ -34,7 +36,7 @@ export default [
               scaledSize: new googleMaps.Size(34, 46),
               anchor: new googleMaps.Point(17, 41),
             },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+            zIndex: google.maps.Marker.MAX_ZINDEX + 2,
           },
         },
         pathOptions: {

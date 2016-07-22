@@ -1,0 +1,33 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-royal bar bar-header">
+    <h1 class="title">Login</h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="modal.hide()">
+    </button>
+  </ion-header-bar>
+  <ion-content ng-form="form.validation">
+    <div class="item item-text-wrap loginContent">
+      <div class="list list-inset">
+        <p>
+          Please enter your telephone number.
+        </p>
+        <label class="item item-input loginTel">
+          <i class="icon ion-ios-telephone placeholder-icon"></i><span class="telPrefix">+65</span>
+          <input ng-model="data.telephone" name="telephone" ng-required="true" ng-pattern="phonePattern" placeholder="91234567" type="tel">
+        </label>
+        <div class="has-error" ng-show="form.validation.telephone.$invalid
+                  && form.validation.telephone.$dirty">
+          The phone no. you provide does not appear to be in the correct format. Please provide a valid 8-digit phone no. starting with the number 8 or 9.
+        </div>
+        <div class="checkTerms">
+            Please read Beeline's <a ng-click="showPrivacyPolicy()">Privacy Policy</a> and <a ng-click="showTermsOfUse()">Terms of Use</a>.
+          <ion-checkbox ng-model="acceptPolicy" ng-required="true">I read and agree to the above terms and would like to proceed using Beeline.
+          </ion-checkbox>
+          </div>
+          <button class="primary-button button" ng-click="accept()" ng-disabled="form.validation.$invalid">
+            Log in
+          </button>
+
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

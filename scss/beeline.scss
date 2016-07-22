@@ -95,6 +95,10 @@
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  &.activated{
+    border-color: #f7c639;
+  }
 }
 
 table.booking-info {
@@ -157,7 +161,7 @@ table.booking-info {
 
 
 .popup-title {
-  padding: 30px 20px 10px;
+  padding: 10px 20px 10px;
   font-size: $font-size-large;
   font-weight: bold;
 }
@@ -167,7 +171,22 @@ table.booking-info {
   font-size: $font-size-base;
   line-height: $line-height-base;
 }
+.popup-body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  input {
+    margin: $padding-small-vertical 0;
+  }
+}
 
+.button-bar {
+  .button:last-child {
+    border-radius: 0;
+  }
+  .button:first-child {
+    border-radius: 0;
+  }
+}
 
 // input overrides
 // -------------------------------
@@ -187,10 +206,18 @@ input[type="search"],
 input[type="tel"],
 input[type="color"] {
   padding-left: 10px;
+  line-height: $line-height-base;
 }
 
 /** FIXES FOR BUGS **/
 /* Fix the wrong colour on Android subtabs */
 .tabs-striped.tabs-royal .tabs.tabs-striped.tabs-light {
   background-color: $light;
+}
+/* Fix tabs in IE when screen > 1200px. This is actually the **correct**
+  markup for the flexbox. max-width should not be used with flexbox
+  because there is a flexbox-based alternative for that */
+.tab-nav.tabs .tab-item {
+  max-width: none;
+  flex: 0 1 400px;
 }
