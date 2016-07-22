@@ -76,6 +76,9 @@ export default [
     $scope.$on('priceCalculator.done', () => {
       $ionicScrollDelegate.resize();
     })
+    $scope.$on('companyTnc.done', () => {
+      $ionicScrollDelegate.resize();
+    })
 
     $scope.checkValidDate = async function () {
 
