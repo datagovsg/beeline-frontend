@@ -13,7 +13,7 @@ export default [
     };
     $scope.$watch(() => UserService.getUser(), (user) => {
       if (user) {
-        refreshTickets()
+        refreshTickets(true)
       }
       $scope.user = user;
     });
