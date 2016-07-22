@@ -206,6 +206,7 @@ input[type="search"],
 input[type="tel"],
 input[type="color"] {
   padding-left: 10px;
+  line-height: $line-height-base;
 }
 
 /** FIXES FOR BUGS **/

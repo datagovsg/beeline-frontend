@@ -11,7 +11,7 @@
           Please enter your telephone number.
         </p>
         <label class="item item-input loginTel">
-          <i class="icon ion-ios-telephone placeholder-icon"></i> +65
+          <i class="icon ion-ios-telephone placeholder-icon"></i><span class="telPrefix">+65</span>
           <input ng-model="data.telephone" name="telephone" ng-required="true" ng-pattern="phonePattern" placeholder="91234567" type="tel">
         </label>
         <div class="has-error" ng-show="form.validation.telephone.$invalid

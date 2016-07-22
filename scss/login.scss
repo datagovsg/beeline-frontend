@@ -2,8 +2,11 @@
   p{
     margin: $content-padding 0px;
   }
-  label{
-    margin: $content-padding 0;
+  .loginTel{
+    .telPrefix{
+      margin-left: $item-padding-small;
+      white-space: nowrap;
+    }
   }
   .primary-button{
     margin-bottom: $content-padding*3;
