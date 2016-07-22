@@ -343,7 +343,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       $ionicLoading.hide();
       $ionicPopup.alert({
         title: "Error while trying to connect to server.",
-        subTitle: error
+        subTitle: error && error.data && error.data.message
       });
     };
   };
