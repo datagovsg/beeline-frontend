@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="sg.beeline.beeline" version="3.0.0" android-versionCode="10000" ios-CFBundleVersion="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>beeline2</name>
+<!-- iOS build -->
+<widget id="sg.beeline.beeline" version="3.0.0" android-versionCode="300000" ios-CFBundleVersion="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<!-- android build -->
+<!-- <widget id="sg.beeline" version="3.0.0" android-versionCode="300000" ios-CFBundleVersion="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"> -->
+  <name>Beeline</name>
   <description>
-    Beeline2
+    Beeline
   </description>
   <author email="feedback@beeline.sg" href="https://beeline.sg/">
     Beeline
