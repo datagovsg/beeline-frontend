@@ -1,101 +1,98 @@
-//overrides to the multiple-date-picker style imported
-/* .multiple-date-picker {
-  user-select: none;
-} */
-.multiple-date-picker,
-.picker-days-row,
-.picker-days-week-row,
-.picker-top-row {
-  width: 100%;
-  background-color: $picker-header-bg;
-}
-/* .picker-top-row {
-  div {
-    display: inline-block;
+.item {
+  &.datepickerIntro{
+      text-align: center;
+      color: $hint-color;
+      border-bottom: none;
+      padding: $padding_large_vertical 0px 0px 0px;
   }
 }
-.picker-navigate {
-  width: 16.66%;
-}
-.picker-navigate:hover {
-  cursor: pointer;
-}
-.picker-navigate.disabled,
-.picker-navigate.disabled:hover {
-  color: #ddd;
-  cursor: default;
-}
-.picker-month {
-}
-*/
 
-.picker-days-week-row {
-  div {
-    //width: 14.28%;
-    //display: inline-block;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #ddd;
+.multiple-date-picker {
+  user-select: none;
+  background-color: $picker-header-bg;
+  width: 100%;
+
+  .picker-days-row,
+  .picker-days-week-row,
+  .picker-top-row {
+    width: 100%;
+  }
+  .picker-top-row {
+    display: flex;
+
+    .picker-month {
+      flex: 1 1 auto;
+    }
+  }
+
+  .picker-navigate {
+    width: 16.66%;
+    font-size: 2em;
+
+    &:hover {
+      cursor: pointer;
+    }
+    &.disabled,
+    &.disabled:hover {
+      color: #ddd;
+      cursor: default;
+    }
+  }
+  .picker-days-week-row {
+    div {
+      width: 14.28%;
+      display: inline-block;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+  .picker-days-row {
+    div {
+      width: 14.28%;
+      display: inline-block;
+    }
   }
 }
-/* .picker-days-row {
-  div {
-    width: 14.28%;
-    display: inline-block;
-  }
-}
-.picker-days-row {
-  div {
-    width: 14.28%;
-    display: inline-block;
-  }
-}
+
 .picker-day,
 .picker-top-row {
   padding: 10px 0;
-} */
-/* When hovering over android phones */
-.picker-day:not(.picker-off):not(.picker-empty):hover,
+}
+
 .picker-day {
   background-color: $pickable-day-non-picked-background;
   border: 1px solid transparent;
   font-weight: bold;
-  //box-sizing: border-box;
+  box-sizing: border-box;
   color: $pickable-day-non-picked-color;
+
+  &.today {
+    color: $picker-day-today;
+    text-decoration: underline;
+  }
+
+  &:not(.picker-off):not(.picker-empty):not(.picker-selected):hover {
+    background-color: darken($pickable-day-non-picked-background, 10%);
+  }
+
+  &.picker-off {
+    background-color: $non-pickable-day-background;
+    color: $non-pickable-day-color;
+  }
+
+  &.picker-selected {
+    background-color: $pickable-day-picked-background;
+    color: $pickable-day-picked-color;
+
+    &:hover {
+      background-color: lighten($pickable-day-picked-background, 10%);
+    }
+  }
+  &.picker-empty {
+    background-color: $empty-day-background;
+  }
 }
-.picker-day.today,
-.picker-day.today.picker-selected,
-.picker-day.today:hover {
-  color: $picker-day-today;
-  text-decoration: underline;
-}
-.picker-day.today.picker-off,
-.picker-day.today.picker-off:hover {
-  color: $non-pickable-day-color;
-}
-/* Android phones may keep the hover lingering, which is bad */
-// .picker-day:not(.picker-off):not(.picker-empty):hover {
-//   background-color: $pickable-day-picked-background;
-//   color: $pickable-day-picked-color;
-//   cursor: pointer;
-// }
-.picker-day:not(.picker-off):not(.picker-empty).picker-selected:hover,
-.picker-day.picker-selected,
-.picker-day.today.picker-selected,
-.picker-day.today.picker-selected:hover {
-  background-color: $pickable-day-picked-background;
-  color: $pickable-day-picked-color;
-}
-.picker-day.picker-off,
-.picker-day.picker-off:hover {
-  background-color: $non-pickable-day-background;
-  color: $non-pickable-day-color;
-  //cursor: default;
-}
-.picker-day.picker-empty,
-.picker-day.picker-empty:hover {
-  background-color: $empty-day-background;
-  //cursor: default;
-}
+
 //legend stuff
 #pg_bookdate {
   multiple-date-picker {
@@ -126,12 +123,24 @@
       font-size: $font-size-small;
     }
   }
-}
-.datepicker {
-  background-color: $empty-day-background;
-  padding: 1em 0;
-}
-.picker-navigate-left-arrow,
-.picker-navigate-right-arrow {
-  font-size: 2em;
+
+  // Legend
+  .datepicker {
+    background-color: $empty-day-background;
+    padding: 1em 0;
+  }
+
+  .picker-day {
+    position: relative;
+
+    .annotation {
+      width: 0px;
+      height: 0px;
+      border-top: solid 1em $picker-notes-bg;
+      border-left: solid 1em transparent;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
 }

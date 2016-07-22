@@ -73,9 +73,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
   // This cascades the region filter from the previous block
   $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes'], function([newActiveRoutes, recentRoutes]) {
     $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
-    $scope.data.filteredRecentRoutes = _.filter(newActiveRoutes, function(route) {
-      return _.some(recentRoutes, {'id': route.id});
-    });
+    $scope.data.filteredRecentRoutes = recentRoutes.map(
+      recent => newActiveRoutes.find(route => route.id === recent.id)
+    ).filter(x => x) // Exclude null values (e.g. expired routes)
   });
 
   $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes'],
@@ -83,5 +83,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $ionicScrollDelegate.resize();
     });
 
-  $scope.$watch(() => UserService.getUser(), () => $scope.refreshRoutes(true));
+  // Don't override the caching in main.js
+  var firstRun = true;
+  $scope.$watch(() => UserService.getUser(), () => {
+    $scope.refreshRoutes(!firstRun);
+    firstRun = false;
+  });
 }

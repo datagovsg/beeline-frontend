@@ -26,6 +26,9 @@ $bus-stop-selector-padding-bottom: $item-padding-small;
 $stopMarkerWidth: 20px;
 $stopMarkerRightMargin: 0.5em;
 
+$popUpStopSelectMinWidth: 250px;
+$popUpStopSelectMinHeight: 100px;
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,6 +51,7 @@ $positive:  $royal; /* override default buttons for dialog boxes */
 
 //datepicker variables in bookingDates.scss
 
+$picker-notes-bg: #000;
 $picker-header-bg: #fff;
 $empty-day-background: $light-grey;
 $picker-day-today: #000;

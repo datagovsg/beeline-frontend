@@ -1,5 +1,5 @@
 <ion-view id="pg_booking" view-title="Select Stops"
-  hide-back-button="true">
+  hide-back-button="true" can-swipe-back="false">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
        ui-sref="tabs.routes">
@@ -21,9 +21,6 @@
         <route-item route="book.route"></route-item>
 
         <div class="price">
-          <div class="from">
-            from
-          </div>
           <fancy-price value="book.route.trips[0].price"></fancy-price>
         </div>
       </div>
@@ -36,8 +33,21 @@
             zoom="map.zoom"
             bounds="map.bounds"
             control="map.control"
-            options="map.options"
-            data-tap-disabled="true">
+            options="map.options">
+          <my-location></my-location>
+
+          <ui-gmap-window ng-if="disp.popupStop" coords="disp.popupStop.coordinates"
+            show="disp.popupStop">
+            <div class="popUpStopSelect">
+              <b>{{disp.popupStop.time | formatTime }}</b><br/>
+              {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
+              <a class="button button-block button-outline button-royal"
+                ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
+                Set {{disp.popupStopType === 'pickup' ? 'pick-up' : 'drop-off'}} stop
+              </a>
+            </div>
+          </ui-gmap-window>
+
           <ui-gmap-marker
             ng-repeat="stop in book.boardStops"
             idKey="stop.id"
@@ -71,6 +81,7 @@
             coords="book.alightStop.coordinates"
             options="map.markerOptions.endMarker">
           </ui-gmap-marker>
+
         </ui-gmap-google-map>
       </div>
 

@@ -1,7 +1,7 @@
 #pg_summary {
   .route-info {
     .start-end {
-      margin-top: 5px;
+      margin-top: $padding_small_vertical;
     }
   }
   .signage {
@@ -11,19 +11,21 @@
       border: 1px solid lighten($normal-grey, 50%);
     }
   }
-  .bus-logo{
+  .bus-logo {
     img {
       padding: 1px;
       border: 1px solid lighten($normal-grey, 50%);
-      max-width: 100px;
-      max-heigth: 100px;
+      max-width: 100%;
+      max-heigth: 100%;
     }
   }
-
+  .bus-co-info {
+    padding-left: $content-padding;
+  }
   .features {
     ul {
-        list-style: disc;
-        padding-left: $content-padding*2;
+      list-style: disc;
+      padding-left: $content-padding*2;
     }
   }
 }

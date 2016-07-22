@@ -1,3 +1,4 @@
+<p ng-if="data.bodyText">{{data.bodyText}}</p>
 <form name="form.verifiedPromptForm">
   <input  ng-repeat-start="input in data.inputs"
           placeholder={{input.inputPlaceHolder}}
@@ -9,6 +10,7 @@
   <div  ng-repeat-end
         ng-show="form.verifiedPromptForm[input.name].$invalid
           && form.verifiedPromptForm[input.name].$dirty">
-          Your {{input.name}} is invalid
+          <span ng-if="input.errorMsg">{{input.errorMsg}}</span>
+          <span ng-if="!input.errorMsg">Your {{input.name}} is invalid.</span>
   </div>
 </form>
