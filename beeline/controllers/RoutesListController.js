@@ -46,7 +46,13 @@ export default function($scope, $state, UserService, RoutesService, $q,
     // Configure the list of available regions
     allRoutesPromise.then(function(allRoutes) {
       $scope.data.regions = getUniqueRegionsFromRoutes(allRoutes);
-      $scope.data.routes = allRoutes;
+      $scope.data.routes = _.sortBy(allRoutes, (route) => {
+        var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
+
+        var timeSinceMidnight = new Date(firstTripStop.time.getTime());
+        timeSinceMidnight.setHours(0,0,0,0);
+        return firstTripStop.time.getTime() - timeSinceMidnight.getTime();
+      });
     });
 
     recentRoutesPromise.then(function(recentRoutes) {
