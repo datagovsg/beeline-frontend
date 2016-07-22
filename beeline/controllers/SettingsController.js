@@ -1,6 +1,4 @@
 import faqModalTemplate from '../templates/faq-modal.html';
-import privacyPolicyModalTemplate from '../templates/privacy-policy-modal.html';
-import termsOfUseModalTemplate from '../templates/terms-of-use-modal.html';
 import contactUsModalTemplate from '../templates/contact-us-modal.html';
 import commonmark from 'commonmark';
 
@@ -8,16 +6,9 @@ var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
 
 export default [
-  '$scope',
-  'UserService',
-  '$ionicModal',
-  '$ionicPopup',
+  '$scope', 'UserService', '$ionicModal', '$ionicPopup', 'Legalese',
   function(
-    $scope,
-    UserService,
-    $ionicModal,
-    $ionicPopup
-  ) {
+    $scope, UserService, $ionicModal, $ionicPopup, Legalese) {
     $scope.data = {};
 
     // Track the login state of the user service
@@ -69,22 +60,14 @@ export default [
       faqModalTemplate,
       {scope: assetScope('FAQ')}
     );
-    $scope.privacyPolicyModal = $ionicModal.fromTemplate(
-      privacyPolicyModalTemplate,
-      {scope: $scope}
-    );
-    $scope.termsOfUseModal = $ionicModal.fromTemplate(
-      termsOfUseModalTemplate,
-      {scope: $scope}
-    );
+    $scope.showPrivacyPolicy = () => Legalese.showPrivacyPolicy();
+    $scope.showTermsOfUse = () => Legalese.showTermsOfUse();
     $scope.contactUsModal = $ionicModal.fromTemplate(
       contactUsModalTemplate,
       {scope: $scope}
     );
     $scope.$on('$destroy', function() {
       $scope.faqModal.destroy();
-      $scope.privacyPolicyModal.destroy();
-      $scope.termsOfUseModal.destroy();
       $scope.contactUsModal.destroy();
     });
 

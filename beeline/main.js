@@ -55,6 +55,8 @@ var app = angular.module('beeline', [
 .factory('GoogleAnalytics', require('./services/GoogleAnalytics.js').default)
 .service('MapOptions', require('./services/MapOptions').default)
 .service('busStopSelectorDialog', require('./services/busStopSelectorDialog.js').default)
+.service('Legalese', require('./services/legalese.js').default)
+.service('LoginDialog', require('./services/login.js').default)
 .controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
 .controller('RoutesController', require('./controllers/RoutesController.js').default)
 .controller('RoutesMapController', require('./controllers/RoutesMapController.js').default)

@@ -95,6 +95,10 @@
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  &.activated{
+    border-color: #f7c639;
+  }
 }
 
 table.booking-info {
@@ -175,6 +179,14 @@ table.booking-info {
   }
 }
 
+.button-bar {
+  .button:last-child {
+    border-radius: 0;
+  }
+  .button:first-child {
+    border-radius: 0;
+  }
+}
 
 // input overrides
 // -------------------------------
@@ -194,6 +206,7 @@ input[type="search"],
 input[type="tel"],
 input[type="color"] {
   padding-left: 10px;
+  line-height: $line-height-base;
 }
 
 /** FIXES FOR BUGS **/
