@@ -143,12 +143,11 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // If the session is invalid then log out
   var verifySession = function() {
     return beelineRequest({
-      url: '/users/auth/renew',
-      method: 'POST'
+      url: '/user',
+      method: 'GET'
     })
     .then(function(response) {
-      assert(response.data.sessionToken);
-      window.localStorage.setItem('sessionToken', response.data.sessionToken);
+      user = response.data;
 
       return true;
     }, function(error) {
