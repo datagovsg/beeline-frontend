@@ -20,7 +20,8 @@ export default function($scope, UserService, RoutesService) {
 
     routesPromise = RoutesService.getRoutes(true, {
       end_date: Date.now(),
-      start_date: Date.now() - 365*24*60*60*1000
+      start_date: Date.now() - 365*24*60*60*1000,
+      tags: '[]',
     })
     .then((routes) => {
       $scope.routesById = _.keyBy(routes, r => r.id);
