@@ -82,7 +82,7 @@
     <splash src="resources/ios/splash/Default~iphone.png" height="480" width="320"/>
   </platform>
   <chcp>
-    <config-file url="https://s3-ap-southeast-1.amazonaws.com/beeline-hcp/chcp.json"/>
+    <config-file url="https://app.beeline.sg/chcp.json"/>
     <native-interface version="1" />
   </chcp>
 </widget>

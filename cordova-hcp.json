@@ -6,5 +6,5 @@
   "android_identifier": "sg.beeline",
   "ios_identifier": "id1010615256",
   "update": "resume",
-  "content_url": "https://s3-ap-southeast-1.amazonaws.com/beeline-hcp"
+  "content_url": "https://app.beeline.sg"
 }
