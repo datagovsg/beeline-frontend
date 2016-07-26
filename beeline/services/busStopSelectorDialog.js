@@ -3,7 +3,7 @@ import {formatTime} from '../shared/format'
 import _ from 'lodash';
 
 export default function ($rootScope, $ionicModal, MapOptions,
-  uiGmapGoogleMapApi) {
+  uiGmapGoogleMapApi, $ionicScrollDelegate) {
   var scope = $rootScope.$new();
 
   initializeScope(scope);
@@ -23,6 +23,12 @@ export default function ($rootScope, $ionicModal, MapOptions,
       scope.selectionModal.show()
       .then(() => {
         scope.fitMap();
+
+        // I have no idea why $getByHandle doesn't work in Ionic 1.3.1
+        // var scrollDelegate = $ionicScrollDelegate.$getByHandle('stopsListScroll');
+        var scrollDelegate = $ionicScrollDelegate._instances.find(inst => inst.$$delegateHandle === 'stopsListScroll');
+        scrollDelegate.resize();
+        scrollDelegate.scrollTop();
       });
       scope.resolve = resolve;
     })

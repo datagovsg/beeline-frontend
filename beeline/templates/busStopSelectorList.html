@@ -34,7 +34,7 @@
 
     <div class="item item-divider num-stops">{{busStops.length}} stops available</div>
 
-    <ion-content class="stops-list">
+    <ion-content class="stops-list" delegate-handle="stopsListScroll">
       <ion-list>
         <ion-radio  ng-repeat="stop in busStops"
                     ng-model="data.selectedStop"
