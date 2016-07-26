@@ -60,12 +60,12 @@
       .item-radio{
         .radio-icon {
           color: $royal;
-          font-size: 30px;
+          font-size: $radio-font-size;
           left: 0px;
         }
         .not-selected{
           color: $hint-color;
-          font-size: 30px;
+          font-size: $radio-font-size;
           left: 0px;
           padding: 14px; /*follow radio-icon padding*/
         }
