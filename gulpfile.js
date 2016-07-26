@@ -20,7 +20,7 @@ function errHandler(err) {
     this.emit('end');
 }
 
-gulp.task('default', ['sass', 'webpack', 'js-libraries']);
+gulp.task('default', ['sass', 'webpack', 'js-libraries', 'hot-code-push']);
 
 gulp.task('js-libraries', function() {
     gulp.src('./node_modules/angular-google-maps/dist/angular-google-maps.js')
@@ -60,6 +60,11 @@ gulp.task('watch', ['sass', 'webpack'], function() {
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(['www/templates/*.html', 'beeline/**/*.js', 'beeline/**/*.html'], ['webpack']);
 });
+
+gulp.task('hot-code-push', ['sass', 'webpack', 'js-libraries'], function (done) {
+  promiseExec('cordova-hcp build')
+  .then(done, done);
+})
 
 gulp.task('git-check', function(done) {
   if (!sh.which('git')) {

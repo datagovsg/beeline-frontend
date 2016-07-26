@@ -46,7 +46,8 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-app-version",
-    "cordova-plugin-geolocation"
+    "cordova-plugin-geolocation",
+    "cordova-hot-code-push-plugin"
   ],
   "cordovaPlatforms": [
     "android",

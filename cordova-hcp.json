@@ -1,0 +1,10 @@
+{
+  "name": "beeline",
+  "s3bucket": "beeline-hcp",
+  "s3prefix": "",
+  "s3region": "ap-southeast-1",
+  "android_identifier": "sg.beeline",
+  "ios_identifier": "id1010615256",
+  "update": "resume",
+  "content_url": "https://app.beeline.sg"
+}
