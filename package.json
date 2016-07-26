@@ -36,7 +36,9 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cordova-hot-code-push-cli": "^1.1.1"
+  },
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",
