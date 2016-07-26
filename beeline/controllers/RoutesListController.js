@@ -46,6 +46,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
     // Configure the list of available regions
     allRoutesPromise.then(function(allRoutes) {
       $scope.data.regions = getUniqueRegionsFromRoutes(allRoutes);
+      // Need to sort by time of day rather than by absolute time,
+      // in case we have routes with missing dates (e.g. upcoming routes)
       $scope.data.routes = _.sortBy(allRoutes, (route) => {
         var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
 

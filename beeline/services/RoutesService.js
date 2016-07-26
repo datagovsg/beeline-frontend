@@ -104,7 +104,9 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         url: url,
       })
       .then(function(response) {
-        var routes = response.data.filter(r => r.trips);
+        // Checking that we have trips, so that users of it don't choke
+        // on trips[0]
+        var routes = response.data.filter(r => r.trips && r.trips.length);
         transformRouteData(routes)
         return routes;
       });
