@@ -32,7 +32,6 @@
 
     .map-area {
       flex: 0 0.5 45vh;
-
       padding: 0;
       display: flex;
       flex-direction: column;
@@ -57,11 +56,18 @@
       flex: 1 1 auto;
       position: relative;
 
+
       .item-radio{
         .radio-icon {
           color: $royal;
           font-size: 30px;
           left: 0px;
+        }
+        .not-selected{
+          color: $hint-color;
+          font-size: 30px;
+          left: 0px;
+          padding: 14px; /*follow radio-icon padding*/
         }
         .item-content{
           padding-right: $item-padding * 1;
@@ -71,9 +77,6 @@
 
       .fullStopDetails{
         padding-left: $item_padding_base*4;
-        background-image: url("../img/busstopselector_default.svg");
-        background-repeat: no-repeat;
-        background-position: 1px 50%;
         .time{
           font-weight: bold;
         }
