@@ -1,14 +1,5 @@
 
-.radio-content {
-  .item-content {
-    .fullStopDetails::before {
-      position: absolute;
-      left:17px;
-      top: 31px;
-      content: url('../img/busstopselector_default.svg');
-    }
-  }
-}
+
 
 .bus-stop-selector {
   /* 38px is related to the width of the icon representing stops */
@@ -80,6 +71,9 @@
 
       .fullStopDetails{
         padding-left: $item_padding_base*4;
+        background-image: url("../img/busstopselector_default.svg");
+        background-repeat: no-repeat;
+        background-position: 1px 50%;
         .time{
           font-weight: bold;
         }
