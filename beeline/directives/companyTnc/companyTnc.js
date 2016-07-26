@@ -23,6 +23,7 @@ export default function companyTnc(CompanyService, $q) {
         .then((company) => {
           company.featuresHTML = writer.render(reader.parse(company.features));
           scope.company = company;
+          scope.$emit('companyTnc.done');
           return company;
         });
       });
