@@ -1,4 +1,6 @@
 
+
+
 .bus-stop-selector {
   /* 38px is related to the width of the icon representing stops */
 
@@ -30,7 +32,6 @@
 
     .map-area {
       flex: 0 0.5 45vh;
-
       padding: 0;
       display: flex;
       flex-direction: column;
@@ -55,11 +56,18 @@
       flex: 1 1 auto;
       position: relative;
 
+
       .item-radio{
         .radio-icon {
           color: $royal;
-          font-size: 30px;
+          font-size: $radio-font-size;
           left: 0px;
+        }
+        .not-selected{
+          color: $hint-color;
+          font-size: $radio-font-size;
+          left: 0px;
+          padding: 14px; /*follow radio-icon padding*/
         }
         .item-content{
           padding-right: $item-padding * 1;
