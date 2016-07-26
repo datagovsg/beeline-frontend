@@ -56,7 +56,7 @@ gulp.task('webpack', function(done) {
   return webpackPrefix(null,done);
 });
 
-gulp.task('watch', ['sass', 'webpack'], function() {
+gulp.task('watch', ['sass', 'webpack', 'js-libraries'], function() {
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(['www/templates/*.html', 'beeline/**/*.js', 'beeline/**/*.html'], ['webpack']);
 });
