@@ -28,7 +28,6 @@ export default function ($rootScope, $ionicModal, MapOptions,
         // var scrollDelegate = $ionicScrollDelegate.$getByHandle('stopsListScroll');
         var scrollDelegate = $ionicScrollDelegate._instances.find(inst => inst.$$delegateHandle === 'stopsListScroll');
         scrollDelegate.resize();
-        scrollDelegate.scrollTop();
       });
       scope.resolve = resolve;
     })
