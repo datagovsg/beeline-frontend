@@ -342,7 +342,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     catch(error){
       $ionicLoading.hide();
       $ionicPopup.alert({
-        title: "Error while trying to connect to server.",
+        title: "Error updating phone number.",
         subTitle: error && error.data && error.data.message
       });
     };
