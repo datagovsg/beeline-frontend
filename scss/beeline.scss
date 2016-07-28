@@ -1,5 +1,16 @@
 // Styling for elements that exist across the app
 
+// Limit width of super large devices
+@media (min-width: 992px) {
+  body > ion-nav-view {
+    max-width: 750px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 40px rgba(0,0,0,0.6)
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////
 // Ionic style overrides
 // Try to change using variables first before adding new styles here
