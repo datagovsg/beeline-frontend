@@ -87,6 +87,7 @@ var app = angular.module('beeline', [
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.tabs.style('standard');
   $ionicConfigProvider.navBar.alignTitle('center');
+  $ionicConfigProvider.scrolling.jsScrolling(false);
 })
 .config(function ($httpProvider) {
   $httpProvider.useApplyAsync(true);
