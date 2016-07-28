@@ -17,6 +17,15 @@
     box-shadow: 0 0 40px rgba(0,0,0,0.6)
   }
 }
+
+//hack to override ionic css for modal bug.
+@media (min-width: 680px) {
+  .modal {
+    left:0%;
+    right:0%;
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Ionic style overrides
 // Try to change using variables first before adding new styles here
