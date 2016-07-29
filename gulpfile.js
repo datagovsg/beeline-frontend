@@ -56,15 +56,15 @@ gulp.task('webpack', function(done) {
   return webpackPrefix(null,done);
 });
 
+gulp.task('hot-code-push', ['sass', 'webpack', 'js-libraries'], function (done) {
+  promiseExec('cordova-hcp build www')
+  .then(done, done);
+})
+
 gulp.task('watch', ['sass', 'webpack', 'js-libraries'], function() {
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(['www/templates/*.html', 'beeline/**/*.js', 'beeline/**/*.html'], ['webpack']);
 });
-
-gulp.task('hot-code-push', ['sass', 'webpack', 'js-libraries'], function (done) {
-  promiseExec('cordova-hcp build')
-  .then(done, done);
-})
 
 gulp.task('git-check', function(done) {
   if (!sh.which('git')) {
@@ -116,7 +116,12 @@ gulp.task('deploy-build', ['deploy-copy'], function (done) {
   return webpackPrefix('build', done)
 })
 
-gulp.task('deploy', ['deploy-build'], function (done) {
+gulp.task('deploy-hot-code-push', ['deploy-build'], function (done) {
+  promiseExec('cordova-hcp build build')
+  .then(done, done);
+})
+
+gulp.task('deploy', ['deploy-build', 'deploy-hot-code-push'], function (done) {
   done();
 })
 
