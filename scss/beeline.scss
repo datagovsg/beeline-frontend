@@ -4,25 +4,16 @@
 @media (min-width: 992px) {
   body > ion-nav-view,
   body ion-modal-view,
+  body ion-modal-view.stop-selector,
   body .popup-container > .popup
    {
     max-width: 750px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
+    left: calc(50% - 375px);
+    right: calc(50% - 375px);
   }
 
   body > ion-nav-view {
     box-shadow: 0 0 40px rgba(0,0,0,0.6)
-  }
-}
-
-//hack to override ionic css for modal bug.
-@media (min-width: 680px) {
-  .modal {
-    left:0%;
-    right:0%;
   }
 }
 
