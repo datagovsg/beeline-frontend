@@ -3,8 +3,8 @@
 // Limit width of super large devices
 @media (min-width: 992px) {
   body > ion-nav-view,
-  body ion-modal-view,
-  body ion-modal-view.stop-selector,
+  body ion-modal-view.modal,
+  body ion-modal-view.modal.stop-selector,
   body .popup-container > .popup
    {
     max-width: 750px;
