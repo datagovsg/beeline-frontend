@@ -176,6 +176,14 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       inputs: options.inputs || [],
       bodyText: options.bodyText || ''
     };
+    promptScope.$watch('form.verifiedPromptForm.$valid', function(inputValid){
+      if (inputValid && promptScope.form.verifiedPromptForm.$dirty) {
+        options.buttons[1].type="button-positive";
+      }
+      else {
+        options.buttons[1].type="button-default";
+      }
+    }, true);
     _.defaultsDeep(options,{
       template: verifiedPromptTemplate,
       title: '',
@@ -185,7 +193,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         { text: 'Cancel'},
         {
           text: 'OK',
-          type: 'button-positive',
+          type: 'button-light',
           onTap: function(e) {
             if (promptScope.form.verifiedPromptForm.$valid) {
               return promptScope.data;
@@ -298,7 +306,15 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
           },
         ],
       });
-      if (!accountResponse) return;
+      if (!accountResponse) {
+        $ionicPopup.alert({
+          title: 'Name and Email are compulsory fields.',
+          subTitle: "You will be logged out."
+        }).then(function(response) {
+          return logOut();
+        });
+        return;
+      }
       $ionicLoading.show({template: registeringWithServerTemplate});
       var updateResponse = await updateUserInfo({
         name: accountResponse.name,
