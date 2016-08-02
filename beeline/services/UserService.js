@@ -307,20 +307,18 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         ],
       });
       if (!accountResponse) {
-        $ionicPopup.alert({
-          title: 'Name and Email are compulsory fields.',
-          subTitle: "You will be logged out."
-        }).then(function(response) {
-          return logOut();
-        });
+        logOut();
+        $rootScope.$digest();
         return;
       }
-      $ionicLoading.show({template: registeringWithServerTemplate});
-      var updateResponse = await updateUserInfo({
-        name: accountResponse.name,
-        email: accountResponse.email,
-      });
-      $ionicLoading.hide();
+      else {
+        $ionicLoading.show({template: registeringWithServerTemplate});
+        var updateResponse = await updateUserInfo({
+          name: accountResponse.name,
+          email: accountResponse.email,
+        });
+        $ionicLoading.hide();
+      }
     }
     // If an error occurs at any point stop and alert the user
     catch(error) {
