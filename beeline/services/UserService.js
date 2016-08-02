@@ -176,14 +176,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       inputs: options.inputs || [],
       bodyText: options.bodyText || ''
     };
-    promptScope.$watch('form.verifiedPromptForm.$valid', function(inputValid){
-      if (inputValid && promptScope.form.verifiedPromptForm.$dirty) {
-        options.buttons[1].type="button-positive";
-      }
-      else {
-        options.buttons[1].type="button-default";
-      }
-    }, true);
     _.defaultsDeep(options,{
       template: verifiedPromptTemplate,
       title: '',
@@ -193,7 +185,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         { text: 'Cancel'},
         {
           text: 'OK',
-          type: 'button-light',
+          type: 'button-positive',
           onTap: function(e) {
             if (promptScope.form.verifiedPromptForm.$valid) {
               return promptScope.data;
