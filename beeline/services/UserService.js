@@ -298,13 +298,19 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
           },
         ],
       });
-      if (!accountResponse) return;
-      $ionicLoading.show({template: registeringWithServerTemplate});
-      var updateResponse = await updateUserInfo({
-        name: accountResponse.name,
-        email: accountResponse.email,
-      });
-      $ionicLoading.hide();
+      if (!accountResponse) {
+        logOut();
+        $rootScope.$digest();
+        return;
+      }
+      else {
+        $ionicLoading.show({template: registeringWithServerTemplate});
+        var updateResponse = await updateUserInfo({
+          name: accountResponse.name,
+          email: accountResponse.email,
+        });
+        $ionicLoading.hide();
+      }
     }
     // If an error occurs at any point stop and alert the user
     catch(error) {

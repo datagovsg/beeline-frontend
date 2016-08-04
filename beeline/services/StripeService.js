@@ -34,7 +34,7 @@ export default function initStripe(UserService, $ionicPlatform) {
           handler.open({
             name: 'Beeline',
             description: description,
-            amount: amount,
+            amount: Math.round(amount),
             currency: 'SGD',
             email: UserService.getUser().email,
           });
