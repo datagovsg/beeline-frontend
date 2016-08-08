@@ -60,7 +60,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "gulp",
-    /*"postinstall": "ionic state restore",*/
     "clean": "ionic platform remove android; ionic platform remove ios; ionic platform remove browser; git checkout package.json"
   },
   "author": "",
