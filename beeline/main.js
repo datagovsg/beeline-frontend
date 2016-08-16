@@ -47,6 +47,7 @@ var app = angular.module('beeline', [
 .factory('CompanyService', require('./services/CompanyService.js').default)
 .factory('SuggestionService', require('./services/SuggestionService.js').default)
 .factory('RoutesService', require('./services/RoutesService.js').default)
+.factory('LiteRoutesService', require('./services/LiteRoutesService.js').default)
 .service('BookingService', require('./services/BookingService.js').default)
 .factory('OneMapService', require('./services/OneMapService.js').default)
 .factory('DateService', require('./services/DateService.js').default)

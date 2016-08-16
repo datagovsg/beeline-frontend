@@ -22,7 +22,7 @@ function filterRoutesByRegionId(routes, regionId) {
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
-  BookingService, $ionicScrollDelegate) {
+  BookingService, $ionicScrollDelegate, LiteRoutesService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -33,6 +33,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     filteredActiveRoutes: [],
     filteredRecentRoutes: [],
     nextSessionId: null,
+    filteredLiteRoutes: [],
   };
 
   $scope.$on('$ionicView.beforeEnter', () => {
@@ -40,6 +41,13 @@ export default function($scope, $state, UserService, RoutesService, $q,
   })
 
   $scope.refreshRoutes = function (ignoreCache) {
+    var allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
+    allLiteRoutesPromise.then(function(allLiteRoutes){
+      console.log("lite routes returns as");
+      console.log(allLiteRoutes);
+      $scope.data.filteredLiteRoutes = allLiteRoutes;
+    })
+
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
 
@@ -75,6 +83,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   // Filter the displayed routes by selected region
   $scope.$watchGroup(['data.routes', 'data.selectedRegionId'], function([routes, selectedRegionId]) {
     $scope.data.filteredActiveRoutes = filterRoutesByRegionId(routes, +selectedRegionId);
+    console.log($scope.data.filteredActiveRoutes);
   });
 
   // Filter the recent routes display whenever the active routes is changed

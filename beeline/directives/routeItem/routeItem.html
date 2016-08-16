@@ -4,14 +4,14 @@
 </div>
 <div class="stops">
   <div class="start">
-    <span class="time">{{ route | routeStartTime | formatTime:true }}</span>
+    <span class="time">{{ route.startTime  | formatTime:true }}</span>
     <span class="stop-icon">
       <span class="line"></span>
     </span>
     <span class="road">{{ route.from }}</span>
   </div>
   <div class="end">
-    <span class="time">{{ route | routeEndTime | formatTime:true }}</span>
+    <span class="time">{{ route.endTime  | formatTime:true }}</span>
     <span class="stop-icon"></span>
     <span class="road">{{ route.to }}</span>
   </div>

@@ -21,6 +21,16 @@
                      on-refresh="refreshRoutes(true)">
       </ion-refresher>
 
+      <!-- Available Lite Routes Section -->
+      <div class="item item-divider">
+        Lite Routes
+      </div>
+      <ion-item ng-repeat="route in data.filteredLiteRoutes"
+                class="item-icon-right">
+        <route-item route="route"></route-item>
+        <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+
       <!-- Recent Routes Section -->
       <!-- ng-show doesn't work 100% reliably. angular bug? -->
       <div class="item item-divider"
