@@ -57,7 +57,7 @@ export default function TicketService($http, $filter, UserService) {
         });
         return categorizedTickets;
       });
-		        }
+		}
 
   };
 }

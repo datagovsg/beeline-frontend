@@ -2,10 +2,12 @@ export default [
   '$scope',
   'TicketService',
   'UserService',
+  'LiteRouteSubscriptionService',
   function(
     $scope,
     TicketService,
-    UserService
+    UserService,
+    LiteRouteSubscriptionService
   ) {
     // Track the login state of the user service
     $scope.logIn = function() {
@@ -20,6 +22,7 @@ export default [
 
     // Grab the tickets
     $scope.tickets = {};
+    $scope.liteRouteSubscriptions =  [];
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.refreshTickets(true);
     });
@@ -36,6 +39,18 @@ export default [
         $scope.$broadcast('scroll.refreshComplete');
         $scope.error = true;
       });
+      LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then((liteRouteSubscriptions)=>{
+        $scope.liteRouteSubscriptions = liteRouteSubscriptions;
+        console.log("tickets controller");
+        console.log($scope.liteRouteSubscriptions);
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.error = false;
+      })
+      .catch((error) => {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.error = true;
+      });;
+
     }
 
     $scope.refreshTickets = refreshTickets;
