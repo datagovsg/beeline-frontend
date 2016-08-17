@@ -1,6 +1,5 @@
 <div class="route-overview">
   <span class="bus-number">{{ route.label }}</span>
-  <span class="schedule">{{route.schedule}}</span>
 </div>
 <div class="stops">
   <div class="start">
@@ -15,4 +14,20 @@
     <span class="stop-icon"></span>
     <span class="road">{{ route.to }}</span>
   </div>
+</div>
+<div class="company-info" ng-if="route.transportCompanyId">
+  <span class="icon-span">
+    <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
+  </span>
+  <span class="schedule">
+    {{companyName}}
+  </span>
+</div>
+<div class="schedule-info" ng-if="route.schedule">
+  <span class="schedule-icon-span">
+    <img class="mini-icon" src="img/icon_schedule.svg">
+  </span>
+  <span class="schedule">
+    {{route.schedule}}
+  </span>
 </div>
