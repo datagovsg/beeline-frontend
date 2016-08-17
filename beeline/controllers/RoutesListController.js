@@ -33,6 +33,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     filteredActiveRoutes: [],
     filteredRecentRoutes: [],
     nextSessionId: null,
+    liteRoutes: [],
     filteredLiteRoutes: [],
   };
 
@@ -45,7 +46,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     allLiteRoutesPromise.then(function(allLiteRoutes){
       console.log("lite routes returns as");
       console.log(allLiteRoutes);
-      $scope.data.filteredLiteRoutes = allLiteRoutes;
+      $scope.data.liteRoutes = allLiteRoutes;
     })
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
@@ -69,7 +70,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.recentRoutes = recentRoutes;
     });
 
-    $q.all([allRoutesPromise, recentRoutesPromise]).then(() => {
+    $q.all([allRoutesPromise, recentRoutesPromise], allLiteRoutesPromise).then(() => {
       $scope.error = null;
     })
     .catch(() => {
@@ -81,9 +82,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }
 
   // Filter the displayed routes by selected region
-  $scope.$watchGroup(['data.routes', 'data.selectedRegionId'], function([routes, selectedRegionId]) {
+  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId'], function([routes, liteRoutes, selectedRegionId]) {
     $scope.data.filteredActiveRoutes = filterRoutesByRegionId(routes, +selectedRegionId);
+    $scope.data.filteredLiteRoutes = filterRoutesByRegionId(liteRoutes, +selectedRegionId);
     console.log($scope.data.filteredActiveRoutes);
+    console.log($scope.data.filteredLiteRoutes);
   });
 
   // Filter the recent routes display whenever the active routes is changed
@@ -95,7 +98,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     ).filter(x => x) // Exclude null values (e.g. expired routes)
   });
 
-  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes'],
+  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes'],
     () => {
       $ionicScrollDelegate.resize();
     });
