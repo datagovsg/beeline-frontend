@@ -22,11 +22,12 @@
       </ion-refresher>
 
       <!-- Available Lite Routes Section -->
-      <div class="item item-divider">
+      <div class="item item-divider"
+          ng-if="data.filteredLiteRoutes.length > 0">
         Lite Routes
       </div>
       <ion-item ng-repeat="route in data.filteredLiteRoutes"
-                class="item-icon-right">
+                on-tap="promptFollow(route.id)">
         <route-item route="route"></route-item>
       </ion-item>
 
