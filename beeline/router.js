@@ -71,6 +71,11 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tabs.booking', {
+    url: '/booking',
+    abstract: true
+  })
+
   .state('tabs.bookingPickup', {
     url: '/booking/:routeId/stops?boardStop&alightStop&sessionId',
     views: {
