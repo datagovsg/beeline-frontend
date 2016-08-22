@@ -125,6 +125,18 @@ export default function($stateProvider, $urlRouterProvider) {
       hideTabs: true,
     }
   })
+  .state('tabs.lite-summary', {
+    url: '/lite/summary/:label',
+    views: {
+      'tab-booking': {
+        templateUrl: 'templates/tab-lite-summary.html',
+        controller: 'BookingStopsController',
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
 
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Sugesstions Tab
