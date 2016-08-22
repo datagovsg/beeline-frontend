@@ -1,26 +1,17 @@
 import routeItemTemplate from './routeItem.html';
 
-export default function($state, BookingService, CompanyService) {
+export default function($state, BookingService) {
   return {
     replace: false,
     template: routeItemTemplate,
     scope: {
       route: '=',
     },
+    transclude: {
+      'company-info': '?routeItemCompanyInfo',
+      'schedule-info': '?routeItemScheduleInfo',
+    },
     link: function(scope, element, attributes) {
-
-      scope.$watch('route', function() {
-        if (!scope.route.transportCompanyId) {
-          scope.companyName = '';
-          return;
-        }
-
-        var companyPromise = CompanyService.getCompany(scope.route.transportCompanyId)
-        .then((company) => {
-          scope.companyName = company.name;
-          return scope.companyName;
-        });
-      });
     },
   };
 }

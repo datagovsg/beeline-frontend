@@ -49,7 +49,27 @@
                   sessionId: data.nextSessionId
                 })"
                 class="item-icon-right">
-        <route-item route="route"></route-item>
+        <route-item route="route">
+          <route-item-company-info>
+            <company-info-broker company-id="route.transportCompanyId"
+                                  company="companyInfo"/>
+            <span class="icon-span">
+              <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
+            </span>
+            <span class="schedule">
+              {{companyInfo.name}}
+            </span>
+          </route-item-company-info>
+
+          <route-item-schedule-info>
+            <span class="schedule-icon-span">
+              <img class="mini-icon" src="img/icon_schedule.svg">
+            </span>
+            <span class="schedule">
+              {{route.schedule}}
+            </span>
+          </route-item-schedule-info>
+        </route-item>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
     </ion-content>

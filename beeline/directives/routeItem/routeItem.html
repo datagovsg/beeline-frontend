@@ -15,19 +15,7 @@
     <span class="road">{{ route.to }}</span>
   </div>
 </div>
-<div class="company-info" ng-if="route.transportCompanyId">
-  <span class="icon-span">
-    <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-  </span>
-  <span class="schedule">
-    {{companyName}}
-  </span>
+<div class="company-info" ng-if="route.transportCompanyId" ng-transclude="company-info">
 </div>
-<div class="schedule-info" ng-if="route.schedule">
-  <span class="schedule-icon-span">
-    <img class="mini-icon" src="img/icon_schedule.svg">
-  </span>
-  <span class="schedule">
-    {{route.schedule}}
-  </span>
+<div class="schedule-info" ng-if="route.schedule" ng-transclude="schedule-info">
 </div>
