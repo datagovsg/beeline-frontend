@@ -128,9 +128,9 @@ export default function($stateProvider, $urlRouterProvider) {
   .state('tabs.lite-summary', {
     url: '/lite/summary/:label',
     views: {
-      'tab-booking': {
+      'tab-lite': {
         templateUrl: 'templates/tab-lite-summary.html',
-        controller: 'BookingStopsController',
+        controller: 'LiteSummaryController',
       }
     },
     data: {

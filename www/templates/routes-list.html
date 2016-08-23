@@ -27,8 +27,12 @@
         Lite Routes
       </div>
       <ion-item ng-repeat="route in data.filteredLiteRoutes"
-                on-tap="promptFollow(route.id)">
+                ui-sref="tabs.lite-summary({
+                  label: route.label,
+                })"
+                class="item-icon-right">
         <route-item route="route"></route-item>
+        <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
       <!-- Recent Routes Section -->
