@@ -8,8 +8,7 @@ export default function($state, BookingService) {
       route: '=',
     },
     transclude: {
-      'company-info': '?routeItemCompanyInfo',
-      'schedule-info': '?routeItemScheduleInfo',
+      'additional-info': '?routeItemAdditionalInfo',
     },
     link: function(scope, element, attributes) {
     },

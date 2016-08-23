@@ -15,7 +15,5 @@
     <span class="road">{{ route.to }}</span>
   </div>
 </div>
-<div class="company-info" ng-if="route.transportCompanyId" ng-transclude="company-info">
-</div>
-<div class="schedule-info" ng-if="route.schedule" ng-transclude="schedule-info">
+<div class="additional-info" ng-if="route.transportCompanyId" ng-transclude="additional-info">
 </div>
