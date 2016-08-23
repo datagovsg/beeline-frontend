@@ -73,16 +73,12 @@ route-item {
     }
   }
 
-  .company-info {
+  .icon-and-schedule {
     margin-top: 1em;
-    .text-info {
-      text-align: center;
-    }
-  }
 
-  .schedule-info {
-    @extend .company-info;
-    margin-top: 0;
+    & + .icon-and-schedule {
+      margin-top: 0;
+    }
   }
 
   .icon-span {
@@ -93,12 +89,11 @@ route-item {
     justify-content: center;
     align-items: center;
     vertical-align: middle;
-    border: 1px solid $light-grey;
-  }
+    margin-right: 0.2em;
 
-  .schedule-icon-span {
-    @extend .icon-span;
-    border: 0px;
+    &.company-logo {
+      border: 1px solid $light-grey;
+    }
   }
 
   .mini-icon {
