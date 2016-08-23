@@ -9,12 +9,12 @@ export default function($state, BookingService) {
       hideAdditionalInfo: '<?'
     },
     transclude: {
-      'additional-info': '?routeItemAdditionalInfo',
-      'bus-number': '?routeItemBusNumber',
-      'start-time': '?routeItemStartTime',
-      'start-location': '?routeItemStartLocation',
-      'end-time': '?routeItemEndTime',
-      'end-location': '?routeItemEndLocation',
+      additionalInfo: '?routeItemAdditionalInfo',
+      busNumber: '?routeItemBusNumber',
+      startTime: '?routeItemStartTime',
+      startLocation: '?routeItemStartLocation',
+      endTime: '?routeItemEndTime',
+      endLocation: '?routeItemEndLocation',
     },
     link: function(scope, element, attributes) {
     },
