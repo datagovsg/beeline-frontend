@@ -19,15 +19,14 @@ export default function LiteRoutesService($http, UserService, $q) {
   function transformLiteRouteData(data) {
     console.log(data);
     var liteRoutesByLabel = _.reduce(data, function(result,value, key){
-      console.log("hello");
-      console.log(value.trips);
       var label = value.label;
-      console.log("label is "+label);
       if (result[label]) {
         result[label].trips = result[label].trips.concat(value.trips);
       }
       else {
         result[label] = value;
+        //to display schedule in notes JSON
+        result[label].schedule = value.notes.schedule;
       }
       return result;
     },{});
@@ -83,7 +82,7 @@ export default function LiteRoutesService($http, UserService, $q) {
     getLiteRoute: function(liteRouteLabel, ignoreCache, options) {
       assert.equal(typeof liteRouteLabel, 'string');
 
-      if (!ignoreCache && !options && lastLiteRouteId === liteRouteId) {
+      if (!ignoreCache && !options && lastLiteRouteLabel=== liteRouteLabel) {
         console.log(`Using lite route ${liteRouteLabel} from cache`)
         return lastLiteRoutePromise;
       }
@@ -97,16 +96,14 @@ export default function LiteRoutesService($http, UserService, $q) {
         include_availability: false,
       }, options)
 
-      lastLiteRouteId = liteRouteId;
+      lastLiteRouteLabel = liteRouteLabel;
       return lastLiteRoutePromise = UserService.beeline({
         method: 'GET',
-        url: `/routes/${LiterouteId}?${querystring.stringify(finalOptions)}`,
+        url: `/routes/${liteRouteLabel}?${querystring.stringify(finalOptions)}`,
       })
       .then(function(response) {
-        transformLiteRouteData([response.data]);
-        console.log('singel lite route is ');
-        console.log(response.data);
-        return response.data;
+        var liteRouteData =  transformLiteRouteData([response.data]);
+        return liteRouteData;
       })
       .catch((err) => {
         console.error(err);
