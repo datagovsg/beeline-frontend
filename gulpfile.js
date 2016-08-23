@@ -20,7 +20,8 @@ function errHandler(err) {
     this.emit('end');
 }
 
-gulp.task('default', ['sass', 'webpack', 'js-libraries', 'hot-code-push']);
+// gulp.task('default', ['sass', 'webpack', 'js-libraries', 'hot-code-push']);
+gulp.task('default', ['sass', 'webpack', 'js-libraries']);
 
 gulp.task('js-libraries', function() {
     gulp.src('./node_modules/angular-google-maps/dist/angular-google-maps.js')
