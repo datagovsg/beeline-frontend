@@ -72,4 +72,31 @@ route-item {
       }
     }
   }
+
+  .icon-and-schedule {
+    margin-top: 1em;
+
+    & + .icon-and-schedule {
+      margin-top: 0;
+    }
+  }
+
+  .icon-span {
+    height: 30px;
+    width: 30px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    margin-right: 0.2em;
+
+    &.company-logo {
+      border: 1px solid $light-grey;
+    }
+  }
+
+  .mini-icon {
+    max-width: 20px;
+  }
 }

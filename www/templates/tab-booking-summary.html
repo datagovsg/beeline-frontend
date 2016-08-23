@@ -28,50 +28,30 @@
       <h3 class="item item-divider">
         Selected Route
       </h3>
-      <div class="item item-text-wrap route-info">
-        <!-- FIXME we need to show the SELECTED STOPS not the route
-          itself.
+      <route-item class="item" hide-additional-info="true">
+        <route-item-bus-number>
+          {{ book.route.label }}
+        </route-item-bus-number>
+        <route-item-start-time>
+          {{book.boardStop.time | formatTime:true}}
+        </route-item-start-time>
+        <route-item-start-location>
+          <h4>Pick-up at</h4>
+          {{book.boardStop.stop.description}}<br/>
+          {{book.boardStop.stop.road}}<br/>
+          <br/>
+        </route-item-start-location>
+        <route-item-end-time>
+          {{book.alightStop.time | formatTime:true}}
+        </route-item-end-time>
+        <route-item-end-location>
+          <h4>Drop-off at</h4>
+          {{book.alightStop.stop.description}}<br/>
+          {{book.alightStop.stop.road}}<br/>
+          <br/>
+        </route-item-end-location>
+      </route-item>
 
-          Unfortunatley current version of angular (1.4) bundled with Ionic
-          does not support multi-slot translcusion so this is a headache.
-
-        -->
-          <div class="bus-number">{{book.route.label}}</div>
-          <div class="start-end">
-            <div class="start">
-              <stop-time>
-                {{book.boardStop.time | formatTime:true}}
-              </stop-time>
-
-              <stop-img>
-                <img src="img/RoutePairSmallStart.svg">
-              </stop-img>
-
-              <stop-stop>
-                <h4>Pick-up at</h4>
-                {{book.boardStop.stop.description}}<br/>
-                {{book.boardStop.stop.road}}<br/>
-                <br/>
-              </stop-stop>
-           </div>
-           <div class="end">
-             <stop-time>
-               {{book.alightStop.time | formatTime:true}}
-             </stop-time>
-
-             <stop-img>
-               <img src="img/RoutePairSmallEnd.svg">
-             </stop-img>
-
-             <stop-stop>
-               <h4>Drop-off at</h4>
-               {{book.alightStop.stop.description}}<br/>
-               {{book.alightStop.stop.road}}<br/>
-               <br/>
-              </stop-stop>
-           </div>
-        </div> <!-- start-end -->
-      </div>
     </section>
 
 
