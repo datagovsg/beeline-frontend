@@ -114,12 +114,12 @@ export default function LiteRoutesService($http, UserService, $q) {
     },
 
 
-    subscribeLiteRoute: function(liteRouteId) {
+    subscribeLiteRoute: function(liteRouteLabel) {
       var subscribePromise = UserService.beeline({
         method: 'POST',
         url: '/liteRoutes/subscription',
         data: {
-          routeId: liteRouteId,
+          routeLabel: liteRouteLabel,
         }
       })
       .then(function(response) {
