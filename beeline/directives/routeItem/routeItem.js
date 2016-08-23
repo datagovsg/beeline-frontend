@@ -5,7 +5,6 @@ export default function($state, BookingService) {
     replace: false,
     template: routeItemTemplate,
     scope: {
-      route: '=?',
       hideBusLabel: '<?',
       hideAdditionalInfo: '<?'
     },
