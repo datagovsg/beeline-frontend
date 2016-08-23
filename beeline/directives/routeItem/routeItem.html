@@ -1,18 +1,22 @@
 <div class="route-overview">
-  <span class="bus-number">{{ route.label }}</span>
-  <span class="schedule">{{route.schedule}}</span>
+  <span class="bus-number" ng-if="!hideBusLabel" ng-transclude="busNumber">
+  </span>
 </div>
 <div class="stops">
   <div class="start">
-    <span class="time">{{ route.startTime  | formatTime:true }}</span>
+    <span class="time" ng-transclude="startTime"></span>
     <span class="stop-icon">
       <span class="line"></span>
     </span>
-    <span class="road">{{ route.from }}</span>
+    <span class="road" ng-transclude="startLocation"></span>
   </div>
   <div class="end">
-    <span class="time">{{ route.endTime  | formatTime:true }}</span>
+    <span class="time" ng-transclude="endTime"></span>
     <span class="stop-icon"></span>
-    <span class="road">{{ route.to }}</span>
+    <span class="road" ng-transclude="endLocation"></span>
   </div>
+</div>
+<div class="additional-info"
+    ng-if="!hideAdditionalInfo"
+    ng-transclude="additional-info">
 </div>

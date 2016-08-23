@@ -25,35 +25,11 @@
       display: flex;
       flex-direction: row;
       background: $light;
-      padding: $padding-base-vertical 0;
 
       route-item {
-        display: flex;
-        padding: $item-padding-base;
-        background-color: $light;
-        flex: 1 1 auto;
-        overflow-x: hidden;
-        flex-direction: row;
-        align-items: center;
-
-        .route-overview {
-          display: none;
-          align-self: flex-start;
-
-          .bus-number {
-            display: none;
-          }
-          .schedule {
-            display: none;
-          }
-        }
-        .start, .end {
-          white-space: nowrap;
-        }
-        .stops {
-          margin: 0;
-        }
+        flex-grow: 1;
       }
+
       .price {
         padding: $padding-small-vertical 0;
         flex: 0 0 auto;

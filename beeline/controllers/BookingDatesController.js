@@ -141,7 +141,8 @@ export default [
     }
     function updateCalendar() {
       // ensure cancelled trips are not shown
-      var runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
+      // var runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
+      var runningTrips = $scope.book.route.trips.filter(tr => tr.isRunning);
 
       // discover which month to show. Use UTC timezone
       $scope.disp.month = moment(_.min(runningTrips.map(t => t.date))).utcOffset(0);

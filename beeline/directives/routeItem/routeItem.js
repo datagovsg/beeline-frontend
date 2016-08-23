@@ -5,7 +5,16 @@ export default function($state, BookingService) {
     replace: false,
     template: routeItemTemplate,
     scope: {
-      route: '=',
+      hideBusLabel: '<?',
+      hideAdditionalInfo: '<?'
+    },
+    transclude: {
+      additionalInfo: '?routeItemAdditionalInfo',
+      busNumber: '?routeItemBusNumber',
+      startTime: '?routeItemStartTime',
+      startLocation: '?routeItemStartLocation',
+      endTime: '?routeItemEndTime',
+      endLocation: '?routeItemEndLocation',
     },
     link: function(scope, element, attributes) {
     },
