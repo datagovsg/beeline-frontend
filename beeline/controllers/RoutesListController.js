@@ -111,7 +111,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   });
 
   // Shows a confirmation dialogue asking if the user is sure they want to log out
-  $scope.promptFollow = function(liteRouteId) {
+  $scope.promptFollow = function(liteRouteLabel) {
     console.log("pressed");
     $ionicPopup.confirm({
       title: 'Are you sure you want to follow this lite route?',
@@ -119,7 +119,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     }).then(function(response) {
       if (response) {
         try {
-          LiteRoutesService.subscribeLiteRoute(liteRouteId).then(function(response)
+          LiteRoutesService.subscribeLiteRoute(liteRouteLabel).then(function(response)
           {
             if (response) {
               $ionicPopup.alert({

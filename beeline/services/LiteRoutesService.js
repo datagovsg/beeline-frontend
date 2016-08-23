@@ -5,30 +5,33 @@
 // subscriptions for certain lite route ( this may go to tickets service)
 import querystring from 'querystring';
 import _ from 'lodash';
+import assert from 'assert';
 
-export default function LiteRouteService($http, UserService, $q) {
+export default function LiteRoutesService($http, UserService, $q) {
 
   var liteRoutesCache;
   var liteRoutesPromise;
 
-  function transformLiteRouteData(data) {
+  // For single lite route
+  var lastLiteRouteId = null;
+  var lastLiteRoutePromise = null;
 
-    _(data).each(function(route) {
-      route.tripsByDate = _.groupBy(route.trips, trip => new Date(trip.date).getTime());
-      for (var index in route.tripsByDate){
-        route.interval = route.tripsByDate[index].length;
-        var trips = _.sortBy(route.tripsByDate[index], 'id');
-        console.log(trips);
-        var totalStops = trips[route.interval-1].tripStops.length;
-        route.startTime = trips[0].tripStops[0].time;
-        route.endTime = trips[trips.length-1].tripStops[totalStops-1].time;
-        console.log(route.startTime);
-        console.log(route.endTime);
-        break;
-      }
-      console.log(route.tripsByDate);
-    })
+  function transformLiteRouteData(data) {
     console.log(data);
+    var liteRoutesByLabel = _.reduce(data, function(result,value, key){
+      var label = value.label;
+      if (result[label]) {
+        result[label].trips = result[label].trips.concat(value.trips);
+      }
+      else {
+        result[label] = value;
+        //to display schedule in notes JSON
+        result[label].schedule = value.notes.schedule;
+      }
+      return result;
+    },{});
+    //ignor the startingTime and endTime for now
+    return liteRoutesByLabel;
   }
 
   var instance = {
@@ -49,7 +52,7 @@ export default function LiteRouteService($http, UserService, $q) {
       var finalOptions = _.assign({
         start_date: startDate.getTime(),
         include_trips: true,
-        limit_trips: 20,
+        limit_trips: 1,
         include_path: false,
         tags: JSON.stringify(['lite']),
       }, options)
@@ -64,7 +67,7 @@ export default function LiteRouteService($http, UserService, $q) {
         // Checking that we have trips, so that users of it don't choke
         // on trips[0]
         var liteRoutes = response.data.filter(r => r.trips && r.trips.length);
-        transformLiteRouteData(liteRoutes)
+        liteRoutes = transformLiteRouteData(liteRoutes)
         return liteRoutes;
       });
 
@@ -76,13 +79,44 @@ export default function LiteRouteService($http, UserService, $q) {
       return liteRoutesPromise;
     },
 
+    getLiteRoute: function(liteRouteLabel, ignoreCache, options) {
+      assert.equal(typeof liteRouteLabel, 'string');
 
-    subscribeLiteRoute: function(liteRouteId) {
+      if (!ignoreCache && !options && lastLiteRouteLabel=== liteRouteLabel) {
+        console.log(`Using lite route ${liteRouteLabel} from cache`)
+        return lastLiteRoutePromise;
+      }
+
+      var startDate = new Date();
+      startDate.setHours(3,0,0,0,0)
+
+      var finalOptions = _.assign({
+        start_date: startDate.getTime(),
+        include_trips: true,
+        include_availability: false,
+      }, options)
+
+      lastLiteRouteLabel = liteRouteLabel;
+      return lastLiteRoutePromise = UserService.beeline({
+        method: 'GET',
+        url: `/routes/${liteRouteLabel}?${querystring.stringify(finalOptions)}`,
+      })
+      .then(function(response) {
+        var liteRouteData =  transformLiteRouteData([response.data]);
+        return liteRouteData;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    },
+
+
+    subscribeLiteRoute: function(liteRouteLabel) {
       var subscribePromise = UserService.beeline({
         method: 'POST',
         url: '/liteRoutes/subscription',
         data: {
-          routeId: liteRouteId,
+          routeLabel: liteRouteLabel,
         }
       })
       .then(function(response) {
