@@ -6,7 +6,8 @@ export default function($state, BookingService) {
     template: routeItemTemplate,
     scope: {
       hideBusLabel: '<?',
-      hideAdditionalInfo: '<?'
+      hideAdditionalInfo: '<?',
+      hideTiming: '<?'
     },
     transclude: {
       additionalInfo: '?routeItemAdditionalInfo',
