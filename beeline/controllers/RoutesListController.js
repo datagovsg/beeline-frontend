@@ -85,8 +85,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId'], function([routes, liteRoutes, selectedRegionId]) {
     $scope.data.filteredActiveRoutes = filterRoutesByRegionId(routes, +selectedRegionId);
     $scope.data.filteredLiteRoutes = filterRoutesByRegionId(liteRoutes, +selectedRegionId);
-    console.log($scope.data.filteredActiveRoutes);
-    console.log($scope.data.filteredLiteRoutes);
   });
 
   // Filter the recent routes display whenever the active routes is changed

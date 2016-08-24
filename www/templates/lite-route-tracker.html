@@ -1,0 +1,65 @@
+<ion-view class="ticket-detail" ng-init="activeTab=0"
+  hide-back-button="true" can-swipe-back="false">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+       ui-sref="tabs.tickets">
+       <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-nav-title>Tracking for {{liteRouteLabel}}</ion-nav-title>
+  <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
+    <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
+      <span class="tab-title-large"><i class="ticket-nav-ticket"></i>Map</a>
+    </span>
+      <a class="tab-item" on-tap="activeTab=1" ng-class="{active: activeTab===1}">
+        <span class="tab-title-large"><i class="ticket-nav-moreInfo"></i>Info</span>
+      </a>
+  </div>
+  <ion-content class="has-tabs-top" scroll=false>
+
+    <!-- Map Tab -->
+    <div class="trip-info item item-text-wrap" ng-show="activeTab===0">
+      <route-item route="liteRoute"></route-item>
+
+    </div>
+
+    <!-- Info Tab -->
+    <div class="trip-info item item-text-wrap" ng-show="activeTab===1">
+        <div class="col" ng-click="unSubscribe()">
+          Unfollow this route
+        </div>
+        <div class="col">
+          Terms and Conditions
+        </div>
+      </div>
+    </div>
+
+    <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
+      <my-location></my-location>
+      <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
+      <ui-gmap-polyline ng-if="map.lines.actualPath.path.length"
+                        path="map.lines.actualPath.path"
+                        stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
+      <ui-gmap-marker idkey="'boardstop'"
+                      ng-if="map.markers.boardStop.stop"
+                      coords="map.markers.boardStop.stop.coordinates"
+                      options="map.markerOptions.startMarker"></ui-gmap-marker>
+      <ui-gmap-marker idkey="'alightstop'"
+                      ng-if="map.markers.alightStop.stop"
+                      coords="map.markers.alightStop.stop.coordinates"
+                      options="map.markerOptions.endMarker"></ui-gmap-marker>
+      <ui-gmap-marker ng-if="map.busLocation.coordinates"
+                      idkey="'bus-location'"
+                      coords="map.busLocation.coordinates"
+                      icon="map.busLocation.icon"></ui-gmap-marker>
+      <ui-gmap-markers  ng-if="trip.tripStops"
+                        models="trip.tripStops"
+                        idkey="'id'"
+                        options="'_markerOptions'"
+                        coords="'stop.coordinates'"
+                        ></ui-gmap-markers>
+    </ui-gmap-google-map>
+    <!-- Service cancellation section ends -->
+  </ion-content>
+</ion-view>

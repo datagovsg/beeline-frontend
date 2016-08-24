@@ -135,6 +135,27 @@ export default function LiteRoutesService($http, UserService, $q) {
         }
       });
       return subscribePromise;
+    },
+
+    unSubscribeLiteRoute: function(liteRouteLabel) {
+      var unSubscribePromise = UserService.beeline({
+        method: 'PUT',
+        url: '/liteRoutes/unsubscribe',
+        data: {
+          routeLabel: liteRouteLabel,
+        }
+      })
+      .then(function(response) {
+        console.log(response.data);
+        if (response.data) {
+          return true;
+        }
+        else{
+          console.log("Fails");
+          return false;
+        }
+      });
+      return unSubscribePromise;
     }
 
 

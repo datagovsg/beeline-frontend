@@ -72,6 +72,7 @@ var app = angular.module('beeline', [
 .controller('SettingsController', require('./controllers/SettingsController.js').default)
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
+.controller('LiteRouteTrackerController', require('./controllers/LiteRouteTrackerController.js').default)
 .controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
