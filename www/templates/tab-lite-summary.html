@@ -50,10 +50,6 @@
             <div class="popUpStopSelect">
               <b>{{disp.popupStop.time | formatTime }}</b><br/>
               {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
-              <a class="button button-block button-outline button-royal"
-                ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
-                Set {{disp.popupStopType === 'pickup' ? 'pick-up' : 'drop-off'}} stop
-              </a>
             </div>
           </ui-gmap-window>
 
@@ -64,13 +60,6 @@
             options="map.markerOptions.boardMarker"
             click="applyTapBoard(stop)"
           ></ui-gmap-marker>
-          <ui-gmap-marker
-            ng-repeat="stop in book.alightStops"
-            idKey="stop.id"
-            coords="stop.coordinates"
-            options="map.markerOptions.alightMarker"
-            click="applyTapAlight(stop)"
-          ></ui-gmap-marker>
 
           <ui-gmap-polyline
             path="routePath"
@@ -79,17 +68,6 @@
           >
           </ui-gmap-polyline>
 
-          <ui-gmap-marker
-            idkey="'bs'"
-            coords="book.boardStop.coordinates"
-            options="map.markerOptions.startMarker">
-          </ui-gmap-marker>
-
-          <ui-gmap-marker
-            idkey="'as'"
-            coords="book.alightStop.coordinates"
-            options="map.markerOptions.endMarker">
-          </ui-gmap-marker>
 
         </ui-gmap-google-map>
       </div>

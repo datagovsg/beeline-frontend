@@ -12,6 +12,7 @@ export default [
   '$cordovaGeolocation',
   'BookingService',
   'RoutesService',
+  'LiteRoutesService',
   'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
@@ -26,6 +27,7 @@ export default [
     $cordovaGeolocation,
     BookingService,
     RoutesService,
+    LiteRoutesService,
     uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner
@@ -34,13 +36,9 @@ export default [
     $scope.map = MapOptions.defaultMapOptions();
     $scope.routePath = [];
 
-    // Booking session logic
-    $scope.session = {
-      sessionId: null,
-    };
     // Default settings for various info used in the page
     $scope.book = {
-      routeId: null,
+      label: null,
       route: null,
       boardStops: [], // all board stops for this route
       alightStops: [], // all alight stops for this route
@@ -69,18 +67,18 @@ export default [
 
     var routePromise;
 
-    $scope.session.sessionId = +$stateParams.sessionId;
-    $scope.book.routeId = +$stateParams.routeId;
+    $scope.book.label = $stateParams.label;
 
-    routePromise = RoutesService.getRoute($scope.book.routeId);
+    routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
 
     var stopOptions = {
       initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
       initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
     };
     routePromise.then((route) => {
-      $scope.book.route = route;
-      computeStops(stopOptions);
+      $scope.book.route = route[$scope.book.label];
+      // computeStops(stopOptions);
+      console.log("RouteObject", route)
     });
 
     $scope.$on('$ionicView.afterEnter', () => {
@@ -107,16 +105,7 @@ export default [
       }
     })
 
-    $scope.applyTapBoard = function (stop) {
-      $scope.disp.popupStopType = "pickup";
-      $scope.disp.popupStop = stop;
-      $scope.$digest();
-    }
-    $scope.applyTapAlight = function (stop) {
-      $scope.disp.popupStopType = "dropoff";
-      $scope.disp.popupStop = stop;
-      $scope.$digest();
-    }
+
     $scope.setStop = function (stop, type) {
       if (type === 'pickup') {
         $scope.book.boardStop = stop;
@@ -146,22 +135,22 @@ export default [
     }
 
     /** Summarizes the stops from trips by comparing their stop location and time */
-    function computeStops({initialBoardStopId, initialAlightStopId}) {
-      var trips = $scope.book.route.trips;
-      var [boardStops, alightStops] = BookingService.computeStops(trips);
-      $scope.book.boardStops = boardStops;
-      $scope.book.alightStops = alightStops;
-
-      // Check that the boardStopIds are still valid
-      if (typeof(initialBoardStopId) === 'number') {
-        $scope.book.boardStop = boardStops.find(ts =>
-            ts.id === initialBoardStopId);
-      }
-      // Check that the boardStopIds are still valid
-      if (typeof(initialAlightStopId) === 'number') {
-        $scope.book.alightStop = alightStops.find(ts =>
-            ts.id === initialAlightStopId);
-      }
-    }
+    // function computeStops({initialBoardStopId, initialAlightStopId}) {
+    //   var trips = $scope.book.route.trips;
+    //   var [boardStops, alightStops] = BookingService.computeStops(trips);
+    //   $scope.book.boardStops = boardStops;
+    //   $scope.book.alightStops = alightStops;
+    //
+    //   // Check that the boardStopIds are still valid
+    //   if (typeof(initialBoardStopId) === 'number') {
+    //     $scope.book.boardStop = boardStops.find(ts =>
+    //         ts.id === initialBoardStopId);
+    //   }
+    //   // Check that the boardStopIds are still valid
+    //   if (typeof(initialAlightStopId) === 'number') {
+    //     $scope.book.alightStop = alightStops.find(ts =>
+    //         ts.id === initialAlightStopId);
+    //   }
+    // }
   }
 ];
