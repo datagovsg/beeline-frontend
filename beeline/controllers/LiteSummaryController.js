@@ -79,6 +79,10 @@ export default [
       $scope.book.route = route[$scope.book.label];
       // computeStops(stopOptions);
       console.log("RouteObject", route)
+      var trips = $scope.book.route.trips;
+      var [boardStops, alightStops] = BookingService.computeStops(trips);
+      $scope.book.boardStops = boardStops;
+      $scope.book.alightStops = alightStops;
     });
 
     $scope.$on('$ionicView.afterEnter', () => {
@@ -133,24 +137,5 @@ export default [
       }
       $scope.map.control.getGMap().fitBounds(bounds);
     }
-
-    /** Summarizes the stops from trips by comparing their stop location and time */
-    // function computeStops({initialBoardStopId, initialAlightStopId}) {
-    //   var trips = $scope.book.route.trips;
-    //   var [boardStops, alightStops] = BookingService.computeStops(trips);
-    //   $scope.book.boardStops = boardStops;
-    //   $scope.book.alightStops = alightStops;
-    //
-    //   // Check that the boardStopIds are still valid
-    //   if (typeof(initialBoardStopId) === 'number') {
-    //     $scope.book.boardStop = boardStops.find(ts =>
-    //         ts.id === initialBoardStopId);
-    //   }
-    //   // Check that the boardStopIds are still valid
-    //   if (typeof(initialAlightStopId) === 'number') {
-    //     $scope.book.alightStop = alightStops.find(ts =>
-    //         ts.id === initialAlightStopId);
-    //   }
-    // }
   }
 ];

@@ -1,0 +1,111 @@
+#pg_lite {
+  $button-bar-height: 85px;
+  $list-offset: 10px;
+
+  ion-content {
+    .stops-form {
+      @include flex-col;
+      height: 100%;
+    }
+
+    .route-info {
+      @include flex-shrink;
+
+      display: flex;
+      flex-direction: row;
+      background: $light;
+
+      route-item {
+        flex-grow: 1;
+      }
+
+      .price {
+        padding: $padding-small-vertical 0;
+        flex: 0 0 auto;
+        align-self: center;
+        margin-right: $content-padding;
+      }
+    }
+
+    .map-area {
+      flex: 1 1 auto;
+      position: relative;
+
+      ui-gmap-google-map {
+        display: block;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        position: absolute;
+
+        .popUpStopSelect{
+          min-width: $popUpStopSelectMinWidth;
+          min-height: $popUpStopSelectMinHeight;
+          padding-left: $content-padding*2;
+          padding-top: $content-padding;
+
+          .button{
+            margin-top: $content-padding;
+          }
+        }
+
+        .angular-google-map, .angular-google-map-container {
+          width: 100%;
+          height: 100%;
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 0;
+
+          /* Hides the terms of use */
+          .gmnoprint, .gm-style-cc {
+            display: none;
+          }
+        }
+      } /* ui-gmap-google-map */
+
+      .locate-button {
+        top: $content-padding;
+        right: $content-padding;
+        position: absolute;
+      }
+    }
+
+    .continue-button-item {
+      @include flex-shrink;
+    }
+
+    .stop-inputs {
+      @include flex-shrink;
+
+      .bus-stop-selector:nth-of-type(1) .stop-icon {
+        background: url('../img/RoutePairBigStart.svg') 0 50% no-repeat transparent;
+        background-size: 24px 24px;
+      }
+
+      .bus-stop-selector:nth-of-type(2) .stop-icon {
+        background: url('../img/RoutePairBigEnd.svg') 0 50% no-repeat transparent;
+        background-size: 24px 24px;
+      }
+    }
+  }
+  .check-terms{
+    margin-top: $content-padding*3;
+    margin-bottom: $content-padding*2;
+    padding: $item-padding-small;
+    a{
+      text-decoration: underline;
+    }
+    .item.item-checkbox{
+      border: none;
+      padding: 0;
+      padding-left: $content-padding*4;
+      margin: $content-padding 0;
+      .checkbox{
+        position: absolute;
+        left:-8px; /*undo ionic default*/
+      }
+    }
+  }
+}
