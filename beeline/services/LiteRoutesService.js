@@ -13,20 +13,22 @@ export default function LiteRoutesService($http, UserService, $q) {
   var liteRoutesPromise;
 
   // For single lite route
-  var lastLiteRouteId = null;
+  var lastLiteRouteLabel = null;
   var lastLiteRoutePromise = null;
 
   function transformLiteRouteData(data) {
     console.log(data);
     var liteRoutesByLabel = _.reduce(data, function(result,value, key){
       var label = value.label;
-      if (result[label]) {
+      if (result[label] && (result[label].trips || value.trips)) {
         result[label].trips = result[label].trips.concat(value.trips);
       }
       else {
         result[label] = value;
         //to display schedule in notes JSON
-        result[label].schedule = value.notes.schedule;
+        if (value.notes && value.notes.schedule) {
+          result[label].schedule = value.notes.schedule;
+        }
       }
       return result;
     },{});
@@ -92,17 +94,20 @@ export default function LiteRoutesService($http, UserService, $q) {
 
       var finalOptions = _.assign({
         start_date: startDate.getTime(),
-        include_trips: true,
-        include_availability: false,
+        include_trips: true
       }, options)
 
       lastLiteRouteLabel = liteRouteLabel;
       return lastLiteRoutePromise = UserService.beeline({
         method: 'GET',
-        url: `/routes/${liteRouteLabel}?${querystring.stringify(finalOptions)}`,
+        url: `/liteRoutes/${liteRouteLabel}?${querystring.stringify(finalOptions)}`,
       })
       .then(function(response) {
-        var liteRouteData =  transformLiteRouteData([response.data]);
+        console.log("single lite route is ");
+        console.log(response.data);
+        var liteRouteData =  transformLiteRouteData(response.data);
+        console.log("after tranforamtion is ");
+        console.log(liteRouteData);
         return liteRouteData;
       })
       .catch((err) => {

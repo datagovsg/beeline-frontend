@@ -22,7 +22,6 @@ export default [
 
     // Grab the tickets
     $scope.tickets = {};
-    $scope.liteRouteSubscriptions =  [];
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.refreshTickets(true);
     });

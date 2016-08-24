@@ -80,8 +80,9 @@
            class="item item-divider">Lite Route Subscriptions</div>
       <a ng-if="liteRouteSubscriptions.length > 0"
          class="item item-icon-right"
-         ng-repeat="subscription in liteRouteSubscriptions">
-        <span>{{ subscription.route.label }}</span> {{ subscription.route.from }}
+         ng-repeat="subscription in liteRouteSubscriptions"
+         ui-sref="tabs.lite-route-tracker({ liteRouteLabel: subscription.label })">
+        <span>{{ subscription.label }}</span> {{ subscription.from }}
         <i class="icon ion-ios-arrow-right icon-accessory"></i>
       </a>
     </div>
