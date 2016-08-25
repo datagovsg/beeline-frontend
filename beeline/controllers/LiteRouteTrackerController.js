@@ -165,26 +165,39 @@ export default [
     });
 
     $scope.unSubscribe = function() {
-      try {
-        LiteRoutesService.unSubscribeLiteRoute($scope.liteRouteLabel).then(function(response)
-        {
-          if (response) {
-            $ionicPopup.alert({
-              title: 'Success',
+      $ionicPopup.confirm({
+        title: 'Unfollow Route?',
+        subTitle: "Are you sure you want to unfollow this route? You will not be able track this route."
+      }).then(function(response) {
+        if (response) {
+          try {
+            LiteRoutesService.unSubscribeLiteRoute($scope.liteRouteLabel).then(function(response)
+            {
+              if (response) {
+                $ionicPopup.alert({
+                  title: 'Success',
+                })
+              }
+              else {
+                $ionicPopup.alert({
+                  title: 'Error unSubscribing lite route',
+                })
+              }
             })
           }
-          else {
+          catch(err) {
             $ionicPopup.alert({
-              title: 'Error unSubscribing lite route',
+              title: 'Error unSubscribing lite route ' + err,
             })
           }
-        })
-      }
-      catch(err) {
-        $ionicPopup.alert({
-          title: 'Error unSubscribing lite route ' + err,
-        })
-      }
-    }
+        }
+      });
+    };
+
+    $scope.showTerms = function() {
+      if (!$scope.liteRoute.transportCompanyId) return;
+      CompanyService.showTerms($scope.liteRoute.transportCompanyId);
+    };
+
   }
 ];
