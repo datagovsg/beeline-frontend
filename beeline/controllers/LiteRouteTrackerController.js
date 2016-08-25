@@ -34,44 +34,51 @@ export default [
     $scope.map = MapOptions.defaultMapOptions({
       lines: {
         route: { path: [] },
-        actualPath: { path: [] },
+        // actualPath: { path: [] },
+        actualPaths: [],
       },
-      busLocation: {
-        coordinates: null,
-        icon: null,
-      },
-      markers: {
-        boardStop: {},
-        alightStop: {},
-      }
+      // busLocation: {
+      //   coordinates: null,
+      //   icon: null,
+      // },
+      busLocations: []
     });
+    $scope.recentPings = [];
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
     var routePromise = LiteRoutesService.getLiteRoute($scope.liteRouteLabel);
     routePromise.then((liteRoute) => {
       $scope.liteRoute = liteRoute[$scope.liteRouteLabel];
       $scope.trip = $scope.liteRoute.trips[0];
     });
+    var todayTripsPromise = routePromise.then((route)=>{
+      var now = new Date();
+      var lastMidnight = now.setHours(0, 0, 0, 0);
+      var nextMidnight = now.setHours(24, 0, 0, 0);
+      return $scope.todayTrips = $scope.liteRoute.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
+                       Date.parse(lr.date) < nextMidnight && lr.isRunning);
+    })
 
     // Loop to get pings from the server every 15s between responses
     // Using a recursive timeout instead of an interval to avoid backlog
     // when the server is slow to respond
     var pingTimer;
     function pingLoop() {
-      TripService.DriverPings($scope.trip.id)
-      .then((info) => {
-        $scope.info = info;
-
-        /* Only show pings from the last two hours */
-        var now = Date.now();
-        $scope.recentPings = _.filter(info.pings,
-          ping => now - ping.time.getTime() < 2*60*60*1000)
-      })
-      .then(null, () => {}) // catch all errors
+       Promise.all([$scope.todayTrips.map((trip, index)=>{
+        return TripService.DriverPings(trip.id)
+        .then((info) => {
+          /* Only show pings from the last two hours */
+          var now = Date.now();
+          $scope.recentPings[index] = _.filter(info.pings,
+            ping => now - ping.time.getTime() < 2*60*60*1000);
+        })
+        .then(null, () => {})
+      })])
       .then(() => {
         pingTimer = $timeout(pingLoop, 15000);
-      });
-    };
-    routePromise.then(pingLoop);
+      }); // catch all errors
+
+    }
+    todayTripsPromise.then(pingLoop);
     $scope.$on('$destroy', () => { $timeout.cancel(pingTimer); });
 
     // Draw the planned route
@@ -83,22 +90,47 @@ export default [
       });
     });
 
-    uiGmapGoogleMapApi.then((googleMaps) => {
-      $scope.map.busLocation.icon = {
-          url: 'img/busMarker.svg',
-          scaledSize: new googleMaps.Size(68, 86),
-          anchor: new googleMaps.Point(34, 78),
-        };
+    Promise.all([uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
+       var [googleMaps, todayTrips] = values;
+       console.log("today trips are ");
+       console.log(todayTrips);
+       var icon = {
+           url: 'img/busMarker.svg',
+           scaledSize: new googleMaps.Size(68, 86),
+           anchor: new googleMaps.Point(34, 78),
+         };
+       todayTrips.map((trip, index)=>{
+        $scope.map.busLocations.splice(index,0, {
+          "icon": icon
+        })
+        console.log($scope.map.busLocations);
+      })
     })
 
     // Draw the icon for latest bus location
     $scope.$watch('recentPings', function(recentPings) {
-      if (recentPings && recentPings.length > 0) {
-        $scope.map.busLocation.coordinates = recentPings[0].coordinates;
-        $scope.map.lines.actualPath.path = recentPings.map(ping => ({
-          latitude: ping.coordinates.coordinates[1],
-          longitude: ping.coordinates.coordinates[0]
-        }));
+      if (recentPings) {
+        recentPings.map((pings, index)=>{
+          if (pings.length > 0){
+
+            var coordinates = pings[0].coordinates;
+            var path = pings.map(ping => ({
+              latitude: ping.coordinates.coordinates[1],
+              longitude: ping.coordinates.coordinates[0]
+            }));
+            $scope.map.busLocations.splice(index, 0, {
+              "coordinates": coordinates,
+            })
+            $scope.map.lines.actualPaths.splice(index,0, {
+              "path": path
+            })
+            // $scope.map.busLocations[index].coordinates = pings[0].coordinates;
+            // $scope.map.lines.actualPaths[index].path = pings.map(ping => ({
+            //   latitude: ping.coordinates.coordinates[1],
+            //   longitude: ping.coordinates.coordinates[0]
+            // }));
+          }
+        })
       }
     });
 
@@ -118,6 +150,11 @@ export default [
     // Duplicates a bit with the update loop but is much cleaner this way
     // If the load ever gets too much can easily integrate into the
     // main update loop
+    var mapPromise = new Promise(function(resolve) {
+      $scope.$watch('map.control.getGMap', function(getGMap) {
+        if (getGMap) resolve($scope.map.control.getGMap());
+      });
+    });
 
     var mapPromise = new Promise(function(resolve) {
       $scope.$watch('map.control.getGMap', function(getGMap) {
@@ -128,26 +165,14 @@ export default [
       mapPromise,
       uiGmapGoogleMapApi
     ]).then((values) => {
-      var [map,googleMaps] = values;
-
-      if (info.pings.length > 0) {
-        var bounds = new googleMaps.LatLngBounds();
-        bounds.extend(new google.maps.LatLng(ticket.boardStop.stop.coordinates.coordinates[1],
-                                             ticket.boardStop.stop.coordinates.coordinates[0]));
-        bounds.extend(new google.maps.LatLng(info.pings[0].coordinates.coordinates[1],
-                                             info.pings[0].coordinates.coordinates[0]));
-        map.fitBounds(bounds);
+      var [map, googleMaps] = values;
+      // Just show the boarding stops
+      var bounds = new googleMaps.LatLngBounds();
+      for (let tripStop of $scope.todayTrips[0].tripStops) {
+        bounds.extend(new google.maps.LatLng(tripStop.stop.coordinates.coordinates[1],
+                                             tripStop.stop.coordinates.coordinates[0]));
       }
-      else {
-        // Just show the boarding stops
-        var bounds = new googleMaps.LatLngBounds();
-        for (let tripStop of $scope.trip.tripStops) {
-          if (!tripStop.canBoard) continue;
-          bounds.extend(new google.maps.LatLng(tripStop.stop.coordinates.coordinates[1],
-                                               tripStop.stop.coordinates.coordinates[0]));
-        }
-        map.fitBounds(bounds);
-      }
+      map.fitBounds(bounds);
     });
 
     // ////////////////////////////////////////////////////////////////////////
