@@ -60,33 +60,47 @@
         </ui-gmap-google-map>
       </div>
 
+      <company-info-broker company-id="book.route.transportCompanyId"
+                            company="companyInfo">
+      </company-info-broker>
+
       <div class="item-text-wrap">
-        <div class="item item-icon-right" ng-click="showTerms()">
+        <div class="item item-icon-right"
+             ui-sref="tabs.lite-more-info({
+               companyId: book.route.transportCompanyId,
+               label: book.route.label})">
           More Information
           <i class="icon ion-ios-arrow-right"></i>
         </div>
-        <company-info-broker company-id="book.route.transportCompanyId"
-                              company="companyInfo">
-        </company-info-broker>
         <div class="item check-terms item-text-wrap">
             Please read {{companyInfo.name}}'s <a ng-click="showPrivacyPolicy()">Terms and Conditions</a>.
-            <ion-checkbox class="item item-checkbox" ng-model="acceptPolicy" ng-required="true">
-              I read and agree to the above terms and would like to proceed using Beeline.
+            <ion-checkbox class="item item-checkbox" ng-model="disp.termsChecked">
+              I read and agree to the above terms and would like to proceed.
             </ion-checkbox>
         </div>
       </div>
 
-      <div class="item continue-button-item">
-        <button class="button primary-button button-item"
-          ui-sref="tabs.booking-dates({
-            routeId: book.routeId,
-            boardStop: book.boardStop.id,
-            alightStop: book.alightStop.id,
-            sessionId: session.sessionId
-          })">
-          Follow
+      <section class="item item-text-wrap"
+               ng-if="!isLoggedIn">
+        You are not logged in. Please enter your mobile number to track this route.
+
+        <button class="button primary-button"
+                ng-click="login()"
+                ng-disabled="!disp.termsChecked">
+          Log In
         </button>
-      </div>
+      </section>
+
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn">
+        By clicking on the button below, you can track the bus on the day of the trip.
+
+        <button class="button primary-button"
+                ng-click="promptFollow()"
+                ng-disabled="!disp.termsChecked">
+          Track Route
+        </button>
+      </section>
 
     </form>
   </ion-content>

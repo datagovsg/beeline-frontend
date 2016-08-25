@@ -1,5 +1,6 @@
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
+import loadingTemplate from '../templates/loading.html';
 
 export default [
   '$rootScope',
@@ -10,9 +11,12 @@ export default [
   '$ionicModal',
   '$http',
   '$cordovaGeolocation',
+  '$ionicPopup',
+  '$ionicLoading',
   'BookingService',
   'RoutesService',
   'LiteRoutesService',
+  'UserService',
   'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
@@ -25,13 +29,17 @@ export default [
     $ionicModal,
     $http,
     $cordovaGeolocation,
+    $ionicPopup,
+    $ionicLoading,
     BookingService,
     RoutesService,
     LiteRoutesService,
+    UserService,
     uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner
   ) {
+    $scope.disp = {};
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
     $scope.routePath = [];
@@ -119,6 +127,51 @@ export default [
       }
       $scope.disp.popupStop = null;
     }
+
+    $scope.$watch(() => UserService.getUser(), async(user) => {
+      $scope.isLoggedIn = user ? true : false;
+      if ($scope.isLoggedIn) {
+        $ionicLoading.show({
+          template: loadingTemplate
+        })
+        $ionicLoading.hide();
+      }
+    })
+
+    $scope.login = function () {
+      UserService.promptLogIn()
+    }
+
+    $scope.promptFollow = function() {
+      console.log("pressed");
+      $ionicPopup.confirm({
+        title: 'Are you sure you want to follow this lite route?',
+        subTitle: "You will view the lite route tracker in tickets."
+      }).then(function(response) {
+        if (response) {
+          try {
+            LiteRoutesService.subscribeLiteRoute($scope.book.route.label).then(function(response)
+            {
+              if (response) {
+                $ionicPopup.alert({
+                  title: 'Success',
+                })
+              }
+              else {
+                $ionicPopup.alert({
+                  title: 'Error subscribing lite route',
+                })
+              }
+            })
+          }
+          catch(err) {
+            $ionicPopup.alert({
+              title: 'Error subscribing lite route ' + err,
+            })
+          }
+        }
+      });
+    };
 
     /* Pans to the stops on the screen */
     function panToStops() {

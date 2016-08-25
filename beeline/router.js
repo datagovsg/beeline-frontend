@@ -137,6 +137,18 @@ export default function($stateProvider, $urlRouterProvider) {
       hideTabs: true,
     }
   })
+  .state('tabs.lite-more-info', {
+    url: '/lite/more-info/:label/:companyId/',
+    views: {
+      'tab-lite': {
+        templateUrl: 'templates/tab-lite-more-info.html',
+        controller: 'LiteMoreInfoController',
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
 
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Sugesstions Tab
