@@ -1,4 +1,4 @@
-<ion-view class="tickets" view-title="Tickets">
+<ion-view class="tickets" view-title="Trips">
   <ion-content>
     <ion-refresher pulling-text="Pull to refresh..."
                    on-refresh="refreshTickets(true)"
@@ -82,7 +82,7 @@
          class="item item-icon-right"
          ng-repeat="subscription in liteRouteSubscriptions"
          ui-sref="tabs.lite-route-tracker({ liteRouteLabel: subscription.label })">
-        <span>{{ subscription.label }}</span> {{ subscription.from }}
+        <route-item route="subscription.liteRoute"></route-item>
         <i class="icon ion-ios-arrow-right icon-accessory"></i>
       </a>
     </div>
