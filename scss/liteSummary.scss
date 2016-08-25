@@ -18,13 +18,6 @@
       route-item {
         flex-grow: 1;
       }
-
-      .price {
-        padding: $padding-small-vertical 0;
-        flex: 0 0 auto;
-        align-self: center;
-        margin-right: $content-padding;
-      }
     }
 
     .map-area {
@@ -90,21 +83,17 @@
       }
     }
   }
-  .check-terms{
-    margin-top: $content-padding*3;
-    margin-bottom: $content-padding*2;
-    padding: $item-padding-small;
+
+  .item.check-terms{
     a{
       text-decoration: underline;
     }
     .item.item-checkbox{
       border: none;
-      padding: 0;
       padding-left: $content-padding*4;
-      margin: $content-padding 0;
       .checkbox{
         position: absolute;
-        left:-8px; /*undo ionic default*/
+        left:-7px; /*undo ionic default*/
       }
     }
   }
