@@ -11,6 +11,18 @@ export function twoPad(s, len, ch) {
   return s;
 }
 
+export function timeSinceMidnight(date) {
+  if (!date) return '';
+  if (typeof date == 'string' || typeof date == 'number') {
+    date = new Date(date);
+  }
+
+  return date.getHours() * 3600000 +
+    date.getMinutes() * 60000 +
+    date.getSeconds() * 1000 +
+    date.getMilliseconds();
+}
+
 export function formatDate(date) {
   if (!date) return '';
   if (typeof date == 'string' || typeof date == 'number') {
