@@ -74,6 +74,7 @@ var app = angular.module('beeline', [
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
 .controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
 .controller('LiteSummaryController', require('./controllers/LiteSummaryController.js').default)
+.controller('LiteMoreInfoController', require('./controllers/LiteMoreInfoController.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
@@ -86,6 +87,8 @@ var app = angular.module('beeline', [
 .directive('tripCode', require('./directives/tripCode/tripCode.js').default)
 .directive('myLocation', require('./directives/myLocation.js').default)
 .directive('companyInfoBroker', require('./directives/companyInfoBroker.js').default)
+.directive('moreInfo', require('./directives/moreInfo/moreInfo').default)
+.directive('markdownRenderer', require('./directives/markdownRenderer').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');

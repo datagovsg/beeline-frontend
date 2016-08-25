@@ -1,0 +1,35 @@
+<h4 class="item item-divider">Operated By:</h4>
+
+<company-info-broker company-id="companyId"
+                      company="companyInfo">
+</company-info-broker>
+
+<div class="item item-text-wrap">
+  <div class="row">
+    <div class="col-20 bus-logo">
+      <img ng-src="{{companyInfo.id | companyLogo}}">
+    </div>
+    <div class="col-80 col-center bus-co-info">
+      <p class="name">{{companyInfo.name}}</p>
+      <p class="email">{{companyInfo.email}}</p>
+    </div>
+  </div>
+</div>
+
+<h4 class="item item-divider">Important Notes</h4>
+<div class="item item-text-wrap features">
+  <markdown-renderer data="companyInfo.features">
+  </markdown-renderer>
+
+  <div class="signage-info">
+    <div>
+      Signage example:
+    </div>
+    <div class="signage">
+      <img ng-src="img/terms-sign.png" width="200">
+    </div>
+    <div>
+      Please look out for the Beeline sign at the front of the bus.
+    </div>
+  </div>
+</div>
