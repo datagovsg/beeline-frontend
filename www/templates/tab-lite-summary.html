@@ -97,7 +97,7 @@
 
         <button class="button primary-button"
                 ng-click="promptFollow()"
-                ng-disabled="!disp.termsChecked">
+                ng-disabled="!disp.termsChecked || book.waitingForSubscriptionResult">
           Track Route
         </button>
       </section>

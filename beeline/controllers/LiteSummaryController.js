@@ -55,6 +55,7 @@ export default [
       boardStop: null,
       alightStop: null,
       changes: {},
+      waitingForSubscriptionResult: false,
     };
     $scope.disp = {
       popupStop: null,
@@ -152,6 +153,7 @@ export default [
       }).then(function(response) {
         if (response) {
           try {
+            $scope.book.waitingForSubscriptionResult = true;
             LiteRoutesService.subscribeLiteRoute($scope.book.route.label).then(function(response)
             {
               if (response) {
@@ -163,6 +165,7 @@ export default [
                 $ionicPopup.alert({
                   title: 'Error subscribing lite route',
                 })
+                $scope.book.waitingForSubscriptionResult = false;
               }
             })
           }
