@@ -20,7 +20,41 @@
 
     <!-- Map Tab -->
     <div ng-show="activeTab===0">
-      <route-item class="item" route="liteRoute"></route-item>
+      <route-item class="item">
+        <route-item-bus-number>
+          {{ liteRoute.label }}
+        </route-item-bus-number>
+
+        <route-item-start-location>
+          {{ liteRoute.from }}
+        </route-item-start-location>
+        <route-item-end-location>
+          {{ liteRoute.to }}
+        </route-item-end-location>
+
+        <route-item-additional-info>
+          <company-info-broker company-id="liteRoute.transportCompanyId"
+                                company="companyInfo">
+          </company-info-broker>
+          <div class="icon-and-schedule">
+            <span class="icon-span company-logo">
+              <img class="mini-icon" ng-src="{{liteRoute.transportCompanyId | companyLogo}}">
+            </span>
+            <span class="schedule">
+              {{companyInfo.name}}
+            </span>
+          </div>
+
+          <div class="icon-and-schedule">
+            <span class="icon-span">
+              <img class="mini-icon" src="img/icon_schedule.svg">
+            </span>
+            <span class="schedule">
+              {{liteRoute.schedule}}
+            </span>
+          </div>
+        </route-item-additional-info>
+      </route-item>
       <ui-gmap-google-map ng-if="todayTrips.length > 0" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
         <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
@@ -56,9 +90,9 @@
       </div>
     </ion-scroll>
 
-    <ion-scroll class="service-cancellation" ng-if="todayTrips.length === 0">
+    <ion-scroll class="no-service" ng-if="todayTrips.length === 0">
       <div class="item item-text-wrap">
-        <div class="cancellation-content">
+        <div class="no-service-content">
           <h2>Today has no trip running for this lite route</h2>
           <img src="img/TicketCancelledTrip.svg" />
           <!-- <i class="icon ion-alert-circled"></i> -->

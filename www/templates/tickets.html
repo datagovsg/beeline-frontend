@@ -82,7 +82,41 @@
          class="item item-icon-right"
          ng-repeat="subscription in liteRouteSubscriptions"
          ui-sref="tabs.lite-route-tracker({ liteRouteLabel: subscription.label })">
-        <route-item route="subscription.liteRoute"></route-item>
+        <route-item>
+          <route-item-bus-number>
+            {{ subscription.liteRoute.label }}
+          </route-item-bus-number>
+
+          <route-item-start-location>
+            {{ subscription.liteRoute.from }}
+          </route-item-start-location>
+          <route-item-end-location>
+            {{ subscription.liteRoute.to }}
+          </route-item-end-location>
+
+          <route-item-additional-info>
+            <company-info-broker company-id="subscription.liteRoute.transportCompanyId"
+                                  company="companyInfo">
+            </company-info-broker>
+            <div class="icon-and-schedule">
+              <span class="icon-span company-logo">
+                <img class="mini-icon" ng-src="{{subscription.liteRoute.transportCompanyId | companyLogo}}">
+              </span>
+              <span class="schedule">
+                {{companyInfo.name}}
+              </span>
+            </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="schedule">
+                {{subscription.liteRoute.schedule}}
+              </span>
+            </div>
+          </route-item-additional-info>
+        </route-item>
         <i class="icon ion-ios-arrow-right icon-accessory"></i>
       </a>
     </div>
