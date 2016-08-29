@@ -20,6 +20,19 @@ export default function LiteRouteSubscriptionService($http, UserService, LiteRou
           return {"label": label, "from": liteRoute[label].from, "liteRoute": liteRoute[label]};
         }))
 			});
+    },
+
+    isSubscribed: async function(label) {
+      if (!LiteRouteSubscriptionCache) {
+        await getSubscriptions(true);
+      }
+      var subscription = _.find(LiteRouteSubscriptionCache, {"label": label})
+      if (subscription) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
   };
