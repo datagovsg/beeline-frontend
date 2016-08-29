@@ -189,6 +189,19 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tabs.lite-route-tracker', {
+    url: '/tickets/:liteRouteLabel',
+    views: {
+      'tab-tickets': {
+        templateUrl: 'templates/lite-route-tracker.html',
+        controller: 'LiteRouteTrackerController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Settings Tab
   // ////////////////////////////////////////////////////////////////////////////

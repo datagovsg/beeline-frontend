@@ -15,9 +15,24 @@ export default function LiteRoutesService($http, UserService, $q) {
   // For single lite route
   var lastLiteRouteLabel = null;
   var lastLiteRoutePromise = null;
+  function tranformTime(liteRoutesByLabel) {
+    for (let label in liteRoutesByLabel){
+      var liteRoute = liteRoutesByLabel[label]
+      //no starting time and ending time
+      if (!liteRoute.trips) {
+        liteRoute.startTime = null;
+        liteRoute.endTime = null;
+        return;
+      }
+      var tripByDates = _.partition(liteRoute.trips, function(trip) { return trip.date; });
+      var allTripStops = _.flatten(tripByDates[0].map(trip=>trip.tripStops));
+      var allStopTimes = allTripStops.map(stop=>stop.time).sort();
+      liteRoute.startTime = allStopTimes[0];
+      liteRoute.endTime = allStopTimes[allStopTimes.length-1];
+    }
+  }
 
   function transformLiteRouteData(data) {
-    console.log(data);
     var liteRoutesByLabel = _.reduce(data, function(result,value, key){
       var label = value.label;
       if (result[label] && (result[label].trips || value.trips)) {
@@ -32,6 +47,7 @@ export default function LiteRoutesService($http, UserService, $q) {
       }
       return result;
     },{});
+    tranformTime(liteRoutesByLabel);
     //ignor the startingTime and endTime for now
     return liteRoutesByLabel;
   }
@@ -135,6 +151,27 @@ export default function LiteRoutesService($http, UserService, $q) {
         }
       });
       return subscribePromise;
+    },
+
+    unSubscribeLiteRoute: function(liteRouteLabel) {
+      var unSubscribePromise = UserService.beeline({
+        method: 'PUT',
+        url: '/liteRoutes/unsubscribe',
+        data: {
+          routeLabel: liteRouteLabel,
+        }
+      })
+      .then(function(response) {
+        console.log(response.data);
+        if (response.data) {
+          return true;
+        }
+        else{
+          console.log("Fails");
+          return false;
+        }
+      });
+      return unSubscribePromise;
     }
 
 
