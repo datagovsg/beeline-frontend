@@ -17,6 +17,7 @@ export default [
   'RoutesService',
   'LiteRoutesService',
   'UserService',
+  'CompanyService',
   'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
@@ -35,6 +36,7 @@ export default [
     RoutesService,
     LiteRoutesService,
     UserService,
+    CompanyService,
     uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner
@@ -172,6 +174,12 @@ export default [
         }
       });
     };
+
+    $scope.disp.showTerms = () => {
+      if (!$scope.book.route.transportCompanyId) return;
+
+      CompanyService.showTerms($scope.book.route.transportCompanyId);
+    }
 
     /* Pans to the stops on the screen */
     function panToStops() {
