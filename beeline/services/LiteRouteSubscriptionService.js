@@ -23,10 +23,10 @@ export default function LiteRouteSubscriptionService($http, UserService, LiteRou
     },
 
     isSubscribed: async function(label) {
-      if (!LiteRouteSubscriptionCache) {
-        await this.getSubscriptions(true);
-      }
-      var subscription = _.find(LiteRouteSubscriptionCache, {"label": label})
+      var subscriptions = await this.getSubscriptions();
+      assert(subscriptions);
+
+      var subscription = _.find(subscriptions, {"label": label})
       if (subscription) {
         return true;
       }
@@ -34,6 +34,5 @@ export default function LiteRouteSubscriptionService($http, UserService, LiteRou
         return false;
       }
     }
-
   };
 }
