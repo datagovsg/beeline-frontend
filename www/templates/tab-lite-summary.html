@@ -72,11 +72,17 @@
           More Information
           <i class="icon ion-ios-arrow-right"></i>
         </div>
-        <div class="item check-terms item-text-wrap">
+        <div class="item check-terms item-text-wrap" ng-if="!book.isSubscribed">
             Please read {{companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
             <ion-checkbox class="item item-checkbox" ng-model="disp.termsChecked">
               I read and agree to the above terms and would like to proceed.
             </ion-checkbox>
+        </div>
+        <div class="item item-icon-right"
+             ng-if="book.isSubscribed"
+             ng-click="disp.showTerms()">
+          Terms and Conditions
+          <i class="icon ion-ios-arrow-right"></i>
         </div>
       </div>
 
@@ -92,7 +98,7 @@
       </section>
 
       <section class="item item-text-wrap"
-               ng-if="isLoggedIn">
+               ng-if="isLoggedIn && !book.isSubscribed">
         By clicking on the button below, you can track the bus on the day of the trip.
 
         <button class="button primary-button"
@@ -100,6 +106,17 @@
                 ng-disabled="!disp.termsChecked || book.waitingForSubscriptionResult">
           Track Route
         </button>
+      </section>
+
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn && book.isSubscribed">
+        You subscribed to tracking this route, you can track the bus on the day of the trip.
+
+        <button class="button primary-button"
+                ng-click="bleh()">
+          Go view map now
+        </button>
+
       </section>
 
     </form>

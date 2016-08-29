@@ -16,6 +16,7 @@ export default [
   'BookingService',
   'RoutesService',
   'LiteRoutesService',
+  'LiteRouteSubscriptionService',
   'UserService',
   'CompanyService',
   'uiGmapGoogleMapApi',
@@ -35,6 +36,7 @@ export default [
     BookingService,
     RoutesService,
     LiteRoutesService,
+    LiteRouteSubscriptionService,
     UserService,
     CompanyService,
     uiGmapGoogleMapApi,
@@ -56,6 +58,7 @@ export default [
       alightStop: null,
       changes: {},
       waitingForSubscriptionResult: false,
+      isSubscribed: false,
     };
     $scope.disp = {
       popupStop: null,
@@ -79,6 +82,8 @@ export default [
     var routePromise;
 
     $scope.book.label = $stateParams.label;
+
+    $scope.book.isSubscribed = LiteRouteSubscriptionService.isSubscribed($scope.book.label)
 
     routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
 
