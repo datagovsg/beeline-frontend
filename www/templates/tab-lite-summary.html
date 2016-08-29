@@ -113,10 +113,12 @@
         You subscribed to tracking this route, you can track the bus on the day of the trip.
 
         <button class="button primary-button"
-                ng-click="bleh()">
+                ui-sref="tabs.tickets">
           Go view map now
         </button>
-
+        <div class="untrack-link">
+          <a ng-click="promptUntrack()">I want to untrack this route now</a>
+        </div>
       </section>
 
     </form>

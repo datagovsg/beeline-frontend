@@ -165,18 +165,53 @@ export default [
                 $ionicPopup.alert({
                   title: 'Success',
                 })
+                $scope.book.isSubscribed = true;
               }
               else {
                 $ionicPopup.alert({
                   title: 'Error subscribing lite route',
                 })
-                $scope.book.waitingForSubscriptionResult = false;
               }
+              $scope.book.waitingForSubscriptionResult = false;
             })
           }
           catch(err) {
             $ionicPopup.alert({
               title: 'Error subscribing lite route ' + err,
+            })
+          }
+        }
+      });
+    };
+
+    $scope.promptUntrack = function() {
+      console.log("pressed");
+      $ionicPopup.confirm({
+        title: 'Are you sure you want to untrack this lite route?',
+        subTitle: "This lite route will be removed from your tickets."
+      }).then(function(response) {
+        if (response) {
+          try {
+            $scope.book.waitingForSubscriptionResult = true;
+            LiteRoutesService.unSubscribeLiteRoute($scope.book.route.label).then(function(response)
+            {
+              if (response) {
+                $ionicPopup.alert({
+                  title: 'Success',
+                })
+                $scope.book.isSubscribed = false;
+              }
+              else {
+                $ionicPopup.alert({
+                  title: 'Error untracking lite route',
+                })
+              }
+              $scope.book.waitingForSubscriptionResult = false;
+            })
+          }
+          catch(err) {
+            $ionicPopup.alert({
+              title: 'Error untracking lite route ' + err,
             })
           }
         }
