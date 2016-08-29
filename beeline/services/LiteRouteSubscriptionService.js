@@ -24,7 +24,7 @@ export default function LiteRouteSubscriptionService($http, UserService, LiteRou
 
     isSubscribed: async function(label) {
       if (!LiteRouteSubscriptionCache) {
-        await getSubscriptions(true);
+        await this.getSubscriptions(true);
       }
       var subscription = _.find(LiteRouteSubscriptionCache, {"label": label})
       if (subscription) {

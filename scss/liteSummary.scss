@@ -1,15 +1,4 @@
-@mixin flex-col {
-  display: flex;
-  flex-direction: column;
-}
-@mixin flex-shrink {
-  flex: 0 0 auto;
-}
-@mixin flex-grow {
-  flex: 1 1 auto;
-}
-
-#pg_booking {
+#pg_lite {
   $button-bar-height: 85px;
   $list-offset: 10px;
 
@@ -28,13 +17,6 @@
 
       route-item {
         flex-grow: 1;
-      }
-
-      .price {
-        padding: $padding-small-vertical 0;
-        flex: 0 0 auto;
-        align-self: center;
-        margin-right: $content-padding;
       }
     }
 
@@ -101,38 +83,17 @@
       }
     }
   }
-}
 
-// FIXME: big-white-button
-.booking-stops-infowindow {
-  button {
-    border: solid 2px $royal;
-    color: $royal;
-    background: $light;
-    border-radius: 15px;
-    padding: 5px 15px;
-    display: block;
-    margin-left: 1em;
-  }
-}
-
-.changes-message {
-  table {
-    width: 100%;
-
-    tr {
-      td {
-        background-color: white;
-      }
-      td:nth-child(1) {
-        width: 10%;
-      }
-      td:nth-child(2) {
-        width: 30%;
-      }
-      td:nth-child(3) {
-        width: 60%;
-        text-align: left;
+  .item.check-terms{
+    a{
+      text-decoration: underline;
+    }
+    .item.item-checkbox{
+      border: none;
+      padding-left: $content-padding*4;
+      .checkbox{
+        position: absolute;
+        left:-7px; /*undo ionic default*/
       }
     }
   }

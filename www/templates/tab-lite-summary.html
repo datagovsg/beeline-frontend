@@ -1,0 +1,125 @@
+<ion-view id="pg_lite" view-title="Route Details"
+  hide-back-button="true" can-swipe-back="false">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+       ui-sref="tabs.routes">
+       <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="fullscreen-map" scroll="false">
+    <form class="stops-form" name="stopsForm">
+      <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
+
+      <div class="route-info item">
+        <route-item hide-additional-info="true" hide-timing="true">
+          <route-item-bus-number>
+            {{ book.route.label }}
+          </route-item-bus-number>
+          <route-item-start-location>
+            {{ book.route.from }}
+          </route-item-start-location>
+          <route-item-end-location>
+            {{ book.route.to }}
+          </route-item-end-location>
+        </route-item>
+      </div>
+
+      <div class="map-area">
+        <ui-gmap-google-map
+            center="map.center"
+            zoom="map.zoom"
+            bounds="map.bounds"
+            control="map.control"
+            options="map.options">
+          <my-location></my-location>
+
+          <ui-gmap-window ng-if="disp.popupStop" coords="disp.popupStop.coordinates"
+            show="disp.popupStop">
+            <div class="popUpStopSelect">
+              <b>{{disp.popupStop.time | formatTime }}</b><br/>
+              {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
+            </div>
+          </ui-gmap-window>
+
+          <ui-gmap-marker
+            ng-repeat="stop in book.boardStops"
+            idKey="stop.id"
+            coords="stop.coordinates"
+            options="map.markerOptions.boardMarker"
+            click="applyTapBoard(stop)"
+          ></ui-gmap-marker>
+
+          <ui-gmap-polyline
+            path="routePath"
+            static="true"
+            stroke="map.pathOptions.routePath"
+          >
+          </ui-gmap-polyline>
+
+
+        </ui-gmap-google-map>
+      </div>
+
+      <company-info-broker company-id="book.route.transportCompanyId"
+                            company="companyInfo">
+      </company-info-broker>
+
+      <div class="item-text-wrap">
+        <div class="item item-icon-right"
+             ui-sref="tabs.lite-more-info({
+               companyId: book.route.transportCompanyId,
+               label: book.route.label})">
+          More Information
+          <i class="icon ion-ios-arrow-right"></i>
+        </div>
+        <div class="item check-terms item-text-wrap" ng-if="!book.isSubscribed">
+            Please read {{companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
+            <ion-checkbox class="item item-checkbox" ng-model="disp.termsChecked">
+              I read and agree to the above terms and would like to proceed.
+            </ion-checkbox>
+        </div>
+        <div class="item item-icon-right"
+             ng-if="book.isSubscribed"
+             ng-click="disp.showTerms()">
+          Terms and Conditions
+          <i class="icon ion-ios-arrow-right"></i>
+        </div>
+      </div>
+
+      <section class="item item-text-wrap"
+               ng-if="!isLoggedIn">
+        You are not logged in. Please enter your mobile number to track this route.
+
+        <button class="button primary-button"
+                ng-click="login()"
+                ng-disabled="!disp.termsChecked">
+          Log In
+        </button>
+      </section>
+
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn && !book.isSubscribed">
+        By clicking on the button below, you can track the bus on the day of the trip.
+
+        <button class="button primary-button"
+                ng-click="promptFollow()"
+                ng-disabled="!disp.termsChecked || book.waitingForSubscriptionResult">
+          Track Route
+        </button>
+      </section>
+
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn && book.isSubscribed">
+        You subscribed to tracking this route, you can track the bus on the day of the trip.
+
+        <button class="button primary-button"
+                ng-click="bleh()">
+          Go view map now
+        </button>
+
+      </section>
+
+    </form>
+  </ion-content>
+
+</ion-view>

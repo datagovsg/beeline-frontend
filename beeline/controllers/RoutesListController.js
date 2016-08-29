@@ -99,7 +99,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes'],
     () => {
       $ionicScrollDelegate.resize();
-    });
+  });
 
   // Don't override the caching in main.js
   var firstRun = true;

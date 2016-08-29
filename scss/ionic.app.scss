@@ -22,6 +22,7 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/startEndPicker";
 @import "scss/startEndStops";
 @import "scss/tripCode";
+@import "scss/moreInfo";
 
 // View specific styles
 @import "scss/intro-slides";
@@ -36,6 +37,7 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/bookingHistory";
 @import "scss/summary";
 @import "scss/mainMenu";
+@import "scss/liteSummary";
 
 //Not cleaned up styles
 @import "scss/busStopSelector";

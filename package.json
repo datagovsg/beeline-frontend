@@ -2,6 +2,9 @@
   "name": "beeline2",
   "version": "1.1.1",
   "description": "beeline2: An Ionic project",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "dependencies": {
     "angular-google-maps": "^2.3.2",
     "angular-simple-logger": "^0.1.7",
@@ -57,7 +60,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "gulp",
-    "postinstall": "ionic state restore",
     "clean": "ionic platform remove android; ionic platform remove ios; ionic platform remove browser; git checkout package.json"
   },
   "author": "",
