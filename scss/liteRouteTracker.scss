@@ -1,0 +1,43 @@
+/* ---------- tracker PAGE ---------- */
+#lite_route_tracker {
+
+  .tab-item {
+    text-transform: uppercase;
+    &.active {
+      opacity: 1;
+    }
+    &:not(.active) {
+      opacity: 0.3;
+    }
+  }
+
+  // Have the map fill the container
+  .angular-google-map-container {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+  }
+
+  .signage {
+    img {
+      margin: 15px 0;
+      padding: 1px;
+      border: 1px solid lighten($normal-grey, 50%);
+    }
+  }
+
+  .bus-logo {
+    min-height: 4em;
+    height: 20vw;
+    max-height: 10em;
+    img {
+      padding: 1px;
+      border: 1px solid lighten($normal-grey, 50%);
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+}
