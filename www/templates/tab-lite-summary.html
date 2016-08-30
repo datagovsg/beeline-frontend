@@ -11,7 +11,7 @@
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
 
       <div class="route-info item">
-        <route-item hide-additional-info="true" hide-timing="true">
+        <route-item class="lite" ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="true" hide-timing="true">
           <route-item-bus-number>
             {{ book.route.label }}
           </route-item-bus-number>
