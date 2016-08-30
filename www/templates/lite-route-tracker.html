@@ -37,6 +37,9 @@
           {{ liteRoute.to }}
         </route-item-end-location>
       </route-item>
+      <h2 class="item" ng-if="hasNoTrip">
+        There is no service at moment.
+      </h2>
       <ui-gmap-google-map ng-if="todayTrips.length > 0" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
         <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
@@ -68,17 +71,6 @@
     <ion-scroll ng-show="activeTab===1">
       <more-info company-id="liteRoute.transportCompanyId">
       </more-info>
-    </ion-scroll>
-
-    <ion-scroll class="no-service" ng-if="todayTrips.length === 0">
-      <div class="item item-text-wrap">
-        <div class="no-service-content">
-          <h2>There is no service at moment.</h2>
-          <img src="img/TicketCancelledTrip.svg" />
-          <!-- <i class="icon ion-alert-circled"></i> -->
-          <p>Today has no trip. </p>
-        </div>
-      </div>
     </ion-scroll>
   </ion-content>
 </ion-view>

@@ -190,7 +190,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.lite-route-tracker', {
-    url: '/tickets/:liteRouteLabel',
+    url: '/tickets/liteRoute/:liteRouteLabel',
     views: {
       'tab-tickets': {
         templateUrl: 'templates/lite-route-tracker.html',
