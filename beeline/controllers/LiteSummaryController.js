@@ -170,6 +170,7 @@ export default [
                   title: 'Success',
                 })
                 $scope.book.isSubscribed = true;
+                $scope.book.route.isSubscribed = true;
               }
               else {
                 $ionicPopup.alert({
@@ -204,6 +205,7 @@ export default [
                   title: 'Success',
                 })
                 $scope.book.isSubscribed = false;
+                $scope.book.route.isSubscribed = false;
               }
               else {
                 $ionicPopup.alert({
