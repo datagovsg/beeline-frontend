@@ -79,11 +79,11 @@ export default [
       });
     });
 
-    var routePromise;
+    var routePromise, subscriptionPromise;
 
     $scope.book.label = $stateParams.label;
 
-    $scope.book.isSubscribed = LiteRouteSubscriptionService.isSubscribed($scope.book.label)
+    subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label);
 
     routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
 
@@ -102,13 +102,17 @@ export default [
     });
 
     $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(Promise.all([gmapIsReady, routePromise])
+      loadingSpinner(Promise.all([gmapIsReady, routePromise, subscriptionPromise])
       .then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
         panToStops();
       }));
     });
+
+    subscriptionPromise.then((response)=>{
+      $scope.book.isSubscribed = response;
+    })
 
     gmapIsReady.then(function() {
       MapOptions.disableMapLinks();
