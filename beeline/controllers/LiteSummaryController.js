@@ -224,6 +224,12 @@ export default [
       CompanyService.showTerms($scope.book.route.transportCompanyId);
     }
 
+    $scope.applyTapBoard = function (stop) {
+      $scope.disp.popupStopType = "pickup";
+      $scope.disp.popupStop = stop;
+      $scope.$digest();
+    }
+
     /* Pans to the stops on the screen */
     function panToStops() {
       var stops = [];
