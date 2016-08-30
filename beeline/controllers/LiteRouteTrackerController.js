@@ -94,6 +94,9 @@ export default [
        var [googleMaps, todayTrips] = values;
        console.log("today trips are ");
        console.log(todayTrips);
+       if (todayTrips.length ==0 ){
+         $scope.hasNoTrip = true;
+       }
        var icon = {
            url: 'img/busMarker.svg',
            scaledSize: new googleMaps.Size(68, 86),
