@@ -24,36 +24,18 @@
         <route-item-bus-number>
           {{ liteRoute.label }}
         </route-item-bus-number>
-
+        <route-item-start-time>
+          {{ liteRoute.startTime | formatTime}}
+        </route-item-start-time>
         <route-item-start-location>
           {{ liteRoute.from }}
         </route-item-start-location>
+        <route-item-start-time>
+          {{ liteRoute.endTime | formatTime}}
+        </route-item-start-time>
         <route-item-end-location>
           {{ liteRoute.to }}
         </route-item-end-location>
-
-        <route-item-additional-info>
-          <company-info-broker company-id="liteRoute.transportCompanyId"
-                                company="companyInfo">
-          </company-info-broker>
-          <div class="icon-and-schedule">
-            <span class="icon-span company-logo">
-              <img class="mini-icon" ng-src="{{liteRoute.transportCompanyId | companyLogo}}">
-            </span>
-            <span class="schedule">
-              {{companyInfo.name}}
-            </span>
-          </div>
-
-          <div class="icon-and-schedule">
-            <span class="icon-span">
-              <img class="mini-icon" src="img/icon_schedule.svg">
-            </span>
-            <span class="schedule">
-              {{liteRoute.schedule}}
-            </span>
-          </div>
-        </route-item-additional-info>
       </route-item>
       <ui-gmap-google-map ng-if="todayTrips.length > 0" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
@@ -84,16 +66,14 @@
 
     <!-- Info Tab -->
     <ion-scroll ng-show="activeTab===1">
-      <company-tnc company-id="liteRoute.transportCompanyId"></company-tnc>
-      <div class="item col" ng-click="unSubscribe()">
-        Unfollow this route
-      </div>
+      <more-info company-id="liteRoute.transportCompanyId">
+      </more-info>
     </ion-scroll>
 
     <ion-scroll class="no-service" ng-if="todayTrips.length === 0">
       <div class="item item-text-wrap">
         <div class="no-service-content">
-          <h2>Today has no trip running for this lite route</h2>
+          <h2>There is no service at moment.</h2>
           <img src="img/TicketCancelledTrip.svg" />
           <!-- <i class="icon ion-alert-circled"></i> -->
           <p>Today has no trip. </p>
