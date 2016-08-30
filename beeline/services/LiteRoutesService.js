@@ -41,8 +41,8 @@ export default function LiteRoutesService($http, UserService, $q) {
       else {
         result[label] = value;
         //to display schedule in notes JSON
-        if (value.notes && value.notes.schedule) {
-          result[label].schedule = value.notes.schedule;
+        if (value.notes && value.notes.description) {
+          result[label].description = value.notes.description;
         }
       }
       return result;
@@ -70,7 +70,7 @@ export default function LiteRoutesService($http, UserService, $q) {
       var finalOptions = _.assign({
         start_date: startDate.getTime(),
         include_trips: true,
-        limit_trips: 1,
+        limit_trips: 5,
         include_path: false,
         tags: JSON.stringify(['lite']),
       }, options)
@@ -101,8 +101,15 @@ export default function LiteRoutesService($http, UserService, $q) {
       assert.equal(typeof liteRouteLabel, 'string');
 
       if (!ignoreCache && !options && lastLiteRouteLabel=== liteRouteLabel) {
-        console.log(`Using lite route ${liteRouteLabel} from cache`)
+        console.log(`Using lite route ${liteRouteLabel} from cache`);
         return lastLiteRoutePromise;
+      }
+
+      if (!ignoreCache && !options && liteRoutesPromise) {
+        console.log(`Using lite route ${liteRouteLabel} from liteRoutesPromise`);
+        liteRoutesPromise.then((response)=>{
+          return lastLiteRoutePromise = response[liteRouteLabel];
+        })
       }
 
       var startDate = new Date();
@@ -141,12 +148,10 @@ export default function LiteRoutesService($http, UserService, $q) {
         }
       })
       .then(function(response) {
-        console.log(response.data);
         if (response.data) {
           return true;
         }
         else{
-          console.log("Fails");
           return false;
         }
       });
@@ -162,12 +167,10 @@ export default function LiteRoutesService($http, UserService, $q) {
         }
       })
       .then(function(response) {
-        console.log(response.data);
         if (response.data) {
           return true;
         }
         else{
-          console.log("Fails");
           return false;
         }
       });

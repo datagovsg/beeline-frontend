@@ -44,8 +44,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.refreshRoutes = function (ignoreCache) {
     var allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
     allLiteRoutesPromise.then(function(allLiteRoutes){
-      console.log("lite routes returns as");
-      console.log(allLiteRoutes);
       $scope.data.liteRoutes = allLiteRoutes;
     })
 
@@ -108,35 +106,4 @@ export default function($scope, $state, UserService, RoutesService, $q,
     firstRun = false;
   });
 
-  // Shows a confirmation dialogue asking if the user is sure they want to log out
-  $scope.promptFollow = function(liteRouteLabel) {
-    console.log("pressed");
-    $ionicPopup.confirm({
-      title: 'Are you sure you want to follow this lite route?',
-      subTitle: "You will view the lite route tracker in tickets."
-    }).then(function(response) {
-      if (response) {
-        try {
-          LiteRoutesService.subscribeLiteRoute(liteRouteLabel).then(function(response)
-          {
-            if (response) {
-              $ionicPopup.alert({
-                title: 'Success',
-              })
-            }
-            else {
-              $ionicPopup.alert({
-                title: 'Error subscribing lite route',
-              })
-            }
-          })
-        }
-        catch(err) {
-          $ionicPopup.alert({
-            title: 'Error subscribing lite route ' + err,
-          })
-        }
-      }
-    });
-  };
 }
