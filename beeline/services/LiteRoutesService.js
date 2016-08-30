@@ -44,6 +44,8 @@ export default function LiteRoutesService($http, UserService, $q) {
         if (value.notes && value.notes.description) {
           result[label].description = value.notes.description;
         }
+        //mark isSubscribed as false
+        result[label].isSubscribed = false;
       }
       return result;
     },{});

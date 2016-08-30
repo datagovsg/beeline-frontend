@@ -22,7 +22,7 @@ function filterRoutesByRegionId(routes, regionId) {
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
-  BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup) {
+  BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup, LiteRouteSubscriptionService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -43,8 +43,21 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.refreshRoutes = function (ignoreCache) {
     var allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
-    allLiteRoutesPromise.then(function(allLiteRoutes){
+    // allLiteRoutesPromise.then(function(allLiteRoutes){
+    //   $scope.data.liteRoutes = allLiteRoutes;
+    // })
+    var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
+    $q.all([allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then((response)=>{
+      var allLiteRoutes, liteRouteSubscriptions;
+      [allLiteRoutes, liteRouteSubscriptions] = response;
+      if (liteRouteSubscriptions.length != 0){
+        for (let subscription of liteRouteSubscriptions){
+          allLiteRoutes[subscription.label].isSubscribed = true;
+        }
+      }
       $scope.data.liteRoutes = allLiteRoutes;
+      console.log("lite route in route list");
+      console.log($scope.data.liteRoutes);
     })
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
@@ -68,7 +81,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.recentRoutes = recentRoutes;
     });
 
-    $q.all([allRoutesPromise, recentRoutesPromise], allLiteRoutesPromise).then(() => {
+    $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
       $scope.error = null;
     })
     .catch(() => {

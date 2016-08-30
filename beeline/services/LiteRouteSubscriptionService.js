@@ -9,17 +9,22 @@ export default function LiteRouteSubscriptionService($http, UserService, LiteRou
   var subscriptions = null;
   return {
     getSubscriptions: function(ignoreCache) {
-      if (LiteRouteSubscriptionCache && !ignoreCache) return LiteRouteSubscriptionCache;
-      return LiteRouteSubscriptionCache = UserService.beeline({
-        method: 'GET',
-        url: '/liteRoutes/subscription',
-      }).then((response) => {
-        subscriptionsByLiteRouteLabel = _.map(response.data, subs=>subs.routeLabel);
-        return Promise.all(subscriptionsByLiteRouteLabel.map(async(label) => {
-          var liteRoute = await LiteRoutesService.getLiteRoute(label, ignoreCache);
-          return {"label": label, "from": liteRoute[label].from, "liteRoute": liteRoute[label]};
-        }))
-			});
+      if (UserService.getUser()) {
+        if (LiteRouteSubscriptionCache && !ignoreCache) return LiteRouteSubscriptionCache;
+        return LiteRouteSubscriptionCache = UserService.beeline({
+          method: 'GET',
+          url: '/liteRoutes/subscription',
+        }).then((response) => {
+          subscriptionsByLiteRouteLabel = _.map(response.data, subs=>subs.routeLabel);
+          return Promise.all(subscriptionsByLiteRouteLabel.map(async(label) => {
+            var liteRoute = await LiteRoutesService.getLiteRoute(label, ignoreCache);
+            return {"label": label, "from": liteRoute[label].from, "liteRoute": liteRoute[label]};
+          }))
+  			});
+      }
+      else {
+        return $q.resovle([]);
+      }
     },
 
     isSubscribed: async function(label) {
