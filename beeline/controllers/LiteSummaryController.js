@@ -163,22 +163,24 @@ export default [
         if (response) {
           try {
             $scope.book.waitingForSubscriptionResult = true;
-            LiteRoutesService.subscribeLiteRoute($scope.book.route.label).then(function(response)
-            {
-              if (response) {
-                $ionicPopup.alert({
-                  title: 'Success',
-                })
-                $scope.book.isSubscribed = true;
-                $scope.book.route.isSubscribed = true;
-              }
-              else {
-                $ionicPopup.alert({
-                  title: 'Error subscribing lite route',
-                })
-              }
-              $scope.book.waitingForSubscriptionResult = false;
-            })
+            loadingSpinner(
+              LiteRoutesService.subscribeLiteRoute($scope.book.route.label).then(function(response)
+              {
+                if (response) {
+                  $ionicPopup.alert({
+                    title: 'Success',
+                  })
+                  $scope.book.isSubscribed = true;
+                  $scope.book.route.isSubscribed = true;
+                }
+                else {
+                  $ionicPopup.alert({
+                    title: 'Error subscribing lite route',
+                  })
+                }
+                $scope.book.waitingForSubscriptionResult = false;
+              })
+            )
           }
           catch(err) {
             $ionicPopup.alert({
@@ -198,22 +200,24 @@ export default [
         if (response) {
           try {
             $scope.book.waitingForSubscriptionResult = true;
-            LiteRoutesService.unSubscribeLiteRoute($scope.book.route.label).then(function(response)
-            {
-              if (response) {
-                $ionicPopup.alert({
-                  title: 'Success',
-                })
-                $scope.book.isSubscribed = false;
-                $scope.book.route.isSubscribed = false;
-              }
-              else {
-                $ionicPopup.alert({
-                  title: 'Error untracking lite route',
-                })
-              }
-              $scope.book.waitingForSubscriptionResult = false;
-            })
+            loadingSpinner(
+              LiteRoutesService.unSubscribeLiteRoute($scope.book.route.label).then(function(response)
+              {
+                if (response) {
+                  $ionicPopup.alert({
+                    title: 'Success',
+                  })
+                  $scope.book.isSubscribed = false;
+                  $scope.book.route.isSubscribed = false;
+                }
+                else {
+                  $ionicPopup.alert({
+                    title: 'Error untracking lite route',
+                  })
+                }
+                $scope.book.waitingForSubscriptionResult = false;
+              })
+            )
           }
           catch(err) {
             $ionicPopup.alert({
