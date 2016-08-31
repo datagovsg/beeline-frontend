@@ -3,11 +3,26 @@ import assert from 'assert';
 
 
 
-export default function LiteRouteSubscriptionService($http, UserService, LiteRoutesService) {
+export default function LiteRouteSubscriptionService($http, UserService) {
   var LiteRouteSubscriptionCache = null;
   var subscriptionsByLiteRouteLabel = null;
-  var subscriptions = null;
+  var liteRouteSubscriptionsSummary = [];
+
   return {
+
+    setSubscribed(label, isSubscribed) {
+
+    },
+
+    getSubscribed(label, isSubscribed) {
+
+    },
+
+    getSubscriptionSummary: function(){
+      console.log("cachethis", liteRouteSubscriptionsSummary)
+      return liteRouteSubscriptionsSummary;
+    },
+
     getSubscriptions: function(ignoreCache) {
       if (UserService.getUser()) {
         if (LiteRouteSubscriptionCache && !ignoreCache) return LiteRouteSubscriptionCache;
@@ -16,20 +31,21 @@ export default function LiteRouteSubscriptionService($http, UserService, LiteRou
           url: '/liteRoutes/subscription',
         }).then((response) => {
           subscriptionsByLiteRouteLabel = _.map(response.data, subs=>subs.routeLabel);
-          return Promise.all(subscriptionsByLiteRouteLabel.map(async(label) => {
-            var liteRoute = await LiteRoutesService.getLiteRoute(label, ignoreCache);
-            return {"label": label, "from": liteRoute[label].from, "liteRoute": liteRoute[label]};
-          }))
+          liteRouteSubscriptionsSummary = subscriptionsByLiteRouteLabel.map((label) => {
+            return {"label": label, "isSubscribed": true};
+          })
+          return liteRouteSubscriptionsSummary;
   			});
       }
       else {
-        return $q.resovle([]);
+        return $q.resolve([]);
       }
     },
 
     isSubscribed: async function(label) {
       var subscriptions = await this.getSubscriptions();
       assert(subscriptions);
+      console.log("this are subscriptions:", subscriptions);
 
       var subscription = _.find(subscriptions, {"label": label})
       if (subscription) {

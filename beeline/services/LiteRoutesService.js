@@ -7,7 +7,7 @@ import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
 
-export default function LiteRoutesService($http, UserService, $q) {
+export default function LiteRoutesService($http, UserService, $q, LiteRouteSubscriptionService) {
 
   var liteRoutesCache;
   var liteRoutesPromise;
@@ -141,7 +141,8 @@ export default function LiteRoutesService($http, UserService, $q) {
     },
 
 
-    subscribeLiteRoute: function(liteRouteLabel) {
+    subscribeLiteRoute: async function(liteRouteLabel) {
+      // var subscriptionsCache = await LiteRouteSubscriptionService.getSubscriptions();
       var subscribePromise = UserService.beeline({
         method: 'POST',
         url: '/liteRoutes/subscription',
@@ -151,6 +152,10 @@ export default function LiteRoutesService($http, UserService, $q) {
       })
       .then(function(response) {
         if (response.data) {
+          // subscriptionsCache.push({"label": liteRouteLabel, "isSubscribed": true});
+          LiteRouteSubscriptionService.getSubscriptionSummary().push({"label": liteRouteLabel, "isSubscribed": true})
+          console.log("subscribe success");
+          console.log(LiteRouteSubscriptionService.getSubscriptionSummary());
           return true;
         }
         else{
@@ -160,7 +165,8 @@ export default function LiteRoutesService($http, UserService, $q) {
       return subscribePromise;
     },
 
-    unSubscribeLiteRoute: function(liteRouteLabel) {
+    unSubscribeLiteRoute: async function(liteRouteLabel) {
+      var subscriptionsCache = await LiteRouteSubscriptionService.getSubscriptions();
       var unSubscribePromise = UserService.beeline({
         method: 'PUT',
         url: '/liteRoutes/unsubscribe',
@@ -170,6 +176,11 @@ export default function LiteRoutesService($http, UserService, $q) {
       })
       .then(function(response) {
         if (response.data) {
+          var subscription = _.find(LiteRouteSubscriptionService.getSubscriptionSummary(), {"label": liteRouteLabel})
+          if (subscription) {
+            console.log(subscription);
+            subscription.isSubscribed = false;
+          }
           return true;
         }
         else{

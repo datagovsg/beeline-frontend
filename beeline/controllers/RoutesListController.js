@@ -41,6 +41,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
+  // $scope.$watch('data.liteRoutes', updateSubscriptionStatus)
+  // $scope.$watch(() => Svc.getSubscriptionSummary(), updateSubscriptionStatus)
+
   $scope.refreshRoutes = function (ignoreCache) {
     var allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
     // allLiteRoutesPromise.then(function(allLiteRoutes){
@@ -111,6 +114,19 @@ export default function($scope, $state, UserService, RoutesService, $q,
     () => {
       $ionicScrollDelegate.resize();
   });
+
+  $scope.$watchCollection(
+                    LiteRouteSubscriptionService.getSubscriptionSummary()
+                    ,
+                    (newValue, oldValue) => {
+                      console.log(
+                          "new and old"
+                      );
+                        console.log(
+                            newValue, oldValue
+                        );
+                    }
+                );
 
   // Don't override the caching in main.js
   var firstRun = true;
