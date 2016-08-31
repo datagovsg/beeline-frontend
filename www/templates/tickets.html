@@ -82,7 +82,7 @@
          class="item item-icon-right"
          ng-repeat="subscription in liteRouteSubscriptions"
          ui-sref="tabs.lite-route-tracker({ liteRouteLabel: subscription.label })">
-        <route-item>
+        <route-item class="lite lite-tracked" hide-additional-info="true" hide-timing="true">
           <route-item-bus-number>
             {{ subscription.liteRoute.label }}
           </route-item-bus-number>

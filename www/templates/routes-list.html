@@ -31,7 +31,7 @@
                   label: route.label,
                 })"
                 class="item-icon-right">
-        <route-item>
+        <route-item class="lite" ng-class="{'lite-tracked': route.isSubscribed}" hide-additional-info="true" hide-timing="true">
           <route-item-bus-number>
             {{ route.label }}
           </route-item-bus-number>
