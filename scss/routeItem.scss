@@ -1,8 +1,43 @@
 
 /* ----- General styling for route information listings ----- */
 route-item {
-  position: relative;
   display: block;
+
+  &.lite {
+
+    &:before, &:after {
+      display: block;
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      top: 0;
+      right: 0;
+      content: "";
+      border-top: solid 25px $hint-color;
+      border-right: solid 25px $hint-color;
+      background: url('../img/icon_tracking_route.svg') 0 100% no-repeat;
+      background-size: 18px 18px;
+    }
+
+    &.lite-tracked {
+      &:before {
+        border-top: solid 25px $royal;
+        border-right: solid 25px $royal;
+      }
+    }
+
+    &:before {
+      border-left: solid 25px transparent;
+      border-bottom: solid 25px transparent;
+    }
+
+    &:after {
+      border-bottom: solid 25px transparent;
+      border-left: solid 25px transparent;
+      border-right: solid 25px transparent;
+      border-top: solid 25px transparent;
+    }
+  }
 
   .bus-number {
     margin-right: $padding-small-horizontal;
@@ -98,5 +133,11 @@ route-item {
 
   .mini-icon {
     max-width: 20px;
+  }
+
+  .tracking-icon {
+    position: absolute;
+    top: 7px;
+    right: 7px;
   }
 }
