@@ -3,7 +3,7 @@ import assert from 'assert';
 
 
 
-export default function LiteRouteSubscriptionService($http, UserService, LiteRoutesService) {
+export default function LiteRouteSubscriptionService($http, UserService, LiteRoutesService, $q) {
   var LiteRouteSubscriptionCache = null;
   var subscriptionsByLiteRouteLabel = null;
   var subscriptions = null;
@@ -23,7 +23,7 @@ export default function LiteRouteSubscriptionService($http, UserService, LiteRou
   			});
       }
       else {
-        return $q.resovle([]);
+        return $q.resolve([]);
       }
     },
 
