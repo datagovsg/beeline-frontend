@@ -20,10 +20,13 @@
 
     <!-- Map Tab -->
     <div ng-show="activeTab===0">
-      <route-item class="item">
+      <route-item class="lite item lite-tracked">
         <route-item-bus-number>
           {{ liteRoute.label }}
         </route-item-bus-number>
+        <route-item-description>
+          {{ liteRoute.description }}
+        </route-item-description>
         <route-item-start-time>
           {{ liteRoute.startTime | formatTime}}
         </route-item-start-time>

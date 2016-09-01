@@ -11,13 +11,22 @@
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
 
       <div class="route-info item">
-        <route-item class="lite" ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="true" hide-timing="true">
+        <route-item class="lite" ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="true">
           <route-item-bus-number>
             {{ book.route.label }}
           </route-item-bus-number>
+          <route-item-description>
+            {{ book.route.description }}
+          </route-item-description>
+          <route-item-start-time>
+            {{ book.route | routeStartTime | formatTime:true }}
+          </route-item-start-time>
           <route-item-start-location>
             {{ book.route.from }}
           </route-item-start-location>
+          <route-item-end-time>
+            {{ book.route | routeEndTime | formatTime:true }}
+          </route-item-end-time>
           <route-item-end-location>
             {{ book.route.to }}
           </route-item-end-location>
