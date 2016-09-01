@@ -3,11 +3,13 @@ export default [
   'TicketService',
   'UserService',
   'LiteRouteSubscriptionService',
+  'LiteRoutesService',
   function(
     $scope,
     TicketService,
     UserService,
-    LiteRouteSubscriptionService
+    LiteRouteSubscriptionService,
+    LiteRoutesService
   ) {
     // Track the login state of the user service
     $scope.logIn = function() {
@@ -38,17 +40,29 @@ export default [
         $scope.$broadcast('scroll.refreshComplete');
         $scope.error = true;
       });
-      LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then((liteRouteSubscriptions)=>{
-        $scope.liteRouteSubscriptions = liteRouteSubscriptions;
-        console.log("tickets controller");
-        console.log($scope.liteRouteSubscriptions);
-        $scope.$broadcast('scroll.refreshComplete');
-        $scope.error = false;
-      })
-      .catch((error) => {
-        $scope.$broadcast('scroll.refreshComplete');
-        $scope.error = true;
-      });;
+      LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then(async(liteRouteSubscriptions)=>{
+          // $scope.liteRouteSubscriptions = [];
+
+          var XXX = []
+          console.log("searched subs",liteRouteSubscriptions)
+          for (let subscribedLiteLabel of liteRouteSubscriptions) {
+            var subscribedLiteRoute = await LiteRoutesService.getLiteRoute(subscribedLiteLabel)
+            console.log("is able to find?");
+            console.log(subscribedLiteRoute);
+            XXX.push({"label": subscribedLiteLabel, "liteRoute": subscribedLiteRoute})
+          }
+          $scope.liteRouteSubscriptions = XXX;
+
+          console.log("tickets controller");
+          console.log($scope.liteRouteSubscriptions);
+          $scope.$broadcast('scroll.refreshComplete');
+          $scope.error = false;
+        })
+        .catch((error) => {
+          console.log(error.stack);
+          $scope.$broadcast('scroll.refreshComplete');
+          $scope.error = true;
+        });
 
     }
 
