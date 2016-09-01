@@ -15,7 +15,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
   // For single lite route
   var lastLiteRouteLabel = null;
   var lastLiteRoutePromise = null;
-  function tranformTime(liteRoutesByLabel) {
+  function transformTime(liteRoutesByLabel) {
     for (let label in liteRoutesByLabel){
       var liteRoute = liteRoutesByLabel[label]
       //no starting time and ending time
@@ -49,7 +49,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       }
       return result;
     },{});
-    tranformTime(liteRoutesByLabel);
+    transformTime(liteRoutesByLabel);
     //ignor the startingTime and endTime for now
     return liteRoutesByLabel;
   }
@@ -142,7 +142,6 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
 
 
     subscribeLiteRoute: async function(liteRouteLabel) {
-      // var subscriptionsCache = await LiteRouteSubscriptionService.getSubscriptions();
       var subscribePromise = UserService.beeline({
         method: 'POST',
         url: '/liteRoutes/subscription',
@@ -153,7 +152,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       .then(function(response) {
         if (response.data) {
           // subscriptionsCache.push({"label": liteRouteLabel, "isSubscribed": true});
-          LiteRouteSubscriptionService.getSubscriptionSummary().push({"label": liteRouteLabel, "isSubscribed": true})
+          LiteRouteSubscriptionService.getSubscriptionSummary().push(liteRouteLabel)
           console.log("subscribe success");
           console.log(LiteRouteSubscriptionService.getSubscriptionSummary());
           return true;
@@ -166,7 +165,6 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     },
 
     unSubscribeLiteRoute: async function(liteRouteLabel) {
-      var subscriptionsCache = await LiteRouteSubscriptionService.getSubscriptions();
       var unSubscribePromise = UserService.beeline({
         method: 'PUT',
         url: '/liteRoutes/unsubscribe',
@@ -176,11 +174,10 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       })
       .then(function(response) {
         if (response.data) {
-          var subscription = _.find(LiteRouteSubscriptionService.getSubscriptionSummary(), {"label": liteRouteLabel})
-          if (subscription) {
-            console.log(subscription);
-            subscription.isSubscribed = false;
-          }
+          console.log("unsubscribe success");
+          var index = LiteRouteSubscriptionService.getSubscriptionSummary().indexOf(liteRouteLabel)
+          LiteRouteSubscriptionService.getSubscriptionSummary().splice(index, 1)
+          console.log("after removing", LiteRouteSubscriptionService.getSubscriptionSummary());
           return true;
         }
         else{
@@ -189,9 +186,6 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       });
       return unSubscribePromise;
     }
-
-
   };
-
   return instance;
 }

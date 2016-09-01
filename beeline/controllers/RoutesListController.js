@@ -53,14 +53,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $q.all([allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then((response)=>{
       var allLiteRoutes, liteRouteSubscriptions;
       [allLiteRoutes, liteRouteSubscriptions] = response;
-      if (liteRouteSubscriptions.length != 0){
-        for (let subscription of liteRouteSubscriptions){
-          allLiteRoutes[subscription.label].isSubscribed = true;
-        }
-      }
       $scope.data.liteRoutes = allLiteRoutes;
-      console.log("lite route in route list");
-      console.log($scope.data.liteRoutes);
     })
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
@@ -116,17 +109,18 @@ export default function($scope, $state, UserService, RoutesService, $q,
   });
 
   $scope.$watchCollection(
-                    LiteRouteSubscriptionService.getSubscriptionSummary()
-                    ,
-                    (newValue, oldValue) => {
-                      console.log(
-                          "new and old"
-                      );
-                        console.log(
-                            newValue, oldValue
-                        );
-                    }
-                );
+    () => LiteRouteSubscriptionService.getSubscriptionSummary(),
+    (newValue) => {
+      _.forEach($scope.data.liteRoutes,(liteRoute)=>{
+        if (newValue.includes(liteRoute.label)) {
+          liteRoute.isSubscribed = true;
+        }
+        else {
+          liteRoute.isSubscribed = false;
+        }
+      })
+    }
+  );
 
   // Don't override the caching in main.js
   var firstRun = true;

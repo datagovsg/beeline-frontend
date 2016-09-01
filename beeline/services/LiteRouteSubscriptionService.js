@@ -10,29 +10,20 @@ export default function LiteRouteSubscriptionService($http, UserService) {
 
   return {
 
-    setSubscribed(label, isSubscribed) {
-
-    },
-
-    getSubscribed(label, isSubscribed) {
-
-    },
-
-    getSubscriptionSummary: function(){
-      console.log("cachethis", liteRouteSubscriptionsSummary)
+    getSubscriptionSummary: function() {
       return liteRouteSubscriptionsSummary;
     },
 
     getSubscriptions: function(ignoreCache) {
       if (UserService.getUser()) {
-        if (LiteRouteSubscriptionCache && !ignoreCache) return LiteRouteSubscriptionCache;
+        if (LiteRouteSubscriptionCache && !ignoreCache) return liteRouteSubscriptionsSummary;
         return LiteRouteSubscriptionCache = UserService.beeline({
           method: 'GET',
           url: '/liteRoutes/subscription',
         }).then((response) => {
           subscriptionsByLiteRouteLabel = _.map(response.data, subs=>subs.routeLabel);
           liteRouteSubscriptionsSummary = subscriptionsByLiteRouteLabel.map((label) => {
-            return {"label": label, "isSubscribed": true};
+            return label;
           })
           return liteRouteSubscriptionsSummary;
   			});
@@ -44,10 +35,11 @@ export default function LiteRouteSubscriptionService($http, UserService) {
 
     isSubscribed: async function(label) {
       var subscriptions = await this.getSubscriptions();
+      console.log("the cache", subscriptions)
       assert(subscriptions);
       console.log("this are subscriptions:", subscriptions);
 
-      var subscription = _.find(subscriptions, {"label": label})
+      var subscription = subscriptions.includes(label)
       if (subscription) {
         return true;
       }
