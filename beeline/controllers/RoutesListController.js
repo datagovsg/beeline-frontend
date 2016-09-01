@@ -43,9 +43,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // $scope.$watch('data.liteRoutes', updateSubscriptionStatus)
   // $scope.$watch(() => Svc.getSubscriptionSummary(), updateSubscriptionStatus)
+  var allLiteRoutesPromise
 
   $scope.refreshRoutes = function (ignoreCache) {
-    var allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
+    allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
     // allLiteRoutesPromise.then(function(allLiteRoutes){
     //   $scope.data.liteRoutes = allLiteRoutes;
     // })
