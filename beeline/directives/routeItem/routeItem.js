@@ -8,6 +8,7 @@ export default function($state, BookingService) {
       hideBusLabel: '<?',
       hideAdditionalInfo: '<?',
       hideTiming: '<?'
+      hideDescription: '<?',
     },
     transclude: {
       additionalInfo: '?routeItemAdditionalInfo',
@@ -16,6 +17,7 @@ export default function($state, BookingService) {
       startLocation: '?routeItemStartLocation',
       endTime: '?routeItemEndTime',
       endLocation: '?routeItemEndLocation',
+      description: '?routeItemDescription',
     },
     link: function(scope, element, attributes) {
     },
