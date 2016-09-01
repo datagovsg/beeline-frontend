@@ -7,7 +7,7 @@ export default function($state, BookingService) {
     scope: {
       hideBusLabel: '<?',
       hideAdditionalInfo: '<?',
-      hideTiming: '<?'
+      hideTiming: '<?',
       hideDescription: '<?',
     },
     transclude: {
