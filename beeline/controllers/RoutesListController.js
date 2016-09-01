@@ -110,7 +110,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.$watchCollection(
     () => LiteRouteSubscriptionService.getSubscriptionSummary(),
-    (newValue) => {
+    async (newValue) => {
+      console.log(newValue)
+      await allLiteRoutesPromise;
+      console.log("all lite routes", $scope.data.liteRoutes)
       _.forEach($scope.data.liteRoutes,(liteRoute)=>{
         if (newValue.includes(liteRoute.label)) {
           liteRoute.isSubscribed = true;
