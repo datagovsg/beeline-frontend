@@ -49,7 +49,7 @@ export default [
             var subscribedLiteRoute = await LiteRoutesService.getLiteRoute(subscribedLiteLabel)
             console.log("is able to find?");
             console.log(subscribedLiteRoute);
-            XXX.push({"label": subscribedLiteLabel, "liteRoute": subscribedLiteRoute})
+            XXX.push({"label": subscribedLiteLabel,"liteRoute": subscribedLiteRoute})
           }
           $scope.liteRouteSubscriptions = XXX;
 
