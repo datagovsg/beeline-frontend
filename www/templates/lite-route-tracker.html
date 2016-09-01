@@ -43,8 +43,9 @@
       <ui-gmap-google-map ng-if="todayTrips.length > 0" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
         <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
-        <ui-gmap-polyline ng-if="map.lines.actualPath.path.length"
-                          path="map.lines.actualPath.path"
+        <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
+                          ng-if="actualPath.path.length"
+                          path="actualPath.path"
                           stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
         <ui-gmap-marker idkey="'boardstop'"
                         ng-if="map.markers.boardStop.stop"
@@ -54,10 +55,11 @@
                         ng-if="map.markers.alightStop.stop"
                         coords="map.markers.alightStop.stop.coordinates"
                         options="map.markerOptions.endMarker"></ui-gmap-marker>
-        <ui-gmap-marker ng-if="map.busLocation.coordinates"
-                        idkey="'bus-location'"
-                        coords="map.busLocation.coordinates"
-                        icon="map.busLocation.icon"></ui-gmap-marker>
+        <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
+                        ng-if="busLocation.coordinates"
+                        idkey="'bus-location{{index}}'"
+                        coords="busLocation.coordinates"
+                        icon="busLocation.icon"></ui-gmap-marker>
         <ui-gmap-markers  ng-if="trip.tripStops"
                           models="trip.tripStops"
                           idkey="'id'"

@@ -2,31 +2,13 @@ import _ from 'lodash';
 import assert from 'assert';
 
 export default [
-  '$scope',
-  '$rootScope',
-  '$stateParams',
-  '$timeout',
-  'uiGmapGoogleMapApi',
-  'CompanyService',
-  'TripService',
-  'UserService',
-  'MapOptions',
-  'RoutesService',
-  'LiteRoutesService',
-  '$ionicPopup',
+  '$scope', '$rootScope', '$stateParams', '$timeout', 'uiGmapGoogleMapApi',
+  'CompanyService', 'TripService', 'UserService', 'MapOptions', 'RoutesService',
+  'LiteRoutesService', '$ionicPopup',
   function(
-    $scope,
-    $rootScope,
-    $stateParams,
-    $timeout,
-    uiGmapGoogleMapApi,
-    CompanyService,
-    TripService,
-    UserService,
-    MapOptions,
-    RoutesService,
-    LiteRoutesService,
-    $ionicPopup
+    $scope,  $rootScope,  $stateParams,  $timeout,  uiGmapGoogleMapApi,
+    CompanyService, TripService,  UserService, MapOptions, RoutesService,
+    LiteRoutesService,  $ionicPopup
   ) {
 
     // Initialize the necessary basic data data
@@ -34,14 +16,14 @@ export default [
     $scope.map = MapOptions.defaultMapOptions({
       lines: {
         route: { path: [] },
-        // actualPath: { path: [] },
-        actualPaths: [],
+        actualPaths: [
+          { path: [] }
+        ],
       },
-      // busLocation: {
-      //   coordinates: null,
-      //   icon: null,
-      // },
-      busLocations: []
+      busLocations: [
+        { coordinates: null,
+          icon: null,}
+      ]
     });
     $scope.recentPings = [];
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
@@ -63,22 +45,26 @@ export default [
     // when the server is slow to respond
     var pingTimer;
     function pingLoop() {
-       Promise.all([$scope.todayTrips.map((trip, index)=>{
+       console.log("Ping again!");
+       Promise.all($scope.todayTrips.map((trip, index)=>{
+         console.log("currently is pinging "+trip.id);
         return TripService.DriverPings(trip.id)
         .then((info) => {
           /* Only show pings from the last two hours */
           var now = Date.now();
-          $scope.recentPings[index] = _.filter(info.pings,
+          return $scope.recentPings[index] = _.filter(info.pings,
             ping => now - ping.time.getTime() < 2*60*60*1000);
         })
-        .then(null, () => {})
-      })])
+      }))
       .then(() => {
         pingTimer = $timeout(pingLoop, 15000);
       }); // catch all errors
 
     }
-    todayTripsPromise.then(pingLoop);
+    todayTripsPromise.then(()=>{
+      console.log("start to ping!");
+      pingLoop();
+    });
     $scope.$on('$destroy', () => { $timeout.cancel(pingTimer); });
 
     // Draw the planned route
@@ -108,10 +94,16 @@ export default [
         })
         console.log($scope.map.busLocations);
       })
+      for (let ts of todayTrips[0].tripStops) {
+        ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
+                                 $scope.map.markerOptions.alightMarker;
+      }
     })
 
     // Draw the icon for latest bus location
-    $scope.$watch('recentPings', function(recentPings) {
+    $scope.$watchCollection('recentPings', function(recentPings) {
+      console.log("recent pings are here ");
+      console.log(recentPings);
       if (recentPings) {
         recentPings.map((pings, index)=>{
           if (pings.length > 0){
@@ -121,32 +113,14 @@ export default [
               latitude: ping.coordinates.coordinates[1],
               longitude: ping.coordinates.coordinates[0]
             }));
-            $scope.map.busLocations.splice(index, 0, {
-              "coordinates": coordinates,
-            })
+            $scope.map.busLocations[index].coordinates = coordinates;
             $scope.map.lines.actualPaths.splice(index,0, {
               "path": path
             })
-            // $scope.map.busLocations[index].coordinates = pings[0].coordinates;
-            // $scope.map.lines.actualPaths[index].path = pings.map(ping => ({
-            //   latitude: ping.coordinates.coordinates[1],
-            //   longitude: ping.coordinates.coordinates[0]
-            // }));
           }
         })
       }
     });
-
-    //
-    // $scope.$watch('map.markerOptions.boardMarker.icon', (icon) => {
-    //   if (!icon) return;
-    //   routePromise.then((trip) => {
-    //     for (let ts of trip.tripStops) {
-    //       ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
-    //                                $scope.map.markerOptions.alightMarker;
-    //     }
-    //   })
-    // })
 
     // Pan and zoom to the bus location when the map is ready
     // Single ping request for updating the map initially
@@ -159,11 +133,6 @@ export default [
       });
     });
 
-    var mapPromise = new Promise(function(resolve) {
-      $scope.$watch('map.control.getGMap', function(getGMap) {
-        if (getGMap) resolve($scope.map.control.getGMap());
-      });
-    });
     Promise.all([
       mapPromise,
       uiGmapGoogleMapApi
