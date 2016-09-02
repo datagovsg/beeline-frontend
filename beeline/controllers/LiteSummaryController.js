@@ -129,7 +129,6 @@ export default [
       }
     })
 
-
     $scope.setStop = function (stop, type) {
       if (type === 'pickup') {
         $scope.book.boardStop = stop;
@@ -140,13 +139,26 @@ export default [
       $scope.disp.popupStop = null;
     }
 
-    $scope.$watch(() => UserService.getUser(), async(user) => {
-      $scope.isLoggedIn = user ? true : false;
+    $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
+      $scope.isLoggedIn = userId ? true : false;
       if ($scope.isLoggedIn) {
         $ionicLoading.show({
           template: loadingTemplate
         })
-        $ionicLoading.hide();
+        try {
+          LiteRouteSubscriptionService.isSubscribed($scope.book.label, true)
+          .then((response) => {
+            $scope.book.isSubscribed = response;
+            $ionicLoading.hide();
+            }
+          )
+        }
+        catch(error) {
+          $ionicLoading.hide();
+        }
+      }
+      else {
+        $scope.book.isSubscribed = false;
       }
     })
 

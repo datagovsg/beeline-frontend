@@ -3,7 +3,7 @@ import assert from 'assert';
 
 
 
-export default function LiteRouteSubscriptionService($http, UserService) {
+export default function LiteRouteSubscriptionService($http, UserService, $q) {
   var LiteRouteSubscriptionCache = null;
   var subscriptionsByLiteRouteLabel = null;
   var liteRouteSubscriptionsSummary = [];
@@ -29,12 +29,13 @@ export default function LiteRouteSubscriptionService($http, UserService) {
   			});
       }
       else {
+        liteRouteSubscriptionsSummary = [];
         return $q.resolve([]);
       }
     },
 
-    isSubscribed: async function(label) {
-      var subscriptions = await this.getSubscriptions();
+    isSubscribed: async function(label, ignoreCache) {
+      var subscriptions = await this.getSubscriptions(ignoreCache);
       console.log("the cache", subscriptions)
       assert(subscriptions);
       console.log("this are subscriptions:", subscriptions);
