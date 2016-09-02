@@ -19,7 +19,7 @@ export default function LiteRouteSubscriptionService($http, UserService, $q) {
         if (LiteRouteSubscriptionCache && !ignoreCache) return liteRouteSubscriptionsSummary;
         return LiteRouteSubscriptionCache = UserService.beeline({
           method: 'GET',
-          url: '/liteRoutes/subscription',
+          url: '/liteRoutes/subscriptions',
         }).then((response) => {
           subscriptionsByLiteRouteLabel = _.map(response.data, subs=>subs.routeLabel);
           liteRouteSubscriptionsSummary = subscriptionsByLiteRouteLabel.map((label) => {

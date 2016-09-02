@@ -7,7 +7,7 @@ import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
 
-export default function LiteRoutesService($http, UserService, $q, LiteRouteSubscriptionService) {
+export default function LiteRoutesService($http, UserService, $q) {
 
   var liteRoutesCache;
   var liteRoutesPromise;
@@ -15,7 +15,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
   // For single lite route
   var lastLiteRouteLabel = null;
   var lastLiteRoutePromise = null;
-  function transformTime(liteRoutesByLabel) {
+  function tranformTime(liteRoutesByLabel) {
     for (let label in liteRoutesByLabel){
       var liteRoute = liteRoutesByLabel[label]
       //no starting time and ending time
@@ -49,7 +49,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       }
       return result;
     },{});
-    transformTime(liteRoutesByLabel);
+    tranformTime(liteRoutesByLabel);
     //ignor the startingTime and endTime for now
     return liteRoutesByLabel;
   }
@@ -119,13 +119,18 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
 
       var finalOptions = _.assign({
         start_date: startDate.getTime(),
-        include_trips: true
+        include_trips: true,
+        tags: JSON.stringify(['lite']),
+        label: liteRouteLabel
       }, options)
+
+      var url = '/routes?';
+      url+= querystring.stringify(finalOptions);
 
       lastLiteRouteLabel = liteRouteLabel;
       return lastLiteRoutePromise = UserService.beeline({
         method: 'GET',
-        url: `/liteRoutes/${liteRouteLabel}?${querystring.stringify(finalOptions)}`,
+        url: url,
       })
       .then(function(response) {
         console.log("single lite route is ");
@@ -141,20 +146,16 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     },
 
 
-    subscribeLiteRoute: async function(liteRouteLabel) {
+    subscribeLiteRoute: function(liteRouteLabel) {
       var subscribePromise = UserService.beeline({
         method: 'POST',
-        url: '/liteRoutes/subscription',
+        url: '/liteRoutes/subscriptions',
         data: {
           routeLabel: liteRouteLabel,
         }
       })
       .then(function(response) {
         if (response.data) {
-          // subscriptionsCache.push({"label": liteRouteLabel, "isSubscribed": true});
-          LiteRouteSubscriptionService.getSubscriptionSummary().push(liteRouteLabel)
-          console.log("subscribe success");
-          console.log(LiteRouteSubscriptionService.getSubscriptionSummary());
           return true;
         }
         else{
@@ -164,20 +165,14 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       return subscribePromise;
     },
 
-    unSubscribeLiteRoute: async function(liteRouteLabel) {
+    unSubscribeLiteRoute: function(liteRouteLabel) {
+
       var unSubscribePromise = UserService.beeline({
-        method: 'PUT',
-        url: '/liteRoutes/unsubscribe',
-        data: {
-          routeLabel: liteRouteLabel,
-        }
+        method: 'DELETE',
+        url: '/liteRoutes/subscriptions/'+liteRouteLabel
       })
       .then(function(response) {
         if (response.data) {
-          console.log("unsubscribe success");
-          var index = LiteRouteSubscriptionService.getSubscriptionSummary().indexOf(liteRouteLabel)
-          LiteRouteSubscriptionService.getSubscriptionSummary().splice(index, 1)
-          console.log("after removing", LiteRouteSubscriptionService.getSubscriptionSummary());
           return true;
         }
         else{
@@ -185,7 +180,36 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         }
       });
       return unSubscribePromise;
+    },
+
+    //consolidate tripstops for lite route
+    //aggregate stop time for stops
+    computeLiteStops: function(trips) {
+      var tripStops = _.map(trips, (trip)=>{return trip.tripStops});
+      console.log(tripStops);
+      var allTripStops = _.flatten(tripStops);
+      console.log(allTripStops);
+
+      var boardStops = _.groupBy(allTripStops, function(tripStop){
+        return tripStop.stop.id
+      });
+      console.log(boardStops);
+      var newStops = [];
+      for (let stopId in boardStops){
+        console.log(stopId);
+        console.log(boardStops[stopId]);
+        var stop = boardStops[stopId][0].stop;
+        var timeArray = _.map(boardStops[stopId], (stop)=>{
+          return stop.time
+        })
+        //FIXME: why this not working!!
+        var sortedTime = _(timeArray).uniq().sort().value();
+        newStops.push(_.extend({"time": sortedTime}, stop));
+      }
+      return newStops;
     }
+
   };
+
   return instance;
 }

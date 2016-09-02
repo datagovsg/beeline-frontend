@@ -1,4 +1,4 @@
-import {formatDate, formatDateMMMdd, formatTime,
+import {formatDate, formatDateMMMdd, formatTime, formatTimeArray,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
 
@@ -28,6 +28,7 @@ var app = angular.module('beeline', [
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
 .filter('formatTime', () => formatTime)
+.filter('formatTimeArray', () => formatTimeArray)
 .filter('formatHHMM_ampm', () => formatHHMM_ampm)
 .filter('titleCase', () => titleCase)
 .filter('routeStartTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].time : '')

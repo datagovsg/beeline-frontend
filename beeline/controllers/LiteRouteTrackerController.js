@@ -25,13 +25,35 @@ export default [
           icon: null,}
       ]
     });
+
+    $scope.disp = {
+      popupStop: null,
+      popupStopType: null,
+      parentScope: $scope,
+    }
+
+    $scope.applyTapBoard = function (values) {
+      console.log("Tapped");
+      console.log(values);
+      $scope.disp.popupStopType = "pickup";
+      $scope.disp.popupStop = values.model;
+      console.log("popup stop is ");
+      console.log($scope.disp.popupStop);
+      $scope.$digest();
+    }
+
     $scope.recentPings = [];
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
+
     var routePromise = LiteRoutesService.getLiteRoute($scope.liteRouteLabel);
     routePromise.then((liteRoute) => {
       $scope.liteRoute = liteRoute[$scope.liteRouteLabel];
+      console.log("lite route trips are");
+      console.log($scope.liteRoute.trips);
+      $scope.tripStops = LiteRoutesService.computeLiteStops($scope.liteRoute.trips);
       $scope.trip = $scope.liteRoute.trips[0];
     });
+
     var todayTripsPromise = routePromise.then((route)=>{
       var now = new Date();
       var lastMidnight = now.setHours(0, 0, 0, 0);
@@ -67,8 +89,15 @@ export default [
     });
     $scope.$on('$destroy', () => { $timeout.cancel(pingTimer); });
 
-    // Draw the planned route
-    routePromise.then((route) => {
+
+    var mapPromise = new Promise(function(resolve) {
+      $scope.$watch('map.control.getGMap', function(getGMap) {
+        if (getGMap) resolve($scope.map.control.getGMap());
+      });
+    });
+
+    Promise.all([mapPromise, routePromise]).then((values) =>{
+      var [map, route] = values;
       RoutesService.decodeRoutePath(route[$scope.liteRouteLabel].path)
       .then((path) => $scope.map.lines.route.path = path)
       .catch((err) => {
@@ -76,13 +105,19 @@ export default [
       });
     });
 
-    Promise.all([uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
-       var [googleMaps, todayTrips] = values;
+    Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
+       var [map, googleMaps, todayTrips] = values;
        console.log("today trips are ");
        console.log(todayTrips);
        if (todayTrips.length ==0 ){
          $scope.hasNoTrip = true;
        }
+
+       MapOptions.disableMapLinks();
+       $scope.$on("$ionicView.afterEnter", function(event, data) {
+         googleMaps.event.trigger(map, 'resize');
+       });
+
        var icon = {
            url: 'img/busMarker.svg',
            scaledSize: new googleMaps.Size(68, 86),
@@ -92,74 +127,45 @@ export default [
         $scope.map.busLocations.splice(index,0, {
           "icon": icon
         })
-        console.log($scope.map.busLocations);
-      })
-      for (let ts of todayTrips[0].tripStops) {
-        ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
-                                 $scope.map.markerOptions.alightMarker;
-      }
-    })
-
-    // Draw the icon for latest bus location
-    $scope.$watchCollection('recentPings', function(recentPings) {
-      console.log("recent pings are here ");
-      console.log(recentPings);
-      if (recentPings) {
-        recentPings.map((pings, index)=>{
-          if (pings.length > 0){
-
-            var coordinates = pings[0].coordinates;
-            var path = pings.map(ping => ({
-              latitude: ping.coordinates.coordinates[1],
-              longitude: ping.coordinates.coordinates[0]
-            }));
-            $scope.map.busLocations[index].coordinates = coordinates;
-            $scope.map.lines.actualPaths.splice(index,0, {
-              "path": path
-            })
-          }
+          console.log($scope.map.busLocations);
         })
-      }
-    });
+        // for (let ts of todayTrips[0].tripStops) {
+        for (let ts of $scope.tripStops) {
+          ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
+                                   $scope.map.markerOptions.alightMarker;
+        }
 
-    // Pan and zoom to the bus location when the map is ready
-    // Single ping request for updating the map initially
-    // Duplicates a bit with the update loop but is much cleaner this way
-    // If the load ever gets too much can easily integrate into the
-    // main update loop
-    var mapPromise = new Promise(function(resolve) {
-      $scope.$watch('map.control.getGMap', function(getGMap) {
-        if (getGMap) resolve($scope.map.control.getGMap());
-      });
-    });
-
-    Promise.all([
-      mapPromise,
-      uiGmapGoogleMapApi
-    ]).then((values) => {
-      var [map, googleMaps] = values;
       // Just show the boarding stops
       var bounds = new googleMaps.LatLngBounds();
-      for (let tripStop of $scope.todayTrips[0].tripStops) {
-        bounds.extend(new google.maps.LatLng(tripStop.stop.coordinates.coordinates[1],
-                                             tripStop.stop.coordinates.coordinates[0]));
-      }
-      map.fitBounds(bounds);
-    });
+      // for (let tripStop of $scope.todayTrips[0].tripStops) {
+      for (let tripStop of $scope.tripStops) {
+          bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
+                                               tripStop.coordinates.coordinates[0]));
+        }
+        map.fitBounds(bounds);
+      })
 
-    // ////////////////////////////////////////////////////////////////////////
-    // Hack to fix map resizing due to ionic view cacheing
-    // Need to use the rootscope since ionic view enter stuff doesnt seem
-    // to propagate down to child views and scopes
-    // ////////////////////////////////////////////////////////////////////////
-    Promise.all([mapPromise, uiGmapGoogleMapApi]).then(function(values) {
-      var [map, googleMaps] = values;
+      // Draw the icon for latest bus location
+      $scope.$watchCollection('recentPings', function(recentPings) {
+        console.log("recent pings are here ");
+        console.log(recentPings);
+        if (recentPings) {
+          recentPings.map((pings, index)=>{
+            if (pings.length > 0){
 
-      MapOptions.disableMapLinks();
-      $scope.$on("$ionicView.afterEnter", function(event, data) {
-        googleMaps.event.trigger(map, 'resize');
+              var coordinates = pings[0].coordinates;
+              var path = pings.map(ping => ({
+                latitude: ping.coordinates.coordinates[1],
+                longitude: ping.coordinates.coordinates[0]
+              }));
+              $scope.map.busLocations[index].coordinates = coordinates;
+              $scope.map.lines.actualPaths.splice(index,0, {
+                "path": path
+              })
+            }
+          })
+        }
       });
-    });
 
     $scope.unSubscribe = function() {
       $ionicPopup.confirm({
