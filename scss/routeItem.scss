@@ -8,34 +8,31 @@ route-item {
     &:before, &:after {
       display: block;
       position: absolute;
-      width: 50px;
-      height: 50px;
+      width: $route-item-triangle-height;
+      height: $route-item-triangle-height;
       top: 0;
       right: 0;
       content: "";
-      border-top: solid 25px $hint-color;
-      border-right: solid 25px $hint-color;
+      border-top: solid $route-item-triangle-height/2 $hint-color;
+      border-right: solid $route-item-triangle-height/2 $hint-color;
       background: url('../img/icon_tracking_route.svg') 0 100% no-repeat;
       background-size: 18px 18px;
     }
 
     &.lite-tracked {
       &:before {
-        border-top: solid 25px $royal;
-        border-right: solid 25px $royal;
+        border-top: solid $route-item-triangle-height/2 $royal;
+        border-right: solid $route-item-triangle-height/2 $royal;
       }
     }
 
     &:before {
-      border-left: solid 25px transparent;
-      border-bottom: solid 25px transparent;
+      border-left: solid $route-item-triangle-height/2 transparent;
+      border-bottom: solid $route-item-triangle-height/2 transparent;
     }
 
     &:after {
-      border-bottom: solid 25px transparent;
-      border-left: solid 25px transparent;
-      border-right: solid 25px transparent;
-      border-top: solid 25px transparent;
+      border: solid $route-item-triangle-height/2 transparent;
     }
   }
 
