@@ -7,7 +7,7 @@ import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
 
-export default function LiteRoutesService($http, UserService, $q) {
+export default function LiteRoutesService($http, UserService, $q, LiteRouteSubscriptionService) {
 
   var liteRoutesCache;
   var liteRoutesPromise;
@@ -156,6 +156,7 @@ export default function LiteRoutesService($http, UserService, $q) {
       })
       .then(function(response) {
         if (response.data) {
+          LiteRouteSubscriptionService.getSubscriptionSummary().push(liteRouteLabel)
           return true;
         }
         else{
@@ -173,6 +174,8 @@ export default function LiteRoutesService($http, UserService, $q) {
       })
       .then(function(response) {
         if (response.data) {
+          var index = LiteRouteSubscriptionService.getSubscriptionSummary().indexOf(liteRouteLabel)
+          LiteRouteSubscriptionService.getSubscriptionSummary().splice(index, 1)
           return true;
         }
         else{
