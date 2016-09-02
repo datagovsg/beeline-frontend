@@ -19,13 +19,13 @@
             {{ book.route.description }}
           </route-item-description>
           <route-item-start-time>
-            {{ book.route | routeStartTime | formatTime:true }}
+            {{ book.route.startTime | formatTime:true }}
           </route-item-start-time>
           <route-item-start-location>
             {{ book.route.from }}
           </route-item-start-location>
           <route-item-end-time>
-            {{ book.route | routeEndTime | formatTime:true }}
+            {{ book.route.endTime  | formatTime:true }}
           </route-item-end-time>
           <route-item-end-location>
             {{ book.route.to }}
