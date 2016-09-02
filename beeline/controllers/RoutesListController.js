@@ -55,6 +55,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       var allLiteRoutes, liteRouteSubscriptions;
       [allLiteRoutes, liteRouteSubscriptions] = response;
       $scope.data.liteRoutes = allLiteRoutes;
+      console.log(allLiteRoutes)
     })
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
@@ -109,12 +110,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $ionicScrollDelegate.resize();
   });
 
-  $scope.$watchCollection(
-    () => LiteRouteSubscriptionService.getSubscriptionSummary(),
-    async (newValue) => {
-      console.log(newValue)
-      await allLiteRoutesPromise;
-      console.log("all lite routes", $scope.data.liteRoutes)
+  $scope.$watchCollection(() =>
+    [].concat(LiteRouteSubscriptionService.getSubscriptionSummary())
+    .concat([$scope.data.liteRoutes]),
+    (newValue) => {
       _.forEach($scope.data.liteRoutes,(liteRoute)=>{
         if (newValue.includes(liteRoute.label)) {
           liteRoute.isSubscribed = true;
