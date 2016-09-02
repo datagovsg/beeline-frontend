@@ -15,7 +15,7 @@ export default function LiteRoutesService($http, UserService, $q) {
   // For single lite route
   var lastLiteRouteLabel = null;
   var lastLiteRoutePromise = null;
-  function tranformTime(liteRoutesByLabel) {
+  function transformTime(liteRoutesByLabel) {
     for (let label in liteRoutesByLabel){
       var liteRoute = liteRoutesByLabel[label]
       //no starting time and ending time
@@ -49,7 +49,7 @@ export default function LiteRoutesService($http, UserService, $q) {
       }
       return result;
     },{});
-    tranformTime(liteRoutesByLabel);
+    transformTime(liteRoutesByLabel);
     //ignor the startingTime and endTime for now
     return liteRoutesByLabel;
   }
