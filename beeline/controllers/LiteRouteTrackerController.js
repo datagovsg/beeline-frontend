@@ -87,7 +87,10 @@ export default [
       console.log("start to ping!");
       pingLoop();
     });
-    $scope.$on('$destroy', () => { $timeout.cancel(pingTimer); });
+
+    $scope.$on('$ionicView.beforeLeave', () => {
+      $timeout.cancel(pingTimer);
+    });
 
 
     var mapPromise = new Promise(function(resolve) {
