@@ -127,9 +127,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // Don't override the caching in main.js
   var firstRun = true;
-  $scope.$watch(() => UserService.getUser(), () => {
-    $scope.refreshRoutes(!firstRun);
-    firstRun = false;
-  });
+  $scope.$watch(() => UserService.getUser() && UserService.getUser().id,
+    (newUser, oldUser) => {
+      $scope.refreshRoutes(!firstRun);
+      firstRun = false;
+    });
 
 }
