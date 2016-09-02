@@ -189,23 +189,17 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     //aggregate stop time for stops
     computeLiteStops: function(trips) {
       var tripStops = _.map(trips, (trip)=>{return trip.tripStops});
-      console.log(tripStops);
       var allTripStops = _.flatten(tripStops);
-      console.log(allTripStops);
 
       var boardStops = _.groupBy(allTripStops, function(tripStop){
         return tripStop.stop.id
       });
-      console.log(boardStops);
       var newStops = [];
       for (let stopId in boardStops){
-        console.log(stopId);
-        console.log(boardStops[stopId]);
         var stop = boardStops[stopId][0].stop;
         var timeArray = _.map(boardStops[stopId], (stop)=>{
           return stop.time
         })
-        //FIXME: why this not working!!
         var sortedTime = _(timeArray).uniq().sort().value();
         newStops.push(_.extend({"time": sortedTime}, stop));
       }

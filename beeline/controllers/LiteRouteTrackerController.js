@@ -48,18 +48,16 @@ export default [
     var routePromise = LiteRoutesService.getLiteRoute($scope.liteRouteLabel);
     routePromise.then((liteRoute) => {
       $scope.liteRoute = liteRoute[$scope.liteRouteLabel];
-      console.log("lite route trips are");
-      console.log($scope.liteRoute.trips);
-      $scope.tripStops = LiteRoutesService.computeLiteStops($scope.liteRoute.trips);
-      $scope.trip = $scope.liteRoute.trips[0];
     });
 
     var todayTripsPromise = routePromise.then((route)=>{
       var now = new Date();
       var lastMidnight = now.setHours(0, 0, 0, 0);
       var nextMidnight = now.setHours(24, 0, 0, 0);
-      return $scope.todayTrips = $scope.liteRoute.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
+      $scope.todayTrips = $scope.liteRoute.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
                        Date.parse(lr.date) < nextMidnight && lr.isRunning);
+      $scope.tripStops = LiteRoutesService.computeLiteStops($scope.todayTrips);
+      return $scope.todayTrips
     })
 
     // Loop to get pings from the server every 15s between responses
