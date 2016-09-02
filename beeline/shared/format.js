@@ -59,6 +59,17 @@ export function formatTime(date, prePadding) {
             twoPad(date.getSeconds()) */;
 }
 
+export function formatTimeArray(timeArray) {
+  if (timeArray.length ==0 )return;
+  else {
+    var newArray = [];
+    for (let time of timeArray) {
+      newArray.push(formatTime(time))
+    }
+    return newArray.join(', ');
+  }
+}
+
 // func to generate something like '14:15 pm' from JS date obj
 export function formatHHMM_ampm(t) {
   var h = t.getHours(),

@@ -43,32 +43,32 @@
       <h2 class="item" ng-if="hasNoTrip">
         There is no service at moment.
       </h2>
-      <ui-gmap-google-map ng-if="todayTrips.length > 0" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
+      <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
         <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
         <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
                           ng-if="actualPath.path.length"
                           path="actualPath.path"
                           stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
-        <ui-gmap-marker idkey="'boardstop'"
-                        ng-if="map.markers.boardStop.stop"
-                        coords="map.markers.boardStop.stop.coordinates"
-                        options="map.markerOptions.startMarker"></ui-gmap-marker>
-        <ui-gmap-marker idkey="'alightstop'"
-                        ng-if="map.markers.alightStop.stop"
-                        coords="map.markers.alightStop.stop.coordinates"
-                        options="map.markerOptions.endMarker"></ui-gmap-marker>
         <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
                         ng-if="busLocation.coordinates"
                         idkey="'bus-location{{index}}'"
                         coords="busLocation.coordinates"
                         icon="busLocation.icon"></ui-gmap-marker>
-        <ui-gmap-markers  ng-if="trip.tripStops"
-                          models="trip.tripStops"
-                          idkey="'id'"
-                          options="'_markerOptions'"
-                          coords="'stop.coordinates'"
-                          ></ui-gmap-markers>
+          <ui-gmap-markers  ng-if="tripStops"
+                            models="tripStops"
+                            idkey="'id'"
+                            options="'_markerOptions'"
+                            coords="'coordinates'"
+                            click="applyTapBoard"
+                            ></ui-gmap-markers>
+          <ui-gmap-window ng-if="disp.popupStop" coords="disp.popupStop.coordinates"
+            show="disp.popupStop">
+            <div class="popUpStopSelect">
+              <b>{{disp.popupStop.time | formatTimeArray }}</b><br/>
+              {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
+            </div>
+          </ui-gmap-window>
       </ui-gmap-google-map>
     </div>
 
