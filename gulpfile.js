@@ -57,6 +57,9 @@ gulp.task('webpack', function(done) {
 });
 
 gulp.task('hot-code-push', ['sass', 'webpack', 'js-libraries'], function (done) {
+  if (process.env.NO_HOT_CODE_PUSH) {
+    return done();
+  }
   promiseExec('cordova-hcp build www')
   .then(done, done);
 })
