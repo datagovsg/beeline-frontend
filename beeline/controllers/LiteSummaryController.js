@@ -166,50 +166,49 @@ export default [
       UserService.promptLogIn()
     }
 
-    $scope.promptFollow = function() {
+    $scope.promptFollow = async function() {
       console.log("pressed");
-      $ionicPopup.confirm({
+      var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to follow this lite route?',
         subTitle: "You will view the lite route tracker in tickets."
-      }).then(function(response) {
-        if (response) {
-          try {
-            $scope.book.waitingForSubscriptionResult = true;
-            loadingSpinner(
-              LiteRoutesService.subscribeLiteRoute($scope.book.route.label).then(function(response)
-              {
-                if (response) {
-                  $ionicPopup.alert({
-                    title: 'Success',
-                    template: `
-                    <div class="text-center item-text-wrap">
-                      <div>
-                        <img src="img/lite_success.svg">
-                      </div>
-                      You are now following this route.<br>
-                      Track your bus on the day of the trip.
-                    </div>
-                    `,
-                  })
-                  $scope.book.isSubscribed = true;
-                  $scope.book.route.isSubscribed = true;
-                }
-                else {
-                  $ionicPopup.alert({
-                    title: 'Error subscribing lite route',
-                  })
-                }
-                $scope.book.waitingForSubscriptionResult = false;
-              })
-            )
-          }
-          catch(err) {
-            $ionicPopup.alert({
-              title: 'Error subscribing lite route ' + err,
-            })
-          }
+      })
+
+      if (!response) return;
+
+      try {
+        $scope.book.waitingForSubscriptionResult = true;
+
+        var subscribeResult = await loadingSpinner(
+          LiteRoutesService.subscribeLiteRoute($scope.book.route.label)
+        )
+
+        if (subscribeResult) {
+          $ionicPopup.alert({
+            title: 'Success',
+            template: `
+            <div class="text-center item-text-wrap">
+              <div>
+                <img src="img/lite_success.svg">
+              </div>
+              You are now following this route.<br>
+              Track your bus on the day of the trip.
+            </div>
+            `,
+          })
+          $scope.book.isSubscribed = true;
+          $scope.book.route.isSubscribed = true;
         }
-      });
+        $scope.book.waitingForSubscriptionResult = false;
+      }
+      catch(err) {
+        $scope.book.waitingForSubscriptionResult = false;
+        await $ionicLoading.show({
+          template: `
+          <div>Error, please try again later.</div>
+          `,
+          duration: 1000,
+        })
+      }
     };
 
     $scope.promptUntrack = async function() {
@@ -246,6 +245,7 @@ export default [
         }
       }
       catch(err) {
+        $scope.book.waitingForSubscriptionResult = false;
         await $ionicLoading.show({
           template: `
           <div>Error, please try again later.</div>
