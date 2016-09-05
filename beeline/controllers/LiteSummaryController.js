@@ -13,11 +13,12 @@ export default [
   '$cordovaGeolocation',
   '$ionicPopup',
   '$ionicLoading',
-  'BookingService',
+  '$timeout',
   'RoutesService',
   'LiteRoutesService',
   'LiteRouteSubscriptionService',
   'UserService',
+  'TripService',
   'CompanyService',
   'uiGmapGoogleMapApi',
   'MapOptions',
@@ -33,20 +34,37 @@ export default [
     $cordovaGeolocation,
     $ionicPopup,
     $ionicLoading,
-    BookingService,
+    $timeout,
     RoutesService,
     LiteRoutesService,
     LiteRouteSubscriptionService,
     UserService,
+    TripService,
     CompanyService,
     uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner
   ) {
-    $scope.disp = {};
     // Gmap default settings
-    $scope.map = MapOptions.defaultMapOptions();
-    $scope.routePath = [];
+    $scope.map = MapOptions.defaultMapOptions({
+      lines: {
+        route: { path: [] },
+        actualPaths: [
+          { path: [] }
+        ],
+      },
+
+      busLocations: [
+        { coordinates: null,
+          icon: null,}
+      ]
+    });
+
+    $scope.disp = {
+      popupStop: null,
+      popupStopType: null,
+      parentScope: $scope,
+    }
 
     // Default settings for various info used in the page
     $scope.book = {
@@ -60,10 +78,15 @@ export default [
       waitingForSubscriptionResult: false,
       isSubscribed: false,
     };
-    $scope.disp = {
-      popupStop: null,
-      popupStopType: null,
-      parentScope: $scope,
+
+    $scope.applyTapBoard = function (values) {
+      console.log("Tapped");
+      console.log(values);
+      $scope.disp.popupStopType = "pickup";
+      $scope.disp.popupStop = values.model;
+      console.log("popup stop is ");
+      console.log($scope.disp.popupStop);
+      $scope.$digest();
     }
 
     // Resolved when the map is initialized
@@ -81,24 +104,55 @@ export default [
 
     var routePromise, subscriptionPromise;
 
+    $scope.recentPings = [];
     $scope.book.label = $stateParams.label;
 
+    routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
     subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label);
 
-    routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
+    routePromise.then((liteRoute) => {
+      $scope.book.route = liteRoute[$scope.book.label];
+    });
+    subscriptionPromise.then((response)=>{
+      $scope.book.isSubscribed = response;
+    });
 
-    var stopOptions = {
-      initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
-      initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
-    };
-    routePromise.then((route) => {
+    var todayTripsPromise = routePromise.then((route)=>{
+      var now = new Date();
+      var lastMidnight = now.setHours(0, 0, 0, 0);
+      var nextMidnight = now.setHours(24, 0, 0, 0);
       $scope.book.route = route[$scope.book.label];
-      // computeStops(stopOptions);
-      console.log("RouteObject", route)
-      var trips = $scope.book.route.trips;
-      var [boardStops, alightStops] = BookingService.computeStops(trips);
-      $scope.book.boardStops = boardStops;
-      $scope.book.alightStops = alightStops;
+      $scope.todayTrips = $scope.book.route.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
+                       Date.parse(lr.date) < nextMidnight && lr.isRunning);
+      $scope.tripStops = LiteRoutesService.computeLiteStops($scope.todayTrips);
+      return $scope.todayTrips
+    });
+
+    // Loop to get pings from the server every 15s between responses
+    // Using a recursive timeout instead of an interval to avoid backlog
+    // when the server is slow to respond
+    var pingTimer;
+
+    function pingLoop() {
+       console.log("Ping again!");
+       Promise.all($scope.todayTrips.map((trip, index)=>{
+         console.log("currently is pinging "+trip.id);
+        return TripService.DriverPings(trip.id)
+        .then((info) => {
+          /* Only show pings from the last two hours */
+          var now = Date.now();
+          return $scope.recentPings[index] = _.filter(info.pings,
+            ping => now - ping.time.getTime() < 2*60*60*1000);
+        })
+      }))
+      .then(() => {
+        pingTimer = $timeout(pingLoop, 15000);
+      }); // catch all errors
+
+    }
+    todayTripsPromise.then(()=>{
+      console.log("start to ping!");
+      pingLoop();
     });
 
     $scope.$on('$ionicView.afterEnter', () => {
@@ -110,9 +164,86 @@ export default [
       }));
     });
 
-    subscriptionPromise.then((response)=>{
-      $scope.book.isSubscribed = response;
-    })
+    $scope.$on('$ionicView.beforeLeave', () => {
+      $timeout.cancel(pingTimer);
+    });
+
+    var mapPromise = new Promise(function(resolve) {
+      $scope.$watch('map.control.getGMap', function(getGMap) {
+        if (getGMap) resolve($scope.map.control.getGMap());
+      });
+    });
+
+    Promise.all([mapPromise, routePromise]).then((values) =>{
+      var [map, route] = values;
+      RoutesService.decodeRoutePath(route[$scope.book.label].path)
+      .then((path) => $scope.map.lines.route.path = path)
+      .catch((err) => {
+        console.error(err);
+      });
+    });
+
+    Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
+       var [map, googleMaps, todayTrips] = values;
+       console.log("today trips are ");
+       console.log(todayTrips);
+       if (todayTrips.length ==0 ){
+         $scope.hasNoTrip = true;
+       }
+
+       MapOptions.disableMapLinks();
+       $scope.$on("$ionicView.afterEnter", function(event, data) {
+         googleMaps.event.trigger(map, 'resize');
+       });
+
+       var icon = {
+           url: 'img/busMarker.svg',
+           scaledSize: new googleMaps.Size(68, 86),
+           anchor: new googleMaps.Point(34, 78),
+         };
+       todayTrips.map((trip, index)=>{
+        $scope.map.busLocations.splice(index,0, {
+          "icon": icon
+        })
+          console.log($scope.map.busLocations);
+        })
+        // for (let ts of todayTrips[0].tripStops) {
+        for (let ts of $scope.tripStops) {
+          ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
+                                   $scope.map.markerOptions.alightMarker;
+        }
+
+      // Just show the boarding stops
+      var bounds = new googleMaps.LatLngBounds();
+      // for (let tripStop of $scope.todayTrips[0].tripStops) {
+      for (let tripStop of $scope.tripStops) {
+          bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
+                                               tripStop.coordinates.coordinates[0]));
+        }
+        map.fitBounds(bounds);
+      })
+
+      // Draw the icon for latest bus location
+      $scope.$watchCollection('recentPings', function(recentPings) {
+        console.log("recent pings are here ");
+        console.log(recentPings);
+        if (recentPings) {
+          recentPings.map((pings, index)=>{
+            if (pings.length > 0){
+
+              var coordinates = pings[0].coordinates;
+              var path = pings.map(ping => ({
+                latitude: ping.coordinates.coordinates[1],
+                longitude: ping.coordinates.coordinates[0]
+              }));
+              $scope.map.busLocations[index].coordinates = coordinates;
+              $scope.map.lines.actualPaths.splice(index,0, {
+                "path": path
+              })
+            }
+          })
+        }
+      });
 
     gmapIsReady.then(function() {
       MapOptions.disableMapLinks();
@@ -179,7 +310,7 @@ export default [
         $scope.book.waitingForSubscriptionResult = true;
 
         var subscribeResult = await loadingSpinner(
-          LiteRoutesService.subscribeLiteRoute($scope.book.route.label)
+          LiteRoutesService.subscribeLiteRoute($scope.book.label)
         )
 
         if (subscribeResult) {
@@ -224,7 +355,7 @@ export default [
         $scope.book.waitingForSubscriptionResult = true;
 
         var unsubscribeResult = await loadingSpinner(
-          LiteRoutesService.unSubscribeLiteRoute($scope.book.route.label)
+          LiteRoutesService.unSubscribeLiteRoute($scope.book.label)
         )
 
         if (unsubscribeResult) {
@@ -259,12 +390,6 @@ export default [
       if (!$scope.book.route.transportCompanyId) return;
 
       CompanyService.showTerms($scope.book.route.transportCompanyId);
-    }
-
-    $scope.applyTapBoard = function (stop) {
-      $scope.disp.popupStopType = "pickup";
-      $scope.disp.popupStop = stop;
-      $scope.$digest();
     }
 
     /* Pans to the stops on the screen */
