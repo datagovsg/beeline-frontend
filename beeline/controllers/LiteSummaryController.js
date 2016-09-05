@@ -181,6 +181,15 @@ export default [
                 if (response) {
                   $ionicPopup.alert({
                     title: 'Success',
+                    template: `
+                    <div class="text-center item-text-wrap">
+                      <div>
+                        <img src="img/lite_success.svg">
+                      </div>
+                      You are now following this route.<br>
+                      Track your bus on the day of the trip.
+                    </div>
+                    `,
                   })
                   $scope.book.isSubscribed = true;
                   $scope.book.route.isSubscribed = true;
