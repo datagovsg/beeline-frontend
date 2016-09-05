@@ -212,41 +212,47 @@ export default [
       });
     };
 
-    $scope.promptUntrack = function() {
+    $scope.promptUntrack = async function() {
       console.log("pressed");
-      $ionicPopup.confirm({
+      var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to untrack this lite route?',
         subTitle: "This lite route will be removed from your tickets."
-      }).then(function(response) {
-        if (response) {
-          try {
-            $scope.book.waitingForSubscriptionResult = true;
-            loadingSpinner(
-              LiteRoutesService.unSubscribeLiteRoute($scope.book.route.label).then(function(response)
-              {
-                if (response) {
-                  $ionicPopup.alert({
-                    title: 'Success',
-                  })
-                  $scope.book.isSubscribed = false;
-                  $scope.book.route.isSubscribed = false;
-                }
-                else {
-                  $ionicPopup.alert({
-                    title: 'Error untracking lite route',
-                  })
-                }
-                $scope.book.waitingForSubscriptionResult = false;
-              })
-            )
-          }
-          catch(err) {
-            $ionicPopup.alert({
-              title: 'Error untracking lite route ' + err,
-            })
-          }
+      })
+
+      if (!response) return;
+
+      try {
+        $scope.book.waitingForSubscriptionResult = true;
+
+        var unsubscribeResult = await loadingSpinner(
+          LiteRoutesService.unSubscribeLiteRoute($scope.book.route.label)
+        )
+
+        if (unsubscribeResult) {
+          $scope.book.isSubscribed = false;
+          $scope.book.route.isSubscribed = false;
         }
-      });
+        $scope.book.waitingForSubscriptionResult = false;
+        // $scope.$digest();
+
+        if (!$scope.book.isSubscribed) {
+          await $ionicLoading.show({
+            template: `
+            <div>Done!</div>
+            `,
+            duration: 1000,
+          })
+          $state.transitionTo("tabs.routes");
+        }
+      }
+      catch(err) {
+        await $ionicLoading.show({
+          template: `
+          <div>Error, please try again later.</div>
+          `,
+          duration: 1000,
+        })
+      }
     };
 
     $scope.disp.showTerms = () => {
