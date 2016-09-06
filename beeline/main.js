@@ -91,6 +91,7 @@ var app = angular.module('beeline', [
 .directive('companyInfoBroker', require('./directives/companyInfoBroker.js').default)
 .directive('moreInfo', require('./directives/moreInfo/moreInfo').default)
 .directive('markdownRenderer', require('./directives/markdownRenderer').default)
+.directive('mapPolyRoute', require('./directives/mapPolyRoute').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
