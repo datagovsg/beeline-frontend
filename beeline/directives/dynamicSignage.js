@@ -5,7 +5,7 @@ export default function() {
     <div>{{signageText}}</div>
     `,
     scope: {
-      'signageText': '@signageText',
+      'signageText': '<',
     },
     link: function(scope, element, attributes) {
     },
