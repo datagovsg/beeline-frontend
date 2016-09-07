@@ -121,7 +121,6 @@ export default [
       var now = new Date();
       var lastMidnight = now.setHours(0, 0, 0, 0);
       var nextMidnight = now.setHours(24, 0, 0, 0);
-      $scope.book.route = route[$scope.book.label];
       $scope.todayTrips = $scope.book.route.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
                        Date.parse(lr.date) < nextMidnight && lr.isRunning);
       $scope.tripStops = LiteRoutesService.computeLiteStops($scope.todayTrips);

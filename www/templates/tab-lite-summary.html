@@ -38,15 +38,8 @@
           <my-location></my-location>
           <map-poly-route route-path="map.lines.route.path">
           </map-poly-route>
-          <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
-                            ng-if="actualPath.path.length"
-                            path="actualPath.path"
-                            stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
-          <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
-                          ng-if="busLocation.coordinates"
-                          idkey="'bus-location{{index}}'"
-                          coords="busLocation.coordinates"
-                          icon="busLocation.icon"></ui-gmap-marker>
+          <map-bus-poly-route route="book.route">
+          </map-bus-poly-route>
           <ui-gmap-markers  ng-if="tripStops"
                             models="tripStops"
                             idkey="'id'"
