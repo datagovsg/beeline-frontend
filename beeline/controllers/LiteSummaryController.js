@@ -49,15 +49,7 @@ export default [
     $scope.map = MapOptions.defaultMapOptions({
       lines: {
         route: { path: [] },
-        actualPaths: [
-          { path: [] }
-        ],
       },
-
-      busLocations: [
-        { coordinates: null,
-          icon: null,}
-      ]
     });
 
     $scope.disp = {
@@ -110,14 +102,12 @@ export default [
     routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
     subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label);
 
-    routePromise.then((liteRoute) => {
-      $scope.book.route = liteRoute[$scope.book.label];
-    });
     subscriptionPromise.then((response)=>{
       $scope.book.isSubscribed = response;
     });
 
     var todayTripsPromise = routePromise.then((route)=>{
+      $scope.book.route = route[$scope.book.label];
       var now = new Date();
       var lastMidnight = now.setHours(0, 0, 0, 0);
       var nextMidnight = now.setHours(24, 0, 0, 0);
@@ -127,33 +117,6 @@ export default [
       return $scope.todayTrips
     });
 
-    // Loop to get pings from the server every 15s between responses
-    // Using a recursive timeout instead of an interval to avoid backlog
-    // when the server is slow to respond
-    var pingTimer;
-
-    function pingLoop() {
-       console.log("Ping again!");
-       Promise.all($scope.todayTrips.map((trip, index)=>{
-         console.log("currently is pinging "+trip.id);
-        return TripService.DriverPings(trip.id)
-        .then((info) => {
-          /* Only show pings from the last two hours */
-          var now = Date.now();
-          return $scope.recentPings[index] = _.filter(info.pings,
-            ping => now - ping.time.getTime() < 2*60*60*1000);
-        })
-      }))
-      .then(() => {
-        pingTimer = $timeout(pingLoop, 15000);
-      }); // catch all errors
-
-    }
-    todayTripsPromise.then(()=>{
-      console.log("start to ping!");
-      pingLoop();
-    });
-
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([gmapIsReady, routePromise, subscriptionPromise])
       .then(() => {
@@ -161,10 +124,11 @@ export default [
         google.maps.event.trigger(gmap, 'resize');
         panToStops();
       }));
+      $scope.$broadcast('startPingLoop');
     });
 
     $scope.$on('$ionicView.beforeLeave', () => {
-      $timeout.cancel(pingTimer);
+      $scope.$broadcast('killPingLoop');
     });
 
     var mapPromise = new Promise(function(resolve) {
@@ -183,66 +147,55 @@ export default [
     });
 
     Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
-       var [map, googleMaps, todayTrips] = values;
-       console.log("today trips are ");
-       console.log(todayTrips);
-       if (todayTrips.length ==0 ){
-         $scope.hasNoTrip = true;
-       }
+      var [map, googleMaps, todayTrips] = values;
+      console.log("today trips are ");
+      console.log(todayTrips);
+      if (todayTrips.length ==0 ){
+       $scope.hasNoTrip = true;
+      }
 
-       MapOptions.disableMapLinks();
-       $scope.$on("$ionicView.afterEnter", function(event, data) {
-         googleMaps.event.trigger(map, 'resize');
-       });
+      MapOptions.disableMapLinks();
+      $scope.$on("$ionicView.afterEnter", function(event, data) {
+        googleMaps.event.trigger(map, 'resize');
+      });
 
-       var icon = {
-           url: 'img/busMarker.svg',
-           scaledSize: new googleMaps.Size(68, 86),
-           anchor: new googleMaps.Point(34, 78),
-         };
-       todayTrips.map((trip, index)=>{
-        $scope.map.busLocations.splice(index,0, {
-          "icon": icon
-        })
-          console.log($scope.map.busLocations);
-        })
-        // for (let ts of todayTrips[0].tripStops) {
-        for (let ts of $scope.tripStops) {
-          ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
-                                   $scope.map.markerOptions.alightMarker;
-        }
+      // for (let ts of todayTrips[0].tripStops) {
+      for (let ts of $scope.tripStops) {
+      ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
+                             $scope.map.markerOptions.alightMarker;
+      }
 
       // Just show the boarding stops
       var bounds = new googleMaps.LatLngBounds();
       // for (let tripStop of $scope.todayTrips[0].tripStops) {
       for (let tripStop of $scope.tripStops) {
-          bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
-                                               tripStop.coordinates.coordinates[0]));
-        }
-        map.fitBounds(bounds);
-      })
+        bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
+                                           tripStop.coordinates.coordinates[0]));
+      }
+      map.fitBounds(bounds);
+    })
 
-      // Draw the icon for latest bus location
-      $scope.$watchCollection('recentPings', function(recentPings) {
-        console.log("recent pings are here ");
-        console.log(recentPings);
-        if (recentPings) {
-          recentPings.map((pings, index)=>{
-            if (pings.length > 0){
+    // Draw the icon for latest bus location
+    $scope.$watchCollection('recentPings', function(recentPings) {
+      console.log("recent pings are here ");
+      console.log(recentPings);
+      if (recentPings) {
+        recentPings.map((pings, index)=>{
+          if (pings.length > 0){
 
-              var coordinates = pings[0].coordinates;
-              var path = pings.map(ping => ({
-                latitude: ping.coordinates.coordinates[1],
-                longitude: ping.coordinates.coordinates[0]
-              }));
-              $scope.map.busLocations[index].coordinates = coordinates;
-              $scope.map.lines.actualPaths.splice(index,0, {
-                "path": path
-              })
-            }
-          })
-        }
-      });
+            var coordinates = pings[0].coordinates;
+            var path = pings.map(ping => ({
+              latitude: ping.coordinates.coordinates[1],
+              longitude: ping.coordinates.coordinates[0]
+            }));
+            $scope.map.busLocations[index].coordinates = coordinates;
+            $scope.map.lines.actualPaths.splice(index,0, {
+              "path": path
+            })
+          }
+        })
+      }
+    });
 
     gmapIsReady.then(function() {
       MapOptions.disableMapLinks();
