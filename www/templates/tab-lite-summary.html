@@ -38,7 +38,8 @@
           <my-location></my-location>
           <map-poly-route route-path="map.lines.route.path">
           </map-poly-route>
-          <map-bus-poly-route route="book.route">
+          <map-bus-poly-route route="book.route"
+                              today-trips="todayTrips">
           </map-bus-poly-route>
           <ui-gmap-markers  ng-if="tripStops"
                             models="tripStops"

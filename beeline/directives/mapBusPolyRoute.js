@@ -1,4 +1,4 @@
-export default function(TripService) {
+export default function(TripService, uiGmapGoogleMapApi, $timeout) {
   return {
     replace: false,
     template: `
@@ -13,22 +13,54 @@ export default function(TripService) {
                     icon="busLocation.icon"></ui-gmap-marker>
     `,
     scope: {
-      tripId: '<',
+      route: '<',
+      todayTrips: '<',
     },
     link: function(scope, element, attributes) {
+
+      var pingTimer;
+
       scope.strokeOptions = {
         color: '#4b3863',
         weight: 3.0,
         opacity: 0.7
       };
+
+      scope.map = {
+        lines: {
+          actualPaths: [
+            { path: [] }
+          ],
+        },
+        busLocations: [
+          { coordinates: null,
+            icon: null,}
+        ]
+      }
+
       scope.recentPings = [];
 
-      scope.$watch('tripId', (tripId) => {
-        if (!tripId) return;
+      scope.$watch('route', (route) => {
+        if (!route || pingTimer) return;
+        pingLoop();
+      });
 
-        getPings(tripId).then((pings) => {
-          scope.path = ...
-          scope.busLocation = ...
+      scope.$watch('todayTrips', (todayTrips) => {
+        if (!todayTrips) return;
+
+        console.log("today!!!!!!", todayTrips)
+
+        uiGmapGoogleMapApi.then((googleMaps) => {
+          var icon = {
+            url: 'img/busMarker.svg',
+            scaledSize: new googleMaps.Size(68, 86),
+            anchor: new googleMaps.Point(34, 78),
+          };
+          scope.todayTrips.map((trip, index)=>{
+            scope.map.busLocations.splice(index,0, {
+              "icon": icon
+            })
+          })
         })
       })
 
@@ -44,8 +76,8 @@ export default function(TripService) {
                 latitude: ping.coordinates.coordinates[1],
                 longitude: ping.coordinates.coordinates[0]
               }));
-              $scope.map.busLocations[index].coordinates = coordinates;
-              $scope.map.lines.actualPaths.splice(index,0, {
+              scope.map.busLocations[index].coordinates = coordinates;
+              scope.map.lines.actualPaths.splice(index,0, {
                 "path": path
               })
             }
@@ -53,15 +85,25 @@ export default function(TripService) {
         }
       });
 
+      scope.$on("killPingLoop", () => {
+        console.log("cancelling!")
+        $timeout.cancel(pingTimer);
+      });
+
+      scope.$on("startPingLoop", () => {
+        if (!scope.route) return;
+        pingLoop();
+      });
+
       function pingLoop() {
          console.log("Ping again!");
-         Promise.all($scope.todayTrips.map((trip, index)=>{
+         Promise.all(scope.todayTrips.map((trip, index)=>{
            console.log("currently is pinging "+trip.id);
           return TripService.DriverPings(trip.id)
           .then((info) => {
             /* Only show pings from the last two hours */
             var now = Date.now();
-            return $scope.recentPings[index] = _.filter(info.pings,
+            return scope.recentPings[index] = _.filter(info.pings,
               ping => now - ping.time.getTime() < 2*60*60*1000);
           })
         }))
@@ -69,8 +111,6 @@ export default function(TripService) {
           pingTimer = $timeout(pingLoop, 15000);
         }); // catch all errors
       }
-
-      function
 
     },
   };
