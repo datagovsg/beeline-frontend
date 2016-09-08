@@ -60,19 +60,6 @@ export default [
       isSubscribed: false,
     };
 
-    // Resolved when the map is initialized
-    var gmapIsReady = new Promise((resolve, reject) => {
-      var resolved = false;
-      $scope.$watch('map.control.getGMap', function() {
-        if ($scope.map.control.getGMap) {
-          if (!resolved) {
-            resolved = true;
-            resolve();
-          }
-        }
-      });
-    });
-
     var routePromise, subscriptionPromise;
 
     $scope.book.label = $stateParams.label;
@@ -94,24 +81,23 @@ export default [
       return $scope.todayTrips
     });
 
+    var mapPromise = new Promise(function(resolve) {
+      $scope.$watch('map.control.getGMap', function(getGMap) {
+        if (getGMap) resolve($scope.map.control.getGMap());
+      });
+    });
+
     $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(Promise.all([gmapIsReady, routePromise, subscriptionPromise])
+      loadingSpinner(Promise.all([mapPromise, routePromise, subscriptionPromise])
       .then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
-        panToStops();
       }));
       $scope.$broadcast('startPingLoop');
     });
 
     $scope.$on('$ionicView.beforeLeave', () => {
       $scope.$broadcast('killPingLoop');
-    });
-
-    var mapPromise = new Promise(function(resolve) {
-      $scope.$watch('map.control.getGMap', function(getGMap) {
-        if (getGMap) resolve($scope.map.control.getGMap());
-      });
     });
 
     Promise.all([mapPromise, routePromise]).then((values) =>{
@@ -138,10 +124,6 @@ export default [
 
       $scope.mapFrame = map;
     })
-
-    gmapIsReady.then(function() {
-      MapOptions.disableMapLinks();
-    });
 
     $scope.$watch('book.route.path', (path) => {
       if (!path) {
@@ -274,27 +256,6 @@ export default [
       if (!$scope.book.route.transportCompanyId) return;
 
       CompanyService.showTerms($scope.book.route.transportCompanyId);
-    }
-
-    /* Pans to the stops on the screen */
-    function panToStops() {
-      var stops = [];
-      stops = $scope.book.boardStops.concat($scope.book.alightStops);
-      console.log("stops", stops)
-      console.log("route", $scope.book.route)
-      console.log("panning")
-
-      if (stops.length == 0) {
-        return;
-      }
-      var bounds = new google.maps.LatLngBounds();
-      for (let s of stops) {
-        bounds.extend(new google.maps.LatLng(
-          s.coordinates.coordinates[1],
-          s.coordinates.coordinates[0]
-        ));
-      }
-      $scope.map.control.getGMap().fitBounds(bounds);
     }
   }
 ];
