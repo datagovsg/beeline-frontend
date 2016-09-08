@@ -121,19 +121,7 @@ export default [
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });
-
       $scope.mapFrame = map;
-    })
-
-    $scope.$watch('book.route.path', (path) => {
-      if (!path) {
-        $scope.routePath = [];
-      }
-      else {
-        RoutesService.decodeRoutePath(path)
-        .then((decodedPath) => $scope.routePath = decodedPath)
-        .catch(() => $scope.routePath = []);
-      }
     })
 
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
