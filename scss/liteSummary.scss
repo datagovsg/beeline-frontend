@@ -34,13 +34,8 @@
 
         .popUpStopSelect{
           min-width: $popUpStopSelectMinWidth;
-          min-height: $popUpStopSelectMinHeight;
           padding-left: $content-padding*2;
           padding-top: $content-padding;
-
-          .button{
-            margin-top: $content-padding;
-          }
         }
 
         .angular-google-map, .angular-google-map-container {
@@ -57,30 +52,6 @@
           }
         }
       } /* ui-gmap-google-map */
-
-      .locate-button {
-        top: $content-padding;
-        right: $content-padding;
-        position: absolute;
-      }
-    }
-
-    .continue-button-item {
-      @include flex-shrink;
-    }
-
-    .stop-inputs {
-      @include flex-shrink;
-
-      .bus-stop-selector:nth-of-type(1) .stop-icon {
-        background: url('../img/RoutePairBigStart.svg') 0 50% no-repeat transparent;
-        background-size: 24px 24px;
-      }
-
-      .bus-stop-selector:nth-of-type(2) .stop-icon {
-        background: url('../img/RoutePairBigEnd.svg') 0 50% no-repeat transparent;
-        background-size: 24px 24px;
-      }
     }
   }
 
