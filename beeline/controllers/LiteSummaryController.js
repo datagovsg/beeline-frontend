@@ -13,12 +13,10 @@ export default [
   '$cordovaGeolocation',
   '$ionicPopup',
   '$ionicLoading',
-  '$timeout',
   'RoutesService',
   'LiteRoutesService',
   'LiteRouteSubscriptionService',
   'UserService',
-  'TripService',
   'CompanyService',
   'uiGmapGoogleMapApi',
   'MapOptions',
@@ -34,12 +32,10 @@ export default [
     $cordovaGeolocation,
     $ionicPopup,
     $ionicLoading,
-    $timeout,
     RoutesService,
     LiteRoutesService,
     LiteRouteSubscriptionService,
     UserService,
-    TripService,
     CompanyService,
     uiGmapGoogleMapApi,
     MapOptions,
@@ -52,11 +48,7 @@ export default [
       },
     });
 
-    $scope.disp = {
-      popupStop: null,
-      popupStopType: null,
-      parentScope: $scope,
-    }
+    $scope.disp = {};
 
     // Default settings for various info used in the page
     $scope.book = {
@@ -64,22 +56,9 @@ export default [
       route: null,
       boardStops: [], // all board stops for this route
       alightStops: [], // all alight stops for this route
-      boardStop: null,
-      alightStop: null,
-      changes: {},
       waitingForSubscriptionResult: false,
       isSubscribed: false,
     };
-
-    $scope.applyTapBoard = function (values) {
-      console.log("Tapped");
-      console.log(values);
-      $scope.disp.popupStopType = "pickup";
-      $scope.disp.popupStop = values.model;
-      console.log("popup stop is ");
-      console.log($scope.disp.popupStop);
-      $scope.$digest();
-    }
 
     // Resolved when the map is initialized
     var gmapIsReady = new Promise((resolve, reject) => {
@@ -96,7 +75,6 @@ export default [
 
     var routePromise, subscriptionPromise;
 
-    $scope.recentPings = [];
     $scope.book.label = $stateParams.label;
 
     routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
@@ -113,7 +91,6 @@ export default [
       var nextMidnight = now.setHours(24, 0, 0, 0);
       $scope.todayTrips = $scope.book.route.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
                        Date.parse(lr.date) < nextMidnight && lr.isRunning);
-      $scope.tripStops = LiteRoutesService.computeLiteStops($scope.todayTrips);
       return $scope.todayTrips
     });
 
@@ -158,44 +135,7 @@ export default [
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });
-
-      // for (let ts of todayTrips[0].tripStops) {
-      for (let ts of $scope.tripStops) {
-      ts._markerOptions = ts.canBoard ? $scope.map.markerOptions.boardMarker :
-                             $scope.map.markerOptions.alightMarker;
-      }
-
-      // Just show the boarding stops
-      var bounds = new googleMaps.LatLngBounds();
-      // for (let tripStop of $scope.todayTrips[0].tripStops) {
-      for (let tripStop of $scope.tripStops) {
-        bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
-                                           tripStop.coordinates.coordinates[0]));
-      }
-      map.fitBounds(bounds);
     })
-
-    // Draw the icon for latest bus location
-    $scope.$watchCollection('recentPings', function(recentPings) {
-      console.log("recent pings are here ");
-      console.log(recentPings);
-      if (recentPings) {
-        recentPings.map((pings, index)=>{
-          if (pings.length > 0){
-
-            var coordinates = pings[0].coordinates;
-            var path = pings.map(ping => ({
-              latitude: ping.coordinates.coordinates[1],
-              longitude: ping.coordinates.coordinates[0]
-            }));
-            $scope.map.busLocations[index].coordinates = coordinates;
-            $scope.map.lines.actualPaths.splice(index,0, {
-              "path": path
-            })
-          }
-        })
-      }
-    });
 
     gmapIsReady.then(function() {
       MapOptions.disableMapLinks();
@@ -211,16 +151,6 @@ export default [
         .catch(() => $scope.routePath = []);
       }
     })
-
-    $scope.setStop = function (stop, type) {
-      if (type === 'pickup') {
-        $scope.book.boardStop = stop;
-      }
-      else {
-        $scope.book.alightStop = stop;
-      }
-      $scope.disp.popupStop = null;
-    }
 
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
       $scope.isLoggedIn = userId ? true : false;

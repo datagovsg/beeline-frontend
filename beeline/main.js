@@ -93,6 +93,7 @@ var app = angular.module('beeline', [
 .directive('markdownRenderer', require('./directives/markdownRenderer').default)
 .directive('mapPolyRoute', require('./directives/mapPolyRoute').default)
 .directive('mapBusPolyRoute', require('./directives/mapBusPolyRoute').default)
+.directive('mapBusStops', require('./directives/mapBusStops').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
