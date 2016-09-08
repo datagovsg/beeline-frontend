@@ -113,11 +113,9 @@
 
       <section class="item item-text-wrap"
                ng-if="isLoggedIn && book.isSubscribed">
-        You subscribed to tracking this route, you can track the bus on the day of the trip.
-
         <button class="button primary-button"
                 ui-sref="tabs.tickets">
-          Go view map now
+          View Map
         </button>
         <div class="untrack-link">
           <a ng-click="promptUntrack()">I want to untrack this route now</a>
