@@ -135,6 +135,8 @@ export default [
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });
+
+      $scope.mapFrame = map;
     })
 
     gmapIsReady.then(function() {
@@ -278,6 +280,9 @@ export default [
     function panToStops() {
       var stops = [];
       stops = $scope.book.boardStops.concat($scope.book.alightStops);
+      console.log("stops", stops)
+      console.log("route", $scope.book.route)
+      console.log("panning")
 
       if (stops.length == 0) {
         return;

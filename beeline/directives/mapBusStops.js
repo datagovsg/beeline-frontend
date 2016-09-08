@@ -30,6 +30,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
       }
 
       uiGmapGoogleMapApi.then((googleMaps) => {
+        scope.googleMaps = googleMaps;
         scope.boardMarker = {
           icon: {
             url: 'img/map/MapRoutePickupStop@2x.png',
@@ -45,6 +46,12 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
         scope.tripStops = LiteRoutesService.computeLiteStops(todayTrips);
       })
 
+      scope.$watch('mapFrame', async (mapFrame) => {
+        if (!mapFrame) return;
+        await scope.tripStops
+        panToStops(mapFrame);
+      })
+
       scope.applyTapBoard = function (values) {
         console.log("Tapped");
         console.log(values);
@@ -56,6 +63,15 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
 
       scope.closeWindow = function () {
         scope.disp.popupStop = null;
+      }
+
+      function panToStops(mapFrame) {
+        var bounds = new scope.googleMaps.LatLngBounds();
+        for (let tripStop of scope.tripStops) {
+          bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
+                                               tripStop.coordinates.coordinates[0]));
+        }
+        mapFrame.fitBounds(bounds);
       }
     },
   };
