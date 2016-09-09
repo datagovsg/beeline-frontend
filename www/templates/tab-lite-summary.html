@@ -47,7 +47,7 @@
       </div>
 
       <company-info-broker company-id="book.route.transportCompanyId"
-                            company="companyInfo">
+                            company="disp.companyInfo">
       </company-info-broker>
 
       <div class="item-text-wrap">
@@ -56,18 +56,6 @@
                companyId: book.route.transportCompanyId,
                label: book.route.label})">
           More Information
-          <i class="icon ion-ios-arrow-right"></i>
-        </div>
-        <div class="item check-terms item-text-wrap" ng-if="!book.isSubscribed">
-            Please read {{companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
-            <ion-checkbox class="item item-checkbox" ng-model="disp.termsChecked">
-              I read and agree to the above terms and would like to proceed.
-            </ion-checkbox>
-        </div>
-        <div class="item item-icon-right"
-             ng-if="book.isSubscribed"
-             ng-click="disp.showTerms()">
-          Terms and Conditions
           <i class="icon ion-ios-arrow-right"></i>
         </div>
       </div>
@@ -88,19 +76,17 @@
         By clicking on the button below, you can track the bus on the day of the trip.
 
         <button class="button primary-button"
-                ng-click="promptFollow()"
-                ng-disabled="!disp.termsChecked || book.waitingForSubscriptionResult">
+                ng-click="confirmationPopup()"
+                ng-disabled="book.waitingForSubscriptionResult">
           Track Route
         </button>
       </section>
 
       <section class="item item-text-wrap"
                ng-if="isLoggedIn && book.isSubscribed">
-        You subscribed to tracking this route, you can track the bus on the day of the trip.
-
         <button class="button primary-button"
                 ui-sref="tabs.tickets">
-          Go view map now
+          View Map
         </button>
         <div class="untrack-link">
           <a ng-click="promptUntrack()">I want to untrack this route now</a>
