@@ -195,6 +195,20 @@ table.booking-info {
   input {
     margin: $padding-small-vertical 0;
   }
+  .item {
+    border: none;
+    background-color: inherit;
+  }
+}
+
+.popup-no-head {
+  .popup-head {
+    display: none;
+  }
+  .popup-body {
+    padding: 15px;
+    padding-bottom: 0;
+  }
 }
 
 .button-bar {

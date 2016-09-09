@@ -48,7 +48,9 @@ export default [
       },
     });
 
-    $scope.disp = {};
+    $scope.disp = {
+      companyInfo: {}
+    };
 
     // Default settings for various info used in the page
     $scope.book = {
@@ -151,14 +153,41 @@ export default [
       UserService.promptLogIn()
     }
 
-    $scope.promptFollow = async function() {
-      console.log("pressed");
-      var response = await $ionicPopup.confirm({
-        title: 'Are you sure you want to follow this lite route?',
-        subTitle: "You will view the lite route tracker in tickets."
+    $scope.confirmationPopup = function() {
+      return $scope.trackPopup = $ionicPopup.show({
+        scope: $scope,
+        template: `
+        <div class="item-text-wrap">
+          <div>
+              Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
+          </div>
+          <ion-checkbox ng-model="disp.termsChecked">
+            I read and agree to the above terms and would like to proceed.
+          </ion-checkbox>
+        </div>
+        `,
+        cssClass: "popup-no-head",
+        buttons: [{
+          text: "Cancel",
+          type: "button-default",
+          onTap: () => {return false;},
+        },
+        {
+          text: "OK",
+          type: "button-positive",
+          onTap: (e) => {
+            if (!$scope.disp.termsChecked) {
+              e.preventDefault();
+            }
+            else {
+              $scope.followRoute();
+            }
+          },
+        }]
       })
+    }
 
-      if (!response) return;
+    $scope.followRoute = async function() {
 
       try {
         $scope.book.waitingForSubscriptionResult = true;
@@ -168,6 +197,8 @@ export default [
         )
 
         if (subscribeResult) {
+          $scope.book.isSubscribed = true;
+          $scope.book.route.isSubscribed = true;
           $ionicPopup.alert({
             title: 'Success',
             template: `
@@ -180,8 +211,9 @@ export default [
             </div>
             `,
           })
-          $scope.book.isSubscribed = true;
-          $scope.book.route.isSubscribed = true;
+          .then(() => {
+            $state.transitionTo("tabs.tickets");
+          })
         }
         $scope.book.waitingForSubscriptionResult = false;
       }
@@ -240,10 +272,14 @@ export default [
       }
     };
 
-    $scope.disp.showTerms = () => {
+    $scope.disp.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return;
 
-      CompanyService.showTerms($scope.book.route.transportCompanyId);
+      $scope.trackPopup.close();
+
+      await CompanyService.showTerms($scope.book.route.transportCompanyId)
+
+      $scope.confirmationPopup();
     }
   }
 ];
