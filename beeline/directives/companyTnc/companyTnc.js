@@ -9,6 +9,7 @@ export default function companyTnc(CompanyService, $q) {
     replace: false,
     scope: {
       companyId: '=',
+      signageText: '<?',
     },
     link: function(scope, elem, attr) {
       scope.company = {};
