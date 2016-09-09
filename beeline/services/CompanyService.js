@@ -6,7 +6,7 @@ var writer = new commonmark.HtmlRenderer({safe: true});
 
 export default function CompanyService(UserService, $ionicModal, $rootScope, $q) {
   var companyCache = {};
-  var termsModal, termsScope;
+  var termsScope;
 
   return {
     getCompany: function(id, ignoreCache) {
@@ -22,22 +22,28 @@ export default function CompanyService(UserService, $ionicModal, $rootScope, $q)
       });
     },
     showTerms: function (id) {
-      if (!termsModal) {
-        termsScope = $rootScope.$new();
-        termsScope.termsModal = termsModal = $ionicModal.fromTemplate(
-          require('../templates/termsModal.html'),
-          {
-            scope: termsScope
-          }
-        );
-      }
+
+      termsScope = $rootScope.$new();
+      termsScope.termsModal = $ionicModal.fromTemplate(
+        require('../templates/termsModal.html'),
+        {
+          scope: termsScope
+        }
+      );
 
       this.getCompany(id)
       .then((company) => {
         termsScope.company = {
           termsHTML: writer.render(reader.parse(company.terms))
         };
-        termsModal.show();
+        termsScope.termsModal.show();
+      })
+
+      return new Promise((resolve, reject) => {
+        termsScope.$on('modal.hidden', () => {
+          termsScope.$destroy()
+          resolve();
+        })
       })
     },
   };
