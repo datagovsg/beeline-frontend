@@ -210,6 +210,8 @@ export default [
         )
 
         if (subscribeResult) {
+          $scope.book.isSubscribed = true;
+          $scope.book.route.isSubscribed = true;
           $ionicPopup.alert({
             title: 'Success',
             template: `
@@ -222,8 +224,9 @@ export default [
             </div>
             `,
           })
-          $scope.book.isSubscribed = true;
-          $scope.book.route.isSubscribed = true;
+          .then(() => {
+            $state.transitionTo("tabs.tickets");
+          })
         }
         $scope.book.waitingForSubscriptionResult = false;
       }
