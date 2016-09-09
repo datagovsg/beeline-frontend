@@ -53,11 +53,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
       })
 
       scope.applyTapBoard = function (values) {
-        console.log("Tapped");
-        console.log(values);
         scope.disp.popupStop = values.model;
-        console.log("popup stop is ");
-        console.log(scope.disp.popupStop);
         // scope.digest();
       }
 

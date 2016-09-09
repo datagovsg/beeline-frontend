@@ -48,8 +48,6 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       scope.$watch('todayTrips', (todayTrips) => {
         if (!todayTrips) return;
 
-        console.log("today!!!!!!", todayTrips)
-
         uiGmapGoogleMapApi.then((googleMaps) => {
           var icon = {
             url: 'img/busMarker.svg',
@@ -65,8 +63,6 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       })
 
       scope.$watchCollection('recentPings', function(recentPings) {
-        console.log("recent pings are here ");
-        console.log(recentPings);
         if (recentPings) {
           recentPings.map((pings, index)=>{
             if (pings.length > 0){
@@ -86,7 +82,6 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       });
 
       scope.$on("killPingLoop", () => {
-        console.log("cancelling!")
         $timeout.cancel(pingTimer);
       });
 
@@ -96,9 +91,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       });
 
       function pingLoop() {
-         console.log("Ping again!");
          Promise.all(scope.todayTrips.map((trip, index)=>{
-           console.log("currently is pinging "+trip.id);
           return TripService.DriverPings(trip.id)
           .then((info) => {
             /* Only show pings from the last two hours */
