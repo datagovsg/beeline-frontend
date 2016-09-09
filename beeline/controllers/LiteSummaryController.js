@@ -43,7 +43,6 @@ export default [
     MapOptions,
     loadingSpinner
   ) {
-    $scope.disp = {};
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
     $scope.routePath = [];
@@ -64,6 +63,7 @@ export default [
       popupStop: null,
       popupStopType: null,
       parentScope: $scope,
+      companyInfo: {}
     }
 
     // Resolved when the map is initialized
@@ -166,12 +166,43 @@ export default [
       UserService.promptLogIn()
     }
 
+    $scope.confirmationPopup = function() {
+      return $scope.trackPopup = $ionicPopup.show({
+        scope: $scope,
+        template: `
+        <div class="item-text-wrap">
+          <div>
+              Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
+          </div>
+          <ion-checkbox ng-model="disp.termsChecked">
+            I read and agree to the above terms and would like to proceed.
+          </ion-checkbox>
+        </div>
+        `,
+        cssClass: "popup-no-head",
+        buttons: [{
+          text: "Cancel",
+          type: "button-default",
+          onTap: () => {return false;},
+        },
+        {
+          text: "OK",
+          type: "button-positive",
+          onTap: (e) => {
+            if (!$scope.disp.termsChecked) {
+              e.preventDefault();
+            }
+            else {
+              return true;
+            }
+          },
+        }]
+      })
+    }
+
     $scope.promptFollow = async function() {
       console.log("pressed");
-      var response = await $ionicPopup.confirm({
-        title: 'Are you sure you want to follow this lite route?',
-        subTitle: "You will view the lite route tracker in tickets."
-      })
+      var response = await $scope.confirmationPopup();
 
       if (!response) return;
 
@@ -255,10 +286,14 @@ export default [
       }
     };
 
-    $scope.disp.showTerms = () => {
+    $scope.disp.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return;
 
-      CompanyService.showTerms($scope.book.route.transportCompanyId);
+      $scope.trackPopup.close();
+
+      await CompanyService.showTerms($scope.book.route.transportCompanyId)
+
+      $scope.confirmationPopup();
     }
 
     $scope.applyTapBoard = function (stop) {
