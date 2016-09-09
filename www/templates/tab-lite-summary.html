@@ -34,38 +34,15 @@
       </div>
 
       <div class="map-area">
-        <ui-gmap-google-map
-            center="map.center"
-            zoom="map.zoom"
-            bounds="map.bounds"
-            control="map.control"
-            options="map.options">
+        <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
           <my-location></my-location>
-
-          <ui-gmap-window ng-if="disp.popupStop" coords="disp.popupStop.coordinates"
-            show="disp.popupStop">
-            <div class="popUpStopSelect">
-              <b>{{disp.popupStop.time | formatTime }}</b><br/>
-              {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
-            </div>
-          </ui-gmap-window>
-
-          <ui-gmap-marker
-            ng-repeat="stop in book.boardStops"
-            idKey="stop.id"
-            coords="stop.coordinates"
-            options="map.markerOptions.boardMarker"
-            click="applyTapBoard(stop)"
-          ></ui-gmap-marker>
-
-          <ui-gmap-polyline
-            path="routePath"
-            static="true"
-            stroke="map.pathOptions.routePath"
-          >
-          </ui-gmap-polyline>
-
-
+          <map-poly-route route-path="map.lines.route.path">
+          </map-poly-route>
+          <map-bus-poly-route route="book.route"
+                              today-trips="todayTrips">
+          </map-bus-poly-route>
+          <map-bus-stops today-trips="todayTrips" map-frame="mapFrame">
+          </map-bus-stops>
         </ui-gmap-google-map>
       </div>
 

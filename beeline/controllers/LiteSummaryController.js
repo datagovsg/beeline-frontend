@@ -13,7 +13,6 @@ export default [
   '$cordovaGeolocation',
   '$ionicPopup',
   '$ionicLoading',
-  'BookingService',
   'RoutesService',
   'LiteRoutesService',
   'LiteRouteSubscriptionService',
@@ -33,7 +32,6 @@ export default [
     $cordovaGeolocation,
     $ionicPopup,
     $ionicLoading,
-    BookingService,
     RoutesService,
     LiteRoutesService,
     LiteRouteSubscriptionService,
@@ -43,10 +41,14 @@ export default [
     MapOptions,
     loadingSpinner
   ) {
-    $scope.disp = {};
     // Gmap default settings
-    $scope.map = MapOptions.defaultMapOptions();
-    $scope.routePath = [];
+    $scope.map = MapOptions.defaultMapOptions({
+      lines: {
+        route: { path: [] },
+      },
+    });
+
+    $scope.disp = {};
 
     // Default settings for various info used in the page
     $scope.book = {
@@ -54,90 +56,73 @@ export default [
       route: null,
       boardStops: [], // all board stops for this route
       alightStops: [], // all alight stops for this route
-      boardStop: null,
-      alightStop: null,
-      changes: {},
       waitingForSubscriptionResult: false,
       isSubscribed: false,
     };
-    $scope.disp = {
-      popupStop: null,
-      popupStopType: null,
-      parentScope: $scope,
-    }
-
-    // Resolved when the map is initialized
-    var gmapIsReady = new Promise((resolve, reject) => {
-      var resolved = false;
-      $scope.$watch('map.control.getGMap', function() {
-        if ($scope.map.control.getGMap) {
-          if (!resolved) {
-            resolved = true;
-            resolve();
-          }
-        }
-      });
-    });
 
     var routePromise, subscriptionPromise;
 
     $scope.book.label = $stateParams.label;
 
-    subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label);
-
     routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
-
-    var stopOptions = {
-      initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
-      initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
-    };
-    routePromise.then((route) => {
-      $scope.book.route = route[$scope.book.label];
-      // computeStops(stopOptions);
-      console.log("RouteObject", route)
-      var trips = $scope.book.route.trips;
-      var [boardStops, alightStops] = BookingService.computeStops(trips);
-      $scope.book.boardStops = boardStops;
-      $scope.book.alightStops = alightStops;
-    });
-
-    $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(Promise.all([gmapIsReady, routePromise, subscriptionPromise])
-      .then(() => {
-        var gmap = $scope.map.control.getGMap();
-        google.maps.event.trigger(gmap, 'resize');
-        panToStops();
-      }));
-    });
+    subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label);
 
     subscriptionPromise.then((response)=>{
       $scope.book.isSubscribed = response;
-    })
-
-    gmapIsReady.then(function() {
-      MapOptions.disableMapLinks();
     });
 
-    $scope.$watch('book.route.path', (path) => {
-      if (!path) {
-        $scope.routePath = [];
-      }
-      else {
-        RoutesService.decodeRoutePath(path)
-        .then((decodedPath) => $scope.routePath = decodedPath)
-        .catch(() => $scope.routePath = []);
-      }
-    })
+    var todayTripsPromise = routePromise.then((route)=>{
+      $scope.book.route = route[$scope.book.label];
+      var now = new Date();
+      var lastMidnight = now.setHours(0, 0, 0, 0);
+      var nextMidnight = now.setHours(24, 0, 0, 0);
+      $scope.todayTrips = $scope.book.route.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
+                       Date.parse(lr.date) < nextMidnight && lr.isRunning);
+      return $scope.todayTrips
+    });
 
-    $scope.setStop = function (stop, type) {
-      if (type === 'pickup') {
-        $scope.book.boardStop = stop;
+    var mapPromise = new Promise(function(resolve) {
+      $scope.$watch('map.control.getGMap', function(getGMap) {
+        if (getGMap) resolve($scope.map.control.getGMap());
+      });
+    });
+
+    $scope.$on('$ionicView.afterEnter', () => {
+      loadingSpinner(Promise.all([mapPromise, routePromise, subscriptionPromise])
+      .then(() => {
+        var gmap = $scope.map.control.getGMap();
+        google.maps.event.trigger(gmap, 'resize');
+      }));
+      $scope.$broadcast('startPingLoop');
+    });
+
+    $scope.$on('$ionicView.beforeLeave', () => {
+      $scope.$broadcast('killPingLoop');
+    });
+
+    Promise.all([mapPromise, routePromise]).then((values) =>{
+      var [map, route] = values;
+      RoutesService.decodeRoutePath(route[$scope.book.label].path)
+      .then((path) => $scope.map.lines.route.path = path)
+      .catch((err) => {
+        console.error(err);
+      });
+    });
+
+    Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
+      var [map, googleMaps, todayTrips] = values;
+      console.log("today trips are ");
+      console.log(todayTrips);
+      if (todayTrips.length ==0 ){
+       $scope.hasNoTrip = true;
       }
-      else {
-        $scope.book.alightStop = stop;
-      }
-      $scope.disp.popupStop = null;
-    }
+
+      MapOptions.disableMapLinks();
+      $scope.$on("$ionicView.afterEnter", function(event, data) {
+        googleMaps.event.trigger(map, 'resize');
+      });
+      $scope.mapFrame = map;
+    })
 
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
       $scope.isLoggedIn = userId ? true : false;
@@ -179,7 +164,7 @@ export default [
         $scope.book.waitingForSubscriptionResult = true;
 
         var subscribeResult = await loadingSpinner(
-          LiteRoutesService.subscribeLiteRoute($scope.book.route.label)
+          LiteRoutesService.subscribeLiteRoute($scope.book.label)
         )
 
         if (subscribeResult) {
@@ -224,7 +209,7 @@ export default [
         $scope.book.waitingForSubscriptionResult = true;
 
         var unsubscribeResult = await loadingSpinner(
-          LiteRoutesService.unSubscribeLiteRoute($scope.book.route.label)
+          LiteRoutesService.unSubscribeLiteRoute($scope.book.label)
         )
 
         if (unsubscribeResult) {
@@ -259,30 +244,6 @@ export default [
       if (!$scope.book.route.transportCompanyId) return;
 
       CompanyService.showTerms($scope.book.route.transportCompanyId);
-    }
-
-    $scope.applyTapBoard = function (stop) {
-      $scope.disp.popupStopType = "pickup";
-      $scope.disp.popupStop = stop;
-      $scope.$digest();
-    }
-
-    /* Pans to the stops on the screen */
-    function panToStops() {
-      var stops = [];
-      stops = $scope.book.boardStops.concat($scope.book.alightStops);
-
-      if (stops.length == 0) {
-        return;
-      }
-      var bounds = new google.maps.LatLngBounds();
-      for (let s of stops) {
-        bounds.extend(new google.maps.LatLng(
-          s.coordinates.coordinates[1],
-          s.coordinates.coordinates[0]
-        ));
-      }
-      $scope.map.control.getGMap().fitBounds(bounds);
     }
   }
 ];
