@@ -193,18 +193,14 @@ export default [
               e.preventDefault();
             }
             else {
-              return true;
+              $scope.followRoute();
             }
           },
         }]
       })
     }
 
-    $scope.promptFollow = async function() {
-      console.log("pressed");
-      var response = await $scope.confirmationPopup();
-
-      if (!response) return;
+    $scope.followRoute = async function() {
 
       try {
         $scope.book.waitingForSubscriptionResult = true;
