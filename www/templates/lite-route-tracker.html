@@ -54,9 +54,21 @@
     </div>
 
     <!-- Info Tab -->
-    <ion-scroll ng-show="activeTab===1">
+    <ion-content ng-show="activeTab===1">
       <more-info company-id="liteRoute.transportCompanyId">
       </more-info>
-    </ion-scroll>
+      <div class="item-text-wrap"
+           ng-click="disp.showTerms()">
+        <div class="item">
+          Terms and Conditions
+        </div>
+      </div>
+      <div class="item-text-wrap"
+           ng-click="promptUntrack()">
+        <div class="item">
+          Untrack Route
+        </div>
+      </div>
+    </ion-content>
   </ion-content>
 </ion-view>
