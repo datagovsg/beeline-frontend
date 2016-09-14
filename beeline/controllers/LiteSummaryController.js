@@ -149,6 +149,19 @@ export default [
       }
     })
 
+    $scope.$watchCollection( () => [].concat(LiteRouteSubscriptionService.getSubscriptionSummary()),
+    (newValue) => {
+      LiteRouteSubscriptionService.isSubscribed($scope.book.label)
+      .then((response) => {
+        if (response) {
+          $scope.book.isSubscribed = true;
+        }
+        else {
+          $scope.book.isSubscribed = false;
+        }
+      })
+    });
+
     $scope.login = function () {
       UserService.promptLogIn()
     }

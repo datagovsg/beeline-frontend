@@ -2,13 +2,13 @@ import _ from 'lodash';
 import assert from 'assert';
 
 export default [
-  '$scope', '$rootScope', '$stateParams', '$timeout', 'uiGmapGoogleMapApi',
+  '$scope', '$rootScope', '$state', '$stateParams', '$timeout', 'uiGmapGoogleMapApi',
   'CompanyService', 'TripService', 'UserService', 'MapOptions', 'RoutesService',
-  'LiteRoutesService', '$ionicPopup','loadingSpinner',
+  'LiteRoutesService', '$ionicPopup', '$ionicLoading', 'loadingSpinner',
   function(
-    $scope,  $rootScope,  $stateParams,  $timeout,  uiGmapGoogleMapApi,
+    $scope,  $rootScope, $state, $stateParams,  $timeout,  uiGmapGoogleMapApi,
     CompanyService, TripService,  UserService, MapOptions, RoutesService,
-    LiteRoutesService,  $ionicPopup, loadingSpinner,
+    LiteRoutesService,  $ionicPopup, $ionicLoading, loadingSpinner,
   ) {
     // Initialize the necessary basic data data
     $scope.user = UserService.getUser();
@@ -58,14 +58,11 @@ export default [
       RoutesService.decodeRoutePath(route[$scope.liteRouteLabel].path)
       .then((path) => $scope.map.lines.route.path = path)
       .catch((err) => {
-        console.error(err);
       });
     });
 
     Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
       var [map, googleMaps, todayTrips] = values;
-      console.log("today trips are ");
-      console.log(todayTrips);
       if (todayTrips.length ==0 ){
         $scope.hasNoTrip = true;
       }
@@ -77,38 +74,40 @@ export default [
       $scope.mapFrame = map;
     })
 
+    $scope.promptUntrack = async function() {
+      var response = await $ionicPopup.confirm({
+        title: 'Are you sure you want to untrack this lite route?',
+        subTitle: "This lite route will be removed from your tickets."
+      })
 
-    $scope.unSubscribe = function() {
-      $ionicPopup.confirm({
-        title: 'Unfollow Route?',
-        subTitle: "Are you sure you want to unfollow this route? You will not be able track this route."
-      }).then(function(response) {
-        if (response) {
-          try {
-            LiteRoutesService.unSubscribeLiteRoute($scope.liteRouteLabel).then(function(response)
-            {
-              if (response) {
-                $ionicPopup.alert({
-                  title: 'Success',
-                })
-              }
-              else {
-                $ionicPopup.alert({
-                  title: 'Error unSubscribing lite route',
-                })
-              }
-            })
-          }
-          catch(err) {
-            $ionicPopup.alert({
-              title: 'Error unSubscribing lite route ' + err,
-            })
-          }
+      if (!response) return;
+
+      try {
+        var unsubscribeResult = await loadingSpinner(
+          LiteRoutesService.unSubscribeLiteRoute($scope.liteRouteLabel)
+        )
+
+        if (unsubscribeResult) {
+          await $ionicLoading.show({
+            template: `
+            <div>Done!</div>
+            `,
+            duration: 1000,
+          })
+          $state.transitionTo("tabs.tickets");
         }
-      });
+      }
+      catch(err) {
+        await $ionicLoading.show({
+          template: `
+          <div>Error, please try again later.</div>
+          `,
+          duration: 1000,
+        })
+      }
     };
 
-    $scope.showTerms = function() {
+    $scope.disp.showTerms = function() {
       if (!$scope.liteRoute.transportCompanyId) return;
       CompanyService.showTerms($scope.liteRoute.transportCompanyId);
     };
