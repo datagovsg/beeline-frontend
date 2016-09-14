@@ -58,14 +58,11 @@ export default [
       RoutesService.decodeRoutePath(route[$scope.liteRouteLabel].path)
       .then((path) => $scope.map.lines.route.path = path)
       .catch((err) => {
-        console.error(err);
       });
     });
 
     Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
       var [map, googleMaps, todayTrips] = values;
-      console.log("today trips are ");
-      console.log(todayTrips);
       if (todayTrips.length ==0 ){
         $scope.hasNoTrip = true;
       }
@@ -78,7 +75,6 @@ export default [
     })
 
     $scope.promptUntrack = async function() {
-      console.log("pressed");
       var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to untrack this lite route?',
         subTitle: "This lite route will be removed from your tickets."
@@ -87,8 +83,6 @@ export default [
       if (!response) return;
 
       try {
-
-        console.log($scope.liteRouteLabel)
         var unsubscribeResult = await loadingSpinner(
           LiteRoutesService.unSubscribeLiteRoute($scope.liteRouteLabel)
         )
