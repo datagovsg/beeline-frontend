@@ -8,7 +8,7 @@ export default [
   function(
     $scope,  $rootScope, $state, $stateParams,  $timeout,  uiGmapGoogleMapApi,
     CompanyService, TripService,  UserService, MapOptions, RoutesService,
-    LiteRoutesService,  $ionicPopup, $ionicLoading, loadingSpinner,
+    LiteRoutesService,  $ionicPopup, $ionicLoading, loadingSpinner
   ) {
     // Initialize the necessary basic data data
     $scope.user = UserService.getUser();
