@@ -18,6 +18,8 @@ export default [
       },
     });
 
+    $scope.isLiteFrequent = false;
+
     $scope.disp = {}
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
@@ -26,6 +28,7 @@ export default [
 
     var todayTripsPromise = routePromise.then((route)=>{
       $scope.liteRoute = route[$scope.liteRouteLabel];
+      $scope.isLiteFrequent = ($scope.liteRoute["tags"].includes("lite-frequent") ? true : false);
       var now = new Date();
       var lastMidnight = now.setHours(0, 0, 0, 0);
       var nextMidnight = now.setHours(24, 0, 0, 0);
