@@ -60,6 +60,7 @@ export default [
       alightStops: [], // all alight stops for this route
       waitingForSubscriptionResult: false,
       isSubscribed: false,
+      isLiteFrequent: false,
     };
 
     var routePromise, subscriptionPromise;
@@ -75,6 +76,7 @@ export default [
 
     var todayTripsPromise = routePromise.then((route)=>{
       $scope.book.route = route[$scope.book.label];
+      $scope.book.isLiteFrequent = ($scope.book.route["tags"].includes("lite-frequent") ? true : false);
       var now = new Date();
       var lastMidnight = now.setHours(0, 0, 0, 0);
       var nextMidnight = now.setHours(24, 0, 0, 0);
@@ -104,6 +106,7 @@ export default [
 
     Promise.all([mapPromise, routePromise]).then((values) =>{
       var [map, route] = values;
+      console.log("Route is:", route);
       RoutesService.decodeRoutePath(route[$scope.book.label].path)
       .then((path) => $scope.map.lines.route.path = path)
       .catch((err) => {
