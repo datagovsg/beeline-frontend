@@ -49,7 +49,7 @@
         <map-bus-poly-route route="liteRoute"
                             today-trips="todayTrips"></map-bus-poly-route>
         <map-bus-stops today-trips="todayTrips" map-frame="mapFrame"
-                       is-lite-frequent="isLiteFrequent">
+                       is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>
     </div>
