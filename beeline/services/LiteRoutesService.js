@@ -71,9 +71,9 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
 
       var finalOptions = _.assign({
         start_date: startDate.getTime(),
+        include_path: false,
         include_trips: true,
         limit_trips: 5,
-        include_path: false,
         tags: JSON.stringify(['lite']),
       }, options)
 
@@ -95,7 +95,6 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       // in flight together
       if (!options)
         liteRoutesCache = liteRoutesPromise;
-
       return liteRoutesPromise;
     },
 
@@ -106,14 +105,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         console.log(`Using lite route ${liteRouteLabel} from cache`);
         return lastLiteRoutePromise;
       }
-
-      if (!ignoreCache && !options && liteRoutesPromise) {
-        console.log(`Using lite route ${liteRouteLabel} from liteRoutesPromise`);
-        liteRoutesPromise.then((response)=>{
-          return lastLiteRoutePromise = response[liteRouteLabel];
-        })
-      }
-
+      
       var startDate = new Date();
       startDate.setHours(3,0,0,0,0)
 
@@ -121,7 +113,8 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         start_date: startDate.getTime(),
         include_trips: true,
         tags: JSON.stringify(['lite']),
-        label: liteRouteLabel
+        label: liteRouteLabel,
+        include_path: true,
       }, options)
 
       var url = '/routes?';
@@ -133,11 +126,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         url: url,
       })
       .then(function(response) {
-        console.log("single lite route is ");
-        console.log(response.data);
         var liteRouteData =  transformLiteRouteData(response.data);
-        console.log("after tranforamtion is ");
-        console.log(liteRouteData);
         return liteRouteData;
       })
       .catch((err) => {

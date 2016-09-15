@@ -36,9 +36,7 @@ export default function LiteRouteSubscriptionService($http, UserService, $q) {
 
     isSubscribed: async function(label, ignoreCache) {
       var subscriptions = await this.getSubscriptions(ignoreCache);
-      console.log("the cache", subscriptions)
       assert(subscriptions);
-      console.log("this are subscriptions:", subscriptions);
 
       var subscription = subscriptions.includes(label)
       if (subscription) {

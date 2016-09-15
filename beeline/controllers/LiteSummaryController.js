@@ -113,8 +113,6 @@ export default [
 
     Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
       var [map, googleMaps, todayTrips] = values;
-      console.log("today trips are ");
-      console.log(todayTrips);
       if (todayTrips.length ==0 ){
        $scope.hasNoTrip = true;
       }

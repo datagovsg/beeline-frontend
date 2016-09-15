@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import assert from 'assert';
 
 export default [
   '$scope', '$rootScope', '$state', '$stateParams', '$timeout', 'uiGmapGoogleMapApi',

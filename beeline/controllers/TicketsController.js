@@ -44,17 +44,11 @@ export default [
           // $scope.liteRouteSubscriptions = [];
 
           var XXX = []
-          console.log("searched subs",liteRouteSubscriptions)
           for (let subscribedLiteLabel of liteRouteSubscriptions) {
             var subscribedLiteRoute = await LiteRoutesService.getLiteRoute(subscribedLiteLabel)
-            console.log("is able to find?");
-            console.log(subscribedLiteRoute);
             XXX.push({"label": subscribedLiteLabel,"liteRoute": subscribedLiteRoute})
           }
           $scope.liteRouteSubscriptions = XXX;
-
-          console.log("tickets controller");
-          console.log($scope.liteRouteSubscriptions);
           $scope.$broadcast('scroll.refreshComplete');
           $scope.error = false;
         })
