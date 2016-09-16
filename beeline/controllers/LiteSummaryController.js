@@ -72,7 +72,7 @@ export default [
     subscriptionPromise.then((response)=>{
       $scope.book.isSubscribed = response;
     });
-
+    
     var todayTripsPromise = routePromise.then((route)=>{
       $scope.book.route = route[$scope.book.label];
       var now = new Date();
@@ -104,6 +104,7 @@ export default [
 
     Promise.all([mapPromise, routePromise]).then((values) =>{
       var [map, route] = values;
+      console.log("Route is:", route);
       RoutesService.decodeRoutePath(route[$scope.book.label].path)
       .then((path) => $scope.map.lines.route.path = path)
       .catch((err) => {

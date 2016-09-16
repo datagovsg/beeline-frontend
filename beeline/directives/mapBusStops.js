@@ -14,7 +14,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
                     show="disp.popupStop"
                     closeClick="closeWindow">
       <div class="popUpStopSelect">
-        <b>{{disp.popupStop.time | formatTimeArray }}</b><br/>
+        <b ng-if="!isLiteFrequent">{{disp.popupStop.time | formatTimeArray }}</b><br ng-if="!isLiteFrequent"/>
         {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
       </div>
     </ui-gmap-window>
@@ -22,6 +22,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
     scope: {
       'todayTrips': '<',
       'mapFrame': '<',
+      'isLiteFrequent': '<?',
     },
     link: function(scope, element, attributes) {
 
