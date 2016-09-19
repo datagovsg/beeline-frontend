@@ -72,7 +72,7 @@ export default [
     subscriptionPromise.then((response)=>{
       $scope.book.isSubscribed = response;
     });
-    
+
     var todayTripsPromise = routePromise.then((route)=>{
       $scope.book.route = route[$scope.book.label];
       var now = new Date();
@@ -169,7 +169,7 @@ export default [
       return $scope.trackPopup = $ionicPopup.show({
         scope: $scope,
         template: `
-        <div class="item-text-wrap">
+        <div class="item item-text-wrap">
           <div>
               Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
           </div>
@@ -214,12 +214,13 @@ export default [
           $ionicPopup.alert({
             title: 'Success',
             template: `
-            <div class="text-center item-text-wrap">
+            <div class="item item-text-wrap text-center ">
               <div>
                 <img src="img/lite_success.svg">
               </div>
-              You are now following this route.<br>
+              <p>You are now following this route.<br>
               Track your bus on the day of the trip.
+              </p>
             </div>
             `,
           })
