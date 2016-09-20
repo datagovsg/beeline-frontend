@@ -170,7 +170,7 @@ export default [
       return $scope.trackPopup = $ionicPopup.show({
         scope: $scope,
         template: `
-        <div class="item-text-wrap">
+        <div class="item item-text-wrap">
           <div>
               Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
           </div>
@@ -215,12 +215,13 @@ export default [
           $ionicPopup.alert({
             title: 'Success',
             template: `
-            <div class="text-center item-text-wrap">
+            <div class="item item-text-wrap text-center ">
               <div>
                 <img src="img/lite_success.svg">
               </div>
-              You are now following this route.<br>
+              <p>You are now following this route.<br>
               Track your bus on the day of the trip.
+              </p>
             </div>
             `,
           })
@@ -244,8 +245,8 @@ export default [
     $scope.promptUntrack = async function() {
       console.log("pressed");
       var response = await $ionicPopup.confirm({
-        title: 'Are you sure you want to untrack this lite route?',
-        subTitle: "This lite route will be removed from your tickets."
+        title: 'Are you sure you want to untrack this route?',
+        subTitle: "This tracking-only route will be removed from your list of trips."
       })
 
       if (!response) return;

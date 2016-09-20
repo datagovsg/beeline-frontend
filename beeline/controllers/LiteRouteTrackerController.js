@@ -75,8 +75,8 @@ export default [
 
     $scope.promptUntrack = async function() {
       var response = await $ionicPopup.confirm({
-        title: 'Are you sure you want to untrack this lite route?',
-        subTitle: "This lite route will be removed from your tickets."
+        title: 'Are you sure you want to untrack this route?',
+        subTitle: "This tracking-only route will be removed from your list of trips."
       })
 
       if (!response) return;
