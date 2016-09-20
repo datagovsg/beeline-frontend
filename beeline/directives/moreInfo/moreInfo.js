@@ -4,6 +4,7 @@ export default function () {
     replace: false,
     scope: {
       companyId: '<',
+      features: '<',
       signageText: '<',
     },
     link: function(scope, elem, attr) {

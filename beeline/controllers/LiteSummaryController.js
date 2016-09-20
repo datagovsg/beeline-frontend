@@ -115,9 +115,6 @@ export default [
 
     Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
       var [map, googleMaps, todayTrips] = values;
-      if (todayTrips.length ==0 ){
-       $scope.hasNoTrip = true;
-      }
 
       MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
