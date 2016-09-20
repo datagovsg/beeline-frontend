@@ -49,7 +49,8 @@ export default [
     });
 
     $scope.disp = {
-      companyInfo: {}
+      companyInfo: {},
+      showTooltip: true,
     };
 
     // Default settings for various info used in the page
@@ -72,7 +73,7 @@ export default [
     subscriptionPromise.then((response)=>{
       $scope.book.isSubscribed = response;
     });
-    
+
     var todayTripsPromise = routePromise.then((route)=>{
       $scope.book.route = route[$scope.book.label];
       var now = new Date();
@@ -292,6 +293,12 @@ export default [
       await CompanyService.showTerms($scope.book.route.transportCompanyId)
 
       $scope.confirmationPopup();
+    }
+
+    $scope.hideTooltip = () => {
+      if ($scope.disp.showTooltip) {
+        $scope.disp.showTooltip = false;
+      }
     }
   }
 ];

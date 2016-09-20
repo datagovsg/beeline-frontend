@@ -1,5 +1,5 @@
 <ion-view id="pg_lite" view-title="Route Details"
-  hide-back-button="true" can-swipe-back="false">
+  hide-back-button="true" can-swipe-back="false" on-touch="hideTooltip()">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
        ui-sref="tabs.routes">
@@ -11,7 +11,7 @@
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
 
       <div class="route-info item">
-        <route-item class="lite" ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="true">
+        <route-item class="lite"  ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="!disp.showTooltip">
           <route-item-bus-number>
             {{ book.route.label }}
           </route-item-bus-number>
@@ -30,6 +30,13 @@
           <route-item-end-location>
             {{ book.route.to }}
           </route-item-end-location>
+          <route-item-additional-info>
+            <div class="corner-triangle">
+              <a>
+                <span class="tooltiptext"> Tracking Only Route </span>
+              </a>
+            </div>
+          </route-item-additional-info>
         </route-item>
       </div>
 
