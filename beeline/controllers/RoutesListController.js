@@ -66,7 +66,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.regions = getUniqueRegionsFromRoutes(allRoutes);
       // Need to sort by time of day rather than by absolute time,
       // in case we have routes with missing dates (e.g. upcoming routes)
-      $scope.data.routes = _.sortBy(allRoutes, (route) => {
+      $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
         var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
 
         var midnightOfTrip = new Date(firstTripStop.time.getTime());
