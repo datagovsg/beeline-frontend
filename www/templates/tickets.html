@@ -87,7 +87,7 @@
             {{ subscription.label }}
           </route-item-bus-number>
           <route-item-description>
-            {{ subscription.liteRoute[subscription.label].description }}
+            {{ subscription.liteRoute[subscription.label].notes.description }}
           </route-item-description>
           <route-item-start-time>
             {{ subscription.liteRoute[subscription.label].startTime | formatTime}}

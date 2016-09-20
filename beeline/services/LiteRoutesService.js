@@ -40,10 +40,10 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       }
       else {
         result[label] = value;
-        //to display schedule in notes JSON
-        if (value.notes && value.notes.description) {
-          result[label].description = value.notes.description;
-        }
+        //to display route description in notes JSON
+        // if (value.notes && value.notes.description) {
+        //   result[label].description = value.notes.description;
+        // }
         //mark isSubscribed as false
         result[label].isSubscribed = false;
       }
@@ -105,7 +105,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         console.log(`Using lite route ${liteRouteLabel} from cache`);
         return lastLiteRoutePromise;
       }
-      
+
       var startDate = new Date();
       startDate.setHours(3,0,0,0,0)
 
