@@ -228,16 +228,17 @@ export default [
             $state.transitionTo("tabs.tickets");
           })
         }
-        $scope.book.waitingForSubscriptionResult = false;
       }
       catch(err) {
-        $scope.book.waitingForSubscriptionResult = false;
         await $ionicLoading.show({
           template: `
           <div>Error, please try again later.</div>
           `,
           duration: 1000,
         })
+      }
+      finally {
+        $scope.book.waitingForSubscriptionResult = false;
       }
     };
 
