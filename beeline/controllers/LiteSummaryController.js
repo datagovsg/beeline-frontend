@@ -166,8 +166,8 @@ export default [
       UserService.promptLogIn()
     }
 
-    $scope.confirmationPopup = function() {
-      return $scope.trackPopup = $ionicPopup.show({
+    $scope.showConfirmationPopup = function() {
+      return $scope.confirmationPopup = $ionicPopup.show({
         scope: $scope,
         template: `
         <div class="item item-text-wrap">
@@ -288,11 +288,11 @@ export default [
     $scope.disp.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return;
 
-      $scope.trackPopup.close();
+      $scope.confirmationPopup.close();
 
       await CompanyService.showTerms($scope.book.route.transportCompanyId)
 
-      $scope.confirmationPopup();
+      $scope.showConfirmationPopup();
     }
 
     $scope.hideTooltip = () => {
