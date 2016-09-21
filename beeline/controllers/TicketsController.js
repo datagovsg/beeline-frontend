@@ -48,7 +48,6 @@ export default [
     }
 
     function refreshNormalTickets(ignoreCache) {
-      console.log("refreshing NORMAL");
       return TicketService.getCategorizedTickets(ignoreCache).then((categorizedTickets) => {
         $scope.tickets.today = categorizedTickets.today;
         $scope.tickets.soon = categorizedTickets.afterToday;
@@ -63,7 +62,6 @@ export default [
     }
 
     function refreshLiteTickets(ignoreCache) {
-      console.log("refreshing LITE");
       LiteRoutesService.clearShouldRefreshLiteTickets();
       return LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then(async(liteRouteSubscriptions)=>{
           // $scope.liteRouteSubscriptions = [];
