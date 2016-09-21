@@ -129,20 +129,13 @@ export default [
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
       $scope.isLoggedIn = userId ? true : false;
       if ($scope.isLoggedIn) {
-        $ionicLoading.show({
-          template: loadingTemplate
-        })
-        try {
-          LiteRouteSubscriptionService.isSubscribed($scope.book.label, true)
+          var promise = LiteRouteSubscriptionService.isSubscribed($scope.book.label, true)
           .then((response) => {
             $scope.book.isSubscribed = response;
             $ionicLoading.hide();
             }
-          )
-        }
-        catch(error) {
-          $ionicLoading.hide();
-        }
+          );
+          loadingSpinner(promise);
       }
       else {
         $scope.book.isSubscribed = false;
