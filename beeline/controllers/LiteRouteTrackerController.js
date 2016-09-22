@@ -105,7 +105,7 @@ export default [
       catch(err) {
         await $ionicLoading.show({
           template: `
-          <div>Error, please try again later.</div>
+          <div> There was an error unsubscribing. {{err && err.data && err.data.message}} Please try again later.</div>
           `,
           duration: 1000,
         })

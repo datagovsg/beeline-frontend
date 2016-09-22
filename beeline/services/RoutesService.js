@@ -170,6 +170,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       }
     },
 
+// TODO: make a directive, otherwise literoute need to inject this routeservice
     decodeRoutePath: function (path) {
       assert.strictEqual(typeof path, 'string');
       return uiGmapGoogleMapApi.then((googleMaps) => {

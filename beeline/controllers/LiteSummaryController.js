@@ -76,6 +76,7 @@ export default [
 
     var todayTripsPromise = routePromise.then((route)=>{
       $scope.book.route = route[$scope.book.label];
+      // TODO:  date calculation here is not exactly correct
       var now = new Date();
       var lastMidnight = now.setHours(0, 0, 0, 0);
       var nextMidnight = now.setHours(24, 0, 0, 0);
@@ -124,17 +125,6 @@ export default [
 
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
       $scope.isLoggedIn = userId ? true : false;
-      if ($scope.isLoggedIn) {
-          var promise = LiteRouteSubscriptionService.isSubscribed($scope.book.label, true)
-          .then((response) => {
-            $scope.book.isSubscribed = response;
-            }
-          );
-          loadingSpinner(promise);
-      }
-      else {
-        $scope.book.isSubscribed = false;
-      }
     })
 
     $scope.$watchCollection( () => [].concat(LiteRouteSubscriptionService.getSubscriptionSummary()),

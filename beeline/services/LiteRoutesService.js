@@ -27,8 +27,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         liteRoute.endTime = null;
         return;
       }
-      var tripByDates = _.partition(liteRoute.trips, function(trip) { return trip.date; });
-      var allTripStops = _.flatten(tripByDates[0].map(trip=>trip.tripStops));
+      var allTripStops = _.flatten(liteRoute.trips.map(trip=>trip.tripStops));
       var allStopTimes = allTripStops.map(stop=>stop.time).sort();
       liteRoute.startTime = allStopTimes[0];
       liteRoute.endTime = allStopTimes[allStopTimes.length-1];

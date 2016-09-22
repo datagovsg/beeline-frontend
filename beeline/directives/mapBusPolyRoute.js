@@ -20,6 +20,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
 
       var pingTimer;
 
+      scope.pingLoopRunning = true;
+
       scope.strokeOptions = {
         color: '#4b3863',
         weight: 3.0,
@@ -83,6 +85,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
 
       scope.$on("killPingLoop", () => {
         $timeout.cancel(pingTimer);
+        scope.pingLoopRunning = false;
       });
 
       scope.$on("startPingLoop", () => {
@@ -101,7 +104,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
           })
         }))
         .then(() => {
-          pingTimer = $timeout(pingLoop, 15000);
+          if (scope.pingLoopRunning)
+            pingTimer = $timeout(pingLoop, 15000);
         }); // catch all errors
       }
 
