@@ -131,7 +131,6 @@ export default [
           var promise = LiteRouteSubscriptionService.isSubscribed($scope.book.label, true)
           .then((response) => {
             $scope.book.isSubscribed = response;
-            $ionicLoading.hide();
             }
           );
           loadingSpinner(promise);
