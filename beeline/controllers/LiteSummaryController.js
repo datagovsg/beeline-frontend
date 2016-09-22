@@ -254,8 +254,6 @@ export default [
         if (unsubscribeResult) {
           $scope.book.isSubscribed = false;
         }
-        $scope.book.waitingForSubscriptionResult = false;
-        // $scope.$digest();
 
         if (!$scope.book.isSubscribed) {
           await $ionicLoading.show({
@@ -268,13 +266,15 @@ export default [
         }
       }
       catch(err) {
-        $scope.book.waitingForSubscriptionResult = false;
         await $ionicLoading.show({
           template: `
           <div>Error, please try again later.</div>
           `,
           duration: 1000,
         })
+      }
+      finally {
+        $scope.book.waitingForSubscriptionResult = false;
       }
     };
 
