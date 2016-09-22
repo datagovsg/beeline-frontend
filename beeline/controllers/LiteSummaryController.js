@@ -105,7 +105,6 @@ export default [
 
     Promise.all([mapPromise, routePromise]).then((values) =>{
       var [map, route] = values;
-      console.log("Route is:", route);
       RoutesService.decodeRoutePath(route[$scope.book.label].path)
       .then((path) => $scope.map.lines.route.path = path)
       .catch((err) => {
@@ -236,7 +235,6 @@ export default [
     };
 
     $scope.promptUntrack = async function() {
-      console.log("pressed");
       var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to untrack this route?',
         subTitle: "This tracking-only route will be removed from your list of trips."

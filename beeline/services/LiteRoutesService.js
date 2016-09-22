@@ -105,7 +105,6 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       assert.equal(typeof liteRouteLabel, 'string');
 
       if (!ignoreCache && !options && lastLiteRouteLabel=== liteRouteLabel) {
-        console.log(`Using lite route ${liteRouteLabel} from cache`);
         return lastLiteRoutePromise;
       }
 
