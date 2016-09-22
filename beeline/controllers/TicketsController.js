@@ -41,25 +41,17 @@ export default [
         $scope.error = true;
       });
       LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then(async(liteRouteSubscriptions)=>{
-          // $scope.liteRouteSubscriptions = [];
-
-          var XXX = []
-          for (let subscribedLiteLabel of liteRouteSubscriptions) {
-            var subscribedLiteRoute = await LiteRoutesService.getLiteRoute(subscribedLiteLabel)
-            XXX.push({"label": subscribedLiteLabel,"liteRoute": subscribedLiteRoute})
-          }
-          $scope.liteRouteSubscriptions = XXX;
-          $scope.$broadcast('scroll.refreshComplete');
-          $scope.error = false;
-        })
-        .catch((error) => {
-          console.log(error.stack);
-          $scope.$broadcast('scroll.refreshComplete');
-          $scope.error = true;
-        });
-
+        var allLiteRoutes = await LiteRoutesService.getLiteRoutes(ignoreCache);
+        $scope.liteRouteSubscriptions =  liteRouteSubscriptions.map(subscribedLiteLabel=>({"label": subscribedLiteLabel,"liteRoute": allLiteRoutes[subscribedLiteLabel]}))
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.error = false;
+      })
+      .catch((error) => {
+        console.log(error.stack);
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.error = true;
+      });
     }
-
     $scope.refreshTickets = refreshTickets;
   }
 ];

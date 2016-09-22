@@ -40,10 +40,6 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       }
       else {
         result[label] = value;
-        //to display route description in notes JSON
-        // if (value.notes && value.notes.description) {
-        //   result[label].description = value.notes.description;
-        // }
         //mark isSubscribed as false
         result[label].isSubscribed = false;
       }

@@ -87,19 +87,19 @@
             {{ subscription.label }}
           </route-item-bus-number>
           <route-item-description>
-            {{ subscription.liteRoute[subscription.label].notes.description }}
+            {{ subscription.liteRoute.notes.description }}
           </route-item-description>
           <route-item-start-time>
-            {{ subscription.liteRoute[subscription.label].startTime | formatTime}}
+            {{ subscription.liteRoute.startTime | formatTime}}
           </route-item-start-time>
           <route-item-start-location>
-            {{ subscription.liteRoute[subscription.label].from }}
+            {{ subscription.liteRoute.from }}
           </route-item-start-location>
           <route-item-end-time>
-            {{ subscription.liteRoute[subscription.label].endTime | formatTime}}
+            {{ subscription.liteRoute.endTime | formatTime}}
           </route-item-end-time>
           <route-item-end-location>
-            {{ subscription.liteRoute[subscription.label].to }}
+            {{ subscription.liteRoute.to }}
           </route-item-end-location>
         </route-item>
         <i class="icon ion-ios-arrow-right icon-accessory"></i>
