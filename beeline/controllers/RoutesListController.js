@@ -55,7 +55,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
       var allLiteRoutes, liteRouteSubscriptions;
       [allLiteRoutes, liteRouteSubscriptions] = response;
       $scope.data.liteRoutes = allLiteRoutes;
-      console.log(allLiteRoutes)
     })
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
@@ -113,9 +112,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.$watchCollection(() =>
     [].concat(LiteRouteSubscriptionService.getSubscriptionSummary())
     .concat([$scope.data.liteRoutes]),
-    (newValue) => {
+    () => {
+      var subscribedRoutes = LiteRouteSubscriptionService.getSubscriptionSummary();
       _.forEach($scope.data.liteRoutes,(liteRoute)=>{
-        if (newValue.includes(liteRoute.label)) {
+        if (subscribedRoutes.includes(liteRoute.label)) {
           liteRoute.isSubscribed = true;
         }
         else {

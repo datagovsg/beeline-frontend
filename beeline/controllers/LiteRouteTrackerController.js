@@ -83,7 +83,7 @@ export default [
 
       try {
         var unsubscribeResult = await loadingSpinner(
-          LiteRoutesService.unSubscribeLiteRoute($scope.liteRouteLabel)
+          LiteRoutesService.unsubscribeLiteRoute($scope.liteRouteLabel)
         )
 
         if (unsubscribeResult) {

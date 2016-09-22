@@ -38,10 +38,11 @@
     <div class="list"
          ng-if="user &&
                 tickets.today.length > 0 ||
-                tickets.soon.length > 0">
+                tickets.soon.length > 0 ||
+                liteRouteSubscriptions.length > 0">
       <div class="item item-text-wrap" ng-if="error">
         <i class="icon ion-alert-circled"></i>
-        There was a problem fetching your description/tickets from the server.
+        There was a problem fetching your tickets from the server.
         Please try again later.
       </div>
 
@@ -63,19 +64,6 @@
         <span class="date">{{ ticket.boardStop.time | date:'d MMM y' }}</span> {{ ticket.boardStop.time | date:'h:mm a' }}
         <i class="icon ion-ios-arrow-right icon-accessory"></i>
       </a>
-    </div>
-
-
-    <!-- if there are lite route subscriptions -->
-    <div class="list"
-         ng-if="user &&
-                liteRouteSubscriptions.length > 0">
-      <div class="item item-text-wrap" ng-if="error">
-        <i class="icon ion-alert-circled"></i>
-        There was a problem fetching your description/tickets from the server.
-        Please try again later.
-      </div>
-
       <div ng-if="liteRouteSubscriptions.length > 0"
            class="item item-divider">Routes You Are Tracking</div>
       <a ng-if="liteRouteSubscriptions.length > 0"

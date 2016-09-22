@@ -105,7 +105,6 @@ export default [
 
     Promise.all([mapPromise, routePromise]).then((values) =>{
       var [map, route] = values;
-      console.log("Route is:", route);
       RoutesService.decodeRoutePath(route[$scope.book.label].path)
       .then((path) => $scope.map.lines.route.path = path)
       .catch((err) => {
@@ -129,20 +128,12 @@ export default [
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
       $scope.isLoggedIn = userId ? true : false;
       if ($scope.isLoggedIn) {
-        $ionicLoading.show({
-          template: loadingTemplate
-        })
-        try {
-          LiteRouteSubscriptionService.isSubscribed($scope.book.label, true)
+          var promise = LiteRouteSubscriptionService.isSubscribed($scope.book.label, true)
           .then((response) => {
             $scope.book.isSubscribed = response;
-            $ionicLoading.hide();
             }
-          )
-        }
-        catch(error) {
-          $ionicLoading.hide();
-        }
+          );
+          loadingSpinner(promise);
       }
       else {
         $scope.book.isSubscribed = false;
@@ -166,8 +157,8 @@ export default [
       UserService.promptLogIn()
     }
 
-    $scope.confirmationPopup = function() {
-      return $scope.trackPopup = $ionicPopup.show({
+    $scope.showConfirmationPopup = function() {
+      return $scope.confirmationPopup = $ionicPopup.show({
         scope: $scope,
         template: `
         <div class="item item-text-wrap">
@@ -211,7 +202,6 @@ export default [
 
         if (subscribeResult) {
           $scope.book.isSubscribed = true;
-          $scope.book.route.isSubscribed = true;
           $ionicPopup.alert({
             title: 'Success',
             template: `
@@ -229,10 +219,8 @@ export default [
             $state.transitionTo("tabs.tickets");
           })
         }
-        $scope.book.waitingForSubscriptionResult = false;
       }
       catch(err) {
-        $scope.book.waitingForSubscriptionResult = false;
         await $ionicLoading.show({
           template: `
           <div>Error, please try again later.</div>
@@ -240,10 +228,12 @@ export default [
           duration: 1000,
         })
       }
+      finally {
+        $scope.book.waitingForSubscriptionResult = false;
+      }
     };
 
     $scope.promptUntrack = async function() {
-      console.log("pressed");
       var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to untrack this route?',
         subTitle: "This tracking-only route will be removed from your list of trips."
@@ -255,15 +245,12 @@ export default [
         $scope.book.waitingForSubscriptionResult = true;
 
         var unsubscribeResult = await loadingSpinner(
-          LiteRoutesService.unSubscribeLiteRoute($scope.book.label)
+          LiteRoutesService.unsubscribeLiteRoute($scope.book.label)
         )
 
         if (unsubscribeResult) {
           $scope.book.isSubscribed = false;
-          $scope.book.route.isSubscribed = false;
         }
-        $scope.book.waitingForSubscriptionResult = false;
-        // $scope.$digest();
 
         if (!$scope.book.isSubscribed) {
           await $ionicLoading.show({
@@ -276,7 +263,6 @@ export default [
         }
       }
       catch(err) {
-        $scope.book.waitingForSubscriptionResult = false;
         await $ionicLoading.show({
           template: `
           <div>Error, please try again later.</div>
@@ -284,16 +270,19 @@ export default [
           duration: 1000,
         })
       }
+      finally {
+        $scope.book.waitingForSubscriptionResult = false;
+      }
     };
 
     $scope.disp.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return;
 
-      $scope.trackPopup.close();
+      $scope.confirmationPopup.close();
 
       await CompanyService.showTerms($scope.book.route.transportCompanyId)
 
-      $scope.confirmationPopup();
+      $scope.showConfirmationPopup();
     }
 
     $scope.hideTooltip = () => {

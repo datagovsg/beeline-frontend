@@ -15,6 +15,9 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
   // For single lite route
   var lastLiteRouteLabel = null;
   var lastLiteRoutePromise = null;
+
+  var shouldRefreshLiteTickets = false;
+
   function transformTime(liteRoutesByLabel) {
     for (let label in liteRoutesByLabel){
       var liteRoute = liteRoutesByLabel[label]
@@ -98,7 +101,6 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       assert.equal(typeof liteRouteLabel, 'string');
 
       if (!ignoreCache && !options && lastLiteRouteLabel=== liteRouteLabel) {
-        console.log(`Using lite route ${liteRouteLabel} from cache`);
         return lastLiteRoutePromise;
       }
 
@@ -140,6 +142,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         }
       })
       .then(function(response) {
+        shouldRefreshLiteTickets = true;
         if (response.data) {
           LiteRouteSubscriptionService.getSubscriptionSummary().push(liteRouteLabel)
           return true;
@@ -151,13 +154,14 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       return subscribePromise;
     },
 
-    unSubscribeLiteRoute: function(liteRouteLabel) {
+    unsubscribeLiteRoute: function(liteRouteLabel) {
 
-      var unSubscribePromise = UserService.beeline({
+      var unsubscribePromise = UserService.beeline({
         method: 'DELETE',
         url: '/liteRoutes/subscriptions/'+liteRouteLabel
       })
       .then(function(response) {
+        shouldRefreshLiteTickets = true;
         if (response.data) {
           var index = LiteRouteSubscriptionService.getSubscriptionSummary().indexOf(liteRouteLabel)
           LiteRouteSubscriptionService.getSubscriptionSummary().splice(index, 1)
@@ -167,7 +171,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
           return false;
         }
       });
-      return unSubscribePromise;
+      return unsubscribePromise;
     },
 
     //consolidate tripstops for lite route
@@ -189,8 +193,15 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         newStops.push(_.extend({"time": sortedTime}, stop));
       }
       return newStops;
-    }
+    },
 
+    getShouldRefreshLiteTickets: function() {
+      return shouldRefreshLiteTickets;
+    },
+
+    clearShouldRefreshLiteTickets: function() {
+      shouldRefreshLiteTickets = false;
+    },
   };
 
   return instance;
