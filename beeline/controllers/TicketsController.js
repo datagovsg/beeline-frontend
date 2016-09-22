@@ -51,34 +51,33 @@ export default [
       return TicketService.getCategorizedTickets(ignoreCache).then((categorizedTickets) => {
         $scope.tickets.today = categorizedTickets.today;
         $scope.tickets.soon = categorizedTickets.afterToday;
-
-        $scope.$broadcast('scroll.refreshComplete');
         $scope.error = false;
       })
       .catch((error) => {
-        $scope.$broadcast('scroll.refreshComplete');
         $scope.error = true;
+      })
+      .finally(() => {
+        $scope.$broadcast('scroll.refreshComplete');
       });
     }
 
     function refreshLiteTickets(ignoreCache) {
       LiteRoutesService.clearShouldRefreshLiteTickets();
       return LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then(async(liteRouteSubscriptions)=>{
-          // $scope.liteRouteSubscriptions = [];
 
-          var XXX = []
+          var liteLabelAndRoutes = []
           for (let subscribedLiteLabel of liteRouteSubscriptions) {
             var subscribedLiteRoute = await LiteRoutesService.getLiteRoute(subscribedLiteLabel)
-            XXX.push({"label": subscribedLiteLabel,"liteRoute": subscribedLiteRoute})
+            liteLabelAndRoutes.push({"label": subscribedLiteLabel,"liteRoute": subscribedLiteRoute})
           }
-          $scope.liteRouteSubscriptions = XXX;
-          $scope.$broadcast('scroll.refreshComplete');
+          $scope.liteRouteSubscriptions = liteLabelAndRoutes;
           $scope.error = false;
         })
         .catch((error) => {
-          console.log(error.stack);
-          $scope.$broadcast('scroll.refreshComplete');
           $scope.error = true;
+        })
+        .finally(() => {
+          $scope.$broadcast('scroll.refreshComplete');
         });
     }
 
