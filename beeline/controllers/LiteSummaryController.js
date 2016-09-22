@@ -245,7 +245,7 @@ export default [
         $scope.book.waitingForSubscriptionResult = true;
 
         var unsubscribeResult = await loadingSpinner(
-          LiteRoutesService.unSubscribeLiteRoute($scope.book.label)
+          LiteRoutesService.unsubscribeLiteRoute($scope.book.label)
         )
 
         if (unsubscribeResult) {

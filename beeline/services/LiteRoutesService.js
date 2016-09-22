@@ -158,9 +158,9 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       return subscribePromise;
     },
 
-    unSubscribeLiteRoute: function(liteRouteLabel) {
+    unsubscribeLiteRoute: function(liteRouteLabel) {
 
-      var unSubscribePromise = UserService.beeline({
+      var unsubscribePromise = UserService.beeline({
         method: 'DELETE',
         url: '/liteRoutes/subscriptions/'+liteRouteLabel
       })
@@ -175,7 +175,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
           return false;
         }
       });
-      return unSubscribePromise;
+      return unsubscribePromise;
     },
 
     //consolidate tripstops for lite route
