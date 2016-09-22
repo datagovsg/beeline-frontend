@@ -35,6 +35,8 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     }
   }
 
+  // TODO the same label lite route all data fileds should be the same except trips
+  //otherwise reduce make no sense
   function transformLiteRouteData(data) {
     var liteRoutesByLabel = _.reduce(data, function(result,value, key){
       var label = value.label;

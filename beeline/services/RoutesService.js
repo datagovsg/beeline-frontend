@@ -176,8 +176,20 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         // Array of LatLng objects
         return googleMaps.geometry.encoding.decodePath(path);
       })
+    },
+
+    getRouteFeatures: function (routeId) {
+      return UserService.beeline({
+        method: 'GET',
+        url: `/routes/${routeId}/features`,
+      })
+      .then(function(response) {
+        return response.data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     }
   };
-
   return instance;
 }

@@ -1,4 +1,4 @@
-export default function($scope, $state, $stateParams, LiteRoutesService) {
+export default function($scope, $state, $stateParams, LiteRoutesService, RoutesService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -10,5 +10,8 @@ export default function($scope, $state, $stateParams, LiteRoutesService) {
   $scope.data.label = $stateParams.label;
   LiteRoutesService.getLiteRoute($scope.data.label).then((liteRoute) => {
     $scope.data.liteRoute = liteRoute[$scope.data.label];
+    RoutesService.getRouteFeatures($scope.data.liteRoute.id).then((data)=>{
+     $scope.data.features = data;
+   })
   })
 }
