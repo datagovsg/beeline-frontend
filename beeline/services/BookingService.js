@@ -1,5 +1,6 @@
 import {NetworkError} from '../shared/errors';
-import {formatDate, formatDateMMMdd, formatTime, formatUTCDate} from '../shared/format';
+import {formatDate, formatDateMMMdd, formatTime, formatUTCDate,
+        timeSinceMidnight} from '../shared/format';
 import _ from 'lodash';
 
 export default function(UserService, CompanyService, RoutesService, $http) {
@@ -247,14 +248,20 @@ export default function(UserService, CompanyService, RoutesService, $http) {
     var uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id);
     var stopData = _.keyBy(uniqueStops, ts => ts.stop.id);
 
-    var boardStops = uniqueStops.filter(ts => ts.canBoard)
+    var boardStops = _(uniqueStops)
+      .filter(ts => ts.canBoard)
       .map(ts => {
-        return _.extend({time: ts.time}, ts.stop);
-      });
-    var alightStops = uniqueStops.filter(ts => ts.canAlight)
+        return _.extend({time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
+      })
+      .orderBy(s => s.timeSinceMidnight)
+      .value();
+    var alightStops = _(uniqueStops)
+      .filter(ts => ts.canAlight)
       .map(ts => {
-        return _.extend({time: ts.time}, ts.stop);
-      });
+        return _.extend({time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
+      })
+      .orderBy(s => s.timeSinceMidnight)
+      .value();
     return [boardStops, alightStops];
   };
 

@@ -55,7 +55,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
       var allLiteRoutes, liteRouteSubscriptions;
       [allLiteRoutes, liteRouteSubscriptions] = response;
       $scope.data.liteRoutes = allLiteRoutes;
-      console.log(allLiteRoutes)
     })
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
@@ -66,7 +65,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.regions = getUniqueRegionsFromRoutes(allRoutes);
       // Need to sort by time of day rather than by absolute time,
       // in case we have routes with missing dates (e.g. upcoming routes)
-      $scope.data.routes = _.sortBy(allRoutes, (route) => {
+      $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
         var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
 
         var midnightOfTrip = new Date(firstTripStop.time.getTime());
@@ -113,9 +112,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.$watchCollection(() =>
     [].concat(LiteRouteSubscriptionService.getSubscriptionSummary())
     .concat([$scope.data.liteRoutes]),
-    (newValue) => {
+    () => {
+      var subscribedRoutes = LiteRouteSubscriptionService.getSubscriptionSummary();
       _.forEach($scope.data.liteRoutes,(liteRoute)=>{
-        if (newValue.includes(liteRoute.label)) {
+        if (subscribedRoutes.includes(liteRoute.label)) {
           liteRoute.isSubscribed = true;
         }
         else {

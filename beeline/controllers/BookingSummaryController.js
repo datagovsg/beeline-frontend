@@ -158,6 +158,8 @@ export default [
         // This gives us the transaction items
         assert(result.status == 200);
 
+        TicketService.setShouldRefreshTickets();
+
         $state.go('tabs.booking-confirmation');
       } catch (err) {
         $ionicLoading.hide();
