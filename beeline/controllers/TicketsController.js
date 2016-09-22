@@ -11,7 +11,7 @@ export default [
     UserService,
     LiteRouteSubscriptionService,
     LiteRoutesService,
-    loadingSpinner,
+    loadingSpinner
   ) {
     var normalRoutesPromise = Promise.resolve(null);;
     var liteRoutesPromise = Promise.resolve(null);
