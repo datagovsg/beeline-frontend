@@ -1,6 +1,7 @@
-export default function(uiGmapGoogleMapApi, LiteRoutesService) {
+export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle) {
   return {
     replace: false,
+    require: '^uiGmapGoogleMap',
     template: `
     <ui-gmap-markers  ng-if="tripStops"
                       models="tripStops"
@@ -21,10 +22,9 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
     `,
     scope: {
       'todayTrips': '<',
-      'mapFrame': '<',
       'isLiteFrequent': '<?',
     },
-    link: function(scope, element, attributes) {
+    link: function(scope, element, attributes, ctrl) {
 
       scope.disp = {
         popupStop: null,
@@ -47,10 +47,10 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
         scope.tripStops = LiteRoutesService.computeLiteStops(todayTrips);
       })
 
-      scope.$watch('mapFrame', async (mapFrame) => {
-        if (!mapFrame) return;
+      uiGmapCtrlHandle.mapPromise(scope, ctrl)
+      .then(async (map) => {
         await scope.tripStops
-        panToStops(mapFrame);
+        panToStops(map);
       })
 
       scope.applyTapBoard = function (values) {
@@ -62,13 +62,13 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService) {
         scope.disp.popupStop = null;
       }
 
-      function panToStops(mapFrame) {
+      function panToStops(map) {
         var bounds = new scope.googleMaps.LatLngBounds();
         for (let tripStop of scope.tripStops) {
           bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
                                                tripStop.coordinates.coordinates[0]));
         }
-        mapFrame.fitBounds(bounds);
+        map.fitBounds(bounds);
       }
     },
   };

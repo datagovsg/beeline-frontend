@@ -66,6 +66,7 @@ export default [
       return LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then(async(liteRouteSubscriptions)=>{
         var allLiteRoutes = await LiteRoutesService.getLiteRoutes(ignoreCache);
         $scope.liteRouteSubscriptions =  liteRouteSubscriptions.map(subscribedLiteLabel=>({"label": subscribedLiteLabel,"liteRoute": allLiteRoutes[subscribedLiteLabel]}))
+                                                               .filter(subscription=>(subscription.liteRoute));
         $scope.error = false;
       })
       .catch((error) => {

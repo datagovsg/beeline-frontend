@@ -5,7 +5,6 @@ import assert from 'assert';
 
 export default function LiteRouteSubscriptionService($http, UserService, $q) {
   var LiteRouteSubscriptionCache = null;
-  var subscriptionsByLiteRouteLabel = null;
   var liteRouteSubscriptionsSummary = [];
 
   return {
@@ -21,10 +20,7 @@ export default function LiteRouteSubscriptionService($http, UserService, $q) {
           method: 'GET',
           url: '/liteRoutes/subscriptions',
         }).then((response) => {
-          subscriptionsByLiteRouteLabel = _.map(response.data, subs=>subs.routeLabel);
-          liteRouteSubscriptionsSummary = subscriptionsByLiteRouteLabel.map((label) => {
-            return label;
-          })
+          liteRouteSubscriptionsSummary = response.data.map(subs=>subs.routeLabel);
           return liteRouteSubscriptionsSummary;
   			});
       }

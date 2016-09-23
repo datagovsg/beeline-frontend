@@ -120,7 +120,6 @@ export default [
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
       });
-      $scope.mapFrame = map;
     })
 
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
