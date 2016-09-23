@@ -5,7 +5,8 @@ route-item {
 
   &.lite {
 
-    &:before, &:after {
+    &:before {
+      color: $hint-color; // Fix safari border color bug
       display: block;
       position: absolute;
       width: $route-item-triangle-height;
@@ -15,24 +16,32 @@ route-item {
       content: "";
       border-top: solid $route-item-triangle-height/2 $hint-color;
       border-right: solid $route-item-triangle-height/2 $hint-color;
-      background: url('../img/icon_tracking_route.svg') 0 100% no-repeat;
+      background-size: 18px 18px;
+    }
+
+    &:after {
+      display: block;
+      position: absolute;
+      width: $route-item-triangle-height;
+      height: $route-item-triangle-height;
+      top: 0;
+      right: 0;
+      content: "";
+      background: url('../img/icon_tracking_route.svg') 80% 20% no-repeat;
       background-size: 18px 18px;
     }
 
     &.lite-tracked {
       &:before {
+        color: $royal; // Fix safari border color bug
         border-top: solid $route-item-triangle-height/2 $royal;
         border-right: solid $route-item-triangle-height/2 $royal;
       }
     }
 
     &:before {
-      border-left: solid $route-item-triangle-height/2 transparent;
-      border-bottom: solid $route-item-triangle-height/2 transparent;
-    }
-
-    &:after {
-      border: solid $route-item-triangle-height/2 transparent;
+      border-left: solid $route-item-triangle-height/2 rgba(0,255,0,0);
+      border-bottom: solid $route-item-triangle-height/2 rgba(0,255,0,0);
     }
   }
 
