@@ -45,12 +45,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
       scope.$watch('todayTrips', (todayTrips) => {
         if (!todayTrips) return;
         scope.tripStops = LiteRoutesService.computeLiteStops(todayTrips);
-      })
-
-      uiGmapCtrlHandle.mapPromise(scope, ctrl)
-      .then(async (map) => {
-        await scope.tripStops
-        panToStops(map);
+        uiGmapCtrlHandle.mapPromise(scope, ctrl).then(panToStops);
       })
 
       scope.applyTapBoard = function (values) {
@@ -68,6 +63,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
           bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
                                                tripStop.coordinates.coordinates[0]));
         }
+        google.maps.event.trigger(map, 'resize')
         map.fitBounds(bounds);
       }
     },
