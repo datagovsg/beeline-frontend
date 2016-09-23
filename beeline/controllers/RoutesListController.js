@@ -62,7 +62,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
     // Configure the list of available regions
     allRoutesPromise.then(function(allRoutes) {
-      $scope.data.regions = getUniqueRegionsFromRoutes(allRoutes);
       // Need to sort by time of day rather than by absolute time,
       // in case we have routes with missing dates (e.g. upcoming routes)
       $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
@@ -91,6 +90,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // Filter the displayed routes by selected region
   $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId'], function([routes, liteRoutes, selectedRegionId]) {
+    var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
+    $scope.data.regions = getUniqueRegionsFromRoutes(normalAndLiteRoutes);
     $scope.data.filteredActiveRoutes = filterRoutesByRegionId(routes, +selectedRegionId);
     $scope.data.filteredLiteRoutes = filterRoutesByRegionId(liteRoutes, +selectedRegionId);
   });
