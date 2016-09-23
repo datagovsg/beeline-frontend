@@ -219,6 +219,8 @@ export default [
       }
     };
 
+    // TODO: Move bulk of promptUntrack code into service or directive as both
+    // LiteSummaryController and LiteRouteTrackerController uses it
     $scope.promptUntrack = async function() {
       var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to untrack this route?',
