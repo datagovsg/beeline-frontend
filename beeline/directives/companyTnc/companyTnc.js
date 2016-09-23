@@ -9,6 +9,7 @@ export default function companyTnc(CompanyService, $q) {
     replace: false,
     scope: {
       companyId: '=',
+      features: '=',
       signageText: '<?',
     },
     link: function(scope, elem, attr) {
@@ -22,7 +23,6 @@ export default function companyTnc(CompanyService, $q) {
 
         var companyPromise = CompanyService.getCompany(scope.companyId)
         .then((company) => {
-          company.featuresHTML = writer.render(reader.parse(company.features));
           scope.company = company;
           scope.$emit('companyTnc.done');
           return company;

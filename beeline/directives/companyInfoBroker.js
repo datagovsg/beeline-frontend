@@ -14,7 +14,7 @@ export default function(CompanyService) {
           return;
         }
 
-        var companyPromise = CompanyService.getCompany(companyId)
+        var companyPromise = CompanyService.getCompany(+companyId)
         .then((company) => {
           scope.company = company
         });

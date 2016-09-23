@@ -22,7 +22,7 @@ function filterRoutesByRegionId(routes, regionId) {
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
-  BookingService, $ionicScrollDelegate) {
+  BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup, LiteRouteSubscriptionService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -33,13 +33,30 @@ export default function($scope, $state, UserService, RoutesService, $q,
     filteredActiveRoutes: [],
     filteredRecentRoutes: [],
     nextSessionId: null,
+    liteRoutes: [],
+    filteredLiteRoutes: [],
   };
 
   $scope.$on('$ionicView.beforeEnter', () => {
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
+  // $scope.$watch('data.liteRoutes', updateSubscriptionStatus)
+  // $scope.$watch(() => Svc.getSubscriptionSummary(), updateSubscriptionStatus)
+  var allLiteRoutesPromise
+
   $scope.refreshRoutes = function (ignoreCache) {
+    allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
+    // allLiteRoutesPromise.then(function(allLiteRoutes){
+    //   $scope.data.liteRoutes = allLiteRoutes;
+    // })
+    var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
+    $q.all([allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then((response)=>{
+      var allLiteRoutes, liteRouteSubscriptions;
+      [allLiteRoutes, liteRouteSubscriptions] = response;
+      $scope.data.liteRoutes = allLiteRoutes;
+    })
+
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
 
@@ -61,7 +78,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.recentRoutes = recentRoutes;
     });
 
-    $q.all([allRoutesPromise, recentRoutesPromise]).then(() => {
+    $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
       $scope.error = null;
     })
     .catch(() => {
@@ -73,8 +90,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }
 
   // Filter the displayed routes by selected region
-  $scope.$watchGroup(['data.routes', 'data.selectedRegionId'], function([routes, selectedRegionId]) {
+  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId'], function([routes, liteRoutes, selectedRegionId]) {
     $scope.data.filteredActiveRoutes = filterRoutesByRegionId(routes, +selectedRegionId);
+    $scope.data.filteredLiteRoutes = filterRoutesByRegionId(liteRoutes, +selectedRegionId);
   });
 
   // Filter the recent routes display whenever the active routes is changed
@@ -86,15 +104,33 @@ export default function($scope, $state, UserService, RoutesService, $q,
     ).filter(x => x) // Exclude null values (e.g. expired routes)
   });
 
-  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes'],
+  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes'],
     () => {
       $ionicScrollDelegate.resize();
   });
 
+  $scope.$watchCollection(() =>
+    [].concat(LiteRouteSubscriptionService.getSubscriptionSummary())
+    .concat([$scope.data.liteRoutes]),
+    () => {
+      var subscribedRoutes = LiteRouteSubscriptionService.getSubscriptionSummary();
+      _.forEach($scope.data.liteRoutes,(liteRoute)=>{
+        if (subscribedRoutes.includes(liteRoute.label)) {
+          liteRoute.isSubscribed = true;
+        }
+        else {
+          liteRoute.isSubscribed = false;
+        }
+      })
+    }
+  );
+
   // Don't override the caching in main.js
   var firstRun = true;
-  $scope.$watch(() => UserService.getUser(), () => {
-    $scope.refreshRoutes(!firstRun);
-    firstRun = false;
-  });
+  $scope.$watch(() => UserService.getUser() && UserService.getUser().id,
+    () => {
+      $scope.refreshRoutes(!firstRun);
+      firstRun = false;
+    });
+
 }

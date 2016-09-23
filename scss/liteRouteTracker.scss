@@ -1,0 +1,22 @@
+/* ---------- tracker PAGE ---------- */
+#lite_route_tracker {
+
+  .tab-item {
+    text-transform: uppercase;
+    &.active {
+      opacity: 1;
+    }
+    &:not(.active) {
+      opacity: 0.3;
+    }
+  }
+
+  // Have the map fill the container
+  .angular-google-map-container {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+  }
+}

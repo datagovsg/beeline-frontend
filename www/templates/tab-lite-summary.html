@@ -1,0 +1,106 @@
+<ion-view id="pg_lite" view-title="Route Details"
+  hide-back-button="true" can-swipe-back="false" on-touch="hideTooltip()">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+       ui-sref="tabs.routes">
+       <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="fullscreen-map" scroll="false">
+    <form class="stops-form" name="stopsForm">
+      <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
+
+      <div class="route-info item">
+        <route-item class="lite"  ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="!disp.showTooltip">
+          <route-item-bus-number>
+            {{ book.route.label }}
+          </route-item-bus-number>
+          <route-item-description>
+            {{ book.route.notes.description }}
+          </route-item-description>
+          <route-item-start-time>
+            {{ book.route.startTime | formatTime:true }}
+          </route-item-start-time>
+          <route-item-start-location>
+            {{ book.route.from }}
+          </route-item-start-location>
+          <route-item-end-time>
+            {{ book.route.endTime  | formatTime:true }}
+          </route-item-end-time>
+          <route-item-end-location>
+            {{ book.route.to }}
+          </route-item-end-location>
+          <route-item-additional-info>
+            <div class="corner-triangle">
+              <a>
+                <span class="tooltiptext"> Tracking Only Route </span>
+              </a>
+            </div>
+          </route-item-additional-info>
+        </route-item>
+      </div>
+
+      <div class="map-area">
+        <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
+          <my-location></my-location>
+          <map-poly-route route-path="map.lines.route.path">
+          </map-poly-route>
+          <map-bus-poly-route route="book.route"
+                              today-trips="todayTrips">
+          </map-bus-poly-route>
+          <map-bus-stops today-trips="todayTrips"
+                         is-lite-frequent="book.route['tags'].includes('lite-frequent')">
+          </map-bus-stops>
+        </ui-gmap-google-map>
+      </div>
+
+      <company-info-broker company-id="book.route.transportCompanyId"
+                            company="disp.companyInfo">
+      </company-info-broker>
+
+      <div class="item-text-wrap">
+        <div class="item item-icon-right"
+             ui-sref="tabs.lite-more-info({
+               companyId: book.route.transportCompanyId,
+               label: book.route.label})">
+          More Information
+          <i class="icon ion-ios-arrow-right"></i>
+        </div>
+      </div>
+
+      <section class="item item-text-wrap"
+               ng-if="!isLoggedIn">
+        You are not logged in. Please enter your mobile number to track this route.
+
+        <button class="button primary-button"
+                ng-click="login()">
+          Log In
+        </button>
+      </section>
+
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn && !book.isSubscribed">
+        By clicking on the button below, you can track the bus on the day of the trip.
+
+        <button class="button primary-button"
+                ng-click="showConfirmationPopup()"
+                ng-disabled="book.waitingForSubscriptionResult">
+          Track Route
+        </button>
+      </section>
+
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn && book.isSubscribed">
+        <button class="button primary-button"
+                ui-sref="tabs.tickets">
+          View Map
+        </button>
+        <div class="untrack-link">
+          <a ng-click="promptUntrack()">Untrack this route</a>
+        </div>
+      </section>
+
+    </form>
+  </ion-content>
+
+</ion-view>

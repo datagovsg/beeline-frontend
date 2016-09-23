@@ -1,13 +1,17 @@
 <h4 class="item item-divider">Operated By:</h4>
 
-<div class="item">
+<company-info-broker company-id="companyId"
+                      company="companyInfo">
+</company-info-broker>
+
+<div class="item item-text-wrap">
   <div class="row">
     <div class="col-20 bus-logo">
-      <img ng-src="{{company.id | companyLogo}}">
+      <img ng-src="{{companyInfo.id | companyLogo}}">
     </div>
     <div class="col-80 col-center bus-co-info">
-      <p class="name">{{company.name}}</p>
-      <p class="email">{{company.email}}</p>
+      <p class="name">{{companyInfo.name}}</p>
+      <p class="email">{{companyInfo.email}}</p>
     </div>
   </div>
 </div>
@@ -24,9 +28,4 @@
   <div>
     Please look out for the signage at the front of the bus.
   </div>
-</div>
-
-<div class="item item-icon-right" ng-click="showTerms()">
-  Terms and Conditions of Booking
-  <i class="icon ion-ios-arrow-right"></i>
 </div>

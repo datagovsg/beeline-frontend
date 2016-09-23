@@ -21,6 +21,63 @@
                      on-refresh="refreshRoutes(true)">
       </ion-refresher>
 
+      <!-- Available Lite Routes Section -->
+      <div class="item item-divider"
+          ng-if="data.filteredLiteRoutes.length > 0">
+        Tracking-Only Routes
+      </div>
+      <ion-item ng-repeat="route in data.filteredLiteRoutes"
+                ui-sref="tabs.lite-summary({
+                  label: route.label,
+                })"
+                class="item-icon-right">
+        <route-item class="lite"
+                    ng-class="{'lite-tracked': route.isSubscribed}">
+          <route-item-bus-number>
+            {{ route.label }}
+          </route-item-bus-number>
+          <route-item-description>
+            {{ route.notes.description }}
+          </route-item-description>
+          <route-item-start-time>
+            {{ route.startTime | formatTime}}
+          </route-item-start-time>
+          <route-item-start-location>
+            {{ route.from }}
+          </route-item-start-location>
+          <route-item-end-time>
+            {{ route.endTime | formatTime}}
+          </route-item-end-time>
+          <route-item-end-location>
+            {{ route.to }}
+          </route-item-end-location>
+
+          <route-item-additional-info>
+            <company-info-broker company-id="route.transportCompanyId"
+                                  company="companyInfo">
+            </company-info-broker>
+            <div class="icon-and-schedule">
+              <span class="icon-span company-logo">
+                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
+              </span>
+              <span class="schedule">
+                {{companyInfo.name}}
+              </span>
+            </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="schedule">
+                {{route.schedule}}
+              </span>
+            </div>
+          </route-item-additional-info>
+        </route-item>
+        <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+
       <!-- Recent Routes Section -->
       <!-- ng-show doesn't work 100% reliably. angular bug? -->
       <div class="item item-divider"
@@ -39,6 +96,9 @@
           <route-item-bus-number>
             {{ route.label }}
           </route-item-bus-number>
+          <route-item-description>
+            {{ route.notes.description }}
+          </route-item-description>
           <route-item-start-time>
             {{ route | routeStartTime | formatTime:true }}
           </route-item-start-time>
@@ -92,6 +152,9 @@
           <route-item-bus-number>
             {{ route.label }}
           </route-item-bus-number>
+          <route-item-description>
+            {{ route.notes.description }}
+          </route-item-description>
           <route-item-start-time>
             {{ route | routeStartTime | formatTime:true }}
           </route-item-start-time>

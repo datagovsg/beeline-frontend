@@ -1,4 +1,4 @@
-import {formatDate, formatDateMMMdd, formatTime,
+import {formatDate, formatDateMMMdd, formatTime, formatTimeArray,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
 
@@ -28,6 +28,7 @@ var app = angular.module('beeline', [
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
 .filter('formatTime', () => formatTime)
+.filter('formatTimeArray', () => formatTimeArray)
 .filter('formatHHMM_ampm', () => formatHHMM_ampm)
 .filter('titleCase', () => titleCase)
 .filter('routeStartTime', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].time : '')
@@ -42,11 +43,13 @@ var app = angular.module('beeline', [
   };
 })
 .factory('TicketService', require('./services/TicketService.js').default)
+.factory('LiteRouteSubscriptionService', require('./services/LiteRouteSubscriptionService.js').default)
 .factory('UserService', require('./services/UserService.js').default)
 .factory('TripService', require('./services/TripService.js').default)
 .factory('CompanyService', require('./services/CompanyService.js').default)
 .factory('SuggestionService', require('./services/SuggestionService.js').default)
 .factory('RoutesService', require('./services/RoutesService.js').default)
+.factory('LiteRoutesService', require('./services/LiteRoutesService.js').default)
 .service('BookingService', require('./services/BookingService.js').default)
 .factory('OneMapService', require('./services/OneMapService.js').default)
 .factory('DateService', require('./services/DateService.js').default)
@@ -70,7 +73,10 @@ var app = angular.module('beeline', [
 .controller('SettingsController', require('./controllers/SettingsController.js').default)
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
+.controller('LiteRouteTrackerController', require('./controllers/LiteRouteTrackerController.js').default)
 .controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
+.controller('LiteSummaryController', require('./controllers/LiteSummaryController.js').default)
+.controller('LiteMoreInfoController', require('./controllers/LiteMoreInfoController.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
@@ -83,6 +89,11 @@ var app = angular.module('beeline', [
 .directive('tripCode', require('./directives/tripCode/tripCode.js').default)
 .directive('myLocation', require('./directives/myLocation.js').default)
 .directive('companyInfoBroker', require('./directives/companyInfoBroker.js').default)
+.directive('moreInfo', require('./directives/moreInfo/moreInfo').default)
+.directive('markdownRenderer', require('./directives/markdownRenderer').default)
+.directive('mapPolyRoute', require('./directives/mapPolyRoute').default)
+.directive('mapBusPolyRoute', require('./directives/mapBusPolyRoute').default)
+.directive('mapBusStops', require('./directives/mapBusStops').default)
 .directive('dynamicSignage', require('./directives/dynamicSignage.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {

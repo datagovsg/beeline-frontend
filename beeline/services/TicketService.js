@@ -4,7 +4,20 @@ import assert from 'assert';
 export default function TicketService($http, $filter, UserService) {
   var ticketsCache = null;
   var ticketsByRouteId = null;
+
+  //set to true with setShouldRefreshTickets once a ticket is bought
+  //set to false once getCategorizedTickets is called
+  var shouldRefreshTickets = false;
+
   return {
+
+    getShouldRefreshTickets: function() {
+      return shouldRefreshTickets;
+    },
+
+    setShouldRefreshTickets: function() {
+      shouldRefreshTickets = true;
+    },
 
     getTickets: function(ignoreCache) {
       if (ticketsCache && !ignoreCache) return ticketsCache;
@@ -41,6 +54,7 @@ export default function TicketService($http, $filter, UserService) {
     },
 
     getCategorizedTickets: function(ignoreCache) {
+      shouldRefreshTickets = false;
       return this.getTickets(ignoreCache).then(function(tickets) {
         var now = new Date();
         var lastMidnight = now.setHours(0, 0, 0, 0);
@@ -57,7 +71,6 @@ export default function TicketService($http, $filter, UserService) {
         });
         return categorizedTickets;
       });
-		        }
-
+		}
   };
 }
