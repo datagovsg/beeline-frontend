@@ -53,8 +53,10 @@
             options="map.options">
           <my-location></my-location>
 
-          <ui-gmap-window ng-if="disp.popupStop" coords="disp.popupStop.coordinates"
-            show="disp.popupStop">
+          <ui-gmap-window ng-if="disp.popupStop"
+                          coords="disp.popupStop.coordinates"
+                          show="disp.popupStop"
+                          closeClick="closeWindow">
             <div class="popUpStopSelect">
               <b>{{disp.popupStop.time | formatTime }}</b><br/>
               {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
