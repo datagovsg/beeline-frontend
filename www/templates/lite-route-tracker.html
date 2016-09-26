@@ -41,14 +41,14 @@
         </route-item-end-location>
       </route-item>
       <h2 class="item" ng-if="hasNoTrip">
-        There is no service at moment.
+        There is no service at the moment.
       </h2>
       <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
         <map-poly-route route-path="map.lines.route.path"></map-poly-route>
         <map-bus-poly-route route="liteRoute"
                             today-trips="todayTrips"></map-bus-poly-route>
-        <map-bus-stops today-trips="todayTrips"
+        <map-bus-stops available-trips="availableTrips"
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>

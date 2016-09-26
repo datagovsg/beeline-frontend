@@ -21,7 +21,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
     </ui-gmap-window>
     `,
     scope: {
-      'todayTrips': '<',
+      'availableTrips': '<',
       'isLiteFrequent': '<?',
     },
     link: function(scope, element, attributes, ctrl) {
@@ -42,9 +42,9 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
         }
       })
 
-      scope.$watch('todayTrips', (todayTrips) => {
-        if (!todayTrips) return;
-        scope.tripStops = LiteRoutesService.computeLiteStops(todayTrips);
+      scope.$watch('availableTrips', (availableTrips) => {
+        if (!availableTrips) return;
+        scope.tripStops = LiteRoutesService.computeLiteStops(availableTrips);
         uiGmapCtrlHandle.mapPromise(scope, ctrl).then(panToStops);
       })
 
