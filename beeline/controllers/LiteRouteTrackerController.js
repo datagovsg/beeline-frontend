@@ -72,13 +72,10 @@ export default [
       if (todayTrips.length ==0 ){
         $scope.hasNoTrip = true;
       }
-      else {
-        //get route features
-        RoutesService.getRouteFeatures(todayTrips[0].routeId).then((data)=>{
-          $scope.disp.features = data;
-        })
-      }
-
+      //get route features
+      RoutesService.getRouteFeatures($scope.availableTrips[0].routeId).then((data)=>{
+        $scope.disp.features = data;
+      })
       MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
