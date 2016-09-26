@@ -34,8 +34,7 @@ export default [
         $scope.availableTrips = $scope.todayTrips;
       else {
         //no trips for today, grab the next avaiable for bus stop rendering
-        var nextAvailableDate = $scope.liteRoute.trips[0].date;
-        $scope.availableTrips = $scope.liteRoute.trips.filter(lr=>lr.date==nextAvailableDate);
+        $scope.availableTrips = $scope.liteRoute.trips.filter(lr=>lr.date==$scope.liteRoute.trips[0].date);
       }
       return $scope.todayTrips
     })
