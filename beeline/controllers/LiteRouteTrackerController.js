@@ -60,7 +60,7 @@ export default [
 
     Promise.all([mapPromise, uiGmapGoogleMapApi, availableTripsPromise]).then((values) => {
       var [map, googleMaps, availTrips] = values;
-      if (new Date(availTrips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0) ){
+      if (availTrips[0] && new Date(availTrips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0) ){
         $scope.hasNoTrip = true;
       }
       //get route features
