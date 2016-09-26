@@ -30,6 +30,13 @@ export default [
       var nextMidnight = now.setHours(24, 0, 0, 0);
       $scope.todayTrips = $scope.liteRoute.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
                        Date.parse(lr.date) < nextMidnight && lr.isRunning);
+      if ($scope.todayTrips.length > 0)
+        $scope.availableTrips = $scope.todayTrips;
+      else {
+        //no trips for today, grab the next avaiable for bus stop rendering
+        var nextAvailableDate = $scope.liteRoute.trips[0].date;
+        $scope.availableTrips = $scope.liteRoute.trips.filter(lr=>lr.date==nextAvailableDate);
+      }
       return $scope.todayTrips
     })
 
