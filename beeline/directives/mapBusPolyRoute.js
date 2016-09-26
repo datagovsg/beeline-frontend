@@ -14,7 +14,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
     `,
     scope: {
       route: '<',
-      todayTrips: '<',
+      availableTrips: '<',
     },
     link: function(scope, element, attributes) {
 
@@ -47,8 +47,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         pingLoop();
       });
 
-      scope.$watch('todayTrips', (todayTrips) => {
-        if (!todayTrips) return;
+      scope.$watch('availableTrips', (availableTrips) => {
+        if (!availableTrips) return;
 
         uiGmapGoogleMapApi.then((googleMaps) => {
           var icon = {
@@ -56,7 +56,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
             scaledSize: new googleMaps.Size(68, 86),
             anchor: new googleMaps.Point(34, 78),
           };
-          scope.todayTrips.map((trip, index)=>{
+          scope.availableTrips.map((trip, index)=>{
             scope.map.busLocations.splice(index,0, {
               "icon": icon
             })
@@ -94,7 +94,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       });
 
       function pingLoop() {
-         Promise.all(scope.todayTrips.map((trip, index)=>{
+         Promise.all(scope.availableTrips.map((trip, index)=>{
           return TripService.DriverPings(trip.id)
           .then((info) => {
             /* Only show pings from the last two hours */

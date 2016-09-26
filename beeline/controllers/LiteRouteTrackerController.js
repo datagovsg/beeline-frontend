@@ -23,20 +23,12 @@ export default [
 
     var routePromise = LiteRoutesService.getLiteRoute($scope.liteRouteLabel);
 
-    var todayTripsPromise = routePromise.then((route)=>{
+    var availableTripsPromise = routePromise.then((route)=>{
       $scope.liteRoute = route[$scope.liteRouteLabel];
-      var now = new Date();
-      var lastMidnight = now.setHours(0, 0, 0, 0);
-      var nextMidnight = now.setHours(24, 0, 0, 0);
-      $scope.todayTrips = $scope.liteRoute.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
-                       Date.parse(lr.date) < nextMidnight && lr.isRunning);
-      if ($scope.todayTrips.length > 0)
-        $scope.availableTrips = $scope.todayTrips;
-      else {
-        //no trips for today, grab the next avaiable for bus stop rendering
-        $scope.availableTrips = $scope.liteRoute.trips.filter(lr=>lr.date==$scope.liteRoute.trips[0].date);
-      }
-      return $scope.todayTrips
+      var runningTrips = $scope.liteRoute.trips.filter((trip)=>trip.isRunning);
+      $scope.availableTrips = runningTrips[0] &&
+          $scope.liteRoute.trips.filter(trip => trip.date == runningTrips[0].date)
+      return $scope.availableTrips
     })
 
     var mapPromise = new Promise(function(resolve) {
@@ -66,13 +58,13 @@ export default [
       });
     });
 
-    Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
-      var [map, googleMaps, todayTrips] = values;
-      if (todayTrips.length ==0 ){
+    Promise.all([mapPromise, uiGmapGoogleMapApi, availableTripsPromise]).then((values) => {
+      var [map, googleMaps, availTrips] = values;
+      if (new Date(availTrips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0) ){
         $scope.hasNoTrip = true;
       }
       //get route features
-      RoutesService.getRouteFeatures($scope.availableTrips[0].routeId).then((data)=>{
+      RoutesService.getRouteFeatures(availTrips[0].routeId).then((data)=>{
         $scope.disp.features = data;
       })
       MapOptions.disableMapLinks();
