@@ -126,6 +126,9 @@ export default [
       }
       $scope.disp.popupStop = null;
     }
+    $scope.closeWindow = function () {
+      $scope.disp.popupStop = null;
+    }
 
     /* Pans to the stops on the screen */
     function panToStops() {
