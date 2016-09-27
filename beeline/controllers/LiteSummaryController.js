@@ -74,22 +74,11 @@ export default [
       $scope.book.isSubscribed = response;
     });
 
-    var todayTripsPromise = routePromise.then((route)=>{
+    var availableTripsPromise = routePromise.then((route)=>{
       $scope.book.route = route[$scope.book.label];
-      // TODO:  date calculation here is not exactly correct
-      var now = new Date();
-      var lastMidnight = now.setHours(0, 0, 0, 0);
-      var nextMidnight = now.setHours(24, 0, 0, 0);
-      $scope.todayTrips = $scope.book.route.trips.filter(lr =>  Date.parse(lr.date) >= lastMidnight &&
-                       Date.parse(lr.date) < nextMidnight && lr.isRunning);
-      if ($scope.todayTrips.length > 0)
-        $scope.availableTrips = $scope.todayTrips;
-      else {
-        //no trips for today, grab the next avaiable for bus stop rendering
-        var nextAvailableDate = $scope.book.route.trips[0].date;
-        $scope.availableTrips = $scope.book.route.trips.filter(lr=>lr.date==nextAvailableDate);
-      }
-      return $scope.todayTrips
+      var runningTrips = $scope.book.route.trips.filter((trip)=>trip.isRunning);
+      $scope.availableTrips = runningTrips[0] && $scope.book.route.trips.filter(lr=>lr.date==runningTrips[0].date);
+      return $scope.nextAvailableTrip
     });
 
     var mapPromise = new Promise(function(resolve) {
@@ -120,8 +109,8 @@ export default [
       });
     });
 
-    Promise.all([mapPromise, uiGmapGoogleMapApi, todayTripsPromise]).then((values) => {
-      var [map, googleMaps, todayTrips] = values;
+    Promise.all([mapPromise, uiGmapGoogleMapApi, availableTripsPromise]).then((values) => {
+      var [map, googleMaps, avaialableTrips] = values;
 
       MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
