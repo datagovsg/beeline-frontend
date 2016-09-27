@@ -23,6 +23,8 @@ function errHandler(err) {
 gulp.task('default', ['sass', 'webpack', 'js-libraries', 'hot-code-push']);
 
 gulp.task('js-libraries', function() {
+    gulp.src('./node_modules/lodash/lodash.js')
+        .pipe(gulp.dest('./www/js'))
     gulp.src('./node_modules/angular-google-maps/dist/angular-google-maps.js')
         .pipe(gulp.dest('./www/js'))
     gulp.src('./node_modules/angular-simple-logger/dist/angular-simple-logger.js')

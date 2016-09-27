@@ -57,4 +57,7 @@ module.exports = {
     presets: ['es2015', 'stage-3'],
     sourceMaps: true,
   },
+  externals: {
+    'lodash': '_'
+  }
 };
