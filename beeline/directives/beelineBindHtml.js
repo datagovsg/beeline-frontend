@@ -1,6 +1,6 @@
 
 
-export default function () {
+export default function ($compile) {
   return {
     restrict: 'A',
     scope: false,
@@ -8,10 +8,21 @@ export default function () {
       scope.$watch(attrs.beelineBindHtml, (html) => {
         elem[0].innerHTML = html || '';
 
+        scope.$openOpenLink = (href) => {
+          if (cordova) {
+            cordova.InAppBrowser.open(href, '_system');
+          }
+          else {
+            window.open(href, '_blank');
+          }
+        };
+
         angular.forEach(elem.find('a'), (value, key) => {
           if (!value.href) return;
 
-          value.target = '_system';
+          value.setAttribute("ng-click", `$openOpenLink(${JSON.stringify(value.href)})`)
+
+          $compile(value)(scope);
         })
       })
     }
