@@ -15,7 +15,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
                     show="disp.popupStop"
                     closeClick="closeWindow">
       <div class="popUpStopSelect">
-        <b ng-if="!isLiteFrequent">{{disp.popupStop.time | formatTimeArray }}</b><br ng-if="!isLiteFrequent"/>
+        <b ng-if="!isLiteFrequent">{{disp.popupStop.time | formatTimeArray }}<br/></b>
         {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
       </div>
     </ui-gmap-window>

@@ -158,6 +158,7 @@ export default [
         // This gives us the transaction items
         assert(result.status == 200);
 
+        // TODO: put need-to-refresh logic into service
         TicketService.setShouldRefreshTickets();
 
         $state.go('tabs.booking-confirmation');
