@@ -1,0 +1,79 @@
+<ion-view class="routes-list" view-title="Kickstart">
+  <ion-content scroll="false">
+    <div class="item item-text-wrap" ng-if="error">
+      <i class="icon ion-alert-circled"></i>
+      There was a problem fetching the kickstart from the server.
+      Please try again later.
+    </div>
+
+    <!-- Region Filter  -->
+    <label class="item item-input item-select region-filter">
+      <div class="input-label">Filter By</div>
+        <select ng-model="data.selectedRegionId">
+          <option value="" disabled selected>Select A Region</option>
+          <option value="">All Regions</option>
+          <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
+        </select>
+    </label>
+
+    <ion-content class="list">
+      <ion-refresher pulling-text="Pull to refresh..."
+                     on-refresh="refreshRoutes(true)">
+      </ion-refresher>
+
+      <!-- Available Routes Section -->
+      <div class="item item-divider">
+        Available Kickstart
+      </div>
+
+      <ion-item ng-repeat="route in data.filteredKickstart"
+                class="item-icon-right"
+                ui-sref="tabs.kickstart-detail({ routeId: route.id })">
+        <route-item>
+          <route-item-bus-number>
+            {{ route.label }}
+          </route-item-bus-number>
+          <route-item-description>
+            {{ route.notes.description }}
+          </route-item-description>
+          <route-item-start-time>
+            {{ route | routeStartTime | formatTime:true }}
+          </route-item-start-time>
+          <route-item-start-location>
+            {{ route.from }}
+          </route-item-start-location>
+          <route-item-end-time>
+            {{ route | routeEndTime | formatTime:true }}
+          </route-item-end-time>
+          <route-item-end-location>
+            {{ route.to }}
+          </route-item-end-location>
+
+          <route-item-additional-info>
+            <company-info-broker company-id="route.transportCompanyId"
+                                  company="companyInfo">
+            </company-info-broker>
+            <div class="icon-and-schedule">
+              <span class="icon-span company-logo">
+                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
+              </span>
+              <span class="schedule">
+                {{companyInfo.name}}
+              </span>
+            </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="schedule">
+                {{route.schedule}}
+              </span>
+            </div>
+          </route-item-additional-info>
+        </route-item>
+        <i class="icon ion-ios-arrow-right icon-accessory"></i>
+      </ion-item>
+    </ion-content>
+  </ion-content>
+</ion-view>

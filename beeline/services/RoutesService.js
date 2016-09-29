@@ -35,6 +35,9 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routesCache;
   var recentRoutesCache;
 
+  // For kickstart routes
+  var kickstartRoutesCache;
+
   // For single routes
   var lastRouteId = null;
   var lastPromise = null;
@@ -190,7 +193,48 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       .catch((err) => {
         console.error(err);
       });
+    },
+
+    getKickstartRoutes: function(ignoreCache, options) {
+      if (kickstartRoutesCache && !ignoreCache && !options) return kickstartRoutesCache;
+
+      var url = '/routes?';
+
+      // Start at midnight to avoid cut trips in the middle
+      // FIXME: use date-based search instead
+      var startDate = new Date();
+      startDate.setHours(3,0,0,0,0)
+
+      var finalOptions = _.assign({
+        start_date: startDate.getTime(),
+        include_trips: true,
+        limit_trips: 5,
+        include_path: false,
+        tags: JSON.stringify(['lelong']),
+      }, options)
+
+      url += querystring.stringify(finalOptions)
+
+      var kickstartPromise = UserService.beeline({
+        method: 'GET',
+        url: url,
+      })
+      .then(function(response) {
+        // Checking that we have trips, so that users of it don't choke
+        // on trips[0]
+        var routes = response.data.filter(r => r.trips && r.trips.length);
+        transformRouteData(routes)
+        return routes;
+      });
+
+      // Cache the promise -- prevents two requests from being
+      // in flight together
+      if (!options)
+        kickstartRoutesCache = kickstartPromise;
+
+      return kickstartPromise;
     }
+
   };
   return instance;
 }

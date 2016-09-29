@@ -34,6 +34,15 @@
   }
 }
 
+.nav-kickstart {
+  background: url('../img/menu/MenuRoutesNormal.svg') center 4px no-repeat;
+  display: block;
+  &:hover,
+  &.tab-item-active {
+    background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
+  }
+}
+
 
 .nav-settings {
   background: url('../img/menu/MenuSettingsNormal.svg') center 3px no-repeat;

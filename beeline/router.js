@@ -203,6 +203,33 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   // ////////////////////////////////////////////////////////////////////////////
+  // Main interface, Kickstart Tab
+  // ////////////////////////////////////////////////////////////////////////////
+  .state('tabs.kickstart', {
+    url: '/kickstart',
+    views: {
+      'tab-kickstart': {
+        templateUrl: 'templates/kickstart.html',
+        controller: 'KickstartController'
+      }
+    }
+  })
+
+  .state('tabs.kickstart-detail', {
+    url: '/kickstart/:routeId',
+    views: {
+      'tab-kickstart': {
+        templateUrl: 'templates/kickstart-detail.html',
+        controller: 'KickstartDetailController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+
+  // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Settings Tab
   // ////////////////////////////////////////////////////////////////////////////
   .state('tabs.settings', {
