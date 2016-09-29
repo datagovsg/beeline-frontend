@@ -27,20 +27,20 @@ export default function($scope, $state, UserService, RoutesService, $q,
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
     regions: [],
-    kickstart: [],
+    kickstarter: [],
     selectedRegionId: undefined,
-    filteredKickstart: [],
+    filteredKickstarter: [],
   };
 
   $scope.refreshRoutes = function (ignoreCache) {
 
-    var kickstartPromise = RoutesService.getKickstartRoutes(ignoreCache);
+    var kickstarterPromise = RoutesService.getKickstarterRoutes(ignoreCache);
 
     // Configure the list of available regions
-    kickstartPromise.then(function(allRoutes) {
+    kickstarterPromise.then(function(allRoutes) {
       // Need to sort by time of day rather than by absolute time,
       // in case we have routes with missing dates (e.g. upcoming routes)
-      $scope.data.kickstart = _.sortBy(allRoutes, 'label', (route) => {
+      $scope.data.kickstarter = _.sortBy(allRoutes, 'label', (route) => {
         var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
 
         var midnightOfTrip = new Date(firstTripStop.time.getTime());
@@ -59,9 +59,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }
 
   // Filter the displayed routes by selected region
-  $scope.$watchGroup(['data.kickstart', 'data.selectedRegionId'], function([routes, selectedRegionId]) {
+  $scope.$watchGroup(['data.kickstarter', 'data.selectedRegionId'], function([routes, selectedRegionId]) {
     $scope.data.regions = getUniqueRegionsFromRoutes(routes);
-    $scope.data.filteredKickstart = filterRoutesByRegionId(routes, +selectedRegionId);
+    $scope.data.filteredKickstarter = filterRoutesByRegionId(routes, +selectedRegionId);
     $ionicScrollDelegate.resize();
   });
 

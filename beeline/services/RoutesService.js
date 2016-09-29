@@ -35,8 +35,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routesCache;
   var recentRoutesCache;
 
-  // For kickstart routes
-  var kickstartRoutesCache;
+  // For kickstarter routes
+  var kickstarterRoutesCache;
 
   // For single routes
   var lastRouteId = null;
@@ -195,8 +195,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       });
     },
 
-    getKickstartRoutes: function(ignoreCache, options) {
-      if (kickstartRoutesCache && !ignoreCache && !options) return kickstartRoutesCache;
+    getKickstarterRoutes: function(ignoreCache, options) {
+      if (kickstarterRoutesCache && !ignoreCache && !options) return kickstarterRoutesCache;
 
       var url = '/routes?';
 
@@ -215,7 +215,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
       url += querystring.stringify(finalOptions)
 
-      var kickstartPromise = UserService.beeline({
+      var kickstarterPromise = UserService.beeline({
         method: 'GET',
         url: url,
       })
@@ -230,9 +230,9 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       // Cache the promise -- prevents two requests from being
       // in flight together
       if (!options)
-        kickstartRoutesCache = kickstartPromise;
+        kickstarterRoutesCache = kickstarterPromise;
 
-      return kickstartPromise;
+      return kickstarterPromise;
     }
 
   };

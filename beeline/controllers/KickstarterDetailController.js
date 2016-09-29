@@ -1,5 +1,6 @@
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
+import loadingTemplate from '../templates/loading.html';
 
 export default [
   '$rootScope',
@@ -15,6 +16,7 @@ export default [
   'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
+  'UserService',
   function(
     $rootScope,
     $scope,
@@ -28,7 +30,8 @@ export default [
     RoutesService,
     uiGmapGoogleMapApi,
     MapOptions,
-    loadingSpinner
+    loadingSpinner,
+    UserService
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -42,11 +45,7 @@ export default [
     $scope.book = {
       routeId: null,
       route: null,
-      boardStops: [], // all board stops for this route
-      alightStops: [], // all alight stops for this route
-      boardStop: null,
-      alightStop: null,
-      changes: {},
+      bid: null
     };
     $scope.disp = {
       popupStop: null,
@@ -79,6 +78,7 @@ export default [
     };
     routePromise.then((route) => {
       $scope.book.route = route;
+      $scope.book.bidOptions = $scope.book.route.notes.tier;
       computeStops(stopOptions);
     });
 
@@ -164,6 +164,14 @@ export default [
         $scope.book.alightStop = alightStops.find(ts =>
             ts.id === initialAlightStopId);
       }
+    }
+
+    $scope.$watch(() => UserService.getUser(), async(user) => {
+      $scope.isLoggedIn = user ? true : false;
+    })
+
+    $scope.login = function () {
+      UserService.promptLogIn()
     }
   }
 ];

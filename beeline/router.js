@@ -203,24 +203,24 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   // ////////////////////////////////////////////////////////////////////////////
-  // Main interface, Kickstart Tab
+  // Main interface, Kickstarter Tab
   // ////////////////////////////////////////////////////////////////////////////
-  .state('tabs.kickstart', {
-    url: '/kickstart',
+  .state('tabs.kickstarter', {
+    url: '/kickstarter',
     views: {
-      'tab-kickstart': {
-        templateUrl: 'templates/kickstart.html',
-        controller: 'KickstartController'
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter.html',
+        controller: 'KickstarterController'
       }
     }
   })
 
-  .state('tabs.kickstart-detail', {
-    url: '/kickstart/:routeId',
+  .state('tabs.kickstarter-detail', {
+    url: '/kickstarter/:routeId',
     views: {
-      'tab-kickstart': {
-        templateUrl: 'templates/kickstart-detail.html',
-        controller: 'KickstartDetailController'
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-detail.html',
+        controller: 'KickstarterDetailController'
       }
     },
     data: {

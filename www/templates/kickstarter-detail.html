@@ -2,8 +2,8 @@
   hide-back-button="true" can-swipe-back="false">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
-       ui-sref="tabs.kickstart">
-       <i class="icon ion-ios-arrow-back"></i> Kickstart
+       ui-sref="tabs.kickstarter">
+       <i class="icon ion-ios-arrow-back"></i> Kickstarter
     </button>
   </ion-nav-buttons>
 
@@ -28,12 +28,7 @@
           <route-item-end-location>
             {{ book.route.to }}
           </route-item-end-location>
-
         </route-item>
-
-        <div class="price">
-          <fancy-price value="book.route.trips[0].price"></fancy-price>
-        </div>
       </div>
 
       <!-- contains the map, the stop selectors
@@ -94,33 +89,40 @@
         </ui-gmap-google-map>
       </div>
 
-      <ion-list class="stop-inputs">
-        <bus-stop-selector
-          ng-model="book.boardStop"
-          bus-stops="book.boardStops"
-          placeholder="Select pick-up stop"
-          title="Select pick-up stop"
-          button="Select pick-up stop"
-          marker-options="map.markerOptions.boardMarker"
-          pin-options="map.markerOptions.startMarker"
-          ng-required="true"
-          name="boardStop"
-          >
-        </bus-stop-selector>
-      </ion-list>
-
       <div class="item continue-button-item">
-        <button class="button primary-button button-item"
-          ui-sref="tabs.booking-dates({
-            routeId: book.routeId,
-            boardStop: book.boardStop.id,
-            alightStop: book.alightStop.id,
-            sessionId: session.sessionId
-          })"
-          ng-disabled="stopsForm.$invalid">
-          Continue
-        </button>
+
+        <label>
+          <div class = "input-label">
+             Choose your bid
+          </div>
+
+          <select ng-model="book.bid">
+            <option value="" disabled selected>Select A Bid</option>
+            <option ng-repeat="price in book.route.notes.tier" value="{{$index}}">${{price.price}}    {{price.pax}}pax</option>
+          </select>
+       </label>
       </div>
+
+      <section class="item item-text-wrap continue-button-item"
+               ng-if="!isLoggedIn">
+        You are not logged in. Please enter your mobile number to complete bidding.
+
+        <button class="button primary-button"
+                ng-click="login()">
+          Log In
+        </button>
+      </section>
+
+      <section class="item item-text-wrap continue-button-item"
+               ng-if="isLoggedIn">
+        Please ensure that your credit card is ready for the next step in the booking process.
+
+        <button class="button primary-button"
+                ng-click="pay()">
+          Confirm and Bid
+        </button>
+      </section>
+
     </form> <!-- flex-col -->
   </ion-content>
 </ion-view>

@@ -1,8 +1,8 @@
-<ion-view class="routes-list" view-title="Kickstart">
+<ion-view class="routes-list" view-title="Kickstarter">
   <ion-content scroll="false">
     <div class="item item-text-wrap" ng-if="error">
       <i class="icon ion-alert-circled"></i>
-      There was a problem fetching the kickstart from the server.
+      There was a problem fetching the kickstarter from the server.
       Please try again later.
     </div>
 
@@ -23,12 +23,12 @@
 
       <!-- Available Routes Section -->
       <div class="item item-divider">
-        Available Kickstart
+        Available Kickstarter
       </div>
 
-      <ion-item ng-repeat="route in data.filteredKickstart"
+      <ion-item ng-repeat="route in data.filteredKickstarter"
                 class="item-icon-right"
-                ui-sref="tabs.kickstart-detail({ routeId: route.id })">
+                ui-sref="tabs.kickstarter-detail({ routeId: route.id })">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
