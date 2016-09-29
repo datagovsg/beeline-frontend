@@ -1,6 +1,7 @@
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 import loadingTemplate from '../templates/loading.html';
+import processingPaymentsTemplate from '../templates/processing-payments.html';
 
 export default [
   '$rootScope',
@@ -17,6 +18,7 @@ export default [
   'MapOptions',
   'loadingSpinner',
   'UserService',
+  'StripeService',
   function(
     $rootScope,
     $scope,
@@ -31,7 +33,8 @@ export default [
     uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner,
-    UserService
+    UserService,
+    StripeService
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -45,7 +48,8 @@ export default [
     $scope.book = {
       routeId: null,
       route: null,
-      bid: null
+      bid: null,
+      calculatedAmount: '',
     };
     $scope.disp = {
       popupStop: null,
@@ -168,10 +172,94 @@ export default [
 
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
+      $scope.user = user;
     })
 
     $scope.login = function () {
       UserService.promptLogIn()
+    }
+
+    $scope.$watch('book.bid',(bid)=>{
+      if ($scope.book.route && $scope.book.route.notes &&  $scope.book.route.notes.tier) {
+        console.log(bid);
+        $scope.book.calculatedAmount = $scope.book.route.notes.tier[bid].price * 5;
+        console.log($scope.book.calculatedAmount);
+      }
+    })
+
+    $scope.createBid = async function(){
+      try {
+        // disable the button
+        $scope.waitingForPaymentResult = true;
+
+        if (window.CardIO) {
+          var cardDetails = await new Promise((resolve, reject) => CardIO.scan({
+            "expiry": true,
+            "cvv": true,
+            "zip": false,
+            "suppressManual": false,
+            "suppressConfirm": false,
+            "hideLogo": true
+          }, resolve, () => resolve(null)));
+
+          if (cardDetails == null) return;
+
+          var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
+            number:     cardDetails["card_number"],
+            cvc:        cardDetails["cvv"],
+            exp_month:  cardDetails["expiry_month"],
+            exp_year:   cardDetails["expiry_year"],
+          }, (statusCode, response) => {
+            if (response.error)
+              reject(response.error.message);
+            else
+              resolve(response);
+          }));
+        }
+        else if (StripeService.loaded) { // Use Stripe Checkout
+          var stripeToken = await StripeService.promptForToken(
+              undefined, /* description */
+              isFinite($scope.book.calculatedAmount) ? $scope.book.calculatedAmount * 100 : '');
+          if (stripeToken == null)
+            return;
+        }
+        else { // Last resort :(
+          throw new Error("There was some difficulty contacting the payment gateway." +
+            " Please check your Internet connection");
+        }
+
+        if (!('id' in stripeToken)) {
+          alert("There was an error contacting Stripe");
+          return;
+        }
+
+        $ionicLoading.show({
+          template: processingPaymentsTemplate
+        })
+        var result = await UserService.beeline({
+          method: 'POST',
+          url: '/users/$scope.user.id/creditCards',
+          data: {
+            stripeToken: stripeToken.id
+          },
+        });
+        $ionicLoading.hide();
+
+        // This gives us the transaction items
+        assert(result.status == 200);
+
+        //TODO post lelong bid
+      } catch (err) {
+        $ionicLoading.hide();
+        await $ionicPopup.alert({
+          title: 'Error processing payment',
+          template: err.data.message,
+        })
+      }finally {
+        $scope.$apply(() => {
+          $scope.waitingForPaymentResult = false;
+        })
+      }
     }
   }
 ];

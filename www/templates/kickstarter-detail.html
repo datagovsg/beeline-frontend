@@ -1,4 +1,4 @@
-<ion-view id="pg_booking" view-title="Select Bid"
+<ion-view id="pg_kickstarter_detail" view-title="Select Bid"
   hide-back-button="true" can-swipe-back="false">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
@@ -90,17 +90,23 @@
       </div>
 
       <div class="item continue-button-item">
+       <div class = "input-label">
+          Choose your bid
+       </div>
+       <div>
+         <ion-radio  ng-repeat="price in book.route.notes.tier"
+                     ng-model="book.bid"
+                     ng-value="{{$index}}"
+                     class="item-text-wrap item-icon-left"
+                     icon="icon ion-ios-checkmark">
+           <!-- <i class="icon ion-ios-circle-outline not-selected" ng-show="book.bid !== {{$index}}"></i> -->
+           <div>${{price.price}}    {{price.pax}}pax</div>
+         </ion-radio>
+       </div>
+      </div>
 
-        <label>
-          <div class = "input-label">
-             Choose your bid
-          </div>
-
-          <select ng-model="book.bid">
-            <option value="" disabled selected>Select A Bid</option>
-            <option ng-repeat="price in book.route.notes.tier" value="{{$index}}">${{price.price}}    {{price.pax}}pax</option>
-          </select>
-       </label>
+      <div class="item continue-button-item"ng-if="book.calculatedAmount">
+        The calculated amount to be charge is {{book.calculatedAmount}}.
       </div>
 
       <section class="item item-text-wrap continue-button-item"
@@ -118,7 +124,8 @@
         Please ensure that your credit card is ready for the next step in the booking process.
 
         <button class="button primary-button"
-                ng-click="pay()">
+                ng-disabled="waitingForPaymentResult"
+                ng-click="createBid()">
           Confirm and Bid
         </button>
       </section>
