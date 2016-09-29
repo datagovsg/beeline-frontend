@@ -74,7 +74,7 @@ export function formatTime(date, prePadding) {
 export function formatTimeArray(timeArray) {
   if (timeArray.length ==0 )return;
   else {
-    return timeArray.map(formatTime).join(', ');
+    return timeArray.map((x)=>formatTime(x,true)).join(', ');
   }
 }
 
