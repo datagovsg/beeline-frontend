@@ -120,13 +120,22 @@
       </section>
 
       <section class="item item-text-wrap continue-button-item"
-               ng-if="isLoggedIn">
+               ng-if="isLoggedIn && !book.isBid">
         Please ensure that your credit card is ready for the next step in the booking process.
 
         <button class="button primary-button"
                 ng-disabled="waitingForPaymentResult"
                 ng-click="createBid()">
           Confirm and Bid
+        </button>
+      </section>
+
+      <section class="item item-text-wrap continue-button-item"
+               ng-if="isLoggedIn && book.isBid">
+
+        <button class="button primary-button"
+                ng-click="deleteBid()">
+          Delete Bid
         </button>
       </section>
 

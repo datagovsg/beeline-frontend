@@ -8,25 +8,24 @@ export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
   '$http','$cordovaGeolocation','BookingService','RoutesService','uiGmapGoogleMapApi',
   'MapOptions','loadingSpinner','UserService','StripeService','$ionicLoading','$ionicPopup',
+  'KickstarterService',
   function(
     $rootScope,$scope,$interpolate,$state,$stateParams,$ionicModal,$http,
     $cordovaGeolocation,BookingService,RoutesService,uiGmapGoogleMapApi,
-    MapOptions,loadingSpinner,UserService,StripeService,$ionicLoading,$ionicPopup
+    MapOptions,loadingSpinner,UserService,StripeService,$ionicLoading,$ionicPopup,
+    KickstarterService
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
     $scope.routePath = [];
 
-    // Booking session logic
-    $scope.session = {
-      sessionId: null,
-    };
     // Default settings for various info used in the page
     $scope.book = {
       routeId: null,
       route: null,
       bid: null,
       calculatedAmount: '',
+      isBid: false
     };
     $scope.disp = {
       popupStop: null,
@@ -150,6 +149,11 @@ export default [
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
+      if ($scope.isLoggedIn) {
+        $scope.book.isBid = await KickstarterService.isBid($scope.book.routeId);
+        console.log("ISBID");
+        console.log($scope.book.isBid);
+      }
     })
 
     $scope.login = function () {
@@ -166,83 +170,50 @@ export default [
       }
     })
 
+    function userHasNoCreditCard() {
+      console.log("USER");
+      console.log($scope.user);
+      if ($scope.user && $scope.user.savedPaymentInfo) {
+        return false;
+      }
+      return true;
+    }
+
     $scope.createBid = async function(){
       try {
         // disable the button
         $scope.waitingForPaymentResult = true;
 
-        if (window.CardIO) {
-          var cardDetails = await new Promise((resolve, reject) => CardIO.scan({
-            "expiry": true,
-            "cvv": true,
-            "zip": false,
-            "suppressManual": false,
-            "suppressConfirm": false,
-            "hideLogo": true
-          }, resolve, () => resolve(null)));
+        if (userHasNoCreditCard()) {
+          const stripeToken = await StripeService.promptForToken();
+          if (!stripeToken){
+            throw new Error("There was some difficulty contacting the payment gateway." +
+              " Please check your Internet connection");
+            return;
+          }
 
-          if (cardDetails == null) return;
+          if (!('id' in stripeToken)) {
+            alert("There was an error contacting Stripe");
+            return;
+          }
+          const user = $scope.user;
 
-          var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
-            number:     cardDetails["card_number"],
-            cvc:        cardDetails["cvv"],
-            exp_month:  cardDetails["expiry_month"],
-            exp_year:   cardDetails["expiry_year"],
-          }, (statusCode, response) => {
-            if (response.error)
-              reject(response.error.message);
-            else
-              resolve(response);
+          var result = await loadingSpinner(UserService.beeline({
+            method: 'POST',
+            url: `/users/${user.id}/creditCards`,
+            data: {
+              stripeToken: stripeToken.id
+            },
           }));
         }
-        else if (StripeService.loaded) { // Use Stripe Checkout
-          var stripeToken = await StripeService.promptForToken(
-              undefined, /* description */
-              isFinite($scope.book.calculatedAmount) ? $scope.book.calculatedAmount * 100 : '');
-          if (stripeToken == null)
-            return;
-        }
-        else { // Last resort :(
-          throw new Error("There was some difficulty contacting the payment gateway." +
-            " Please check your Internet connection");
-        }
 
-        if (!('id' in stripeToken)) {
-          alert("There was an error contacting Stripe");
-          return;
-        }
-
-        $ionicLoading.show({
-          template: processingPaymentsTemplate
-        })
-        var user = $scope.user;
-        var result = await UserService.beeline({
-          method: 'POST',
-          url: `/users/${user.id}/creditCards`,
-          data: {
-            stripeToken: stripeToken.id
-          },
-        });
-        $ionicLoading.hide();
-
-        // This gives us the transaction items
-        assert(result.status == 200);
       } catch (err) {
-        $ionicLoading.hide();
-        await $ionicPopup.alert({
-          title: 'Error processing payment',
-          template: err.data.message
-        })
-        $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
-        })
+        console.log(err);
+        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
       }
-      //TODO post lelong bid
+
       try {
-        $ionicLoading.show({
-          template: processingPaymentsTemplate
-        })
-        var bidResult = await UserService.beeline({
+        var bidResult = await loadingSpinner(UserService.beeline({
           method: 'POST',
           url: '/custom/lelong/bid',
           data: {
@@ -256,11 +227,13 @@ export default [
               options: {price: $scope.book.route.notes.tier[$scope.book.bid].price}
             }
           }
-        })
-        assert(bidResult.status == 200);
-        $ionicLoading.hide();
+        }))
+
         await $ionicPopup.alert({
           title: 'Success',
+        })
+        $scope.$apply(() => {
+          $scope.book.isBid = true;
         })
       }catch(err){
         await $ionicPopup.alert({
@@ -274,5 +247,27 @@ export default [
         })
       }
     }
+
+    $scope.deleteBid = async function(){
+      try {
+        await loadingSpinner(UserService.beeline({
+          method: 'DELETE',
+          url: '/custom/lelong/bids/'+$scope.book.routeId
+        }));
+
+        await $ionicPopup.alert({
+          title: 'Deleted',
+        });
+        $scope.$apply(() => {
+          $scope.book.isBid = false;
+        })
+      } catch(err) {
+        await $ionicPopup.alert({
+          title: 'Error processing delete',
+          template: err.data.message,
+        })
+      }
+    }
   }
 ];
+//

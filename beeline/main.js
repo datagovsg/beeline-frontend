@@ -60,6 +60,7 @@ var app = angular.module('beeline', [
 .service('busStopSelectorDialog', require('./services/busStopSelectorDialog.js').default)
 .service('Legalese', require('./services/legalese.js').default)
 .service('LoginDialog', require('./services/login.js').default)
+.service('KickstarterService', require('./services/KickstarterService.js').default)
 .controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
 .controller('RoutesController', require('./controllers/RoutesController.js').default)
 .controller('RoutesMapController', require('./controllers/RoutesMapController.js').default)
