@@ -2,39 +2,16 @@ import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 import loadingTemplate from '../templates/loading.html';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
+import assert from 'assert';
 
 export default [
-  '$rootScope',
-  '$scope',
-  '$interpolate',
-  '$state',
-  '$stateParams',
-  '$ionicModal',
-  '$http',
-  '$cordovaGeolocation',
-  'BookingService',
-  'RoutesService',
-  'uiGmapGoogleMapApi',
-  'MapOptions',
-  'loadingSpinner',
-  'UserService',
-  'StripeService',
+  '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
+  '$http','$cordovaGeolocation','BookingService','RoutesService','uiGmapGoogleMapApi',
+  'MapOptions','loadingSpinner','UserService','StripeService','$ionicLoading','$ionicPopup',
   function(
-    $rootScope,
-    $scope,
-    $interpolate,
-    $state,
-    $stateParams,
-    $ionicModal,
-    $http,
-    $cordovaGeolocation,
-    BookingService,
-    RoutesService,
-    uiGmapGoogleMapApi,
-    MapOptions,
-    loadingSpinner,
-    UserService,
-    StripeService
+    $rootScope,$scope,$interpolate,$state,$stateParams,$ionicModal,$http,
+    $cordovaGeolocation,BookingService,RoutesService,uiGmapGoogleMapApi,
+    MapOptions,loadingSpinner,UserService,StripeService,$ionicLoading,$ionicPopup
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -181,6 +158,8 @@ export default [
 
     $scope.$watch('book.bid',(bid)=>{
       if ($scope.book.route && $scope.book.route.notes &&  $scope.book.route.notes.tier) {
+        console.log("ROUTE");
+        console.log($scope.book.route.trips)
         console.log(bid);
         $scope.book.calculatedAmount = $scope.book.route.notes.tier[bid].price * 5;
         console.log($scope.book.calculatedAmount);
@@ -236,9 +215,10 @@ export default [
         $ionicLoading.show({
           template: processingPaymentsTemplate
         })
+        var user = $scope.user;
         var result = await UserService.beeline({
           method: 'POST',
-          url: '/users/$scope.user.id/creditCards',
+          url: `/users/${user.id}/creditCards`,
           data: {
             stripeToken: stripeToken.id
           },
@@ -247,15 +227,48 @@ export default [
 
         // This gives us the transaction items
         assert(result.status == 200);
-
-        //TODO post lelong bid
       } catch (err) {
         $ionicLoading.hide();
         await $ionicPopup.alert({
           title: 'Error processing payment',
+          template: err.data.message
+        })
+        $scope.$apply(() => {
+          $scope.waitingForPaymentResult = false;
+        })
+      }
+      //TODO post lelong bid
+      try {
+        $ionicLoading.show({
+          template: processingPaymentsTemplate
+        })
+        var bidResult = await UserService.beeline({
+          method: 'POST',
+          url: '/custom/lelong/bid',
+          data: {
+            trips: $scope.book.route.trips.map(trip => ({
+              tripId: trip.id,
+              boardStopId: trip.tripStops[0].id,
+              alightStopId: trip.tripStops[1].id,
+            })),
+            promoCode: {
+              code: 'LELONG',
+              options: {price: $scope.book.route.notes.tier[$scope.book.bid].price}
+            }
+          }
+        })
+        assert(bidResult.status == 200);
+        $ionicLoading.hide();
+        await $ionicPopup.alert({
+          title: 'Success',
+        })
+      }catch(err){
+        await $ionicPopup.alert({
+          title: 'Error processing bid',
           template: err.data.message,
         })
       }finally {
+        $ionicLoading.hide();
         $scope.$apply(() => {
           $scope.waitingForPaymentResult = false;
         })
