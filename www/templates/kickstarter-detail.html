@@ -89,14 +89,14 @@
         </ui-gmap-google-map>
       </div>
 
-      <div class="item continue-button-item">
+      <div class="item continue-button-item" ng-if="!isLoggedIn || !book.isBid">
        <div class = "input-label">
           Choose your bid
        </div>
        <div>
          <ion-radio  ng-repeat="price in book.route.notes.tier"
                      ng-model="book.bid"
-                     ng-value="{{$index}}"
+                     ng-value="{{$index+1}}"
                      class="item-text-wrap item-icon-left"
                      icon="icon ion-ios-checkmark">
            <!-- <i class="icon ion-ios-circle-outline not-selected" ng-show="book.bid !== {{$index}}"></i> -->
@@ -104,10 +104,16 @@
          </ion-radio>
        </div>
       </div>
-
-      <div class="item continue-button-item"ng-if="book.calculatedAmount">
+      <div class="item continue-button-item" ng-if="book.calculatedAmount && (!isLoggedIn || !book.isBid)">
         The calculated amount to be charge is {{book.calculatedAmount}}.
       </div>
+
+
+      <div class="item item-text-wrap continue-button-item" ng-if="isLoggedIn && book.isBid">
+        You have already bid this kickstarter route. And the price you committed is ${{book.bidPrice}}
+      </div>
+
+
 
       <section class="item item-text-wrap continue-button-item"
                ng-if="!isLoggedIn">

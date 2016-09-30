@@ -25,7 +25,8 @@ export default [
       route: null,
       bid: null,
       calculatedAmount: '',
-      isBid: false
+      isBid: false,
+      bidPrice: null
     };
     $scope.disp = {
       popupStop: null,
@@ -153,6 +154,12 @@ export default [
         $scope.book.isBid = await KickstarterService.isBid($scope.book.routeId);
         console.log("ISBID");
         console.log($scope.book.isBid);
+        if ($scope.book.isBid) {
+          const bidInfo =  await KickstarterService.getBidInfo($scope.book.routeId);
+          console.log("BIDINFO");
+          console.log(bidInfo);
+          $scope.book.bidPrice = bidInfo[0].bid.userOptions.price
+        }
       }
     })
 
@@ -161,11 +168,11 @@ export default [
     }
 
     $scope.$watch('book.bid',(bid)=>{
-      if ($scope.book.route && $scope.book.route.notes &&  $scope.book.route.notes.tier) {
+      if (bid && $scope.book.route && $scope.book.route.notes &&  $scope.book.route.notes.tier) {
         console.log("ROUTE");
         console.log($scope.book.route.trips)
         console.log(bid);
-        $scope.book.calculatedAmount = $scope.book.route.notes.tier[bid].price * 5;
+        $scope.book.calculatedAmount = $scope.book.route.notes.tier[bid-1].price * 5;
         console.log($scope.book.calculatedAmount);
       }
     })
@@ -213,22 +220,7 @@ export default [
       }
 
       try {
-        var bidResult = await loadingSpinner(UserService.beeline({
-          method: 'POST',
-          url: '/custom/lelong/bid',
-          data: {
-            trips: $scope.book.route.trips.map(trip => ({
-              tripId: trip.id,
-              boardStopId: trip.tripStops[0].id,
-              alightStopId: trip.tripStops[1].id,
-            })),
-            promoCode: {
-              code: 'LELONG',
-              options: {price: $scope.book.route.notes.tier[$scope.book.bid].price}
-            }
-          }
-        }))
-
+        var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.route.notes.tier[$scope.book.bid-1].price));
         await $ionicPopup.alert({
           title: 'Success',
         })
@@ -250,10 +242,7 @@ export default [
 
     $scope.deleteBid = async function(){
       try {
-        await loadingSpinner(UserService.beeline({
-          method: 'DELETE',
-          url: '/custom/lelong/bids/'+$scope.book.routeId
-        }));
+        await loadingSpinner(KickstarterService.deleteBid($scope.book.routeId));
 
         await $ionicPopup.alert({
           title: 'Deleted',

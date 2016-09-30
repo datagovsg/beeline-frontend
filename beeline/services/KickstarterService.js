@@ -14,9 +14,9 @@ export default function KickstarterService($http, UserService,$q) {
         if (kickstarterStatusCache && !ignoreCache) return kickstarterStatusCache;
         return kickstarterStatusCache = UserService.beeline({
           method: 'GET',
-          url: '/custom/lelong/status',
+          url: '/custom/lelong/bids',
         }).then((response) => {
-          kickstarterSummary = response.data.map(x=>x.id);
+          kickstarterSummary = response.data;
           return kickstarterSummary;
   			});
       }
@@ -28,13 +28,56 @@ export default function KickstarterService($http, UserService,$q) {
 
     isBid: async function(routeId, ignoreCache) {
       var bids = await this.getBids(ignoreCache);
+      var bidsId = bids.map(x=>x.id);
       assert(bids);
-      if (bids.includes(routeId)) {
+      if (bidsId.includes(routeId)) {
         return true;
       }
       else {
         return false;
       }
+    },
+
+    getBidInfo: async function(routeId, ignoreCache) {
+      console.log(routeId);
+      var bids = await this.getBids(ignoreCache);
+      assert(bids);
+      var info =bids.filter(x=>{return x.id==routeId});
+      console.log(info);
+      return info;
+    },
+
+    createBid: async function(route, bidPrice) {
+      var promise =  await UserService.beeline({
+        method: 'POST',
+        url: '/custom/lelong/bid',
+        data: {
+          trips: route.trips.map(trip => ({
+            tripId: trip.id,
+            boardStopId: trip.tripStops[0].id,
+            alightStopId: trip.tripStops[1].id,
+          })),
+          promoCode: {
+            code: 'LELONG',
+            options: {price: bidPrice}
+          }
+        }
+      });
+      if (promise) {
+        this.getBids(true);
+      }
+      return promise.data;
+    },
+
+    deleteBid: async function(routeId) {
+      var promise = await UserService.beeline({
+        method: 'DELETE',
+        url: '/custom/lelong/bids/'+routeId
+      });
+      if (promise) {
+        this.getBids(true);
+      }
+      return promise.data;
     }
   }
 }
