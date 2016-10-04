@@ -215,21 +215,8 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tabs.kickstarter-pickup', {
-    url: '/kickstarter/:routeId/stops?boardStop&alightStop',
-    views: {
-      'tab-kickstarter': {
-        templateUrl: 'templates/kickstarter-stops.html',
-        controller: 'KickstarterStopsController'
-      }
-    },
-    data: {
-      hideTabs: true,
-    }
-  })
-
   .state('tabs.kickstarter-summary', {
-    url: '/kickstarter/:routeId/summary?boardStop&alightStop',
+    url: '/kickstarter/:routeId/summary',
     views: {
       'tab-kickstarter': {
         templateUrl: 'templates/kickstarter-summary.html',
@@ -240,8 +227,6 @@ export default function($stateProvider, $urlRouterProvider) {
       hideTabs: true,
     }
   })
-
-
 
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Settings Tab

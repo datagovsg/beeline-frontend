@@ -2,10 +2,8 @@
   hide-back-button="true" can-swipe-back="false">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
-      ui-sref="tabs.kickstarter-pickup({
-       routeId: book.routeId,
-     })" nav-direction="back">
-       <i class="icon ion-ios-arrow-back"></i> Stops
+       ui-sref="tabs.kickstarter">
+       <i class="icon ion-ios-arrow-back"></i> Kickstarters
     </button>
   </ion-nav-buttons>
 
@@ -91,6 +89,33 @@
         </ui-gmap-google-map>
       </div>
 
+      <ion-list class="stop-inputs">
+        <bus-stop-selector
+          ng-model="book.boardStop"
+          bus-stops="book.boardStops"
+          placeholder="Select pick-up stop"
+          title="Select pick-up stop"
+          button="Select pick-up stop"
+          marker-options="map.markerOptions.boardMarker"
+          pin-options="map.markerOptions.startMarker"
+          ng-required="true"
+          name="boardStop"
+          >
+        </bus-stop-selector>
+        <bus-stop-selector
+          ng-model="book.alightStop"
+          bus-stops="book.alightStops"
+          placeholder="Select drop-off stop"
+          title="Select drop-off stop"
+          button="Select drop-off stop"
+          marker-options="map.markerOptions.alightMarker"
+          pin-options="map.markerOptions.endMarker"
+          ng-required="true"
+          name="alightStop"
+          >
+        </bus-stop-selector>
+      </ion-list>
+
       <div class="item continue-button-item" ng-if="book.isValid && (!isLoggedIn || !book.isBid)">
        <div class = "input-label">
           Choose your bid
@@ -140,7 +165,7 @@
         Please ensure that your credit card is ready for the next step in the booking process.
 
         <button class="button primary-button"
-                ng-disabled="waitingForPaymentResult"
+                ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
                 ng-click="createBid()">
           Confirm and Bid
         </button>

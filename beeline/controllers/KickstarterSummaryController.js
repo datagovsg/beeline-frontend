@@ -35,9 +35,6 @@ export default [
       parentScope: $scope,
     }
 
-    $scope.book.boardStopId = parseInt($stateParams.boardStop);
-    $scope.book.alightStopId = parseInt($stateParams.alightStop);
-
     // Resolved when the map is initialized
     var gmapIsReady = new Promise((resolve, reject) => {
       var resolved = false;
@@ -231,8 +228,8 @@ export default [
       }
 
       try {
-        var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStopId,
-                                              $scope.book.alightStopId, $scope.book.route.notes.tier[$scope.book.bid-1].price));
+        var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStop.id,
+                                              $scope.book.alightStop.id, $scope.book.route.notes.tier[$scope.book.bid-1].price));
         await $ionicPopup.alert({
           title: 'Success',
         })

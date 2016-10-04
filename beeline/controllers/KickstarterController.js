@@ -21,16 +21,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
     // Configure the list of available regions
     kickstarterPromise.then(function(allRoutes) {
-      // Need to sort by time of day rather than by absolute time,
-      // in case we have routes with missing dates (e.g. upcoming routes)
-      $scope.data.kickstarter = _.sortBy(allRoutes, 'label', (route) => {
-        var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
-
-        var midnightOfTrip = new Date(firstTripStop.time);
-        midnightOfTrip.setHours(0,0,0,0);
-        return new Date(firstTripStop.time).getTime() - midnightOfTrip.getTime();
-      });
-
+      $scope.data.kickstarter = _.sortBy(allRoutes, 'label');
       $scope.error = null;
     })
     .catch(() => {
