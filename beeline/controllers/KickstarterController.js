@@ -73,13 +73,4 @@ export default function($scope, $state, UserService, RoutesService, $q,
       firstRun = false;
     });
 
-  $scope.createBid = function(id){
-    if (!UserService.getUser()) {
-      console.log("You need to login");
-    }
-    else {
-      console.log("I'm bidding");
-    }
-  }
-
 }

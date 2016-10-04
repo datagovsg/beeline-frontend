@@ -47,15 +47,15 @@ export default function KickstarterService($http, UserService,$q) {
       return info;
     },
 
-    createBid: async function(route, bidPrice) {
+    createBid: async function(route, boardStopId, alightStopId,bidPrice) {
       var promise =  await UserService.beeline({
         method: 'POST',
         url: '/custom/lelong/bid',
         data: {
           trips: route.trips.map(trip => ({
             tripId: trip.id,
-            boardStopId: trip.tripStops[0].id,
-            alightStopId: trip.tripStops[1].id,
+            boardStopId: boardStopId,
+            alightStopId: alightStopId,
           })),
           promoCode: {
             code: 'LELONG',
