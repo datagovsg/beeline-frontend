@@ -91,7 +91,7 @@
         </ui-gmap-google-map>
       </div>
 
-      <div class="item continue-button-item" ng-if="!isLoggedIn || !book.isBid">
+      <div class="item continue-button-item" ng-if="book.isValid && (!isLoggedIn || !book.isBid)">
        <div class = "input-label">
           Choose your bid
        </div>
@@ -106,7 +106,7 @@
          </ion-radio>
        </div>
       </div>
-      <div class="item continue-button-item" ng-if="book.calculatedAmount && (!isLoggedIn || !book.isBid)">
+      <div class="item continue-button-item" ng-if="book.isValid && book.calculatedAmount && (!isLoggedIn || !book.isBid)">
         The calculated amount to be charge is {{book.calculatedAmount}}.
       </div>
 
@@ -115,10 +115,18 @@
         You have already bid this kickstarter route. And the price you committed is ${{book.bidPrice}}
       </div>
 
+      <section class="item item-text-wrap continue-button-item"
+               ng-if="!book.isValid">
+        The kickstarter is over.
+        <button class="button primary-button"
+          ui-sref="tabs.kickstarter">
+          Show Kickstarter List
+        </button>
+      </section>
 
 
       <section class="item item-text-wrap continue-button-item"
-               ng-if="!isLoggedIn">
+               ng-if="book.isValid && !isLoggedIn">
         You are not logged in. Please enter your mobile number to complete bidding.
 
         <button class="button primary-button"
@@ -128,7 +136,7 @@
       </section>
 
       <section class="item item-text-wrap continue-button-item"
-               ng-if="isLoggedIn && !book.isBid">
+               ng-if="book.isValid && isLoggedIn && !book.isBid">
         Please ensure that your credit card is ready for the next step in the booking process.
 
         <button class="button primary-button"
@@ -139,7 +147,7 @@
       </section>
 
       <section class="item item-text-wrap continue-button-item"
-               ng-if="isLoggedIn && book.isBid">
+               ng-if="book.isValid && isLoggedIn && book.isBid">
 
         <button class="button primary-button"
                 ng-click="deleteBid()">
