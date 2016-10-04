@@ -226,6 +226,7 @@ export default [
         })
         $scope.$apply(() => {
           $scope.book.isBid = true;
+          $scope.book.bidPrice = $scope.book.route.notes.tier[$scope.book.bid-1].price;
         })
       }catch(err){
         await $ionicPopup.alert({
