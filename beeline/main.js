@@ -79,7 +79,6 @@ var app = angular.module('beeline', [
 .controller('LiteSummaryController', require('./controllers/LiteSummaryController.js').default)
 .controller('LiteMoreInfoController', require('./controllers/LiteMoreInfoController.js').default)
 .controller('KickstarterController', require('./controllers/KickstarterController.js').default)
-.controller('KickstarterStopsController', require('./controllers/KickstarterStopsController.js').default)
 .controller('KickstarterSummaryController', require('./controllers/KickstarterSummaryController.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
