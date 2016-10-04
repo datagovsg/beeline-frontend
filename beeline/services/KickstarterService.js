@@ -3,10 +3,20 @@ import _ from 'lodash';
 import assert from 'assert';
 
 export default function KickstarterService($http, UserService,$q) {
+  var lelongCache;
   var kickstarterStatusCache;
   var kickstarterSummary;
 
   return {
+    getLelong: function(ignoreCache) {
+      if (lelongCache && !ignoreCache) return lelongCache;
+      return lelongCache = UserService.beeline({
+        method: 'GET',
+        url: '/custom/lelong/status',
+      }).then((response)=>{
+        return response.data;
+      })
+    },
 
     getBids: function(ignoreCache) {
       if (UserService.getUser()) {
@@ -27,6 +37,9 @@ export default function KickstarterService($http, UserService,$q) {
 
     isBid: async function(routeId, ignoreCache) {
       var bids = await this.getBids(ignoreCache);
+      if (bids.length == 0){
+        return false;
+      }
       var bidsId = bids.map(x=>x.id);
       assert(bids);
       if (bidsId.includes(routeId)) {
@@ -38,15 +51,11 @@ export default function KickstarterService($http, UserService,$q) {
     },
 
     getBidInfo: async function(routeId, ignoreCache) {
-      console.log(routeId);
       var bids = await this.getBids(ignoreCache);
       assert(bids);
       var info =bids.filter(x=>{return x.id==routeId});
-      console.log(info);
       return info;
     },
-
-
 
     createBid: async function(route, boardStopId, alightStopId,bidPrice) {
       var promise =  await UserService.beeline({
@@ -56,10 +65,10 @@ export default function KickstarterService($http, UserService,$q) {
           trips: route.trips.map(trip => ({
             tripId: trip.id,
             boardStopId: trip.tripStops.filter((x)=>{
-              return x.stopId == boardStopId;
+              return x.stopId === boardStopId;
             })[0].id,
             alightStopId: trip.tripStops.filter((x)=>{
-              return x.stopId == alightStopId;
+              return x.stopId === alightStopId;
             })[0].id,
           })),
           promoCode: {

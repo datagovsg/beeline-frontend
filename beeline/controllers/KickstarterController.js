@@ -22,7 +22,7 @@ function filterRoutesByRegionId(routes, regionId) {
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
-  $ionicScrollDelegate, $ionicPopup,) {
+  $ionicScrollDelegate, $ionicPopup, KickstarterService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -34,7 +34,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.refreshRoutes = function (ignoreCache) {
 
-    var kickstarterPromise = RoutesService.getKickstarterRoutes(ignoreCache);
+    // var kickstarterPromise = RoutesService.getKickstarterRoutes(ignoreCache);
+    var kickstarterPromise = KickstarterService.getLelong(ignoreCache);
 
     // Configure the list of available regions
     kickstarterPromise.then(function(allRoutes) {
@@ -43,9 +44,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.kickstarter = _.sortBy(allRoutes, 'label', (route) => {
         var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
 
-        var midnightOfTrip = new Date(firstTripStop.time.getTime());
+        var midnightOfTrip = new Date(firstTripStop.time);
         midnightOfTrip.setHours(0,0,0,0);
-        return firstTripStop.time.getTime() - midnightOfTrip.getTime();
+        return new Date(firstTripStop.time).getTime() - midnightOfTrip.getTime();
       });
 
       $scope.error = null;

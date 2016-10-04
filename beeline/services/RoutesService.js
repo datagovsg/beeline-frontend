@@ -195,46 +195,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       });
     },
 
-    getKickstarterRoutes: function(ignoreCache, options) {
-      if (kickstarterRoutesCache && !ignoreCache && !options) return kickstarterRoutesCache;
-
-      var url = '/routes?';
-
-      // Start at midnight to avoid cut trips in the middle
-      // FIXME: use date-based search instead
-      var startDate = new Date();
-      startDate.setHours(3,0,0,0,0)
-
-      var finalOptions = _.assign({
-        start_date: startDate.getTime(),
-        include_trips: true,
-        limit_trips: 5,
-        include_path: false,
-        tags: JSON.stringify(['lelong']),
-      }, options)
-
-      url += querystring.stringify(finalOptions)
-
-      var kickstarterPromise = UserService.beeline({
-        method: 'GET',
-        url: url,
-      })
-      .then(function(response) {
-        // Checking that we have trips, so that users of it don't choke
-        // on trips[0]
-        var routes = response.data.filter(r => r.trips && r.trips.length);
-        transformRouteData(routes)
-        return routes;
-      });
-
-      // Cache the promise -- prevents two requests from being
-      // in flight together
-      if (!options)
-        kickstarterRoutesCache = kickstarterPromise;
-
-      return kickstarterPromise;
-    }
-
   };
   return instance;
 }

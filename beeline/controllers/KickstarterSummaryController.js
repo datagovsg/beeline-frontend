@@ -26,7 +26,8 @@ export default [
       bid: null,
       calculatedAmount: '',
       isBid: false,
-      bidPrice: null
+      bidPrice: null,
+      isValid: true
     };
     $scope.disp = {
       popupStop: null,
@@ -64,6 +65,13 @@ export default [
       $scope.book.route = route;
       $scope.book.bidOptions = $scope.book.route.notes.tier;
       computeStops(stopOptions);
+      if (route.notes && route.notes.lelongExpiry) {
+       var now = new Date().getTime();
+       var expiryTime = new Date(route.notes.lelongExpiry).getTime();
+       if (now > expiryTime) {
+         $scope.book.isValid = false;
+       }
+      }
     });
 
     $scope.$on('$ionicView.afterEnter', () => {
