@@ -2,7 +2,6 @@ import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
 
-
 export default function KickstarterService($http, UserService,$q) {
   var kickstarterStatusCache;
   var kickstarterSummary;
@@ -47,6 +46,8 @@ export default function KickstarterService($http, UserService,$q) {
       return info;
     },
 
+
+
     createBid: async function(route, boardStopId, alightStopId,bidPrice) {
       var promise =  await UserService.beeline({
         method: 'POST',
@@ -54,8 +55,12 @@ export default function KickstarterService($http, UserService,$q) {
         data: {
           trips: route.trips.map(trip => ({
             tripId: trip.id,
-            boardStopId: boardStopId,
-            alightStopId: alightStopId,
+            boardStopId: trip.tripStops.filter((x)=>{
+              return x.stopId == boardStopId;
+            })[0].id,
+            alightStopId: trip.tripStops.filter((x)=>{
+              return x.stopId == alightStopId;
+            })[0].id,
           })),
           promoCode: {
             code: 'LELONG',
