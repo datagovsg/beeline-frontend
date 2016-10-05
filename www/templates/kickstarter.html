@@ -23,7 +23,7 @@
             {{ route.label }}
           </route-item-bus-number>
           <route-item-description>
-            {{ route.notes.description }}
+            Expiry {{ route.notes.lelongExpiry | formatDateMMMdd}}
           </route-item-description>
           <route-item-start-time>
             {{ route | routeStartTime | formatTime:true }}
@@ -62,8 +62,9 @@
           </route-item-additional-info>
         </route-item>
         <i class="icon ion-ios-arrow-right icon-accessory"></i>
-        <progress max={{route.notes.tier[0].pax}} value={{route.notes.tier[0].no}}></progress>
-        <progress max={{route.notes.tier[1].pax}} value={{route.notes.tier[1].no}}></progress>
+        <!-- TODO: show price infor in progress -->
+        <progress max={{route.notes.tier[0].pax}} value={{route.notes.tier[0].no}}>{{route.notes.tier[0].price}}</progress>
+        <progress max={{route.notes.tier[1].pax}} value={{route.notes.tier[1].no}}>{{route.notes.tier[1].price}}</progress>
       </ion-item>
     </ion-content>
   </ion-content>
