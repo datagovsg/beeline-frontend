@@ -20,6 +20,10 @@ var transformKickstarterData = function (kickstarterRoutes) {
         _.assign(tier, {no: 0})
       })
     }
+    //order tiers in price desc order
+    kickstarter.notes.tier = _.orderBy(kickstarter.notes.tier, x=>x.price, "desc");
+    //if sb. commit $8, also commit $5
+    kickstarter.notes.tier[1].no += kickstarter.notes.tier[0].no;
   }
 }
 // Parse out the available regions from the routes
