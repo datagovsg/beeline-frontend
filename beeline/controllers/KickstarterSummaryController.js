@@ -27,7 +27,7 @@ export default [
       calculatedAmount: '',
       isBid: false,
       bidPrice: null,
-      isValid: true
+      notExpired: true
     };
     $scope.disp = {
       popupStop: null,
@@ -66,7 +66,7 @@ export default [
        var now = new Date().getTime();
        var expiryTime = new Date(route.notes.lelongExpiry).getTime();
        if (now > expiryTime) {
-         $scope.book.isValid = false;
+         $scope.book.notExpired = false;
        }
       }
     });

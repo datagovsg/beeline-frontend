@@ -1,31 +1,6 @@
 import _ from 'lodash';
 
 
-var transformKickstarterData = function (kickstarterRoutes) {
-  for (let kickstarter of kickstarterRoutes){
-    console.log(kickstarter);
-    if (kickstarter.bids.length > 0) {
-     var bidsByTier = _.groupBy(kickstarter.bids, x=>x.userOptions.price);
-     console.log(kickstarter.notes.tier)
-      kickstarter.notes.tier.map((tier)=>{
-        if (bidsByTier[tier.price]) {
-          console.log(bidsByTier[tier.price]);
-          console.log(bidsByTier[tier.price].length);
-        }
-
-        _.assign(tier, {no: bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0})
-      })
-    } else {
-      kickstarter.notes.tier.map((tier)=>{
-        _.assign(tier, {no: 0})
-      })
-    }
-    //order tiers in price desc order
-    kickstarter.notes.tier = _.orderBy(kickstarter.notes.tier, x=>x.price, "desc");
-    //if sb. commit $8, also commit $5
-    kickstarter.notes.tier[1].no += kickstarter.notes.tier[0].no;
-  }
-}
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
@@ -44,7 +19,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
     // Configure the list of available regions
     kickstarterPromise.then(function(allRoutes) {
-      transformKickstarterData(allRoutes);
       console.log(allRoutes);
       $scope.data.kickstarter = _.sortBy(allRoutes, 'label');
       $scope.error = null;
