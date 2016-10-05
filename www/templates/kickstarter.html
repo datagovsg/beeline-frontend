@@ -12,8 +12,12 @@
       </ion-refresher>
 
       <ion-item ng-repeat="route in data.kickstarter"
-                class="item-icon-right"
-                ui-sref="tabs.kickstarter-summary({ routeId: route.id })">
+                ui-sref="tabs.kickstarter-summary({
+                  routeId: route.id,
+                  boardStop:  recentBidsById[route.id].boardStopId,
+                  alightStop: recentBidsById[route.id].alightStopId
+                 })"
+                 class="item-icon-right">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}

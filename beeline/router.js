@@ -216,7 +216,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.kickstarter-summary', {
-    url: '/kickstarter/:routeId/summary',
+    url: '/kickstarter/:routeId/summary?boardStop&alightStop',
     views: {
       'tab-kickstarter': {
         templateUrl: 'templates/kickstarter-summary.html',

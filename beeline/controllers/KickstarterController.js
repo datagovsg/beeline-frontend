@@ -8,10 +8,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
-    regions: [],
     kickstarter: [],
-    selectedRegionId: undefined,
-    filteredKickstarter: [],
   };
 
   $scope.refreshRoutes = function (ignoreCache) {
@@ -35,9 +32,25 @@ export default function($scope, $state, UserService, RoutesService, $q,
   // Don't override the caching in main.js
   var firstRun = true;
   $scope.$watch(() => UserService.getUser() && UserService.getUser().id,
-    () => {
+    async () => {
       $scope.refreshRoutes(!firstRun);
+      var user = UserService.getUser();
+      $scope.isLoggedIn = user ? true : false;
+      $scope.user = user;
+      $scope.userBids = await KickstarterService.getBids(!firstRun);
+      console.log($scope.userBids);
+      if ($scope.userBids) {
+        $scope.recentBids = $scope.userBids.map((bid)=>{
+          return {routeId: bid.id,
+                  boardStopId: bid.bid.tickets[0].boardStop.stopId,
+                  alightStopId: bid.bid.tickets[0].alightStop.stopId,
+                  bidPrice: bid.bid.userOptions.price}});
+        $scope.recentBidsById = _.keyBy($scope.recentBids, r=>r.routeId);
+        console.log($scope.recentBids);
+        console.log($scope.recentBidsById);
+      }
       firstRun = false;
-    });
+    }
+  );
 
 }
