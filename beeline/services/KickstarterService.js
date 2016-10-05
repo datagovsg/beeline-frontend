@@ -8,6 +8,7 @@ export default function KickstarterService($http, UserService,$q) {
   var kickstarterSummary;
 
   return {
+    //all lelong routes
     getLelong: function(ignoreCache) {
       if (lelongCache && !ignoreCache) return lelongCache;
       return lelongCache = UserService.beeline({
@@ -18,6 +19,7 @@ export default function KickstarterService($http, UserService,$q) {
       })
     },
 
+    //user personal bid information
     getBids: function(ignoreCache) {
       if (UserService.getUser()) {
         if (kickstarterStatusCache && !ignoreCache) return kickstarterStatusCache;
