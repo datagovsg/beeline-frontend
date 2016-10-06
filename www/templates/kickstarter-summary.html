@@ -116,25 +116,6 @@
         </bus-stop-selector>
       </ion-list>
 
-      <div class="item continue-button-item" ng-if="book.notExpired && (!isLoggedIn || !book.isBid)">
-       <div class = "input-label">
-          Choose your bid
-       </div>
-       <div>
-         <ion-radio  ng-repeat="price in book.route.notes.tier"
-                     ng-model="book.bid"
-                     ng-value="{{$index+1}}"
-                     class="item-text-wrap item-icon-left"
-                     icon="icon ion-ios-checkmark">
-           <!-- <i class="icon ion-ios-circle-outline not-selected" ng-show="book.bid !== {{$index}}"></i> -->
-           <div>${{price.price}}    {{price.pax}}pax</div>
-         </ion-radio>
-       </div>
-      </div>
-      <div class="item continue-button-item" ng-if="book.notExpired && book.calculatedAmount && (!isLoggedIn || !book.isBid)">
-        The calculated amount to be charge is {{book.calculatedAmount}}.
-      </div>
-
 
       <div class="item item-text-wrap continue-button-item" ng-if="isLoggedIn && book.isBid">
         You have already bid this kickstarter route. And the price you committed is ${{book.bidPrice}}
@@ -163,11 +144,17 @@
       <section class="item item-text-wrap continue-button-item"
                ng-if="book.notExpired && isLoggedIn && !book.isBid">
         Please ensure that your credit card is ready for the next step in the booking process.
-
         <button class="button primary-button"
                 ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
-                ng-click="createBid()">
-          Confirm and Bid
+                ng-click="createBid(0)">
+          Bid at ${{book.route.notes.tier[0].price}}
+          <span>({{book.route.notes.tier[0].pax-book.route.notes.tier[0].no}} pax needed)</span>
+        </button>
+        <button class="button button-block button-outline button-positive"
+                ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
+                ng-click="createBid(1)">
+          BID AT ${{book.route.notes.tier[1].price}}
+          <span>({{book.route.notes.tier[1].pax-book.route.notes.tier[1].no}} pax needed)</span>
         </button>
       </section>
 

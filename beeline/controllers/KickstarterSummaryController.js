@@ -194,8 +194,9 @@ export default [
       return true;
     }
 
-    $scope.createBid = async function(){
+    $scope.createBid = async function(index){
       try {
+        var bidPrice = $scope.book.route.notes.tier[index].price;
         // disable the button
         $scope.waitingForPaymentResult = true;
 
@@ -229,13 +230,13 @@ export default [
 
       try {
         var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStop.id,
-                                              $scope.book.alightStop.id, $scope.book.route.notes.tier[$scope.book.bid-1].price));
+                                              $scope.book.alightStop.id, bidPrice));
         await $ionicPopup.alert({
           title: 'Success',
         })
         $scope.$apply(() => {
           $scope.book.isBid = true;
-          $scope.book.bidPrice = $scope.book.route.notes.tier[$scope.book.bid-1].price;
+          $scope.book.bidPrice = bidPrice;
         })
       }catch(err){
         await $ionicPopup.alert({
