@@ -4,6 +4,22 @@ import loadingTemplate from '../templates/loading.html';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 import assert from 'assert';
 
+var increaseBidNo = function(route, price) {
+  for (let tier of route.notes.tier) {
+    if (tier.price <= price) {
+      tier.no++;
+    }
+  }
+}
+
+var decreaseBidNo = function(route, price) {
+  for (let tier of route.notes.tier) {
+    if (tier.price <= price) {
+      tier.no--;
+    }
+  }
+}
+
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
   '$http','$cordovaGeolocation','BookingService','RoutesService','uiGmapGoogleMapApi',
@@ -237,6 +253,8 @@ export default [
         $scope.$apply(() => {
           $scope.book.isBid = true;
           $scope.book.bidPrice = bidPrice;
+          //TODO: important ! no. updated in kickstarter list however boardstop and alightstop is not updated when revisit
+          increaseBidNo($scope.book.route, bidPrice);
         })
       }catch(err){
         await $ionicPopup.alert({
@@ -260,6 +278,8 @@ export default [
         });
         $scope.$apply(() => {
           $scope.book.isBid = false;
+          //TODO: refresh the lelong routes and bids info
+          decreaseBidNo($scope.book.route, $scope.book.bidPrice);
         })
       } catch(err) {
         await $ionicPopup.alert({
