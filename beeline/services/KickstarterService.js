@@ -46,6 +46,11 @@ export default function KickstarterService($http, UserService,$q) {
       })
     },
 
+    getLelongById: async function(routeId, ignoreCache) {
+      var response = await this.getLelong(ignoreCache);
+      return response.filter(x=>x.id==routeId)[0];
+    },
+
     //user personal bid information
     getBids: function(ignoreCache) {
       if (UserService.getUser()) {

@@ -52,7 +52,7 @@ export default [
 
     $scope.book.routeId = +$stateParams.routeId;
 
-    routePromise = RoutesService.getRoute($scope.book.routeId);
+    routePromise = KickstarterService.getLelongById($scope.book.routeId);
 
     var stopOptions = {
       initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
