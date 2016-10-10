@@ -6,9 +6,9 @@ var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
 
 export default [
-  '$scope', 'UserService', '$ionicModal', '$ionicPopup', 'Legalese',
+  '$scope', 'UserService', '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading', '$state',
   function(
-    $scope, UserService, $ionicModal, $ionicPopup, Legalese) {
+    $scope, UserService, $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state) {
     $scope.data = {};
 
     // Track the login state of the user service
@@ -16,6 +16,7 @@ export default [
       return UserService.getUser();
     }, function(newUser) {
       $scope.user = newUser;
+      $scope.hasPaymentInfor = newUser.savedPaymentInfo && newUser.savedPaymentInfo.sources.data.length > 0;
     });
 
     // Map in the login items
@@ -70,5 +71,42 @@ export default [
       $scope.faqModal.destroy();
       $scope.contactUsModal.destroy();
     });
+
+    $scope.removeCard = async function() {
+      var response = await $ionicPopup.confirm({
+        title: 'Are you sure you want to remove this card?',
+      })
+
+      if (!response) return;
+      var user = $scope.user;
+      try {
+        var removeResult = await loadingSpinner(UserService.beeline({
+          method: 'DELETE',
+          url: `/users/${user.id}/creditCards/${user.savedPaymentInfo.sources.data[0].id}`,
+        }));
+
+        if (removeResult) {
+          //FIXME: old card infor flash and disapper after card is deleted
+          $scope.hasPaymentInfor = false;
+           $scope.$digest();
+          await $ionicLoading.show({
+            template: `
+            <div>Removed!</div>
+            `,
+            duration: 1000,
+          })
+          $state.transitionTo("tabs.settings");
+        }
+      }
+      catch(err) {
+        console.log(err);
+        await $ionicLoading.show({
+          template: `
+          <div> There was an error when remove the card. {{err && err.data && err.data.message}} Please try again later.</div>
+          `,
+          duration: 1000,
+        })
+      }
+    };
 
   }];

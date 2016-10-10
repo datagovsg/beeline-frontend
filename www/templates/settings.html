@@ -32,6 +32,11 @@
            ui-sref="tabs.booking-history">
           Booking History <i class="icon ion-ios-arrow-right"></i>
       </div>
+      <div ng-show="user && hasPaymentInfor" class="item item-divider">Payment Method</div>
+      <!-- TODO: click to prompt to remove card -->
+      <div ng-show="user && hasPaymentInfor" class="item" on-tap="removeCard()">
+        Credit Card  <span class="item-note">Brand {{user.savedPaymentInfo.sources.data[0].brand}} with Last 4 Digits: {{user.savedPaymentInfo.sources.data[0].last4}}</span>
+      </div>
       <div class="item item-divider">About Beeline</div>
       <ion-item ui-sref='intro'>Quick Tour</ion-item>
       <ion-item on-tap="faqModal.show()">FAQ</ion-item>

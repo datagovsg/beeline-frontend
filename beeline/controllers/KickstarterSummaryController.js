@@ -204,7 +204,7 @@ export default [
     function userHasNoCreditCard() {
       console.log("USER");
       console.log($scope.user);
-      if ($scope.user && $scope.user.savedPaymentInfo) {
+      if ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) {
         return false;
       }
       return true;
