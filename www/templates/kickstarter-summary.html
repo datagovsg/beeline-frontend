@@ -143,7 +143,10 @@
 
       <section class="item item-text-wrap continue-button-item"
                ng-if="book.notExpired && isLoggedIn && !book.isBid">
-        Please ensure that your credit card is ready for the next step in the booking process.
+        <div class="text-center">
+          <h1><fancy-price value="book.route.notes.tier[0].price"></fancy-price></h1>
+          <h2>per trip</h2>
+        </div>
         <button class="button primary-button"
                 ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
                 ng-click="createBid(0)">

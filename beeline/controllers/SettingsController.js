@@ -16,7 +16,7 @@ export default [
       return UserService.getUser();
     }, function(newUser) {
       $scope.user = newUser;
-      $scope.hasPaymentInfor = newUser.savedPaymentInfo && newUser.savedPaymentInfo.sources.data.length > 0;
+      $scope.hasPaymentInfor = newUser && newUser.savedPaymentInfo && newUser.savedPaymentInfo.sources.data.length > 0;
     });
 
     // Map in the login items
@@ -87,6 +87,7 @@ export default [
 
         if (removeResult) {
           //FIXME: old card infor flash and disapper after card is deleted
+          //FIXME: card can only be removed if no active bid made
           $scope.hasPaymentInfor = false;
            $scope.$digest();
           await $ionicLoading.show({

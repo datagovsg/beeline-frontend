@@ -5,7 +5,7 @@ import assert from 'assert';
 var transformKickstarterData = function (kickstarterRoutes) {
   for (let kickstarter of kickstarterRoutes){
     console.log(kickstarter);
-    if (kickstarter.bids.length > 0) {
+    if (kickstarter.bids && kickstarter.bids.length > 0) {
      var bidsByTier = _.groupBy(kickstarter.bids, x=>x.userOptions.price);
      console.log(kickstarter.notes.tier)
       kickstarter.notes.tier.map((tier)=>{
