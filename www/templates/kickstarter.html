@@ -11,7 +11,13 @@
                      on-refresh="refreshRoutes(true)">
       </ion-refresher>
 
-      <ion-item ng-repeat="route in data.kickstarter"
+      <!-- recently bid kickstarter -->
+      <div class="item item-divider"
+          ng-if="data.backedKickstarter.length > 0">
+        Recently Booked Routes
+      </div>
+
+      <ion-item ng-repeat="route in data.backedKickstarter"
                 ui-sref="tabs.kickstarter-summary({
                   routeId: route.id,
                   boardStop:  recentBidsById[route.id].boardStopId,
@@ -55,8 +61,11 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
-              <span class="schedule">
-                {{route.schedule}}
+              <span class="schedule" ng-if="route.daysLeft && route.daysLeft>1">
+                {{route.daysLeft}} days left to activate
+              </span>
+              <span class="schedule" ng-if="route.daysLeft && route.daysLeft==1">
+                {{route.daysLeft}} day left to activate
               </span>
             </div>
           </route-item-additional-info>
@@ -78,6 +87,83 @@
           <span>{{route.notes.tier[1].price}}</span>
         </progress>
       </ion-item>
+
+
+      <!-- available kickstarter -->
+      <div class="item item-divider"
+          ng-if="data.kickstarter.length > 0">
+        Available Routes
+      </div>
+
+      <ion-item ng-repeat="route in data.kickstarter"
+                ui-sref="tabs.kickstarter-summary({
+                  routeId: route.id
+                 })"
+                 class="item-icon-right">
+        <div class = "kickstarter-info">
+        <route-item>
+          <route-item-bus-number>
+            {{ route.label }}
+          </route-item-bus-number>
+          <route-item-description>
+            Expiry {{ route.notes.lelongExpiry | formatDateMMMdd}}
+          </route-item-description>
+          <route-item-start-time>
+            {{ route | routeStartTime | formatTime:true }}
+          </route-item-start-time>
+          <route-item-start-location>
+            {{ route.from }}
+          </route-item-start-location>
+          <route-item-end-time>
+            {{ route | routeEndTime | formatTime:true }}
+          </route-item-end-time>
+          <route-item-end-location>
+            {{ route.to }}
+          </route-item-end-location>
+          <route-item-additional-info>
+            <company-info-broker company-id="route.transportCompanyId"
+                                  company="companyInfo">
+            </company-info-broker>
+            <div class="icon-and-schedule">
+              <span class="icon-span company-logo">
+                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
+              </span>
+              <span class="schedule">
+                {{companyInfo.name}}
+              </span>
+            </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="schedule" ng-if="route.daysLeft && route.daysLeft>1">
+                {{route.daysLeft}} days left to activate
+              </span>
+              <span class="schedule" ng-if="route.daysLeft && route.daysLeft==1">
+                {{route.daysLeft}} day left to activate
+              </span>
+            </div>
+          </route-item-additional-info>
+        </route-item>
+        <div class="price">
+          <fancy-price value="route.notes.tier[0].price"></fancy-price>
+        </div>
+
+        <i class="icon ion-ios-arrow-right icon-accessory"></i>
+        </div>
+
+        <!-- TODO: show price infor in progress -->
+        <progress max={{route.notes.tier[0].pax}} value={{route.notes.tier[0].no}}>
+          <div class="progress-bar">
+              <span>{{route.notes.tier[0].price}}</span>
+          </div>
+        </progress>
+        <progress max={{route.notes.tier[1].pax}} value={{route.notes.tier[1].no}}>
+          <span>{{route.notes.tier[1].price}}</span>
+        </progress>
+      </ion-item>
+
     </ion-content>
   </ion-content>
 </ion-view>
