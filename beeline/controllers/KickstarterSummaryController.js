@@ -75,6 +75,8 @@ export default [
       initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
     };
     routePromise.then((route) => {
+      console.log("ROUTEBYID");
+      console.log(route);
       $scope.book.route = route;
       $scope.book.bidOptions = $scope.book.route.notes.tier;
       computeStops(stopOptions);

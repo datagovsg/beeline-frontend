@@ -25,6 +25,18 @@ var transformKickstarterData = function (kickstarterRoutes) {
     kickstarter.notes.tier = _.orderBy(kickstarter.notes.tier, x=>x.price, "desc");
     //if sb. commit $8, also commit $5
     kickstarter.notes.tier[1].no += kickstarter.notes.tier[0].no;
+
+    kickstarter.isValid = true;
+    if (kickstarter.notes && kickstarter.notes.lelongExpiry) {
+      var now = new Date().getTime();
+      var expiryTime = new Date(kickstarter.notes.lelongExpiry).getTime();
+      if (now >= expiryTime) {
+        kickstarter.isValid = false;
+      } else{
+        var day = 1000  * 60 * 60 * 24;
+        kickstarter.daysLeft =  Math.ceil((expiryTime - now)/day);
+      }
+    }
   }
   return kickstarterRoutes;
 }
@@ -42,7 +54,9 @@ export default function KickstarterService($http, UserService,$q) {
         method: 'GET',
         url: '/custom/lelong/status',
       }).then((response)=>{
-        return transformKickstarterData(response.data);
+        return transformKickstarterData(response.data).filter((kickstarter)=>{
+          return kickstarter.isValid;
+        });
       })
     },
 

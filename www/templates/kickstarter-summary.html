@@ -45,8 +45,11 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
-              <span class="schedule">
-                {{book.route.schedule}}
+              <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
+                {{book.route.daysLeft}} days left to activate
+              </span>
+              <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
+                {{book.route.daysLeft}} day left to activate
               </span>
             </div>
           </route-item-additional-info>
