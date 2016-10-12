@@ -227,19 +227,19 @@ export default function($stateProvider, $urlRouterProvider) {
       hideTabs: true,
     }
   })
-  // 
-  // .state('tabs.kickstarter-summary', {
-  //   url: '/kickstarter/:routeId/summary?boardStop&alightStop',
-  //   views: {
-  //     'tab-kickstarter': {
-  //       templateUrl: 'templates/kickstarter-summary.html',
-  //       controller: 'KickstarterSummaryController'
-  //     }
-  //   },
-  //   data: {
-  //     hideTabs: true,
-  //   }
-  // })
+  
+  .state('tabs.kickstarter-summary', {
+    url: '/kickstarter/:routeId/summary?boardStop&alightStop',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-summary.html',
+        controller: 'KickstarterSummaryController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
 
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Settings Tab
