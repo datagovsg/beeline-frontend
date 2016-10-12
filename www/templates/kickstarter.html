@@ -1,4 +1,4 @@
-<ion-view class="kickstarter-list" view-title="Kickstarter">
+<ion-view class="kickstarter-list" view-title="Kickstart Routes">
   <ion-content scroll="false">
     <div class="item item-text-wrap" ng-if="error">
       <i class="icon ion-alert-circled"></i>
@@ -14,7 +14,7 @@
       <!-- recently bid kickstarter -->
       <div class="item item-divider"
           ng-if="data.backedKickstarter.length > 0">
-        Recently Booked Routes
+        Kickstart routes you backed
       </div>
 
       <ion-item ng-repeat="route in data.backedKickstarter"
@@ -92,7 +92,7 @@
       <!-- available kickstarter -->
       <div class="item item-divider"
           ng-if="data.kickstarter.length > 0">
-        Available Routes
+        Kickstart Routes
       </div>
 
       <ion-item ng-repeat="route in data.kickstarter"
