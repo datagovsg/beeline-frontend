@@ -12,7 +12,7 @@
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
 
       <div class="route-info item">
-        <route-item hide-additional-info="true">
+        <route-item>
           <route-item-bus-number>
             {{ book.route.label }}
           </route-item-bus-number>
@@ -28,6 +28,28 @@
           <route-item-end-location>
             {{ book.route.to }}
           </route-item-end-location>
+          <route-item-additional-info>
+            <company-info-broker company-id="book.route.transportCompanyId"
+                                  company="companyInfo">
+            </company-info-broker>
+            <div class="icon-and-schedule">
+              <span class="icon-span company-logo">
+                <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
+              </span>
+              <span class="schedule">
+                {{companyInfo.name}}
+              </span>
+            </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="schedule">
+                {{book.route.schedule}}
+              </span>
+            </div>
+          </route-item-additional-info>
         </route-item>
       </div>
 

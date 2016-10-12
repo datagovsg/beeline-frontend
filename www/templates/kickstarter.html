@@ -1,4 +1,4 @@
-<ion-view class="routes-list" view-title="Kickstarter">
+<ion-view class="kickstarter-list" view-title="Kickstarter">
   <ion-content scroll="false">
     <div class="item item-text-wrap" ng-if="error">
       <i class="icon ion-alert-circled"></i>
@@ -18,6 +18,7 @@
                   alightStop: recentBidsById[route.id].alightStopId
                  })"
                  class="item-icon-right">
+        <div class = "kickstarter-info">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
@@ -37,7 +38,6 @@
           <route-item-end-location>
             {{ route.to }}
           </route-item-end-location>
-
           <route-item-additional-info>
             <company-info-broker company-id="route.transportCompanyId"
                                   company="companyInfo">
@@ -61,10 +61,22 @@
             </div>
           </route-item-additional-info>
         </route-item>
+        <div class="price">
+          <fancy-price value="route.notes.tier[0].price"></fancy-price>
+        </div>
+
         <i class="icon ion-ios-arrow-right icon-accessory"></i>
+        </div>
+
         <!-- TODO: show price infor in progress -->
-        <progress max={{route.notes.tier[0].pax}} value={{route.notes.tier[0].no}}><span>{{route.notes.tier[0].price}}</span></progress>
-        <progress max={{route.notes.tier[1].pax}} value={{route.notes.tier[1].no}}><span>{{route.notes.tier[1].price}}</span></progress>
+        <progress max={{route.notes.tier[0].pax}} value={{route.notes.tier[0].no}}>
+          <div class="progress-bar">
+              <span>{{route.notes.tier[0].price}}</span>
+          </div>
+        </progress>
+        <progress max={{route.notes.tier[1].pax}} value={{route.notes.tier[1].no}}>
+          <span>{{route.notes.tier[1].price}}</span>
+        </progress>
       </ion-item>
     </ion-content>
   </ion-content>
