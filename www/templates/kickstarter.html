@@ -18,7 +18,7 @@
       </div>
 
       <ion-item ng-repeat="route in data.backedKickstarter"
-                ui-sref="tabs.kickstarter-summary({
+                ui-sref="tabs.kickstarter-detail({
                   routeId: route.id,
                   boardStop:  recentBidsById[route.id].boardStopId,
                   alightStop: recentBidsById[route.id].alightStopId
@@ -30,7 +30,7 @@
             {{ route.label }}
           </route-item-bus-number>
           <route-item-description>
-            Expiry {{ route.notes.lelongExpiry | formatDateMMMdd}}
+            {{ route.notes.description }}
           </route-item-description>
           <route-item-start-time>
             {{ route | routeStartTime | formatTime:true }}
@@ -96,7 +96,7 @@
       </div>
 
       <ion-item ng-repeat="route in data.kickstarter"
-                ui-sref="tabs.kickstarter-summary({
+                ui-sref="tabs.kickstarter-detail({
                   routeId: route.id
                  })"
                  class="item-icon-right">
@@ -106,7 +106,7 @@
             {{ route.label }}
           </route-item-bus-number>
           <route-item-description>
-            Expiry {{ route.notes.lelongExpiry | formatDateMMMdd}}
+            {{ route.notes.description }}
           </route-item-description>
           <route-item-start-time>
             {{ route | routeStartTime | formatTime:true }}

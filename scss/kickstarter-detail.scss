@@ -1,4 +1,4 @@
-#pg_kickstarter {
+#pg_kickstarter_detail {
   $button-bar-height: 85px;
   $list-offset: 10px;
 
@@ -8,7 +8,7 @@
       height: 100%;
     }
 
-    .route-info {
+    .kickstarter-info {
       @include flex-shrink;
 
       display: flex;

@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter" view-title="Kickstarter Route Details"
+<ion-view id="pg_kickstarter_detail" view-title="Kickstarter Route Details"
   hide-back-button="true" can-swipe-back="false">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
@@ -11,7 +11,7 @@
     <form class="stops-form" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
 
-      <div class="route-info item">
+      <div class="kickstarter-info item">
         <route-item>
           <route-item-bus-number>
             {{ book.route.label }}
@@ -54,6 +54,9 @@
             </div>
           </route-item-additional-info>
         </route-item>
+        <div class="price">
+          <fancy-price value="book.route.notes.tier[0].price"></fancy-price>
+        </div>
       </div>
 
       <!-- contains the map, the stop selectors
