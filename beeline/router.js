@@ -227,9 +227,9 @@ export default function($stateProvider, $urlRouterProvider) {
       hideTabs: true,
     }
   })
-  
+
   .state('tabs.kickstarter-summary', {
-    url: '/kickstarter/:routeId/summary?boardStop&alightStop',
+    url: '/kickstarter/:routeId/summary?boardStop&alightStop&bidPrice',
     views: {
       'tab-kickstarter': {
         templateUrl: 'templates/kickstarter-summary.html',

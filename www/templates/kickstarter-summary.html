@@ -1,0 +1,115 @@
+<ion-view id="pg_summary" view-title="Kickstart Route Summary"
+  hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+       ui-sref="tabs.kickstarter-detail">
+       <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+
+    <section class="card">
+      <h3 class="item item-divider">
+        Price Calculator
+      </h3>
+      <table class="price-table totals booking-info">
+        <tbody>
+          <tr>
+            <td>No. of Trips</td>
+            <td>{{priceInfo.tripCount || 0}}</td>
+          </tr>
+          <tr>
+            <td>Price per Trip</td>
+            <td>${{priceInfo.bidPrice | number:2}}</td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td>${{priceInfo.totalDue | number:2}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3 class="item item-divider">
+        Joining this route
+      </h3>
+      <route-item class="item" hide-additional-info="true">
+        <route-item-bus-number>
+          {{ book.route.label }}
+        </route-item-bus-number>
+        <route-item-start-time>
+          {{book.boardStop.time | formatTime:true}}
+        </route-item-start-time>
+        <route-item-start-location>
+          <h4>Pick-up at</h4>
+          {{book.boardStop.stop.description}}<br/>
+          {{book.boardStop.stop.road}}<br/>
+          <br/>
+        </route-item-start-location>
+        <route-item-end-time>
+          {{book.alightStop.time | formatTime:true}}
+        </route-item-end-time>
+        <route-item-end-location>
+          <h4>Drop-off at</h4>
+          {{book.alightStop.stop.description}}<br/>
+          {{book.alightStop.stop.road}}<br/>
+          <br/>
+        </route-item-end-location>
+      </route-item>
+    </section>
+
+
+    <section class="card">
+      <h3 class="item item-divider">
+        Dates
+      </h3>
+      <table class="price-table prices booking-info" ng-if="book.route.trips.length > 0" >
+        <thead>
+          <tr>
+            <th>Selected Dates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="pinfo in book.route.trips">
+            <td>
+              {{pinfo.date | date:'dd MMM (EEE)'}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3 class="item item-divider">
+        Terms and Conditions of Booking
+      </h3>
+      <more-info company-id="book.route.transportCompanyId"></more-info>
+      <ion-checkbox class="item item-text-wrap" ng-model="disp.termsChecked">
+        Yes, I have read and agree to the Terms and Conditions of booking.
+      </ion-checkbox>
+    </section>
+
+    <section class="item item-text-wrap"
+             ng-if="!isLoggedIn">
+      You are not logged in. Please enter your mobile number to complete booking.
+
+      <button class="button primary-button"
+              ng-click="login()"
+              ng-disabled="!disp.termsChecked || waitingForPaymentResult">
+        Log In
+      </button>
+    </section>
+
+    <section class="item item-text-wrap"
+             ng-if="isLoggedIn">
+      Please ensure that your credit card is ready for the next step in the booking process.
+
+      <button class="button primary-button"
+              ng-click="pay()"
+              ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
+        Add Card Details
+      </button>
+    </section>
+  </ion-content>
+</ion-view>

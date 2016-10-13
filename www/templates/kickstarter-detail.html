@@ -161,43 +161,43 @@
 
 
       <section class="item item-text-wrap continue-button-item"
-               ng-if="book.notExpired && !isLoggedIn">
-        You are not logged in. Please enter your mobile number to complete bidding.
-
-        <button class="button primary-button"
-                ng-click="login()">
-          Log In
-        </button>
-      </section>
-
-      <section class="item item-text-wrap continue-button-item"
-               ng-if="book.notExpired && isLoggedIn && !book.isBid">
+               ng-if="book.notExpired  && !book.isBid">
         <div class="text-center">
           <h1><fancy-price value="book.route.notes.tier[0].price"></fancy-price></h1>
           <h2>per trip</h2>
         </div>
         <button class="button primary-button"
                 ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
-                ng-click="createBid(0)">
+                ui-sref="tabs.kickstarter-summary({
+                          routeId: book.routeId,
+                          boardStop: book.boardStop.id,
+                          alightStop: book.alightStop.id,
+                          bidPrice: book.route.notes.tier[0].price
+                        })">
           Bid at ${{book.route.notes.tier[0].price}}
           <span>({{book.route.notes.tier[0].pax-book.route.notes.tier[0].no}} pax needed)</span>
         </button>
         <button class="button button-block button-outline button-positive"
                 ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
-                ng-click="createBid(1)">
+                ui-sref="tabs.kickstarter-summary({
+                          routeId: book.routeId,
+                          boardStop: book.boardStop.id,
+                          alightStop: book.alightStop.id,
+                          bidPrice: book.route.notes.tier[1].price
+                        })">
           BID AT ${{book.route.notes.tier[1].price}}
           <span>({{book.route.notes.tier[1].pax-book.route.notes.tier[1].no}} pax needed)</span>
         </button>
       </section>
 
-      <section class="item item-text-wrap continue-button-item"
+      <!-- <section class="item item-text-wrap continue-button-item"
                ng-if="book.notExpired && isLoggedIn && book.isBid">
 
         <button class="button primary-button"
                 ng-click="deleteBid()">
           Delete Bid
         </button>
-      </section>
+      </section> -->
 
     </form> <!-- flex-col -->
   </ion-content>

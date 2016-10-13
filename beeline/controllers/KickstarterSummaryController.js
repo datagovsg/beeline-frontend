@@ -1,0 +1,161 @@
+import {NetworkError} from '../shared/errors';
+import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
+import loadingTemplate from '../templates/loading.html';
+import assert from 'assert';
+
+
+export default [
+  '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal','$http',
+  'BookingService','RoutesService','loadingSpinner','UserService','$ionicLoading',
+  '$ionicPopup','KickstarterService',
+  function(
+    $rootScope,$scope,$interpolate,$state,$stateParams,$ionicModal,$http,
+    BookingService,RoutesService,loadingSpinner,UserService,$ionicLoading,
+    $ionicPopup,KickstarterService
+  ) {
+    // Default settings for various info used in the page
+    $scope.book = {
+      routeId: null,
+      boardStopId: null,
+      alightStop: null,
+      route: null,
+      notExpired: true,
+      isBid: null,
+    };
+    $scope.priceInfo = {
+      tripCount: null,
+      bidPrice: null,
+      totalDue: null
+    }
+
+
+    $scope.book.routeId = +$stateParams.routeId;
+    $scope.book.boardStopId = +$stateParams.boardStop;
+    $scope.book.alightStopId = +$stateParams.alightStop;
+    $scope.priceInfo.bidPrice = +$stateParams.bidPrice;
+
+    var routePromise;
+    routePromise = KickstarterService.getLelongById($scope.book.routeId);
+
+    routePromise.then((route) => {
+
+      $scope.book.route = route;
+      $scope.book.boardStop = route.trips[0]
+            .tripStops
+            .filter(ts => $scope.book.boardStopId == ts.stop.id)[0];
+      $scope.book.alightStop =route.trips[0]
+            .tripStops
+            .filter(ts => $scope.book.alightStopId == ts.stop.id)[0];
+
+      if (route.notes && route.notes.lelongExpiry) {
+       var now = new Date().getTime();
+       var expiryTime = new Date(route.notes.lelongExpiry).getTime();
+       if (now > expiryTime) {
+         $scope.book.notExpired = false;
+       }
+      }
+      $scope.priceInfo.tripCount = $scope.book.route.trips.length || 0;
+      $scope.priceInfo.totalDue = $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount;
+      console.log($scope.priceInfo.totalDue);
+      console.log("ROUTE")
+      console.log(route);
+      $scope.$watch('priceInfo.bidPrice',(price)=>{
+        $scope.priceInfo.tripCount = $scope.book.route.trips.length || 0;
+        $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount;
+      })
+    });
+
+
+    $scope.$watch(() => UserService.getUser(), async(user) => {
+      $scope.isLoggedIn = user ? true : false;
+      $scope.user = user;
+      if ($scope.isLoggedIn) {
+        $scope.book.isBid = await KickstarterService.isBid($scope.book.routeId);
+        console.log("ISBID");
+        console.log($scope.book.isBid);
+        if ($scope.book.isBid) {
+          const bidInfo =  await KickstarterService.getBidInfo($scope.book.routeId);
+          console.log("BIDINFO");
+          console.log(bidInfo);
+          $scope.priceInfo.bidPrice = bidInfo[0].bid.userOptions.price
+        }
+      }
+    });
+
+
+    $scope.login = function () {
+      UserService.promptLogIn()
+    }
+
+    function userHasNoCreditCard() {
+      console.log("USER");
+      console.log($scope.user);
+      if ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) {
+        return false;
+      }
+      return true;
+    }
+
+    $scope.createBid = async function(index){
+      try {
+        var bidPrice = $scope.book.route.notes.tier[index].price;
+        // disable the button
+        $scope.waitingForPaymentResult = true;
+
+        if (userHasNoCreditCard()) {
+          const stripeToken = await StripeService.promptForToken();
+          if (!stripeToken){
+            throw new Error("There was some difficulty contacting the payment gateway." +
+              " Please check your Internet connection");
+            return;
+          }
+
+          if (!('id' in stripeToken)) {
+            alert("There was an error contacting Stripe");
+            return;
+          }
+          const user = $scope.user;
+
+          var result = await loadingSpinner(UserService.beeline({
+            method: 'POST',
+            url: `/users/${user.id}/creditCards`,
+            data: {
+              stripeToken: stripeToken.id
+            },
+          }));
+        }
+
+      } catch (err) {
+        console.log(err);
+        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
+      }
+
+      try {
+        var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStop.id,
+                                              $scope.book.alightStop.id, bidPrice));
+        await $ionicPopup.alert({
+          title: 'Success',
+        })
+        $scope.$apply(() => {
+          $scope.book.isBid = true;
+          $scope.book.bidPrice = bidPrice;
+          //TODO: important ! no. updated in kickstarter list however boardstop and alightstop is not updated when revisit
+          increaseBidNo($scope.book.route, bidPrice);
+        })
+      }catch(err){
+        await $ionicPopup.alert({
+          title: 'Error processing bid',
+          template: err.data.message,
+        })
+      }finally {
+        $ionicLoading.hide();
+        $scope.$apply(() => {
+          $scope.waitingForPaymentResult = false;
+        })
+      }
+    }
+
+
+  }
+];
+//
