@@ -3,6 +3,13 @@ import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/
 import loadingTemplate from '../templates/loading.html';
 import assert from 'assert';
 
+var increaseBidNo = function(route, price) {
+  for (let tier of route.notes.tier) {
+    if (tier.price <= price) {
+      tier.no++;
+    }
+  }
+}
 
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal','$http',
@@ -56,9 +63,6 @@ export default [
       }
       $scope.priceInfo.tripCount = $scope.book.route.trips.length || 0;
       $scope.priceInfo.totalDue = $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount;
-      console.log($scope.priceInfo.totalDue);
-      console.log("ROUTE")
-      console.log(route);
       $scope.$watch('priceInfo.bidPrice',(price)=>{
         $scope.priceInfo.tripCount = $scope.book.route.trips.length || 0;
         $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount;
@@ -101,9 +105,9 @@ export default [
       return true;
     }
 
-    $scope.createBid = async function(index){
+    $scope.createBid = async function(){
       try {
-        var bidPrice = $scope.book.route.notes.tier[index].price;
+        var bidPrice = $scope.priceInfo.bidPrice;
         // disable the button
         $scope.waitingForPaymentResult = true;
 
@@ -136,21 +140,22 @@ export default [
       }
 
       try {
-        var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStop.id,
-                                              $scope.book.alightStop.id, bidPrice));
+        var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStopId,
+                                              $scope.book.alightStopId, bidPrice));
         await $ionicPopup.alert({
           title: 'Success',
         })
         $scope.$apply(() => {
           $scope.book.isBid = true;
-          $scope.book.bidPrice = bidPrice;
           //TODO: important ! no. updated in kickstarter list however boardstop and alightstop is not updated when revisit
           increaseBidNo($scope.book.route, bidPrice);
         })
       }catch(err){
         await $ionicPopup.alert({
           title: 'Error processing bid',
-          template: err.data.message,
+          template: `
+          <div> There was an error creating the bid. {{err && err.data && err.data.message}} Please try again later.</div>
+          `,
         })
       }finally {
         $ionicLoading.hide();

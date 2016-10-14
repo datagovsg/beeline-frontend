@@ -1,13 +1,5 @@
 <ion-view id="pg_summary" view-title="Kickstart Route Summary"
-  hide-back-button="true" can-swipe-back="false">
-  <ion-nav-buttons side="left">
-    <button class="button button-clear back-button"
-       ui-sref="tabs.kickstarter-detail({
-         routeId: book.routeId,
-        })">
-       <i class="icon ion-ios-arrow-back"></i>
-    </button>
-  </ion-nav-buttons>
+  hide-back-button="false" can-swipe-back="false">
   <ion-content>
 
     <section class="card">
@@ -87,7 +79,7 @@
                          company="book.companyInfo">
     </company-info-broker>
 
-    <section class="card">
+    <section class="card" ng-if="!isLoggedIn || !book.isBid">
       <div class="checkTerms">
           Please read {{book.companyInfo.name}} <a ng-click="showTerms()">Terms and Conditions</a>.
         <ion-checkbox ng-model="book.acceptPolicy">I read and agree to the above terms and would like to proceed using Beeline.
@@ -107,12 +99,12 @@
     </section>
 
     <section class="item item-text-wrap"
-             ng-if="isLoggedIn">
+             ng-if="!isLoggedIn || !book.isBid">
       Please ensure that your credit card is ready for the next step in the booking process.
 
       <button class="button primary-button"
-              ng-click="pay()"
-              ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
+              ng-click="createBid()"
+              ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
         Add Card Details
       </button>
     </section>

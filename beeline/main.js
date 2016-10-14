@@ -106,6 +106,8 @@ var app = angular.module('beeline', [
   $ionicConfigProvider.tabs.style('standard');
   $ionicConfigProvider.navBar.alignTitle('center');
   $ionicConfigProvider.scrolling.jsScrolling(false);
+  //kickstart-summary use default history stack
+  $ionicConfigProvider.backButton.previousTitleText(false).text(' ');
 })
 .config(function ($httpProvider) {
   $httpProvider.useApplyAsync(true);

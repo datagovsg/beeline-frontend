@@ -18,10 +18,11 @@
       </div>
 
       <ion-item ng-repeat="route in data.backedKickstarter"
-                ui-sref="tabs.kickstarter-detail({
+                ui-sref="tabs.kickstarter-summary({
                   routeId: route.id,
                   boardStop:  recentBidsById[route.id].boardStopId,
-                  alightStop: recentBidsById[route.id].alightStopId
+                  alightStop: recentBidsById[route.id].alightStopId,
+                  bidPrice: recentBidsById[route.id].bidPrice
                  })"
                  class="item-icon-right">
         <div class = "kickstarter-info">
