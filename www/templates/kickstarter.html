@@ -1,4 +1,4 @@
-<ion-view class="kickstarter-list" view-title="Kickstart Routes">
+<ion-view class="kickstarter-list" view-title="Kickstart Routes" hide-back-button="true">
   <ion-content scroll="false">
     <div class="item item-text-wrap" ng-if="error">
       <i class="icon ion-alert-circled"></i>
@@ -16,15 +16,12 @@
           ng-if="data.backedKickstarter.length > 0">
         Kickstart routes you backed
       </div>
-
-      <ion-item ng-repeat="route in data.backedKickstarter"
-                ui-sref="tabs.kickstarter-summary({
-                  routeId: route.id,
-                  boardStop:  recentBidsById[route.id].boardStopId,
-                  alightStop: recentBidsById[route.id].alightStopId,
-                  bidPrice: recentBidsById[route.id].bidPrice
-                 })"
-                 class="item-icon-right">
+      
+       <ion-item ng-repeat="route in data.backedKickstarter"
+                 ui-sref="tabs.kickstarter-commit({
+                   routeId: route.id
+                  })"
+                  class="item-icon-right">
         <div class = "kickstarter-info">
         <route-item>
           <route-item-bus-number>

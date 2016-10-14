@@ -144,11 +144,6 @@
         </bus-stop-selector>
       </ion-list>
 
-
-      <div class="item item-text-wrap continue-button-item" ng-if="isLoggedIn && book.isBid">
-        You have already bid this kickstarter route. And the price you committed is ${{book.bidPrice}}
-      </div>
-
       <!-- TODO: if user bid kickstarter and it expiries must show in the list!-->
       <section class="item item-text-wrap continue-button-item"
                ng-if="!book.notExpired">
@@ -161,7 +156,7 @@
 
 
       <section class="item item-text-wrap continue-button-item"
-               ng-if="book.notExpired  && !book.isBid">
+               ng-if="book.notExpired">
         <div class="text-center">
           <h1><fancy-price value="book.route.notes.tier[0].price"></fancy-price></h1>
           <h2>per trip</h2>

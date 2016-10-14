@@ -102,7 +102,7 @@ export default function KickstarterService($http, UserService,$q) {
       var bids = await this.getBids(ignoreCache);
       assert(bids);
       var info =bids.filter(x=>{return x.id==routeId});
-      return info;
+      return transformKickstarterData(info);
     },
 
     createBid: async function(route, boardStopId, alightStopId,bidPrice) {

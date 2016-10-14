@@ -241,6 +241,19 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tabs.kickstarter-commit', {
+    url: '/kickstarter/:routeId/commit',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-commit.html',
+        controller: 'KickstarterCommitController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Settings Tab
   // ////////////////////////////////////////////////////////////////////////////

@@ -150,6 +150,7 @@ export default [
           //TODO: important ! no. updated in kickstarter list however boardstop and alightstop is not updated when revisit
           increaseBidNo($scope.book.route, bidPrice);
         })
+        $state.go('tabs.kickstarter-commit', { routeId: $scope.book.routeId});
       }catch(err){
         await $ionicPopup.alert({
           title: 'Error processing bid',
@@ -157,6 +158,7 @@ export default [
           <div> There was an error creating the bid. {{err && err.data && err.data.message}} Please try again later.</div>
           `,
         })
+        $state.go('tabs.kickstarter');
       }finally {
         $ionicLoading.hide();
         $scope.$apply(() => {

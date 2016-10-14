@@ -41,7 +41,6 @@ export default [
       route: null,
       bid: null,
       calculatedAmount: '',
-      isBid: false,
       bidPrice: null,
       notExpired: true
     };
@@ -173,123 +172,25 @@ export default [
       }
     }
 
-    $scope.$watch(() => UserService.getUser(), async(user) => {
-      $scope.isLoggedIn = user ? true : false;
-      $scope.user = user;
-      if ($scope.isLoggedIn) {
-        $scope.book.isBid = await KickstarterService.isBid($scope.book.routeId);
-        console.log("ISBID");
-        console.log($scope.book.isBid);
-        if ($scope.book.isBid) {
-          const bidInfo =  await KickstarterService.getBidInfo($scope.book.routeId);
-          console.log("BIDINFO");
-          console.log(bidInfo);
-          $scope.book.bidPrice = bidInfo[0].bid.userOptions.price
-        }
-      }
-    })
-
-    $scope.login = function () {
-      UserService.promptLogIn()
-    }
-
-    $scope.$watch('book.bid',(bid)=>{
-      if (bid && $scope.book.route && $scope.book.route.notes &&  $scope.book.route.notes.tier) {
-        console.log("ROUTE");
-        console.log($scope.book.route.trips)
-        console.log(bid);
-        $scope.book.calculatedAmount = $scope.book.route.notes.tier[bid-1].price * 5;
-        console.log($scope.book.calculatedAmount);
-      }
-    })
-
-    function userHasNoCreditCard() {
-      console.log("USER");
-      console.log($scope.user);
-      if ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) {
-        return false;
-      }
-      return true;
-    }
-
-    $scope.createBid = async function(index){
-      try {
-        var bidPrice = $scope.book.route.notes.tier[index].price;
-        // disable the button
-        $scope.waitingForPaymentResult = true;
-
-        if (userHasNoCreditCard()) {
-          const stripeToken = await StripeService.promptForToken();
-          if (!stripeToken){
-            throw new Error("There was some difficulty contacting the payment gateway." +
-              " Please check your Internet connection");
-            return;
-          }
-
-          if (!('id' in stripeToken)) {
-            alert("There was an error contacting Stripe");
-            return;
-          }
-          const user = $scope.user;
-
-          var result = await loadingSpinner(UserService.beeline({
-            method: 'POST',
-            url: `/users/${user.id}/creditCards`,
-            data: {
-              stripeToken: stripeToken.id
-            },
-          }));
-        }
-
-      } catch (err) {
-        console.log(err);
-        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
-      }
-
-      try {
-        var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStop.id,
-                                              $scope.book.alightStop.id, bidPrice));
-        await $ionicPopup.alert({
-          title: 'Success',
-        })
-        $scope.$apply(() => {
-          $scope.book.isBid = true;
-          $scope.book.bidPrice = bidPrice;
-          //TODO: important ! no. updated in kickstarter list however boardstop and alightstop is not updated when revisit
-          increaseBidNo($scope.book.route, bidPrice);
-        })
-      }catch(err){
-        await $ionicPopup.alert({
-          title: 'Error processing bid',
-          template: err.data.message,
-        })
-      }finally {
-        $ionicLoading.hide();
-        $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
-        })
-      }
-    }
-
-    $scope.deleteBid = async function(){
-      try {
-        await loadingSpinner(KickstarterService.deleteBid($scope.book.routeId));
-
-        await $ionicPopup.alert({
-          title: 'Deleted',
-        });
-        $scope.$apply(() => {
-          $scope.book.isBid = false;
-          //TODO: refresh the lelong routes and bids info
-          decreaseBidNo($scope.book.route, $scope.book.bidPrice);
-        })
-      } catch(err) {
-        await $ionicPopup.alert({
-          title: 'Error processing delete',
-          template: err.data.message,
-        })
-      }
-    }
+    // $scope.deleteBid = async function(){
+    //   try {
+    //     await loadingSpinner(KickstarterService.deleteBid($scope.book.routeId));
+    //
+    //     await $ionicPopup.alert({
+    //       title: 'Deleted',
+    //     });
+    //     $scope.$apply(() => {
+    //       $scope.book.isBid = false;
+    //       //TODO: refresh the lelong routes and bids info
+    //       decreaseBidNo($scope.book.route, $scope.book.bidPrice);
+    //     })
+    //   } catch(err) {
+    //     await $ionicPopup.alert({
+    //       title: 'Error processing delete',
+    //       template: err.data.message,
+    //     })
+    //   }
+    // }
   }
 ];
 //
