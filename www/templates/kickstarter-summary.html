@@ -1,4 +1,4 @@
-<ion-view id="pg_summary" view-title="Kickstart Route Summary"
+<ion-view id="pg_kickstarter_summary" view-title="Kickstart Route Summary"
   hide-back-button="false" can-swipe-back="false">
   <ion-content>
 
@@ -6,22 +6,24 @@
       <h3 class="item item-divider">
         Price Calculator
       </h3>
-      <table class="item price-table totals booking-info">
-        <tbody>
-          <tr>
-            <td>No. of Trips</td>
-            <td>{{priceInfo.tripCount || 0}}</td>
-          </tr>
-          <tr>
-            <td>Price per Trip</td>
-            <td>${{priceInfo.bidPrice | number:2}}</td>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td>${{priceInfo.totalDue | number:2}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="item">
+        <table class="price-table booking-info">
+
+            <tr>
+              <td><b>No. of Trips</b></td>
+              <td>{{priceInfo.tripCount || 0}}</td>
+            </tr>
+            <tr>
+              <td><b>Price per Trip</b></td>
+              <td>${{priceInfo.bidPrice | number:2}}</td>
+            </tr>
+            <tr>
+              <th><b>Total</b></th>
+              <th>${{priceInfo.totalDue | number:2}}</th>
+            </tr>
+        </table>
+      </div>
+
     </section>
 
     <section class="card">
@@ -60,7 +62,7 @@
       </h3>
       <div class="item"  ng-if="priceInfo.tripCount > 0">
         <div><b>{{priceInfo.tripCount}} day(s)</b> were selected.</div>
-        <table class="price-table prices booking-info" >
+        <table class="price-table booking-info" >
           <thead>
             <tr>
               <th>Dates</th>
@@ -84,9 +86,10 @@
     </company-info-broker>
 
     <section class="card" ng-if="!isLoggedIn || !book.isBid">
-      <div class="checkTerms">
-          Please read {{book.companyInfo.name}} <a ng-click="showTerms()">Terms and Conditions</a>.
-        <ion-checkbox ng-model="book.acceptPolicy">I read and agree to the above terms and would like to proceed using Beeline.
+      <div class="item item-text-wrap">
+        Please read {{book.companyInfo.name}} <a ng-click="showTerms()">Terms and Conditions</a>.
+        <ion-checkbox  ng-model="book.acceptPolicy">
+          I read and agree to the above terms and would like to proceed using Beeline.
         </ion-checkbox>
       </div>
     </section>
@@ -103,7 +106,7 @@
     </section>
 
     <section class="item item-text-wrap"
-             ng-if="!isLoggedIn || !book.isBid">
+             ng-if="isLoggedIn && !book.isBid">
       Please ensure that your credit card is ready for the next step in the booking process.
 
       <button class="button primary-button"
