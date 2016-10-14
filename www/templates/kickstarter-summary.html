@@ -6,7 +6,7 @@
       <h3 class="item item-divider">
         Price Calculator
       </h3>
-      <table class="price-table totals booking-info">
+      <table class="item price-table totals booking-info">
         <tbody>
           <tr>
             <td>No. of Trips</td>
@@ -56,22 +56,26 @@
 
     <section class="card">
       <h3 class="item item-divider">
-        Dates
+        Trip Dates
       </h3>
-      <table class="price-table prices booking-info" ng-if="book.route.trips.length > 0" >
-        <thead>
-          <tr>
-            <th>Selected Dates</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="pinfo in book.route.trips">
-            <td>
-              {{pinfo.date | date:'dd MMM (EEE)'}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="item"  ng-if="priceInfo.tripCount > 0">
+        <div><b>{{priceInfo.tripCount}} day(s)</b> were selected.</div>
+        <table class="price-table prices booking-info" >
+          <thead>
+            <tr>
+              <th>Dates</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="pinfo in book.route.trips">
+              <td>
+                {{pinfo.date | date:'dd MMM (EEE)'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </section>
 
 
