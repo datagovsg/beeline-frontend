@@ -7,11 +7,11 @@ import assert from 'assert';
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal','$http',
   'BookingService','RoutesService','loadingSpinner','UserService','$ionicLoading',
-  '$ionicPopup','KickstarterService',
+  '$ionicPopup','KickstarterService','CompanyService',
   function(
     $rootScope,$scope,$interpolate,$state,$stateParams,$ionicModal,$http,
     BookingService,RoutesService,loadingSpinner,UserService,$ionicLoading,
-    $ionicPopup,KickstarterService
+    $ionicPopup,KickstarterService,CompanyService
   ) {
     // Default settings for various info used in the page
     $scope.book = {
@@ -81,6 +81,11 @@ export default [
         }
       }
     });
+
+    $scope.showTerms = async () => {
+      if (!$scope.book.route.transportCompanyId) return;
+      await CompanyService.showTerms($scope.book.route.transportCompanyId);
+    }
 
 
     $scope.login = function () {

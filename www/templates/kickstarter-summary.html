@@ -1,8 +1,10 @@
 <ion-view id="pg_summary" view-title="Kickstart Route Summary"
-  hide-back-button="true">
+  hide-back-button="true" can-swipe-back="false">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
-       ui-sref="tabs.kickstarter-detail">
+       ui-sref="tabs.kickstarter-detail({
+         routeId: book.routeId,
+        })">
        <i class="icon ion-ios-arrow-back"></i>
     </button>
   </ion-nav-buttons>
@@ -80,15 +82,16 @@
       </table>
     </section>
 
-    <section class="card">
-      <h3 class="item item-divider">
-        Terms and Conditions of Booking
-      </h3>
-      <more-info company-id="book.route.transportCompanyId"></more-info>
-      <ion-checkbox class="item item-text-wrap" ng-model="disp.termsChecked">
-        Yes, I have read and agree to the Terms and Conditions of booking.
+
+    <company-info-broker company-id="book.route.transportCompanyId"
+                         company="book.companyInfo">
+    </company-info-broker>
+
+    <div class="checkTerms">
+        Please read {{book.companyInfo.name}} <a ng-click="showTermsAndConditions()">Terms and Conditions</a>.
+      <ion-checkbox ng-model="book.acceptPolicy">I read and agree to the above terms and would like to proceed using Beeline.
       </ion-checkbox>
-    </section>
+    </div>
 
     <section class="item item-text-wrap"
              ng-if="!isLoggedIn">
@@ -96,7 +99,7 @@
 
       <button class="button primary-button"
               ng-click="login()"
-              ng-disabled="!disp.termsChecked || waitingForPaymentResult">
+              ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
         Log In
       </button>
     </section>
