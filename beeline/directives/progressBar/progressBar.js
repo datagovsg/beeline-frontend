@@ -8,7 +8,9 @@ export default [
       scope: {
         curVal: '@',
         maxVal: '@',
-        secondVal: '@'
+        secondVal: '@',
+        highPrice: '@',
+        lowPrice: '@'
       },
       link: function(scope, elem, attr) {
 
