@@ -10,7 +10,8 @@ export default [
         maxVal: '@',
         secondVal: '@',
         highPrice: '@',
-        lowPrice: '@'
+        lowPrice: '@',
+        highTotal: '@'
       },
       link: function(scope, elem, attr) {
 
@@ -20,18 +21,18 @@ export default [
           if (scope.maxVal) {
             progress = Math.min(scope.curVal, scope.maxVal) / scope.maxVal * elem[0].querySelector('.fullBar').offsetWidth;
             secProgress = Math.min(scope.secondVal, scope.maxVal) / scope.maxVal * elem[0].querySelector('.fullBar').offsetWidth;
-            console.log("BAR");
-            console.log(progress);
-            console.log(secProgress);
           }
 
           // elem[0].querySelector('.highBid').css('width', progress);
           elem[0].querySelector('.highBid').style.width = progress+"px";
           // elem[0].querySelector('.lowBid').css('width', secProgress);
           elem[0].querySelector('.lowBid').style.width = secProgress+"px";
+
+          scope.highNeeded = scope.highTotal - scope.curVal;
+          scope.lowNeeded = scope.maxVal - scope.secondVal;
         }
 
-        scope.$watchGroup(['curVal','secVal','maxVal'], updateProgress);
+        scope.$watchGroup(['curVal','secVal','maxVal', 'highTotal'], updateProgress);
       }
     }
   }
