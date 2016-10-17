@@ -61,21 +61,32 @@
         Trip Dates
       </h3>
       <div class="item"  ng-if="priceInfo.tripCount > 0">
-        <div><b>{{priceInfo.tripCount}} day(s)</b> were selected.</div>
-        <table class="price-table booking-info" >
-          <thead>
-            <tr>
-              <th>Dates</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="pinfo in book.route.trips">
-              <td>
-                {{pinfo.date | date:'dd MMM (EEE)'}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div><b>{{priceInfo.tripCount}} day(s)</b> were selected.</div></br>
+        <div class="row">
+          <div class="col-33">
+            <table class="price-table booking-info" >
+              <thead>
+                <tr>
+                  <th>Dates</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="pinfo in book.route.trips">
+                  <td>
+                    {{pinfo.date | date:'dd MMM (EEE)'}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-67 item-text-wrap">
+            When will be charged and for how much?</br>
+            You will be charged when the route is activated.</br>
+            You will be charged when the campaign ends on Nov 1,
+            2016 if the rotue is activated. </br>
+            And only at the lowest unlocked price.
+          </div>
+      </div>
       </div>
 
     </section>
