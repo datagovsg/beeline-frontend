@@ -1,0 +1,47 @@
+.progress-bar {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  .fullBar {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 20px;
+    z-index: 0;
+  }
+
+  .highBid {
+    position: absolute;
+    height: 100%;
+    background-color: #00C4A5;
+    opacity: 1;
+    border-radius: 20px 0px 0px 20px;
+    z-index: 2;
+  }
+
+  .lowBid {
+    position: absolute;
+    height: 100%;
+    background-color: #7D7D7D;
+    border-radius: 20px 0px 0px 20px;
+    z-index: 1;
+
+  }
+
+  .label {
+    text-align: center;
+    line-height: 30px;
+    color: white;
+  }
+
+  .expensive {
+    position: absolute;
+    left: 40%;
+    text-align: right;
+  }
+
+  .cheap {
+    position: absolute;
+    left: 80%;
+  }
+}

@@ -16,7 +16,7 @@
           ng-if="data.backedKickstarter.length > 0">
         Kickstart routes you backed
       </div>
-      
+
        <ion-item ng-repeat="route in data.backedKickstarter"
                  ui-sref="tabs.kickstarter-commit({
                    routeId: route.id
@@ -76,14 +76,9 @@
         </div>
 
         <!-- TODO: show price infor in progress -->
-        <progress max={{route.notes.tier[0].pax}} value={{route.notes.tier[0].no}}>
-          <div class="progress-bar">
-              <span>{{route.notes.tier[0].price}}</span>
-          </div>
-        </progress>
-        <progress max={{route.notes.tier[1].pax}} value={{route.notes.tier[1].no}}>
-          <span>{{route.notes.tier[1].price}}</span>
-        </progress>
+        <progress-bar cur-val={{route.notes.tier[0].no}} second-val={{route.notes.tier[1].no}} max-val={{route.notes.tier[1].pax}}></progress-bar>
+        <!-- <progress-bar cur-val=6 second-val=9 max-val=12></progress-bar> -->
+
       </ion-item>
 
 
@@ -152,14 +147,7 @@
         </div>
 
         <!-- TODO: show price infor in progress -->
-        <progress max={{route.notes.tier[0].pax}} value={{route.notes.tier[0].no}}>
-          <div class="progress-bar">
-              <span>{{route.notes.tier[0].price}}</span>
-          </div>
-        </progress>
-        <progress max={{route.notes.tier[1].pax}} value={{route.notes.tier[1].no}}>
-          <span>{{route.notes.tier[1].price}}</span>
-        </progress>
+        <progress-bar cur-val={{route.notes.tier[0].no}} second-val={{route.notes.tier[1].no}} max-val={{route.notes.tier[1].pax}}></progress-bar>
       </ion-item>
 
     </ion-content>
