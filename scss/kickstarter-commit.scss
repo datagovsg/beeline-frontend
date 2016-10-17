@@ -1,45 +1,46 @@
+#pg_kickstarter_commit {
+  .booking-content {
+    .item {
+      @include display-flex;
+      @include flex-direction(column);
+      @include justify-content(center);
+      @include align-items(center);
+      height: 100%;
+      width: 100%;
 
-.booking-content {
-  .item {
-    @include display-flex;
-    @include flex-direction(column);
-    @include justify-content(center);
-    @include align-items(center);
-    height: 100%;
-    width: 100%;
 
-
-    .row {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      .success-image {
-        text-align: center;
-      }
-      .success-text {
-        padding-left: 5%;
-      }
-
-      .kickstarter-info {
-        @include flex-shrink;
-
-        display: flex;
-        flex-direction: row;
-        background: $light;
-
-        route-item {
-          flex-grow: 1;
+      .row {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        .success-image {
+          text-align: center;
+        }
+        .success-text {
+          padding-left: 5%;
         }
 
-        .price {
-          padding: $padding-small-vertical 0;
-          flex: 0 0 auto;
-          align-self: center;
-          margin-right: $content-padding;
+        .kickstarter-info {
+          @include flex-shrink;
+
+          display: flex;
+          flex-direction: row;
+          background: $light;
+
+          route-item {
+            flex-grow: 1;
+          }
+
+          .price {
+            padding: $padding-small-vertical 0;
+            flex: 0 0 auto;
+            align-self: center;
+            margin-right: $content-padding;
+          }
         }
       }
-    }
-    .button {
-      margin-top: 10%;
+      .button {
+        margin-top: 10%;
+      }
     }
   }
 }
