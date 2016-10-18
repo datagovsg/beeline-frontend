@@ -74,7 +74,7 @@ export default [
 
     $scope.removeCard = async function() {
       var response = await $ionicPopup.confirm({
-        title: 'Are you sure you want to remove this card?',
+        title: 'Are you sure you want to delete this payment method?',
       })
 
       if (!response) return;
@@ -92,9 +92,9 @@ export default [
            $scope.$digest();
           await $ionicLoading.show({
             template: `
-            <div>Removed!</div>
+            <div>Payment method has been deleted!</div>
             `,
-            duration: 1000,
+            duration: 1500,
           })
           $state.transitionTo("tabs.settings");
         }
@@ -103,9 +103,9 @@ export default [
         console.log(err);
         await $ionicLoading.show({
           template: `
-          <div> There was an error when remove the card. {{err && err.data && err.data.message}} Please try again later.</div>
+          <div> Failed to delete payment method. {{err && err.data && err.data.message}} Please try again later.</div>
           `,
-          duration: 1000,
+          duration: 3500,
         })
       }
     };
