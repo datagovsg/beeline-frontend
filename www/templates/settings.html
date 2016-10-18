@@ -27,15 +27,18 @@
       <div ng-show="user" class="item" on-tap="updateTelephone()">
         Phone Number <span class="item-note">{{ user.telephone.slice(3)}}</span>
       </div>
+      <!-- TODO: click to prompt to remove card -->
+      <div ng-show="user && hasPaymentInfor" class="item" on-tap="removeCard()">
+        Payment Method  <span class="item-note">{{user.savedPaymentInfo.sources.data[0].brand}} Credit Card ending with: {{user.savedPaymentInfo.sources.data[0].last4}}</span>
+      </div>
+        <!-- TODO: click to prompt to add card -->
+      <div ng-show="user && !hasPaymentInfor" class="item">
+        Payment Method <span class="item-note">Add Payment Method</span>
+      </div>
       <div ng-show="user"
            class="item item-icon-right"
            ui-sref="tabs.booking-history">
           Booking History <i class="icon ion-ios-arrow-right"></i>
-      </div>
-      <div ng-show="user && hasPaymentInfor" class="item item-divider">Payment Method</div>
-      <!-- TODO: click to prompt to remove card -->
-      <div ng-show="user && hasPaymentInfor" class="item" on-tap="removeCard()">
-        Credit Card  <span class="item-note">{{user.savedPaymentInfo.sources.data[0].brand}} ending with: {{user.savedPaymentInfo.sources.data[0].last4}}</span>
       </div>
       <div class="item item-divider">About Beeline</div>
       <ion-item ui-sref='intro'>Quick Tour</ion-item>
