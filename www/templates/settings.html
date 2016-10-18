@@ -29,7 +29,7 @@
       </div>
       <!-- TODO: click to prompt to remove card -->
       <div ng-show="user && hasPaymentInfor" class="item" on-tap="removeCard()">
-        Payment Method  <span class="item-note">{{user.savedPaymentInfo.sources.data[0].brand}} Credit Card ending with: {{user.savedPaymentInfo.sources.data[0].last4}}</span>
+        Payment Method  <span class="item-note">{{user.savedPaymentInfo.sources.data[0].brand}} ending with {{user.savedPaymentInfo.sources.data[0].last4}}</span>
       </div>
         <!-- TODO: click to prompt to add card -->
       <div ng-show="user && !hasPaymentInfor" class="item">

@@ -103,7 +103,7 @@ export default [
         console.log(err);
         await $ionicLoading.show({
           template: `
-          <div> Failed to delete payment method. {{err && err.data && err.data.message}} Please try again later.</div>
+          <div> Failed to delete payment method. ${err && err.data && err.data.message} Please try again later.</div>
           `,
           duration: 3500,
         })
