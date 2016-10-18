@@ -14,11 +14,11 @@ var increaseBidNo = function(route, price) {
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal','$http',
   'BookingService','RoutesService','loadingSpinner','UserService','$ionicLoading',
-  '$ionicPopup','KickstarterService','CompanyService',
+  '$ionicPopup','KickstarterService','CompanyService', 'StripeService',
   function(
     $rootScope,$scope,$interpolate,$state,$stateParams,$ionicModal,$http,
     BookingService,RoutesService,loadingSpinner,UserService,$ionicLoading,
-    $ionicPopup,KickstarterService,CompanyService
+    $ionicPopup,KickstarterService,CompanyService,StripeService
   ) {
     // Default settings for various info used in the page
     $scope.book = {

@@ -5,6 +5,10 @@ import assert from 'assert';
 var transformKickstarterData = function (kickstarterRoutes) {
   for (let kickstarter of kickstarterRoutes){
     console.log(kickstarter);
+    //compatibility between /status and /bids
+    if (kickstarter.bid) {
+      kickstarter.bids = [kickstarter.bid];
+    }
     if (kickstarter.bids && kickstarter.bids.length > 0) {
      var bidsByTier = _.groupBy(kickstarter.bids, x=>x.userOptions.price);
      console.log(kickstarter.notes.tier)
