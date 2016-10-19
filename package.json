@@ -50,11 +50,15 @@
     "cordova-plugin-inappbrowser",
     "cordova-plugin-app-version",
     "cordova-plugin-geolocation",
-    "cordova-hot-code-push-plugin"
+    "cordova-hot-code-push-plugin",
+    {
+      "locator": "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
+      "id": "cordova-plugin-x-socialsharing"
+    }
   ],
   "cordovaPlatforms": [
-    "android",
-    "ios"
+    "ios",
+    "android"
   ],
   "main": "gulpfile.js",
   "scripts": {

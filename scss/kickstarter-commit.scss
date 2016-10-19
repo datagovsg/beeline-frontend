@@ -37,10 +37,18 @@
             margin-right: $content-padding;
           }
         }
+
+        textarea {
+          width: 90%;
+          height: $line-height-computed*3;
+        }
       }
-      .button {
+      .primary-button {
         margin-top: 10%;
       }
+
     }
+
+
   }
 }

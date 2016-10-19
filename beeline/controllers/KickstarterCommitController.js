@@ -13,10 +13,10 @@ var increaseBidNo = function(route, price) {
 
 export default [
   '$rootScope','$scope','$state','$stateParams','$http','RoutesService','loadingSpinner',
-  'UserService','KickstarterService',
+  'UserService','KickstarterService','$cordovaSocialSharing',
   function(
     $rootScope,$scope,$state,$stateParams,$http,RoutesService,loadingSpinner,UserService,
-    KickstarterService
+    KickstarterService,$cordovaSocialSharing
   ) {
     // Default settings for various info used in the page
     $scope.book = {
@@ -28,8 +28,9 @@ export default [
       bidPrice: null,
     };
 
-
     $scope.book.routeId = +$stateParams.routeId;
+
+
 
     var routePromise;
     routePromise = KickstarterService.getBidInfo($scope.book.routeId);
@@ -50,6 +51,32 @@ export default [
       console.log("BID PRICE");
       console.log($scope.book.bidPrice);
     });
+
+    var showShareLink = function(){
+      //if has cordova no need to show shareLink text area
+      $scope.shareLink = "Check out this new kickstart route from Beeline! https://app.beeline.sg/kickstarter/"+$scope.book.routeId ;
+    }
+
+    $scope.shareAnywhere = function() {
+      if (window.cordova) {
+        $cordovaSocialSharing.share("Check out this new kickstart route from Beeline!",
+          "New Beeline Kickstart Route", null, "https://app.beeline.sg/kickstarter/"+$scope.book.routeId);
+      } else {
+        showShareLink();
+      }
+   };
+
+   $scope.shareViaTwitter = function(message, image, link) {
+     if (window.cordova) {
+       $cordovaSocialSharing.canShareVia("twitter", message, image, link).then(function(result) {
+           $cordovaSocialSharing.shareViaTwitter(message, image, link);
+       }, function(error) {
+           alert("Cannot share on Twitter");
+       });
+     } else {
+       showShareLink();
+     }
+   }
   }
 ];
 //

@@ -42,6 +42,7 @@ export default function initStripe(UserService, $ionicPlatform) {
             var handler = StripeCheckout.configure({
               key: stripeKey,
               locale: 'auto',
+              // allowRememberMe: false,
               token: function(token) {
                 deregister();
                 resolve(token);
@@ -62,6 +63,7 @@ export default function initStripe(UserService, $ionicPlatform) {
               amount: Math.round(amount),
               currency: 'SGD',
               email: UserService.getUser().email,
+              // panelLabel: "Add Card Details",
             });
           });
         });

@@ -14,6 +14,16 @@
           direction to join too so that the rotue gets activated soon!
         </div>
       </div>
+      <div class="row">
+        <button class="col-50 button" ng-click="shareAnywhere()">Share anywhere</button>
+        <button class="col-50 button" ng-click="shareViaTwitter('Check out this new kickstart route from Beeline!', null, 'https://app.beeline.sg/kickstarter/'+{{book.routeId}})">
+          Share on Twitter
+        </button>
+      </div>
+      <div class="row">
+        <textarea>{{shareLink || "share link here"}}</textarea>
+      </div>
+
       <div class="">
         <div class="row">
           <div class="kickstarter-info">
