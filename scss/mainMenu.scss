@@ -35,11 +35,11 @@
 }
 
 .nav-kickstarter {
-  background: url('../img/menu/MenuRoutesNormal.svg') center 4px no-repeat;
+  background: url('../img/menu/MenuKickstartNormal.svg') center 4px no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
+    background: url('../img/menu/MenuKickstartActive.svg') center 4px no-repeat;
   }
 }
 
