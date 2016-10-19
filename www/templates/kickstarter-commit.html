@@ -14,54 +14,60 @@
           direction to join too so that the rotue gets activated soon!
         </div>
       </div>
-      <div class="row">
-        <div class="kickstarter-info item">
-          <route-item>
-            <route-item-bus-number>
-              {{ book.route.label }}
-            </route-item-bus-number>
-            <route-item-start-time>
-              {{ book.route | routeStartTime | formatTime:true }}
-            </route-item-start-time>
-            <route-item-start-location>
-              {{ book.route.from }}
-            </route-item-start-location>
-            <route-item-end-time>
-              {{ book.route | routeEndTime | formatTime:true }}
-            </route-item-end-time>
-            <route-item-end-location>
-              {{ book.route.to }}
-            </route-item-end-location>
-            <route-item-additional-info>
-              <company-info-broker company-id="book.route.transportCompanyId"
-                                    company="companyInfo">
-              </company-info-broker>
-              <div class="icon-and-schedule">
-                <span class="icon-span company-logo">
-                  <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
-                </span>
-                <span class="schedule">
-                  {{companyInfo.name}}
-                </span>
-              </div>
+      <div class="">
+        <div class="row">
+          <div class="kickstarter-info">
+            <route-item>
+              <route-item-bus-number>
+                {{ book.route.label }}
+              </route-item-bus-number>
+              <route-item-start-time>
+                {{ book.route | routeStartTime | formatTime:true }}
+              </route-item-start-time>
+              <route-item-start-location>
+                {{ book.route.from }}
+              </route-item-start-location>
+              <route-item-end-time>
+                {{ book.route | routeEndTime | formatTime:true }}
+              </route-item-end-time>
+              <route-item-end-location>
+                {{ book.route.to }}
+              </route-item-end-location>
+              <route-item-additional-info>
+                <company-info-broker company-id="book.route.transportCompanyId"
+                                      company="companyInfo">
+                </company-info-broker>
+                <div class="icon-and-schedule">
+                  <span class="icon-span company-logo">
+                    <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
+                  </span>
+                  <span class="schedule">
+                    {{companyInfo.name}}
+                  </span>
+                </div>
 
-              <div class="icon-and-schedule">
-                <span class="icon-span">
-                  <img class="mini-icon" src="img/icon_schedule.svg">
-                </span>
-                <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
-                  {{book.route.daysLeft}} days left to activate
-                </span>
-                <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
-                  {{book.route.daysLeft}} day left to activate
-                </span>
-              </div>
-            </route-item-additional-info>
-          </route-item>
-          <div class="price">
-            <fancy-price value="book.bidPrice"></fancy-price>
+                <div class="icon-and-schedule">
+                  <span class="icon-span">
+                    <img class="mini-icon" src="img/icon_schedule.svg">
+                  </span>
+                  <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
+                    {{book.route.daysLeft}} days left to activate
+                  </span>
+                  <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
+                    {{book.route.daysLeft}} day left to activate
+                  </span>
+                </div>
+              </route-item-additional-info>
+            </route-item>
+            <div class="price">
+              <fancy-price value="book.bidPrice"></fancy-price>
+            </div>
           </div>
         </div>
+        <progress-bar cur-val={{book.route.notes.tier[0].no}} second-val={{book.route.notes.tier[1].no}}
+          max-val={{book.route.notes.tier[1].pax}} high-price={{book.route.notes.tier[0].price}} low-price={{book.route.notes.tier[1].price}}
+          high-total={{book.route.notes.tier[0].pax}}>
+        </progress-bar>
       </div>
 
       <button class="primary-button button" ui-sref="tabs.kickstarter">
