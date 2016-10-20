@@ -1,6 +1,7 @@
 import faqModalTemplate from '../templates/faq-modal.html';
 import contactUsModalTemplate from '../templates/contact-us-modal.html';
 import commonmark from 'commonmark';
+import _ from 'lodash';
 
 var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
@@ -18,7 +19,6 @@ export default [
       return UserService.getUser();
     }, function(newUser) {
       $scope.user = newUser;
-      $scope.hasPaymentInfo = newUser && newUser.savedPaymentInfo && newUser.savedPaymentInfo.sources.data.length > 0;
     });
 
     // Map in the login items
@@ -74,6 +74,10 @@ export default [
       $scope.contactUsModal.destroy();
     });
 
+    $scope.hasPaymentInfo = function() {
+      return _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
+    }
+
     $scope.removeCard = async function() {
       var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to delete this payment method?',
@@ -87,19 +91,14 @@ export default [
           url: `/users/${user.id}/creditCards/${user.savedPaymentInfo.sources.data[0].id}`,
         }));
 
-        if (removeResult) {
-          //FIXME: old card info flash and disapper after card is deleted
-          //FIXME: card can only be removed if no active bid made
-          $scope.hasPaymentInfo = false;
-           $scope.$digest();
-          await $ionicLoading.show({
-            template: `
-            <div>Payment method has been deleted!</div>
-            `,
-            duration: 1500,
-          })
-          $state.transitionTo("tabs.settings");
-        }
+        $scope.user.savedPaymentInfo = removeResult.data;
+
+        await $ionicLoading.show({
+          template: `
+          <div>Payment method has been deleted!</div>
+          `,
+          duration: 1500,
+        })
       }
       catch(err) {
         console.log(err);
@@ -109,6 +108,8 @@ export default [
           `,
           duration: 3500,
         })
+      } finally {
+        $scope.$digest();
       }
     };
 
@@ -138,11 +139,15 @@ export default [
             stripeToken: stripeToken.id
           },
         }));
+
+        $scope.user.savedPaymentInfo = result.data;
+
       } catch (err) {
         console.log(err);
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
       } finally {
         isStripeLoading = false;
+        $scope.$digest();
       }
     }
   }];
