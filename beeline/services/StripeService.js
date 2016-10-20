@@ -10,7 +10,7 @@ export default function initStripe(UserService, $ionicPlatform) {
   });
 
   return {
-    async promptForToken(description, amount) {
+    async promptForToken(description, amount, isAddPayment) {
       if (window.CardIO) {
         var cardDetails = await new Promise((resolve, reject) => CardIO.scan({
           "expiry": true,
@@ -57,14 +57,26 @@ export default function initStripe(UserService, $ionicPlatform) {
               handler.close();
             }, 401);
 
-            handler.open({
+            let handlerOptions = {
               name: 'Beeline',
               description: description,
               amount: Math.round(amount),
               currency: 'SGD',
               email: UserService.getUser().email,
               // panelLabel: "Add Card Details",
-            });
+            }
+
+            if (isAddPayment) {
+              handlerOptions = {
+                name: 'Add Card Details',
+                description: description,
+                panelLabel: "Add Card",
+                allowRememberMe: false,
+                email: UserService.getUser().email
+              }
+            }
+
+            handler.open(handlerOptions);
           });
         });
       }

@@ -118,7 +118,7 @@ export default [
 
       try {
         isStripeLoading = true;
-        const stripeToken = await StripeService.promptForToken();
+        const stripeToken = await StripeService.promptForToken(null, null, true);
         if (!stripeToken){
           throw new Error("There was some difficulty contacting the payment gateway." +
             " Please check your Internet connection");
@@ -145,6 +145,4 @@ export default [
         isStripeLoading = false;
       }
     }
-
-
   }];
