@@ -6,17 +6,19 @@ var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
 
 export default [
-  '$scope', 'UserService', '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading', '$state',
+  '$scope', 'UserService', 'StripeService', '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading', '$state',
   function(
-    $scope, UserService, $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state) {
+    $scope, UserService, StripeService, $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state) {
     $scope.data = {};
+
+    let isStripeLoading = false;
 
     // Track the login state of the user service
     $scope.$watch(function() {
       return UserService.getUser();
     }, function(newUser) {
       $scope.user = newUser;
-      $scope.hasPaymentInfor = newUser && newUser.savedPaymentInfo && newUser.savedPaymentInfo.sources.data.length > 0;
+      $scope.hasPaymentInfo = newUser && newUser.savedPaymentInfo && newUser.savedPaymentInfo.sources.data.length > 0;
     });
 
     // Map in the login items
@@ -86,9 +88,9 @@ export default [
         }));
 
         if (removeResult) {
-          //FIXME: old card infor flash and disapper after card is deleted
+          //FIXME: old card info flash and disapper after card is deleted
           //FIXME: card can only be removed if no active bid made
-          $scope.hasPaymentInfor = false;
+          $scope.hasPaymentInfo = false;
            $scope.$digest();
           await $ionicLoading.show({
             template: `
@@ -109,5 +111,40 @@ export default [
         })
       }
     };
+
+    $scope.addCard = async function() {
+
+      if (isStripeLoading) return;
+
+      try {
+        isStripeLoading = true;
+        const stripeToken = await StripeService.promptForToken();
+        if (!stripeToken){
+          throw new Error("There was some difficulty contacting the payment gateway." +
+            " Please check your Internet connection");
+          return;
+        }
+
+        if (!('id' in stripeToken)) {
+          alert("There was an error contacting Stripe");
+          return;
+        }
+        const user = $scope.user;
+
+        var result = await loadingSpinner(UserService.beeline({
+          method: 'POST',
+          url: `/users/${user.id}/creditCards`,
+          data: {
+            stripeToken: stripeToken.id
+          },
+        }));
+      } catch (err) {
+        console.log(err);
+        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
+      } finally {
+        isStripeLoading = false;
+      }
+    }
+
 
   }];
