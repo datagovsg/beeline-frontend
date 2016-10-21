@@ -43,7 +43,7 @@ export default function initStripe(UserService, $ionicPopup, $ionicPlatform) {
         if (isAddPayment) {
           handlerOptions = {
             name: 'Add Card Details',
-            description: "blabla",
+            description: description,
             panelLabel: "Add Card",
             allowRememberMe: false,
             email: UserService.getUser().email
