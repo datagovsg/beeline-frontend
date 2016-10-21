@@ -77,6 +77,37 @@
   @include box-shadow($card-box-shadow);
 }
 
+.small-button {
+  @extend .button;
+  @extend .button-outline;
+  @extend .button-royal;
+  @include box-shadow($card-box-shadow);
+  vertical-align: middle;
+  margin-left: 10px;
+  border-color: $royal;
+  color: $royal;
+
+  &:active {
+    border-bottom: 1px solid $royal;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.6);
+  }
+
+  &[disabled="disabled"] {
+    background-color: #d6d6d6;
+    border-bottom: 4px solid #b9b9b9;
+    color: #6f6f6f;
+  }
+
+  &.button-item {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  &.activated{
+    border-color: $royal;
+  }
+}
+
 // Hide the google maps boilerplate annotations
 .gmnoprint,
 .gm-style-cc,

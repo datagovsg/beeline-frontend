@@ -27,8 +27,8 @@
       <div ng-show="user" class="item" on-tap="updateTelephone()">
         Phone Number <span class="item-note">{{ user.telephone.slice(3)}}</span>
       </div>
-      <!-- TODO: click to prompt to remove card -->
-      <div ng-show="user && hasPaymentInfo()" class="item" on-tap="removeCard()">
+      <!-- TODO: click to prompt to change or remove card -->
+      <div ng-show="user && hasPaymentInfo()" class="item" on-tap="promptChangeOrRemoveCard()">
         Payment Method  <span class="item-note">{{user.savedPaymentInfo.sources.data[0].brand}} ending in {{user.savedPaymentInfo.sources.data[0].last4}}</span>
       </div>
         <!-- TODO: click to prompt to add card -->

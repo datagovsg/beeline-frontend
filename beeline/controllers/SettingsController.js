@@ -12,6 +12,9 @@ export default [
     $scope, UserService, StripeService, $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state) {
     $scope.data = {};
 
+    // For Testing UI Shell
+    $scope.isOnKickstarter = true;
+
     let isStripeLoading = false;
 
     // Track the login state of the user service
@@ -78,7 +81,47 @@ export default [
       return _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
     };
 
-    $scope.removeCard = async function() {
+    $scope.promptChangeOrRemoveCard = async function() {
+      var response = await $ionicPopup.show({
+        title: 'Payment Method',
+        scope: $scope,
+        template: `
+          <div class="item item-text-wrap text-center">
+            <span>
+              <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
+              <button class="button small-button"
+                ng-click="console.log('ahhh')">
+                Change
+              </button>
+            </span>
+
+
+          </div>
+          <div class="item item-text-wrap text-center" ng-if=isOnKickstarter>
+            You are committed to existing kickstarter route(s). Please change
+            the card if you want to remove this card.
+          </div>
+        `,
+        buttons: [
+          {  text: 'Cancel'
+          },
+          {
+            text: 'Remove',
+            type: 'button-positive',
+            onTap: function(e) {
+              if ($scope.isOnKickstarter) {
+                e.preventDefault();
+              }
+              else {
+                removeCard()
+              }
+            }
+          }
+        ]
+      });
+    }
+
+    var removeCard = async function() {
       var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to delete this payment method?',
       })
