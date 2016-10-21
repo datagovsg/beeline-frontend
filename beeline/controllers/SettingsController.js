@@ -13,7 +13,7 @@ export default [
     $scope.data = {};
 
     // For Testing UI Shell
-    $scope.isOnKickstarter = true;
+    $scope.isOnKickstarter = false;
 
     let isStripeLoading = false;
 
@@ -123,7 +123,16 @@ export default [
 
     var removeCard = async function() {
       var response = await $ionicPopup.confirm({
-        title: 'Are you sure you want to delete this payment method?',
+        title: 'Remove Payment Method',
+        scope: $scope,
+        template: `
+        <div class="item item-text-wrap text-center">
+            Are you sure you want to delete this payment method?
+        </div>
+        <div class="item item-text-wrap text-center">
+            <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
+        </div>
+        `
       })
 
       if (!response) return;
