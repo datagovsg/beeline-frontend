@@ -112,17 +112,10 @@ export default [
         $scope.waitingForPaymentResult = true;
 
         if (userHasNoCreditCard()) {
-          const stripeToken = await StripeService.promptForToken();
-          if (!stripeToken){
-            throw new Error("There was some difficulty contacting the payment gateway." +
-              " Please check your Internet connection");
-            return;
-          }
+          const stripeToken = await StripeService.promptForToken(null, null, true);
 
-          if (!('id' in stripeToken)) {
-            alert("There was an error contacting Stripe");
-            return;
-          }
+          if (!stripeToken) return;
+
           const user = $scope.user;
 
           var result = await loadingSpinner(UserService.beeline({
