@@ -116,15 +116,9 @@ export default [
 
           if (!stripeToken) return;
 
-          const user = $scope.user;
-
-          var result = await loadingSpinner(UserService.beeline({
-            method: 'POST',
-            url: `/users/${user.id}/creditCards`,
-            data: {
-              stripeToken: stripeToken.id
-            },
-          }));
+          await loadingSpinner(
+            UserService.savePaymentInfo(stripeToken.id)
+          );
         }
 
       } catch (err) {

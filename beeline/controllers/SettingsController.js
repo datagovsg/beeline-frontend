@@ -57,7 +57,7 @@ export default [
         })
       })
       return newScope;
-    }
+    };
 
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,
@@ -76,7 +76,7 @@ export default [
 
     $scope.hasPaymentInfo = function() {
       return _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
-    }
+    };
 
     $scope.removeCard = async function() {
       var response = await $ionicPopup.confirm({
@@ -84,14 +84,9 @@ export default [
       })
 
       if (!response) return;
-      var user = $scope.user;
-      try {
-        var removeResult = await loadingSpinner(UserService.beeline({
-          method: 'DELETE',
-          url: `/users/${user.id}/creditCards/${user.savedPaymentInfo.sources.data[0].id}`,
-        }));
 
-        $scope.user.savedPaymentInfo = removeResult.data;
+      try {
+        await loadingSpinner(UserService.removePaymentInfo());
 
         await $ionicLoading.show({
           template: `
@@ -123,17 +118,9 @@ export default [
 
         if (!stripeToken) return;
 
-        const user = $scope.user;
-
-        var result = await loadingSpinner(UserService.beeline({
-          method: 'POST',
-          url: `/users/${user.id}/creditCards`,
-          data: {
-            stripeToken: stripeToken.id
-          },
-        }));
-
-        $scope.user.savedPaymentInfo = result.data;
+        await loadingSpinner(
+          UserService.savePaymentInfo(stripeToken.id)
+        );
 
       } catch (err) {
         console.log(err);
@@ -142,5 +129,5 @@ export default [
         isStripeLoading = false;
         $scope.$digest();
       }
-    }
-  }];
+    };
+}];
