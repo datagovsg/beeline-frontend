@@ -142,6 +142,9 @@ export default [
           return;
         }
 
+        // TODO: After stripeToken is received, check disp.savePaymentChecked,
+        // if true: call UserService.savePaymentInfo(stripeToken.id)
+
         $ionicLoading.show({
           template: processingPaymentsTemplate
         })
