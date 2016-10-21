@@ -120,16 +120,9 @@ export default [
       try {
         isStripeLoading = true;
         const stripeToken = await StripeService.promptForToken(null, null, true);
-        if (!stripeToken){
-          throw new Error("There was some difficulty contacting the payment gateway." +
-            " Please check your Internet connection");
-          return;
-        }
 
-        if (!('id' in stripeToken)) {
-          alert("There was an error contacting Stripe");
-          return;
-        }
+        if (!stripeToken) return;
+
         const user = $scope.user;
 
         var result = await loadingSpinner(UserService.beeline({
