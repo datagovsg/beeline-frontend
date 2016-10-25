@@ -101,49 +101,15 @@ export default [
         // disable the button
         $scope.waitingForPaymentResult = true;
 
-        if (window.CardIO) {
-          var cardDetails = await new Promise((resolve, reject) => CardIO.scan({
-            "expiry": true,
-            "cvv": true,
-            "zip": false,
-            "suppressManual": false,
-            "suppressConfirm": false,
-            "hideLogo": true
-          }, resolve, () => resolve(null)));
+        const stripeToken = await StripeService.promptForToken();
 
-          if (cardDetails == null) return;
-
-          var stripeToken = await new Promise((resolve, reject) => Stripe.createToken({
-            number:     cardDetails["card_number"],
-            cvc:        cardDetails["cvv"],
-            exp_month:  cardDetails["expiry_month"],
-            exp_year:   cardDetails["expiry_year"],
-          }, (statusCode, response) => {
-            if (response.error)
-              reject(response.error.message);
-            else
-              resolve(response);
-          }));
-        }
-        else if (StripeService.loaded) { // Use Stripe Checkout
-          var stripeToken = await StripeService.promptForToken(
-              undefined, /* description */
-              isFinite($scope.book.price) ? $scope.book.price * 100 : '');
-          if (stripeToken == null)
-            return;
-        }
-        else { // Last resort :(
-          throw new Error("There was some difficulty contacting the payment gateway." +
-            " Please check your Internet connection");
-        }
-
-        if (!('id' in stripeToken)) {
-          alert("There was an error contacting Stripe");
-          return;
-        }
+        if (!stripeToken) return;
 
         // TODO: After stripeToken is received, check disp.savePaymentChecked,
         // if true: call UserService.savePaymentInfo(stripeToken.id)
+        if ($scope.disp.savePaymentChecked) {
+          await UserService.savePaymentInfo(stripeToken.id);
+        }
 
         $ionicLoading.show({
           template: processingPaymentsTemplate
