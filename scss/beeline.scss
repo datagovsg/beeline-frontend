@@ -77,19 +77,6 @@
   @include box-shadow($card-box-shadow);
 }
 
-.small-button {
-  vertical-align: middle;
-  margin-left: 10px;
-  // border-color: $royal;
-  // color: $royal;
-
-  // &.activated{
-  //   border-color: $royal;
-  //   background-color: $royal;
-  //   color: #fff;
-  // }
-}
-
 // Hide the google maps boilerplate annotations
 .gmnoprint,
 .gm-style-cc,
