@@ -31,4 +31,11 @@
       padding-left: $content-padding*2;
     }
   }
+  .text-link{
+    text-align: center;
+    margin: 1em;
+    a{
+      text-decoration: underline;
+    }
+  }
 }

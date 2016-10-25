@@ -11,6 +11,9 @@ export default [
     BookingService, UserService, $ionicLoading,
     StripeService, $stateParams, RoutesService, $ionicScrollDelegate, TicketService) {
 
+    //Testing logic variables
+    $scope.hasSavedPaymentInfo = false;
+
     // Booking session logic
     $scope.session = {
       sessionId: null,
@@ -65,6 +68,7 @@ export default [
 
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
+      $scope.user = user;
       if ($scope.isLoggedIn) {
         $ionicLoading.show({
           template: loadingTemplate
@@ -95,8 +99,7 @@ export default [
       $scope.book.hasInvalidDate = (selectedAndInvalid.length > 0)
     }
 
-    // methods
-    $scope.pay = async function() {
+    $scope.payWithDifferentCard = async function() {
       try {
         // disable the button
         $scope.waitingForPaymentResult = true;
@@ -143,5 +146,11 @@ export default [
         })
       }
     };
+
+    // #TODO: Implement method to pay with saved info.
+    // payWithSavedInfo()
+    $scope.payWithSavedInfo = async function () {
+
+    }
   },
 ];
