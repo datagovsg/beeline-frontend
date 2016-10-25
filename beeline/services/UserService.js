@@ -412,7 +412,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         stripeToken: stripeTokenId
       }
     })
-    .then( function(response) {
+    .then(function(response) {
       user.savedPaymentInfo = response.data;
     });
   };
