@@ -7,15 +7,18 @@ var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
 
 export default [
-  '$scope', 'UserService', 'StripeService', '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading', '$state',
+  '$scope', 'UserService', 'StripeService', 'KickstarterService',
+  '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading',
+  '$state',
   function(
-    $scope, UserService, StripeService, $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state) {
+    $scope, UserService, StripeService, KickstarterService,
+    $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state) {
+
     $scope.data = {};
 
-    // For Testing UI Shell
     $scope.isOnKickstarter = false;
 
-    let isStripeLoading = false;
+    let isPressed = false;
 
     // Track the login state of the user service
     $scope.$watch(function() {
@@ -82,29 +85,47 @@ export default [
     };
 
     $scope.promptChangeOrRemoveCard = async function() {
+
+      if (isPressed) return;
+
+      try {
+        isPressed = true;
+        $scope.isOnKickstarter = await checkIfOnKickstarter();
+      } catch (err) {
+        console.log(err);
+        await $ionicLoading.show({
+          template: `
+          <div> Network error. ${err && err.data && err.data.message} Please try again later.</div>
+          `,
+          duration: 3500,
+        })
+        return;
+      } finally {
+        isPressed = false;
+      }
+
       var response = await $ionicPopup.show({
         title: 'Payment Method',
         scope: $scope,
         template: `
           <div class="item item-text-wrap text-center">
-            <span>
+            <div>
               <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
+            </div>
+            <div>
               <button class="button button-outline button-royal small-button"
                 ng-click="console.log('ahhh')">
                 Change
               </button>
-            </span>
-
-
+            </div>
           </div>
-          <div class="item item-text-wrap text-center" ng-if=isOnKickstarter>
+          <div class="item item-text-wrap text-center" ng-if="isOnKickstarter">
             You are committed to existing kickstarter route(s). Please change
             the card if you want to remove this card.
           </div>
         `,
         buttons: [
-          {  text: 'Cancel'
-          },
+          {  text: 'Cancel' },
           {
             text: 'Remove',
             type: 'button-positive',
@@ -160,12 +181,17 @@ export default [
       }
     };
 
+    var checkIfOnKickstarter = async () => {
+      let response = await KickstarterService.hasBids();
+      return response;
+    }
+
     $scope.addCard = async function() {
 
-      if (isStripeLoading) return;
+      if (isPressed) return;
 
       try {
-        isStripeLoading = true;
+        isPressed = true;
         const stripeToken = await StripeService.promptForToken(null, null, true);
 
         if (!stripeToken) return;
@@ -178,7 +204,7 @@ export default [
         console.log(err);
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
       } finally {
-        isStripeLoading = false;
+        isPressed = false;
         $scope.$digest();
       }
     };
