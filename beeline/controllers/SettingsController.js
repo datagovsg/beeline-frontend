@@ -89,7 +89,7 @@ export default [
           <div class="item item-text-wrap text-center">
             <span>
               <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
-              <button class="button small-button"
+              <button class="button button-outline button-royal small-button"
                 ng-click="console.log('ahhh')">
                 Change
               </button>
