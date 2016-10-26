@@ -104,7 +104,7 @@ export default [
         isPressed = false;
       }
 
-      var response = await $ionicPopup.show({
+      $scope.cardDetailPopup = $ionicPopup.show({
         title: 'Payment Method',
         scope: $scope,
         template: `
@@ -114,7 +114,7 @@ export default [
             </div>
             <div>
               <button class="button button-outline button-royal small-button"
-                ng-click="console.log('ahhh')">
+                ng-click="changeCard()">
                 Change
               </button>
             </div>
@@ -134,13 +134,13 @@ export default [
                 e.preventDefault();
               }
               else {
-                removeCard()
+                removeCard();
               }
             }
           }
         ]
       });
-    }
+    };
 
     var removeCard = async function() {
       var response = await $ionicPopup.confirm({
@@ -184,7 +184,7 @@ export default [
     var checkIfOnKickstarter = async () => {
       let response = await KickstarterService.hasBids();
       return response;
-    }
+    };
 
     $scope.addCard = async function() {
 
@@ -208,4 +208,29 @@ export default [
         $scope.$digest();
       }
     };
+
+    $scope.changeCard = async function() {
+
+      if (isPressed) return;
+
+      try {
+        isPressed = true;
+        $scope.cardDetailPopup.close();
+        const stripeToken = await StripeService.promptForToken(null, null, true);
+
+        if (!stripeToken) return;
+
+        await loadingSpinner(
+          UserService.updatePaymentInfo(stripeToken.id)
+        );
+
+      } catch (err) {
+        console.log(err);
+        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
+      } finally {
+        isPressed = false;
+        $scope.$digest();
+      }
+    };
+
 }];
