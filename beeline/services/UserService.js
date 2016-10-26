@@ -417,13 +417,27 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
+  // Update/change payment info to backend and update user object
+  var updatePaymentInfo = function(stripeTokenId) {
+    return beelineRequest({
+      method: 'PUT',
+      url: `/users/${user.id}/creditCards`,
+      data: {
+        stripeToken: stripeTokenId
+      }
+    })
+    .then(function(response) {
+      user.savedPaymentInfo = response.data;
+    });
+  };
+
   // Remove payment info from backend and update user object
   var removePaymentInfo = function() {
     return beelineRequest({
       method: 'DELETE',
       url: `/users/${user.id}/creditCards/${user.savedPaymentInfo.sources.data[0].id}`
     })
-    .then( function(response) {
+    .then(function(response) {
       user.savedPaymentInfo = response.data;
     });
   };
@@ -445,6 +459,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     promptLogOut: promptLogOut,
     verifySession: verifySession,
     savePaymentInfo: savePaymentInfo,
+    updatePaymentInfo: updatePaymentInfo,
     removePaymentInfo: removePaymentInfo
   };
 
