@@ -11,9 +11,6 @@ export default [
     BookingService, UserService, $ionicLoading,
     StripeService, $stateParams, RoutesService, $ionicScrollDelegate, TicketService) {
 
-    //Testing logic variables
-    $scope.hasSavedPaymentInfo = false;
-
     // Booking session logic
     $scope.session = {
       sessionId: null,
@@ -69,6 +66,13 @@ export default [
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
+      console.log("userobj", user);
+      $scope.hasSavedPaymentInfo = (
+        user && user.savedPaymentInfo &&
+        user.savedPaymentInfo.sources &&
+        user.savedPaymentInfo.sources.data &&
+        !_.isEmpty(user.savedPaymentInfo.sources.data)
+      );
       if ($scope.isLoggedIn) {
         $ionicLoading.show({
           template: loadingTemplate
@@ -99,7 +103,7 @@ export default [
       $scope.book.hasInvalidDate = (selectedAndInvalid.length > 0)
     }
 
-    $scope.payWithDifferentCard = async function() {
+    $scope.pay = async function() {
       try {
         // disable the button
         $scope.waitingForPaymentResult = true;
@@ -150,7 +154,43 @@ export default [
     // #TODO: Implement method to pay with saved info.
     // payWithSavedInfo()
     $scope.payWithSavedInfo = async function () {
+      try {
+        // disable the button
+        $scope.waitingForPaymentResult = true;
 
-    }
+        $ionicLoading.show({
+          template: processingPaymentsTemplate
+        })
+        console.log("customerId", $scope.user.savedPaymentInfo.id);
+        console.log("sourceId", _.head($scope.user.savedPaymentInfo.sources.data).id);
+        var result = await UserService.beeline({
+          method: 'POST',
+          url: '/transactions/payment_ticket_sale',
+          data: {
+            customerId: $scope.user.savedPaymentInfo.id,
+            sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+          },
+        });
+        $ionicLoading.hide();
+
+        // This gives us the transaction items
+        assert(result.status == 200);
+
+        // TODO: put need-to-refresh logic into service
+        TicketService.setShouldRefreshTickets();
+
+        $state.go('tabs.booking-confirmation');
+      } catch (err) {
+        $ionicLoading.hide();
+        await $ionicPopup.alert({
+          title: 'Error processing payment',
+          template: err.data.message,
+        })
+      } finally {
+        $scope.$apply(() => {
+          $scope.waitingForPaymentResult = false;
+        })
+      }
+    };
   },
 ];
