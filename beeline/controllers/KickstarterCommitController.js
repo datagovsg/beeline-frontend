@@ -3,6 +3,7 @@ import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/
 import loadingTemplate from '../templates/loading.html';
 import assert from 'assert';
 
+
 var increaseBidNo = function(route, price) {
   for (let tier of route.notes.tier) {
     if (tier.price <= price) {
@@ -30,7 +31,7 @@ export default [
 
     $scope.book.routeId = +$stateParams.routeId;
 
-
+    $scope.showCopy = !window.cordova || false;
 
     var routePromise;
     routePromise = KickstarterService.getBidInfo($scope.book.routeId);
@@ -52,31 +53,14 @@ export default [
       console.log($scope.book.bidPrice);
     });
 
-    var showShareLink = function(){
-      //if has cordova no need to show shareLink text area
-      $scope.shareLink = "Check out this new kickstart route from Beeline! https://app.beeline.sg/kickstarter/"+$scope.book.routeId ;
-    }
+    //if has cordova no need to show shareLink text area
+    $scope.shareLink = "Check out this new kickstart route from Beeline! https://app.beeline.sg/kickstarter/"+$scope.book.routeId ;
 
     $scope.shareAnywhere = function() {
-      if (window.cordova) {
-        $cordovaSocialSharing.share("Check out this new kickstart route from Beeline!",
-          "New Beeline Kickstart Route", null, "https://app.beeline.sg/kickstarter/"+$scope.book.routeId);
-      } else {
-        showShareLink();
-      }
+      $cordovaSocialSharing.share("Check out this new kickstart route from Beeline!",
+        "New Beeline Kickstart Route", null, "https://app.beeline.sg/kickstarter/"+$scope.book.routeId);
    };
 
-   $scope.shareViaTwitter = function(message, image, link) {
-     if (window.cordova) {
-       $cordovaSocialSharing.canShareVia("twitter", message, image, link).then(function(result) {
-           $cordovaSocialSharing.shareViaTwitter(message, image, link);
-       }, function(error) {
-           alert("Cannot share on Twitter");
-       });
-     } else {
-       showShareLink();
-     }
-   }
   }
 ];
 //

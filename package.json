@@ -33,6 +33,7 @@
     "lodash": "^4.16.2",
     "moment": "^2.15.1",
     "multiple-date-picker": "git+https://github.com/datagovsg/MultipleDatePicker.git#annotations",
+    "ngclipboard": "^1.1.1",
     "q": "^1.4.1",
     "shelljs": "^0.7.4",
     "uuid": "^2.0.3",

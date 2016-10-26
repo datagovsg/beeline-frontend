@@ -15,15 +15,12 @@
         </div>
       </div>
       <div class="row">
-        <button class="col-50 button" ng-click="shareAnywhere()">Share anywhere</button>
-        <button class="col-50 button" ng-click="shareViaTwitter('Check out this new kickstart route from Beeline!', null, 'https://app.beeline.sg/kickstarter/'+{{book.routeId}})">
-          Share on Twitter
+        <textarea class="col-60">{{shareLink}}</textarea>
+        <button class="col-40 button" ng-click="shareAnywhere()" ng-if="!showCopy">Share anywhere</button>
+        <button class="col-40 button" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}}>
+            Copy
         </button>
       </div>
-      <div class="row">
-        <textarea>{{shareLink || "share link here"}}</textarea>
-      </div>
-
       <div class="">
         <div class="row">
           <div class="kickstarter-info">

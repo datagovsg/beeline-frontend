@@ -14,7 +14,6 @@ import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 
 // Configuration Imports
 import configureRoutes from './router.js';
-
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
 // //////////////////////////////////////////////////////////////////////////////
@@ -23,6 +22,7 @@ var app = angular.module('beeline', [
   'ngCordova',
   'uiGmapgoogle-maps',
   'multipleDatePicker',
+  'ngclipboard',
 ])
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
