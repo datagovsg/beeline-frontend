@@ -169,6 +169,7 @@ export default [
           data: {
             customerId: $scope.user.savedPaymentInfo.id,
             sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+            trips: BookingService.prepareTrips($scope.book),
           },
         });
         $ionicLoading.hide();
