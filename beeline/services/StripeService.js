@@ -35,6 +35,7 @@ export default function initStripe(UserService, $ionicPopup, $ionicPlatform) {
           name: 'Beeline',
           description: description,
           amount: Math.round(amount),
+          allowRememberMe: false,
           currency: 'SGD',
           email: UserService.getUser().email,
           // panelLabel: "Add Card Details",

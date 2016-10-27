@@ -31,11 +31,16 @@
       padding-left: $content-padding*2;
     }
   }
-  .text-link{
+  .text-link-div {
     text-align: center;
     margin: 1em;
-    a{
+    a {
       text-decoration: underline;
     }
+  }
+  .text-link-disabled {
+    color: $hint-color;
+    text-decoration: underline;
+    pointer-events: none;
   }
 }

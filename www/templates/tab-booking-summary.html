@@ -144,8 +144,11 @@
               ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
         Confirm and Pay
       </button>
-      <div class="text-link">
-        <a ng-click="pay()">Use a different card for this payment</a>
+      <div class="text-link-div">
+        <a ng-class="(!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate) ? 'text-link-disabled' : ''"
+            ng-click="pay()">
+            Use a different card for this payment
+        </a>
       </div>
 
     </section>
