@@ -128,7 +128,7 @@ export default [
           {  text: 'Cancel' },
           {
             text: 'Remove',
-            type: 'button-positive',
+            type: ($scope.isOnKickstarter ? 'button-disabled' : 'button-positive'),
             onTap: function(e) {
               if ($scope.isOnKickstarter) {
                 e.preventDefault();
