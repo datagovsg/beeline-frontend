@@ -41,7 +41,7 @@
             <img class="mini-icon" src="img/icon_schedule.svg">
           </span>
           <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
-            {{book.route.daysLeft}} days left to activate
+            {{book.route.daysLeft}} days left
           </span>
           <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
             {{book.route.daysLeft}} day left to activate
@@ -116,7 +116,7 @@
     <div>
       <h4>When will I be charged and for how much?</h4>
       You will be charged for the {{book.route.trips.length}} if the
-      route is activated when the campaign ends on {{book.route.notes.lelongExpiry | formatDateMMMdd}}
+      route is activated when the campaign ends on {{book.route.notes.lelongExpiry | date:'dd MMM'}}
       at the lowest unlocked price you agreed to.
     </div>
 

@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_commit" view-title="Commit Success" hide-back-button="true">
+<ion-view id="pg_kickstarter_commit" view-title="Joined Route" hide-back-button="true">
   <ion-nav-buttons side="right">
     <button class="button button-clear"
        ui-sref="tabs.kickstarter">
@@ -8,19 +8,17 @@
   <ion-content class="booking-content" scroll=false>
     <ion-item class="item item-text-wrap">
       <div class="row">
-        <div class="col-33 success-image"><img src="img/paymentComplete_paid.svg"></div>
-        <div class="col-67 success-text">
-          You joined the route! Tell your colleagues and neighbours travelling in the same
-          direction to join too so that the rotue gets activated soon!
+        <div class="success-text">
+          You are in! You pledge to book this kickstarter route at ${{book.route.bidPrice | number:2}}
+          per trip for {{book.route.trips.length}} trips!
+
+          You will be notified via email about the route status when the kickstarter ends on
+          {{book.route.notes.lelongExpiry | date:'dd MMM'}}.
+
+          You will be charged when the route activates at this price.
         </div>
       </div>
-      <div class="row">
-        <textarea class="col-60">{{shareLink}}</textarea>
-        <button class="col-40 button" ng-click="shareAnywhere()" ng-if="!showCopy">Share anywhere</button>
-        <button class="col-40 button" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}}>
-            Copy
-        </button>
-      </div>
+
       <div class="">
         <div class="row">
           <div class="kickstarter-info">
@@ -58,7 +56,7 @@
                     <img class="mini-icon" src="img/icon_schedule.svg">
                   </span>
                   <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
-                    {{book.route.daysLeft}} days left to activate
+                    {{book.route.daysLeft}} days left
                   </span>
                   <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
                     {{book.route.daysLeft}} day left to activate
@@ -75,6 +73,15 @@
           max-val={{book.route.notes.tier[1].pax}} high-price={{book.route.notes.tier[0].price}} low-price={{book.route.notes.tier[1].price}}
           high-total={{book.route.notes.tier[0].pax}}>
         </progress-bar>
+      </div>
+
+      Share this route to your friends!
+      <div class="row">
+        <textarea class="col-60">{{shareLink}}</textarea>
+        <button class="col-40 button" ng-click="shareAnywhere()" ng-if="!showCopy">Share anywhere</button>
+        <button class="col-40 button" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}}>
+            Copy
+        </button>
       </div>
 
       <button class="primary-button button" ui-sref="tabs.kickstarter">

@@ -1,6 +1,34 @@
-<ion-view id="pg_kickstarter_summary" view-title="Kickstart Route Summary"
+<ion-view id="pg_kickstarter_summary" view-title="View Pending Trip Dates"
   hide-back-button="false" can-swipe-back="false">
   <ion-content>
+    <div>
+    If activated, route will commence on {{book.route.trips[0].date | date:'dd MMM'}} and will
+    run for at least a month. To activate the route, minimum
+    no. of people must pledge to book the first 5 trips
+    shown below.
+    </div>
+
+    <h3>
+      Trip Dates
+    </h3>
+    <div class="item"  ng-if="priceInfo.tripCount > 0">
+      <div class="row">
+        <table class="price-table booking-info" >
+          <thead>
+            <tr>
+              <th>Dates</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="pinfo in book.route.trips">
+              <td>
+                {{pinfo.date | date:'dd MMM (EEE)'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <section class="card">
       <h3 class="item item-divider">
@@ -55,46 +83,33 @@
       </route-item>
     </section>
 
-
-    <section class="card">
-      <h3 class="item item-divider">
-        Trip Dates
-      </h3>
-      <div class="item"  ng-if="priceInfo.tripCount > 0">
-        <div><b>{{priceInfo.tripCount}} day(s)</b> were selected.</div></br>
-        <div class="row">
-          <div class="col-33">
-            <table class="price-table booking-info" >
-              <thead>
-                <tr>
-                  <th>Dates</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="pinfo in book.route.trips">
-                  <td>
-                    {{pinfo.date | date:'dd MMM (EEE)'}}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-67 item-text-wrap">
-            When will be charged and for how much?</br>
-            You will be charged when the route is activated.</br>
-            You will be charged when the campaign ends on Nov 1,
-            2016 if the rotue is activated. </br>
-            And only at the lowest unlocked price.
-          </div>
-      </div>
-      </div>
-
-    </section>
-
-
     <company-info-broker company-id="book.route.transportCompanyId"
                          company="book.companyInfo">
     </company-info-broker>
+
+    <section class="card">
+      <h4 class="item item-divider">Operated By:</h4>
+
+      <div class="item item-text-wrap">
+        <div class="row">
+          <div class="col-20 bus-logo">
+            <img ng-src="{{book.companyInfo.id | companyLogo}}">
+          </div>
+          <div class="col-80 col-center bus-co-info">
+            <p class="name">{{book.companyInfo.name}}</p>
+            <p class="email">{{book.companyInfo.email}}</p>
+          </div>
+        </div>
+      </div>
+      <!-- When will I be charged -->
+      <div>
+        <h4>When will I be charged and for how much?</h4>
+        You will be charged for the {{book.route.trips.length}} if the
+        route is activated when the campaign ends on {{book.route.notes.lelongExpiry | date:'dd MMM'}}
+        at the lowest unlocked price you agreed to.
+      </div>
+
+    </section>
 
     <section class="card" ng-if="!isLoggedIn || !book.isBid">
       <div class="item item-text-wrap">
