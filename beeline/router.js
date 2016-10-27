@@ -215,6 +215,19 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tabs.kickstarter-recap', {
+    url: '/kickstarter/:routeId/recap',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-recap.html',
+        controller: 'KickstarterRecapController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
   .state('tabs.kickstarter-detail', {
     url: '/kickstarter/:routeId/detail?boardStop&alightStop',
     views: {

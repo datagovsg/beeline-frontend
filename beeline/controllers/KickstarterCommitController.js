@@ -38,7 +38,7 @@ export default [
 
     routePromise.then((route) => {
 
-      $scope.book.route = route[0];
+      $scope.book.route = route;
       console.log("COMMIT");
       console.log($scope.book.route);
       if ($scope.book.route.notes && $scope.book.route.notes.lelongExpiry) {

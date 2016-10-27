@@ -81,7 +81,7 @@ export default [
           const bidInfo =  await KickstarterService.getBidInfo($scope.book.routeId);
           console.log("BIDINFO");
           console.log(bidInfo);
-          $scope.priceInfo.bidPrice = bidInfo[0].bid.userOptions.price
+          $scope.priceInfo.bidPrice = bidInfo.bid.userOptions.price
         }
       }
     });

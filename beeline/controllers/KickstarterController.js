@@ -31,14 +31,14 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }
 
   // Don't override the caching in main.js
-  var firstRun = true;
+  // var firstRun = true;
   $scope.$watch(() => UserService.getUser() && UserService.getUser().id,
     async () => {
-       $scope.refreshRoutes(!firstRun);
+       $scope.refreshRoutes(/*!firstRun*/);
        var user = UserService.getUser();
        $scope.isLoggedIn = user ? true : false;
        $scope.user = user;
-       $scope.userBids = await KickstarterService.getBids(!firstRun);
+       $scope.userBids = await KickstarterService.getBids(true);
        console.log($scope.userBids);
        if ($scope.userBids) {
          $scope.recentBids = $scope.userBids.map((bid)=>{
@@ -55,7 +55,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
          $scope.data.backedKickstarter = recentAndAvailable[0];
          $scope.data.kickstarter = recentAndAvailable[1];
       }
-      firstRun = false;
+      // firstRun = false;
   })
 
 }
