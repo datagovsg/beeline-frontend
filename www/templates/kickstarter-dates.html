@@ -1,39 +1,40 @@
-<ion-view id="" view-title="View Pending Trip Dates"
+<ion-view id="pg_kickstarter_dates" view-title="View Pending Trip Dates"
   hide-back-button="false" can-swipe-back="false">
   <ion-content>
-    <div>
-    If activated, route will commence on {{book.route.trips[0].date | date:'dd MMM'}} and will
-    run for at least a month. To activate the route, minimum
-    no. of people must pledge to book the first 5 trips
-    shown below.
-    </div>
-
-    <h4>
-      Trip Dates
-    </h4>
-    <div class="item"  ng-if="book.route.trips.length > 0">
-      <div class="row">
-        <table class="price-table booking-info" >
-          <thead>
-            <tr>
-              <th>Dates</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="pinfo in book.route.trips">
-              <td>
-                {{pinfo.date | date:'dd MMM (EEE)'}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="item item-text-wrap">
+      <i class="icon ion-calendar"></i>
+      <div>
+        If activated, route will commence on {{book.route.trips[0].date | date:'dd MMM'}} and will
+        run for at least a month. To activate the route, minimum
+        no. of people must pledge to book the first 5 trips
+        shown below.
       </div>
     </div>
 
-    <h4>
-      Pledge to book trips at the following price.
-    </h4>
     <div class="item">
+      <div class="subTitle">
+        Trip Dates
+      </div>
+      <table class="booking-info" >
+        <thead>
+          <tr>
+            <th>Dates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="pinfo in book.route.trips">
+            <td>
+              {{pinfo.date | date:'dd MMM (EEE)'}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="item">
+      <div class="subTitle">
+        Pledge to book trips at the following price.
+      </div>
       <div class="row">
         <table class="price-table booking-info" >
           <thead>
