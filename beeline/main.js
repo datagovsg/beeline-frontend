@@ -80,6 +80,7 @@ var app = angular.module('beeline', [
 .controller('LiteMoreInfoController', require('./controllers/LiteMoreInfoController.js').default)
 .controller('KickstarterController', require('./controllers/KickstarterController.js').default)
 .controller('KickstarterDetailController', require('./controllers/KickstarterDetailController.js').default)
+.controller('KickstarterDatesController', require('./controllers/KickstarterDatesController.js').default)
 .controller('KickstarterSummaryController', require('./controllers/KickstarterSummaryController.js').default)
 .controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)

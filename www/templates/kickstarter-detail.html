@@ -8,187 +8,171 @@
   </ion-nav-buttons>
 
   <ion-content>
-    <div class=item>
-      <div class="kickstarter-info">
-        <route-item>
-          <route-item-bus-number>
-            {{ book.route.label }}
-          </route-item-bus-number>
-          <route-item-start-time>
-            {{ book.route | routeStartTime | formatTime:true }}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ book.route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ book.route | routeEndTime | formatTime:true }}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ book.route.to }}
-          </route-item-end-location>
-          <route-item-additional-info>
-            <company-info-broker company-id="book.route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="schedule">
-                {{companyInfo.name}}
-              </span>
-            </div>
+    <form class="stops-form" name="stopsForm">
+      <div class=item>
+        <div class="kickstarter-info">
+          <route-item>
+            <route-item-bus-number>
+              {{ book.route.label }}
+            </route-item-bus-number>
+            <route-item-start-time>
+              {{ book.route | routeStartTime | formatTime:true }}
+            </route-item-start-time>
+            <route-item-start-location>
+              {{ book.route.from }}
+            </route-item-start-location>
+            <route-item-end-time>
+              {{ book.route | routeEndTime | formatTime:true }}
+            </route-item-end-time>
+            <route-item-end-location>
+              {{ book.route.to }}
+            </route-item-end-location>
+            <route-item-additional-info>
+              <company-info-broker company-id="book.route.transportCompanyId"
+                                    company="companyInfo">
+              </company-info-broker>
+              <div class="icon-and-schedule">
+                <span class="icon-span company-logo">
+                  <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
+                </span>
+                <span class="schedule">
+                  {{companyInfo.name}}
+                </span>
+              </div>
 
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
-                {{book.route.daysLeft}} days left
-              </span>
-              <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
-                {{book.route.daysLeft}} day left to activate
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
-        <div class="price">
-          <fancy-price value="book.route.notes.tier[0].price"></fancy-price>
-        </div>
-      </div>
-
-      <progress-bar cur-val={{book.route.notes.tier[0].no}} second-val={{book.route.notes.tier[1].no}}
-        max-val={{book.route.notes.tier[1].pax}} high-price={{book.route.notes.tier[0].price}} low-price={{book.route.notes.tier[1].price}}
-        high-total={{book.route.notes.tier[0].pax}}>
-      </progress-bar>
-
-    </div>
-
-    <!-- contains the map, the stop selectors
-      and the locate me button -->
-    <div class="map-area">
-      <ui-gmap-google-map
-          center="map.center"
-          zoom="map.zoom"
-          bounds="map.bounds"
-          control="map.control"
-          options="map.options">
-        <my-location></my-location>
-
-        <ui-gmap-window ng-if="disp.popupStop"
-                        coords="disp.popupStop.coordinates"
-                        show="disp.popupStop"
-                        closeClick="closeWindow">
-          <div class="popUpStopSelect">
-            <b>{{disp.popupStop.time | formatTime }}</b><br/>
-            {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
+              <div class="icon-and-schedule">
+                <span class="icon-span">
+                  <img class="mini-icon" src="img/icon_schedule.svg">
+                </span>
+                <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
+                  {{book.route.daysLeft}} days left
+                </span>
+                <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
+                  {{book.route.daysLeft}} day left to activate
+                </span>
+              </div>
+            </route-item-additional-info>
+          </route-item>
+          <div class="price">
+            <fancy-price value="book.route.notes.tier[0].price"></fancy-price>
           </div>
-        </ui-gmap-window>
+        </div>
 
-        <ui-gmap-marker
-          ng-repeat="stop in book.boardStops"
-          idKey="stop.id"
-          coords="stop.coordinates"
-          options="map.markerOptions.boardMarker"
-          click="applyTapBoard(stop)"
-        ></ui-gmap-marker>
-        <ui-gmap-marker
-          ng-repeat="stop in book.alightStops"
-          idKey="stop.id"
-          coords="stop.coordinates"
-          options="map.markerOptions.alightMarker"
-          click="applyTapAlight(stop)"
-        ></ui-gmap-marker>
+        <progress-bar cur-val={{book.route.notes.tier[0].no}} second-val={{book.route.notes.tier[1].no}}
+          max-val={{book.route.notes.tier[1].pax}} high-price={{book.route.notes.tier[0].price}} low-price={{book.route.notes.tier[1].price}}
+          high-total={{book.route.notes.tier[0].pax}}>
+        </progress-bar>
 
-        <ui-gmap-polyline
-          path="routePath"
-          static="true"
-          stroke="map.pathOptions.routePath"
-        >
-        </ui-gmap-polyline>
-
-        <ui-gmap-marker
-          idkey="'bs'"
-          coords="book.boardStop.coordinates"
-          options="map.markerOptions.startMarker">
-        </ui-gmap-marker>
-
-        <ui-gmap-marker
-          idkey="'as'"
-          coords="book.alightStop.coordinates"
-          options="map.markerOptions.endMarker">
-        </ui-gmap-marker>
-
-      </ui-gmap-google-map>
-    </div>
-
-    <ion-list class="stop-inputs">
-      <bus-stop-selector
-        ng-model="book.boardStop"
-        bus-stops="book.boardStops"
-        placeholder="Select pick-up stop"
-        title="Select pick-up stop"
-        button="Select pick-up stop"
-        marker-options="map.markerOptions.boardMarker"
-        pin-options="map.markerOptions.startMarker"
-        ng-required="true"
-        name="boardStop"
-        >
-      </bus-stop-selector>
-      <bus-stop-selector
-        ng-model="book.alightStop"
-        bus-stops="book.alightStops"
-        placeholder="Select drop-off stop"
-        title="Select drop-off stop"
-        button="Select drop-off stop"
-        marker-options="map.markerOptions.alightMarker"
-        pin-options="map.markerOptions.endMarker"
-        ng-required="true"
-        name="alightStop"
-        >
-      </bus-stop-selector>
-    </ion-list>
-
-    <!-- TODO: if user bid kickstarter and it expiries must show in the list!-->
-    <section class="item item-text-wrap continue-button-item"
-             ng-if="!book.notExpired">
-      The kickstarter is over.
-      <button class="button primary-button"
-        ui-sref="tabs.kickstarter">
-        Show Kickstarter List
-      </button>
-    </section>
-
-
-    <section class="item item-text-wrap continue-button-item"
-             ng-if="book.notExpired">
-      <div class="text-center">
-        <h1><fancy-price value="book.route.notes.tier[0].price"></fancy-price></h1>
-        <h2>per trip</h2>
       </div>
-      <button class="button primary-button"
-              ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
-              ui-sref="tabs.kickstarter-summary({
-                        routeId: book.routeId,
-                        boardStop: book.boardStop.id,
-                        alightStop: book.alightStop.id,
-                        bidPrice: book.route.notes.tier[0].price
-                      })">
-        Bid at ${{book.route.notes.tier[0].price}}
-        <span>({{book.route.notes.tier[0].pax-book.route.notes.tier[0].no}} pax needed)</span>
-      </button>
-      <button class="button button-block button-outline button-positive"
-              ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
-              ui-sref="tabs.kickstarter-summary({
-                        routeId: book.routeId,
-                        boardStop: book.boardStop.id,
-                        alightStop: book.alightStop.id,
-                        bidPrice: book.route.notes.tier[1].price
-                      })">
-        BID AT ${{book.route.notes.tier[1].price}}
-        <span>({{book.route.notes.tier[1].pax-book.route.notes.tier[1].no}} pax needed)</span>
-      </button>
-    </section>
+
+      <!-- contains the map, the stop selectors
+        and the locate me button -->
+      <div class="map-area">
+        <ui-gmap-google-map
+            center="map.center"
+            zoom="map.zoom"
+            bounds="map.bounds"
+            control="map.control"
+            options="map.options">
+          <my-location></my-location>
+
+          <ui-gmap-window ng-if="disp.popupStop"
+                          coords="disp.popupStop.coordinates"
+                          show="disp.popupStop"
+                          closeClick="closeWindow">
+            <div class="popUpStopSelect">
+              <b>{{disp.popupStop.time | formatTime }}</b><br/>
+              {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
+            </div>
+          </ui-gmap-window>
+
+          <ui-gmap-marker
+            ng-repeat="stop in book.boardStops"
+            idKey="stop.id"
+            coords="stop.coordinates"
+            options="map.markerOptions.boardMarker"
+            click="applyTapBoard(stop)"
+          ></ui-gmap-marker>
+          <ui-gmap-marker
+            ng-repeat="stop in book.alightStops"
+            idKey="stop.id"
+            coords="stop.coordinates"
+            options="map.markerOptions.alightMarker"
+            click="applyTapAlight(stop)"
+          ></ui-gmap-marker>
+
+          <ui-gmap-polyline
+            path="routePath"
+            static="true"
+            stroke="map.pathOptions.routePath"
+          >
+          </ui-gmap-polyline>
+
+          <ui-gmap-marker
+            idkey="'bs'"
+            coords="book.boardStop.coordinates"
+            options="map.markerOptions.startMarker">
+          </ui-gmap-marker>
+
+          <ui-gmap-marker
+            idkey="'as'"
+            coords="book.alightStop.coordinates"
+            options="map.markerOptions.endMarker">
+          </ui-gmap-marker>
+
+        </ui-gmap-google-map>
+      </div>
+
+      <ion-list class="stop-inputs">
+        <bus-stop-selector
+          ng-model="book.boardStop"
+          bus-stops="book.boardStops"
+          placeholder="Select pick-up stop"
+          title="Select pick-up stop"
+          button="Select pick-up stop"
+          marker-options="map.markerOptions.boardMarker"
+          pin-options="map.markerOptions.startMarker"
+          ng-required="true"
+          name="boardStop"
+          >
+        </bus-stop-selector>
+        <bus-stop-selector
+          ng-model="book.alightStop"
+          bus-stops="book.alightStops"
+          placeholder="Select drop-off stop"
+          title="Select drop-off stop"
+          button="Select drop-off stop"
+          marker-options="map.markerOptions.alightMarker"
+          pin-options="map.markerOptions.endMarker"
+          ng-required="true"
+          name="alightStop"
+          >
+        </bus-stop-selector>
+      </ion-list>
+
+      <!-- TODO: if user bid kickstarter and it expiries must show in the list!-->
+      <section class="item item-text-wrap continue-button-item"
+               ng-if="!book.notExpired">
+        The kickstarter is over.
+        <button class="button primary-button"
+          ui-sref="tabs.kickstarter">
+          Show Kickstarter List
+        </button>
+      </section>
+
+      <section class="item item-text-wrap continue-button-item"
+               ng-if="book.notExpired">
+        <button class="button primary-button"
+                ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
+                ui-sref="tabs.kickstarter-dates({
+                          routeId: book.routeId,
+                          boardStop: book.boardStop.id,
+                          alightStop: book.alightStop.id
+                        })">
+          Continue
+        </button>
+      </section>
+    </form>
 
     <!-- <section class="item item-text-wrap continue-button-item"
              ng-if="book.notExpired && isLoggedIn && book.isBid">

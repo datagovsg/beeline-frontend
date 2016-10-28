@@ -1,34 +1,6 @@
 <ion-view id="pg_kickstarter_summary" view-title="View Pending Trip Dates"
   hide-back-button="false" can-swipe-back="false">
   <ion-content>
-    <div>
-    If activated, route will commence on {{book.route.trips[0].date | date:'dd MMM'}} and will
-    run for at least a month. To activate the route, minimum
-    no. of people must pledge to book the first 5 trips
-    shown below.
-    </div>
-
-    <h3>
-      Trip Dates
-    </h3>
-    <div class="item"  ng-if="priceInfo.tripCount > 0">
-      <div class="row">
-        <table class="price-table booking-info" >
-          <thead>
-            <tr>
-              <th>Dates</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="pinfo in book.route.trips">
-              <td>
-                {{pinfo.date | date:'dd MMM (EEE)'}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
     <section class="card">
       <h3 class="item item-divider">
@@ -42,11 +14,11 @@
               <td>{{priceInfo.tripCount || 0}}</td>
             </tr>
             <tr>
-              <td><b>Price per Trip</b></td>
+              <td><b>Max. Price per Trip</b></td>
               <td>${{priceInfo.bidPrice | number:2}}</td>
             </tr>
             <tr>
-              <th><b>Total</b></th>
+              <th><b>Amount you commit</b></th>
               <th>${{priceInfo.totalDue | number:2}}</th>
             </tr>
         </table>
@@ -54,9 +26,10 @@
 
     </section>
 
+
     <section class="card">
       <h3 class="item item-divider">
-        Joining this route
+        Selected Stop
       </h3>
       <route-item class="item" hide-additional-info="true">
         <route-item-bus-number>
@@ -82,6 +55,28 @@
         </route-item-end-location>
       </route-item>
     </section>
+
+    <h3>
+      Trip Dates
+    </h3>
+    <div class="item"  ng-if="priceInfo.tripCount > 0">
+      <div class="row">
+        <table class="price-table booking-info" >
+          <thead>
+            <tr>
+              <th>Dates</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="pinfo in book.route.trips">
+              <td>
+                {{pinfo.date | date:'dd MMM (EEE)'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <company-info-broker company-id="book.route.transportCompanyId"
                          company="book.companyInfo">

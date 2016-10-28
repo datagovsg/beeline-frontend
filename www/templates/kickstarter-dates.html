@@ -1,0 +1,91 @@
+<ion-view id="" view-title="View Pending Trip Dates"
+  hide-back-button="false" can-swipe-back="false">
+  <ion-content>
+    <div>
+    If activated, route will commence on {{book.route.trips[0].date | date:'dd MMM'}} and will
+    run for at least a month. To activate the route, minimum
+    no. of people must pledge to book the first 5 trips
+    shown below.
+    </div>
+
+    <h4>
+      Trip Dates
+    </h4>
+    <div class="item"  ng-if="book.route.trips.length > 0">
+      <div class="row">
+        <table class="price-table booking-info" >
+          <thead>
+            <tr>
+              <th>Dates</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="pinfo in book.route.trips">
+              <td>
+                {{pinfo.date | date:'dd MMM (EEE)'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h4>
+      Pledge to book trips at the following price.
+    </h4>
+    <div class="item">
+      <div class="row">
+        <table class="price-table booking-info" >
+          <thead>
+            <tr>
+              <th>Pledge Amount</th>
+              <th>No. of people who pledged already</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="tier in book.route.notes.tier">
+              <td>
+                ${{tier.price | number:2}} per trip
+              </td>
+              <td>
+                {{tier.pax - tier.no}} out of {{tier.pax}} pax needed
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <company-info-broker company-id="book.route.transportCompanyId"
+                         company="book.companyInfo">
+    </company-info-broker>
+
+
+    <section class="item item-text-wrap continue-button-item"
+             ng-if="book.notExpired">
+      <button class="button primary-button"
+              ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
+              ui-sref="tabs.kickstarter-summary({
+                        routeId: book.routeId,
+                        boardStop: book.boardStopId,
+                        alightStop: book.alightStopId,
+                        bidPrice: book.route.notes.tier[0].price
+                      })">
+        Bid at ${{book.route.notes.tier[0].price}}
+        <span>({{book.route.notes.tier[0].pax-book.route.notes.tier[0].no}} pax needed)</span>
+      </button>
+      <button class="button button-block button-outline button-positive"
+              ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
+              ui-sref="tabs.kickstarter-summary({
+                        routeId: book.routeId,
+                        boardStop: book.boardStopId,
+                        alightStop: book.alightStopId,
+                        bidPrice: book.route.notes.tier[1].price
+                      })">
+        BID AT ${{book.route.notes.tier[1].price}}
+        <span>({{book.route.notes.tier[1].pax-book.route.notes.tier[1].no}} pax needed)</span>
+      </button>
+    </section>
+  </ion-content>
+</ion-view>
