@@ -98,6 +98,20 @@
         <button type="submit" class='button button-royal' >Apply</button>
       </div>
     </section>
+
+    <section class="card" ng-if="myCredits > 0">
+      <div class="item item-toggle">
+      Apply your Beeline Crdits: {{book.myCredits | currency}}
+      <label class="toggle toggle-royal">
+         <input type="checkbox" ng-model="book.useCredits">
+         <div class="track">
+           <div class="handle"></div>
+         </div>
+      </label>
+      </div>
+    </section>
+
+    <section class="card">
       <h3 class="item item-divider">
         Terms and Conditions of Booking
       </h3>
