@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_summary" view-title="View Pending Trip Dates"
+<ion-view id="pg_kickstarter_summary" view-title="Kickstart Route Details"
   hide-back-button="false" can-swipe-back="false">
   <ion-content>
 
@@ -56,34 +56,34 @@
       </route-item>
     </section>
 
-    <h3>
-      Trip Dates
-    </h3>
-    <div class="item"  ng-if="priceInfo.tripCount > 0">
-      <div class="row">
-        <table class="price-table booking-info" >
-          <thead>
-            <tr>
-              <th>Dates</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="pinfo in book.route.trips">
-              <td>
-                {{pinfo.date | date:'dd MMM (EEE)'}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <section class="card">
+      <h4 class="item item-divider">Trip Dates</h4>
+      <div class="item"  ng-if="priceInfo.tripCount > 0">
+        <div class="row">
+          <table class="price-table booking-info" >
+            <thead>
+              <tr>
+                <th>Dates</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="pinfo in book.route.trips">
+                <td>
+                  {{pinfo.date | date:'dd MMM , EEE'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+  </section>
 
     <company-info-broker company-id="book.route.transportCompanyId"
                          company="book.companyInfo">
     </company-info-broker>
 
     <section class="card">
-      <h4 class="item item-divider">Operated By:</h4>
+      <h4 class="item item-divider">Operated by</h4>
 
       <div class="item item-text-wrap">
         <div class="row">
@@ -96,14 +96,15 @@
           </div>
         </div>
       </div>
-      <!-- When will I be charged -->
-      <div>
-        <h4>When will I be charged and for how much?</h4>
+    </section>
+
+    <section class="card">
+      <h4 class="item item-divider">When will I be charged and for how much?</h4>
+      <div class="item item-text-wrap">
         You will be charged for the {{book.route.trips.length}} if the
         route is activated when the campaign ends on {{book.route.notes.lelongExpiry | date:'dd MMM'}}
         at the lowest unlocked price you agreed to.
       </div>
-
     </section>
 
     <section class="card" ng-if="!isLoggedIn || !book.isBid">
