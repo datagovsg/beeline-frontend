@@ -42,6 +42,10 @@ var transformKickstarterData = function (kickstarterRoutes) {
 
     //sort trips date in ascending order
     kickstarter.trips = _.orderBy(kickstarter.trips, x=>x.date);
+    //sort tripStops time in ascending order
+    _.forEach(kickstarter.trips, function(trip){
+      trip.tripStops = _.orderBy(trip.tripStops, stop=>stop.time)
+    });
   }
   return kickstarterRoutes;
 }

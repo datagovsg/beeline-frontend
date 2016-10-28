@@ -4,21 +4,14 @@ import loadingTemplate from '../templates/loading.html';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 import assert from 'assert';
 
-var increaseBidNo = function(route, price) {
-  for (let tier of route.notes.tier) {
-    if (tier.price <= price) {
-      tier.no++;
-    }
-  }
-}
 
-var decreaseBidNo = function(route, price) {
-  for (let tier of route.notes.tier) {
-    if (tier.price <= price) {
-      tier.no--;
-    }
-  }
-}
+// var decreaseBidNo = function(route, price) {
+//   for (let tier of route.notes.tier) {
+//     if (tier.price <= price) {
+//       tier.no--;
+//     }
+//   }
+// }
 
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
@@ -69,16 +62,10 @@ export default [
 
     routePromise = KickstarterService.getLelongById($scope.book.routeId);
 
-    var stopOptions = {
-      initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
-      initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
-    };
     routePromise.then((route) => {
-      console.log("ROUTEBYID");
-      console.log(route);
       $scope.book.route = route;
       $scope.book.bidOptions = $scope.book.route.notes.tier;
-      computeStops(stopOptions);
+      computeStops();
       if (route.notes && route.notes.lelongExpiry) {
        var now = new Date().getTime();
        var expiryTime = new Date(route.notes.lelongExpiry).getTime();
@@ -154,22 +141,11 @@ export default [
     }
 
     /** Summarizes the stops from trips by comparing their stop location and time */
-    function computeStops({initialBoardStopId, initialAlightStopId}) {
+    function computeStops() {
       var trips = $scope.book.route.trips;
       var [boardStops, alightStops] = BookingService.computeStops(trips);
       $scope.book.boardStops = boardStops;
       $scope.book.alightStops = alightStops;
-
-      // Check that the boardStopIds are still valid
-      if (typeof(initialBoardStopId) === 'number') {
-        $scope.book.boardStop = boardStops.find(ts =>
-            ts.id === initialBoardStopId);
-      }
-      // Check that the boardStopIds are still valid
-      if (typeof(initialAlightStopId) === 'number') {
-        $scope.book.alightStop = alightStops.find(ts =>
-            ts.id === initialAlightStopId);
-      }
     }
 
     // $scope.deleteBid = async function(){
