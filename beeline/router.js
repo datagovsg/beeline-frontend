@@ -29,6 +29,12 @@ export default function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/intro-slides.html',
     controller: 'IntroSlidesController'
   })
+  .state('welcome', {
+    url: '/welcome',
+    templateUrl: 'templates/welcome.html',
+    controller: 'WelcomeController'
+  })
+
 
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface

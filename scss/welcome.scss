@@ -1,0 +1,25 @@
+.welcome-page {
+      background: url('../img/welcome-background.png') center no-repeat;
+
+  .welcome-content {
+    h1 {
+      margin-top: $padding-large-vertical*2;
+      margin-bottom: $padding-large-vertical*3;
+      color: $royal
+    }
+
+    p {
+      margin: $padding-large-vertical*2 $padding-small-horizontal;
+    }
+
+    h2 {
+      margin-top: $padding-large-vertical*3;
+      margin-bottom: $padding-large-vertical*2;
+      line-height: 1.5em;
+    }
+
+    label.item.item-input.signUp {
+      border: 1px solid $border-grey;
+    }
+  }
+}
