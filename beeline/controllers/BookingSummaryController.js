@@ -66,13 +66,7 @@ export default [
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
-      console.log("userobj", user);
-      $scope.hasSavedPaymentInfo = (
-        user && user.savedPaymentInfo &&
-        user.savedPaymentInfo.sources &&
-        user.savedPaymentInfo.sources.data &&
-        !_.isEmpty(user.savedPaymentInfo.sources.data)
-      );
+      $scope.hasSavedPaymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
       if ($scope.isLoggedIn) {
         $ionicLoading.show({
           template: loadingTemplate
@@ -103,19 +97,28 @@ export default [
       $scope.book.hasInvalidDate = (selectedAndInvalid.length > 0)
     }
 
-    $scope.pay = async function() {
+    $scope.payHandler = async function () {
+      if ($scope.disp.savePaymentChecked) {
+        $scope.payWithSavedInfo();
+      }
+      else {
+        $scope.payWithoutSavingCard();
+      }
+    }
+
+    // Prompts for card and processes payment with one time stripe token.
+    $scope.payWithoutSavingCard = async function() {
       try {
         // disable the button
         $scope.waitingForPaymentResult = true;
 
-        const stripeToken = await StripeService.promptForToken();
+        var stripeToken = await StripeService.promptForToken(
+          null,
+          isFinite($scope.book.price) ? $scope.book.price * 100 : '',
+          null);
 
-        if (!stripeToken) return;
-
-        // TODO: After stripeToken is received, check disp.savePaymentChecked,
-        // if true: call UserService.savePaymentInfo(stripeToken.id)
-        if ($scope.disp.savePaymentChecked) {
-          await UserService.savePaymentInfo(stripeToken.id);
+        if (!stripeToken) {
+          return;
         }
 
         $ionicLoading.show({
@@ -151,18 +154,33 @@ export default [
       }
     };
 
-    // #TODO: Implement method to pay with saved info.
-    // payWithSavedInfo()
+    // Processes payment with customer object. If customer object does not exist,
+    // prompts for card, creates customer object, and proceeds as usual.
     $scope.payWithSavedInfo = async function () {
       try {
         // disable the button
         $scope.waitingForPaymentResult = true;
 
+        if (!$scope.hasSavedPaymentInfo) {
+          var stripeToken = await StripeService.promptForToken(
+            null,
+            isFinite($scope.book.price) ? $scope.book.price * 100 : '',
+            null);
+
+          if (!stripeToken) {
+            return;
+          }
+        }
+
         $ionicLoading.show({
           template: processingPaymentsTemplate
         })
-        console.log("customerId", $scope.user.savedPaymentInfo.id);
-        console.log("sourceId", _.head($scope.user.savedPaymentInfo.sources.data).id);
+
+        //saves payment info if doesn't exist
+        if (!$scope.hasSavedPaymentInfo){
+          await UserService.savePaymentInfo(stripeToken.id);
+        }
+
         var result = await UserService.beeline({
           method: 'POST',
           url: '/transactions/payment_ticket_sale',

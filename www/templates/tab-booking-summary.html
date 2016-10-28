@@ -129,7 +129,7 @@
       Please ensure that your credit card is ready for the next step in the booking process.
 
       <button class="button primary-button"
-              ng-click="pay()"
+              ng-click="payHandler()"
               ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
         Confirm and Pay
       </button>
@@ -146,7 +146,7 @@
       </button>
       <div class="text-link-div">
         <a ng-class="(!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate) ? 'text-link-disabled' : ''"
-            ng-click="pay()">
+            ng-click="payWithoutSavingCard()">
             Use a different card for this payment
         </a>
       </div>
