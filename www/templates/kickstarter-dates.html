@@ -3,12 +3,12 @@
   <ion-content>
     <div class="item item-text-wrap">
       <i class="icon ion-calendar"></i>
-      <div>
+
         If activated, route will commence on {{book.route.trips[0].date | date:'dd MMM'}} and will
         run for at least a month. To activate the route, minimum
         no. of people must pledge to book the first 5 trips
         shown below.
-      </div>
+
     </div>
 
     <div class="item">
@@ -24,7 +24,7 @@
         <tbody>
           <tr ng-repeat="pinfo in book.route.trips">
             <td>
-              {{pinfo.date | date:'dd MMM (EEE)'}}
+              {{pinfo.date | date:'dd MMM , EEE'}}
             </td>
           </tr>
         </tbody>
