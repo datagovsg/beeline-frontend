@@ -1,3 +1,4 @@
+
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 import loadingTemplate from '../templates/loading.html';
@@ -34,6 +35,16 @@ export default [
       $scope.book.route = route;
 
     });
+
+    $scope.updateSelection = function(position, tiers, price) {
+      _.forEach(tiers, function(tier, index){
+        if (position == index) {
+          $scope.book.bidPrice = $scope.book.bidPrice == price ? null : price;
+        } else {
+          tier.checked = false;
+        }
+      })
+    }
 
   }
 ];

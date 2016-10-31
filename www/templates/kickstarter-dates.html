@@ -71,7 +71,30 @@
 
     <section class="item item-text-wrap continue-button-item"
              ng-if="book.notExpired">
+
+
+      <ion-list>
+        <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
+            <label class="checkbox">
+                <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
+            </label>
+            {{ item.price }}
+        </ion-item>
+      </ion-list>
       <button class="button primary-button"
+              ng-disabled="stopsForm.$invalid || waitingForPaymentResult || !book.bidPrice"
+              ui-sref="tabs.kickstarter-summary({
+                        routeId: book.routeId,
+                        boardStop: book.boardStopId,
+                        alightStop: book.alightStopId,
+                        bidPrice: book.bidPrice
+                      })">
+        Pledge
+      </button>
+
+
+
+      <!-- <button class="button primary-button"
               ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
               ui-sref="tabs.kickstarter-summary({
                         routeId: book.routeId,
@@ -92,7 +115,7 @@
                       })">
         BID AT ${{book.route.notes.tier[1].price}}
         <span>({{book.route.notes.tier[1].pax-book.route.notes.tier[1].no}} pax needed)</span>
-      </button>
+      </button> -->
     </section>
   </ion-content>
 </ion-view>
