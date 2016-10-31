@@ -98,10 +98,10 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
          Promise.all(scope.availableTrips.map((trip, index)=>{
           return TripService.DriverPings(trip.id)
           .then((info) => {
-            /* Only show pings from the last two hours */
+            /* Only show pings from the last 5 minutes */
             var now = Date.now();
             return scope.recentPings[index] = _.filter(info.pings,
-              ping => now - ping.time.getTime() < 2*60*60*1000);
+              ping => now - ping.time.getTime() < 5*60*1000);
           })
         }))
         .then(() => {
