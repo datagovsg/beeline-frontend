@@ -63,7 +63,7 @@
         <td>{{(priceInfo.priceForTix || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discount">
-        <th>Promo Code: {{booking.promoCode}}</th>
+        <th>{{priceInfo.discount.discount.description}}: {{priceInfo.discount.discount.code}}</th>
         <td>
           {{(-priceInfo.discount.debit || 0) | currency}}
         </td>
