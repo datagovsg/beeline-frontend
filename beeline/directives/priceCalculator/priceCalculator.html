@@ -37,22 +37,50 @@
       </tr>
     </tbody>
   </table>
-  <h3>Price Calculator </h3>
+
   <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
         <th>Total Trips</th>
+        <th>Passengers</th>
         <th>Total Amount</th>
       </tr>
       <tr>
+        <td>{{priceInfo.tripCount || 0}}</td>
+        <td>1</td>
+        <td>{{(priceInfo.priceForTix || 0) | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <h3>Price Calculator </h3>
+  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+    <tbody>
+      <tr>
+        <th>Total Price</th>
+        <td>{{(priceInfo.priceForTix || 0) | currency}}</td>
+      </tr>
+      <tr ng-if="priceInfo.discount">
+        <th>Promo Code: {{booking.promoCode}}</th>
         <td>
-          {{priceInfo.tripCount || 0}}
-        </td>
-        <td>
-          ${{priceInfo.totalDue | number:2}}
+          {{(-priceInfo.discount.debit || 0) | currency}}
         </td>
       </tr>
       <!-- FIXME: include vouchers, discounts here -->
     </tbody>
   </table>
+
+  <hr>
+
+  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+    <tbody>
+      <tr>
+        <th>Amount To Pay</th>
+        <td>{{(priceInfo.totalDue || 0) | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
+
 </div>
