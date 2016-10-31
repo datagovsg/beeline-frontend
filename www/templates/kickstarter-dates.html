@@ -1,55 +1,54 @@
 <ion-view id="pg_kickstarter_dates" view-title="View Pending Trip Dates"
   hide-back-button="false" can-swipe-back="false">
   <ion-content>
-    <div class="item item-text-wrap">
-      <i class="icon ion-calendar"></i>
-
-        If activated, route will commence on {{book.route.trips[0].date | date:'dd MMM'}} and will
-        run for at least a month. To activate the route, minimum
-        no. of people must pledge to book the first 5 trips
-        shown below.
-
-    </div>
-
     <div class="item">
       <div class="subTitle">
         Trip Dates
       </div>
-      <table class="booking-info" >
-        <thead>
-          <tr>
-            <th>Dates</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="pinfo in book.route.trips">
-            <td>
-              {{pinfo.date | date:'dd MMM , EEE'}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="item-icon-left trip-dates">
+        <i class="icon ion-calendar"></i>
+        <div class="item-text-wrap">
+            Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will
+            run for at least a month. To activate this route, pledge to book the first 5 trips
+            shown below.
+        </div>
+        <div class="kickstarter-dates-row" >
+          <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
+            <span class="kickstarter-month">{{pinfo.date | date:'MMM'}}</span>
+            <br />
+            {{pinfo.date | date:'dd'}}
+            <br />
+            <span class="kickstarter-day">{{pinfo.date | date:'EEE'}}</span>
+          </div>
+        </div>
+      </div>
+
+
     </div>
 
     <div class="item">
       <div class="subTitle">
-        Pledge to book trips at the following price.
+        Route Activation Criteria
       </div>
       <div class="row">
         <table class="price-table booking-info" >
           <thead>
             <tr>
-              <th>Pledge Amount</th>
-              <th>No. of people who pledged already</th>
+              <th>Price <br />per ride</th>
+              <th>No. of people<br />who pledged</th>
+              <th>No. of pax needed<br />to activate</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="tier in book.route.notes.tier">
               <td>
-                ${{tier.price | number:2}} per trip
+                ${{tier.price | number:2}}
               </td>
               <td>
-                {{tier.pax - tier.no}} out of {{tier.pax}} pax needed
+                {{tier.no}}
+              </td>
+              <td>
+                {{tier.pax}}
               </td>
             </tr>
           </tbody>
@@ -61,10 +60,11 @@
     <company-info-broker company-id="book.route.transportCompanyId"
                          company="book.companyInfo">
     </company-info-broker>
-
-
     <section class="item item-text-wrap continue-button-item"
              ng-if="book.notExpired">
+          <p class="text-center">
+            Pledge to book at the following price.
+          </p>
       <button class="button primary-button"
               ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
               ui-sref="tabs.kickstarter-summary({
