@@ -91,11 +91,11 @@
     </section> -->
 
     <section class="card">
-      <form class="item item-input-inset" ng-submit=addPromoCode() name="promoCode">
+      <div class="item item-input-inset" name="promoCode">
         <label class="item-input-wrapper">
-          <input class="item" placeholder="Enter your Promo Code here" type="text" name="promoCodeField" ng-model="book.currentPromoCode" style="padding-top: 16px; height: auto; width: 100%"/>    
+          <input class="item" placeholder="Enter your Promo Code here" type="text" name="promoCodeField" ng-model="book.currentPromoCode" style="padding-top: 16px; height: auto; width: 100%" ng-blur="addPromoCode()"/>    
         </label>
-        <button type="submit" class='button button-royal' >Apply</button>
+        <button type="button" ng-click="addPromoCode()" class='button button-royal' >Apply</button>
       </div>
     </section>
 
