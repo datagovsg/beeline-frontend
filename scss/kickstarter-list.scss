@@ -29,23 +29,5 @@
   .list {
     flex: 1 1 auto;
 
-    .kickstarter-info {
-      @include flex-shrink;
-
-      display: flex;
-      flex-direction: row;
-      background: $light;
-
-      route-item {
-        flex-grow: 1;
-      }
-
-      .price {
-        padding: $padding-small-vertical 0;
-        flex: 0 0 auto;
-        align-self: center;
-        margin-right: $content-padding;
-      }
-    }
   }
 }
