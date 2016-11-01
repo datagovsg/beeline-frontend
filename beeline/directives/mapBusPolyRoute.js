@@ -110,7 +110,12 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         .then(() => {
           if (scope.pingLoopRunning)
             pingTimer = $timeout(pingLoop, 15000);
-        }); // catch all errors
+        })
+        .catch((error)=>{
+          if (scope.pingLoopRunning) {
+            pingTimer = $timeout(pingLoop, 1000);
+          }
+        }) // catch all errors
       }
 
     },

@@ -50,48 +50,63 @@ var transformKickstarterData = function (kickstarterRoutes) {
   return kickstarterRoutes;
 }
 
-export default function KickstarterService($http, UserService,$q) {
+export default function KickstarterService($http, UserService,$q, $rootScope) {
   var lelongCache;
   var kickstarterStatusCache;
-  var kickstarterSummary;
+  var kickstarterSummary = [];
+  var kickstarterRoutesList = [], kickstarterRoutesById = {};
+
+  UserService.userEvents.on('userChanged', () => {
+    fetchBids(true);
+  })
+  fetchKickstarterRoutes();
+
+  function fetchBids(ignoreCache) {
+    if (UserService.getUser()) {
+      if (kickstarterStatusCache && !ignoreCache) return kickstarterStatusCache;
+      return kickstarterStatusCache = UserService.beeline({
+        method: 'GET',
+        url: '/custom/lelong/bids',
+      }).then((response) => {
+        kickstarterSummary = response.data;
+        return kickstarterSummary;
+			});
+    }
+    else {
+      kickstarterSummary = [];
+      return $q.resolve([]);
+    }
+  }
+
+  function fetchKickstarterRoutes(ignoreCache) {
+    if (lelongCache && !ignoreCache) return lelongCache;
+    return lelongCache = UserService.beeline({
+      method: 'GET',
+      url: '/custom/lelong/status',
+    }).then((response)=>{
+      kickstarterRoutesList = ransformKickstarterData(response.data).filter((kickstarter)=>{
+        return kickstarter.isValid;
+      });
+      kickstarterRoutesById = _.keyBy(kickstarterRoutesList, 'id')
+      return kickstarterRoutesList
+    })
+  }
+
 
   return {
     //all lelong routes
-    getLelong: function(ignoreCache) {
-      if (lelongCache && !ignoreCache) return lelongCache;
-      return lelongCache = UserService.beeline({
-        method: 'GET',
-        url: '/custom/lelong/status',
-      }).then((response)=>{
-        return transformKickstarterData(response.data).filter((kickstarter)=>{
-          return kickstarter.isValid;
-        });
-      })
-    },
+    getLelong: () => kickstarterRoutesList,
+    fetchLelong: fetchKickstarterRoutes,
 
-    getLelongById: async function(routeId, ignoreCache) {
-      var response = await this.getLelong(ignoreCache);
-      var bid = response.filter(x=>x.id==routeId);
-      return bid.length>0 ? bid[0] : null;
+    getLelongById: function(routeId) {
+      return kickstarterRoutesById[routeId];
     },
 
     //user personal bid information
     getBids: function(ignoreCache) {
-      if (UserService.getUser()) {
-        if (kickstarterStatusCache && !ignoreCache) return kickstarterStatusCache;
-        return kickstarterStatusCache = UserService.beeline({
-          method: 'GET',
-          url: '/custom/lelong/bids',
-        }).then((response) => {
-          kickstarterSummary = response.data;
-          return kickstarterSummary;
-  			});
-      }
-      else {
-        kickstarterSummary = [];
-        return $q.resolve([]);
-      }
+      return kickstarterSummary
     },
+    fetchBids: fetchBids,
 
     isBid: async function(routeId, ignoreCache) {
       var bids = await this.getBids(ignoreCache);
@@ -135,9 +150,16 @@ export default function KickstarterService($http, UserService,$q) {
           }
         }
       });
-      if (promise) {
-        this.getBids(true);
-      }
+      // if (promise) {
+      //   this.getBids(true);
+      // }
+
+
+      // bids.push(...)
+      
+      //shallow watch
+      // bids = bids.concat([...])
+
       return promise.data;
     },
 

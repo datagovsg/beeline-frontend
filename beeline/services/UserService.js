@@ -6,6 +6,7 @@ import verifiedPromptTemplate from '../templates/verified-prompt.html';
 import requestingVerificationCodeTemplate from '../templates/requesting-verification-code.html';
 import sendingVerificationCodeTemplate from '../templates/sending-verification-code.html';
 import registeringWithServerTemplate from '../templates/registering-with-server.html';
+import EventEmitter from 'events';
 const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$/;
 const VALID_VERIFICATION_CODE_REGEX = /^[0-9]{6}$/;
 // user name must be at least 3 characters long, space in front
@@ -23,6 +24,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var sessionToken = window.localStorage.sessionToken || null;
   var user = window.localStorage.beelineUser ?
              JSON.parse(window.localStorage.beelineUser) : null;
+  var userEvents = new EventEmitter();
 
   // General purpose wrapper for making http requests to server
   // Adds the appropriate http headers and token if signed in
@@ -78,7 +80,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       sessionToken = response.data.sessionToken;
       window.localStorage.setItem('sessionToken', sessionToken);
       user = response.data.user;
-      $rootScope.$broadcast("userLoggedIn");
+      userEvents.emit("userChanged");
       window.localStorage.setItem('beelineUser', JSON.stringify(user));
       return user;
     });
@@ -134,7 +136,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var logOut = function() {
     sessionToken = null;
     user = null;
-    $rootScope.$broadcast("userLoggedOut");
+    userEvents.emit("userChanged");
     delete window.localStorage.sessionToken;
     delete window.localStorage.beelineUser;
     return Promise.resolve();
@@ -155,7 +157,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         logOut(); // user not found
         return false;
       }
-      $rootScope.$broadcast("userLoggedIn");
+      userEvents.emit('userChanged')
       return true;
     }, function(error) {
       if (error.status == 403 || error.status == 401) {
@@ -420,7 +422,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     promptUpdatePhone: promptUpdatePhone,
     promptUpdateUserInfo: promptUpdateUserInfo,
     promptLogOut: promptLogOut,
-    verifySession: verifySession
+    verifySession: verifySession,
+    userEvents: userEvents
   };
 
 }
