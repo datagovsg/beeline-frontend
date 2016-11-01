@@ -11,21 +11,21 @@
     flex-direction: row;
 
     .item-input {
-      flex: 1 1 auto;
+      flex: 1 1 50%;
       padding-right: $line-height-computed;
 
       input {
-        width: 5em;
         text-align: left;
-        transition: all 0.1s linear;
-        &:focus {
-          width: 70vw;
-          transition: all 0.1s linear;
-        }
       }
     }
     .item-select {
-      flex: 1 1 auto;
+      flex: 1 1 50%;
+
+      select {
+        padding: inherit;
+        width: 100%;
+        max-width:none;
+      }
 
       &:after { display: none; }
     }

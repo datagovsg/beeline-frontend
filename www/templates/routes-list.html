@@ -10,12 +10,12 @@
     <div class="region-filter">
       <label class="item item-input item-icon-right">
         <input type="text" ng-change="updateFilter($event.target.value)"
-          placeholder="Search terms" ng-model="data.stagingFilterText" />
+          placeholder="Search" ng-model="data.stagingFilterText" />
           <i class="ionicon ion-search"></i>
       </label>
       <label class="item item-input item-select">
         <select ng-model="data.selectedRegionId">
-          <option value="" disabled selected>Select A Region</option>
+          <option value="" disabled selected>Select Region</option>
           <option value="">All Regions</option>
           <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
         </select>
