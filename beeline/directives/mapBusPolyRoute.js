@@ -79,6 +79,12 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
               scope.map.lines.actualPaths[index] = {
                 path: path
               }
+            }else {
+              //to remove bus icon and actual path
+              scope.map.busLocations[index].coordinates = null;
+              scope.map.lines.actualPaths[index] = {
+                path: null
+              }
             }
           })
         }
