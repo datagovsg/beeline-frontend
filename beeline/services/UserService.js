@@ -78,6 +78,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       sessionToken = response.data.sessionToken;
       window.localStorage.setItem('sessionToken', sessionToken);
       user = response.data.user;
+      $rootScope.$broadcast("userLoggedIn");
       window.localStorage.setItem('beelineUser', JSON.stringify(user));
       return user;
     });
@@ -133,6 +134,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var logOut = function() {
     sessionToken = null;
     user = null;
+    $rootScope.$broadcast("userLoggedOut");
     delete window.localStorage.sessionToken;
     delete window.localStorage.beelineUser;
     return Promise.resolve();
@@ -153,7 +155,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         logOut(); // user not found
         return false;
       }
-
+      $rootScope.$broadcast("userLoggedIn");
       return true;
     }, function(error) {
       if (error.status == 403 || error.status == 401) {
