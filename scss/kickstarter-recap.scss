@@ -2,7 +2,7 @@
 
   .icon{
     &.activebid{
-      left: $padding-large-horizontal;
+      left: $padding-small-horizontal*2;
     }
   }
   .subTitle {
