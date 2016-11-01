@@ -149,7 +149,7 @@
       </ion-list>
 
       <!-- TODO: if user bid kickstarter and it expiries must show in the list!-->
-      <section class="item item-text-wrap continue-button-item"
+      <section class="item item-text-wrap"
                ng-if="!book.notExpired">
         The kickstarter is over.
         <button class="button primary-button"
@@ -158,7 +158,7 @@
         </button>
       </section>
 
-      <section class="item item-text-wrap continue-button-item"
+      <section class="item item-text-wrap"
                ng-if="book.notExpired">
         <button class="button primary-button"
                 ng-disabled="stopsForm.$invalid"
@@ -172,7 +172,7 @@
       </section>
     </form>
 
-    <!-- <section class="item item-text-wrap continue-button-item"
+    <!-- <section class="item item-text-wrap"
              ng-if="book.notExpired && isLoggedIn && book.isBid">
 
       <button class="button primary-button"
