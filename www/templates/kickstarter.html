@@ -22,7 +22,6 @@
                    routeId: route.id
                   })"
                   class="item-icon-right">
-        <div class = "kickstarter-info">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
@@ -66,6 +65,12 @@
                 {{route.daysLeft}} day left to activate
               </span>
             </div>
+
+            <!-- TODO: show price infor in progress -->
+            <progress-bar cur-val={{route.notes.tier[0].no}} second-val={{route.notes.tier[1].no}}
+              max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
+              high-total={{route.notes.tier[0].pax}}>
+            </progress-bar>
 
             <div class="icon-and-schedule">
               <!-- <span class="icon ion-ios-flag-outline"></span> -->
@@ -82,18 +87,7 @@
             </div>
           </route-item-additional-info>
         </route-item>
-        <div class="price">
-          <fancy-price value="route.notes.tier[0].price"></fancy-price>
-        </div>
 
-        <i class="icon ion-ios-arrow-right icon-accessory"></i>
-        </div>
-
-        <!-- TODO: show price infor in progress -->
-        <progress-bar cur-val={{route.notes.tier[0].no}} second-val={{route.notes.tier[1].no}}
-          max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
-          high-total={{route.notes.tier[0].pax}}>
-        </progress-bar>
         <!-- <progress-bar cur-val=6 second-val=9 max-val=12></progress-bar> -->
 
       </ion-item>
@@ -110,7 +104,6 @@
                   routeId: route.id
                  })"
                  class="item-icon-right">
-        <div class = "kickstarter-info">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
@@ -154,20 +147,13 @@
                 {{route.daysLeft}} day left to activate
               </span>
             </div>
+            <!-- TODO: show price infor in progress -->
+            <progress-bar cur-val={{route.notes.tier[0].no}} second-val={{route.notes.tier[1].no}}
+              max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
+              high-total={{route.notes.tier[0].pax}}>
+            </progress-bar>
           </route-item-additional-info>
         </route-item>
-        <div class="price">
-          <fancy-price value="route.notes.tier[0].price"></fancy-price>
-        </div>
-
-        <i class="icon ion-ios-arrow-right icon-accessory"></i>
-        </div>
-
-        <!-- TODO: show price infor in progress -->
-        <progress-bar cur-val={{route.notes.tier[0].no}} second-val={{route.notes.tier[1].no}}
-          max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
-          high-total={{route.notes.tier[0].pax}}>
-        </progress-bar>
       </ion-item>
 
     </ion-content>
