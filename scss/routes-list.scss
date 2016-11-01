@@ -1,9 +1,12 @@
 .routes-list ion-content {
+  display: flex;
+  flex-direction: column;
 
   // Get the Region filter to be center aligned
   // Use % widths on both components to get them roughly to the center
   // Using this method since it's easily compatible with the ionic structure
   .region-filter {
+    flex: 0 0 ($line-height-computed + $content-padding * 2);
     display: flex;
     flex-direction: row;
 
@@ -29,14 +32,6 @@
   }
 
   .list {
-    display: flex;
-    flex-direction: column;
-
-    .item {
-      flex: none;
-    }
-    .list {
-      flex: 1 1 auto;
-    }
+    flex: 1 1 auto;
   }
 }
