@@ -76,12 +76,8 @@ export default [
       $scope.user = user;
       if ($scope.isLoggedIn) {
         $scope.book.isBid = await KickstarterService.isBid($scope.book.routeId);
-        console.log("ISBID");
-        console.log($scope.book.isBid);
         if ($scope.book.isBid) {
           const bidInfo =  await KickstarterService.getBidInfo($scope.book.routeId);
-          console.log("BIDINFO");
-          console.log(bidInfo);
           $scope.priceInfo.bidPrice = bidInfo.bid.userOptions.price
         }
         $scope.data.hasNoCreditInfo = ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) ? false : true;

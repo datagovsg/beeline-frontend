@@ -79,6 +79,9 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
               scope.map.lines.actualPaths[index] = {
                 path: path
               }
+            } else {
+              //to make bus icon disappear
+              scope.map.busLocations[index].coordinates = null;
             }
           })
         }
