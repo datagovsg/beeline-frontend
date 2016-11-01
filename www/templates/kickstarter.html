@@ -66,6 +66,19 @@
                 {{route.daysLeft}} day left to activate
               </span>
             </div>
+
+            <div class="icon-and-schedule">
+              <!-- <span class="icon ion-ios-flag-outline"></span> -->
+              <span class="icon-span">
+                <img class="mini-icon" src="img/paymentComplete_paid.svg">
+              </span>
+              <span class="schedule" ng-if="route.daysLeft && route.daysLeft>1">
+                You joined this route at ${{recentBidsById[route.id].bidPrice}}
+              </span>
+              <span class="schedule" ng-if="route.daysLeft && route.daysLeft==1">
+                {{route.daysLeft}} day left to activate
+              </span>
+            </div>
           </route-item-additional-info>
         </route-item>
         <div class="price">
