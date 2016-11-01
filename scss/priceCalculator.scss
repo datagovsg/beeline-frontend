@@ -39,10 +39,15 @@ price-calculator {
       }
     }
   }
-
+  .item-subtitle {
+    margin-top: $padding-large-vertical*2;
+  }
 }
 .date-price-calculator{
   table {
     margin-bottom: 10px;
+    td{
+      text-align: center;
+    }
   }
 }
