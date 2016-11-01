@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_dates" view-title="View Pending Trip Dates" hide-back-button="false" can-swipe-back="false">
+<ion-view id="pg_kickstarter_dates" view-title="Pledge Your Support" hide-back-button="false" can-swipe-back="false">
   <ion-nav-buttons side="right">
     <button class="button button-clear" ui-sref="tabs.kickstarter">
        <i class="icon ion-ios-close-outline"></i>
@@ -25,6 +25,14 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="item">
+      <div class="item-subtitle">
+        Operated by
+      </div>
+      <span style="color: red;">why is company info not showing?</span>
+      <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
+      </company-info-broker>
     </div>
 
     <div class="item">
@@ -55,23 +63,19 @@
           </tbody>
         </table>
       </div>
-    </div>
 
-
-    <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
-    </company-info-broker>
-    <section class="item item-text-wrap select-bid" ng-if="book.notExpired">
-      <h3 class="item-subtitle">Select the maximum price per ride you are willing to pledge</h3>
-      <ion-list>
-        <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
-          <label class="checkbox">
+      <div class="select-bid item-text-wrap" ng-if="book.notExpired">
+        <h3 class="item-subtitle">Select the maximum price per ride you are willing to pledge</h3>
+        <ion-list>
+          <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
+            <label class="checkbox">
                 <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
             </label>
-          <span ng-if="$index==0">I am willing to join at ${{ item.price | number:2 }} per ride.<br />( {{item.pax-item.no}} more pax needed )</span>
-          <span ng-if="$index==1">Count me in for ${{ item.price | number:2 }} per ride only.<br />( {{item.pax-item.no}} more pax needed )</span>
-        </ion-item>
-      </ion-list>
-      <button class="button primary-button" ng-disabled="stopsForm.$invalid || waitingForPaymentResult || !book.bidPrice" ui-sref="tabs.kickstarter-summary({
+            <span ng-if="$index==0">I am willing to join at ${{ item.price | number:2 }} per ride.<br />( {{item.pax-item.no}} more pax needed )</span>
+            <span ng-if="$index==1">Count me in for ${{ item.price | number:2 }} per ride only.<br />( {{item.pax-item.no}} more pax needed )</span>
+          </ion-item>
+        </ion-list>
+        <button class="button primary-button" ng-disabled="stopsForm.$invalid || waitingForPaymentResult || !book.bidPrice" ui-sref="tabs.kickstarter-summary({
                         routeId: book.routeId,
                         boardStop: book.boardStopId,
                         alightStop: book.alightStopId,
@@ -79,6 +83,7 @@
                       })">
         Review Selection
       </button>
-    </section>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

@@ -10,10 +10,10 @@
   }
 
   .select-bid{
-    p{
-      margin-bottom: 1.5em;
+    h3{
+      margin-top: $padding-small-horizontal*2;
+      line-height: 1.5em;
     }
-
     button{
       margin-top: 1.5em;
     }
