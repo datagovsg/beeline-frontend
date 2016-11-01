@@ -67,8 +67,8 @@
           <label class="checkbox">
                 <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
             </label>
-          <span ng-if="$index==0">ddd$ {{ item.price | number:2 }} per ride</span>
-          <span ng-if="$index==1">Count me in only if $ {{ item.price | number:2 }} per ride</span>
+          <span ng-if="$index==0">I want to join even if it is ${{ item.price | number:2 }} per ride.<br />I understand that I will only pay ($5.00) per ride if more people joins and this price unlocks.</span>
+          <span ng-if="$index==1">Count me in only for ${{ item.price | number:2 }} per ride.</span>
         </ion-item>
       </ion-list>
       <button class="button primary-button" ng-disabled="stopsForm.$invalid || waitingForPaymentResult || !book.bidPrice" ui-sref="tabs.kickstarter-summary({
@@ -77,7 +77,7 @@
                         alightStop: book.alightStopId,
                         bidPrice: book.bidPrice
                       })">
-        Pledge
+        PLEDGE
       </button>
 
 

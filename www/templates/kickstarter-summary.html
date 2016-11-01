@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_summary" view-title="Kickstart Route Details" hide-back-button="false" can-swipe-back="false">
+<ion-view id="pg_kickstarter_summary" view-title="Kickstarter Pledge Summary" hide-back-button="false" can-swipe-back="false">
   <ion-nav-buttons side="right">
     <button class="button button-clear" ui-sref="tabs.kickstarter">
        <i class="icon ion-ios-close-outline"></i>
@@ -8,7 +8,7 @@
 
     <section class="card">
       <h3 class="item item-divider">
-        Price Calculator
+        Amount you pledge
       </h3>
       <div class="item">
         <table class="price-table booking-info">
@@ -22,7 +22,7 @@
             <td>${{priceInfo.bidPrice | number:2}}</td>
           </tr>
           <tr>
-            <th><b>Amount you commit</b></th>
+            <th><b>Amount you pledge</b></th>
             <th>${{priceInfo.totalDue | number:2}}</th>
           </tr>
         </table>
