@@ -112,8 +112,14 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         }))
         .then(() => {
           if (scope.pingLoopRunning)
-            pingTimer = $timeout(pingLoop, 15000);
-        }); // catch all errors
+          //make it faster, poll every 8 secs
+            pingTimer = $timeout(pingLoop, 8000);
+        })
+        .catch((error)=>{
+          if (scope.pingLoopRunning) {
+            pingTimer = $timeout(pingLoop, 1000);
+          }
+        }) // catch all errors
       }
 
     },
