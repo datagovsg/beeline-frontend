@@ -7,14 +7,20 @@
     </div>
 
     <!-- Region Filter  -->
-    <label class="item item-input item-select region-filter">
-      <div class="input-label">Filter By</div>
+    <div class="region-filter">
+      <label class="item item-input item-icon-right">
+        <input type="text" ng-change="updateFilter($event.target.value)"
+          placeholder="Search terms" ng-model="data.stagingFilterText" />
+          <i class="ionicon ion-search"></i>
+      </label>
+      <label class="item item-input item-select">
         <select ng-model="data.selectedRegionId">
           <option value="" disabled selected>Select A Region</option>
           <option value="">All Regions</option>
           <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
         </select>
-    </label>
+      </label>
+    </div>
 
     <ion-content class="list">
       <ion-refresher pulling-text="Pull to refresh..."
@@ -138,7 +144,7 @@
         </route-item>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
-      
+
       <ion-item ng-repeat="route in data.filteredActiveRoutes"
                 ui-sref="tabs.bookingPickup({
                   routeId: route.id,
