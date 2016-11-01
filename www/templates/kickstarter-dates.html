@@ -4,7 +4,7 @@
        <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
-  <ion-content>
+  <ion-content class="has-header">
     <div class="item">
       <div class="item-subtitle">
         Trip Dates
@@ -67,8 +67,8 @@
           <label class="checkbox">
                 <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
             </label>
-          <span ng-if="$index==0">I am willing to join at ${{ item.price | number:2 }} per ride.<br />( {{item.pax-item.no}} more pax needed. )</span>
-          <span ng-if="$index==1">Count me in for ${{ item.price | number:2 }} per ride only.<br />( {{item.pax-item.no}} more pax needed. )</span>
+          <span ng-if="$index==0">I am willing to join at ${{ item.price | number:2 }} per ride.<br />( {{item.pax-item.no}} more pax needed )</span>
+          <span ng-if="$index==1">Count me in for ${{ item.price | number:2 }} per ride only.<br />( {{item.pax-item.no}} more pax needed )</span>
         </ion-item>
       </ion-list>
       <button class="button primary-button" ng-disabled="stopsForm.$invalid || waitingForPaymentResult || !book.bidPrice" ui-sref="tabs.kickstarter-summary({

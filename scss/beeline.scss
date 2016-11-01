@@ -122,7 +122,6 @@
 table.booking-info {
   th {
     font-weight: normal;
-    text-align: center;
     background-color: $table-header-bg;
     color: $royal;
     padding: $table-cell-padding;
@@ -131,10 +130,18 @@ table.booking-info {
 
   td {
     padding: $table-cell-padding;
-    text-align: center;
     border-bottom: $table-cell-border-width solid $light-grey;
     vertical-align: middle;
+    &.total-sum{
+      background-color: $table-header-bg;
+      border-top: solid $table-header-border-width $royal !important;
+    }
+    &.right{
+      text-align: right;
+    }
   }
+
+
 }
 
 .bus-number {
