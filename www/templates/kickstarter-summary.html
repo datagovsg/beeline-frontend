@@ -133,15 +133,30 @@
       </button>
     </section>
 
-    <section class="item item-text-wrap"
+    <section class="item item-text-wrap text-center"
              ng-if="isLoggedIn && !book.isBid">
-      Please ensure that your credit card is ready for the next step in the booking process.
+      <div ng-if="data.hasNoCreditInfo">
+        The card you are adding will be saved to the account. You can change it in the Settings if you change your mind.
+        <button class="button primary-button"
+                ng-click="createBid()"
+                ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
+          Add Card Details
+        </button>
+      </div>
+      <div ng-if="!data.hasNoCreditInfo">
+        This payment will be charged to your <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
+        ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}
+        <button class="button primary-button"
+                ng-click="createBid()"
+                ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
+          Confirm
+        </button>
+        <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">
+         Use a different card for this payment
+        </a>
+      </div>
 
-      <button class="button primary-button"
-              ng-click="createBid()"
-              ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-        Add Card Details
-      </button>
+
     </section>
   </ion-content>
 </ion-view>
