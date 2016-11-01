@@ -127,8 +127,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // Throttle the actual updating of filter text
   $scope.updateFilter = _.throttle((value) => {
-    $timeout(() => {
+    // Some times this function is called synchronously, some times it isn't
+    // Use timeout to ensure that we are always inside a digest cycle.
+    setTimeout(() => {
       $scope.data.filterText = $scope.data.stagingFilterText;
+      $scope.$digest();
     }, 0)
   }, 400, {trailing: true})
 
