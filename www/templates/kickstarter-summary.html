@@ -6,10 +6,9 @@
   </ion-nav-buttons>
   <ion-content>
 
-    <h3 class="item item-divider">
-        Amount you pledge
-      </h3>
+
     <div class="item">
+      <h3 class="item-subtitle">Amount you are pledging</h3>
       <table class="price-table booking-info">
 
         <tr>
@@ -26,42 +25,35 @@
         </tr>
       </table>
     </div>
+    <div class="item">
+      <h3 class="item-subtitle">Selected Stops</h3>
+      <route-item hide-additional-info="true">
 
-
-
-
-    <h3 class="item item-divider">
-        Selected Stops
-      </h3>
-    <route-item class="item" hide-additional-info="true">
-      <route-item-bus-number>
-        {{ book.route.label }}
-      </route-item-bus-number>
-      <route-item-start-time>
-        {{book.boardStop.time | formatTime:true}}
-      </route-item-start-time>
-      <route-item-start-location>
-        <h4>Pick-up at</h4> {{book.boardStop.stop.description}}
-        <br/> {{book.boardStop.stop.road}}
-        <br/>
-        <br/>
-      </route-item-start-location>
-      <route-item-end-time>
-        {{book.alightStop.time | formatTime:true}}
-      </route-item-end-time>
-      <route-item-end-location>
-        <h4>Drop-off at</h4> {{book.alightStop.stop.description}}
-        <br/> {{book.alightStop.stop.road}}
-        <br/>
-        <br/>
-      </route-item-end-location>
-    </route-item>
-
-
-
-    <h4 class="item item-divider">Trip Dates</h4>
-
+        <route-item-bus-number>
+          {{ book.route.label }}
+        </route-item-bus-number>
+        <route-item-start-time>
+          {{book.boardStop.time | formatTime:true}}
+        </route-item-start-time>
+        <route-item-start-location>
+          <h4>Pick-up at</h4> {{book.boardStop.stop.description}}
+          <br/> {{book.boardStop.stop.road}}
+          <br/>
+          <br/>
+        </route-item-start-location>
+        <route-item-end-time>
+          {{book.alightStop.time | formatTime:true}}
+        </route-item-end-time>
+        <route-item-end-location>
+          <h4>Drop-off at</h4> {{book.alightStop.stop.description}}
+          <br/> {{book.alightStop.stop.road}}
+          <br/>
+          <br/>
+        </route-item-end-location>
+      </route-item>
+    </div>
     <div class="item" ng-if="priceInfo.tripCount > 0">
+      <h3 class="item-subtitle">Trip Dates</h3>
       <div class="row">
         <div class="item-icon-left trip-dates">
           <i class="icon">
@@ -87,9 +79,8 @@
     </company-info-broker>
 
 
-    <h4 class="item item-divider">Operated by</h4>
-
-    <div class="item item-text-wrap">
+    <div class="item">
+      <h3 class="item-subtitle">Operated by</h3>
       <div class="row">
         <div class="col-20 bus-logo">
           <img ng-src="{{book.companyInfo.id | companyLogo}}">
@@ -100,21 +91,16 @@
         </div>
       </div>
     </div>
-
-
-
-    <h4 class="item item-divider">When will I be charged and for how much?</h4>
     <div class="item item-text-wrap">
+      <h3 class="item-subtitle">When will payment be charged?</h3>
       You will be charged for the {{book.route.trips.length}} if the route is activated when the campaign ends on {{book.route.notes.lelongExpiry | date:'dd MMM'}} at the lowest unlocked price you agreed to.
+    </div>
 
-
-
-    <div ng-if="!isLoggedIn || !book.isBid">
+    <div class="item item-text-wrap" ng-if="!isLoggedIn || !book.isBid">
       Please read {{book.companyInfo.name}} <a ng-click="showTerms()">Terms and Conditions</a>.
       <ion-checkbox ng-model="book.acceptPolicy">
         I read and agree to the above terms and would like to proceed using Beeline.
       </ion-checkbox>
-    </div>
     </div>
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn">

@@ -253,3 +253,9 @@ input[type="color"] {
   max-width: none;
   flex: 0 1 400px;
 }
+
+.item-subtitle {
+    color: $normal-grey;
+    padding-top:  $padding-large-vertical;
+    padding-bottom: $padding-large-vertical*1.5;
+}
