@@ -1,5 +1,9 @@
-<ion-view id="pg_kickstarter_dates" view-title="View Pending Trip Dates"
-  hide-back-button="false" can-swipe-back="false">
+<ion-view id="pg_kickstarter_dates" view-title="View Pending Trip Dates" hide-back-button="false" can-swipe-back="false">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ui-sref="tabs.kickstarter">
+       <i class="icon ion-ios-close-outline"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content>
     <div class="item">
       <div class="subTitle">
@@ -8,22 +12,17 @@
       <div class="item-icon-left trip-dates">
         <i class="icon ion-calendar"></i>
         <div class="item-text-wrap">
-            Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will
-            run for at least a month. To activate this route, pledge to book the first 5 trips
-            shown below.
+          Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. To activate this route, pledge to book the first 5 trips shown below.
         </div>
-        <div class="kickstarter-dates-row" >
+        <div class="kickstarter-dates-row">
           <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
             <span class="kickstarter-month">{{pinfo.date | date:'MMM'}}</span>
-            <br />
-            {{pinfo.date | date:'dd'}}
+            <br /> {{pinfo.date | date:'dd'}}
             <br />
             <span class="kickstarter-day">{{pinfo.date | date:'EEE'}}</span>
           </div>
         </div>
       </div>
-
-
     </div>
 
     <div class="item">
@@ -31,12 +30,12 @@
         Route Activation Criteria
       </div>
       <div class="row">
-        <table class="price-table booking-info" >
+        <table class="price-table booking-info">
           <thead>
             <tr>
               <th>Price <br />per ride</th>
               <th>No. of people<br />who pledged</th>
-              <th>No. of pax needed<br />to activate</th>
+              <th>No. of people<br />needed to activate</th>
             </tr>
           </thead>
           <tbody>
@@ -57,15 +56,33 @@
     </div>
 
 
-    <company-info-broker company-id="book.route.transportCompanyId"
-                         company="book.companyInfo">
+    <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
     </company-info-broker>
-    <section class="item item-text-wrap continue-button-item"
-             ng-if="book.notExpired">
-          <p class="text-center">
-            Pledge to book at the following price.
-          </p>
-      <button class="button primary-button"
+    <section class="item item-text-wrap continue-button-item" ng-if="book.notExpired">
+      <p class="text-center">
+        Pledge to book at the following price.
+      </p>
+      <ion-list>
+        <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
+          <label class="checkbox">
+                <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
+            </label>
+          <span ng-if="$index==0">ddd$ {{ item.price | number:2 }} per ride</span>
+          <span ng-if="$index==1">Count me in only if $ {{ item.price | number:2 }} per ride</span>
+        </ion-item>
+      </ion-list>
+      <button class="button primary-button" ng-disabled="stopsForm.$invalid || waitingForPaymentResult || !book.bidPrice" ui-sref="tabs.kickstarter-summary({
+                        routeId: book.routeId,
+                        boardStop: book.boardStopId,
+                        alightStop: book.alightStopId,
+                        bidPrice: book.bidPrice
+                      })">
+        Pledge
+      </button>
+
+
+
+      <!-- <button class="button primary-button"
               ng-disabled="stopsForm.$invalid || waitingForPaymentResult"
               ui-sref="tabs.kickstarter-summary({
                         routeId: book.routeId,
@@ -86,7 +103,7 @@
                       })">
         BID AT ${{book.route.notes.tier[1].price}}
         <span>({{book.route.notes.tier[1].pax-book.route.notes.tier[1].no}} pax needed)</span>
-      </button>
+      </button> -->
     </section>
   </ion-content>
 </ion-view>

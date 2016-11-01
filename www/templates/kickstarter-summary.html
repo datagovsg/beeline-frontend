@@ -1,5 +1,9 @@
-<ion-view id="pg_kickstarter_summary" view-title="Kickstart Route Details"
-  hide-back-button="false" can-swipe-back="false">
+<ion-view id="pg_kickstarter_summary" view-title="Kickstart Route Details" hide-back-button="false" can-swipe-back="false">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ui-sref="tabs.kickstarter">
+       <i class="icon ion-ios-close-outline"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content>
 
     <section class="card">
@@ -9,18 +13,18 @@
       <div class="item">
         <table class="price-table booking-info">
 
-            <tr>
-              <td><b>No. of Trips</b></td>
-              <td>{{priceInfo.tripCount || 0}}</td>
-            </tr>
-            <tr>
-              <td><b>Max. Price per Trip</b></td>
-              <td>${{priceInfo.bidPrice | number:2}}</td>
-            </tr>
-            <tr>
-              <th><b>Amount you commit</b></th>
-              <th>${{priceInfo.totalDue | number:2}}</th>
-            </tr>
+          <tr>
+            <td><b>No. of Trips</b></td>
+            <td>{{priceInfo.tripCount || 0}}</td>
+          </tr>
+          <tr>
+            <td><b>Max. Price per Trip</b></td>
+            <td>${{priceInfo.bidPrice | number:2}}</td>
+          </tr>
+          <tr>
+            <th><b>Amount you commit</b></th>
+            <th>${{priceInfo.totalDue | number:2}}</th>
+          </tr>
         </table>
       </div>
 
@@ -29,7 +33,7 @@
 
     <section class="card">
       <h3 class="item item-divider">
-        Selected Stop
+        Selected Stops
       </h3>
       <route-item class="item" hide-additional-info="true">
         <route-item-bus-number>
@@ -39,47 +43,48 @@
           {{book.boardStop.time | formatTime:true}}
         </route-item-start-time>
         <route-item-start-location>
-          <h4>Pick-up at</h4>
-          {{book.boardStop.stop.description}}<br/>
-          {{book.boardStop.stop.road}}<br/>
+          <h4>Pick-up at</h4> {{book.boardStop.stop.description}}
+          <br/> {{book.boardStop.stop.road}}
+          <br/>
           <br/>
         </route-item-start-location>
         <route-item-end-time>
           {{book.alightStop.time | formatTime:true}}
         </route-item-end-time>
         <route-item-end-location>
-          <h4>Drop-off at</h4>
-          {{book.alightStop.stop.description}}<br/>
-          {{book.alightStop.stop.road}}<br/>
+          <h4>Drop-off at</h4> {{book.alightStop.stop.description}}
+          <br/> {{book.alightStop.stop.road}}
+          <br/>
           <br/>
         </route-item-end-location>
       </route-item>
     </section>
 
-  <section class="card">
+    <section class="card">
       <h4 class="item item-divider">Trip Dates</h4>
-      <div class="item"  ng-if="priceInfo.tripCount > 0">
+      <div class="item" ng-if="priceInfo.tripCount > 0">
         <div class="row">
-          <table class="price-table booking-info" >
-            <thead>
-              <tr>
-                <th>Dates</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="pinfo in book.route.trips">
-                <td>
-                  {{pinfo.date | date:'dd MMM , EEE'}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="item">
+              <div class="item-icon-left trip-dates">
+                <i class="icon ion-calendar"></i>
+                <div class="item-text-wrap">
+                  Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. You are pledging to book the following 5 trips.
+                </div>
+                <div class="kickstarter-dates-row">
+                  <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
+                    <span class="kickstarter-month">{{pinfo.date | date:'MMM'}}</span>
+                    <br /> {{pinfo.date | date:'dd'}}
+                    <br />
+                    <span class="kickstarter-day">{{pinfo.date | date:'EEE'}}</span>
+                  </div>
+                </div>
+              </div>
+          </div>
         </div>
       </div>
-  </section>
+    </section>
 
-    <company-info-broker company-id="book.route.transportCompanyId"
-                         company="book.companyInfo">
+    <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
     </company-info-broker>
 
     <section class="card">
@@ -101,39 +106,31 @@
     <section class="card">
       <h4 class="item item-divider">When will I be charged and for how much?</h4>
       <div class="item item-text-wrap">
-        You will be charged for the {{book.route.trips.length}} if the
-        route is activated when the campaign ends on {{book.route.notes.lelongExpiry | date:'dd MMM'}}
-        at the lowest unlocked price you agreed to.
+        You will be charged for the {{book.route.trips.length}} if the route is activated when the campaign ends on {{book.route.notes.lelongExpiry | date:'dd MMM'}} at the lowest unlocked price you agreed to.
       </div>
     </section>
 
     <section class="card" ng-if="!isLoggedIn || !book.isBid">
       <div class="item item-text-wrap">
         Please read {{book.companyInfo.name}} <a ng-click="showTerms()">Terms and Conditions</a>.
-        <ion-checkbox  ng-model="book.acceptPolicy">
+        <ion-checkbox ng-model="book.acceptPolicy">
           I read and agree to the above terms and would like to proceed using Beeline.
         </ion-checkbox>
       </div>
     </section>
 
-    <section class="item item-text-wrap"
-             ng-if="!isLoggedIn">
+    <section class="item item-text-wrap" ng-if="!isLoggedIn">
       You are not logged in. Please enter your mobile number to complete booking.
 
-      <button class="button primary-button"
-              ng-click="login()"
-              ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
+      <button class="button primary-button" ng-click="login()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
         Log In
       </button>
     </section>
 
-    <section class="item item-text-wrap"
-             ng-if="isLoggedIn && !book.isBid">
+    <section class="item item-text-wrap" ng-if="isLoggedIn && !book.isBid">
       Please ensure that your credit card is ready for the next step in the booking process.
 
-      <button class="button primary-button"
-              ng-click="createBid()"
-              ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
+      <button class="button primary-button" ng-click="createBid()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
         Add Card Details
       </button>
     </section>
