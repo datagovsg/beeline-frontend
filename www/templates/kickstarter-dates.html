@@ -36,8 +36,8 @@
           <thead>
             <tr>
               <th>Price <br />per ride</th>
-              <th>No. of people<br />who pledged</th>
-              <th>No. of people<br />needed to activate</th>
+              <th>No. of pax<br />who pledged</th>
+              <th>No. of pax<br />needed to activate</th>
             </tr>
           </thead>
           <tbody>
@@ -60,17 +60,17 @@
 
     <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
     </company-info-broker>
-    <section class="item item-text-wrap" ng-if="book.notExpired">
+    <section class="item item-text-wrap select-bid" ng-if="book.notExpired">
       <p class="text-center">
-        Select the maximum price you are willing to pay for each ride.
+        Select the maximum price per ride you are willing to pledge
       </p>
       <ion-list>
         <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
           <label class="checkbox">
                 <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
             </label>
-          <span ng-if="$index==0">I am willing to join at ${{ item.price | number:2 }} per ride.</span>
-          <span ng-if="$index==1">Count me in only for ${{ item.price | number:2 }} per ride.</span>
+          <span ng-if="$index==0">I am willing to join at ${{ item.price | number:2 }} per ride. ( {{item.pax-item.no}} more pax needed. )</span>
+          <span ng-if="$index==1">Count me in for ${{ item.price | number:2 }} per ride only. ( {{item.pax-item.no}} more pax needed. )</span>
         </ion-item>
       </ion-list>
       <button class="button primary-button" ng-disabled="stopsForm.$invalid || waitingForPaymentResult || !book.bidPrice" ui-sref="tabs.kickstarter-summary({
@@ -79,7 +79,7 @@
                         alightStop: book.alightStopId,
                         bidPrice: book.bidPrice
                       })">
-        Pledge
+        Review Selection
       </button>
     </section>
   </ion-content>

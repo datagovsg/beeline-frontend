@@ -7,16 +7,17 @@
   table.price-table{
     width: 100%;
   }
-}
 
-.trip-dates{
-  padding-left: $padding-large-horizontal*2;
-  .icon{
-    align-items: flex-start;
-    top: auto;
-    font-size: $font-size-large;
-    left: $padding-large-horizontal;
+  .select-bid{
+    p{
+      margin-bottom: 1.5em;
+    }
+
+    button{
+      margin-top: 1.5em;
+    }
   }
+
 }
 
 .kickstarter-dates-row {
@@ -38,5 +39,16 @@
     .kickstarter-day,.kickstarter-month{
       font-size: $font-size-small/1.2;
     }
+  }
+}
+
+
+.trip-dates{
+  padding-left: $padding-large-horizontal*2;
+  .icon{
+    align-items: flex-start;
+    top: auto;
+    font-size: $font-size-large;
+    left: $padding-large-horizontal;
   }
 }
