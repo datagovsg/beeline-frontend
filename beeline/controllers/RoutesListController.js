@@ -40,7 +40,10 @@ function routeContainsString(route, string) {
     contains(route.notes && route.notes.description, string) ||
     contains(route.schedule, string) ||
     contains(route.label, string) ||
-    (route.trips[0] && route.trips[0].tripStops.some(ts => contains(ts.stop.description, string))) ||
+    (route.trips[0] && (
+      route.trips[0].tripStops.some(ts => contains(ts.stop.description, string)) ||
+      route.trips[0].tripStops.some(ts => contains(ts.stop.road, string))
+    )) ||
     route.regions.some(region => contains(region.name, string));
 }
 
