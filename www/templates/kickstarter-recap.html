@@ -82,21 +82,23 @@
 
     <!-- Trip dates -->
     <div class="item">
-      <div class="subTitle">Trip Dates</div>
-      <table class="booking-info" >
-        <thead>
-          <tr>
-            <th>Dates</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="pinfo in book.route.trips">
-            <td>
-              {{pinfo.date | date:'dd MMM , EEE'}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="subTitle">
+        Trip Dates
+      </div>
+      <div class="item-icon-left trip-dates">
+        <i class="icon ion-calendar"></i>
+        <div class="item-text-wrap">
+          Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. If activated, you will be given tickets for the following 5 trips.
+        </div>
+        <div class="kickstarter-dates-row">
+          <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
+            <span class="kickstarter-month">{{pinfo.date | date:'MMM'}}</span>
+            <br /> {{pinfo.date | date:'dd'}}
+            <br />
+            <span class="kickstarter-day">{{pinfo.date | date:'EEE'}}</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="item item-text-wrap">
