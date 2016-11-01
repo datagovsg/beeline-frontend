@@ -10,7 +10,9 @@
         Trip Dates
       </div>
       <div class="item-icon-left trip-dates">
-        <i class="icon ion-calendar"></i>
+        <i class="icon">
+            <img src="img/icon_schedule.svg">
+        </i>
         <div class="item-text-wrap">
           Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. To activate this route, pledge to book the first 5 trips shown below.
         </div>
@@ -77,7 +79,7 @@
                         alightStop: book.alightStopId,
                         bidPrice: book.bidPrice
                       })">
-        PLEDGE
+        Pledge
       </button>
     </section>
   </ion-content>

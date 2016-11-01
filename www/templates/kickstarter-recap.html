@@ -2,8 +2,10 @@
   hide-back-button="false" can-swipe-back="false">
   <ion-content>
     <!-- price u bid for -->
-    <div class="item">
-      <i class="icon ion-ios-flag-outline"></i>
+    <div class="item item-icon-left">
+        <i class="icon activebid">
+            <img src="img/icon_kickstarter_activebid.svg">
+        </i>
       You joined this route at ${{book.bidPrice | number:2}} per trip.
     </div>
     <!-- route detail -->
@@ -39,10 +41,10 @@
 
         <div class="icon-and-schedule">
           <span class="icon-span">
-            <img class="mini-icon" src="img/icon_schedule.svg">
+            <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
           </span>
           <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
-            {{book.route.daysLeft}} days left
+            {{book.route.daysLeft}} days left to activate
           </span>
           <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
             {{book.route.daysLeft}} day left to activate
@@ -53,7 +55,7 @@
 
     <!-- selected stop -->
     <div class="item">
-      <div class="subTitle">Selected Stop</div>
+      <div class="subTitle">Selected Stops</div>
       <route-item hide-additional-info="true" hide-bus-label="true">
         <route-item-bus-number>
           {{ book.route.label }}
@@ -86,7 +88,9 @@
         Trip Dates
       </div>
       <div class="item-icon-left trip-dates">
-        <i class="icon ion-calendar"></i>
+        <i class="icon">
+            <img src="img/icon_schedule.svg">
+        </i>
         <div class="item-text-wrap">
           Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. If activated, you will be given tickets for the following 5 trips.
         </div>
