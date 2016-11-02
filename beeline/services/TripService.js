@@ -18,6 +18,7 @@ export default function TripService(UserService) {
       return UserService.beeline({
         method: 'GET',
         url: '/trips/' + id + '/latestInfo',
+        timeout: 10000,
       }).then(function(response) {
         for (let ping of response.data.pings) {
           ping.time = new Date(ping.time);

@@ -39,9 +39,11 @@ var transformKickstarterData = function (kickstarterRoutes) {
         kickstarter.daysLeft =  Math.ceil((expiryTime - now)/day);
       }
     }
-
+    //filter only isRunning trips
     //sort trips date in ascending order
-    kickstarter.trips = _.orderBy(kickstarter.trips, x=>x.date);
+    kickstarter.trips = _(kickstarter.trips).filter(x=>x.isRunning)
+                                            .orderBy(x=>x.date)
+                                            .value();
     //sort tripStops time in ascending order
     _.forEach(kickstarter.trips, function(trip){
       trip.tripStops = _.orderBy(trip.tripStops, stop=>stop.time)

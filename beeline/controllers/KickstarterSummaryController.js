@@ -100,7 +100,7 @@ export default [
         // disable the button
         $scope.waitingForPaymentResult = true;
 
-        if (userHasNoCreditCard()) {
+        if ($scope.data.hasNoCreditInfo) {
           const stripeToken = await StripeService.promptForToken(null, null, true);
 
           if (!stripeToken) return;
