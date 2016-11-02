@@ -101,26 +101,13 @@ export default [
         $scope.waitingForPaymentResult = true;
 
         if ($scope.data.hasNoCreditInfo) {
-          const stripeToken = await StripeService.promptForToken();
-          if (!stripeToken){
-            throw new Error("There was some difficulty contacting the payment gateway." +
-              " Please check your Internet connection");
-            return;
-          }
+          const stripeToken = await StripeService.promptForToken(null, null, true);
 
-          if (!('id' in stripeToken)) {
-            alert("There was an error contacting Stripe");
-            return;
-          }
-          const user = $scope.user;
+          if (!stripeToken) return;
 
-          var result = await loadingSpinner(UserService.beeline({
-            method: 'POST',
-            url: `/users/${user.id}/creditCards`,
-            data: {
-              stripeToken: stripeToken.id
-            },
-          }));
+          await loadingSpinner(
+            UserService.savePaymentInfo(stripeToken.id)
+          );
         }
 
       } catch (err) {
