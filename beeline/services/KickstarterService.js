@@ -41,6 +41,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
     }
 
     //sort trips date in ascending order
+    kickstarter.trips = _.filter(kickstarter.trips, x=>x.status=='normal')
     kickstarter.trips = _.orderBy(kickstarter.trips, x=>x.date);
     //sort tripStops time in ascending order
     _.forEach(kickstarter.trips, function(trip){
@@ -84,7 +85,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       method: 'GET',
       url: '/custom/lelong/status',
     }).then((response)=>{
-      kickstarterRoutesList = ransformKickstarterData(response.data).filter((kickstarter)=>{
+      kickstarterRoutesList = transformKickstarterData(response.data).filter((kickstarter)=>{
         return kickstarter.isValid;
       });
       kickstarterRoutesById = _.keyBy(kickstarterRoutesList, 'id')
@@ -156,7 +157,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
 
 
       // bids.push(...)
-      
+
       //shallow watch
       // bids = bids.concat([...])
 
