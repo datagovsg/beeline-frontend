@@ -98,14 +98,19 @@ export default function KickstarterService($http, UserService,$q) {
       if (bids.length == 0){
         return false;
       }
-      var bidsId = bids.map(x=>x.id);
       assert(bids);
+      var bidsId = bids.map(x=>x.id);
       if (bidsId.includes(routeId)) {
         return true;
       }
       else {
         return false;
       }
+    },
+
+    hasBids: async function(ignoreCache) {
+      var bids = await this.getBids(ignoreCache);
+      return bids.length > 0;
     },
 
     getBidInfo: async function(routeId, ignoreCache) {

@@ -403,6 +403,45 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
+  // Saves payment info to backend and update user object
+  var savePaymentInfo = function(stripeTokenId) {
+    return beelineRequest({
+      method: 'POST',
+      url: `/users/${user.id}/creditCards`,
+      data: {
+        stripeToken: stripeTokenId
+      }
+    })
+    .then(function(response) {
+      user.savedPaymentInfo = response.data;
+    });
+  };
+
+  // Update/change payment info to backend and update user object
+  var updatePaymentInfo = function(stripeTokenId) {
+    return beelineRequest({
+      method: 'PUT',
+      url: `/users/${user.id}/creditCards`,
+      data: {
+        stripeToken: stripeTokenId
+      }
+    })
+    .then(function(response) {
+      user.savedPaymentInfo = response.data;
+    });
+  };
+
+  // Remove payment info from backend and update user object
+  var removePaymentInfo = function() {
+    return beelineRequest({
+      method: 'DELETE',
+      url: `/users/${user.id}/creditCards/${user.savedPaymentInfo.sources.data[0].id}`
+    })
+    .then(function(response) {
+      user.savedPaymentInfo = response.data;
+    });
+  };
+
   // ////////////////////////////////////////////////////////////////////////////
   // Initialization
   // ////////////////////////////////////////////////////////////////////////////
@@ -418,7 +457,10 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     promptUpdatePhone: promptUpdatePhone,
     promptUpdateUserInfo: promptUpdateUserInfo,
     promptLogOut: promptLogOut,
-    verifySession: verifySession
+    verifySession: verifySession,
+    savePaymentInfo: savePaymentInfo,
+    updatePaymentInfo: updatePaymentInfo,
+    removePaymentInfo: removePaymentInfo
   };
 
 }

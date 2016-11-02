@@ -100,29 +100,15 @@ export default [
         // disable the button
         $scope.waitingForPaymentResult = true;
 
-        if ($scope.data.hasNoCreditInfo) {
-          const stripeToken = await StripeService.promptForToken();
-          if (!stripeToken){
-            throw new Error("There was some difficulty contacting the payment gateway." +
-              " Please check your Internet connection");
-            return;
-          }
+        if (userHasNoCreditCard()) {
+          const stripeToken = await StripeService.promptForToken(null, null, true);
 
-          if (!('id' in stripeToken)) {
-            alert("There was an error contacting Stripe");
-            return;
-          }
-          const user = $scope.user;
+          if (!stripeToken) return;
 
-          var result = await loadingSpinner(UserService.beeline({
-            method: 'POST',
-            url: `/users/${user.id}/creditCards`,
-            data: {
-              stripeToken: stripeToken.id
-            },
-          }));
+          await loadingSpinner(
+            UserService.savePaymentInfo(stripeToken.id)
+          );
         }
-
       } catch (err) {
         console.log(err);
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
@@ -148,7 +134,7 @@ export default [
           `,
         })
         $state.go('tabs.kickstarter');
-      }finally {
+      } finally {
         $ionicLoading.hide();
         $scope.$apply(() => {
           $scope.waitingForPaymentResult = false;
