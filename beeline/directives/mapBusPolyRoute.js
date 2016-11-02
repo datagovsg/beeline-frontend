@@ -5,7 +5,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
     <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
                       ng-if="actualPath.path.length"
                       path="actualPath.path"
-                      stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
+                      stroke="strokeOptions"></ui-gmap-polyline>
     <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
                     ng-if="busLocation.coordinates"
                     idkey="'bus-location{{index}}'"
@@ -57,9 +57,9 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
             anchor: new googleMaps.Point(34, 78),
           };
           scope.availableTrips.map((trip, index)=>{
-            scope.map.busLocations.splice(index,0, {
-              "icon": icon
-            })
+            scope.map.busLocations[index] = {
+              icon: icon
+            }
           })
         })
       })
@@ -75,9 +75,13 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
                 longitude: ping.coordinates.coordinates[0]
               }));
               scope.map.busLocations[index].coordinates = coordinates;
-              scope.map.lines.actualPaths.splice(index,0, {
-                "path": path
-              })
+
+              scope.map.lines.actualPaths[index] = {
+                path: path
+              }
+            } else {
+              //to make bus icon disappear
+              scope.map.busLocations[index].coordinates = null;
             }
           })
         }

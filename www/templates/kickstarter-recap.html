@@ -1,0 +1,127 @@
+<ion-view id="pg_kickstarter_recap" view-title="Kickstart Route Details"
+  hide-back-button="false" can-swipe-back="false">
+  <ion-content>
+    <!-- price u bid for -->
+    <div class="item">
+      <i class="icon ion-ios-flag-outline"></i>
+      You joined this route at ${{book.bidPrice | number:2}} per trip.
+    </div>
+    <!-- route detail -->
+
+    <route-item class="item">
+      <route-item-bus-number>
+        {{ book.route.label }}
+      </route-item-bus-number>
+      <route-item-start-time>
+        {{ book.route | routeStartTime | formatTime:true }}
+      </route-item-start-time>
+      <route-item-start-location>
+        {{ book.route.from }}
+      </route-item-start-location>
+      <route-item-end-time>
+        {{ book.route | routeEndTime | formatTime:true }}
+      </route-item-end-time>
+      <route-item-end-location>
+        {{ book.route.to }}
+      </route-item-end-location>
+      <route-item-additional-info>
+        <company-info-broker company-id="book.route.transportCompanyId"
+                              company="book.companyInfo">
+        </company-info-broker>
+        <div class="icon-and-schedule">
+          <span class="icon-span company-logo">
+            <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
+          </span>
+          <span class="schedule">
+            {{book.companyInfo.name}}
+          </span>
+        </div>
+
+        <div class="icon-and-schedule">
+          <span class="icon-span">
+            <img class="mini-icon" src="img/icon_schedule.svg">
+          </span>
+          <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
+            {{book.route.daysLeft}} days left
+          </span>
+          <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
+            {{book.route.daysLeft}} day left to activate
+          </span>
+        </div>
+      </route-item-additional-info>
+    </route-item>
+
+    <!-- selected stop -->
+    <div class="item">
+      <div class="subTitle">Selected Stop</div>
+      <route-item hide-additional-info="true" hide-bus-label="true">
+        <route-item-bus-number>
+          {{ book.route.label }}
+        </route-item-bus-number>
+        <route-item-start-time>
+          {{book.boardStop.time | formatTime:true}}
+        </route-item-start-time>
+        <route-item-start-location>
+          <h4>Pick-up at</h4>
+          {{book.boardStop.stop.description}}<br/>
+          {{book.boardStop.stop.road}}<br/>
+          <br/>
+        </route-item-start-location>
+        <route-item-end-time>
+          {{book.alightStop.time | formatTime:true}}
+        </route-item-end-time>
+        <route-item-end-location>
+          <h4>Drop-off at</h4>
+          {{book.alightStop.stop.description}}<br/>
+          {{book.alightStop.stop.road}}<br/>
+          <br/>
+        </route-item-end-location>
+      </route-item>
+    </div>
+
+
+    <!-- Trip dates -->
+    <div class="item">
+      <div class="subTitle">
+        Trip Dates
+      </div>
+      <div class="item-icon-left trip-dates">
+        <i class="icon ion-calendar"></i>
+        <div class="item-text-wrap">
+          Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. If activated, you will be given tickets for the following 5 trips.
+        </div>
+        <div class="kickstarter-dates-row">
+          <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
+            <span class="kickstarter-month">{{pinfo.date | date:'MMM'}}</span>
+            <br /> {{pinfo.date | date:'dd'}}
+            <br />
+            <span class="kickstarter-day">{{pinfo.date | date:'EEE'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item item-text-wrap">
+      <div class="subTitle">Operated by</div>
+      <div class="row">
+        <div class="col-20 bus-logo">
+          <img ng-src="{{book.companyInfo.id | companyLogo}}">
+        </div>
+        <div class="col-80 col-center bus-co-info">
+          <p class="name">{{book.companyInfo.name}}</p>
+          <p class="email">{{book.companyInfo.email}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- When will I be charged -->
+    <div class="item item-text-wrap">
+      <h3><b>When will I be charged and for how much?</b></h3></br>
+      You will be charged for the {{book.route.trips.length}} if the
+      route is activated when the campaign ends on {{book.route.notes.lelongExpiry | date:'dd MMM'}}
+      at the lowest unlocked price you agreed to.
+    </div>
+
+
+  </ion-content>
+</ion-view>

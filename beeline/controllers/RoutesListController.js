@@ -54,7 +54,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $q.all([allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then((response)=>{
       var allLiteRoutes, liteRouteSubscriptions;
       [allLiteRoutes, liteRouteSubscriptions] = response;
-      $scope.data.liteRoutes = allLiteRoutes;
+      $scope.data.liteRoutes = _.sortBy(allLiteRoutes, 'label');
     })
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);

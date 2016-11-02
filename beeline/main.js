@@ -14,7 +14,6 @@ import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 
 // Configuration Imports
 import configureRoutes from './router.js';
-
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
 // //////////////////////////////////////////////////////////////////////////////
@@ -23,6 +22,7 @@ var app = angular.module('beeline', [
   'ngCordova',
   'uiGmapgoogle-maps',
   'multipleDatePicker',
+  'ngclipboard',
 ])
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
@@ -80,8 +80,10 @@ var app = angular.module('beeline', [
 .controller('LiteMoreInfoController', require('./controllers/LiteMoreInfoController.js').default)
 .controller('KickstarterController', require('./controllers/KickstarterController.js').default)
 .controller('KickstarterDetailController', require('./controllers/KickstarterDetailController.js').default)
+.controller('KickstarterDatesController', require('./controllers/KickstarterDatesController.js').default)
 .controller('KickstarterSummaryController', require('./controllers/KickstarterSummaryController.js').default)
 .controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
+.controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)

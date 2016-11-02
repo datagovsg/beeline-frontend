@@ -3,12 +3,10 @@ import _ from 'lodash';
 import assert from 'assert';
 
 var transformKickstarterData = function (kickstarterRoutes) {
+  if (!kickstarterRoutes) return null;
   for (let kickstarter of kickstarterRoutes){
     console.log(kickstarter);
-    //compatibility between /status and /bids
-    if (kickstarter.bid) {
-      kickstarter.bids = [kickstarter.bid];
-    }
+
     if (kickstarter.bids && kickstarter.bids.length > 0) {
      var bidsByTier = _.groupBy(kickstarter.bids, x=>x.userOptions.price);
      console.log(kickstarter.notes.tier)
@@ -41,6 +39,13 @@ var transformKickstarterData = function (kickstarterRoutes) {
         kickstarter.daysLeft =  Math.ceil((expiryTime - now)/day);
       }
     }
+
+    //sort trips date in ascending order
+    kickstarter.trips = _.orderBy(kickstarter.trips, x=>x.date);
+    //sort tripStops time in ascending order
+    _.forEach(kickstarter.trips, function(trip){
+      trip.tripStops = _.orderBy(trip.tripStops, stop=>stop.time)
+    });
   }
   return kickstarterRoutes;
 }
@@ -66,7 +71,8 @@ export default function KickstarterService($http, UserService,$q) {
 
     getLelongById: async function(routeId, ignoreCache) {
       var response = await this.getLelong(ignoreCache);
-      return response.filter(x=>x.id==routeId)[0];
+      var bid = response.filter(x=>x.id==routeId);
+      return bid.length>0 ? bid[0] : null;
     },
 
     //user personal bid information
@@ -111,7 +117,7 @@ export default function KickstarterService($http, UserService,$q) {
       var bids = await this.getBids(ignoreCache);
       assert(bids);
       var info =bids.filter(x=>{return x.id==routeId});
-      return transformKickstarterData(info);
+      return info.length>0 ? info[0] : null;
     },
 
     createBid: async function(route, boardStopId, alightStopId,bidPrice) {

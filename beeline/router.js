@@ -215,12 +215,38 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tabs.kickstarter-recap', {
+    url: '/kickstarter/:routeId/recap',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-recap.html',
+        controller: 'KickstarterRecapController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
   .state('tabs.kickstarter-detail', {
     url: '/kickstarter/:routeId/detail?boardStop&alightStop',
     views: {
       'tab-kickstarter': {
         templateUrl: 'templates/kickstarter-detail.html',
         controller: 'KickstarterDetailController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  .state('tabs.kickstarter-dates', {
+    url: '/kickstarter/:routeId/dates?boardStop&alightStop',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-dates.html',
+        controller: 'KickstarterDatesController'
       }
     },
     data: {

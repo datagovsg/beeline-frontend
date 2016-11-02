@@ -33,8 +33,10 @@ export default [
       tripCount: null,
       bidPrice: null,
       totalDue: null
+    };
+    $scope.data = {
+      hasNoCreditInfo: true
     }
-
 
     $scope.book.routeId = +$stateParams.routeId;
     $scope.book.boardStopId = +$stateParams.boardStop;
@@ -69,20 +71,16 @@ export default [
       })
     });
 
-
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
         $scope.book.isBid = await KickstarterService.isBid($scope.book.routeId);
-        console.log("ISBID");
-        console.log($scope.book.isBid);
         if ($scope.book.isBid) {
           const bidInfo =  await KickstarterService.getBidInfo($scope.book.routeId);
-          console.log("BIDINFO");
-          console.log(bidInfo);
-          $scope.priceInfo.bidPrice = bidInfo[0].bid.userOptions.price
+          $scope.priceInfo.bidPrice = bidInfo.bid.userOptions.price
         }
+        $scope.data.hasNoCreditInfo = ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) ? false : true;
       }
     });
 
@@ -94,15 +92,6 @@ export default [
 
     $scope.login = function () {
       UserService.promptLogIn()
-    }
-
-    function userHasNoCreditCard() {
-      console.log("USER");
-      console.log($scope.user);
-      if ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) {
-        return false;
-      }
-      return true;
     }
 
     $scope.createBid = async function(){
@@ -152,6 +141,35 @@ export default [
           $scope.waitingForPaymentResult = false;
         })
       }
+    }
+
+    //update the saving card info then place bid
+    $scope.updateSavingCard = async function(){
+      const stripeToken = await StripeService.promptForToken();
+      if (!stripeToken){
+        throw new Error("There was some difficulty contacting the payment gateway." +
+          " Please check your Internet connection");
+        return;
+      }
+
+      if (!('id' in stripeToken)) {
+        alert("There was an error contacting Stripe");
+        return;
+      }
+      const user = $scope.user;
+
+      var result = await loadingSpinner(UserService.beeline({
+        method: 'PUT',
+        url: `/users/${user.id}/creditCards`,
+        data: {
+          stripeToken: stripeToken.id
+        },
+      }));
+
+      if(result) {
+        $scope.createBid();
+      }
+
     }
 
 
