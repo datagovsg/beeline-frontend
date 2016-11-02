@@ -6,10 +6,11 @@ import _ from 'lodash';
 export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
-  'RoutesService', '$ionicScrollDelegate', 'TicketService',
+  'RoutesService', '$ionicScrollDelegate', 'TicketService', 'loadingSpinner',
   function ($scope, $state, $http, $ionicPopup,
     BookingService, UserService, $ionicLoading,
-    StripeService, $stateParams, RoutesService, $ionicScrollDelegate, TicketService) {
+    StripeService, $stateParams, RoutesService, $ionicScrollDelegate, TicketService,
+    loadingSpinner) {
 
     // Booking session logic
     $scope.session = {
@@ -31,7 +32,9 @@ export default [
       hasInvalidDate: false,
       features: null,
     };
-    $scope.disp = {};
+    $scope.disp = {
+      zeroDollarPurchase: false
+    };
 
     $scope.book.routeId = +$stateParams.routeId;
     $scope.session.sessionId = +$stateParams.sessionId;
@@ -86,6 +89,11 @@ export default [
     $scope.$on('companyTnc.done', () => {
       $ionicScrollDelegate.resize();
     })
+    $scope.$watch('book.price', (price) => {
+      if (parseFloat(price) == 0) {
+        $scope.disp.zeroDollarPurchase = true;
+      }
+    })
 
     $scope.checkValidDate = async function () {
 
@@ -98,11 +106,25 @@ export default [
     }
 
     $scope.payHandler = async function () {
-      if ($scope.disp.savePaymentChecked) {
+      if ($scope.disp.payZeroDollar) {
+        $scope.payZeroDollar();
+      }
+      else if ($scope.disp.savePaymentChecked) {
         $scope.payWithSavedInfo();
       }
       else {
         $scope.payWithoutSavingCard();
+      }
+    }
+
+    $scope.payZeroDollar = async function () {
+      if (await $ionicPopup.confirm({
+        title: 'Complete Purchase',
+        template: 'Are you sure you want to complete the purchase?'
+      })) {
+        completePayment({
+          stripeToken: 'this-will-not-be-used'
+        })
       }
     }
 
@@ -121,35 +143,14 @@ export default [
           return;
         }
 
-        $ionicLoading.show({
-          template: processingPaymentsTemplate
-        })
-        var result = await UserService.beeline({
-          method: 'POST',
-          url: '/transactions/payment_ticket_sale',
-          data: {
-            stripeToken: stripeToken.id,
-            trips: BookingService.prepareTrips($scope.book),
-          },
+        completePayment({
+          stripeToken: stripeToken.id,
         });
-        $ionicLoading.hide();
 
-        // This gives us the transaction items
-        assert(result.status == 200);
-
-        // TODO: put need-to-refresh logic into service
-        TicketService.setShouldRefreshTickets();
-
-        $state.go('tabs.booking-confirmation');
       } catch (err) {
-        $ionicLoading.hide();
         await $ionicPopup.alert({
-          title: 'Error processing payment',
+          title: 'Error contacting the payment gateway',
           template: err.data.message,
-        })
-      } finally {
-        $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
         })
       }
     };
@@ -172,33 +173,45 @@ export default [
           }
         }
 
+        //saves payment info if doesn't exist
+        if (!$scope.hasSavedPaymentInfo) {
+          await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
+        }
+
+        completePayment({
+          customerId: $scope.user.savedPaymentInfo.id,
+          sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+        });
+      } catch (err) {
+        await $ionicPopup.alert({
+          title: 'Error saving payment method',
+          template: err.data.message,
+        })
+      }
+    };
+
+    /** After you have settled the payment mode **/
+    async function completePayment(paymentOptions) {
+      try {
         $ionicLoading.show({
           template: processingPaymentsTemplate
         })
 
-        //saves payment info if doesn't exist
-        if (!$scope.hasSavedPaymentInfo){
-          await UserService.savePaymentInfo(stripeToken.id);
-        }
-
         var result = await UserService.beeline({
           method: 'POST',
           url: '/transactions/payment_ticket_sale',
-          data: {
-            customerId: $scope.user.savedPaymentInfo.id,
-            sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+          data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips($scope.book),
-          },
+          }),
         });
-        $ionicLoading.hide();
 
-        // This gives us the transaction items
         assert(result.status == 200);
 
-        // TODO: put need-to-refresh logic into service
-        TicketService.setShouldRefreshTickets();
+        $ionicLoading.hide();
 
+        TicketService.setShouldRefreshTickets();
         $state.go('tabs.booking-confirmation');
+
       } catch (err) {
         $ionicLoading.hide();
         await $ionicPopup.alert({
@@ -210,6 +223,6 @@ export default [
           $scope.waitingForPaymentResult = false;
         })
       }
-    };
+    }
   },
 ];
