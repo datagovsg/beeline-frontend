@@ -34,4 +34,8 @@
   .list {
     flex: 1 1 auto;
   }
+
+  .not-found-message {
+    padding: $content-padding;
+  }
 }

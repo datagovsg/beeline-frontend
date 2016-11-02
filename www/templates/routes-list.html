@@ -196,6 +196,11 @@
         </route-item>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
+
+      <div ng-if="data.filteredActiveRoutes.length === 0 && data.filteredLiteRoutes.length === 0
+        && data.filterText" class="not-found-message">
+        Sorry, we could not find any routes matching "{{data.filterText}}"
+      </div>
     </ion-content>
   </ion-content>
 </ion-view>
