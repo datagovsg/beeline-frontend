@@ -90,7 +90,13 @@
     </div>
     <div class="item item-text-wrap">
       <h3 class="item-subtitle">When will payment be charged?</h3>
-      You will be charged for the {{book.route.trips.length}} trips if the route is activated when the campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong> at the lowest unlocked price you are willing to pay.
+      <p>
+        This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the {{book.route.trips.length}} trips will only be deducted at the end of the campaign if the route is activated.
+      </p>
+      <br />
+      <p>
+        No one will be charged for the route unless it is activated. You will only be charged the unlocked price if it matches or is lower than your pledged amount per ride.
+      </p>
     </div>
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn || !book.isBid">
@@ -110,7 +116,7 @@
 
     <div class="item item-text-wrap text-center" ng-if="isLoggedIn && !book.isBid">
       <div ng-if="data.hasNoCreditInfo">
-        The card you are adding will be saved to the account. You can change it in the Settings if you change your mind.
+        Your card will be securely stored for the future payment. You can swop to another card in the settings.
         <button class="button primary-button" ng-click="createBid()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
           Add Card Details
         </button>
