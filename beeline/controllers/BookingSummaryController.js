@@ -90,7 +90,7 @@ export default [
       $ionicScrollDelegate.resize();
     })
     $scope.$watch('book.price', (price) => {
-      if (parseFloat(price) == 0) {
+      if (parseFloat(price) === 0) {
         $scope.disp.zeroDollarPurchase = true;
       }
     })
