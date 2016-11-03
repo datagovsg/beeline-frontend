@@ -168,17 +168,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
         }])
       }
       return promise.data;
-    },
-
-    deleteBid: async function(routeId) {
-      var promise = await UserService.beeline({
-        method: 'DELETE',
-        url: '/custom/lelong/bids/'+routeId
-      });
-      if (promise) {
-        this.getBids(true);
-      }
-      return promise.data;
     }
+
   }
 }
