@@ -1,3 +1,5 @@
+
+/* Kickstarter select stops */
 #pg_kickstarter_detail {
 
   .map-area {
@@ -57,4 +59,61 @@
     }
   }
 
+}
+
+/* View trip dates scss */
+#pg_kickstarter_dates {
+
+  table.price-table{
+    width: 100%;
+  }
+  table.booking-info{
+    td{
+      text-align: center;
+    }
+  }
+
+  .select-bid{
+    h3{
+      margin-top: $padding-small-horizontal*2;
+      line-height: 1.5em;
+    }
+    button{
+      margin-top: 1.5em;
+    }
+  }
+
+}
+
+.kickstarter-dates-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: $padding-large-vertical*2;
+
+  .kickstarter-dates-box{
+    border: 1px solid lighten($normal-grey,40%);
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.4em 1em;
+    text-align: center;
+    color: $royal;
+    text-transform: uppercase;
+    .kickstarter-day,.kickstarter-month{
+      font-size: $font-size-small/1.2;
+    }
+  }
+}
+
+
+.trip-dates{
+  padding-left: $padding-large-horizontal*1.5;
+  .icon{
+    align-items: flex-start;
+    top: auto;
+    font-size: $font-size-large;
+    left: $padding-large-horizontal;
+  }
 }
