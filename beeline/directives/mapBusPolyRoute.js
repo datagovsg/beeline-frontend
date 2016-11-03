@@ -105,9 +105,11 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
           return TripService.DriverPings(trip.id)
           .then((info) => {
             /* Only show pings from the last 5 minutes */
+            // max 12 pings
             var now = Date.now();
             return scope.recentPings[index] = _.filter(info.pings,
-              ping => now - ping.time.getTime() < 5*60*1000);
+              ping => now - ping.time.getTime() < 5*60*1000)
+              .slice(0,13);
           })
         }))
         .then(() => {
