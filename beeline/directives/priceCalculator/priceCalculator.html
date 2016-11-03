@@ -62,10 +62,10 @@
         <th>Total Price</th>
         <td>{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
-      <tr ng-if="priceInfo.discount">
-        <th>{{priceInfo.discount.discount.description}}: {{priceInfo.discount.discount.code}}</th>
+      <tr ng-if="priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
+        <th>{{discount.discount.description}}: {{discount.discount.code}}</th>
         <td>
-          {{(-priceInfo.discount.debit || 0) | currency}}
+          {{(-discount.debit || 0) | currency}}
         </td>
       </tr>
       <!-- FIXME: include vouchers, discounts here -->

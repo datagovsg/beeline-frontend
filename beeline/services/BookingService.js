@@ -60,7 +60,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
           totalDue: txItems.payment[0].debit,
           tripCount: trips.length,
           pricesPerTrip: this.summarizePrices(booking),
-          discount: txItems.discount ? txItems.discount[0] : null,
+          discounts: txItems.discount,
           totalBeforeDiscount: totalBeforeDiscount
         };
       })
