@@ -31,21 +31,18 @@ export default [
 
     $scope.book.routeId = +$stateParams.routeId;
     $scope.showCopy = !window.cordova || false;
-    $scope.$watch(()=>KickstarterService.getBidInfo($scope.book.routeId),(route)=>{
+
+    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
       if (!route) return;
       $scope.book.route = route;
-      console.log("COMMIT");
-      console.log($scope.book.route);
-      if ($scope.book.route.notes && $scope.book.route.notes.lelongExpiry) {
-       var now = new Date().getTime();
-       var expiryTime = new Date($scope.book.route.notes.lelongExpiry).getTime();
-       if (now > expiryTime) {
-         $scope.book.notExpired = false;
-       }
-      }
-      $scope.book.bidPrice = $scope.book.route.bid.userOptions.price;
-      console.log("BID PRICE");
-      console.log($scope.book.bidPrice);
+      if (!bid) return;
+      $scope.book.bidPrice = bid.bidPrice;
+      $scope.book.boardStop = $scope.book.route.trips[0]
+            .tripStops
+            .filter(ts => bid.boardStopId == ts.stop.id)[0];
+      $scope.book.alightStop =$scope.book.route.trips[0]
+            .tripStops
+            .filter(ts => bid.alightStopId == ts.stop.id)[0];
     });
 
     //if has cordova no need to show shareLink text area
