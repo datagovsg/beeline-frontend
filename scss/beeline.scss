@@ -267,6 +267,36 @@ input[type="color"] {
     padding-bottom: $padding-large-vertical*1.5;
 }
 
+textarea{
+  border: 1px solid lighten($hint-color, 30%);
+}
+
+.small-button {
+  margin-top: $padding-large-vertical;
+  min-height: 40px;
+  text-transform: uppercase;
+  font-size: $font-size-base;
+  line-height: inherit;
+}
+.button.button-disabled {
+  background-color: $light-grey;
+  color: #a2a2a2;
+}
+
+.text-link-div {
+  text-align: center;
+  margin: 1em;
+  color: $royal;
+  a {
+    text-decoration: underline;
+  }
+}
+.text-link-disabled {
+  color: $hint-color;
+  text-decoration: underline;
+  pointer-events: none;
+}
+
 .bus-logo {
   min-height: 4em;
   height: 20vw;

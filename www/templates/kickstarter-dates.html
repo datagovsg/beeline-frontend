@@ -26,21 +26,21 @@
         </div>
       </div>
     </div>
-    <div class="item">
+    <div class="item item-text-wrap">
       <div class="item-subtitle">
         Operated by
       </div>
       <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
       </company-info-broker>
-      <div class="row">
-        <div class="col-20 bus-logo">
-          <img ng-src="{{book.companyInfo.id | companyLogo}}">
+        <div class="row">
+          <div class="col-20 bus-logo">
+            <img ng-src="{{book.companyInfo.id | companyLogo}}">
+          </div>
+          <div class="col-80 col-center bus-co-info">
+            <p class="name">{{book.companyInfo.name}}</p>
+            <p class="email">{{book.companyInfo.email}}</p>
+          </div>
         </div>
-        <div class="col-80 col-center bus-co-info">
-          <p class="name">{{book.companyInfo.name}}</p>
-          <p class="email">{{book.companyInfo.email}}</p>
-        </div>
-      </div>
     </div>
     <div class="item">
       <div class="item-subtitle">
