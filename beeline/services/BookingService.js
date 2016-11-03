@@ -52,7 +52,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
         // Find the 'payment' entry in the list of transaction itemss
         var txItems = _.groupBy(resp.data.transactionItems, 'itemType');
         // console.log("TransactionItems:",txItems)
-        var priceForTix = _.reduce(txItems.ticketSale, (sum, n) => {
+        var priceForTickets = _.reduce(txItems.ticketSale, (sum, n) => {
           return sum + n.credit
         }, 0)
         // FIXME: include discounts, vouchers
@@ -61,7 +61,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
           tripCount: trips.length,
           pricesPerTrip: this.summarizePrices(booking),
           discount: txItems.discount ? txItems.discount[0] : null,
-          priceForTix: priceForTix
+          priceForTickets: priceForTickets
         };
       })
       .then(null, (err) => {

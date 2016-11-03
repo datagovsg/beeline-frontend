@@ -48,7 +48,7 @@
       <tr>
         <td>{{priceInfo.tripCount || 0}}</td>
         <td>1</td>
-        <td>{{(priceInfo.priceForTix || 0) | currency}}</td>
+        <td>{{(priceInfo.priceForTickets || 0) | currency}}</td>
       </tr>
     </tbody>
   </table>
@@ -60,7 +60,7 @@
     <tbody>
       <tr>
         <th>Total Price</th>
-        <td>{{(priceInfo.priceForTix || 0) | currency}}</td>
+        <td>{{(priceInfo.priceForTickets || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discount">
         <th>{{priceInfo.discount.discount.description}}: {{priceInfo.discount.discount.code}}</th>
