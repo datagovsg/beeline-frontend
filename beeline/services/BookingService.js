@@ -43,9 +43,9 @@ export default function(UserService, CompanyService, RoutesService, $http) {
         data: {
           trips: trips,
           dryRun: true, 
-          promoCode: {
-            code: booking.promoCode || ''
-          }
+          promoCode: booking.promoCode ? {
+            code: booking.promoCode
+          } : undefined
         },
       })
       .then((resp) => {
