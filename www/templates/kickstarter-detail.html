@@ -95,7 +95,7 @@
               <span class="icon-span company-logo">
                 <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{companyInfo.name}}
               </span>
             </div>
@@ -104,10 +104,10 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
               </span>
-              <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
+              <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft>1">
                 {{book.route.daysLeft}} days left to activate
               </span>
-              <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
+              <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft==1">
                 {{book.route.daysLeft}} day left to activate
               </span>
             </div>
