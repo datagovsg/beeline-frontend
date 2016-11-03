@@ -120,8 +120,7 @@ export default [
             </div>
           </div>
           <div class="item item-text-wrap text-center" ng-if="isOnKickstarter">
-            You are committed to existing kickstarter route(s). Please change
-            the card if you want to remove this card.
+            You cannot remove this card unless the kickstarter route you back expires.
           </div>
         `,
         buttons: [
