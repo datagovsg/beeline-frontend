@@ -6,7 +6,7 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <div class="item">
-      <h3 class="item-subtitle">Amount you are pledging</h3>
+      <h3 class="item-subtitle">Amount you are pledge</h3>
       <table class="booking-info">
         <tr>
           <td><b>No. of Trips</b></td>
@@ -123,16 +123,17 @@
           Add Card Details
         </button>
       </div>
-      <div ng-if="!data.hasNoCreditInfo">
-        This payment will be charged to your <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}
+      <div class="text-center" ng-if="!data.hasNoCreditInfo">
+        This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}</b>
         <button class="button primary-button"
                 ng-click="createBid()"
                 ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
           Confirm
         </button>
-        <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">
-         Use a different card for this payment
-        </a>
+        <div class="text-link-div">
+          <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">
+           Use a different card for this payment</a>
+        </div>
       </div>
     </div>
   </ion-content>

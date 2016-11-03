@@ -134,9 +134,9 @@
         Confirm and Pay
       </button>
     </section>
-    <section class="item item-text-wrap"
+    <section class="item item-text-wrap text-center"
              ng-if="isLoggedIn && hasSavedPaymentInfo">
-      This payment will be charged to your <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
+      This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
       ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>.
 
       <button class="button primary-button"

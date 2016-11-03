@@ -1,14 +1,11 @@
 #pg_kickstarter_commit {
   .primary-button {
-    margin-top: $padding-large-horizontal;
+    margin-top: $padding-large-vertical*2;
+    margin-bottom: $padding-large-vertical*2;
   }
   textarea {
     width: 90%;
     height: $line-height-computed*3;
     margin: $padding-small-horizontal auto;
-  }
-
-  .small-button{
-
   }
 }

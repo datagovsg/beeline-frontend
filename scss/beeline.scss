@@ -282,3 +282,17 @@ textarea{
   background-color: $light-grey;
   color: #a2a2a2;
 }
+
+.text-link-div {
+  text-align: center;
+  margin: 1em;
+  color: $royal;
+  a {
+    text-decoration: underline;
+  }
+}
+.text-link-disabled {
+  color: $hint-color;
+  text-decoration: underline;
+  pointer-events: none;
+}
