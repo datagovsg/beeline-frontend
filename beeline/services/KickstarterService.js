@@ -133,8 +133,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     },
 
     getBidInfo: function(routeId) {
-      var info =kickstarterSummary.filter(x=>x.routeId==routeId);
-      return info.length>0 ? info[0] : null;
+      return kickstarterSummary.find(x=>x.routeId == routeId);
     },
 
     createBid: async function(route, boardStopId, alightStopId,bidPrice) {
@@ -160,7 +159,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       if (promise) {
         // this.getBids(true);
         increaseBidNo(kickstarterRoutesById[route.id], bidPrice);
-        kickstarterSummary.concat([{
+        kickstarterSummary = kickstarterSummary.concat([{
           routeId: route.id,
           boardStopId: boardStopId,
           alightStopId: alightStopId,

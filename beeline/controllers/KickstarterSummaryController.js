@@ -125,7 +125,7 @@ export default [
         $scope.$apply(() => {
           $scope.book.isBid = true;
           //TODO: important ! no. updated in kickstarter list however boardstop and alightstop is not updated when revisit
-          increaseBidNo($scope.book.route, bidPrice);
+          // increaseBidNo($scope.book.route, bidPrice);
         })
         $state.go('tabs.kickstarter-commit', { routeId: $scope.book.routeId});
       }catch(err){
