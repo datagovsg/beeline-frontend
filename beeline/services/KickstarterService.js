@@ -81,7 +81,13 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
         method: 'GET',
         url: '/custom/lelong/bids',
       }).then((response) => {
-        kickstarterSummary = response.data;
+        // kickstarterSummary = response.data;
+        kickstarterSummary = response.data.map((bid)=>{
+          return   {routeId: bid.id,
+                    boardStopId: bid.bid.tickets[0].boardStop.stopId,
+                    alightStopId: bid.bid.tickets[0].alightStop.stopId,
+                    bidPrice: bid.bid.userOptions.price}
+        })
         bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
         return kickstarterSummary;
 			});
@@ -127,7 +133,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     },
 
     getBidInfo: function(routeId) {
-      var info =kickstarterSummary.filter(x=>{return x.id==routeId});
+      var info =kickstarterSummary.filter(x=>x.routeId==routeId);
       return info.length>0 ? info[0] : null;
     },
 
@@ -154,15 +160,13 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       if (promise) {
         // this.getBids(true);
         increaseBidNo(kickstarterRoutesById[route.id], bidPrice);
-        kickstarterSummary.concat([])
+        kickstarterSummary.concat([{
+          routeId: route.id,
+          boardStopId: boardStopId,
+          alightStopId: alightStopId,
+          bidPrice: bidPrice
+        }])
       }
-
-
-      // bids.push(...)
-
-      //shallow watch
-      // bids = bids.concat([...])
-
       return promise.data;
     },
 

@@ -14,7 +14,7 @@
             <img src="img/icon_schedule.svg">
         </i>
         <div class="item-text-wrap">
-          Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. To activate this route, pledge to book the first 5 trips shown below.
+          Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. To activate this route, pledge to book the first {{book.route.trips.length}} trips shown below.
         </div>
         <div class="kickstarter-dates-row">
           <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
