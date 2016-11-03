@@ -266,3 +266,19 @@ input[type="color"] {
     padding-top:  $padding-large-vertical;
     padding-bottom: $padding-large-vertical*1.5;
 }
+
+textarea{
+  border: 1px solid lighten($hint-color, 30%);
+}
+
+.small-button {
+  margin-top: $padding-large-vertical;
+  min-height: 40px;
+  text-transform: uppercase;
+  font-size: $font-size-base;
+  line-height: inherit;
+}
+.button.button-disabled {
+  background-color: $light-grey;
+  color: #a2a2a2;
+}

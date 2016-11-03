@@ -64,17 +64,19 @@
           </progress-bar>
         </div>
 
-        <div class="item">
+        <div class="item item-text-wrap">
           Share this route to your friends! </br>
-          <textarea>{{shareLink}}</textarea>
-          <button class="button button-outline button-royal" ng-click="shareAnywhere()" ng-if="!showCopy">Share anywhere</button>
-          <button class="button button-outline button-royal" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}}>
+          <div class="text-center">
+            <textarea>{{shareLink}}</textarea>
+          </div>
+          <button class="button button-outline button-royal small-button" ng-click="shareAnywhere()" ng-if="!showCopy">Share anywhere</button>
+          <button class="button button-outline button-royal small-button" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}}>
               Copy
           </button>
         </div>
 
         <button class="primary-button button" ui-sref="tabs.kickstarter">
-          ok
+          Back to Main Menu
         </button>
 
   </ion-content>

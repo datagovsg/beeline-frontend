@@ -66,8 +66,10 @@
   }
 }
 .small-button {
-  margin-top: 5px;
-  min-height: 37px;
+  margin-top: $padding-large-vertical;
+  min-height: 40px;
+  text-transform: uppercase;
+  font-size: $font-size-base;
   line-height: inherit;
 }
 .button.button-disabled {
