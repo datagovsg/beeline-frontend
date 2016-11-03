@@ -1,5 +1,6 @@
 import faqModalTemplate from '../templates/faq-modal.html';
 import contactUsModalTemplate from '../templates/contact-us-modal.html';
+import shareReferralModalTemplate from '../templates/share-referral-modal.html';
 import commonmark from 'commonmark';
 
 var reader = new commonmark.Parser({safe: true});
@@ -55,6 +56,11 @@ export default [
       })
       return newScope;
     }
+
+    $scope.shareReferralModal = $ionicModal.fromTemplate(
+      shareReferralModalTemplate,
+      {scope: $scope}
+    )
 
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,

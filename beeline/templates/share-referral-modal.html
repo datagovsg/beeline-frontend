@@ -1,0 +1,16 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-royal bar bar-header">
+    <h1 class="title">Share Rides, Get Rides</h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="shareReferralModal.hide()">
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div>
+      <p>
+        Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.
+      </p>
+      <p>{{ user.referralCode.code }}</p>
+
+    </div>
+  </ion-content>
+</ion-modal-view>
