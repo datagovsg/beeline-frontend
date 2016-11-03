@@ -31,7 +31,7 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
-      myCredits: 0,
+      userCredits: 0,
       useCredits: false,
     };
     $scope.disp = {};
