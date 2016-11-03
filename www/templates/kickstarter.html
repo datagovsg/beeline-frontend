@@ -56,10 +56,10 @@
 
             <div class="icon-and-schedule">
               <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
+                <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
               </span>
               <span class="schedule" ng-if="route.daysLeft && route.daysLeft>1">
-                {{route.daysLeft}} days left
+                {{route.daysLeft}} days left to activate
               </span>
               <span class="schedule" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
@@ -75,10 +75,11 @@
             <div class="icon-and-schedule">
               <!-- <span class="icon ion-ios-flag-outline"></span> -->
               <span class="icon-span">
-                <img class="mini-icon" src="img/paymentComplete_paid.svg">
+                <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
               </span>
               <span class="schedule" ng-if="route.daysLeft && route.daysLeft>1">
-                You joined this route at ${{recentBidsById[route.id].bidPrice}}
+                You joined this route at ${{recentBidsById[route.id].bidPrice | number:2 }} per ride.
+
               </span>
               <span class="schedule" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
@@ -137,10 +138,10 @@
 
             <div class="icon-and-schedule">
               <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
+                <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
               </span>
               <span class="schedule" ng-if="route.daysLeft && route.daysLeft>1">
-                {{route.daysLeft}} days left
+                {{route.daysLeft}} days left to activate
               </span>
               <span class="schedule" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate

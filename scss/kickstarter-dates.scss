@@ -1,21 +1,24 @@
 #pg_kickstarter_dates {
-  .subTitle {
-    color: $hint-color;
-    line-height:  $line-height-base*2;
-  }
 
   table.price-table{
     width: 100%;
   }
-}
-
-.trip-dates{
-  padding-left: $padding-large-horizontal*2;
-  .icon{
-    align-items: flex-start;
-    top: auto;
-    font-size: $font-size-large;
+  table.booking-info{
+    td{
+      text-align: center;
+    }
   }
+
+  .select-bid{
+    h3{
+      margin-top: $padding-small-horizontal*2;
+      line-height: 1.5em;
+    }
+    button{
+      margin-top: 1.5em;
+    }
+  }
+
 }
 
 .kickstarter-dates-row {
@@ -37,5 +40,16 @@
     .kickstarter-day,.kickstarter-month{
       font-size: $font-size-small/1.2;
     }
+  }
+}
+
+
+.trip-dates{
+  padding-left: $padding-large-horizontal*1.5;
+  .icon{
+    align-items: flex-start;
+    top: auto;
+    font-size: $font-size-large;
+    left: $padding-large-horizontal;
   }
 }

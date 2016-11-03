@@ -1,11 +1,11 @@
 #pg_kickstarter_recap {
-  i.icon.ion-ios-flag-outline {
-    font-size: $font-size-base * 1.5
+
+  .icon{
+    &.activebid{
+      left: $padding-small-horizontal*2;
+    }
   }
-  .subTitle {
-    color: $hint-color;
-    line-height:  $line-height-base*2;
-  }
+  
   table {
     width: 100%;
   }
