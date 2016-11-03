@@ -30,14 +30,9 @@ export default [
     };
 
     $scope.book.routeId = +$stateParams.routeId;
-
     $scope.showCopy = !window.cordova || false;
-
-    var routePromise;
-    routePromise = KickstarterService.getBidInfo($scope.book.routeId);
-
-    routePromise.then((route) => {
-
+    $scope.$watch(()=>KickstarterService.getBidInfo($scope.book.routeId),(route)=>{
+      if (!route) return;
       $scope.book.route = route;
       console.log("COMMIT");
       console.log($scope.book.route);

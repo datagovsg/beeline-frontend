@@ -43,10 +43,8 @@ export default [
     $scope.book.alightStopId = +$stateParams.alightStop;
     $scope.priceInfo.bidPrice = +$stateParams.bidPrice;
 
-    var routePromise;
-    routePromise = KickstarterService.getLelongById($scope.book.routeId);
 
-    routePromise.then((route) => {
+    $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
 
       $scope.book.route = route;
       $scope.book.boardStop = route.trips[0]

@@ -61,7 +61,10 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
   UserService.userEvents.on('userChanged', () => {
     fetchBids(true);
   })
-  fetchKickstarterRoutes();
+
+  //first load
+  fetchKickstarterRoutes(true);
+  fetchBids(true);
 
   function fetchBids(ignoreCache) {
     if (UserService.getUser()) {
@@ -76,7 +79,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     }
     else {
       kickstarterSummary = [];
-      return $q.resolve([]);
+      return $q.resolve(kickstarterSummary);
     }
   }
 
@@ -98,17 +101,17 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
   return {
     //all lelong routes
     getLelong: () => kickstarterRoutesList,
-    fetchLelong: fetchKickstarterRoutes,
+    fetchLelong: (ignoreCache)=>fetchKickstarterRoutes(ignoreCache),
 
     getLelongById: function(routeId) {
       return kickstarterRoutesById[routeId];
     },
 
     //user personal bid information
-    getBids: function(ignoreCache) {
+    getBids: function() {
       return kickstarterSummary
     },
-    fetchBids: fetchBids,
+    fetchBids: (ignoreCache)=>fetchBids(ignoreCache),
 
     isBid: async function(routeId, ignoreCache) {
       var bids = await this.getBids(ignoreCache);
@@ -125,10 +128,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       }
     },
 
-    getBidInfo: async function(routeId, ignoreCache) {
-      var bids = await this.getBids(ignoreCache);
-      assert(bids);
-      var info =bids.filter(x=>{return x.id==routeId});
+    getBidInfo: function(routeId) {
+      var info =kickstarterSummary.filter(x=>{return x.id==routeId});
       return info.length>0 ? info[0] : null;
     },
 

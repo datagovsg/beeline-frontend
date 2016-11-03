@@ -27,14 +27,10 @@ export default [
     $scope.book.boardStopId = +$stateParams.boardStop;
     $scope.book.alightStopId = +$stateParams.alightStop;
 
-    var routePromise;
-    routePromise = KickstarterService.getLelongById($scope.book.routeId);
-
-    routePromise.then((route) => {
-
+    $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
+      if (!route) return;
       $scope.book.route = route;
-
-    });
+    })
 
     $scope.updateSelection = function(position, tiers, price) {
       _.forEach(tiers, function(tier, index){
@@ -45,7 +41,6 @@ export default [
         }
       })
     }
-
   }
 ];
 //
