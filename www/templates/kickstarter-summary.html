@@ -6,7 +6,7 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <div class="item">
-      <h3 class="item-subtitle">Amount you are pledging</h3>
+      <h3 class="item-subtitle">Amount you are pledge</h3>
       <table class="booking-info">
         <tr>
           <td><b>No. of Trips</b></td>
@@ -14,11 +14,11 @@
         </tr>
         <tr>
           <td><b>Max. Price per Trip</b></td>
-          <td class="right">${{priceInfo.bidPrice | number:2}}</td>
+          <td class="right">$ {{priceInfo.bidPrice | number:2}}</td>
         </tr>
         <tr class="total-sum">
           <td class="total-sum"><b>Amount you pledge</b></th>
-          <td class="total-sum right">{{priceInfo.totalDue | number:2}}</th>
+          <td class="total-sum right">$ {{priceInfo.totalDue | number:2}}</th>
         </tr>
       </table>
     </div>
@@ -89,14 +89,16 @@
       </div>
     </div>
     <div class="item item-text-wrap">
-      <h3 class="item-subtitle">When will payment be charged?</h3>
-      <p>
-        This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the {{book.route.trips.length}} trips will only be deducted at the end of the campaign if the route is activated.
-      </p>
-      <br />
-      <p>
-        No one will be charged for the route unless it is activated. You will only be charged the unlocked price if it matches or is lower than your pledged amount per ride.
-      </p>
+      <div class="charge-note">
+        <h3 class="item-subtitle">When will payment be charged?</h3>
+        <p>
+          This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the <strong>{{book.route.trips.length}} trips</strong> will only be deducted at the end of the campaign if the route is activated.
+        </p>
+        <br />
+        <p>
+          No one will be charged for the route unless it is activated. You will only be charged the unlocked price if it matches or is lower than your pledged amount per ride.
+        </p>
+      </div>
     </div>
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn || !book.isBid">
@@ -123,16 +125,17 @@
           Add Card Details
         </button>
       </div>
-      <div ng-if="!data.hasNoCreditInfo">
-        This payment will be charged to your <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}
+      <div class="text-center" ng-if="!data.hasNoCreditInfo">
+        This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}</b>
         <button class="button primary-button"
                 ng-click="createBid()"
                 ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
           Confirm
         </button>
-        <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">
-         Use a different card for this payment
-        </a>
+        <div class="text-link-div">
+          <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">
+           Use a different card for this payment</a>
+        </div>
       </div>
     </div>
   </ion-content>

@@ -2,20 +2,6 @@ more-info {
   .signage-info {
     margin-top: 1em;
   }
-  .bus-logo {
-    min-height: 4em;
-    height: 20vw;
-    max-height: 10em;
-    img {
-      padding: 1px;
-      border: 1px solid lighten($normal-grey, 50%);
-      max-width: 100%;
-      max-height: 100%;
-    }
-  }
-  .bus-co-info {
-    padding-left: $content-padding;
-  }
   .features {
     ul {
       list-style: disc;

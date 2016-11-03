@@ -39,7 +39,7 @@
                 <span class="icon-span company-logo">
                   <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
                 </span>
-                <span class="schedule">
+                <span class="mini-info">
                   {{companyInfo.name}}
                 </span>
               </div>
@@ -48,10 +48,10 @@
                 <span class="icon-span">
                   <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
                 </span>
-                <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
+                <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft>1">
                   {{book.route.daysLeft}} days left to activate
                 </span>
-                <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
+                <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft==1">
                   {{book.route.daysLeft}} day left to activate
                 </span>
               </div>
@@ -63,18 +63,20 @@
             high-total={{book.route.notes.tier[0].pax}}>
           </progress-bar>
         </div>
-
-        <div class="item item-text-wrap">
-          Share this route to your friends! </br>
-          <div class="text-center">
-            <textarea>{{shareLink}}</textarea>
+          <div class="item item-text-wrap">
+            <div class="share-box">
+            Share this route to your friends! </br>
+            <div class="text-center">
+              <textarea>{{shareLink}}</textarea>
+            </div>
+            <div class="text-right">
+              <button class="button button-outline button-royal small-button" ng-click="shareAnywhere()" ng-if="!showCopy">Share anywhere</button>
+              <button class="button button-outline button-royal small-button" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}}>
+                  Copy
+              </button>
+            </div>
           </div>
-          <button class="button button-outline button-royal small-button" ng-click="shareAnywhere()" ng-if="!showCopy">Share anywhere</button>
-          <button class="button button-outline button-royal small-button" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}}>
-              Copy
-          </button>
         </div>
-
         <button class="primary-button button" ui-sref="tabs.kickstarter">
           Back to Main Menu
         </button>
