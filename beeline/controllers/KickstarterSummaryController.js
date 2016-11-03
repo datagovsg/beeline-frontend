@@ -73,14 +73,17 @@ export default [
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
-        $scope.book.isBid = await KickstarterService.isBid($scope.book.routeId);
-        if ($scope.book.isBid) {
-          const bidInfo =  await KickstarterService.getBidInfo($scope.book.routeId);
-          $scope.priceInfo.bidPrice = bidInfo.bid.userOptions.price
-        }
         $scope.data.hasNoCreditInfo = ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) ? false : true;
       }
     });
+
+    $scope.$watch(()=>KickstarterService.isBid($scope.book.routeId), (isBid)=>{
+      $scope.book.isBid = isBid;
+      if ($scope.book.isBid) {
+        const bidInfo =  KickstarterService.getBidInfo($scope.book.routeId);
+        $scope.priceInfo.bidPrice = bidInfo.bid.userOptions.price;
+      }
+    })
 
     $scope.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return;

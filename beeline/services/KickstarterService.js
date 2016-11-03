@@ -52,10 +52,18 @@ var transformKickstarterData = function (kickstarterRoutes) {
   return kickstarterRoutes;
 }
 
+var increaseBidNo = function(route, price) {
+  for (let tier of route.notes.tier) {
+    if (tier.price <= price) {
+      tier.no++;
+    }
+  }
+}
+
 export default function KickstarterService($http, UserService,$q, $rootScope) {
   var lelongCache;
   var kickstarterStatusCache;
-  var kickstarterSummary = [];
+  var kickstarterSummary = [], bidsById = {};
   var kickstarterRoutesList = [], kickstarterRoutesById = {};
 
   UserService.userEvents.on('userChanged', () => {
@@ -74,6 +82,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
         url: '/custom/lelong/bids',
       }).then((response) => {
         kickstarterSummary = response.data;
+        bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
         return kickstarterSummary;
 			});
     }
@@ -113,19 +122,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     },
     fetchBids: (ignoreCache)=>fetchBids(ignoreCache),
 
-    isBid: async function(routeId, ignoreCache) {
-      var bids = await this.getBids(ignoreCache);
-      if (bids.length == 0){
-        return false;
-      }
-      assert(bids);
-      var bidsId = bids.map(x=>x.id);
-      if (bidsId.includes(routeId)) {
-        return true;
-      }
-      else {
-        return false;
-      }
+    isBid: function(routeId) {
+      return bidsById[routeId] ? true : false
     },
 
     getBidInfo: function(routeId) {
@@ -153,9 +151,11 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
           }
         }
       });
-      // if (promise) {
-      //   this.getBids(true);
-      // }
+      if (promise) {
+        // this.getBids(true);
+        increaseBidNo(kickstarterRoutesById[route.id], bidPrice);
+        kickstarterSummary.concat([])
+      }
 
 
       // bids.push(...)

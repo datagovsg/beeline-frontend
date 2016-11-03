@@ -20,7 +20,6 @@ export default [
       alightStopId: null,
       route: null,
       notExpired: true,
-      isBid: null,
     };
 
     $scope.book.routeId = +$stateParams.routeId;

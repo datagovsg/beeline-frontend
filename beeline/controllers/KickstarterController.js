@@ -14,8 +14,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.refreshRoutes = function() {
     try {
-      var kickstarterPromise = KickstarterService.fetchLelong(true);
-      var bidsPromise = KickstarterService.fetchBids(true);
+      KickstarterService.fetchLelong(true);
+      KickstarterService.fetchBids(true);
       $scope.error = null;
     } catch(error) {
       $scope.error = true;
