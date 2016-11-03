@@ -31,4 +31,16 @@
       padding-left: $content-padding*2;
     }
   }
+  .text-link-div {
+    text-align: center;
+    margin: 1em;
+    a {
+      text-decoration: underline;
+    }
+  }
+  .text-link-disabled {
+    color: $hint-color;
+    text-decoration: underline;
+    pointer-events: none;
+  }
 }

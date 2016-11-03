@@ -5,7 +5,7 @@
        <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
-  <ion-content>
+  <ion-content class="has-header">
         <div class="item item-text-wrap">
           You are in! You pledge to book this kickstarter route at ${{book.bidPrice | number:2}}
           per trip for {{book.route.trips.length}} trips!</br></br>
@@ -46,10 +46,10 @@
 
               <div class="icon-and-schedule">
                 <span class="icon-span">
-                  <img class="mini-icon" src="img/icon_schedule.svg">
+                  <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
                 </span>
                 <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
-                  {{book.route.daysLeft}} days left
+                  {{book.route.daysLeft}} days left to activate
                 </span>
                 <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
                   {{book.route.daysLeft}} day left to activate

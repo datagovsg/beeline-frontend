@@ -118,8 +118,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       if (bids.length == 0){
         return false;
       }
-      var bidsId = bids.map(x=>x.id);
       assert(bids);
+      var bidsId = bids.map(x=>x.id);
       if (bidsId.includes(routeId)) {
         return true;
       }
