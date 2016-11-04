@@ -14,7 +14,7 @@
       <!-- recently bid kickstarter -->
       <div class="item item-divider"
           ng-if="data.backedKickstarter.length > 0">
-        Kickstart routes you backed
+        Kickstarter routes you pre-purchased
       </div>
 
        <ion-item ng-repeat="route in data.backedKickstarter"
@@ -79,7 +79,6 @@
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
                 You joined this route at ${{recentBidsById[route.id].bidPrice | number:2 }} per ride.
-
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
@@ -96,7 +95,7 @@
       <!-- available kickstarter -->
       <div class="item item-divider"
           ng-if="data.kickstarter.length > 0">
-        Kickstart Routes
+        Kickstarter Routes
       </div>
 
       <ion-item ng-repeat="route in data.kickstarter"

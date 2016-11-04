@@ -52,7 +52,7 @@
             <tr>
               <th>Price <br />per ride</th>
               <th>No. of pax<br />needed to activate</th>
-              <th>No. of pax<br />who pledged</th>
+              <th>No. of pax<br />who pre-purchase</th>
             </tr>
           </thead>
           <tbody>
@@ -72,14 +72,14 @@
       </div>
 
       <div class="select-bid item-text-wrap" ng-if="book.notExpired">
-        <h3 class="item-subtitle">Select the maximum price per ride you are willing to pledge</h3>
+        <h3 class="item-subtitle">Select the maximum price you are willing to pay per trip for {{book.route.trips.length}} trips. </h3>
         <ion-list>
           <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
             <label class="checkbox">
                 <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
             </label>
-            <span ng-if="$index==0">I am willing to join at ${{ item.price | number:2 }} per ride.<br />( {{item.pax-item.count}} more pax needed )</span>
-            <span ng-if="$index==1">Count me in for ${{ item.price | number:2 }} per ride only.<br />( {{item.pax-item.count}} more pax needed )</span>
+            <span ng-if="$index==0">I am willing to pre-purchase at ${{ item.price | number:2 }} per trip.<br />( {{item.pax-item.count}} more pax needed )</span>
+            <span ng-if="$index==1">Count me in only at ${{ item.price | number:2 }} per trip.<br />( {{item.pax-item.count}} more pax needed )</span>
           </ion-item>
         </ion-list>
         <button class="button primary-button" ng-disabled="stopsForm.$invalid || waitingForPaymentResult || !book.bidPrice" ui-sref="tabs.kickstarter-summary({
