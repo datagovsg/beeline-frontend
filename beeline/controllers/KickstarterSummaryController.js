@@ -3,14 +3,6 @@ import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/
 import loadingTemplate from '../templates/loading.html';
 import assert from 'assert';
 
-var increaseBidNo = function(route, price) {
-  for (let tier of route.notes.tier) {
-    if (tier.price <= price) {
-      tier.no++;
-    }
-  }
-}
-
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal','$http',
   'BookingService','RoutesService','loadingSpinner','UserService','$ionicLoading',
@@ -124,8 +116,6 @@ export default [
         })
         $scope.$apply(() => {
           $scope.book.isBid = true;
-          //TODO: important ! no. updated in kickstarter list however boardstop and alightstop is not updated when revisit
-          // increaseBidNo($scope.book.route, bidPrice);
         })
         $state.go('tabs.kickstarter-commit', { routeId: $scope.book.routeId});
       }catch(err){

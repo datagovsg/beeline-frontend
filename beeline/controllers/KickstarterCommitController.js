@@ -3,15 +3,6 @@ import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/
 import loadingTemplate from '../templates/loading.html';
 import assert from 'assert';
 
-
-var increaseBidNo = function(route, price) {
-  for (let tier of route.notes.tier) {
-    if (tier.price <= price) {
-      tier.no++;
-    }
-  }
-}
-
 export default [
   '$rootScope','$scope','$state','$stateParams','$http','RoutesService','loadingSpinner',
   'UserService','KickstarterService','$cordovaSocialSharing',

@@ -16,17 +16,17 @@ var transformKickstarterData = function (kickstarterRoutes) {
           console.log(bidsByTier[tier.price].length);
         }
 
-        _.assign(tier, {no: bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0})
+        _.assign(tier, {count: bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0})
       })
     } else {
       kickstarter.notes.tier.map((tier)=>{
-        _.assign(tier, {no: 0})
+        _.assign(tier, {count: 0})
       })
     }
     //order tiers in price desc order
     kickstarter.notes.tier = _.orderBy(kickstarter.notes.tier, x=>x.price, "desc");
     //if sb. commit $8, also commit $5
-    kickstarter.notes.tier[1].no += kickstarter.notes.tier[0].no;
+    kickstarter.notes.tier[1].count += kickstarter.notes.tier[0].count;
 
     kickstarter.isValid = true;
     if (kickstarter.notes && kickstarter.notes.lelongExpiry) {
@@ -55,7 +55,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
 var increaseBidNo = function(route, price) {
   for (let tier of route.notes.tier) {
     if (tier.price <= price) {
-      tier.no++;
+      tier.count++;
     }
   }
 }

@@ -4,15 +4,6 @@ import loadingTemplate from '../templates/loading.html';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 import assert from 'assert';
 
-
-// var decreaseBidNo = function(route, price) {
-//   for (let tier of route.notes.tier) {
-//     if (tier.price <= price) {
-//       tier.no--;
-//     }
-//   }
-// }
-
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
   '$http','$cordovaGeolocation','BookingService','RoutesService','uiGmapGoogleMapApi',
