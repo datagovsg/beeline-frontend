@@ -41,10 +41,10 @@ export default [
       $scope.book.route = route;
       $scope.book.boardStop = route.trips[0]
             .tripStops
-            .filter(ts => $scope.book.boardStopId == ts.stop.id)[0];
+            .find(ts => $scope.book.boardStopId == ts.stop.id);
       $scope.book.alightStop =route.trips[0]
             .tripStops
-            .filter(ts => $scope.book.alightStopId == ts.stop.id)[0];
+            .find(ts => $scope.book.alightStopId == ts.stop.id);
 
       if (route.notes && route.notes.lelongExpiry) {
        var now = new Date().getTime();

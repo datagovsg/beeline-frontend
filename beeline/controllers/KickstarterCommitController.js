@@ -30,10 +30,10 @@ export default [
       $scope.book.bidPrice = bid.bidPrice;
       $scope.book.boardStop = $scope.book.route.trips[0]
             .tripStops
-            .filter(ts => bid.boardStopId == ts.stop.id)[0];
+            .find(ts => bid.boardStopId == ts.stop.id);
       $scope.book.alightStop =$scope.book.route.trips[0]
             .tripStops
-            .filter(ts => bid.alightStopId == ts.stop.id)[0];
+            .find(ts => bid.alightStopId == ts.stop.id);
     });
 
     //if has cordova no need to show shareLink text area

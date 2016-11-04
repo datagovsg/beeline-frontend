@@ -50,10 +50,10 @@ export default [
       $scope.book.alightStopId = +$scope.book.bid.alightStopId;
       $scope.book.boardStop = route.trips[0]
             .tripStops
-            .filter(ts => $scope.book.boardStopId == ts.stop.id)[0];
+            .find(ts => $scope.book.boardStopId == ts.stop.id);
       $scope.book.alightStop =route.trips[0]
             .tripStops
-            .filter(ts => $scope.book.alightStopId == ts.stop.id)[0];
+            .find(ts => $scope.book.alightStopId == ts.stop.id);
     })
 
     $scope.showTerms = async () => {

@@ -5,17 +5,9 @@ import assert from 'assert';
 var transformKickstarterData = function (kickstarterRoutes) {
   if (!kickstarterRoutes) return null;
   for (let kickstarter of kickstarterRoutes){
-    console.log(kickstarter);
-
     if (kickstarter.bids && kickstarter.bids.length > 0) {
      var bidsByTier = _.groupBy(kickstarter.bids, x=>x.userOptions.price);
-     console.log(kickstarter.notes.tier)
       kickstarter.notes.tier.map((tier)=>{
-        if (bidsByTier[tier.price]) {
-          console.log(bidsByTier[tier.price]);
-          console.log(bidsByTier[tier.price].length);
-        }
-
         _.assign(tier, {count: bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0})
       })
     } else {
