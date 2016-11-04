@@ -12,6 +12,11 @@ export default [
     $scope, UserService, $ionicModal, $ionicPopup, Legalese) {
     $scope.data = {};
 
+    $scope.referralSharing = {
+      referralBenefitsMsg: "Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.",
+
+    }
+
     // Track the login state of the user service
     $scope.$watch(function() {
       return UserService.getUser();
@@ -60,8 +65,8 @@ export default [
     $scope.shareReferralModal = $ionicModal.fromTemplate(
       shareReferralModalTemplate,
       {scope: $scope}
-    )
 
+    );
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,
       {scope: assetScope('FAQ')}
@@ -75,6 +80,12 @@ export default [
     $scope.$on('$destroy', function() {
       $scope.faqModal.destroy();
       $scope.contactUsModal.destroy();
+      $scope.shareReferralModal.destroy();
     });
+
+
+    $scope.copyToClipboard = function(text){
+      console.log("Function is working.")
+    }
 
   }];

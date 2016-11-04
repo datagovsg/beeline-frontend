@@ -6,10 +6,11 @@
   </ion-header-bar>
   <ion-content>
     <div>
-      <p>
-        Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.
-      </p>
+      <p>{{ referralSharing.referralBenefitsMsg }}</p>
       <p>{{ user.referralCode.code }}</p>
+      <p>
+        <button ng-click="copyToClipboard(referralSharing.referralBenefitsMsg)">Copy</button>
+      </p>
 
     </div>
   </ion-content>
