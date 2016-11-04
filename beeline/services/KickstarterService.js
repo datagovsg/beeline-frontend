@@ -128,8 +128,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       return kickstarterSummary.find(x=>x.routeId == routeId);
     },
 
-    createBid: async function(route, boardStopId, alightStopId,bidPrice) {
-      var promise =  await UserService.beeline({
+    createBid: function(route, boardStopId, alightStopId,bidPrice) {
+      return UserService.beeline({
         method: 'POST',
         url: '/custom/lelong/bid',
         data: {
@@ -147,9 +147,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
             options: {price: bidPrice}
           }
         }
-      });
-      if (promise) {
-        // this.getBids(true);
+      }).then((response)=>{
         increaseBidNo(kickstarterRoutesById[route.id], bidPrice);
         kickstarterSummary = kickstarterSummary.concat([{
           routeId: route.id,
@@ -157,8 +155,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
           alightStopId: alightStopId,
           bidPrice: bidPrice
         }])
-      }
-      return promise.data;
+        return response.data;
+      })
     }
 
   }
