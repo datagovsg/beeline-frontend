@@ -4,15 +4,6 @@ import loadingTemplate from '../templates/loading.html';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 import assert from 'assert';
 
-
-// var decreaseBidNo = function(route, price) {
-//   for (let tier of route.notes.tier) {
-//     if (tier.price <= price) {
-//       tier.no--;
-//     }
-//   }
-// }
-
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
   '$http','$cordovaGeolocation','BookingService','RoutesService','uiGmapGoogleMapApi',
@@ -60,12 +51,12 @@ export default [
 
     $scope.book.routeId = +$stateParams.routeId;
 
-    routePromise = KickstarterService.getLelongById($scope.book.routeId);
-
-    routePromise.then((route) => {
+    $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
+      if (!route) return;
       $scope.book.route = route;
-      $scope.book.bidOptions = $scope.book.route.notes.tier;
+      $scope.book.bidOptions = route.notes.tier;
       computeStops();
+      panToStops();
       if (route.notes && route.notes.lelongExpiry) {
        var now = new Date().getTime();
        var expiryTime = new Date(route.notes.lelongExpiry).getTime();
@@ -73,14 +64,13 @@ export default [
          $scope.book.notExpired = false;
        }
       }
-    });
+    })
 
     $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(Promise.all([gmapIsReady, routePromise])
+      loadingSpinner(Promise.all([gmapIsReady])
       .then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
-        panToStops();
       }));
     });
 

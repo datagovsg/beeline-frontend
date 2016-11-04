@@ -25,20 +25,19 @@ export default [
 
     $scope.priceInfo = {
       bidPrice : null,
-
     }
 
     $scope.book.routeId = +$stateParams.routeId;
 
-    var bidPromise, routePromise;
-    routePromise = KickstarterService.getLelongById($scope.book.routeId);
-    bidPromise = KickstarterService.getBidInfo($scope.book.routeId);
+    // var bidPromise, routePromise;
+    // routePromise = KickstarterService.getLelongById($scope.book.routeId);
+    // bidPromise = KickstarterService.getBidInfo($scope.book.routeId);
 
-    Promise.all([routePromise, bidPromise]).then(([route, bid])=>{
+    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
+      if (!route) return;
       $scope.book.route = route;
-      $scope.book.bid = bid.bid;
-      console.log("BID");
-      console.log($scope.book.bid);
+      if (!bid) return;
+      $scope.book.bid = bid;
       if ($scope.book.route.notes && $scope.book.route.notes.lelongExpiry) {
        var now = new Date().getTime();
        var expiryTime = new Date($scope.book.route.notes.lelongExpiry).getTime();
@@ -46,17 +45,15 @@ export default [
          $scope.book.notExpired = false;
        }
       }
-      $scope.book.bidPrice = $scope.book.bid.userOptions.price;
-      $scope.book.boardStopId = +$scope.book.bid.tickets[0].boardStop.stopId;
-      $scope.book.alightStopId = +$scope.book.bid.tickets[0].alightStop.stopId;
+      $scope.book.bidPrice = $scope.book.bid.bidPrice;
+      $scope.book.boardStopId = +$scope.book.bid.boardStopId;
+      $scope.book.alightStopId = +$scope.book.bid.alightStopId;
       $scope.book.boardStop = route.trips[0]
             .tripStops
-            .filter(ts => $scope.book.boardStopId == ts.stop.id)[0];
+            .find(ts => $scope.book.boardStopId == ts.stop.id);
       $scope.book.alightStop =route.trips[0]
             .tripStops
-            .filter(ts => $scope.book.alightStopId == ts.stop.id)[0];
-      console.log($scope.book.boardStop)
-      console.log($scope.book.alightStop)
+            .find(ts => $scope.book.alightStopId == ts.stop.id);
     })
 
     $scope.showTerms = async () => {

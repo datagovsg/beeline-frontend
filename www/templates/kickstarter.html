@@ -8,7 +8,7 @@
 
     <ion-content class="list">
       <ion-refresher pulling-text="Pull to refresh..."
-                     on-refresh="refreshRoutes(true)">
+                     on-refresh="refreshRoutes()">
       </ion-refresher>
 
       <!-- recently bid kickstarter -->
@@ -67,7 +67,7 @@
             </div>
 
             <!-- TODO: show price infor in progress -->
-            <progress-bar cur-val={{route.notes.tier[0].no}} second-val={{route.notes.tier[1].no}}
+            <progress-bar cur-val={{route.notes.tier[0].count}} second-val={{route.notes.tier[1].count}}
               max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
               high-total={{route.notes.tier[0].pax}}>
             </progress-bar>
@@ -148,7 +148,7 @@
               </span>
             </div>
             <!-- TODO: show price infor in progress -->
-            <progress-bar cur-val={{route.notes.tier[0].no}} second-val={{route.notes.tier[1].no}}
+            <progress-bar cur-val={{route.notes.tier[0].count}} second-val={{route.notes.tier[1].count}}
               max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
               high-total={{route.notes.tier[0].pax}}>
             </progress-bar>

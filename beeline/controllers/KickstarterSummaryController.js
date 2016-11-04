@@ -3,14 +3,6 @@ import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/
 import loadingTemplate from '../templates/loading.html';
 import assert from 'assert';
 
-var increaseBidNo = function(route, price) {
-  for (let tier of route.notes.tier) {
-    if (tier.price <= price) {
-      tier.no++;
-    }
-  }
-}
-
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal','$http',
   'BookingService','RoutesService','loadingSpinner','UserService','$ionicLoading',
@@ -43,18 +35,16 @@ export default [
     $scope.book.alightStopId = +$stateParams.alightStop;
     $scope.priceInfo.bidPrice = +$stateParams.bidPrice;
 
-    var routePromise;
-    routePromise = KickstarterService.getLelongById($scope.book.routeId);
 
-    routePromise.then((route) => {
+    $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
 
       $scope.book.route = route;
       $scope.book.boardStop = route.trips[0]
             .tripStops
-            .filter(ts => $scope.book.boardStopId == ts.stop.id)[0];
+            .find(ts => $scope.book.boardStopId == ts.stop.id);
       $scope.book.alightStop =route.trips[0]
             .tripStops
-            .filter(ts => $scope.book.alightStopId == ts.stop.id)[0];
+            .find(ts => $scope.book.alightStopId == ts.stop.id);
 
       if (route.notes && route.notes.lelongExpiry) {
        var now = new Date().getTime();
@@ -75,14 +65,17 @@ export default [
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
-        $scope.book.isBid = await KickstarterService.isBid($scope.book.routeId);
-        if ($scope.book.isBid) {
-          const bidInfo =  await KickstarterService.getBidInfo($scope.book.routeId);
-          $scope.priceInfo.bidPrice = bidInfo.bid.userOptions.price
-        }
         $scope.data.hasNoCreditInfo = ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) ? false : true;
       }
     });
+
+    $scope.$watch(()=>KickstarterService.isBid($scope.book.routeId), (isBid)=>{
+      $scope.book.isBid = isBid;
+      if ($scope.book.isBid) {
+        const bidInfo =  KickstarterService.getBidInfo($scope.book.routeId);
+        $scope.priceInfo.bidPrice = bidInfo.bid.userOptions.price;
+      }
+    })
 
     $scope.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return;
@@ -123,8 +116,6 @@ export default [
         })
         $scope.$apply(() => {
           $scope.book.isBid = true;
-          //TODO: important ! no. updated in kickstarter list however boardstop and alightstop is not updated when revisit
-          increaseBidNo($scope.book.route, bidPrice);
         })
         $state.go('tabs.kickstarter-commit', { routeId: $scope.book.routeId});
       }catch(err){

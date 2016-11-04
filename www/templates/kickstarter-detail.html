@@ -114,7 +114,7 @@
           </route-item-additional-info>
         </route-item>
 
-        <progress-bar cur-val={{book.route.notes.tier[0].no}} second-val={{book.route.notes.tier[1].no}}
+        <progress-bar cur-val={{book.route.notes.tier[0].count}} second-val={{book.route.notes.tier[1].count}}
           max-val={{book.route.notes.tier[1].pax}} high-price={{book.route.notes.tier[0].price}} low-price={{book.route.notes.tier[1].price}}
           high-total={{book.route.notes.tier[0].pax}}>
         </progress-bar>
@@ -171,15 +171,6 @@
         </button>
       </section>
     </form>
-
-    <!-- <section class="item item-text-wrap"
-             ng-if="book.notExpired && isLoggedIn && book.isBid">
-
-      <button class="button primary-button"
-              ng-click="deleteBid()">
-        Delete Bid
-      </button>
-    </section> -->
 
   </ion-content>
 </ion-view>
