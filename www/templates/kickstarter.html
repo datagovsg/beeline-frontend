@@ -1,9 +1,11 @@
 <ion-view class="kickstarter-list" view-title="Kickstart Routes" hide-back-button="true">
   <ion-content scroll="false">
-    <div class="item item-text-wrap" ng-if="error">
+    <div class="item item-text-wrap item-ion-left" ng-if="error">
       <i class="icon ion-alert-circled"></i>
-      There was a problem fetching the kickstarter from the server.
-      Please try again later.
+      <p class="text-center">
+        There was a problem fetching kickstarter route information from the server.
+        Please try again later.
+      </p>
     </div>
 
     <ion-content class="list">
@@ -63,6 +65,24 @@
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
+              </span>
+            </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="mini-info">
+                Commence on DD/MM/YY if activated
+              </span>
+            </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+              </span>
+              <span class="mini-info">
+                Custom Status
               </span>
             </div>
 
@@ -146,6 +166,16 @@
                 {{route.daysLeft}} day left to activate
               </span>
             </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+              </span>
+              <span class="mini-info">
+                Custom Status
+              </span>
+            </div>
+            
             <!-- TODO: show price infor in progress -->
             <progress-bar cur-val={{route.notes.tier[0].count}} second-val={{route.notes.tier[1].count}}
               max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
