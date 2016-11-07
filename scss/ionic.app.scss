@@ -24,6 +24,7 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/tripCode";
 @import "scss/moreInfo";
 @import "scss/dynamicSignage";
+@import "scss/progress-bar";
 
 // View specific styles
 @import "scss/intro-slides";
@@ -39,6 +40,12 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/summary";
 @import "scss/mainMenu";
 @import "scss/liteSummary";
+@import "scss/kickstarter-list";
+@import "scss/kickstarter-detail";
+@import "scss/kickstarter-summary";
+@import "scss/kickstarter-commit";
+@import "scss/kickstarter-recap";
+
 
 //Not cleaned up styles
 @import "scss/busStopSelector";

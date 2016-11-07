@@ -49,7 +49,7 @@ route-item {
     margin-right: $padding-small-horizontal;
     display: inline;
   }
-  .schedule {
+  .mini-info {
     font-size: $font-size-small;
     color: $hint-color;
   }
@@ -146,4 +146,10 @@ route-item {
     top: 7px;
     right: 7px;
   }
+
+  h4{
+    color: $hint-color;
+    margin: 5px 0 4px 0 !important;
+  }
+
 }

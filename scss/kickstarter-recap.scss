@@ -1,0 +1,12 @@
+#pg_kickstarter_recap {
+
+  .icon{
+    &.activebid{
+      left: $padding-small-horizontal*2;
+    }
+  }
+
+  table {
+    width: 100%;
+  }
+}

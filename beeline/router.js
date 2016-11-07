@@ -203,6 +203,84 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   // ////////////////////////////////////////////////////////////////////////////
+  // Main interface, Kickstarter Tab
+  // ////////////////////////////////////////////////////////////////////////////
+  .state('tabs.kickstarter', {
+    url: '/kickstarter',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter.html',
+        controller: 'KickstarterController'
+      }
+    }
+  })
+
+  .state('tabs.kickstarter-recap', {
+    url: '/kickstarter/:routeId/recap',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-recap.html',
+        controller: 'KickstarterRecapController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  .state('tabs.kickstarter-detail', {
+    url: '/kickstarter/:routeId/detail?boardStop&alightStop',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-detail.html',
+        controller: 'KickstarterDetailController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  .state('tabs.kickstarter-dates', {
+    url: '/kickstarter/:routeId/dates?boardStop&alightStop',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-dates.html',
+        controller: 'KickstarterDatesController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  .state('tabs.kickstarter-summary', {
+    url: '/kickstarter/:routeId/summary?boardStop&alightStop&bidPrice',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-summary.html',
+        controller: 'KickstarterSummaryController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  .state('tabs.kickstarter-commit', {
+    url: '/kickstarter/:routeId/commit',
+    views: {
+      'tab-kickstarter': {
+        templateUrl: 'templates/kickstarter-commit.html',
+        controller: 'KickstarterCommitController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Settings Tab
   // ////////////////////////////////////////////////////////////////////////////
   .state('tabs.settings', {

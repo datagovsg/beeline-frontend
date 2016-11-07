@@ -122,7 +122,6 @@
 table.booking-info {
   th {
     font-weight: normal;
-    text-align: center;
     background-color: $table-header-bg;
     color: $royal;
     padding: $table-cell-padding;
@@ -131,10 +130,18 @@ table.booking-info {
 
   td {
     padding: $table-cell-padding;
-    text-align: center;
     border-bottom: $table-cell-border-width solid $light-grey;
     vertical-align: middle;
+    &.total-sum{
+      background-color: $table-header-bg;
+      border-top: solid $table-header-border-width $royal !important;
+    }
+    &.right{
+      text-align: right;
+    }
   }
+
+
 }
 
 .bus-number {
@@ -252,4 +259,55 @@ input[type="color"] {
 .tab-nav.tabs .tab-item {
   max-width: none;
   flex: 0 1 400px;
+}
+
+.item-subtitle {
+    color: $normal-grey;
+    padding-top:  $padding-large-vertical;
+    padding-bottom: $padding-large-vertical*1.5;
+}
+
+textarea{
+  border: 1px solid lighten($hint-color, 30%);
+}
+
+.small-button {
+  margin-top: $padding-large-vertical;
+  min-height: 40px;
+  text-transform: uppercase;
+  font-size: $font-size-base;
+  line-height: inherit;
+}
+.button.button-disabled {
+  background-color: $light-grey;
+  color: #a2a2a2;
+}
+
+.text-link-div {
+  text-align: center;
+  margin: 1em;
+  color: $royal;
+  a {
+    text-decoration: underline;
+  }
+}
+.text-link-disabled {
+  color: $hint-color;
+  text-decoration: underline;
+  pointer-events: none;
+}
+
+.bus-logo {
+  min-height: 4em;
+  height: 20vw;
+  max-height: 10em;
+  img {
+    padding: 1px;
+    border: 1px solid lighten($normal-grey, 50%);
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+.bus-co-info {
+  padding-left: $content-padding;
 }

@@ -100,6 +100,12 @@
       <ion-checkbox class="item item-text-wrap" ng-model="disp.termsChecked">
         Yes, I have read and agree to the Terms and Conditions of booking.
       </ion-checkbox>
+      <ion-checkbox
+        class="item item-text-wrap"
+        ng-model="disp.savePaymentChecked"
+        ng-if="!hasSavedPaymentInfo">
+        Yes, I want to save this payment method for fast checkout in the future.
+      </ion-checkbox>
     </section>
 
     <section class="item item-text-wrap"
@@ -119,14 +125,32 @@
     </section>
 
     <section class="item item-text-wrap"
-             ng-if="isLoggedIn">
+             ng-if="isLoggedIn && !hasSavedPaymentInfo">
       Please ensure that your credit card is ready for the next step in the booking process.
 
       <button class="button primary-button"
-              ng-click="pay()"
+              ng-click="payHandler()"
               ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
         Confirm and Pay
       </button>
+    </section>
+    <section class="item item-text-wrap text-center"
+             ng-if="isLoggedIn && hasSavedPaymentInfo">
+      This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
+      ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>.
+
+      <button class="button primary-button"
+              ng-click="payWithSavedInfo()"
+              ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
+        Confirm and Pay
+      </button>
+      <div class="text-link-div">
+        <a ng-class="(!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate) ? 'text-link-disabled' : ''"
+            ng-click="payWithoutSavingCard()">
+            Use a different card for this payment
+        </a>
+      </div>
+
     </section>
   </ion-content>
 </ion-view>

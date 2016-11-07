@@ -35,6 +35,9 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routesCache;
   var recentRoutesCache;
 
+  // For kickstarter routes
+  var kickstarterRoutesCache;
+
   // For single routes
   var lastRouteId = null;
   var lastPromise = null;
@@ -190,7 +193,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       .catch((err) => {
         console.error(err);
       });
-    }
+    },
+
   };
   return instance;
 }
