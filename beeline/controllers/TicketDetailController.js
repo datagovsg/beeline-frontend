@@ -78,6 +78,7 @@ export default [
       })
       .then(null, () => {}) // catch all errors
       .then(() => {
+        //TODO: need to add variable to make sure it's still running
         pingTimer = $timeout(pingLoop, 15000);
       });
     };

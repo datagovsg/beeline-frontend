@@ -19,6 +19,8 @@ export default [
 
     $scope.disp = {}
 
+    $scope.hasTrips = true;
+
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
 
     var routePromise = LiteRoutesService.getLiteRoute($scope.liteRouteLabel);
@@ -60,9 +62,8 @@ export default [
 
     Promise.all([mapPromise, uiGmapGoogleMapApi, availableTripsPromise]).then((values) => {
       var [map, googleMaps, availTrips] = values;
-      if (availTrips[0] && new Date(availTrips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0) ){
-        $scope.hasNoTrip = true;
-      }
+      $scope.hasTrips = !(availTrips[0] && new Date(availTrips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0));
+
       //get route features
       RoutesService.getRouteFeatures(availTrips[0].routeId).then((data)=>{
         $scope.disp.features = data;
