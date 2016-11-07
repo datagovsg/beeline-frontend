@@ -42,18 +42,26 @@ export default function(UserService, CompanyService, RoutesService, $http) {
         url: '/transactions/ticket_sale',
         data: {
           trips: trips,
-          dryRun: true,
+          dryRun: true, 
+          promoCode: booking.promoCode ? {
+            code: booking.promoCode
+          } : undefined
         },
       })
       .then((resp) => {
         // Find the 'payment' entry in the list of transaction itemss
         var txItems = _.groupBy(resp.data.transactionItems, 'itemType');
-
+        // console.log("TransactionItems:",txItems)
+        var totalBeforeDiscount = _.reduce(txItems.ticketSale, (sum, n) => {
+          return sum + n.credit
+        }, 0)
         // FIXME: include discounts, vouchers
         return {
           totalDue: txItems.payment[0].debit,
           tripCount: trips.length,
           pricesPerTrip: this.summarizePrices(booking),
+          discounts: txItems.discount,
+          totalBeforeDiscount: totalBeforeDiscount
         };
       })
       .then(null, (err) => {

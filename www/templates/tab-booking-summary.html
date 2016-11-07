@@ -91,6 +91,27 @@
     </section> -->
 
     <section class="card">
+      <div class="item item-input-inset" name="promoCode">
+        <label class="item-input-wrapper">
+          <input class="item" placeholder="Enter your Promo Code here" type="text" name="promoCodeField" ng-model="book.currentPromoCode" style="padding-top: 16px; height: auto; width: 100%" ng-blur="addPromoCode()"/>    
+        </label>
+        <button type="button" ng-click="addPromoCode()" class='button button-royal' >Apply</button>
+      </div>
+    </section>
+
+<!--     <section class="card" ng-if="userCredits > 0">
+      <div class="item item-toggle">
+      Apply your Beeline Crdits: {{book.userCredits | currency}}
+      <label class="toggle toggle-royal">
+         <input type="checkbox" ng-model="book.useCredits">
+         <div class="track">
+           <div class="handle"></div>
+         </div>
+      </label>
+      </div>
+    </section> -->
+
+    <section class="card">
       <h3 class="item item-divider">
         Terms and Conditions of Booking
       </h3>

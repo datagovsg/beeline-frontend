@@ -1,0 +1,17 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-royal bar bar-header">
+    <h1 class="title">Share Rides, Get Rides</h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="shareReferralModal.hide()">
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div>
+      <p>{{ referralSharing.referralBenefitsMsg }}</p>
+      <p>{{ user.referralCode.code }}</p>
+      <p>
+        <button ng-click="copyToClipboard(referralSharing.referralBenefitsMsg)">Copy</button>
+      </p>
+
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -21,7 +21,8 @@ export default [
       qty: 1,
       waitingForPaymentResult : false,
       promoCodes: [],
-      currentPromoCode: undefined,
+      currentPromoCode: "",
+      promoCode: undefined,
       selectedDates: [],
       boardStopId: undefined,
       alightStopId: undefined,
@@ -30,6 +31,8 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
+      userCredits: 0,
+      useCredits: false,
     };
     $scope.disp = {};
 
@@ -59,8 +62,12 @@ export default [
       $scope.book.features = features;
     })
 
-    $scope.addPromoCode = function() {
-      $scope.book.promoCodes.push($scope.book.currentPromoCode);
+    $scope.addPromoCode = async function() {
+      if($scope.book.currentPromoCode.length > 0){
+        $scope.book.promoCode = $scope.book.currentPromoCode
+      } else {
+        $scope.book.promoCode = undefined
+      }
     }
 
     $scope.$watch(() => UserService.getUser(), async(user) => {
@@ -151,6 +158,7 @@ export default [
           data: {
             stripeToken: stripeToken.id,
             trips: BookingService.prepareTrips($scope.book),
+            promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null
           },
         });
         $ionicLoading.hide();
