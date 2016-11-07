@@ -191,7 +191,7 @@ export default [
               <div>
                 <img src="img/lite_success.svg">
               </div>
-              <p>You are now following this route.<br>
+              <p>You bookmarked this route.<br>
               Track your bus on the day of the trip.
               </p>
             </div>
@@ -219,8 +219,8 @@ export default [
     // LiteSummaryController and LiteRouteTrackerController uses it
     $scope.promptUntrack = async function() {
       var response = await $ionicPopup.confirm({
-        title: 'Are you sure you want to untrack this route?',
-        subTitle: "This tracking-only route will be removed from your list of trips."
+        title: 'Are you sure you want to unbookmark this route?',
+        subTitle: "This tracking-only route will be removed from your trips list."
       })
 
       if (!response) return;
