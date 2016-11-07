@@ -27,10 +27,6 @@
             <div class="popUpStopSelect">
               <b>{{disp.popupStop.time | formatTime }}</b><br/>
               {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
-              <a class="button button-block button-outline button-royal"
-                ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
-                Set {{disp.popupStopType === 'pickup' ? 'pick-up' : 'drop-off'}} stop
-              </a>
             </div>
           </ui-gmap-window>
 
