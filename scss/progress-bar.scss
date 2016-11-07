@@ -1,53 +1,237 @@
 .progress-bar {
-  margin-top: 10px;
-  margin-bottom: 30px;
-  .fullBar {
-    position: relative;
-    width: 100%;
-    height: 15px;
-    background-color: #ddd;
-    border-radius: 10px;
-    z-index: 0;
-  }
+  max-width: 90%;
+  margin: 30px auto;
+  display: block;
+}
 
-  .highBid {
-    position: absolute;
-    height: 100%;
-    background-color: #00C4A5;
-    opacity: 1;
-    border-radius: 10px 0px 0px 10px;
-    z-index: 2;
-  }
+/* variables */
+$progress-bar-height: 10px;
+$progress-bar-border-radius: 10px;
+$milestone-border: $progress-bar-height/1.2;
+$milestone-center: 30px;
+$milestone-size: $milestone-border + $milestone-center;
 
-  .lowBid {
-    position: absolute;
-    height: 100%;
-    background-color: #7D7D7D;
-    border-radius: 10px 0px 0px 10px;
-    z-index: 1;
 
-  }
+$kickstarter-price-high: #493861;
+$kickstarter-price-low: #BFBFBF;
+$kickstarter-default: #D9D9D9;
 
-  .label {
-    text-align: center;
-    line-height: 15px;
-    color: white;
-  }
 
-  .expensive {
-    position: absolute;
-    left: 40%;
-    text-align: right;
-    .sub {
-      font-size: $font-size-small;
+/* bar default */
+.bar-default {
+  width: 100%;
+  height: $progress-bar-height;
+  background: $kickstarter-default;
+  border-radius: $progress-bar-border-radius;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.milestone {
+  position: relative;
+  float: right;
+  align-self: center;
+  z-index: 15;
+  right: -35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+
+  .milestone-outline {
+    width: $milestone-size;
+    height: $milestone-size;
+    background: $kickstarter-default;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.activate-low{
+    background: $kickstarter-price-low;
+    }
+
+    &.activate-high{
+    background: $kickstarter-price-high;
+    }
+
+    .milestone-inset {
+      width: $milestone-size - ($milestone-border*2);
+      height: $milestone-size - ($milestone-border*2);
+      background: #fff;
+      border-radius: 100%;
+      z-index: 100;
+      margin: 0 auto;
     }
   }
+}
 
-  .cheap {
+/* mid bar */
+.bar-50 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  order: 1;
+  flex: 1 1 auto;
+  align-self: center;
+  height: 10px;
+  // background-color: red;
+  z-index: 100;
+}
+
+/* full bar */
+.bar-100 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  order: 2;
+  flex: 1 0 auto;
+  align-self: center;
+  height: 10px;
+  //background-color: green;
+  z-index: 100;
+}
+
+
+/* backer bar */
+.backer-progress{
+  position:relative;
+}
+
+.backer-high{
+  position:absolute;
+  left:0;
+  background: $kickstarter-price-high;
+  height: $progress-bar-height;
+  border-radius: $progress-bar-border-radius;
+  float: left;
+  z-index: 10;
+  width: 50%;
+
+}
+
+.backer-low{
+  position:absolute;
+  left:0;
+  background: $kickstarter-price-low;
+  height:$progress-bar-height;
+  border-radius: $progress-bar-border-radius;
+  float: left;
+  z-index: 9;
+}
+
+/* debug - to be removed */
+.debug-route{
+  float:left;
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.debug-info{
+  position: relative;
+  margin-top: 30px;
+}
+
+
+/* price label section */
+.bar-label-default {
+  position: relative;
+  top: -85px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.price-label{
+  z-index: 16;
+  width: 100px;
+  height: 60px;
+  background: #ccc;
+  position: relative;
+  text-align: center;
+  right: -65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+    &::after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
     position: absolute;
-    left: 75%;
-    .sub {
-      font-size:  $font-size-small;
-    }
+    pointer-events: none;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid #ccc;
+    margin-left: -10px;
+  }
+  .ride-price{
+    font-size: 20px;
+    color: #444;
+  }
+  .per-ride{
+    font-size: 14px;
+    color: #444;
+  }
+}
+
+/* needed label section */
+
+.needed-label-default {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.needed-label{
+  z-index: 16;
+  width: 100px;
+  height: 60px;
+  top: -20px;
+  position: relative;
+  text-align: center;
+  right: -66px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .line{
+    border-top: 70px solid #ccc;
+    width: 1px;
+  }
+}
+
+/* needed label for join */
+
+.high-joined{
+  z-index: 200;
+  position: relative;
+  text-align: center;
+  margin-top: 20px;
+  background: #fff;
+  .line{
+    border-top: 80px solid #493861;
+    width: 50px;
+  }
+}
+
+.low-joined{
+  z-index: 201;
+  position: relative;
+  text-align: center;
+  .line{
+    border-top: 80px solid #493861;
+    width: 10px;
   }
 }
