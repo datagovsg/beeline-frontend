@@ -23,8 +23,11 @@ export default [
 
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, () => {
       $scope.user = UserService.getUser();
-      if (!$scope.user) return;
-      refreshTickets(true);
+      if ($scope.user) {
+        refreshTickets(true);
+      } else {
+        refreshTickets();
+      }
     });
 
     // Grab the tickets
