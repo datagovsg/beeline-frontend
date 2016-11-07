@@ -79,6 +79,12 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
               scope.map.lines.actualPaths[index] = {
                 path: path
               }
+            }else {
+              //to remove bus icon and actual path
+              scope.map.busLocations[index].coordinates = null;
+              scope.map.lines.actualPaths[index] = {
+                path: null
+              }
             }
           })
         }
@@ -98,16 +104,24 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
          Promise.all(scope.availableTrips.map((trip, index)=>{
           return TripService.DriverPings(trip.id)
           .then((info) => {
-            /* Only show pings from the last two hours */
+            /* Only show pings from the last 5 minutes */
+            // max 12 pings
             var now = Date.now();
             return scope.recentPings[index] = _.filter(info.pings,
-              ping => now - ping.time.getTime() < 2*60*60*1000);
+              ping => now - ping.time.getTime() < 5*60*1000)
+              .slice(0,13);
           })
         }))
         .then(() => {
           if (scope.pingLoopRunning)
-            pingTimer = $timeout(pingLoop, 15000);
-        }); // catch all errors
+          //make it faster, poll every 8 secs
+            pingTimer = $timeout(pingLoop, 8000);
+        })
+        .catch((error)=>{
+          if (scope.pingLoopRunning) {
+            pingTimer = $timeout(pingLoop, 1000);
+          }
+        }) // catch all errors
       }
 
     },
