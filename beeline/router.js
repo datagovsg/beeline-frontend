@@ -30,7 +30,7 @@ export default function($stateProvider, $urlRouterProvider) {
     controller: 'IntroSlidesController'
   })
   .state('welcome', {
-    url: '/welcome',
+    url: '/welcome?refCode',
     templateUrl: 'templates/welcome.html',
     controller: 'WelcomeController'
   })
