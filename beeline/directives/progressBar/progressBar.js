@@ -9,6 +9,7 @@ export default [
         backer1: '@',
         pax1: '@',
         price1: '@',
+        detail: '@',
       },
     }
   }

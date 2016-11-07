@@ -1,6 +1,6 @@
 <div class="progress-bar">
   <!-- price label starts -->
-  <div class="bar-label-default" ng-if=false>
+  <div class="bar-label-default" ng-if="detail">
     <div class="bar-100">
       <div class="price-label">
         <div class="ride-price">${{price1| number:2}}</div>
@@ -33,40 +33,24 @@
   <!-- default base bar ends -->
 
   <!-- dynamic join starts here -->
-  <div ng-if=false class="high-joined" ng-style="{
+  <div ng-if="detail" class="high-joined" ng-style="{
             width:
-(backer1/pax1)*100 + '%',
+(backer1/pax1)*200 + '%',
             }">
       <span class="line"></span>{{backer1}} joined
-  </div>
-
-  <div ng-if=false class="low-joined" ng-style="{
-            width:
-(backer2/pax2)*200 + '%',
-            }">
-      <span class="line"></span>{{backer2}} joined
   </div>
 
   <!-- dynamic join line ends here -->
 
   <!-- number needed section start -->
-  <div ng-if=false class="needed-label-default">
-    <!-- mid mark -->
-    <div class="bar-50">
+  <div ng-if="detail" class="needed-label-default">
+    <!-- full mark -->
+    <div class="bar-100">
       <div class="needed-label">
         <span class="line"></span>
         <div>{{pax1-backer1}} more</div>
         <div>needed</div>
       </div>
     </div>
-    <!-- full mark -->
-    <div class="bar-100">
-      <div class="needed-label">
-        <span class="line"></span>
-        <div>{{pax2-backer2}} more</div>
-        <div>needed</div>
-      </div>
-    </div>
-  </div>
   <!-- number needed section ends -->
 </div>
