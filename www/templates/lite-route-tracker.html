@@ -40,7 +40,7 @@
           {{ liteRoute.to }}
         </route-item-end-location>
       </route-item>
-      <h2 class="item" ng-if="hasNoTrip">
+      <h2 class="item" ng-if="!hasTrips">
         There is no service at the moment.
       </h2>
       <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
