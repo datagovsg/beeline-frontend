@@ -46,6 +46,7 @@ $tab-item-active-bg: $royal;
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuKickstartActive.svg') center 4px no-repeat;
+    background-color: $tab-item-active-bg;
   }
 }
 
