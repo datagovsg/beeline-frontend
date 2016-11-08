@@ -50,9 +50,9 @@ var transformKickstarterData = function (kickstarterRoutes) {
     //status of kickstarter
     kickstarter.status = "";
     if ((kickstarter.notes.tier.some((tier)=>tier.moreNeeded==0))) {
-      kickstarter.status = "Bus is on at $" + kickstarter.notes.tier[0].price
+      kickstarter.status = "Bus is on at $" + kickstarter.notes.tier[0].price.toFixed(2)
     } else if (!kickstarter.isExpired) {
-      kickstarter.status = kickstarter.notes.tier[0].moreNeeded + " more to activated the route at $"+kickstarter.notes.tier[0].price
+      kickstarter.status = kickstarter.notes.tier[0].moreNeeded + " more to activated the route at $"+kickstarter.notes.tier[0].price.toFixed(2)
     } else {
       kickstarter.status = "Bus is not activated"
     }
