@@ -1,6 +1,6 @@
 .progress-bar {
   display: inline-block;
-  width: 95%;
+  width: 90%;
   margin-top: $padding-large-vertical*3;
   text-align: left;
 }
@@ -217,7 +217,7 @@ $kickstarter-default: lighten($normal-grey,40%);
   background: #fff;
   .line{
     border-top: 80px solid #493861;
-    width: 50px;
+    width: 10px;
   }
 }
 
