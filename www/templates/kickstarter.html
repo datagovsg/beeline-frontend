@@ -8,6 +8,17 @@
       </p>
     </div>
 
+
+    <!-- Region Filter  -->
+    <label class="item item-input item-select region-filter">
+      <div class="input-label">Filter By</div>
+        <select ng-model="data.selectedRegionId">
+          <option value="" disabled selected>Select A Region</option>
+          <option value="">All Regions</option>
+          <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
+        </select>
+    </label>
+
     <ion-content class="list">
       <ion-refresher pulling-text="Pull to refresh..."
                      on-refresh="refreshRoutes()">
@@ -19,7 +30,7 @@
         Kickstarter routes you pre-purchased
       </div>
 
-       <ion-item ng-repeat="route in data.backedKickstarter"
+       <ion-item ng-repeat="route in data.filteredbackedKickstarter"
                  ui-sref="tabs.kickstarter-recap({
                    routeId: route.id
                   })"
@@ -87,9 +98,8 @@
             </div>
 
             <!-- TODO: show price infor in progress -->
-            <progress-bar cur-val={{route.notes.tier[0].count}} second-val={{route.notes.tier[1].count}}
-              max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
-              high-total={{route.notes.tier[0].pax}}>
+            <progress-bar backer1={{route.notes.tier[0].count}} price1={{oute.notes.tier[0].price}}
+              pax1={{route.notes.tier[0].pax}}>
             </progress-bar>
 
             <div class="icon-and-schedule">
@@ -118,7 +128,7 @@
         Kickstarter Routes
       </div>
 
-      <ion-item ng-repeat="route in data.kickstarter"
+      <ion-item ng-repeat="route in data.filteredkickstarter"
                 ui-sref="tabs.kickstarter-detail({
                   routeId: route.id
                  })"
@@ -177,9 +187,9 @@
             </div>
 
             <!-- TODO: show price infor in progress -->
-            <progress-bar cur-val={{route.notes.tier[0].count}} second-val={{route.notes.tier[1].count}}
-              max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
-              high-total={{route.notes.tier[0].pax}}>
+            <progress-bar backer1={{route.notes.tier[0].count}}
+              price1={{oute.notes.tier[0].price}}
+              pax1={{route.notes.tier[0].pax}}>
             </progress-bar>
           </route-item-additional-info>
         </route-item>

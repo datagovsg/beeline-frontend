@@ -138,25 +138,6 @@ export default [
       $scope.book.alightStops = alightStops;
     }
 
-    // $scope.deleteBid = async function(){
-    //   try {
-    //     await loadingSpinner(KickstarterService.deleteBid($scope.book.routeId));
-    //
-    //     await $ionicPopup.alert({
-    //       title: 'Deleted',
-    //     });
-    //     $scope.$apply(() => {
-    //       $scope.book.isBid = false;
-    //       //TODO: refresh the lelong routes and bids info
-    //       decreaseBidNo($scope.book.route, $scope.book.bidPrice);
-    //     })
-    //   } catch(err) {
-    //     await $ionicPopup.alert({
-    //       title: 'Error processing delete',
-    //       template: err.data.message,
-    //     })
-    //   }
-    // }
   }
 ];
 //
