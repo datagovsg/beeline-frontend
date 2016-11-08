@@ -77,6 +77,9 @@
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
               </span>
+              <span class="mini-info" ng-if="route.isExpired">
+                Campaign has expired
+              </span>
             </div>
             <div class="icon-and-schedule">
               <span class="icon-span">
@@ -96,7 +99,7 @@
                 <img class="mini-icon" src="img/icon_kickstarter_status.svg">
               </span>
               <span class="mini-info">
-                Custom Status
+                {{route.status}}
               </span>
             </div>
             <div class="icon-and-schedule">
@@ -109,6 +112,9 @@
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
+              </span>
+              <span class="mini-info" ng-if="route.isExpired">
+                Campaign has expired
               </span>
             </div>
 
@@ -173,6 +179,9 @@
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
               </span>
+              <span class="mini-info" ng-if="route.isExpired">
+                Campaign has expired
+              </span>
             </div>
 
             <!-- TODO: show price infor in progress -->
@@ -186,7 +195,7 @@
                 <img class="mini-icon" src="img/icon_kickstarter_status.svg">
               </span>
               <span class="mini-info">
-                Custom Status
+                {{route.status}}
               </span>
             </div>
 

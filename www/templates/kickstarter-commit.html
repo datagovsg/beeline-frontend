@@ -54,6 +54,9 @@
                 <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft==1">
                   {{book.route.daysLeft}} day left to activate
                 </span>
+                <span class="mini-info" ng-if="book.route.isExpired">
+                  Campaign has expired
+                </span>
               </div>
             </route-item-additional-info>
           </route-item>
