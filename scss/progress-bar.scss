@@ -1,20 +1,27 @@
 .progress-bar {
-  max-width: 90%;
-  margin: 30px auto;
-  display: block;
+  display: inline-block;
+  width: 95%;
+  margin-top: $padding-large-vertical*3;
+  text-align: left;
 }
 
 /* variables */
-$progress-bar-height: 10px;
+$progress-bar-height: 8px;
 $progress-bar-border-radius: 10px;
 $milestone-border: $progress-bar-height/1.2;
-$milestone-center: 30px;
+$milestone-center: 20px;
 $milestone-size: $milestone-border + $milestone-center;
+$milestone-offset: $milestone-size/2;
 
+$price-label-width: 60px;
+$price-label-height: 45px ;
 
-$kickstarter-price-high: #493861;
-$kickstarter-price-low: #BFBFBF;
-$kickstarter-default: #D9D9D9;
+$needed-label-width: 100px;
+$needed-label-height: 60px;
+
+$kickstarter-price-high: $royal;
+$kickstarter-price-low: $normal-grey;
+$kickstarter-default: lighten($normal-grey,40%);
 
 
 /* bar default */
@@ -27,6 +34,7 @@ $kickstarter-default: #D9D9D9;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
 }
 
 .milestone {
@@ -34,11 +42,12 @@ $kickstarter-default: #D9D9D9;
   float: right;
   align-self: center;
   z-index: 15;
-  right: -35px;
+  right: -$milestone-offset;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
+
 
   .milestone-outline {
     width: $milestone-size;
@@ -60,9 +69,9 @@ $kickstarter-default: #D9D9D9;
     .milestone-inset {
       width: $milestone-size - ($milestone-border*2);
       height: $milestone-size - ($milestone-border*2);
-      background: #fff;
+      background: $light;
       border-radius: 100%;
-      z-index: 100;
+      z-index: 20;
       margin: 0 auto;
     }
   }
@@ -77,8 +86,7 @@ $kickstarter-default: #D9D9D9;
   flex: 1 1 auto;
   align-self: center;
   height: 10px;
-  // background-color: red;
-  z-index: 100;
+  z-index: 5;
 }
 
 /* full bar */
@@ -89,9 +97,8 @@ $kickstarter-default: #D9D9D9;
   order: 2;
   flex: 1 0 auto;
   align-self: center;
-  height: 10px;
-  //background-color: green;
-  z-index: 100;
+  height: auto;
+  z-index: 5;
 }
 
 
@@ -107,7 +114,7 @@ $kickstarter-default: #D9D9D9;
   height: $progress-bar-height;
   border-radius: $progress-bar-border-radius;
   float: left;
-  z-index: 10;
+  z-index: 50;
   width: 50%;
 
 }
@@ -119,45 +126,33 @@ $kickstarter-default: #D9D9D9;
   height:$progress-bar-height;
   border-radius: $progress-bar-border-radius;
   float: left;
-  z-index: 9;
+  z-index: 40;
 }
-
-/* debug - to be removed */
-.debug-route{
-  float:left;
-  margin-top: 30px;
-  margin-left: 30px;
-}
-
-.debug-info{
-  position: relative;
-  margin-top: 30px;
-}
-
 
 /* price label section */
 .bar-label-default {
   position: relative;
-  top: -85px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  top: -30px;
 }
 
 .price-label{
   z-index: 16;
-  width: 100px;
-  height: 60px;
-  background: #ccc;
+  width: $price-label-width;
+  height: $price-label-height;
+  background: $kickstarter-default;
   position: relative;
   text-align: center;
-  right: -65px;
+  right: -$price-label-width/2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  line-height: 15px;
 
     &::after {
     top: 100%;
@@ -168,17 +163,17 @@ $kickstarter-default: #D9D9D9;
     width: 0;
     position: absolute;
     pointer-events: none;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
     border-top: 15px solid #ccc;
-    margin-left: -10px;
+    margin-left: -5px;
   }
   .ride-price{
-    font-size: 20px;
+    font-size: $font-size-base;
     color: #444;
   }
   .per-ride{
-    font-size: 14px;
+    font-size: $font-size-small;
     color: #444;
   }
 }
@@ -195,19 +190,19 @@ $kickstarter-default: #D9D9D9;
 }
 
 .needed-label{
-  z-index: 16;
+  z-index: 11;
   width: 100px;
   height: 60px;
-  top: -20px;
+  top: -25px;
   position: relative;
   text-align: center;
-  right: -66px;
+  right: -$needed-label-width/2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   .line{
-    border-top: 70px solid #ccc;
+    border-top: 30px solid #ccc;
     width: 1px;
   }
 }
@@ -215,7 +210,7 @@ $kickstarter-default: #D9D9D9;
 /* needed label for join */
 
 .high-joined{
-  z-index: 200;
+  z-index: 70;
   position: relative;
   text-align: center;
   margin-top: 20px;
@@ -227,7 +222,7 @@ $kickstarter-default: #D9D9D9;
 }
 
 .low-joined{
-  z-index: 201;
+  z-index: 60;
   position: relative;
   text-align: center;
   .line{
