@@ -129,31 +129,10 @@
 
       </div>
 
-      <ion-list class="stop-inputs">
-        <bus-stop-selector
-          ng-model="book.boardStop"
-          bus-stops="book.boardStops"
-          placeholder="Select pick-up stop"
-          title="Select pick-up stop"
-          button="Select pick-up stop"
-          marker-options="map.markerOptions.boardMarker"
-          pin-options="map.markerOptions.startMarker"
-          ng-required="true"
-          name="boardStop"
-          >
-        </bus-stop-selector>
-        <bus-stop-selector
-          ng-model="book.alightStop"
-          bus-stops="book.alightStops"
-          placeholder="Select drop-off stop"
-          title="Select drop-off stop"
-          button="Select drop-off stop"
-          marker-options="map.markerOptions.alightMarker"
-          pin-options="map.markerOptions.endMarker"
-          ng-required="true"
-          name="alightStop"
-          >
-        </bus-stop-selector>
+      <ion-list>
+        <ion-item class="text-center" ng-click="showStops()">
+            View Stops
+        </ion-item>
       </ion-list>
 
       <!-- TODO: if user bid kickstarter and it expiries must show in the list!-->

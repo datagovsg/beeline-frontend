@@ -3,6 +3,7 @@ import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/
 import loadingTemplate from '../templates/loading.html';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 import assert from 'assert';
+import busStopListTemplate from '../templates/bus-stop-list.html';
 
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
@@ -17,6 +18,8 @@ export default [
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
+    $scope.modalMap = MapOptions.defaultMapOptions();
+
     $scope.routePath = [];
 
     // Default settings for various info used in the page
@@ -56,7 +59,8 @@ export default [
       $scope.book.route = route;
       $scope.book.bidOptions = route.notes.tier;
       computeStops();
-      panToStops();
+      $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
+      $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
       if (route.notes && route.notes.lelongExpiry) {
        var now = new Date().getTime();
        var expiryTime = new Date(route.notes.lelongExpiry).getTime();
@@ -112,11 +116,32 @@ export default [
       $scope.disp.popupStop = null;
     }
 
-    /* Pans to the stops on the screen */
-    function panToStops() {
-      var stops = [];
-      stops = $scope.book.boardStops.concat($scope.book.alightStops);
+    $scope.modal = $ionicModal.fromTemplate(busStopListTemplate, {
+      scope: $scope,
+      animation: 'slide-in-up',
+    })
 
+    $scope.showStops = function(){
+      $scope.modal.show();
+
+      $scope.$watch('modalMap.control.getGMap', function() {
+        if ($scope.modalMap.control.getGMap) {
+          console.log("IT's Called here");
+          //set modalMap bound
+          $scope.panToStops($scope.modalMap.control.getGMap(), $scope.busStops);
+        }
+      });
+    };
+    $scope.close = function() {
+      $scope.modal.hide();
+    };
+    // Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+
+    /* Pans to the stops on the screen */
+    $scope.panToStops = function(gmap, stops) {
       if (stops.length == 0) {
         return;
       }
@@ -127,7 +152,7 @@ export default [
           s.coordinates.coordinates[0]
         ));
       }
-      $scope.map.control.getGMap().fitBounds(bounds);
+      gmap.fitBounds(bounds);
     }
 
     /** Summarizes the stops from trips by comparing their stop location and time */
