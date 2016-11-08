@@ -50,6 +50,14 @@
             {{book.route.daysLeft}} day left to activate
           </span>
         </div>
+        <div class="icon-and-schedule">
+          <span class="icon-span">
+            <img class="mini-icon" src="img/icon_schedule.svg">
+          </span>
+          <span class="mini-info">
+            Start on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
+          </span>
+        </div>
       </route-item-additional-info>
     </route-item>
 
@@ -92,7 +100,7 @@
             <img src="img/icon_schedule.svg">
         </i>
         <div class="item-text-wrap">
-          Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. If activated, you will be given tickets for the following 5 trips.
+          Route will start on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong> if activated and will run for at least a month. If activated, you will be given tickets for the following 5 trips.
         </div>
         <div class="kickstarter-dates-row">
           <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
@@ -103,6 +111,35 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="item item-text-wrap">
+      <div class="item-subtitle">
+      How to activate
+      </div>
+      Purchase a <strong> pass for {{book.route.trips.length}} trips</strong> to show your support to activate this route. When <strong>{{book.route.notes.tier[0].pax}} people</strong> purchase the pass, this route will activate.
+      <br />
+      <br />
+      If the route is activated, it will
+      <br />
+      <div class="features">
+        <ul>
+          <li>
+          start on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong>
+          </li>
+          <li>
+          run every Mon - Fri, except public holidays
+          </li>
+          <li>
+          operate for at least a month.
+          </li>
+        </ul>
+      </div>
+      <br />
+        This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the  <strong>pass for {{book.route.trips.length}} trips</strong> will only be deducted at the end of the campaign if the route is activated.
+      <br />
+      <br />
+      Thereafter, you will receive the pass in your account and you can use it to book any {{book.route.trips.length}} trips within the 1st month of the activated route.
     </div>
 
     <div class="item item-text-wrap">
