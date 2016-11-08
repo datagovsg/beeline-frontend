@@ -44,7 +44,18 @@
       </div>
     </div>
 
-
+    <div class="item item-text-wrap">
+      <div class="charge-note">
+        <h3 class="item-subtitle">When will payment be charged?</h3>
+        <p>
+          This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the <strong>{{book.route.trips.length}} trips</strong> will only be deducted at the end of the campaign if the route is activated.
+        </p>
+        <br />
+        <p>
+          No one will be charged for the route unless it is activated. You will only be charged the unlocked price if it matches or is lower than your pledged amount per ride.
+        </p>
+      </div>
+    </div>
     <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
     </company-info-broker>
 
@@ -61,18 +72,6 @@
         </div>
       </div>
     </div>
-    <div class="item item-text-wrap">
-      <div class="charge-note">
-        <h3 class="item-subtitle">When will payment be charged?</h3>
-        <p>
-          This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the <strong>{{book.route.trips.length}} trips</strong> will only be deducted at the end of the campaign if the route is activated.
-        </p>
-        <br />
-        <p>
-          No one will be charged for the route unless it is activated. You will only be charged the unlocked price if it matches or is lower than your pledged amount per ride.
-        </p>
-      </div>
-    </div>
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn || !book.isBid">
       <div class="checkTerms">
@@ -84,7 +83,9 @@
     </div>
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn">
-      You are not logged in. Please enter your mobile number to complete booking.
+      <p class="text-center">
+        You are not logged in. Please enter your mobile number to complete booking.
+      </p>
 
       <button class="button primary-button" ng-click="login()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
         Log In
@@ -93,17 +94,22 @@
 
     <div class="item item-text-wrap text-center" ng-if="isLoggedIn && !book.isBid">
       <div ng-if="data.hasNoCreditInfo">
-        Your card will be securely stored for the future payment. You can swop to another card in the settings.
+        <p class="text-center">
+          Your card will be securely stored for the future payment. You can swop to another card in the settings.
+        </p>
+
         <button class="button primary-button" ng-click="createBid()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
           Add Card Details
         </button>
       </div>
-      <div class="text-center" ng-if="!data.hasNoCreditInfo">
-        This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}</b> if route is activated.
+      <div ng-if="!data.hasNoCreditInfo">
+        <p class="text-center">
+          This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}</b> if route is activated.
+        </p>
         <button class="button primary-button"
                 ng-click="createBid()"
                 ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-          Confirm
+          Confirm Pre-order
         </button>
         <div class="text-link-div">
           <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">
