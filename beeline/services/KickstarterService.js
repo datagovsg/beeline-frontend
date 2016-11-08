@@ -18,7 +18,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
     //order tiers in price desc order
     kickstarter.notes.tier = _.orderBy(kickstarter.notes.tier, x=>x.price, "desc");
     //if sb. commit $8, also commit $5
-    kickstarter.notes.tier[1].count += kickstarter.notes.tier[0].count;
+    // kickstarter.notes.tier[1].count += kickstarter.notes.tier[0].count;
 
     kickstarter.isValid = true;
     if (kickstarter.notes && kickstarter.notes.lelongExpiry) {
