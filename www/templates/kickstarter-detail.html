@@ -116,7 +116,7 @@
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
               <span class="mini-info">
-                Commence on DD/MM/YY if activated
+                Commence on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
               </span>
             </div>
           </route-item-additional-info>

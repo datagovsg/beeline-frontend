@@ -73,7 +73,7 @@
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
               <span class="mini-info">
-                Commence on DD/MM/YY if activated
+                Commence on {{route.trips[0].date | date:'dd MMM yyyy'}} if activated
               </span>
             </div>
 
@@ -175,7 +175,7 @@
                 Custom Status
               </span>
             </div>
-            
+
             <!-- TODO: show price infor in progress -->
             <progress-bar cur-val={{route.notes.tier[0].count}} second-val={{route.notes.tier[1].count}}
               max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
