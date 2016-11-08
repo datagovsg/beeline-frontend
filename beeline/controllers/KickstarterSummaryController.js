@@ -16,7 +16,7 @@ export default [
     $scope.book = {
       routeId: null,
       boardStopId: null,
-      alightStop: null,
+      alightStopId: null,
       route: null,
       notExpired: true,
       isBid: null,
@@ -31,20 +31,15 @@ export default [
     }
 
     $scope.book.routeId = +$stateParams.routeId;
-    $scope.book.boardStopId = +$stateParams.boardStop;
-    $scope.book.alightStopId = +$stateParams.alightStop;
     $scope.priceInfo.bidPrice = +$stateParams.bidPrice;
 
 
     $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
 
       $scope.book.route = route;
-      $scope.book.boardStop = route.trips[0]
-            .tripStops
-            .find(ts => $scope.book.boardStopId == ts.stop.id);
-      $scope.book.alightStop =route.trips[0]
-            .tripStops
-            .find(ts => $scope.book.alightStopId == ts.stop.id);
+      //give 1st and last stop as board and alight stop for fake ticket
+      $scope.book.boardStopId = _.first(route.trips[0].tripStops).id;
+      $scope.book.alightStopId =_.last(route.trips[0].tripStops).id;
 
       if (route.notes && route.notes.lelongExpiry) {
        var now = new Date().getTime();

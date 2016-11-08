@@ -229,7 +229,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.kickstarter-detail', {
-    url: '/kickstarter/:routeId/detail?boardStop&alightStop',
+    url: '/kickstarter/:routeId/detail',
     views: {
       'tab-kickstarter': {
         templateUrl: 'templates/kickstarter-detail.html',
@@ -241,21 +241,8 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tabs.kickstarter-dates', {
-    url: '/kickstarter/:routeId/dates?boardStop&alightStop',
-    views: {
-      'tab-kickstarter': {
-        templateUrl: 'templates/kickstarter-dates.html',
-        controller: 'KickstarterDatesController'
-      }
-    },
-    data: {
-      hideTabs: true,
-    }
-  })
-
   .state('tabs.kickstarter-summary', {
-    url: '/kickstarter/:routeId/summary?boardStop&alightStop&bidPrice',
+    url: '/kickstarter/:routeId/summary?bidPrice',
     views: {
       'tab-kickstarter': {
         templateUrl: 'templates/kickstarter-summary.html',
