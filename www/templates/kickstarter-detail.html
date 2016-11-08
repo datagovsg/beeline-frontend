@@ -216,20 +216,19 @@
       </div>
 
         <div class="select-bid item-text-wrap" ng-if="!book.route.isExpired">
-          <h3 class="item-subtitle">Select the maximum price you are willing to pay per trip for {{book.route.trips.length}} trips. </h3>
           <ion-list>
             <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
               <label class="checkbox">
                   <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
               </label>
-              <span>I am willing to pre-purchase at ${{ item.price | number:2 }} per trip.</span>
+              <span>I am willing to pre-order {{book.route.trips.length}} trips at ${{ item.price | number:2 }} per trip.</span>
             </ion-item>
           </ion-list>
           <button class="button primary-button" ng-disabled="!book.bidPrice" ui-sref="tabs.kickstarter-summary({
                           routeId: book.routeId,
                           bidPrice: book.bidPrice
                         })">
-                        Review Selection
+                        Pre-Order Pass
           </button>
       </div>
     </div>

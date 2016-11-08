@@ -99,7 +99,7 @@
         </button>
       </div>
       <div class="text-center" ng-if="!data.hasNoCreditInfo">
-        This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}</b>
+        This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}</b> if route is activated.
         <button class="button primary-button"
                 ng-click="createBid()"
                 ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
