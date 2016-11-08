@@ -153,6 +153,16 @@ export default [
         ));
       }
       gmap.fitBounds(bounds);
+    };
+
+    $scope.updateSelection = function(position, tiers, price) {
+      _.forEach(tiers, function(tier, index){
+        if (position == index) {
+          $scope.book.bidPrice = $scope.book.bidPrice == price ? null : price;
+        } else {
+          tier.checked = false;
+        }
+      })
     }
 
     /** Summarizes the stops from trips by comparing their stop location and time */

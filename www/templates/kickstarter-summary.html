@@ -22,33 +22,6 @@
         </tr>
       </table>
     </div>
-    <div class="item">
-      <h3 class="item-subtitle">Selected Stops</h3>
-      <route-item hide-additional-info="true">
-
-        <route-item-bus-number>
-          {{ book.route.label }}
-        </route-item-bus-number>
-        <route-item-start-time>
-          {{book.boardStop.time | formatTime:true}}
-        </route-item-start-time>
-        <route-item-start-location>
-          <h4>Pick-up at</h4> {{book.boardStop.stop.description}}
-          <br/> {{book.boardStop.stop.road}}
-          <br/>
-          <br/>
-        </route-item-start-location>
-        <route-item-end-time>
-          {{book.alightStop.time | formatTime:true}}
-        </route-item-end-time>
-        <route-item-end-location>
-          <h4>Drop-off at</h4> {{book.alightStop.stop.description}}
-          <br/> {{book.alightStop.stop.road}}
-          <br/>
-          <br/>
-        </route-item-end-location>
-      </route-item>
-    </div>
     <div class="item" ng-if="priceInfo.tripCount > 0">
       <h3 class="item-subtitle">Trip Dates</h3>
       <div class="row">
