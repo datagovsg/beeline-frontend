@@ -54,7 +54,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
     } else if (!kickstarter.isExpired) {
       kickstarter.status = kickstarter.notes.tier[0].moreNeeded + " more pax to activate the route at $"+kickstarter.notes.tier[0].price.toFixed(2)+"."
     } else {
-      kickstarter.status = "Bus is not activated."
+      kickstarter.status = "No one joined this route yet."
     }
   }
   return kickstarterRoutes;
