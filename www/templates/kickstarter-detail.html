@@ -8,7 +8,13 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
-    <form class="stops-form" name="stopsForm">
+    <div class="item item-icon-left" ng-if="book.route.isExpired">
+        <i class="icon activebid">
+            <img src="img/icon_kickstarter_status.svg">
+        </i>
+      Campaign has expired
+    </div>
+
       <!-- contains the map, the stop selectors
         and the locate me button -->
       <div class="map-area">
@@ -195,7 +201,13 @@
           </table>
         </div>
 
-        <div class="select-bid item-text-wrap" ng-if="book.notExpired">
+        <div class="select-bid item-text-wrap" ng-if="book.route.isExpired">
+          <button class="button primary-button" ui-sref="tabs.kickstarter">
+            back
+          </button>
+      </div>
+
+        <div class="select-bid item-text-wrap" ng-if="!book.route.isExpired">
           <h3 class="item-subtitle">Select the maximum price you are willing to pay per trip for {{book.route.trips.length}} trips. </h3>
           <ion-list>
             <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
@@ -209,11 +221,10 @@
                           routeId: book.routeId,
                           bidPrice: book.bidPrice
                         })">
-          Review Selection
-        </button>
+                        Review Selection
+          </button>
       </div>
     </div>
-  </form>
 
   </ion-content>
 </ion-view>
