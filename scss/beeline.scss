@@ -311,3 +311,10 @@ textarea{
 .bus-co-info {
   padding-left: $content-padding;
 }
+
+.features {
+  ul {
+    list-style: disc;
+    padding-left: $content-padding*2;
+  }
+}
