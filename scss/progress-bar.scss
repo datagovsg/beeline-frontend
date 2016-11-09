@@ -1,10 +1,3 @@
-.progress-bar {
-  display: inline-block;
-  width: 90%;
-  margin-top: $padding-large-vertical*3;
-  text-align: left;
-}
-
 /* variables */
 $progress-bar-height: 8px;
 $progress-bar-border-radius: 10px;
@@ -12,6 +5,7 @@ $milestone-border: $progress-bar-height/1.2;
 $milestone-center: 20px;
 $milestone-size: $milestone-border + $milestone-center;
 $milestone-offset: $milestone-size/2;
+$start-size: 16px;
 
 $price-label-width: 60px;
 $price-label-height: 45px ;
@@ -23,6 +17,14 @@ $kickstarter-price-high: $royal;
 $kickstarter-price-low: $normal-grey;
 $kickstarter-default: lighten($normal-grey,40%);
 
+/* progress bar container */
+.progress-bar {
+  display: inline-block;
+  width: 90%;
+  margin-top: $padding-large-vertical*3;
+  text-align: left;
+  margin-left: $start-size/2;
+}
 
 /* bar default */
 .bar-default {
@@ -35,6 +37,15 @@ $kickstarter-default: lighten($normal-grey,40%);
   align-items: center;
   justify-content: center;
 
+}
+
+.start-marker{
+  background-color: $royal;
+  width: $start-size;
+  height: $start-size;
+  position: relative;
+  left: -$start-size/2;
+  border-radius: 100%;
 }
 
 .milestone {
