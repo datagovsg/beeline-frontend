@@ -49,16 +49,13 @@ route-item {
     margin-right: $padding-small-horizontal;
     display: inline;
   }
-  .mini-info {
-    font-size: $font-size-small;
-    color: $hint-color;
-  }
 
   .stops {
     display: block;
     /* Determines the amount of vertical spacing
        between the .bus-number and the stops */
-    margin-top: 0.5em;
+    margin-top: 0.8em;
+    margin-bottom: 0.2em;
     position: relative;
     flex: 1 1 auto;
 
@@ -113,6 +110,18 @@ route-item {
       }
     }
   }
+  .tracking-icon {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+  }
+
+  h4{
+    color: $hint-color;
+    margin: 5px 0 4px 0 !important;
+  }
+
+}
 
   .icon-and-schedule {
     margin-top: 0.5em;
@@ -141,15 +150,7 @@ route-item {
     max-width: 20px;
   }
 
-  .tracking-icon {
-    position: absolute;
-    top: 7px;
-    right: 7px;
-  }
-
-  h4{
+  .mini-info {
+    font-size: $font-size-small;
     color: $hint-color;
-    margin: 5px 0 4px 0 !important;
   }
-
-}

@@ -121,7 +121,7 @@
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
               <span class="mini-info">
-                Commence on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
+                Start on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
               </span>
             </div>
           </route-item-additional-info>
@@ -132,12 +132,20 @@
           pax1={{book.route.notes.tier[0].pax}}
           detail=true>
         </progress-bar>
-
+        <div class="icon-and-schedule">
+          <span class="icon-span">
+            <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+          </span>
+          <span class="mini-info">
+            {{book.route.status}}
+          </span>
+        </div>
       </div>
 
       <ion-list>
-        <ion-item class="text-center" ng-click="showStops()">
+        <ion-item class="item-icon-right" ng-click="showStops()">
             View Stops
+              <i class="icon ion-ios-arrow-right"></i>
         </ion-item>
       </ion-list>
 
@@ -208,20 +216,19 @@
       </div>
 
         <div class="select-bid item-text-wrap" ng-if="!book.route.isExpired">
-          <h3 class="item-subtitle">Select the maximum price you are willing to pay per trip for {{book.route.trips.length}} trips. </h3>
           <ion-list>
             <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
               <label class="checkbox">
                   <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
               </label>
-              <span>I am willing to pre-purchase at ${{ item.price | number:2 }} per trip.</span>
+              <span>I am willing to pre-order {{book.route.trips.length}} trips at ${{ item.price | number:2 }} per trip.</span>
             </ion-item>
           </ion-list>
           <button class="button primary-button" ng-disabled="!book.bidPrice" ui-sref="tabs.kickstarter-summary({
                           routeId: book.routeId,
                           bidPrice: book.bidPrice
                         })">
-                        Review Selection
+                        Pre-Order Pass
           </button>
       </div>
     </div>
