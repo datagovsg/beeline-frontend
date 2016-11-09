@@ -1,53 +1,243 @@
+/* variables */
+$progress-bar-height: 8px;
+$progress-bar-border-radius: 10px;
+$milestone-border: $progress-bar-height/1.2;
+$milestone-center: 20px;
+$milestone-size: $milestone-border + $milestone-center;
+$milestone-offset: $milestone-size/2;
+$start-size: 16px;
+
+$price-label-width: 60px;
+$price-label-height: 45px ;
+
+$needed-label-width: 100px;
+$needed-label-height: 60px;
+
+$kickstarter-price-high: $royal;
+$kickstarter-price-low: $normal-grey;
+$kickstarter-default: lighten($normal-grey,40%);
+
+/* progress bar container */
 .progress-bar {
-  margin-top: 10px;
-  margin-bottom: 30px;
-  .fullBar {
-    position: relative;
-    width: 100%;
-    height: 15px;
-    background-color: #ddd;
-    border-radius: 10px;
-    z-index: 0;
-  }
+  display: inline-block;
+  width: 90%;
+  margin-top: $padding-large-vertical*3;
+  text-align: left;
+  margin-left: $start-size/2;
+}
 
-  .highBid {
-    position: absolute;
-    height: 100%;
-    background-color: #00C4A5;
-    opacity: 1;
-    border-radius: 10px 0px 0px 10px;
-    z-index: 2;
-  }
+/* bar default */
+.bar-default {
+  width: 100%;
+  height: $progress-bar-height;
+  background: $kickstarter-default;
+  border-radius: $progress-bar-border-radius;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 
-  .lowBid {
-    position: absolute;
-    height: 100%;
-    background-color: #7D7D7D;
-    border-radius: 10px 0px 0px 10px;
-    z-index: 1;
+}
 
-  }
+.start-marker{
+  background-color: $royal;
+  width: $start-size;
+  height: $start-size;
+  position: relative;
+  left: -$start-size/2;
+  border-radius: 100%;
+}
 
-  .label {
-    text-align: center;
-    line-height: 15px;
-    color: white;
-  }
+.milestone {
+  position: relative;
+  float: right;
+  align-self: center;
+  z-index: 15;
+  right: -$milestone-offset;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
 
-  .expensive {
-    position: absolute;
-    left: 40%;
-    text-align: right;
-    .sub {
-      font-size: $font-size-small;
+
+  .milestone-outline {
+    width: $milestone-size;
+    height: $milestone-size;
+    background: $kickstarter-default;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.activate-low{
+    background: $kickstarter-price-low;
+    }
+
+    &.activate-high{
+    background: $kickstarter-price-high;
+    }
+
+    .milestone-inset {
+      width: $milestone-size - ($milestone-border*2);
+      height: $milestone-size - ($milestone-border*2);
+      background: $light;
+      border-radius: 100%;
+      z-index: 20;
+      margin: 0 auto;
     }
   }
+}
 
-  .cheap {
+/* mid bar */
+.bar-50 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  order: 1;
+  flex: 1 1 auto;
+  align-self: center;
+  height: 10px;
+  z-index: 5;
+}
+
+/* full bar */
+.bar-100 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  order: 2;
+  flex: 1 0 auto;
+  align-self: center;
+  height: auto;
+  z-index: 5;
+}
+
+
+/* backer bar */
+.backer-progress{
+  position:relative;
+}
+
+.backer-high{
+  position:absolute;
+  left:0;
+  background: $kickstarter-price-high;
+  height: $progress-bar-height;
+  border-radius: $progress-bar-border-radius;
+  float: left;
+  z-index: 50;
+  width: 50%;
+
+}
+
+.backer-low{
+  position:absolute;
+  left:0;
+  background: $kickstarter-price-low;
+  height:$progress-bar-height;
+  border-radius: $progress-bar-border-radius;
+  float: left;
+  z-index: 40;
+}
+
+/* price label section */
+.bar-label-default {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  top: -30px;
+}
+
+.price-label{
+  z-index: 16;
+  width: $price-label-width;
+  height: $price-label-height;
+  background: $kickstarter-default;
+  position: relative;
+  text-align: center;
+  right: -$price-label-width/2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 15px;
+
+    &::after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
     position: absolute;
-    left: 75%;
-    .sub {
-      font-size:  $font-size-small;
-    }
+    pointer-events: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 15px solid #ccc;
+    margin-left: -5px;
+  }
+  .ride-price{
+    font-size: $font-size-base;
+    color: #444;
+  }
+  .per-ride{
+    font-size: $font-size-small;
+    color: #444;
+  }
+}
+
+/* needed label section */
+
+.needed-label-default {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.needed-label{
+  z-index: 11;
+  width: 100px;
+  height: 60px;
+  top: -25px;
+  position: relative;
+  text-align: center;
+  right: -$needed-label-width/2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .line{
+    border-top: 30px solid #ccc;
+    width: 1px;
+  }
+}
+
+/* needed label for join */
+
+.high-joined{
+  z-index: 70;
+  position: relative;
+  text-align: center;
+  margin-top: 20px;
+  background: #fff;
+  .line{
+    border-top: 80px solid #493861;
+    width: 10px;
+  }
+}
+
+.low-joined{
+  z-index: 60;
+  position: relative;
+  text-align: center;
+  .line{
+    border-top: 80px solid #493861;
+    width: 10px;
   }
 }

@@ -1,0 +1,64 @@
+<ion-modal-view class="stop-selector">
+  <ion-header-bar class="bar bar-royal">
+    <h1 class="title">
+      Kickstarter Route Stops
+    </h1>
+    <button class="button button-clear icon ion-ios-close-outline"
+        ng-click="close()">
+   </button>
+  </ion-header-bar>
+
+  <ion-content class="stops-list-main" scroll="false">
+    <div class="map-area">
+      <ui-gmap-google-map center="modalMap.center"
+                          zoom="modalMap.zoom"
+                          bounds="modalMap.bounds"
+                          control="modalMap.control"
+                          options="modalMap.options"
+                          data-tap-disabled="true">
+        <my-location></my-location>
+        <ui-gmap-marker ng-repeat="stop in busStops"
+                        idkey="stop.id"
+                        coords="stop.coordinates"
+                        options="markerOptions"
+                        ng-click="selectStop($event, stop)">
+        </ui-gmap-marker>
+
+        <ui-gmap-marker ng-if="data.selectedStop"
+                        idkey="'selectedStopPin'"
+                        coords="data.selectedStop.coordinates"
+                        options="pinOptions">
+        </ui-gmap-marker>
+      </ui-gmap-google-map>
+    </div>
+
+    <div class="item item-divider num-stops">{{busStops.length}} stops available</div>
+
+    <ion-content class="stops-list" delegate-handle="stopsListScroll">
+      <ion-list>
+        <ion-item  ng-repeat="stop in busStops"
+                    ng-model="data.selectedStop"
+                    ng-value="stop"
+                    class="item-text-wrap item-icon-left"
+                    icon="icon ion-ios-checkmark"
+                    ng-click="panToStops(modalMap.control.getGMap(), [stop])">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <div class="item select-button">
+      <button class="button primary-button button-item"
+              ng-click="close()">
+        close
+      </button>
+    </div>
+
+  </ion-content>
+</ion-modal-view>

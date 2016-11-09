@@ -8,24 +8,30 @@ var transformKickstarterData = function (kickstarterRoutes) {
     if (kickstarter.bids && kickstarter.bids.length > 0) {
      var bidsByTier = _.groupBy(kickstarter.bids, x=>x.userOptions.price);
       kickstarter.notes.tier.map((tier)=>{
-        _.assign(tier, {count: bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0})
+        var countCommitted = bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0;
+        _.assign(tier, {count: countCommitted,
+                        moreNeeded: tier.pax-countCommitted})
       })
     } else {
       kickstarter.notes.tier.map((tier)=>{
-        _.assign(tier, {count: 0})
+        _.assign(tier, {count: 0, moreNeeded: tier.pax})
       })
     }
     //order tiers in price desc order
     kickstarter.notes.tier = _.orderBy(kickstarter.notes.tier, x=>x.price, "desc");
     //if sb. commit $8, also commit $5
-    kickstarter.notes.tier[1].count += kickstarter.notes.tier[0].count;
+    // kickstarter.notes.tier[1].count += kickstarter.notes.tier[0].count;
 
-    kickstarter.isValid = true;
+    kickstarter.isExpired = false;
+    kickstarter.is7DaysOld = false;
     if (kickstarter.notes && kickstarter.notes.lelongExpiry) {
       var now = new Date().getTime();
       var expiryTime = new Date(kickstarter.notes.lelongExpiry).getTime();
       if (now >= expiryTime) {
-        kickstarter.isValid = false;
+        kickstarter.isExpired = true;
+        if (now - expiryTime >= 7*1000*60*60*24) {
+          kickstarter.is7DaysOld = true;
+        }
       } else{
         var day = 1000  * 60 * 60 * 24;
         kickstarter.daysLeft =  Math.ceil((expiryTime - now)/day);
@@ -40,6 +46,16 @@ var transformKickstarterData = function (kickstarterRoutes) {
     _.forEach(kickstarter.trips, function(trip){
       trip.tripStops = _.orderBy(trip.tripStops, stop=>stop.time)
     });
+
+    //status of kickstarter
+    kickstarter.status = "";
+    if ((kickstarter.notes.tier.some((tier)=>tier.moreNeeded==0))) {
+      kickstarter.status = "Bus is on at $" + kickstarter.notes.tier[0].price.toFixed(2)
+    } else if (!kickstarter.isExpired) {
+      kickstarter.status = kickstarter.notes.tier[0].moreNeeded + " more pax to activate the route at $"+kickstarter.notes.tier[0].price.toFixed(2)+"."
+    } else {
+      kickstarter.status = "No one joined this route yet."
+    }
   }
   return kickstarterRoutes;
 }
@@ -96,9 +112,11 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       method: 'GET',
       url: '/custom/lelong/status',
     }).then((response)=>{
-      kickstarterRoutesList = transformKickstarterData(response.data).filter((kickstarter)=>{
-        return kickstarter.isValid;
-      });
+      // kickstarterRoutesList = transformKickstarterData(response.data).filter((kickstarter)=>{
+      //   return !kickstarter.isExpired;
+      // });
+      //return expired kickstarter too
+      kickstarterRoutesList = transformKickstarterData(response.data);
       kickstarterRoutesById = _.keyBy(kickstarterRoutesList, 'id')
       return kickstarterRoutesList
     })
@@ -128,6 +146,13 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       return kickstarterSummary.find(x=>x.routeId == routeId);
     },
 
+    //need to return a promise
+    hasBids: function() {
+      return kickstarterStatusCache.then(()=>{
+        return kickstarterSummary && kickstarterSummary.length>0;
+      })
+    },
+
     createBid: function(route, boardStopId, alightStopId,bidPrice) {
       return UserService.beeline({
         method: 'POST',
@@ -135,12 +160,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
         data: {
           trips: route.trips.map(trip => ({
             tripId: trip.id,
-            boardStopId: trip.tripStops.filter((x)=>{
-              return x.stopId === boardStopId;
-            })[0].id,
-            alightStopId: trip.tripStops.filter((x)=>{
-              return x.stopId === alightStopId;
-            })[0].id,
+            boardStopId: boardStopId,
+            alightStopId: alightStopId,
           })),
           promoCode: {
             code: 'LELONG',

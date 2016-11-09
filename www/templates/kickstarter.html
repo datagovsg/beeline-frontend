@@ -1,9 +1,11 @@
 <ion-view class="kickstarter-list" view-title="Kickstart Routes" hide-back-button="true">
   <ion-content scroll="false">
-    <div class="item item-text-wrap" ng-if="error">
+    <div class="item item-text-wrap item-ion-left" ng-if="error">
       <i class="icon ion-alert-circled"></i>
-      There was a problem fetching the kickstarter from the server.
-      Please try again later.
+      <p class="text-center">
+        There was a problem fetching kickstarter route information from the server.
+        Please try again later.
+      </p>
     </div>
 
 
@@ -24,8 +26,8 @@
 
       <!-- recently bid kickstarter -->
       <div class="item item-divider"
-          ng-if="data.filteredbackedKickstarter.length > 0">
-        Kickstart routes you backed
+          ng-if="data.backedKickstarter.length > 0">
+        Kickstarter routes you pre-ordered passes
       </div>
 
        <ion-item ng-repeat="route in data.filteredbackedKickstarter"
@@ -75,14 +77,31 @@
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
               </span>
+              <span class="mini-info" ng-if="route.isExpired">
+                Campaign has expired
+              </span>
+            </div>
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="mini-info">
+                Start on {{route.trips[0].date | date:'dd MMM yyyy'}} if activated
+              </span>
             </div>
 
             <!-- TODO: show price infor in progress -->
-            <progress-bar cur-val={{route.notes.tier[0].count}} second-val={{route.notes.tier[1].count}}
-              max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
-              high-total={{route.notes.tier[0].pax}}>
+            <progress-bar backer1={{route.notes.tier[0].count}} price1={{oute.notes.tier[0].price}}
+              pax1={{route.notes.tier[0].pax}}>
             </progress-bar>
-
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+              </span>
+              <span class="mini-info">
+                {{route.status}}
+              </span>
+            </div>
             <div class="icon-and-schedule">
               <!-- <span class="icon ion-ios-flag-outline"></span> -->
               <span class="icon-span">
@@ -90,24 +109,24 @@
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
                 You joined this route at ${{recentBidsById[route.id].bidPrice | number:2 }} per ride.
-
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
               </span>
+              <span class="mini-info" ng-if="route.isExpired">
+                Campaign has expired
+              </span>
             </div>
+
           </route-item-additional-info>
         </route-item>
-
-        <!-- <progress-bar cur-val=6 second-val=9 max-val=12></progress-bar> -->
-
       </ion-item>
 
 
       <!-- available kickstarter -->
       <div class="item item-divider"
           ng-if="data.filteredkickstarter.length > 0">
-        Kickstart Routes
+        Kickstarter Routes
       </div>
 
       <ion-item ng-repeat="route in data.filteredkickstarter"
@@ -157,12 +176,25 @@
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                 {{route.daysLeft}} day left to activate
               </span>
+              <span class="mini-info" ng-if="route.isExpired">
+                Campaign has expired
+              </span>
             </div>
+
             <!-- TODO: show price infor in progress -->
-            <progress-bar cur-val={{route.notes.tier[0].count}} second-val={{route.notes.tier[1].count}}
-              max-val={{route.notes.tier[1].pax}} high-price={{route.notes.tier[0].price}} low-price={{route.notes.tier[1].price}}
-              high-total={{route.notes.tier[0].pax}}>
+            <progress-bar backer1={{route.notes.tier[0].count}}
+              price1={{oute.notes.tier[0].price}}
+              pax1={{route.notes.tier[0].pax}}>
             </progress-bar>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+              </span>
+              <span class="mini-info">
+                {{route.status}}
+              </span>
+            </div>
           </route-item-additional-info>
         </route-item>
       </ion-item>

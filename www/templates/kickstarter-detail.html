@@ -8,7 +8,13 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
-    <form class="stops-form" name="stopsForm">
+    <div class="item item-icon-left" ng-if="book.route.isExpired">
+        <i class="icon activebid">
+            <img src="img/icon_kickstarter_status.svg">
+        </i>
+      Campaign has expired
+    </div>
+
       <!-- contains the map, the stop selectors
         and the locate me button -->
       <div class="map-area">
@@ -27,10 +33,6 @@
             <div class="popUpStopSelect">
               <b>{{disp.popupStop.time | formatTime }}</b><br/>
               {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
-              <a class="button button-block button-outline button-royal"
-                ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
-                Set {{disp.popupStopType === 'pickup' ? 'pick-up' : 'drop-off'}} stop
-              </a>
             </div>
           </ui-gmap-window>
 
@@ -110,67 +112,126 @@
               <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft==1">
                 {{book.route.daysLeft}} day left to activate
               </span>
+              <span class="mini-info" ng-if="book.route.isExpired">
+                Campaign has expired
+              </span>
+            </div>
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="mini-info">
+                Start on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
+              </span>
             </div>
           </route-item-additional-info>
         </route-item>
 
-        <progress-bar cur-val={{book.route.notes.tier[0].count}} second-val={{book.route.notes.tier[1].count}}
-          max-val={{book.route.notes.tier[1].pax}} high-price={{book.route.notes.tier[0].price}} low-price={{book.route.notes.tier[1].price}}
-          high-total={{book.route.notes.tier[0].pax}}>
+        <progress-bar backer1={{book.route.notes.tier[0].count}}
+          price1={{book.route.notes.tier[0].price}}
+          pax1={{book.route.notes.tier[0].pax}}
+          detail=true>
         </progress-bar>
-
+        <div class="icon-and-schedule">
+          <span class="icon-span">
+            <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+          </span>
+          <span class="mini-info">
+            {{book.route.status}}
+          </span>
+        </div>
       </div>
 
-      <ion-list class="stop-inputs">
-        <bus-stop-selector
-          ng-model="book.boardStop"
-          bus-stops="book.boardStops"
-          placeholder="Select pick-up stop"
-          title="Select pick-up stop"
-          button="Select pick-up stop"
-          marker-options="map.markerOptions.boardMarker"
-          pin-options="map.markerOptions.startMarker"
-          ng-required="true"
-          name="boardStop"
-          >
-        </bus-stop-selector>
-        <bus-stop-selector
-          ng-model="book.alightStop"
-          bus-stops="book.alightStops"
-          placeholder="Select drop-off stop"
-          title="Select drop-off stop"
-          button="Select drop-off stop"
-          marker-options="map.markerOptions.alightMarker"
-          pin-options="map.markerOptions.endMarker"
-          ng-required="true"
-          name="alightStop"
-          >
-        </bus-stop-selector>
+      <ion-list>
+        <ion-item class="item-icon-right" ng-click="showStops()">
+            View Stops
+              <i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
       </ion-list>
 
-      <!-- TODO: if user bid kickstarter and it expiries must show in the list!-->
-      <section class="item item-text-wrap"
-               ng-if="!book.notExpired">
-        The kickstarter is over.
-        <button class="button primary-button"
-          ui-sref="tabs.kickstarter">
-          Show Kickstarter List
-        </button>
-      </section>
+      <div class="item item-text-wrap">
+        <div class="item-subtitle">
+        How to activate
+        </div>
+        Purchase a <strong> pass for {{book.route.trips.length}} trips</strong> to show your support to activate this route. When <strong>{{book.route.notes.tier[0].pax}} people</strong> purchase the pass, this route will activate.
+        <br />
+        <br />
+        If the route is activated, it will
+        <br />
+        <div class="features">
+          <ul>
+            <li>
+            commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong>
+            </li>
+            <li>
+            run every Mon - Fri, except public holidays
+            </li>
+            <li>
+            operate for at least a month.
+            </li>
+          </ul>
+        </div>
+        <br />
+          This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the  <strong>pass for {{book.route.trips.length}} trips</strong> will only be deducted at the end of the campaign if the route is activated.
+        <br />
+        <br />
+        Thereafter, you will receive the pass in your account and you can use it to book any {{book.route.trips.length}} trips within the 1st month of the activated route.
+      </div>
+      <div class="item item-text-wrap">
+        <div class="item-subtitle">
+          Route Activation Criteria
+        </div>
+        <div>
+          Number of people who pre-purchased passes.
+          <br />
+          <br />
+          <table class="pax-table booking-info">
+            <thead>
+              <tr>
+                <th>Price per ride<br />of activated route</th>
+                <th>No. of pax<br />who pre-purchased passes</th>
+                <th>No. of pax<br />needed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="tier in book.route.notes.tier">
+                <td>
+                  ${{tier.price | number:2}}
+                </td>
+                <td>
+                  {{tier.count}} of {{tier.pax}} pax
+                </td>
+                <td>
+                  {{tier.pax - tier.count}} more needed
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <section class="item item-text-wrap"
-               ng-if="book.notExpired">
-        <button class="button primary-button"
-                ng-disabled="stopsForm.$invalid"
-                ui-sref="tabs.kickstarter-dates({
+        <div class="select-bid item-text-wrap" ng-if="book.route.isExpired">
+          <button class="button primary-button" ui-sref="tabs.kickstarter">
+            back
+          </button>
+      </div>
+
+        <div class="select-bid item-text-wrap" ng-if="!book.route.isExpired">
+          <ion-list>
+            <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
+              <label class="checkbox">
+                  <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
+              </label>
+              <span>I am willing to pre-order {{book.route.trips.length}} trips at ${{ item.price | number:2 }} per trip.</span>
+            </ion-item>
+          </ion-list>
+          <button class="button primary-button" ng-disabled="!book.bidPrice" ui-sref="tabs.kickstarter-summary({
                           routeId: book.routeId,
-                          boardStop: book.boardStop.id,
-                          alightStop: book.alightStop.id
+                          bidPrice: book.bidPrice
                         })">
-          Next
-        </button>
-      </section>
-    </form>
+                        Pre-Order Pass
+          </button>
+      </div>
+    </div>
 
   </ion-content>
 </ion-view>

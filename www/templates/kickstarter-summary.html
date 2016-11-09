@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_summary" view-title="Kickstarter Pledge Summary" hide-back-button="false" can-swipe-back="false">
+<ion-view id="pg_kickstarter_summary" view-title="Kickstarter Pre-Order Summary" hide-back-button="false" can-swipe-back="false">
   <ion-nav-buttons side="right">
     <button class="button button-clear" ui-sref="tabs.kickstarter">
        <i class="icon ion-ios-close-outline"></i>
@@ -6,72 +6,35 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <div class="item">
-      <h3 class="item-subtitle">Amount you are pledge</h3>
+      <h3 class="item-subtitle">Pre-order Trip Pass </h3>
       <table class="booking-info">
         <tr>
           <td><b>No. of Trips</b></td>
           <td class="right">{{priceInfo.tripCount || 0}} trips</td>
         </tr>
         <tr>
-          <td><b>Max. Price per Trip</b></td>
+          <td><b>Price per Trip</b></td>
           <td class="right">$ {{priceInfo.bidPrice | number:2}}</td>
         </tr>
         <tr class="total-sum">
-          <td class="total-sum"><b>Amount you pledge</b></th>
+          <td class="total-sum"><b>Total Amount</b></th>
           <td class="total-sum right">$ {{priceInfo.totalDue | number:2}}</th>
         </tr>
       </table>
     </div>
-    <div class="item">
-      <h3 class="item-subtitle">Selected Stops</h3>
-      <route-item hide-additional-info="true">
 
-        <route-item-bus-number>
-          {{ book.route.label }}
-        </route-item-bus-number>
-        <route-item-start-time>
-          {{book.boardStop.time | formatTime:true}}
-        </route-item-start-time>
-        <route-item-start-location>
-          <h4>Pick-up at</h4> {{book.boardStop.stop.description}}
-          <br/> {{book.boardStop.stop.road}}
-          <br/>
-          <br/>
-        </route-item-start-location>
-        <route-item-end-time>
-          {{book.alightStop.time | formatTime:true}}
-        </route-item-end-time>
-        <route-item-end-location>
-          <h4>Drop-off at</h4> {{book.alightStop.stop.description}}
-          <br/> {{book.alightStop.stop.road}}
-          <br/>
-          <br/>
-        </route-item-end-location>
-      </route-item>
-    </div>
-    <div class="item" ng-if="priceInfo.tripCount > 0">
-      <h3 class="item-subtitle">Trip Dates</h3>
-      <div class="row">
-        <div class="item-icon-left trip-dates">
-          <i class="icon">
-                    <img src="img/icon_schedule.svg">
-                </i>
-          <div class="item-text-wrap">
-            Route will commence on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. You are pledging to book the following 5 trips.
-          </div>
-          <div class="kickstarter-dates-row">
-            <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
-              <span class="kickstarter-month">{{pinfo.date | date:'MMM'}}</span>
-              <br /> {{pinfo.date | date:'dd'}}
-              <br />
-              <span class="kickstarter-day">{{pinfo.date | date:'EEE'}}</span>
-            </div>
-          </div>
-        </div>
+    <div class="item item-text-wrap">
+      <div class="charge-note">
+        <h3 class="item-subtitle">When will payment be charged?</h3>
+        <p>
+          This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the <strong>{{book.route.trips.length}} trips</strong> will only be deducted at the end of the campaign if the route is activated.
+        </p>
+        <br />
+        <p>
+          No one will be charged for the route unless it is activated. You will only be charged the unlocked price if it matches or is lower than your pledged amount per ride.
+        </p>
       </div>
     </div>
-
-
     <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
     </company-info-broker>
 
@@ -88,18 +51,6 @@
         </div>
       </div>
     </div>
-    <div class="item item-text-wrap">
-      <div class="charge-note">
-        <h3 class="item-subtitle">When will payment be charged?</h3>
-        <p>
-          This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the <strong>{{book.route.trips.length}} trips</strong> will only be deducted at the end of the campaign if the route is activated.
-        </p>
-        <br />
-        <p>
-          No one will be charged for the route unless it is activated. You will only be charged the unlocked price if it matches or is lower than your pledged amount per ride.
-        </p>
-      </div>
-    </div>
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn || !book.isBid">
       <div class="checkTerms">
@@ -111,7 +62,9 @@
     </div>
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn">
-      You are not logged in. Please enter your mobile number to complete booking.
+      <p class="text-center">
+        You are not logged in. Please enter your mobile number to complete booking.
+      </p>
 
       <button class="button primary-button" ng-click="login()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
         Log In
@@ -119,18 +72,24 @@
     </div>
 
     <div class="item item-text-wrap text-center" ng-if="isLoggedIn && !book.isBid">
-      <div ng-if="data.hasNoCreditInfo">
-        Your card will be securely stored for the future payment. You can swop to another card in the settings.
+
+      <div ng-if="!data.hasCreditInfo">
+        <p class="text-center">
+          Your card will be securely stored for the future payment. You can swop to another card in the settings.
+        </p>
+
         <button class="button primary-button" ng-click="createBid()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
           Add Card Details
         </button>
       </div>
-      <div class="text-center" ng-if="!data.hasNoCreditInfo">
-        This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}</b>
+      <div ng-if="data.hasCreditInfo">
+        <p class="text-center">
+          This payment will be charged to your <br /><b>{{data.brand}}</b> ending in <b> {{data.last4Digtis}}</b> if route is activated.
+        </p>
         <button class="button primary-button"
                 ng-click="createBid()"
                 ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-          Confirm
+          Confirm Pre-order
         </button>
         <div class="text-link-div">
           <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">
