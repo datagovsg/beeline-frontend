@@ -48,10 +48,10 @@ export default [
          $scope.book.notExpired = false;
        }
       }
-      $scope.priceInfo.tripCount = $scope.book.route.trips.length || 0;
+      $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0;
       $scope.priceInfo.totalDue = $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount;
       $scope.$watch('priceInfo.bidPrice',(price)=>{
-        $scope.priceInfo.tripCount = $scope.book.route.trips.length || 0;
+        $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0;
         $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount;
       })
     });

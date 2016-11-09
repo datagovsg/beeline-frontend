@@ -153,12 +153,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
         data: {
           trips: route.trips.map(trip => ({
             tripId: trip.id,
-            boardStopId: trip.tripStops.filter((x)=>{
-              return x.stopId === boardStopId;
-            })[0].id,
-            alightStopId: trip.tripStops.filter((x)=>{
-              return x.stopId === alightStopId;
-            })[0].id,
+            boardStopId: boardStopId,
+            alightStopId: alightStopId,
           })),
           promoCode: {
             code: 'LELONG',
