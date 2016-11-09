@@ -146,6 +146,13 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       return kickstarterSummary.find(x=>x.routeId == routeId);
     },
 
+    //need to return a promise
+    hasBids: function() {
+      return kickstarterStatusCache.then(()=>{
+        return kickstarterSummary && kickstarterSummary.length>0;
+      })
+    },
+
     createBid: function(route, boardStopId, alightStopId,bidPrice) {
       return UserService.beeline({
         method: 'POST',
