@@ -22,27 +22,6 @@
         </tr>
       </table>
     </div>
-    <div class="item" ng-if="priceInfo.tripCount > 0">
-      <h3 class="item-subtitle">Trip Dates</h3>
-      <div class="row">
-        <div class="item-icon-left trip-dates">
-          <i class="icon">
-                    <img src="img/icon_schedule.svg">
-                </i>
-          <div class="item-text-wrap">
-            Route will start on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}}</strong> if activated and will run for at least a month. You are pledging to book the following 5 trips.
-          </div>
-          <div class="kickstarter-dates-row">
-            <div class="kickstarter-dates-box" ng-repeat="pinfo in book.route.trips" class="text-center">
-              <span class="kickstarter-month">{{pinfo.date | date:'MMM'}}</span>
-              <br /> {{pinfo.date | date:'dd'}}
-              <br />
-              <span class="kickstarter-day">{{pinfo.date | date:'EEE'}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div class="item item-text-wrap">
       <div class="charge-note">
