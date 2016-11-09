@@ -92,14 +92,14 @@
     </div>
 
     <div class="item item-text-wrap text-center" ng-if="isLoggedIn && !book.isBid">
-      <div ng-if="data.hasNoCreditInfo">
+      <div ng-if="!data.hasCreditInfo">
         Your card will be securely stored for the future payment. You can swop to another card in the settings.
         <button class="button primary-button" ng-click="createBid()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
           Add Card Details
         </button>
       </div>
-      <div class="text-center" ng-if="!data.hasNoCreditInfo">
-        This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}}</b>
+      <div class="text-center" ng-if="data.hasCreditInfo">
+        This payment will be charged to your <br /><b>{{data.brand}}</b> ending in <b> {{data.last4Digtis}}</b>
         <button class="button primary-button"
                 ng-click="createBid()"
                 ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
