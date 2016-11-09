@@ -120,15 +120,12 @@
 
           </route-item-additional-info>
         </route-item>
-
-        <!-- <progress-bar cur-val=6 second-val=9 max-val=12></progress-bar> -->
-
       </ion-item>
 
 
       <!-- available kickstarter -->
       <div class="item item-divider"
-          ng-if="data.kickstarter.length > 0">
+          ng-if="data.filteredkickstarter.length > 0">
         Kickstarter Routes
       </div>
 
@@ -198,7 +195,6 @@
                 {{route.status}}
               </span>
             </div>
-
           </route-item-additional-info>
         </route-item>
       </ion-item>

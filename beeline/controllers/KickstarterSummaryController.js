@@ -27,7 +27,9 @@ export default [
       totalDue: null
     };
     $scope.data = {
-      hasNoCreditInfo: true
+      hasCreditInfo: false,
+      brand: null,
+      last4Digtis: null,
     }
 
     $scope.book.routeId = +$stateParams.routeId;
@@ -35,23 +37,15 @@ export default [
 
 
     $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
-
+      if (!route) return;
       $scope.book.route = route;
       //give 1st and last stop as board and alight stop for fake ticket
       $scope.book.boardStopId = _.first(route.trips[0].tripStops).id;
       $scope.book.alightStopId =_.last(route.trips[0].tripStops).id;
-
-      if (route.notes && route.notes.lelongExpiry) {
-       var now = new Date().getTime();
-       var expiryTime = new Date(route.notes.lelongExpiry).getTime();
-       if (now > expiryTime) {
-         $scope.book.notExpired = false;
-       }
-      }
-      $scope.priceInfo.tripCount = $scope.book.route.trips.length || 0;
+      $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0;
       $scope.priceInfo.totalDue = $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount;
       $scope.$watch('priceInfo.bidPrice',(price)=>{
-        $scope.priceInfo.tripCount = $scope.book.route.trips.length || 0;
+        $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0;
         $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount;
       })
     });
@@ -60,17 +54,15 @@ export default [
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
-        $scope.data.hasNoCreditInfo = ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0) ? false : true;
+        $scope.data.hasCreditInfo = ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0);
+        if ($scope.data.hasCreditInfo) {
+          $scope.$watch(()=>UserService.getUser().savedPaymentInfo, (paymentInfo)=>{
+            $scope.data.brand = paymentInfo.sources.data[0].brand;
+            $scope.data.last4Digtis = paymentInfo.sources.data[0].last4;
+          });
+        }
       }
     });
-
-    $scope.$watch(()=>KickstarterService.isBid($scope.book.routeId), (isBid)=>{
-      $scope.book.isBid = isBid;
-      if ($scope.book.isBid) {
-        const bidInfo =  KickstarterService.getBidInfo($scope.book.routeId);
-        $scope.priceInfo.bidPrice = bidInfo.bid.userOptions.price;
-      }
-    })
 
     $scope.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return;
@@ -88,7 +80,7 @@ export default [
         // disable the button
         $scope.waitingForPaymentResult = true;
 
-        if ($scope.data.hasNoCreditInfo) {
+        if (!$scope.data.hasCreditInfo) {
           const stripeToken = await StripeService.promptForToken(null, null, true);
 
           if (!stripeToken) return;
@@ -131,34 +123,21 @@ export default [
 
     //update the saving card info then place bid
     $scope.updateSavingCard = async function(){
-      const stripeToken = await StripeService.promptForToken();
-      if (!stripeToken){
-        throw new Error("There was some difficulty contacting the payment gateway." +
-          " Please check your Internet connection");
-        return;
+      try {
+        const stripeToken = await StripeService.promptForToken(null, null, true);
+
+        if (!stripeToken) return;
+
+        const user = $scope.user;
+
+        var result = await loadingSpinner(
+          UserService.updatePaymentInfo(stripeToken.id)
+        );
+      } catch(error) {
+        console.log(err);
+        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
       }
-
-      if (!('id' in stripeToken)) {
-        alert("There was an error contacting Stripe");
-        return;
-      }
-      const user = $scope.user;
-
-      var result = await loadingSpinner(UserService.beeline({
-        method: 'PUT',
-        url: `/users/${user.id}/creditCards`,
-        data: {
-          stripeToken: stripeToken.id
-        },
-      }));
-
-      if(result) {
-        $scope.createBid();
-      }
-
     }
-
-
   }
 ];
 //

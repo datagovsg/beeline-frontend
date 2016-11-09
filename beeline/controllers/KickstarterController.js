@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import loadingTemplate from '../templates/loading.html';
 
 // Return an array of regions covered by a given array of routes
 function getUniqueRegionsFromRoutes(routes) {
@@ -22,7 +23,7 @@ function filterRoutesByRegionId(routes, regionId) {
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
-  $ionicScrollDelegate, $ionicPopup, KickstarterService) {
+  $ionicScrollDelegate, $ionicPopup, KickstarterService, $ionicLoading) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -43,22 +44,34 @@ export default function($scope, $state, UserService, RoutesService, $q,
     }
   }
 
-  $scope.$watchGroup([()=>KickstarterService.getLelong(), ()=>KickstarterService.getBids(),'data.selectedRegionId'],([lelongRoutes, userBids, selectedRegionId])=>{
-    if (!lelongRoutes) return;
-    $scope.data.kickstarter = _.sortBy(lelongRoutes, 'label');
-    $scope.data.regions = getUniqueRegionsFromRoutes($scope.data.kickstarter);
-    $scope.data.filteredkickstarter = filterRoutesByRegionId($scope.data.kickstarter, +selectedRegionId);
-    if (!userBids)  return;
-    $scope.userBids = userBids;
-    $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
-    var recentAndAvailable = _.partition($scope.data.kickstarter, (x)=>{
-      return _.includes(_.keys($scope.recentBidsById), x.id.toString());
-    });
-    $scope.data.backedKickstarter = recentAndAvailable[0];
-    //don't display it in kickstarter if it's 7 days after expiry
-    $scope.data.kickstarter = recentAndAvailable[1].filter((route)=>!route.is7DaysOld);
-    $scope.data.filteredkickstarter = filterRoutesByRegionId($scope.data.kickstarter, +selectedRegionId);
-    $scope.data.filteredbackedKickstarter = filterRoutesByRegionId($scope.data.backedKickstarter, +selectedRegionId);
+  //show loading spinner for the 1st time
+  $scope.$watch(()=>KickstarterService.getLelong(), (lelongRoutes)=>{
+    if (lelongRoutes.length==0) {
+      $ionicLoading.show({
+        template: loadingTemplate
+      })
+    } else {
+      $ionicLoading.hide();
+    }
+  });
+
+  $scope.$watchGroup([()=>KickstarterService.getLelong(), ()=>KickstarterService.getBids(),'data.selectedRegionId'],
+    ([lelongRoutes, userBids, selectedRegionId])=>{
+      if (lelongRoutes.length==0) return;
+      $scope.data.kickstarter = _.sortBy(lelongRoutes, 'label');
+      $scope.data.regions = getUniqueRegionsFromRoutes($scope.data.kickstarter);
+      $scope.data.filteredkickstarter = filterRoutesByRegionId($scope.data.kickstarter, +selectedRegionId);
+      if (!userBids)  return;
+      $scope.userBids = userBids;
+      $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
+      var recentAndAvailable = _.partition($scope.data.kickstarter, (x)=>{
+        return _.includes(_.keys($scope.recentBidsById), x.id.toString());
+      });
+      $scope.data.backedKickstarter = recentAndAvailable[0];
+      //don't display it in kickstarter if it's 7 days after expiry
+      $scope.data.kickstarter = recentAndAvailable[1].filter((route)=>!route.is7DaysOld);
+      $scope.data.filteredkickstarter = filterRoutesByRegionId($scope.data.kickstarter, +selectedRegionId);
+      $scope.data.filteredbackedKickstarter = filterRoutesByRegionId($scope.data.backedKickstarter, +selectedRegionId);
   })
 
 }
