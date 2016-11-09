@@ -259,6 +259,46 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     };
   };
 
+  // Registration Sequence used for Welcome page (via Referral Link)
+  // Sends verification code
+  var registerViaReferralWelcome = async function(telephoneNumber, refCode, refCodeOwner){
+    console.log("Telephone", telephoneNumber)
+    try {  
+      if (!telephoneNumber) return;
+      $ionicLoading.show({template: requestingVerificationCodeTemplate});
+      await sendTelephoneVerificationCode(telephoneNumber);
+      $ionicLoading.hide();
+
+      // Ask for verification code
+      var verificationCode = await promptVerificationCode(telephoneNumber);
+      if (!verificationCode) return;
+      $ionicLoading.show({template: sendingVerificationCodeTemplate});
+      var user = await verifyTelephone(telephoneNumber, verificationCode.code);
+      $ionicLoading.hide();
+      
+      if(!user.notes){
+        user.notes = { savedRefCodes: {} } 
+      } 
+      user.notes.savedRefCodes[refCode] = refCodeOwner
+      console.log(user)
+
+      // Is the user name null?
+      await checkNewUser(user);
+
+
+
+    }
+    // If an error occurs at any point stop and alert the user
+    catch(error) {
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+        title: "Error while trying to connect to server.",
+        subTitle: error && error.data && error.data.message
+      });
+      throw error; // Allow the calling function to catch the error
+    };
+  }
+
   function register(newUser) {
     return beelineRequest({
       method: 'POST',
@@ -418,6 +458,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     promptUpdatePhone: promptUpdatePhone,
     promptUpdateUserInfo: promptUpdateUserInfo,
     promptLogOut: promptLogOut,
+    registerViaReferralWelcome: registerViaReferralWelcome,
     verifySession: verifySession
   };
 
