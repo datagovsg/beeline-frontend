@@ -40,25 +40,29 @@ $kickstarter-default: lighten($normal-grey,40%);
 }
 
 .start-marker{
-  background-color: $royal;
+  background-color: $kickstarter-default;
   width: $start-size;
   height: $start-size;
   position: relative;
   left: -$start-size/2;
   border-radius: 100%;
+
+  &.started{
+    background-color: $royal;
+  }
+
 }
 
 .milestone {
   position: relative;
   float: right;
   align-self: center;
-  z-index: 15;
+  z-index: 200;
   right: -$milestone-offset;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
-
 
   .milestone-outline {
     width: $milestone-size;
@@ -69,12 +73,8 @@ $kickstarter-default: lighten($normal-grey,40%);
     align-items: center;
     justify-content: center;
 
-    &.activate-low{
-    background: $kickstarter-price-low;
-    }
-
-    &.activate-high{
-    background: $kickstarter-price-high;
+    &.reached{
+      background-color: $royal;
     }
 
     .milestone-inset {
@@ -82,7 +82,7 @@ $kickstarter-default: lighten($normal-grey,40%);
       height: $milestone-size - ($milestone-border*2);
       background: $light;
       border-radius: 100%;
-      z-index: 20;
+      z-index: 200;
       margin: 0 auto;
     }
   }
@@ -125,7 +125,7 @@ $kickstarter-default: lighten($normal-grey,40%);
   height: $progress-bar-height;
   border-radius: $progress-bar-border-radius;
   float: left;
-  z-index: 50;
+  z-index: 0;
   width: 50%;
 
 }
@@ -227,8 +227,8 @@ $kickstarter-default: lighten($normal-grey,40%);
   margin-top: 20px;
   background: #fff;
   .line{
-    border-top: 80px solid #493861;
-    width: 10px;
+    border-top: 30px solid #ccc;
+    width: 1px;
   }
 }
 
@@ -237,7 +237,7 @@ $kickstarter-default: lighten($normal-grey,40%);
   position: relative;
   text-align: center;
   .line{
-    border-top: 80px solid #493861;
-    width: 10px;
+    border-top: 30px solid #ccc;
+    width: 1px;
   }
 }

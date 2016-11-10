@@ -22,11 +22,10 @@
   <!-- default base bar starts -->
   <div class="bar-default" ng-style="{
               width: (pax1/pax1)*100 + '%'}">
-              <div class="start-marker">
-              </div>
+    <div class="start-marker" ng-class="{started: backer1>0}"></div>
     <div class="bar-100">
       <div class="milestone">
-        <div class="milestone-outline">
+        <div class="milestone-outline"  ng-class="{reached: backer1==pax1}">
           <div class="milestone-inset"></div>
         </div>
       </div>
@@ -39,7 +38,8 @@
             width:
 (backer1/pax1)*200 + '%',
             }">
-      <span class="line"></span>{{backer1}} joined
+      <span class="line"></span>
+      <div>{{backer1}} joined</div>
   </div>
 
   <!-- dynamic join line ends here -->
@@ -48,7 +48,7 @@
   <div ng-if="detail" class="needed-label-default">
     <!-- full mark -->
     <div class="bar-100">
-      <div class="needed-label">
+        <div class="needed-label">
         <span class="line"></span>
         <div>{{pax1-backer1}} more</div>
         <div>needed</div>
