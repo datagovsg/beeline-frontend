@@ -29,7 +29,6 @@ export default [
       bid: null,
       calculatedAmount: '',
       bidPrice: null,
-      notExpired: true
     };
     $scope.disp = {
       popupStop: null,
@@ -61,13 +60,6 @@ export default [
       computeStops();
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
       $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
-      if (route.notes && route.notes.lelongExpiry) {
-       var now = new Date().getTime();
-       var expiryTime = new Date(route.notes.lelongExpiry).getTime();
-       if (now > expiryTime) {
-         $scope.book.notExpired = false;
-       }
-      }
     })
 
     $scope.$on('$ionicView.afterEnter', () => {
@@ -124,11 +116,12 @@ export default [
     $scope.showStops = function(){
       $scope.modal.show();
 
-      $scope.$watch('modalMap.control.getGMap', function() {
-        if ($scope.modalMap.control.getGMap) {
+      $scope.$watch(()=>$scope.modalMap.control.getGMap(), function(modalMap) {
+        if (modalMap) {
           console.log("IT's Called here");
+          google.maps.event.trigger(modalMap, 'resize');
           //set modalMap bound
-          $scope.panToStops($scope.modalMap.control.getGMap(), $scope.busStops);
+          $scope.panToStops(modalMap, $scope.busStops);
         }
       });
     };
