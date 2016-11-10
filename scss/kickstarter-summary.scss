@@ -7,4 +7,20 @@
     margin-top: $padding-large-vertical*2;
     margin-bottom: $padding-large-vertical*2;
   }
+
+  .booking-info {
+    margin-top: $padding-large-vertical;
+    margin-bottom: $padding-large-vertical*3;
+    td {
+      text-align: left;
+      &.total-sum{
+        background-color: $table-header-bg;
+        border-top: solid $table-header-border-width $royal !important;
+      }
+      &.right{
+        text-align: right;
+      }
+    }
+  }
+
 }
