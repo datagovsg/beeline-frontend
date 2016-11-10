@@ -159,8 +159,6 @@ export default [
       _.forEach(tiers, function(tier, index){
         if (position == index) {
           $scope.book.bidPrice = $scope.book.bidPrice == price ? null : price;
-        } else {
-          tier.checked = false;
         }
       })
     }

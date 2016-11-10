@@ -219,7 +219,7 @@
           <ion-list>
             <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
               <label class="checkbox">
-                  <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
+                  <input type="checkbox" ng-model="checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
               </label>
               <span>I am willing to pre-order {{book.route.notes.noPasses}} trips at ${{ item.price | number:2 }} per trip.</span>
             </ion-item>
