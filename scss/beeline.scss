@@ -119,16 +119,21 @@
   }
 }
 
+/* referenced by kickstarter, price calculator and selected dates  */
+
 table.booking-info {
+  width: 100%;
   th {
     font-weight: normal;
     background-color: $table-header-bg;
     color: $royal;
     padding: $table-cell-padding;
     border-bottom: solid $table-header-border-width $royal;
+    text-align: center;
   }
 
   td {
+    text-align: center;
     padding: $table-cell-padding;
     border-bottom: $table-cell-border-width solid $light-grey;
     vertical-align: middle;

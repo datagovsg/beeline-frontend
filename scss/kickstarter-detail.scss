@@ -59,20 +59,19 @@
     }
   }
 
-}
-
-/* View trip dates scss */
-#pg_kickstarter_dates {
-
-  table.pax-table{
-    width: 100%;
-  }
-  table.booking-info{
-    td{
-      text-align: center;
+  .booking-info {
+    margin-top: $padding-large-vertical;
+    margin-bottom: $padding-large-vertical*3;
+    &.criteria{
+      td,
+      th{
+        width: 33.3%;
+      }
     }
   }
 
+}
+/* 
   .select-bid{
     h3{
       margin-top: $padding-small-horizontal*2;
@@ -82,8 +81,6 @@
       margin-top: 1.5em;
     }
   }
-
-}
 
 .kickstarter-dates-row {
   display: flex;
@@ -116,7 +113,7 @@
     font-size: $font-size-large;
     left: $padding-large-horizontal;
   }
-}
+} */
 
 .charge-note{
   margin-top: $padding-large-vertical;
