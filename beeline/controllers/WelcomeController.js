@@ -1,22 +1,34 @@
 const queryString = require('querystring')
 
-export default['$scope', '$state', '$stateParams', 'UserService', 'LoginDialog',
-async function($scope, $state, $stateParams, UserService, LoginDialog) {
-	console.log("StateParams",$stateParams)
+export default['$scope', '$state', '$stateParams', '$ionicPopup', 'UserService', 'LoginDialog', 
+async function($scope, $state, $stateParams, $ionicPopup, UserService, LoginDialog) {
+	// Verify if refCode is provided
+	if($stateParams.refCode){
+		$scope.refCode = $stateParams.refCode;
+	} else {
+		$ionicPopup.alert({
+			title: "Invalid Link",
+			subTitle: "You will now be sent back to the main page"
+		}).then(() => $state.go('tabs.routes'))
+	}
 
-	$scope.refCode = $stateParams.refCode || null;
-	// $scope.refCode = $stateParams.refCode || throw Error("No referral code provided");
-
+	// Check if the refCode is valid by retrieving user data to be displayed
 	if($scope.refCode){
 		var query = queryString.stringify({code: $scope.refCode})
 
-		var result = await UserService.beeline({
+		var refCodeOwner = await UserService.beeline({
 			method: 'GET',
-			url: '/promotions/getRefCodeOwner?'+query,
+			url: '/promotions/refCodeOwner?'+query,
 		});
 
-		$scope.refCodeOwner = result.data || null;
-		// $scope.refCodeOwner = result.data || throw Error("Invalid referral code");
+		if(refCodeOwner.data){
+			$scope.refCodeOwner = refCodeOwner.data	
+		} else {
+			$ionicPopup.alert({
+				title: "Invalid Referral Code",
+				subTitle: "You will now be sent back to the main page"
+			}).then(() => $state.go('tabs.routes'))
+		}
 		
 	} 
 	// if refCode is null OR if refCodeOwner is null, throw error
