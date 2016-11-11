@@ -12,7 +12,9 @@
         <i class="icon activebid">
             <img src="img/icon_kickstarter_status.svg">
         </i>
-      Campaign has expired
+        Campaign has expired.
+        <span ng-if="book.route.notes.tier[0].count>=book.route.notes.tier[0].pax">Route is activated.</span>
+        <span ng-if="book.route.notes.tier[0].count<book.route.notes.tier[0].pax">Route is not activated.</span>
     </div>
     <div class="item kickstarter-breadcrumbs"ng-if="!book.route.isExpired">
       <img src="img/KickstarterProgressBar02_RouteDetails.svg" />
