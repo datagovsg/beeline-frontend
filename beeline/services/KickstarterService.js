@@ -64,6 +64,7 @@ var increaseBidNo = function(route, price) {
   for (let tier of route.notes.tier) {
     if (tier.price <= price) {
       tier.count++;
+      tier.moreNeeded--;
     }
   }
 }

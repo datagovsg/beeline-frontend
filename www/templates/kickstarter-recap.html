@@ -17,13 +17,13 @@
           {{ book.route.label }}
         </route-item-bus-number>
         <route-item-start-time>
-          {{book.boardStop.time | formatTime:true}}
+          {{ book.route | routeStartTime | formatTime:true }}
         </route-item-start-time>
         <route-item-start-location>
           {{ book.route.from }}
         </route-item-start-location>
         <route-item-end-time>
-          {{book.alightStop.time | formatTime:true}}
+          {{ book.route | routeEndTime | formatTime:true }}
         </route-item-end-time>
         <route-item-end-location>
           {{ book.route.to }}
