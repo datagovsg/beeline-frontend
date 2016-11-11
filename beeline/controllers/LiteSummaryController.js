@@ -78,7 +78,7 @@ export default [
       $scope.book.route = route[$scope.book.label];
       var runningTrips = $scope.book.route.trips.filter((trip)=>trip.isRunning);
       $scope.availableTrips = runningTrips[0] && $scope.book.route.trips.filter(lr=>lr.date==runningTrips[0].date);
-      return $scope.nextAvailableTrip
+      return $scope.availableTrips
     });
 
     var mapPromise = new Promise(function(resolve) {
