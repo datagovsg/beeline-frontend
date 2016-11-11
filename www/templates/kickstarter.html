@@ -72,10 +72,10 @@
                 <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
-                {{route.daysLeft}} days left to activate
+                Campaign ends in {{route.daysLeft}} days
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
-                {{route.daysLeft}} day left to activate
+                Campaign ends in {{route.daysLeft}} day
               </span>
               <span class="mini-info" ng-if="route.isExpired">
                 Campaign has expired
@@ -86,7 +86,7 @@
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
               <span class="mini-info">
-                Start on {{route.trips[0].date | date:'dd MMM yyyy'}} if activated
+                Route starts on {{route.trips[0].date | date:'dd MMM yyyy'}} if activated
               </span>
             </div>
 
@@ -109,14 +109,8 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
               </span>
-              <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
-                You joined this route at ${{recentBidsById[route.id].bidPrice | number:2 }} per ride.
-              </span>
-              <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
-                {{route.daysLeft}} day left to activate
-              </span>
-              <span class="mini-info" ng-if="route.isExpired">
-                Campaign has expired
+              <span class="mini-info">
+                You pre-ordered a pass for {{route.notes.noPasses}} trips.
               </span>
             </div>
 
@@ -173,10 +167,10 @@
                 <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
-                {{route.daysLeft}} days left to activate
+                Campaign ends in {{route.daysLeft}} days
               </span>
               <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
-                {{route.daysLeft}} day left to activate
+                Campaign ends in  {{route.daysLeft}} day
               </span>
               <span class="mini-info" ng-if="route.isExpired">
                 Campaign has expired

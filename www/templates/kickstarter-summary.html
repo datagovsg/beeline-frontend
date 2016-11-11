@@ -5,8 +5,11 @@
     </button>
   </ion-nav-buttons>
   <ion-content class="has-header">
+    <div class="item kickstarter-breadcrumbs">
+      <img src="img/KickstarterProgressBar03_ReviewPreorder.svg" />
+    </div>
     <div class="item">
-      <h3 class="item-subtitle">Pre-order Trip Pass </h3>
+      <div class="item-subtitle">Trip Pass Price Calculator </div>
       <table class="booking-info">
         <tr>
           <td><b>No. of Trips</b></td>
@@ -22,25 +25,30 @@
         </tr>
       </table>
     </div>
-
     <div class="item item-text-wrap">
-      <div class="charge-note">
-        <h3 class="item-subtitle">When will payment be charged?</h3>
+      <div class="item-subtitle">
+      When will payment be deducted?
+      </div>
+      <div class="kickstarter-info">
         <p>
-          This campaign ends on <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>. Payment for the <strong>{{book.route.notes.noPasses}} trips</strong> will only be deducted at the end of the campaign if the route is activated.
+          This campaign ends in <span ng-if="book.route.daysLeft && book.route.daysLeft>1">{{book.route.daysLeft}} days</span>
+            <span ng-if="book.route.daysLeft && book.route.daysLeft==1">{{book.route.daysLeft}} day</span>. Payment for the  <strong>pass for {{book.route.notes.noPasses}} trips</strong> will only be deducted at the end of the campaign if the route is activated. You will not be charged if the route does not activate by <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>.
         </p>
-        <br />
         <p>
-          No one will be charged for the route unless it is activated. You will only be charged the unlocked price if it matches or is lower than your pledged amount per ride.
+          If activated, you will receive the pass in your account and you can use it to <strong>book any {{book.route.notes.noPasses}} trips within the 1st month</strong> of the activated route.
+        </p>
+        <p>
+          You will be notified via email about the route status as well.
         </p>
       </div>
     </div>
+
     <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
     </company-info-broker>
 
 
     <div class="item">
-      <h3 class="item-subtitle">Operated by</h3>
+      <div class="item-subtitle">Operated by</div>
       <div class="row">
         <div class="col-20 bus-logo">
           <img ng-src="{{book.companyInfo.id | companyLogo}}">

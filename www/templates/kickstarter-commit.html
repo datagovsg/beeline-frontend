@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_commit" view-title="Joined Route" hide-back-button="true">
+<ion-view id="pg_kickstarter_commit" view-title="Pre-order Success" hide-back-button="true">
   <ion-nav-buttons side="right">
     <button class="button button-clear"
        ui-sref="tabs.kickstarter">
@@ -6,14 +6,14 @@
     </button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-        <div class="item item-text-wrap">
-          You are in! You pledge to book this kickstarter route at ${{book.bidPrice | number:2}}
-          per trip for {{book.route.notes.noPasses}} trips!</br></br>
-          You will be notified via email about the route status when the kickstarter ends on
-          {{book.route.notes.lelongExpiry | date:'dd MMM'}}.</br></br>
-          You will only be charged the lowest unlocked price, when the route activates.
+        <div class="item item-icon-left item-text-wrap">
+            <i class="icon activebid">
+                <img src="img/icon_kickstarter_activebid.svg">
+            </i>
+            You pre-ordered a pass for {{book.route.notes.noPasses}} trips on this route at ${{book.bidPrice | number:2}} per trip.
+            <span ng-if="book.route.notes.tier[0].count>=book.route.notes.tier[0].pax">Route is activated. Payment will be deducted when campaign ends and and you will receive the pass.</span>
+            <span ng-if="book.route.notes.tier[0].count<book.route.notes.tier[0].pax">Route is not activated yet.</span>
         </div>
-
         <div class="item">
           <route-item>
             <route-item-bus-number>
@@ -58,6 +58,14 @@
                   Campaign has expired
                 </span>
               </div>
+              <div class="icon-and-schedule">
+                <span class="icon-span">
+                  <img class="mini-icon" src="img/icon_schedule.svg">
+                </span>
+                <span class="mini-info">
+                  Start on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
+                </span>
+              </div>
             </route-item-additional-info>
           </route-item>
 
@@ -67,6 +75,50 @@
             detail=true
             needed="book.route.notes.tier[0].moreNeeded">
           </progress-bar>
+          <div class="icon-and-schedule">
+            <span class="icon-span">
+              <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+            </span>
+            <span class="mini-info">
+              {{book.route.status}}
+            </span>
+          </div>
+        </div>
+        <div class="item item-text-wrap">
+          <div class="item-subtitle">
+          What happens next?
+          </div>
+          <div class="kickstarter-info">
+            <p>
+              You have pre-ordered a <strong> pass for {{book.route.notes.noPasses}} trips</strong> to show your support to activate this route. When <strong>{{book.route.notes.tier[0].pax}} people</strong> pre-order the pass, this route will activate.
+            </p>
+            <p>
+                If the route is activated, it will
+            </p>
+            <div class="features">
+              <ul>
+                <li>
+                start on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong>
+                </li>
+                <li>
+                run every Mon - Fri, except public holidays
+                </li>
+                <li>
+                operate for at least a month.
+                </li>
+              </ul>
+            </div>
+            <p>
+              This campaign ends in <span ng-if="book.route.daysLeft && book.route.daysLeft>1">{{book.route.daysLeft}} days</span>
+                <span ng-if="book.route.daysLeft && book.route.daysLeft==1">{{book.route.daysLeft}} day</span>. Payment for the  <strong>pass for {{book.route.notes.noPasses}} trips</strong> will only be deducted at the end of the campaign if the route is activated. You will not be charged if the route does not activate by <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>.
+            </p>
+            <p>
+              If activated, you will receive the pass in your account after payment is deducted. You can use it to <strong>book any {{book.route.notes.noPasses}} trips within the 1st month</strong> of the activated route.
+            </p>
+            <p>
+                You will be notified via email about the route status as well.
+            </p>
+          </div>
         </div>
           <div class="item item-text-wrap">
             <div class="share-box">
