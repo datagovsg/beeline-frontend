@@ -165,6 +165,19 @@ $kickstarter-default: lighten($normal-grey,40%);
   align-items: center;
   line-height: 15px;
 
+    &.activated {
+      background: $royal;
+      &::after{
+        border-top: 15px solid $royal;
+      }
+      .ride-price {
+        color: $light;
+      }
+      .per-ride {
+        color: $light;
+      }
+    }
+
     &::after {
     top: 100%;
     left: 50%;
@@ -178,6 +191,7 @@ $kickstarter-default: lighten($normal-grey,40%);
     border-right: 5px solid transparent;
     border-top: 15px solid #ccc;
     margin-left: -5px;
+
   }
   .ride-price{
     font-size: $font-size-base;
