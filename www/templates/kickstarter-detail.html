@@ -127,9 +127,9 @@
           </route-item-additional-info>
         </route-item>
 
-        <progress-bar backer1={{book.route.notes.tier[0].count}}
-          price1={{book.route.notes.tier[0].price}}
-          pax1={{book.route.notes.tier[0].pax}}
+        <progress-bar backer1="book.route.notes.tier[0].count"
+          price1="book.route.notes.tier[0].price"
+          pax1="book.route.notes.tier[0].pax"
           detail=true>
         </progress-bar>
         <div class="icon-and-schedule">
@@ -185,7 +185,7 @@
           Number of people who pre-purchased passes.
           <br />
           <br />
-          <table class="pax-table booking-info">
+          <table class="booking-info criteria">
             <thead>
               <tr>
                 <th>Price per ride<br />of activated route</th>
@@ -219,7 +219,7 @@
           <ion-list>
             <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
               <label class="checkbox">
-                  <input type="checkbox" ng-model="item.checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
+                  <input type="checkbox" ng-model="checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
               </label>
               <span>I am willing to pre-order {{book.route.notes.noPasses}} trips at ${{ item.price | number:2 }} per trip.</span>
             </ion-item>

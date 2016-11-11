@@ -17,12 +17,18 @@
                           options="modalMap.options"
                           data-tap-disabled="true">
         <my-location></my-location>
-        <ui-gmap-marker ng-repeat="stop in busStops"
-                        idkey="stop.id"
-                        coords="stop.coordinates"
-                        options="markerOptions"
-                        ng-click="selectStop($event, stop)">
-        </ui-gmap-marker>
+        <ui-gmap-marker
+          ng-repeat="stop in book.boardStops"
+          idKey="stop.id"
+          coords="stop.coordinates"
+          options="map.markerOptions.boardMarker"
+        ></ui-gmap-marker>
+        <ui-gmap-marker
+          ng-repeat="stop in book.alightStops"
+          idKey="stop.id"
+          coords="stop.coordinates"
+          options="map.markerOptions.alightMarker"
+        ></ui-gmap-marker>
 
         <ui-gmap-marker ng-if="data.selectedStop"
                         idkey="'selectedStopPin'"

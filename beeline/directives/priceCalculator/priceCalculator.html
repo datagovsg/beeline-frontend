@@ -6,7 +6,7 @@
     <ion-spinner></ion-spinner>
       Calculating prices...
   </div>
-  <table class="price-table prices booking-info">
+  <table class="booking-info prices">
     <thead>
       <tr ng-if="booking.selectedDates.length != 0">
         <th>Selected Dates</th>
@@ -38,7 +38,7 @@
     </tbody>
   </table>
   <h3 class="item-subtitle">Price Calculator </h3>
-  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+  <table class="booking-info totals" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
         <th>Total Trips</th>

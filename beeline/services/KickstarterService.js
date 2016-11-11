@@ -10,7 +10,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
       kickstarter.notes.tier.map((tier)=>{
         var countCommitted = bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0;
         _.assign(tier, {count: countCommitted,
-                        moreNeeded: tier.pax-countCommitted})
+                        moreNeeded: Math.max(tier.pax-countCommitted, 0)})
       })
     } else {
       kickstarter.notes.tier.map((tier)=>{
