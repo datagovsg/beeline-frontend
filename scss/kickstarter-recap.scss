@@ -9,4 +9,21 @@
   table {
     width: 100%;
   }
+
+  button{
+    margin-top: $padding-large-vertical*2;
+    margin-bottom: $padding-large-vertical*3;
+  }
 }
+
+
+  .kickstarter-info{
+    margin-bottom: $padding-large-vertical*3;
+      p{
+        color: $dark;
+        padding-bottom: $padding-large-vertical*2;
+      }
+      .features{
+        padding-bottom: $padding-large-vertical*2;
+      }
+  }

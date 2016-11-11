@@ -267,9 +267,10 @@ input[type="color"] {
 }
 
 .item-subtitle {
-    color: $normal-grey;
-    padding-top:  $padding-large-vertical;
-    padding-bottom: $padding-large-vertical*1.5;
+    color: $hint-color;
+    font-size: $font-size-large;
+    padding-top:  $padding-large-vertical*2;
+    padding-bottom: $padding-large-vertical*3;
 }
 
 textarea{
