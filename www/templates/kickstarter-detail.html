@@ -14,6 +14,9 @@
         </i>
       Campaign has expired
     </div>
+    <div class="item kickstarter-breadcrumbs"ng-if="!book.route.isExpired">
+      <img src="img/KickstarterProgressBar02_RouteDetails.svg" />
+    </div>
 
       <!-- contains the map, the stop selectors
         and the locate me button -->
@@ -107,10 +110,10 @@
                 <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
               </span>
               <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft>1">
-                {{book.route.daysLeft}} days left to activate
+                Campaign ends in {{book.route.daysLeft}} days
               </span>
               <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft==1">
-                {{book.route.daysLeft}} day left to activate
+                Campaign ends in {{book.route.daysLeft}} day
               </span>
               <span class="mini-info" ng-if="book.route.isExpired">
                 Campaign has expired
@@ -121,7 +124,7 @@
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
               <span class="mini-info">
-                Start on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
+                Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
               </span>
             </div>
           </route-item-additional-info>

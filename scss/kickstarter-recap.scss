@@ -18,7 +18,7 @@
 
 
   .kickstarter-info{
-    margin-bottom: $padding-large-vertical*3;
+    margin-bottom: $padding-large-vertical*2;
       p{
         color: $dark;
         padding-bottom: $padding-large-vertical*2;
@@ -26,4 +26,15 @@
       .features{
         padding-bottom: $padding-large-vertical*2;
       }
+  }
+
+.kickstarter-breadcrumbs {
+    &.item {
+      padding: $content-padding;
+      img {
+        height: $breadcrumbs-height - 2 * $content-padding;
+        display: block;
+        margin: auto;
+      }
+    }
   }
