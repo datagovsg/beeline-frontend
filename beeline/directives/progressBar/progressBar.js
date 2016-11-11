@@ -10,12 +10,13 @@ export default [
         pax1: '<',
         price1: '<',
         detail: '<',
+        needed: '<',
       },
       link: function(scope, elem, attr) {
         scope.$watchGroup(['backer1', 'pax1'], () => {
-          scope.moreNeeded = Math.max((scope.pax1-scope.backer1), 0);
-          if (!isFinite(scope.moreNeeded))
-            scope.moreNeeded = '';
+          scope.percentage = Math.min((scope.backer1/scope.pax1), 1);
+          // if (!isFinite(scope.moreNeeded))
+          //   scope.moreNeeded = '';
         })
       }
     }

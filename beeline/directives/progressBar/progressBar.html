@@ -2,7 +2,7 @@
   <!-- price label starts -->
   <div class="bar-label-default" ng-if="detail">
     <div class="bar-100">
-      <div class="price-label">
+      <div class="price-label" ng-class="{activated: needed==0}">
         <div class="ride-price">${{price1| number:2}}</div>
         <div class="per-ride">per ride</div>
       </div>
@@ -13,7 +13,7 @@
   <!-- dynamic bar starts -->
   <div class="backer-progress">
     <div class="backer-high" ng-style="{
-             width: (backer1/pax1 * 100) + '%',
+             width: (percentage * 100) + '%',
              }">
     </div>
   </div>
@@ -25,7 +25,7 @@
     <div class="start-marker" ng-class="{started: backer1>0}"></div>
     <div class="bar-100">
       <div class="milestone">
-        <div class="milestone-outline"  ng-class="{reached: backer1>=pax1}">
+        <div class="milestone-outline"  ng-class="{reached: needed==0}">
           <div class="milestone-inset"></div>
         </div>
       </div>
@@ -50,7 +50,7 @@
     <div class="bar-100">
         <div class="needed-label">
         <span class="line"></span>
-        <div>{{moreNeeded}} more</div>
+        <div>{{needed}} more</div>
         <div>needed</div>
       </div>
     </div>

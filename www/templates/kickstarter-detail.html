@@ -130,7 +130,8 @@
         <progress-bar backer1="book.route.notes.tier[0].count"
           price1="book.route.notes.tier[0].price"
           pax1="book.route.notes.tier[0].pax"
-          detail=true>
+          detail=true
+          needed="book.route.notes.tier[0].moreNeeded">
         </progress-bar>
         <div class="icon-and-schedule">
           <span class="icon-span">
@@ -202,7 +203,7 @@
                   {{tier.count}} of {{tier.pax}} pax
                 </td>
                 <td>
-                  {{tier.pax - tier.count}} more needed
+                  {{tier.moreNeeded}} more needed
                 </td>
               </tr>
             </tbody>
