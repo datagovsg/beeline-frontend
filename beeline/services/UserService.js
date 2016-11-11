@@ -260,9 +260,9 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   };
 
   // Registration Sequence used for Welcome page (via Referral Link)
-  // Sends verification code
+  // Verifies telephone number and prompts for name and email for registration
+  // Saves referral code to user data
   var registerViaReferralWelcome = async function(telephoneNumber, refCode, refCodeOwner){
-    console.log("Telephone", telephoneNumber)
     try {  
       if (!telephoneNumber) return;
       $ionicLoading.show({template: requestingVerificationCodeTemplate});
@@ -276,16 +276,9 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       var user = await verifyTelephone(telephoneNumber, verificationCode.code);
       $ionicLoading.hide();
       
-      if(!user.notes){
-        user.notes = { savedRefCodes: {} } 
-      } 
-      user.notes.savedRefCodes[refCode] = refCodeOwner
-      console.log(user)
-
       // Is the user name null?
       await checkNewUser(user);
-
-
+      await saveRefCode(refCode, refCodeOwner)
 
     }
     // If an error occurs at any point stop and alert the user
@@ -297,6 +290,22 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       });
       throw error; // Allow the calling function to catch the error
     };
+  }
+
+  // Saves refCode into user's notes, along with relevant
+  // data on the owner of the refCode
+  // Input:
+  // - refCode - String: referral code
+  // - refCodeOwner - Obj: {name, referrerId}
+  async function saveRefCode(refCode, refCodeOwner){
+    return beelineRequest({
+      method: "PUT",
+      url: "/user/referralCode",
+      data: {
+        refCode: refCode,
+        refCodeOwner: refCodeOwner,
+      }
+    })
   }
 
   function register(newUser) {
