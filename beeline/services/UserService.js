@@ -79,6 +79,17 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       window.localStorage.setItem('sessionToken', sessionToken);
       user = response.data.user;
       window.localStorage.setItem('beelineUser', JSON.stringify(user));
+
+      // beelineRequest({
+      //   // get user's refCode
+      //   url: '/user/getReferralCode',
+      //   method: 'GET',
+      // })
+      // .then(refcode => {
+      //   console.log("Called")
+      //   user.refCode = refcode
+      // });
+
       return user;
     });
   };
@@ -278,8 +289,9 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       
       // Is the user name null?
       await checkNewUser(user);
-      await saveRefCode(refCode, refCodeOwner)
-
+      if(refCode && refCodeOwner){
+        await saveRefCode(refCode, refCodeOwner)  
+      }
     }
     // If an error occurs at any point stop and alert the user
     catch(error) {

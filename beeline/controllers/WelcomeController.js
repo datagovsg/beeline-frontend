@@ -1,37 +1,38 @@
 const queryString = require('querystring')
 
-export default['$scope', '$state', '$stateParams', '$ionicPopup', 'UserService', 'LoginDialog', 
-async function($scope, $state, $stateParams, $ionicPopup, UserService, LoginDialog) {
-	// Verify if refCode is provided
-	if($stateParams.refCode){
-		$scope.refCode = $stateParams.refCode;
-	} else {
-		$ionicPopup.alert({
-			title: "Invalid Link",
-			subTitle: "You will now be sent back to the main page"
-		}).then(() => $state.go('tabs.routes'))
-	}
+export default['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'UserService', 'LoginDialog', 
+async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserService, LoginDialog) {
+	$scope.$on('$ionicView.beforeEnter', async function(){
+		// Verify if refCode is provided
+		$scope.isLoaded = false;
+		$scope.isValidReferral = false;
+		$ionicLoading.show()
 
-	// Check if the refCode is valid by retrieving user data to be displayed
-	if($scope.refCode){
-		var query = queryString.stringify({code: $scope.refCode})
-
-		var refCodeOwner = await UserService.beeline({
-			method: 'GET',
-			url: '/promotions/refCodeOwner?'+query,
-		});
-
-		if(refCodeOwner.data){
-			$scope.refCodeOwner = refCodeOwner.data	
+		if($stateParams.refCode){
+			$scope.refCode = $stateParams.refCode;
+			$scope.isValidReferral = true;
 		} else {
-			$ionicPopup.alert({
-				title: "Invalid Referral Code",
-				subTitle: "You will now be sent back to the main page"
-			}).then(() => $state.go('tabs.routes'))
+			$scope.isValidReferral = false;
 		}
-		
-	} 
-	// if refCode is null OR if refCodeOwner is null, throw error
+
+		if($scope.isValidReferral){
+			var query = queryString.stringify({code: $scope.refCode})
+
+			var refCodeOwner = await UserService.beeline({
+				method: 'GET',
+				url: '/promotions/refCodeOwner?'+query,
+			});
+
+			if(refCodeOwner.data){
+				$scope.refCodeOwner = refCodeOwner.data	
+			} else {
+				$scope.isValidReferral = false;
+			}
+		} 
+
+		$ionicLoading.hide();
+		$scope.isLoaded = true;
+	});
 
 	$scope.data = {}
 

@@ -1,15 +1,15 @@
 <ion-view view-title="Welcome to Beeline">
   <ion-content class="welcome-page">
-    <div class="card welcome-content">
+    <div class="card welcome-content" ng-if='isLoaded'>
       <div class="item item-text-wrap" ng-form="form.validation">
         <h1 class="text-center">Welcome to Beeline</h1>
-          <p>
+          <p ng-if='isValidReferral'>
             Your friend, {{ refCodeOwner.name }}, would like you to try Beeline.
           </p>
           <p>
             Beeline is Singapore's first marketplace for crowdsourced bus services. Our bus routes are derived from analysing transportation data and community demand.
           </p>
-        <h2 class="text-center">
+        <h2 class="text-center" ng-if='isValidReferral'>
           Register now with Beeline to claim $10 worth of ride credits.
         </h2>
         <p>
