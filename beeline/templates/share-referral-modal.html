@@ -5,11 +5,20 @@
     </button>
   </ion-header-bar>
   <ion-content>
-    <div>
-      <p>{{ referralSharing.referralBenefitsMsg }}</p>
-      <p>{{ user.referralCode.code }}</p>
+    <div class="item item-text-wrap">
+      <p>{{ referralSharing.instructions_msg }}</p>
+      <label class="item item-input">
+        {{ user.referralCode.code }}  
+      </label>
       <p>
-        <button ng-click="copyToClipboard(referralSharing.referralBenefitsMsg)">Copy</button>
+        <button ng-if="!hasCordova" class="button button-block button-royal" ngclipboard data-clipboard-text="{{ referralSharing.invitation_msg + referralSharing.invitation_msg_url  }}">Copy</button>
+        <button ng-if="hasCordova" class="button button-block button-royal" >Share</button>
+
+        <a href="http://www.facebook.com/sharer.php?u=beeline.sg">
+          <i class="icon ion-social-facebook" target="_blank"></i>
+        </a>
+
+        
       </p>
 
     </div>

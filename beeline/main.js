@@ -23,6 +23,7 @@ var app = angular.module('beeline', [
   'ngCordova',
   'uiGmapgoogle-maps',
   'multipleDatePicker',
+  'ngclipboard',
 ])
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)

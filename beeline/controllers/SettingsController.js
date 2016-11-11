@@ -12,16 +12,20 @@ export default [
     $scope, UserService, $ionicModal, $ionicPopup, Legalese) {
     $scope.data = {};
 
-    $scope.referralSharing = {
-      referralBenefitsMsg: "Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.",
-
-    }
+    $scope.hasCordova = !!window.cordova || false
 
     // Track the login state of the user service
     $scope.$watch(function() {
       return UserService.getUser();
     }, function(newUser) {
       $scope.user = newUser;
+
+      $scope.referralSharing = {
+        instructions_msg: "Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.",
+        invitation_msg: "Here is FREE $10 credits for you to try out Beeline rides, a marketplace for crowdsourced bus services. Visit "  ,        
+        invitation_msg_url: "https://app.beeline.sg/#/welcome?refCode="+$scope.user.referralCode.code,        
+      }
+
     });
 
     // Map in the login items
@@ -82,10 +86,5 @@ export default [
       $scope.contactUsModal.destroy();
       $scope.shareReferralModal.destroy();
     });
-
-
-    $scope.copyToClipboard = function(text){
-      console.log("Function is working.")
-    }
 
   }];
