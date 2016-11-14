@@ -17,6 +17,7 @@ export default function(LiteRoutesService, $timeout) {
           scope.dailyTrips = [];
           return;
         }
+        scope.pingLoopRunning = true;
         grabTrips(label);
       });
 
