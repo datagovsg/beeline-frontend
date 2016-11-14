@@ -96,7 +96,7 @@ var app = angular.module('beeline', [
 .directive('mapBusStops', require('./directives/mapBusStops').default)
 .directive('dynamicSignage', require('./directives/dynamicSignage.js').default)
 .directive('beelineBindHtml', require('./directives/beelineBindHtml.js').default)
-.directive('dailyTrips', require('./directives/dailyTrips.js').default)
+.directive('dailyTripsBroker', require('./directives/dailyTripsBroker.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
