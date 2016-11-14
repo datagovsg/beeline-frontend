@@ -5,28 +5,37 @@
   // Get the Region filter to be center aligned
   // Use % widths on both components to get them roughly to the center
   // Using this method since it's easily compatible with the ionic structure
-  .item-select {
-    $input-label-width: 40%;
-    .input-label {
-      width: $input-label-width;
-      max-width: none;
-      text-align: right;
-      font-size: $font_size_base;
+  .region-filter {
+    flex: 0 0 ($line-height-computed + $content-padding * 2);
+    display: flex;
+    flex-direction: row;
+
+    .item-input {
+      flex: 1 1 50%;
+      padding-right: $line-height-computed;
+
+      input {
+        text-align: left;
+      }
     }
-    // Get the select option to center align too
-    select {
-      width: 100% - $input-label-width;
-      padding-right: 0; // Remove right padding since we're centre aligning now
-      direction: ltr;
+    .item-select {
+      flex: 1 1 50%;
+
+      select {
+        padding: inherit;
+        width: 100%;
+        max-width:none;
+      }
+
+      &:after { display: none; }
     }
-    // Hide the "down caret" dropdown icon
-    &:after { display: none; }
   }
 
-  .item {
-    flex: none;
-  }
   .list {
     flex: 1 1 auto;
+  }
+
+  .not-found-message {
+    padding: $content-padding*4;
   }
 }
