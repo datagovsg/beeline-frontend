@@ -1,4 +1,6 @@
-export default function(TripService, uiGmapGoogleMapApi, $timeout, SafeInterval) {
+import {SafeInterval} from '../SafeInterval';
+
+export default function(TripService, uiGmapGoogleMapApi, $timeout) {
   return {
     replace: false,
     template: `
@@ -13,7 +15,6 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout, SafeInterval)
                     icon="busLocation.icon"></ui-gmap-marker>
     `,
     scope: {
-      route: '<',
       availableTrips: '<',
     },
     link: function(scope, element, attributes) {
@@ -37,12 +38,6 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout, SafeInterval)
       }
 
       scope.recentPings = [];
-      scope.timeout;
-
-      scope.$watch('route', (route) => {
-        if (!route) return;
-        pingLoop();
-      });
 
       scope.$watch('availableTrips', (availableTrips) => {
         if (!availableTrips) return;
@@ -87,18 +82,18 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout, SafeInterval)
         }
       });
 
+      scope.timeout = new SafeInterval(pingLoop, 8000, 1000);
+
       scope.$on("killPingLoop", () => {
-        scope.timeout.pause();
+        scope.timeout.stop();
       });
 
       scope.$on("startPingLoop", () => {
-        if (!scope.route && scope.timeout) return;
-        scope.timeout = new SafeInterval(pingLoop, 8000);
+        scope.timeout.start();
       });
 
       function pingLoop() {
-        console.log("PING LOOP");
-        return Promise.all(scope.availableTrips.map((trip, index)=>{
+        return Promise.all(scope.availableTrips.map((trip, index) => {
           return TripService.DriverPings(trip.id)
           .then((info) => {
             /* Only show pings from the last 5 minutes */
@@ -109,12 +104,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout, SafeInterval)
               .slice(0,13);
           })
         }))
-        .catch((error)=>{
-          scope.timeout.pause();
-          scope.timeout =  new SafeInterval(pingLoop, 1000);
-        }) // catch all errors
       }
-
     },
   };
 }
