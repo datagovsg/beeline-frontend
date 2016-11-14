@@ -1,7 +1,7 @@
 import assert from 'assert';
 export default function SafeInterval() {
-
-    function SafeInterval(fn, interval) {
+  class SafeInterval {
+    constructor(fn, interval) {
       console.log("START");
       this.isRunning = true;
 
@@ -17,20 +17,19 @@ export default function SafeInterval() {
 
       this.loop();
     }
-
-    SafeInterval.prototype = {
-      constructor: SafeInterval,
-      pause: function(){
-        console.log("PAUSE");
-        this.isRunning = false;
-        clearTimeout(this.timeout);
-      },
-      resume: function(){
-        assert (!this.isRunning);
-        this.isRunning = true;
-        this.loop();
-      }
+      
+    pause(){
+      console.log("PAUSE");
+      this.isRunning = false;
+      clearTimeout(this.timeout);
     }
-
-    return SafeInterval
+      
+    resume(){
+      assert (!this.isRunning);
+      this.isRunning = true;
+      this.loop();
+    }
+  }
+  
+  return SafeInterval
 }
