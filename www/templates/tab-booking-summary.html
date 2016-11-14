@@ -97,6 +97,11 @@
         </label>
         <button type="button" ng-click="addPromoCode()" class='button button-royal' >Apply</button>
       </div>
+      <div ng-if="book.promoCodes.length > 1">
+        <div ng-repeat="pCode in book.promoCodes">
+          <input type="radio" ng-model="book.currentPromoCode" value="{{pCode.refCode}}" ng-change="selectCode(pCode.refCode)" > {{pCode.name + " : " + pCode.refCode}}
+        </div>
+      </div>
     </section>
 
 <!--     <section class="card" ng-if="userCredits > 0">

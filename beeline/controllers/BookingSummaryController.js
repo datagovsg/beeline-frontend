@@ -2,6 +2,7 @@ import assert from 'assert';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 import loadingTemplate from '../templates/loading.html';
 import _ from 'lodash';
+const queryString = require('querystring')
 
 export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
@@ -20,7 +21,6 @@ export default [
       route: null,
       qty: 1,
       waitingForPaymentResult : false,
-      promoCodes: [],
       currentPromoCode: "",
       promoCode: undefined,
       selectedDates: [],
@@ -62,11 +62,76 @@ export default [
       $scope.book.features = features;
     })
 
+    // On entering page, 
+    // Retrieve saved referral codes of the user and select 
+    // the first one in the list
+    $scope.$on('$ionicView.beforeEnter', async function(){
+      var codeOwnerMap = (await getReferralCodes()).data
+      $scope.book.promoCodes = processCodeOwnerMap(codeOwnerMap)
+      if($scope.book.promoCodes.length>0){
+        $scope.book.currentPromoCode = $scope.book.promoCodes[0].refCode
+        $scope.book.promoCode = $scope.book.promoCodes[0].refCode
+      }
+    });
+
+    // Retrieves the list of referral codes saved for the user
+    // Returns an Obj: Key = referral code, value = Owner information
+    var getReferralCodes = async function() {
+      return UserService.beeline({
+        method: "GET",
+        url: "/user/referralCodes",
+      })
+    }
+
+    // makes the promo code that's selected in the radio list 
+    // the primary promo code to be used for the current purchase
+    $scope.selectCode = function(promoCode){
+      $scope.book.promoCode = promoCode
+    }
+
+    // Converts object that maps referral code to owner info
+    // into an array of owner info, with referral code as part of 
+    // the owner info
+    var processCodeOwnerMap = function(codeOwnerMap){
+      var promoCodes = []
+      for(var entry in codeOwnerMap){
+        codeOwnerMap[entry]["refCode"] = entry
+        promoCodes.push(codeOwnerMap[entry])
+      }
+      return promoCodes
+    }
+
+    // Saves promo codes entered by users into notes for future use and
+    // makes it the primary promo code to be used for the current purchase
+    // TODO: Currently only handles referral codes. Implement for other promotion codes
     $scope.addPromoCode = async function() {
       if($scope.book.currentPromoCode.length > 0){
-        $scope.book.promoCode = $scope.book.currentPromoCode
+        // retrieve refCode owner data
+        var refCode = $scope.book.currentPromoCode
+        var query = queryString.stringify({code: refCode})
+        $ionicLoading.show()
+        var refCodeOwner = await UserService.beeline({
+          method: 'GET',
+          url: '/promotions/refCodeOwner?'+query,
+        });
+        var user = UserService.getUser();
+
+        // if code proves to be valid (has data)
+        if(refCodeOwner.data && refCodeOwner.data.referrerId !== user.id) {
+          var codeOwnerMap = (await UserService.saveRefCode(refCode, refCodeOwner.data)).data
+          $scope.book.promoCodes = processCodeOwnerMap(codeOwnerMap)
+        }
+
+        $scope.book.promoCode = refCode
+        $ionicLoading.hide();
       } else {
-        $scope.book.promoCode = undefined
+        
+        if($scope.book.promoCodes.length > 0){
+          $scope.book.promoCode = $scope.book.promoCodes[0].refCode
+        }else {
+          $scope.book.promoCode = undefined  
+        }
+        
       }
     }
 

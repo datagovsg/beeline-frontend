@@ -480,7 +480,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     promptUpdateUserInfo: promptUpdateUserInfo,
     promptLogOut: promptLogOut,
     registerViaReferralWelcome: registerViaReferralWelcome,
-    verifySession: verifySession
+    verifySession: verifySession,
+    saveRefCode: saveRefCode
   };
 
 }
