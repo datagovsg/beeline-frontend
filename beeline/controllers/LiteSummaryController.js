@@ -145,7 +145,7 @@ export default [
         template: `
         <div class="item item-text-wrap">
           <div>
-              Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
+              Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions of Service</a>.
           </div>
           <ion-checkbox ng-model="disp.termsChecked">
             I read and agree to the above terms and would like to proceed.
