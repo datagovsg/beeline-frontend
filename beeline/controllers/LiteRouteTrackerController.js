@@ -21,17 +21,26 @@ export default [
 
     $scope.hasTrips = true;
 
+    $scope.data ={
+      availableTrips : [],
+    }
+
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
 
     var routePromise = LiteRoutesService.getLiteRoute($scope.liteRouteLabel);
 
     var availableTripsPromise = routePromise.then((route)=>{
       $scope.liteRoute = route[$scope.liteRouteLabel];
-      var runningTrips = $scope.liteRoute.trips.filter((trip)=>trip.isRunning);
-      $scope.availableTrips = runningTrips[0] &&
-          $scope.liteRoute.trips.filter(trip => trip.date == runningTrips[0].date)
-      return $scope.availableTrips
     })
+
+    $scope.$watch('data.availableTrips',(trips)=>{
+      if (trips.length == 0) return;
+      $scope.hasTrips = !(trips[0] && new Date(trips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0));
+      //get route features
+      RoutesService.getRouteFeatures(trips[0].routeId).then((data)=>{
+        $scope.disp.features = data;
+      })
+    });
 
     var mapPromise = new Promise(function(resolve) {
       $scope.$watch('map.control.getGMap', function(getGMap) {
@@ -40,12 +49,12 @@ export default [
     });
 
     $scope.$on('$ionicView.afterEnter', () => {
+      $scope.$broadcast('startPingLoop');
       loadingSpinner(Promise.all([mapPromise, routePromise])
       .then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
       }));
-      $scope.$broadcast('startPingLoop');
     });
 
     $scope.$on('$ionicView.beforeLeave', () => {
@@ -60,14 +69,8 @@ export default [
       });
     });
 
-    Promise.all([mapPromise, uiGmapGoogleMapApi, availableTripsPromise]).then((values) => {
-      var [map, googleMaps, availTrips] = values;
-      $scope.hasTrips = !(availTrips[0] && new Date(availTrips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0));
-
-      //get route features
-      RoutesService.getRouteFeatures(availTrips[0].routeId).then((data)=>{
-        $scope.disp.features = data;
-      })
+    Promise.all([mapPromise, uiGmapGoogleMapApi]).then((values) => {
+      var [map, googleMaps] = values;
       MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');

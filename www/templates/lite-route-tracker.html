@@ -17,7 +17,9 @@
       </a>
   </div>
   <ion-content class="has-tabs-top" scroll=false>
-
+    <daily-trips trip-label="liteRoute.label"
+                 daily-trips="data.availableTrips">
+    </daily-trips>
     <!-- Map Tab -->
     <div ng-show="activeTab===0">
       <route-item class="lite item lite-tracked">
@@ -47,8 +49,8 @@
         <my-location></my-location>
         <map-poly-route route-path="map.lines.route.path"></map-poly-route>
         <map-bus-poly-route route="liteRoute"
-                            available-trips="availableTrips"></map-bus-poly-route>
-        <map-bus-stops available-trips="availableTrips"
+                            available-trips="data.availableTrips"></map-bus-poly-route>
+        <map-bus-stops available-trips="data.availableTrips"
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>
