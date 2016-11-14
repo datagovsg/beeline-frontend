@@ -47,26 +47,27 @@ var transformKickstarterData = function (kickstarterRoutes) {
       trip.tripStops = _.orderBy(trip.tripStops, stop=>stop.time)
     });
 
-    //status of kickstarter
-    kickstarter.status = "";
-    if ((kickstarter.notes.tier.some((tier)=>tier.moreNeeded==0))) {
-      kickstarter.status = "Yay! Route is activated at $" + kickstarter.notes.tier[0].price.toFixed(2) + " per trip."
-    } else if (!kickstarter.isExpired) {
-      kickstarter.status = kickstarter.notes.tier[0].moreNeeded + " more pax to activate the route at $"+kickstarter.notes.tier[0].price.toFixed(2)+" per trip."
-    } else {
-      kickstarter.status = "No one joined this route yet."
-    }
+    updateStatus(kickstarter);
   }
   return kickstarterRoutes;
 }
 
-var increaseBidNo = function(route, price) {
-  for (let tier of route.notes.tier) {
-    if (tier.price <= price) {
-      tier.count++;
-      tier.moreNeeded--;
-    }
+var updateStatus = function(route){
+  //status of kickstarter
+  route.status = "";
+  if ((route.notes.tier[0].moreNeeded==0)) {
+    route.status = "Yay! Route is activated at $" + route.notes.tier[0].price.toFixed(2) + " per trip."
+  } else if (!route.isExpired) {
+    route.status = route.notes.tier[0].moreNeeded + " more pax to activate the route at $"+route.notes.tier[0].price.toFixed(2)+" per trip."
+  } else {
+    route.status = "No one joined this route yet."
   }
+}
+
+var udpateAfterBid = function(route, price) {
+  route.notes.tier[0].count = route.notes.tier[0].count + 1;
+  route.notes.tier[0].moreNeeded = Math.max(route.notes.tier[0].moreNeeded-1 ,0);
+  updateStatus(route);
 }
 
 export default function KickstarterService($http, UserService,$q, $rootScope) {
@@ -170,7 +171,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
           }
         }
       }).then((response)=>{
-        increaseBidNo(kickstarterRoutesById[route.id], bidPrice);
+        udpateAfterBid(kickstarterRoutesById[route.id], bidPrice);
         kickstarterSummary = kickstarterSummary.concat([{
           routeId: route.id,
           boardStopId: boardStopId,
