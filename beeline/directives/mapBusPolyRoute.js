@@ -1,3 +1,5 @@
+import {SafeInterval} from '../SafeInterval';
+
 export default function(TripService, uiGmapGoogleMapApi, $timeout) {
   return {
     replace: false,
@@ -13,14 +15,9 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
                     icon="busLocation.icon"></ui-gmap-marker>
     `,
     scope: {
-      route: '<',
       availableTrips: '<',
     },
     link: function(scope, element, attributes) {
-
-      var pingTimer;
-
-      scope.pingLoopRunning = true;
 
       scope.strokeOptions = {
         color: '#4b3863',
@@ -41,11 +38,6 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       }
 
       scope.recentPings = [];
-
-      scope.$watch('route', (route) => {
-        if (!route || pingTimer) return;
-        pingLoop();
-      });
 
       scope.$watch('availableTrips', (availableTrips) => {
         if (!availableTrips) return;
@@ -90,18 +82,18 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         }
       });
 
+      scope.timeout = new SafeInterval(pingLoop, 8000, 1000);
+
       scope.$on("killPingLoop", () => {
-        $timeout.cancel(pingTimer);
-        scope.pingLoopRunning = false;
+        scope.timeout.stop();
       });
 
       scope.$on("startPingLoop", () => {
-        if (!scope.route) return;
-        pingLoop();
+        scope.timeout.start();
       });
 
       function pingLoop() {
-         Promise.all(scope.availableTrips.map((trip, index)=>{
+        return Promise.all(scope.availableTrips.map((trip, index) => {
           return TripService.DriverPings(trip.id)
           .then((info) => {
             /* Only show pings from the last 5 minutes */
@@ -112,18 +104,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
               .slice(0,13);
           })
         }))
-        .then(() => {
-          if (scope.pingLoopRunning)
-          //make it faster, poll every 8 secs
-            pingTimer = $timeout(pingLoop, 8000);
-        })
-        .catch((error)=>{
-          if (scope.pingLoopRunning) {
-            pingTimer = $timeout(pingLoop, 1000);
-          }
-        }) // catch all errors
       }
-
     },
   };
 }
