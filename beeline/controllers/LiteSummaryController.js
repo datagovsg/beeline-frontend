@@ -82,6 +82,7 @@ export default [
       $scope.book.route = route[$scope.book.label];
     });
 
+    /* Updated by the view at <daily-trips></daily-trips> */
     $scope.$watch(()=>$scope.data.availableTrips,(trips)=>{
       if (trips.length == 0) return;
       RoutesService.getRouteFeatures(trips[0].routeId).then((data)=>{
