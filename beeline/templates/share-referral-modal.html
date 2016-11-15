@@ -11,16 +11,12 @@
         {{ user.referralCode.code }}  
       </label>
       <p>
-        <button ng-if="!hasCordova" class="button button-block button-royal" ngclipboard data-clipboard-text="{{ referralSharing.invitation_msg + referralSharing.invitation_msg_url  }}">Copy</button>
-        <button ng-if="hasCordova" class="button button-block button-royal" >Share</button>
-
-        <a href="http://www.facebook.com/sharer.php?u=beeline.sg">
-          <i class="icon ion-social-facebook" target="_blank"></i>
-        </a>
-
-        
+        <button ng-if="!hasCordova" class="button button-block button-royal" ngclipboard data-clipboard-text="{{ referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code }}">Copy</button>
+        <button ng-if="hasCordova" class="button button-block button-royal" ng-click="cordovaShare()">Share</button>
       </p>
 
     </div>
   </ion-content>
 </ion-modal-view>
+
+

@@ -3,13 +3,14 @@ import contactUsModalTemplate from '../templates/contact-us-modal.html';
 import shareReferralModalTemplate from '../templates/share-referral-modal.html';
 import commonmark from 'commonmark';
 
+
 var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
 
 export default [
-  '$scope', 'UserService', '$ionicModal', '$ionicPopup', 'Legalese',
+  '$scope', 'UserService', '$ionicModal', '$ionicPopup', '$cordovaSocialSharing', 'Legalese',
   function(
-    $scope, UserService, $ionicModal, $ionicPopup, Legalese) {
+    $scope, UserService, $ionicModal, $ionicPopup, $cordovaSocialSharing, Legalese) {
     $scope.data = {};
 
     $scope.hasCordova = !!window.cordova || false
@@ -19,14 +20,27 @@ export default [
       return UserService.getUser();
     }, function(newUser) {
       $scope.user = newUser;
-
-      $scope.referralSharing = {
-        instructions_msg: "Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.",
-        invitation_msg: "Here is FREE $10 credits for you to try out Beeline rides, a marketplace for crowdsourced bus services. Visit "  ,        
-        invitation_msg_url: "https://app.beeline.sg/#/welcome?refCode="+$scope.user.referralCode.code,        
-      }
-
     });
+
+    $scope.cordovaShare = async function(){
+      var url = $scope.referralSharing.invitation_msg_url + $scope.user.referralCode.code
+      var msg = $scope.referralSharing.invitation_msg
+      $cordovaSocialSharing.share(msg, $scope.referralSharing.title, null, url)
+        .then(function(result){
+          // console.log("Success")
+        }, function(err){
+          // console.log("Error")
+        })
+
+    } 
+
+
+    $scope.referralSharing = {
+      title: "Try out Beeline!",
+      instructions_msg: "Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.",
+      invitation_msg: "Here is FREE $10 credits for you to try out Beeline rides, a marketplace for crowdsourced bus services. Visit "  ,        
+      invitation_msg_url: "https://app.beeline.sg/#/welcome?refCode=",        
+    }
 
     // Map in the login items
     $scope.logIn = UserService.promptLogIn;
