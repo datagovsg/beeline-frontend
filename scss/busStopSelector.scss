@@ -87,15 +87,22 @@
         }
       }
 
-      i.stop-icon {
-        background: url('../img/RoutePairBigStart.svg') 0 50% no-repeat transparent;
+      i.stop-icon{
         background-size: auto 20px;
         width: 24px;
         /* height: 24px; */
         display: inline-block;
         vertical-align: bottom;
         margin: 0 5px 0 0px;
+
+        &.board{
+          background: url('../img/RoutePairBigStart.svg') 0 50% no-repeat transparent;
+        }
+        &.alight{
+          background: url('../img/RoutePairBigEnd.svg') 0 50% no-repeat transparent;
+        }
       }
+
     }
 
     .num-stops,

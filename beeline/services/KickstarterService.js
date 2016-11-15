@@ -2,6 +2,8 @@ import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
 
+// TODO: refresh the data every hour, since it's important to backers
+
 var transformKickstarterData = function (kickstarterRoutes) {
   if (!kickstarterRoutes) return null;
   for (let kickstarter of kickstarterRoutes){

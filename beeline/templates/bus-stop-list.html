@@ -21,13 +21,13 @@
           ng-repeat="stop in book.boardStops"
           idKey="stop.id"
           coords="stop.coordinates"
-          options="map.markerOptions.boardMarker"
+          options="modalMap.markerOptions.boardMarker"
         ></ui-gmap-marker>
         <ui-gmap-marker
           ng-repeat="stop in book.alightStops"
           idKey="stop.id"
           coords="stop.coordinates"
-          options="map.markerOptions.alightMarker"
+          options="modalMap.markerOptions.alightMarker"
         ></ui-gmap-marker>
 
         <ui-gmap-marker ng-if="data.selectedStop"
@@ -42,7 +42,7 @@
 
     <ion-content class="stops-list" delegate-handle="stopsListScroll">
       <ion-list>
-        <ion-item  ng-repeat="stop in busStops"
+        <ion-item  ng-repeat="stop in book.boardStops"
                     ng-model="data.selectedStop"
                     ng-value="stop"
                     class="item-text-wrap item-icon-left"
@@ -55,7 +55,24 @@
               <div class="road">{{stop.road}}</div>
             </div>
           </div>
-          <i class="icon stop-icon"></i>
+          <i class="icon stop-icon board"></i>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-item  ng-repeat="stop in book.alightStops"
+                    ng-model="data.selectedStop"
+                    ng-value="stop"
+                    class="item-text-wrap item-icon-left"
+                    icon="icon ion-ios-checkmark"
+                    ng-click="panToStops(modalMap.control.getGMap(), [stop])">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
+          </div>
+          <i class="icon stop-icon alight"></i>
         </ion-item>
       </ion-list>
     </ion-content>

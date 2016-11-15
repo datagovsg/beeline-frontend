@@ -118,7 +118,6 @@ export default [
 
       $scope.$watch(()=>$scope.modalMap.control.getGMap(), function(modalMap) {
         if (modalMap) {
-          console.log("IT's Called here");
           google.maps.event.trigger(modalMap, 'resize');
           //set modalMap bound
           $scope.panToStops(modalMap, $scope.busStops);
