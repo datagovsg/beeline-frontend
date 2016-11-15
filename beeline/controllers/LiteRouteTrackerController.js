@@ -23,7 +23,11 @@ export default [
 
     $scope.data ={
       availableTrips : [],
+      serviceOn: true,
     }
+
+    $scope.bar = document.getElementById("progressBar");
+    var barTimeout;
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
 
@@ -56,10 +60,24 @@ export default [
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
       }));
+      makeProgress();
     });
+
+    var makeProgress = function(){
+      if ($scope.bar.value < 100) {
+        $scope.bar.value += 10;
+      } else {
+        $scope.bar.value = 0;
+      }
+      barTimeout = $timeout(makeProgress, 1000);
+    }
 
     $scope.$on('$ionicView.beforeLeave', () => {
       $scope.$broadcast('killPingLoop');
+      $scope.bar.value = 0;
+      if (barTimeout) {
+        $timeout.cancel(barTimeout);
+      }
     });
 
     Promise.all([mapPromise, routePromise]).then((values) =>{
@@ -116,6 +134,12 @@ export default [
     $scope.disp.showTerms = function() {
       if (!$scope.liteRoute.transportCompanyId) return;
       CompanyService.showTerms($scope.liteRoute.transportCompanyId);
+    };
+
+    $scope.locateMe = function(){
+      mapPromise.then(()=>{
+        MapOptions.locateMe($scope.map.control);
+      })
     };
 
   }
