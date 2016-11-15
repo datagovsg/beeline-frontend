@@ -10,6 +10,12 @@
     display: flex;
     flex-direction: row;
 
+    .ionicon{
+      position: relative;
+      top:1px;
+      font-size: $font-size-large;
+    }
+
     .item-input {
       flex: 1 1 50%;
       padding-right: $line-height-computed;
