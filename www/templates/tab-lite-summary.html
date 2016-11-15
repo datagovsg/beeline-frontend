@@ -7,6 +7,9 @@
     </button>
   </ion-nav-buttons>
   <ion-content class="fullscreen-map" scroll="false">
+    <daily-trips-broker trip-label="book.route.label"
+                 daily-trips="data.availableTrips">
+    </daily-trips-broker>
     <form class="stops-form" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
 
@@ -46,9 +49,9 @@
           <map-poly-route route-path="map.lines.route.path">
           </map-poly-route>
           <map-bus-poly-route route="book.route"
-                              available-trips="availableTrips">
+                              available-trips="data.availableTrips">
           </map-bus-poly-route>
-          <map-bus-stops available-trips="availableTrips"
+          <map-bus-stops available-trips="data.availableTrips"
                          is-lite-frequent="book.route['tags'].includes('lite-frequent')">
           </map-bus-stops>
         </ui-gmap-google-map>
@@ -70,22 +73,24 @@
 
       <section class="item item-text-wrap"
                ng-if="!isLoggedIn">
-        You are not logged in. Please enter your mobile number to track this route.
-
+        <p class="text-center">
+          You are not logged in. Please enter your mobile number to bookmark this route.
+        </p>
         <button class="button primary-button"
                 ng-click="login()">
-          Log In
+          Bookmark Route
         </button>
       </section>
 
       <section class="item item-text-wrap"
                ng-if="isLoggedIn && !book.isSubscribed">
-        By clicking on the button below, you can track the bus on the day of the trip.
-
+               <p class="text-center">
+                By clicking on the button below, you can bookmark this route in your trips list.
+               </p>
         <button class="button primary-button"
                 ng-click="showConfirmationPopup()"
                 ng-disabled="book.waitingForSubscriptionResult">
-          Track Route
+          Bookmark Route
         </button>
       </section>
 
@@ -93,10 +98,10 @@
                ng-if="isLoggedIn && book.isSubscribed">
         <button class="button primary-button"
                 ui-sref="tabs.tickets">
-          View Map
+          View Bookmarked Routes
         </button>
         <div class="untrack-link">
-          <a ng-click="promptUntrack()">Untrack this route</a>
+          <a ng-click="promptUntrack()">Unbookmark this route</a>
         </div>
       </section>
 
