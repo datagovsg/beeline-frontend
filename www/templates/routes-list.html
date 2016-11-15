@@ -8,10 +8,10 @@
 
     <!-- Region Filter  -->
     <div class="region-filter">
-      <label class="item item-input item-icon-right">
+      <label class="item item-input item-icon-left">
+          <i class="ionicon ion-ios-search-strong"></i>
         <input type="text" ng-change="updateFilter($event.target.value)"
           placeholder="Search" ng-model="data.stagingFilterText" />
-          <i class="ionicon ion-search"></i>
       </label>
       <label class="item item-input item-select">
         <select ng-model="data.selectedRegionId">
