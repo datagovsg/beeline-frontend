@@ -3,8 +3,6 @@ import _ from 'lodash';
 import assert from 'assert';
 import {SafeInterval} from '../SafeInterval';
 
-// TODO: refresh the data every hour, since it's important to backers
-
 var transformKickstarterData = function (kickstarterRoutes) {
   if (!kickstarterRoutes) return null;
   for (let kickstarter of kickstarterRoutes){
@@ -85,7 +83,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
 
   //first load
   // every 1 hour should reload kickstarter information
-  var timeout = new SafeInterval(refresh, 1000*60, 1000*60);
+  var timeout = new SafeInterval(refresh, 1000*60*60, 1000*60);
 
   function refresh() {
     console.log("Refresh in kickstarter service");
