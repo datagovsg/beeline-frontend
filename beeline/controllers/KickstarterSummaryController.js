@@ -109,7 +109,7 @@ export default [
         await $ionicPopup.alert({
           title: 'Error processing bid',
           template: `
-          <div> There was an error creating the bid. {{err && err.data && err.data.message}} Please try again later.</div>
+          <div> There was an error creating the bid. ${err && err.data && err.data.message} Please try again later.</div>
           `,
         })
         $state.go('tabs.kickstarter');
