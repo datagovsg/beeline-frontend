@@ -65,11 +65,11 @@ export default [
 
     var makeProgress = function(){
       if ($scope.bar.value < 100) {
-        $scope.bar.value += 10;
+        $scope.bar.value += 1;
       } else {
         $scope.bar.value = 0;
       }
-      barTimeout = $timeout(makeProgress, 1000);
+      barTimeout = $timeout(makeProgress, 100);
     }
 
     $scope.$on('$ionicView.beforeLeave', () => {

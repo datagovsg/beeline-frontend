@@ -42,13 +42,13 @@
           {{ liteRoute.to }}
         </route-item-end-location>
       </route-item>
-      <progress id="progressBar" max="100" value="0"></progress>
       <div class="item" ng-if="!hasTrips">
         There is no service today.
       </div>
       <div class="item" ng-if="hasTrips && !data.serviceOn">
         No tracking data available at the moment.
       </div>
+        <progress id="progressBar" max="100" value="0"></progress>
       <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
         <map-poly-route route-path="map.lines.route.path"></map-poly-route>
