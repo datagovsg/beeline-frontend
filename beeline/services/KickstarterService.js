@@ -1,6 +1,7 @@
 import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
+import {SafeInterval} from '../SafeInterval';
 
 // TODO: refresh the data every hour, since it's important to backers
 
@@ -83,8 +84,15 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
   })
 
   //first load
-  fetchKickstarterRoutes(true);
-  fetchBids(true);
+  // every 1 hour should reload kickstarter information
+  var timeout = new SafeInterval(refresh, 1000*60, 1000*60);
+
+  function refresh() {
+    console.log("Refresh in kickstarter service");
+    return Promise.all([fetchKickstarterRoutes(true),fetchBids(true)]);
+  }
+
+  timeout.start();
 
   function fetchBids(ignoreCache) {
     if (UserService.getUser()) {
@@ -116,9 +124,6 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       method: 'GET',
       url: '/custom/lelong/status',
     }).then((response)=>{
-      // kickstarterRoutesList = transformKickstarterData(response.data).filter((kickstarter)=>{
-      //   return !kickstarter.isExpired;
-      // });
       //return expired kickstarter too
       kickstarterRoutesList = transformKickstarterData(response.data);
       kickstarterRoutesById = _.keyBy(kickstarterRoutesList, 'id')
