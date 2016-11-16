@@ -10,7 +10,7 @@
     <div class="region-filter">
       <label class="item item-input item-icon-left">
           <i class="ionicon ion-ios-search-strong"></i>
-        <input type="text" ng-change="updateFilter($event.target.value)"
+        <input type="text" ng-change="updateFilter(data.stagingFilterText)"
           placeholder="Search" ng-model="data.stagingFilterText" />
       </label>
       <label class="item item-input item-select">
@@ -69,7 +69,7 @@
               <span class="icon-span company-logo">
                 <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{companyInfo.name}}
               </span>
             </div>
@@ -78,7 +78,7 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{route.schedule}}
               </span>
             </div>
@@ -127,7 +127,7 @@
               <span class="icon-span company-logo">
                 <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{companyInfo.name}}
               </span>
             </div>
@@ -136,7 +136,7 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{route.schedule}}
               </span>
             </div>
@@ -179,7 +179,7 @@
               <span class="icon-span company-logo">
                 <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{companyInfo.name}}
               </span>
             </div>
@@ -188,7 +188,7 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{route.schedule}}
               </span>
             </div>
