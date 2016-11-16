@@ -56,6 +56,7 @@ var app = angular.module('beeline', [
 .factory('StripeService', require('./services/StripeService.js').default)
 .factory('loadingSpinner', require('./services/LoadingSpinner.js').default)
 .factory('GoogleAnalytics', require('./services/GoogleAnalytics.js').default)
+.factory('SearchService', require('./services/SearchService.js').default)
 .service('MapOptions', require('./services/MapOptions').default)
 .service('busStopSelectorDialog', require('./services/busStopSelectorDialog.js').default)
 .service('Legalese', require('./services/legalese.js').default)

@@ -8,16 +8,20 @@
       </p>
     </div>
 
-
-    <!-- Region Filter  -->
-    <label class="item item-input item-select region-filter">
-      <div class="input-label">Filter By</div>
+    <div class="region-filter">
+      <label class="item item-input item-icon-left">
+          <i class="ionicon ion-ios-search-strong"></i>
+          <input type="text" ng-change="updateFilter(data.stagingFilterText)"
+            placeholder="Search" ng-model="data.stagingFilterText" />
+      </label>
+      <label class="item item-input item-select">
         <select ng-model="data.selectedRegionId">
-          <option value="" disabled selected>Select A Region</option>
+          <option value="" disabled selected>Select Region</option>
           <option value="">All Regions</option>
           <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
         </select>
-    </label>
+      </label>
+    </div>
 
     <ion-content class="list">
       <ion-refresher pulling-text="Pull to refresh..."
@@ -26,7 +30,7 @@
 
       <!-- recently bid kickstarter -->
       <div class="item item-divider"
-          ng-if="data.backedKickstarter.length > 0">
+          ng-if="data.filteredbackedKickstarter.length > 0">
         Kickstarter routes you pre-ordered passes
       </div>
 
@@ -121,11 +125,11 @@
 
       <!-- available kickstarter -->
       <div class="item item-divider"
-          ng-if="data.filteredkickstarter.length > 0">
+          ng-if="data.filteredKickstarter.length > 0">
         Kickstarter Routes
       </div>
 
-      <ion-item ng-repeat="route in data.filteredkickstarter"
+      <ion-item ng-repeat="route in data.filteredKickstarter"
                 ui-sref="tabs.kickstarter-detail({
                   routeId: route.id
                  })"

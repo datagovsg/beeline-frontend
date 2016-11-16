@@ -9,50 +9,12 @@ function getUniqueRegionsFromRoutes(routes) {
   .value();
 }
 
-// Returns a new array with routes matching the given regionId
-// If regionId is undefined then returns a new array with all the same routes
-function filterRoutesByRegionId(routes, regionId) {
-  return _.filter(routes, function(route) {
-    if (regionId) return _.some(route.regions, {'id': regionId});
-    else return true;
-  });
-}
-function filterRoutesByText(routes, string) {
-  return routes.filter(route => routeContainsString(route, string));
-}
-function filterRoutes(routes, regionId, string) {
-  return filterRoutesByText(filterRoutesByRegionId(routes, regionId), string)
-}
-
-// Input: a Route and a string
-// Output: True if route metatdata contains the string
-function routeContainsString(route, string) {
-  if (!string) return true;
-
-  function contains(s, t) {
-    if (typeof s == 'string') {
-      return s.toUpperCase().includes(t.toUpperCase())
-    } else {
-      return false;
-    }
-  }
-  return contains(route.name, string) ||
-    contains(route.notes && route.notes.description, string) ||
-    contains(route.schedule, string) ||
-    contains(route.label, string) ||
-    (route.trips[0] && (
-      route.trips[0].tripStops.some(ts => contains(ts.stop.description, string)) ||
-      route.trips[0].tripStops.some(ts => contains(ts.stop.road, string))
-    )) ||
-    route.regions.some(region => contains(region.name, string));
-}
-
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
   BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup,
-  LiteRouteSubscriptionService, $timeout) {
+  LiteRouteSubscriptionService, $timeout, SearchService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -124,8 +86,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId', 'data.filterText'], function([routes, liteRoutes, selectedRegionId, filterText]) {
     var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
     $scope.data.regions = getUniqueRegionsFromRoutes(normalAndLiteRoutes);
-    $scope.data.filteredActiveRoutes = filterRoutes(routes, +selectedRegionId, filterText);
-    $scope.data.filteredLiteRoutes = filterRoutes(liteRoutes, +selectedRegionId, filterText);
+    $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
+    $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
   });
 
   // Throttle the actual updating of filter text

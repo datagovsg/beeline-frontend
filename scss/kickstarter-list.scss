@@ -5,6 +5,41 @@
   // Get the Region filter to be center aligned
   // Use % widths on both components to get them roughly to the center
   // Using this method since it's easily compatible with the ionic structure
+  .region-filter {
+    flex: 0 0 ($line-height-computed + $content-padding * 2);
+    display: flex;
+    flex-direction: row;
+
+    .ionicon{
+      position: relative;
+      top:1px;
+      font-size: $font-size-large;
+    }
+
+    .item-input {
+      flex: 1 1 50%;
+      padding-right: $line-height-computed;
+
+      input {
+        text-align: left;
+      }
+    }
+    .item-select {
+      flex: 1 1 50%;
+
+      select {
+        padding: inherit;
+        width: 100%;
+        max-width:none;
+      }
+
+      &:after { display: none; }
+    }
+  }
+
+  // Get the Region filter to be center aligned
+  // Use % widths on both components to get them roughly to the center
+  // Using this method since it's easily compatible with the ionic structure
   .item-select {
     $input-label-width: 40%;
     .input-label {
