@@ -19,11 +19,11 @@ var transformKickstarterData = function (kickstarterRoutes) {
         _.assign(tier, {count: 0, moreNeeded: tier.pax})
       })
     }
-    kickstarter.isActived = kickstarter.notes.tier[0].moreNeeded==0;
     //order tiers in price desc order
     kickstarter.notes.tier = _.orderBy(kickstarter.notes.tier, x=>x.price, "desc");
     //if sb. commit $8, also commit $5
     // kickstarter.notes.tier[1].count += kickstarter.notes.tier[0].count;
+    kickstarter.isActived = kickstarter.notes.tier[0].moreNeeded==0;
 
     kickstarter.isExpired = false;
     kickstarter.is7DaysOld = false;
