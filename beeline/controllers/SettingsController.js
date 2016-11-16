@@ -22,6 +22,7 @@ export default [
       $scope.user = newUser;
     });
 
+    // Function that allows user to share an invitation with a referral code to other apps on the phone
     $scope.cordovaShare = async function(){
       var url = $scope.referralSharing.invitation_msg_url + $scope.user.referralCode.code
       var msg = $scope.referralSharing.invitation_msg
@@ -34,7 +35,7 @@ export default [
 
     } 
 
-
+    // templates for sharing of referrals
     $scope.referralSharing = {
       title: "Try out Beeline!",
       instructions_msg: "Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.",
