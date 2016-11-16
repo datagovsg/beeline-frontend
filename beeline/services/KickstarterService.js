@@ -6,6 +6,7 @@ import {SafeInterval} from '../SafeInterval';
 var transformKickstarterData = function (kickstarterRoutes) {
   if (!kickstarterRoutes) return null;
   for (let kickstarter of kickstarterRoutes){
+    kickstarter.isActived = false;
     if (kickstarter.bids && kickstarter.bids.length > 0) {
      var bidsByTier = _.groupBy(kickstarter.bids, x=>x.userOptions.price);
       kickstarter.notes.tier.map((tier)=>{
@@ -18,6 +19,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
         _.assign(tier, {count: 0, moreNeeded: tier.pax})
       })
     }
+    kickstarter.isActived = kickstarter.notes.tier[0].moreNeeded==0;
     //order tiers in price desc order
     kickstarter.notes.tier = _.orderBy(kickstarter.notes.tier, x=>x.price, "desc");
     //if sb. commit $8, also commit $5
@@ -38,6 +40,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
         kickstarter.daysLeft =  Math.ceil((expiryTime - now)/day);
       }
     }
+
     //filter only isRunning trips
     //sort trips date in ascending order
     kickstarter.trips = _(kickstarter.trips).filter(x=>x.isRunning)
@@ -61,13 +64,14 @@ var updateStatus = function(route){
   } else if (!route.isExpired) {
     route.status = route.notes.tier[0].moreNeeded + " more pax to activate the route at $"+route.notes.tier[0].price.toFixed(2)+" per trip."
   } else {
-    route.status = "No one joined this route yet."
+    route.status = "Campaign has expired and the route is not activated."
   }
 }
 
 var udpateAfterBid = function(route, price) {
   route.notes.tier[0].count = route.notes.tier[0].count + 1;
   route.notes.tier[0].moreNeeded = Math.max(route.notes.tier[0].moreNeeded-1 ,0);
+  route.isActived = route.notes.tier[0].moreNeeded==0;
   updateStatus(route);
 }
 

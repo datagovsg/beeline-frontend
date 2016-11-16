@@ -7,8 +7,8 @@
             <img src="img/icon_kickstarter_activebid.svg">
         </i>
         You pre-ordered a pass for {{book.route.notes.noPasses}} trips on this route at ${{book.bidPrice | number:2}} per trip. <br />
-        <span ng-if="book.route.notes.tier[0].count>=book.route.notes.tier[0].pax">Route is activated. Payment will be deducted when campaign ends and and you will receive the pass.</span>
-        <span ng-if="book.route.notes.tier[0].count<book.route.notes.tier[0].pax">Route is not activated yet.</span>
+        <span ng-if="!book.route.isExpired && book.route.isActived">Route is activated. Payment will be deducted when campaign ends and and you will receive the pass.</span>
+        <span ng-if="!book.route.isExpired && !book.route.isActived">Route is not activated yet.</span>
     </div>
     <!-- route detail -->
     <div class="item">
