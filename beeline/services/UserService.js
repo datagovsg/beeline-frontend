@@ -165,6 +165,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         return false;
       }
 
+      window.localStorage.beelineUser = JSON.stringify(response.data)
       return true;
     }, function(error) {
       if (error.status == 403 || error.status == 401) {
