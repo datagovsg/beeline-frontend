@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
 export default [
-  '$scope', '$rootScope', '$state', '$stateParams', '$timeout', 'uiGmapGoogleMapApi',
+  '$scope', '$rootScope', '$state', '$stateParams', 'uiGmapGoogleMapApi',
   'CompanyService', 'TripService', 'UserService', 'MapOptions', 'RoutesService',
   'LiteRoutesService', '$ionicPopup', '$ionicLoading', 'loadingSpinner',
   function(
-    $scope,  $rootScope, $state, $stateParams,  $timeout,  uiGmapGoogleMapApi,
+    $scope,  $rootScope, $state, $stateParams,  uiGmapGoogleMapApi,
     CompanyService, TripService,  UserService, MapOptions, RoutesService,
     LiteRoutesService,  $ionicPopup, $ionicLoading, loadingSpinner
   ) {
@@ -23,6 +23,7 @@ export default [
 
     $scope.data ={
       availableTrips : [],
+      hasTrackingData: true,
     }
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
@@ -116,6 +117,12 @@ export default [
     $scope.disp.showTerms = function() {
       if (!$scope.liteRoute.transportCompanyId) return;
       CompanyService.showTerms($scope.liteRoute.transportCompanyId);
+    };
+
+    $scope.locateMe = function(){
+      mapPromise.then(()=>{
+        MapOptions.locateMe($scope.map.control);
+      })
     };
 
   }

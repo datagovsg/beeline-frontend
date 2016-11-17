@@ -19,4 +19,36 @@
     width: 100%;
     z-index: 0;
   }
+
+  // Position the locate me button near the bottom right
+  .locate-button {
+    position: absolute;
+    bottom: 2* $content-padding;
+    right: $content-padding;
+  }
+}
+
+progress.fakeProgressBar {
+  -webkit-appearance: progress-bar;
+  appearance: none;
+  margin: 0 0;
+  height: 3px;
+  background-color: #eee;
+  border: none;
+
+  &[value] {
+    background-color: #eee;
+  }
+
+  &::-moz-progress-bar {
+    background: lighten($hint-color, 20%);
+  }
+
+  &::-webkit-progress-value {
+    background: lighten($hint-color, 20%);
+  }
+
+  &::-webkit-progress-bar {
+    background: #eee;
+  }
 }

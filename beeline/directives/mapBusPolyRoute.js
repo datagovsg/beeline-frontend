@@ -3,6 +3,7 @@ import {SafeInterval} from '../SafeInterval';
 export default function(TripService, uiGmapGoogleMapApi, $timeout) {
   return {
     replace: false,
+    restrict: 'E',
     template: `
     <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
                       ng-if="actualPath.path.length"
@@ -16,6 +17,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
     `,
     scope: {
       availableTrips: '<',
+      hasTrackingData: '=?',
     },
     link: function(scope, element, attributes) {
 
@@ -58,6 +60,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
 
       scope.$watchCollection('recentPings', function(recentPings) {
         if (recentPings) {
+          scope.hasTrackingData = _.some(recentPings, rp=>rp && rp.length);
+          if (!scope.hasTrackingData) return;
           recentPings.map((pings, index)=>{
             if (pings.length > 0){
 
@@ -91,6 +95,12 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       scope.$on("startPingLoop", () => {
         scope.timeout.start();
       });
+
+      //load icons and path earlier by restart timeout on watching trips
+      scope.$watchCollection("availableTrips", ()=>{
+        scope.timeout.stop();
+        scope.timeout.start();
+      })
 
       function pingLoop() {
         return Promise.all(scope.availableTrips.map((trip, index) => {
