@@ -1,9 +1,10 @@
 import priceCalculatorTemplate from './priceCalculator.html';
 import assert from 'assert';
+const queryString = require('querystring')
 
 export default [
-  'BookingService', 'RoutesService',
-  function(BookingService, RoutesService) {
+  'BookingService', 'RoutesService', 'UserService', '$ionicPopup',
+  function(BookingService, RoutesService, UserService, $ionicPopup) {
     return {
       restrict: 'E',
       template: priceCalculatorTemplate,
@@ -18,6 +19,51 @@ export default [
           scope.isCalculating = Math.max(0, scope.isCalculating - 1);
           scope.$emit('priceCalculator.done')
         }
+
+        // makes the promo code that's selected in the radio list 
+        // the primary promo code to be used for the current purchase
+        scope.selectCode = function(promoCode){
+          scope.booking.promoCode = promoCode
+        }
+
+        // Saves promo codes entered by users into notes for future use and
+        // makes it the primary promo code to be used for the current purchase
+        // TODO: Currently only handles referral codes. Implement for other promotion codes
+        scope.addPromoCode = async function() {
+          try{
+            if(scope.booking.currentPromoCode.length > 0){
+              // retrieve refCode owner data
+              var refCode = scope.booking.currentPromoCode
+              var query = queryString.stringify({code: refCode})
+              
+              var refCodeOwner = await UserService.beeline({
+                method: 'GET',
+                url: '/promotions/refCodeOwner?'+query,
+              });
+              var user = UserService.getUser();
+
+              // if code proves to be valid (has data)
+              if(refCodeOwner.data && refCodeOwner.data.referrerId !== user.id) {
+                var codeOwnerMap = (await UserService.saveRefCode(refCode, refCodeOwner.data)).data
+                scope.booking.promoCodes = scope.booking.processCodeOwnerMap(codeOwnerMap)
+              }
+
+              scope.booking.promoCode = refCode
+            
+            } else if(scope.booking.promoCodes && scope.booking.promoCodes.length > 0){
+                scope.booking.promoCode = scope.booking.promoCodes[0].refCode
+            } else {
+              scope.booking.promoCode = undefined  
+            }
+          } catch(err){
+            await $ionicPopup.alert({
+              title: 'Error processing input',
+              template: err.data.message,
+            })
+          } 
+        }
+
+
 
         var latestRequest = null;
         scope.$watch(

@@ -53,6 +53,19 @@
     </tbody>
   </table>
 
+  <section class="card" ng-if="booking.allowEnterPromoCode">
+    <div class="item item-input-inset">
+      <label class="item-input-wrapper">
+        <input class="item" placeholder="Enter your Promo Code here" type="text" name="promoCodeField" ng-model="booking.currentPromoCode" style="padding-top: 16px; height: auto; width: 100%" ng-blur="addPromoCode()"/>    
+      </label>
+      <button type="button" ng-click="addPromoCode()" class='button button-royal' >Apply</button>
+    </div>
+    <div ng-if="booking.promoCodes.length > 1">
+      <div ng-repeat="pCode in booking.promoCodes">
+        <input type="radio" ng-model="booking.currentPromoCode" value="{{pCode.refCode}}" ng-change="selectCode(pCode.refCode)" > {{pCode.name + " : " + pCode.refCode}}
+      </div>
+    </div>
+  </section>
 
 
   <h3>Price Calculator </h3>
