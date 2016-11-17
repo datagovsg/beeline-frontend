@@ -117,6 +117,10 @@
   &.activated{
     border-color: #f7c639;
   }
+
+  &.page-bottom {
+    margin-bottom: 20px;
+  }
 }
 
 /* referenced by kickstarter, price calculator and selected dates  */
