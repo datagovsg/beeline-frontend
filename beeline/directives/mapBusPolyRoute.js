@@ -99,6 +99,12 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         scope.timeout.start();
       });
 
+      //load icons and path earlier by restart timeout on watching trips
+      scope.$watchCollection("availableTrips", ()=>{
+        scope.timeout.stop();
+        scope.timeout.start();
+      })
+
       function pingLoop() {
         return Promise.all(scope.availableTrips.map((trip, index) => {
           return TripService.DriverPings(trip.id)
