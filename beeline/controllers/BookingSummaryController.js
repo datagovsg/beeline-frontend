@@ -67,8 +67,8 @@ export default [
     // Retrieve saved referral codes of the user and select 
     // the first one in the list
     $scope.$on('$ionicView.beforeEnter', async function(){
+
       var user = UserService.getUser();
-      console.log('User',user)
       if(user && !user.referrerId){
         try{
           var codeOwnerMap = (await getReferralCodes()).data
@@ -82,7 +82,6 @@ export default [
           $scope.book.promoCode = $scope.book.promoCodes[0].refCode
         }  
       }
-      console.log('User2', UserService.getUser())
       
     });
 
