@@ -35,9 +35,6 @@
       </div>
 
        <ion-item ng-repeat="route in data.filteredbackedKickstarter"
-                 ui-sref="tabs.kickstarter-recap({
-                   routeId: route.id
-                  })"
                   class="item-icon-right">
         <route-item>
           <route-item-bus-number>
@@ -94,7 +91,6 @@
               </span>
             </div>
 
-            <!-- TODO: show price infor in progress -->
             <progress-bar backer1="route.notes.tier[0].count "
                           price1="route.notes.tier[0].price"
                           pax1="route.notes.tier[0].pax"
@@ -120,6 +116,11 @@
 
           </route-item-additional-info>
         </route-item>
+        <i class="icon ion-ios-arrow-right"
+            ui-sref="tabs.kickstarter-recap({
+              routeId: route.id
+            })">
+        </i>
       </ion-item>
 
 
@@ -130,9 +131,6 @@
       </div>
 
       <ion-item ng-repeat="route in data.filteredKickstarter"
-                ui-sref="tabs.kickstarter-detail({
-                  routeId: route.id
-                 })"
                  class="item-icon-right">
         <route-item>
           <route-item-bus-number>
@@ -181,7 +179,6 @@
               </span>
             </div>
 
-            <!-- TODO: show price infor in progress -->
             <progress-bar backer1="route.notes.tier[0].count "
                           price1="route.notes.tier[0].price"
                           pax1="route.notes.tier[0].pax"
@@ -198,6 +195,11 @@
             </div>
           </route-item-additional-info>
         </route-item>
+        <i class="icon ion-ios-arrow-right"
+           ui-sref="tabs.kickstarter-detail({
+                          routeId: route.id
+                         })">
+        </i>
       </ion-item>
 
     </ion-content>
