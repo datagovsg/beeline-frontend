@@ -17,7 +17,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
     `,
     scope: {
       availableTrips: '<',
-      serviceOn: '=?',
+      hasTrackingData: '=?',
     },
     link: function(scope, element, attributes) {
 
@@ -60,11 +60,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
 
       scope.$watchCollection('recentPings', function(recentPings) {
         if (recentPings) {
-          if (_.every(recentPings, rp=>!rp || rp.length==0)) {
-            scope.serviceOn = false;
-            return;
-          }
-          scope.serviceOn = true;
+          scope.hasTrackingData = _.some(recentPings, rp=>rp && rp.length);
+          if (!scope.hasTrackingData) return;
           recentPings.map((pings, index)=>{
             if (pings.length > 0){
 

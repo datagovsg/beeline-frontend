@@ -26,22 +26,29 @@
     bottom: 2* $content-padding;
     right: $content-padding;
   }
+}
 
-  progress {
-    -webkit-appearance: progress-bar;
-    appearance: none;
-    margin: 0 0;
-    height: 3px;
-    background-color: #eee;
-    border: none;
-  }
-  progress[value] {
-    background-color: #eee;
-  }
-  /* bar value colour */
-  progress::-moz-progress-bar {background: lighten($hint-color, 20%);}
-  progress::-webkit-progress-value {background: lighten($hint-color, 20%);}
-  /* bar base colour */
-  progress::-webkit-progress-bar { background: #eee;}
+progress.fakeProgressBar {
+  -webkit-appearance: progress-bar;
+  appearance: none;
+  margin: 0 0;
+  height: 3px;
+  background-color: #eee;
+  border: none;
 
+  &[value] {
+    background-color: #eee;
+  }
+
+  &::-moz-progress-bar {
+    background: lighten($hint-color, 20%);
+  }
+
+  &::-webkit-progress-value {
+    background: lighten($hint-color, 20%);
+  }
+
+  &::-webkit-progress-bar {
+    background: #eee;
+  }
 }

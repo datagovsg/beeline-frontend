@@ -45,16 +45,16 @@
       <div class="item" ng-if="!hasTrips">
         There is no service today.
       </div>
-      <div class="item" ng-if="hasTrips && !data.serviceOn">
+      <div class="item" ng-if="hasTrips && !data.hasTrackingData">
         No tracking data available at the moment.
       </div>
-        <progress id="progressBar" max="100" value="0"></progress>
+      <fake-progress-bar max="100" interval="100"></fake-progress-bar>
       <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
         <map-poly-route route-path="map.lines.route.path"></map-poly-route>
         <map-bus-poly-route route="liteRoute"
                             available-trips="data.availableTrips"
-                            service-on="data.serviceOn"></map-bus-poly-route>
+                            has-tracking-data="data.hasTrackingData"></map-bus-poly-route>
         <map-bus-stops available-trips="data.availableTrips"
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
