@@ -31,11 +31,11 @@
       <!-- recently bid kickstarter -->
       <div class="item item-divider"
           ng-if="data.filteredbackedKickstarter.length > 0">
-        Kickstarter routes you pre-ordered passes
+        Kickstarter routes you joined
       </div>
 
        <ion-item ng-repeat="route in data.filteredbackedKickstarter"
-                  class="item-icon-right"
+                  class="item-text-wrap item-icon-right"
                   ui-sref="tabs.kickstarter-recap({
                     routeId: route.id
                   })">
@@ -131,7 +131,7 @@
       </div>
 
       <ion-item ng-repeat="route in data.filteredKickstarter"
-                 class="item-icon-right"
+                 class="item-text-wrap item-icon-right"
                  ui-sref="tabs.kickstarter-detail({
                                 routeId: route.id
                                })">
