@@ -42,10 +42,12 @@
           {{ liteRoute.to }}
         </route-item-end-location>
       </route-item>
-      <div class="item" ng-if="!hasTrips">
+      <div class="item item-icon-left" ng-if="!hasTrips">
+        <span class="icon ion-android-alert"></span>
         There is no service today.
       </div>
-      <div class="item" ng-if="hasTrips && !data.hasTrackingData">
+      <div class="item item-icon-left" ng-if="hasTrips && !data.hasTrackingData">
+        <span class="icon ion-android-alert"></span>
         No tracking data available at the moment.
       </div>
       <fake-progress-bar max="100" interval="100"></fake-progress-bar>
