@@ -199,23 +199,23 @@
           Route Activation Criteria
         </div>
         <div>
-          Number of people who pre-purchased passes.
+          Number of people needed to activate the route
           <br />
           <br />
           <table class="booking-info criteria">
             <thead>
               <tr>
-                <th>Price per ride</th>
-                <th>Pre-ordered passes</th>
+                <th>No. of people<br />needed</th>
+                <th>No. of people<br />who pre-ordered passes</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="tier in book.route.notes.tier">
                 <td>
-                  ${{tier.price | number:2}}
+                  {{tier.pax}} pax
                 </td>
                 <td>
-                  {{tier.count}} of {{tier.pax}} pax
+                  {{tier.count}} pax
                 </td>
               </tr>
             </tbody>
