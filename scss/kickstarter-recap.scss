@@ -3,6 +3,8 @@
   .icon{
     &.activebid{
       left: $padding-small-horizontal*2;
+      align-items: flex-start;
+      top: $padding-large-vertical*2;
     }
   }
 
