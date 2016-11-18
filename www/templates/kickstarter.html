@@ -1,4 +1,4 @@
-<ion-view class="kickstarter-list" view-title="Kickstart Routes" hide-back-button="true">
+ <ion-view class="kickstarter-list" view-title="Kickstart Routes" hide-back-button="true">
   <ion-content scroll="false">
     <div class="item item-text-wrap item-ion-left" ng-if="error">
       <i class="icon ion-alert-circled"></i>
@@ -37,8 +37,9 @@
        <ion-item ng-repeat="route in data.filteredbackedKickstarter"
                   class="item-text-wrap item-icon-right"
                   ui-sref="tabs.kickstarter-recap({
-                    routeId: route.id
-                  })">
+                   routeId: route.id
+                 })"
+                  class="item-icon-right">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
@@ -131,6 +132,7 @@
       </div>
 
       <ion-item ng-repeat="route in data.filteredKickstarter"
+
                  class="item-text-wrap item-icon-right"
                  ui-sref="tabs.kickstarter-detail({
                                 routeId: route.id
@@ -198,8 +200,7 @@
             </div>
           </route-item-additional-info>
         </route-item>
-        <i class="icon ion-ios-arrow-right">
-        </i>
+        <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
     </ion-content>
