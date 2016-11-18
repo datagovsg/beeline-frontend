@@ -64,8 +64,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
         return _.includes(_.keys($scope.recentBidsById), x.id.toString());
       });
       $scope.data.backedKickstarter = recentAndAvailable[0];
-      //don't display it in kickstarter if it's 7 days after expiry
-      $scope.data.kickstarter = recentAndAvailable[1].filter((route)=>!route.is7DaysOld);
+      //don't display it in kickstarter if it's expired
+      $scope.data.kickstarter = recentAndAvailable[1].filter((route)=>!route.isExpired);
       $scope.data.filteredKickstarter = SearchService.filterRoutes($scope.data.kickstarter, +selectedRegionId, filterText);
       $scope.data.filteredbackedKickstarter = SearchService.filterRoutes($scope.data.backedKickstarter, +selectedRegionId, filterText);
 
