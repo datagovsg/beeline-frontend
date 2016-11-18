@@ -119,3 +119,28 @@
   margin-top: $padding-large-vertical;
   margin-bottom: $padding-large-vertical*2;
 }
+
+
+.preorder-pass{
+  width: 60%;
+  height: auto;
+  border: 1px solid #eee;
+  background: #fff;
+  padding: $padding-base-horizontal;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: $padding-large-vertical*2 auto;
+    .pass-additional{
+      margin-top: $padding-large-vertical*2;
+      text-align: left;
+      font-size: $font-size-small;
+      p{
+        font-size: $font-size-small;
+        padding-bottom: 0;
+      }
+
+    }
+}

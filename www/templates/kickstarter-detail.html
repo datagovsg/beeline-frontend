@@ -77,7 +77,7 @@
 
         </ui-gmap-google-map>
       </div>
-      <div class="item">
+      <div class="item item-text-wrap">
         <route-item>
           <route-item-bus-number>
             {{ book.route.label }}
@@ -154,14 +154,28 @@
               <i class="icon ion-ios-arrow-right"></i>
         </ion-item>
       </ion-list>
-
       <div class="item item-text-wrap">
         <div class="item-subtitle">
         How to activate
         </div>
         <div class="kickstarter-info">
           <p>
-            Pre-order a <strong> pass for {{book.route.notes.noPasses}} trips</strong> to show your support to activate this route. When <strong>{{book.route.notes.tier[0].pax}} people</strong> pre-order the pass, this route will activate.
+            Preorder a trip pass:
+          </p>
+          <div class="preorder-pass">
+              <h3>Trip Pass for</h3>
+              <h1>{{book.route.notes.noPasses}}</h1>
+              <p>trips</p>
+              <div class="pass-additional">
+              <p>
+                <strong>If activated</strong>
+              </p>
+                <p>Route starts on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong> </p>
+                <p>Valid for trips within the 1st month</p>
+              </div>
+          </div>
+          <p>
+           When <strong>{{book.route.notes.tier[0].pax}} people</strong> pre-order the pass, this route will activate.
           </p>
           <p>
               If the route is activated, it will
