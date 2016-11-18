@@ -13,7 +13,7 @@ export default function(LiteRoutesService, $timeout) {
     link: function(scope, element, attributes) {
       var timeout;
 
-      scope.dailyTrips = [];
+      scope.dailyTrips = null;
 
       scope.$watch('tripLabel', (label) => {
         if (timeout) timeout.stop();

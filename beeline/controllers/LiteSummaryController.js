@@ -84,7 +84,7 @@ export default [
 
     /* Updated by the view at <daily-trips></daily-trips> */
     $scope.$watch(()=>$scope.data.availableTrips,(trips)=>{
-      if (trips.length == 0) return;
+      if (!trips || trips.length == 0) return;
       RoutesService.getRouteFeatures(trips[0].routeId).then((data)=>{
         $scope.disp.features = data;
       })

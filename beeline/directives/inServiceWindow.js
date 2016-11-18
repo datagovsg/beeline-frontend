@@ -8,29 +8,41 @@ export default function ($timeout) {
     template: '',
     scope: {
       'availableTrips' : '<',
-      'inServiceWindow': '=?',
+      'inServiceWindow': '=',
     },
     link: function(scope, element, attributes) {
       var allStopsTime;
-      scope.timeout = new SafeInterval(()=>checkServiceWindow(scope.availableTrips), 1000*8, 1000);
+      scope.inServiceWindow = null;
+      //check in service window every 1 min, if fails re-try in 1 sec
+      scope.timeout = new SafeInterval(()=>checkServiceWindow(scope.availableTrips), 1000*60, 1000);
       scope.timeout.start();
       scope.$on('$destroy', () => {
         if (scope.timeout) scope.timeout.stop();
       });
+      //to restart the loop when available trips become not null
+      scope.$watchCollection('availableTrips', ()=>{
+        scope.timeout.stop();
+        scope.timeout.start();
+      })
       function checkServiceWindow(trips) {
-        var checkPromise = new Promise(function(resolve) {
+        if (!trips || trips.length == 0) {
+          scope.inServiceWindow = null;
+        } else {
           var allStopsTime = _.flatten(trips.map(trip=>trip.tripStops))
                             .map(stop=>stop.time).sort();
           if (allStopsTime) {
-            scope.startTime = allStopsTime[0];
-            scope.endTime = allStopsTime[allStopsTime.length-1];
-            console.log("inServiceWindow");
-            console.log(scope.startTime);
-            console.log(scope.endTime);
+            //15 min before 1st stop time and 15 mins after last stop time
+            scope.startTime = new Date(allStopsTime[0]).getTime() - 1000*60*15;
+            scope.endTime = new Date(allStopsTime[allStopsTime.length-1]).getTime() + 1000*60*15;
+            scope.now = Date.now();
+            if (isFinite(scope.startTime) && isFinite(scope.endTime)) {
+              scope.inServiceWindow = scope.startTime <= scope.now && scope.now <= scope.endTime;
+            } else {
+              scope.inServiceWindow = false;
+            }
           }
-          resolve();
-        });
-        return checkPromise;
+        }
+        return Promise.resolve();
       }
     }
   }
