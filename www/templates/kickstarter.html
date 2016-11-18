@@ -35,6 +35,7 @@
       </div>
 
        <ion-item ng-repeat="route in data.filteredbackedKickstarter"
+
                   ui-sref="tabs.kickstarter-recap({
                    routeId: route.id
                  })"
@@ -131,10 +132,11 @@
       </div>
 
       <ion-item ng-repeat="route in data.filteredKickstarter"
+
               ui-sref="tabs.kickstarter-detail({
                              routeId: route.id
-                            })"
-                 class="item-icon-right">
+                            })">
+
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
@@ -198,7 +200,12 @@
             </div>
           </route-item-additional-info>
         </route-item>
+<<<<<<< HEAD
         <i class="icon ion-ios-arrow-right"></i>
+=======
+        <i class="icon ion-ios-arrow-right">
+        </i>
+>>>>>>> kickstarter
       </ion-item>
 
     </ion-content>
