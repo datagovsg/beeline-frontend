@@ -180,8 +180,10 @@
             </ul>
           </div>
           <p>
-            This campaign ends in <span ng-if="book.route.daysLeft && book.route.daysLeft>1">{{book.route.daysLeft}} days</span>
-              <span ng-if="book.route.daysLeft && book.route.daysLeft==1">{{book.route.daysLeft}} day</span>. Payment for the  <strong>pass for {{book.route.notes.noPasses}} trips</strong> will only be deducted at the end of the campaign if the route is activated. You will not be charged if the route does not activate by <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>.
+            <span ng-if="book.route.daysLeft && book.route.daysLeft>1">This campaign ends in {{book.route.daysLeft}} days. </span>
+            <span ng-if="book.route.daysLeft && book.route.daysLeft==1">This campaign ends in {{book.route.daysLeft}} day. </span>
+            <span ng-if="!book.route.daysLeft">This campaign has ended.</span>
+              Payment for the  <strong>pass for {{book.route.notes.noPasses}} trips</strong> will only be deducted at the end of the campaign if the route is activated. You will not be charged if the route does not activate by <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>.
           </p>
           <p>
             If activated, you will receive the pass in your account and you can use it to <strong>book any {{book.route.notes.noPasses}} trips within the 1st month</strong> of the activated route.
