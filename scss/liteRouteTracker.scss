@@ -1,6 +1,18 @@
 /* ---------- tracker PAGE ---------- */
 #lite_route_tracker {
 
+  ion-content.lite-route-tracker-content {
+    display: flex;
+    flex-direction: column;
+
+    .lite-route-tracker-tab {
+      flex-direction: column;
+      display: flex;
+
+      flex: 1 1 auto;
+    }
+  }
+
   .tab-item {
     text-transform: uppercase;
     &.active {
@@ -12,12 +24,23 @@
   }
 
   // Have the map fill the container
-  .angular-google-map-container {
-    position: absolute;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 0;
+  ui-gmap-google-map {
+    flex: 1 1 auto;
+    display: block;
+    position: relative;
+
+    .angular-google-map {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      
+      .angular-google-map-container {
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 0;
+      }
+    }
   }
 
   // Position the locate me button near the bottom right

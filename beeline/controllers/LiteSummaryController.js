@@ -84,7 +84,7 @@ export default [
 
     /* Updated by the view at <daily-trips></daily-trips> */
     $scope.$watch(()=>$scope.data.availableTrips,(trips)=>{
-      if (trips.length == 0) return;
+      if (!trips || trips.length == 0) return;
       RoutesService.getRouteFeatures(trips[0].routeId).then((data)=>{
         $scope.disp.features = data;
       })
@@ -157,7 +157,7 @@ export default [
               Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
           </div>
           <ion-checkbox ng-model="disp.termsChecked">
-            I read and agree to the above terms and would like to proceed.
+            Yes, I have read and agree to the above Terms and Conditions and would like to proceed.
           </ion-checkbox>
         </div>
         `,

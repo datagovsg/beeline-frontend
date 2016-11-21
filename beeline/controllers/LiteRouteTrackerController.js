@@ -22,8 +22,9 @@ export default [
     $scope.hasTrips = true;
 
     $scope.data ={
-      availableTrips : [],
+      availableTrips : null,
       hasTrackingData: true,
+      inServiceWindow: false,
     }
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
@@ -36,7 +37,7 @@ export default [
 
     /* Updated by the view using <daily-trips></daily-trips> (yes, I know, it's ugly) */
     $scope.$watch('data.availableTrips',(trips)=>{
-      if (trips.length == 0) return;
+      if (!trips || trips.length == 0) return;
       $scope.hasTrips = !(trips[0] && new Date(trips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0));
       //get route features
       RoutesService.getRouteFeatures(trips[0].routeId).then((data)=>{

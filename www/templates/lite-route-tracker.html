@@ -16,12 +16,15 @@
         <span class="tab-title-large"><i class="track-moreInfo"></i>Info</span>
       </a>
   </div>
-  <ion-content class="has-tabs-top" scroll=false>
+  <ion-content class="has-tabs-top lite-route-tracker-content" scroll=false>
     <daily-trips-broker trip-label="liteRoute.label"
                  daily-trips="data.availableTrips">
     </daily-trips-broker>
+    <in-service-window available-trips="data.availableTrips"
+                       in-service-window="data.inServiceWindow">
+    </in-service-window>
     <!-- Map Tab -->
-    <div ng-show="activeTab===0">
+    <div ng-show="activeTab===0" class="lite-route-tracker-tab">
       <route-item class="lite item lite-tracked">
         <route-item-bus-number>
           {{ liteRoute.label }}
@@ -44,11 +47,15 @@
       </route-item>
       <div class="item item-icon-left" ng-if="!hasTrips">
         <span class="icon ion-android-alert"></span>
-        There is no service today.
+        There is no bus service scheduled for today.
       </div>
-      <div class="item item-icon-left" ng-if="hasTrips && !data.hasTrackingData">
+      <div class="item item-icon-left" ng-if="hasTrips && data.inServiceWindow===false">
         <span class="icon ion-android-alert"></span>
-        No tracking data available at the moment.
+        Tracking will be available between {{ liteRoute.startTime | formatTime}} and {{ liteRoute.endTime | formatTime}}.
+      </div>
+      <div class="item item-icon-left" ng-if="hasTrips && data.inServiceWindow && data.hasTrackingData === false">
+        <span class="icon ion-android-alert"></span>
+        The bus location tracking is not available at the moment.
       </div>
       <fake-progress-bar max="100" interval="100"></fake-progress-bar>
       <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
