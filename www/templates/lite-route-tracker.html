@@ -47,11 +47,11 @@
       </route-item>
       <div class="item item-icon-left" ng-if="!hasTrips">
         <span class="icon ion-android-alert"></span>
-        The bus service is not scheduled for today.
+        There is no bus service scheduled for today.
       </div>
       <div class="item item-icon-left" ng-if="hasTrips && data.inServiceWindow===false">
         <span class="icon ion-android-alert"></span>
-        The bus is currently not in service.
+        Tracking will be available between {{ liteRoute.startTime | formatTime}} and {{ liteRoute.endTime | formatTime}}.
       </div>
       <div class="item item-icon-left" ng-if="hasTrips && data.inServiceWindow && data.hasTrackingData === false">
         <span class="icon ion-android-alert"></span>
