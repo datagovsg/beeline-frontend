@@ -153,4 +153,8 @@ route-item {
   .mini-info {
     font-size: $font-size-small;
     color: $normal-grey;
+    &.important{
+      color: $assertive;
+      font-weight: bold;
+    }
   }
