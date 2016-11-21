@@ -4,7 +4,7 @@
   <div class="item-subtitle">Selected Dates </div>
   <div ng-show="isCalculating" class="spinner-block">
     <ion-spinner></ion-spinner>
-      Calculating prices...
+    Calculating prices...
   </div>
   <table class="booking-info prices">
     <thead>
@@ -21,22 +21,51 @@
       </tr>
       <tr ng-if="errorMessage">
         <td colspan="2" class="text-left">
-          <i class="icon ion-alert-circled padding-right"></i>
-            {{errorMessage}}
+          <i class="icon ion-alert-circled padding-right"></i> {{errorMessage}}
         </td>
       </tr>
       <tr ng-if="booking.selectedDates.length > 0" ng-repeat="pinfo in priceInfo.pricesPerTrip">
         <td>
           {{pinfo.startDate | date:'dd MMM (EEE)'}}
           <div ng-if="pinfo.bookingInfo.notes" class="trip-notes">
-            <i class="ionicon ion-information-circled"></i>
-            {{pinfo.bookingInfo.notes}}
+            <i class="ionicon ion-information-circled"></i> {{pinfo.bookingInfo.notes}}
           </div>
         </td>
         <td>${{pinfo.price | number:2}}</td>
       </tr>
     </tbody>
   </table>
+  <div class="promoCredits">
+    <div class="item-subtitle">Promo and Credits </div>
+    <ul class="list">
+      <li class="item item-toggle">
+        Use my Trip Pass (5 trips remaining)
+        <label class="toggle toggle-royal">
+       <input type="checkbox">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+      </li>
+      <li class="item item-toggle">
+        Use my Welcome Credits ($10.00)
+        <label class="toggle toggle-royal">
+       <input type="checkbox">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+      </li>
+      <li class="item item-input-inset">
+        <label class="item-input-wrapper">
+      <input type="text" placeholder="Enter Promo Code">
+    </label>
+        <button class="button button-royal small-button">
+      Apply
+    </button>
+      </li>
+    </ul>
+  </div>
   <div class="item-subtitle">Price Calculator </div>
   <table class="booking-info totals" ng-if="booking.selectedDates.length > 0">
     <tbody>
