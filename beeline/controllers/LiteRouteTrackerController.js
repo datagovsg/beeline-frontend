@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
 export default [
-  '$scope', '$rootScope', '$state', '$stateParams', '$timeout', 'uiGmapGoogleMapApi',
+  '$scope', '$rootScope', '$state', '$stateParams', 'uiGmapGoogleMapApi',
   'CompanyService', 'TripService', 'UserService', 'MapOptions', 'RoutesService',
   'LiteRoutesService', '$ionicPopup', '$ionicLoading', 'loadingSpinner',
   function(
-    $scope,  $rootScope, $state, $stateParams,  $timeout,  uiGmapGoogleMapApi,
+    $scope,  $rootScope, $state, $stateParams,  uiGmapGoogleMapApi,
     CompanyService, TripService,  UserService, MapOptions, RoutesService,
     LiteRoutesService,  $ionicPopup, $ionicLoading, loadingSpinner
   ) {
@@ -22,7 +22,9 @@ export default [
     $scope.hasTrips = true;
 
     $scope.data ={
-      availableTrips : [],
+      availableTrips : null,
+      hasTrackingData: true,
+      inServiceWindow: false,
     }
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
@@ -35,7 +37,7 @@ export default [
 
     /* Updated by the view using <daily-trips></daily-trips> (yes, I know, it's ugly) */
     $scope.$watch('data.availableTrips',(trips)=>{
-      if (trips.length == 0) return;
+      if (!trips || trips.length == 0) return;
       $scope.hasTrips = !(trips[0] && new Date(trips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0));
       //get route features
       RoutesService.getRouteFeatures(trips[0].routeId).then((data)=>{
@@ -116,6 +118,12 @@ export default [
     $scope.disp.showTerms = function() {
       if (!$scope.liteRoute.transportCompanyId) return;
       CompanyService.showTerms($scope.liteRoute.transportCompanyId);
+    };
+
+    $scope.locateMe = function(){
+      mapPromise.then(()=>{
+        MapOptions.locateMe($scope.map.control);
+      })
     };
 
   }

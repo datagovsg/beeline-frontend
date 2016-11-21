@@ -31,9 +31,12 @@
         padding: inherit;
         width: 100%;
         max-width:none;
+        direction: ltr;
       }
 
-      &:after { display: none; }
+      &:after {
+        /* display: none;  */
+      }
     }
   }
 
