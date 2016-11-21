@@ -11,14 +11,16 @@ export class SafeInterval {
     this.loop = function() {
       this.timeout = null;
 
-      fn()
+      var promise = this.currentPromise = fn();
+
+      this.currentPromise
       .then(()=>{
-        if (this.isRunning) {
+        if (promise == this.currentPromise && this.isRunning) {
           this.timeout = setTimeout(this.loop, interval);
         }
       })
       .catch(() => {
-        if (this.isRunning) {
+        if (promise == this.currentPromise && this.isRunning) {
           this.timeout = setTimeout(this.loop, retryTimeout);
         }
       })
@@ -33,7 +35,7 @@ export class SafeInterval {
   }
 
   start() {
-    assert (!this.isRunning);
+    if (this.isRunning) return;
     this.isRunning = true;
     this.loop();
   }

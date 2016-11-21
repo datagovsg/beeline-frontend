@@ -3,6 +3,7 @@ import {SafeInterval} from '../SafeInterval';
 export default function(TripService, uiGmapGoogleMapApi, $timeout) {
   return {
     replace: false,
+    restrict: 'E',
     template: `
     <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
                       ng-if="actualPath.path.length"
@@ -16,6 +17,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
     `,
     scope: {
       availableTrips: '<',
+      hasTrackingData: '=?',
     },
     link: function(scope, element, attributes) {
 
@@ -37,7 +39,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         ]
       }
 
-      scope.recentPings = [];
+      scope.recentPings = null;
 
       scope.$watch('availableTrips', (availableTrips) => {
         if (!availableTrips) return;
@@ -58,7 +60,21 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
 
       scope.$watchCollection('recentPings', function(recentPings) {
         if (recentPings) {
-          recentPings.map((pings, index)=>{
+          scope.hasTrackingData = _.some(recentPings, rp => rp && rp.length);
+          if (!scope.hasTrackingData) {
+            //to remove path and bus icon
+            _.forEach(scope.map.lines.actualPaths,(actualPath)=>{
+              actualPath = {
+                path: null
+              };
+            });
+            _.forEach(scope.map.busLocations, (busLocation)=>{
+              busLocation.coordinates = null;
+            });
+            return;
+          }
+
+          recentPings.forEach((pings, index)=>{
             if (pings.length > 0){
 
               var coordinates = pings[0].coordinates;
@@ -71,7 +87,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
               scope.map.lines.actualPaths[index] = {
                 path: path
               }
-            }else {
+            } else {
               //to remove bus icon and actual path
               scope.map.busLocations[index].coordinates = null;
               scope.map.lines.actualPaths[index] = {
@@ -79,6 +95,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
               }
             }
           })
+        } else {
+          scope.hasTrackingData = null;
         }
       });
 
@@ -92,10 +110,25 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         scope.timeout.start();
       });
 
-      function pingLoop() {
-        return Promise.all(scope.availableTrips.map((trip, index) => {
+      //load icons and path earlier by restart timeout on watching trips
+      var availableTripsPromise = new Promise((resolve) => {
+        scope.$watchCollection("availableTrips", ()=>{
+          if (scope.availableTrips) {
+            resolve();
+          }
+          scope.timeout.stop();
+          scope.timeout.start();
+        })
+      });
+
+      async function pingLoop() {
+        await availableTripsPromise;
+
+        await Promise.all(scope.availableTrips.map((trip, index) => {
           return TripService.DriverPings(trip.id)
           .then((info) => {
+            scope.recentPings = scope.recentPings || [];
+
             /* Only show pings from the last 5 minutes */
             // max 12 pings
             var now = Date.now();
