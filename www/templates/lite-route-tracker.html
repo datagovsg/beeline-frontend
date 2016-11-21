@@ -47,15 +47,15 @@
       </route-item>
       <div class="item item-icon-left" ng-if="!hasTrips">
         <span class="icon ion-android-alert"></span>
-        There is no service today.
+        The bus service is not scheduled for today.
       </div>
       <div class="item item-icon-left" ng-if="hasTrips && data.inServiceWindow===false">
         <span class="icon ion-android-alert"></span>
-        Bus is currently not in service.
+        The bus is currently not in service.
       </div>
       <div class="item item-icon-left" ng-if="hasTrips && data.inServiceWindow && data.hasTrackingData === false">
         <span class="icon ion-android-alert"></span>
-        No tracking data available at the moment.
+        The bus location tracking is not available at the moment.
       </div>
       <fake-progress-bar max="100" interval="100"></fake-progress-bar>
       <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">

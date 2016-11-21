@@ -61,7 +61,18 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       scope.$watchCollection('recentPings', function(recentPings) {
         if (recentPings) {
           scope.hasTrackingData = _.some(recentPings, rp => rp && rp.length);
-          if (!scope.hasTrackingData) return;
+          if (!scope.hasTrackingData) {
+            //to remove path and bus icon
+            _.forEach(scope.map.lines.actualPaths,(actualPath)=>{
+              actualPath = {
+                path: null
+              };
+            });
+            _.forEach(scope.map.busLocations, (busLocation)=>{
+              busLocation.coordinates = null;
+            });
+            return;
+          }
 
           recentPings.forEach((pings, index)=>{
             if (pings.length > 0){
