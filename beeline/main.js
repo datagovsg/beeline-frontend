@@ -105,6 +105,8 @@ var app = angular.module('beeline', [
 .directive('beelineBindHtml', require('./directives/beelineBindHtml.js').default)
 .directive('progressBar', require('./directives/progressBar/progressBar.js').default)
 .directive('dailyTripsBroker', require('./directives/dailyTripsBroker.js').default)
+.directive('fakeProgressBar', require('./directives/fakeProgressBar.js').default)
+.directive('inServiceWindow', require('./directives/inServiceWindow.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
