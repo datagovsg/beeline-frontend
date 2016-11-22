@@ -8,7 +8,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
     <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
                       ng-if="actualPath.path.length"
                       path="actualPath.path"
-                      stroke="strokeOptions"></ui-gmap-polyline>
+                      stroke="strokeOptions"
+                      icons="strokeIcons"></ui-gmap-polyline>
     <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
                     ng-if="busLocation.coordinates"
                     idkey="'bus-location{{index}}'"
@@ -26,6 +27,14 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         weight: 3.0,
         opacity: 0.7
       };
+
+      scope.strokeIcons = [{
+          icon: {
+            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+          },
+          offset: '10px',
+          repeat: '100px'
+      }]
 
       scope.map = {
         lines: {
