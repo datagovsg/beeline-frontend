@@ -71,7 +71,7 @@
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn">
       <p class="text-center">
-        You are not logged in. Please enter your mobile number to complete booking.
+        You are not logged in. Please enter your mobile number to complete pre-order.
       </p>
 
       <button class="button primary-button" ng-click="login()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
@@ -83,7 +83,7 @@
 
       <div ng-if="!data.hasCreditInfo">
         <p class="text-center">
-          Your card will be securely stored for the future payment. You can swop to another card in the settings.
+          Please add your card details for future payment when the route activates.
         </p>
 
         <button class="button primary-button" ng-click="createBid()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
@@ -97,7 +97,7 @@
         <button class="button primary-button"
                 ng-click="createBid()"
                 ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-          Confirm Pre-order
+          Confirm Pre-order Now
         </button>
         <div class="text-link-div">
           <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">

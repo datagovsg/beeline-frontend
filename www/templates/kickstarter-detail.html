@@ -168,9 +168,10 @@
               <p>trips</p>
               <div class="pass-additional">
               <p>
-                <strong>If activated</strong>
+                <strong>If route is activated, this route pass will be valid</strong>
               </p>
-                <p>Route starts on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong> </p>
+                <p>From <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong> </p>
+                <p>To <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong> </p>
                 <p>Valid for any {{book.route.notes.noPasses}} trips within the 1st month</p>
               </div>
           </div>
@@ -183,9 +184,6 @@
           <div class="features">
             <ul>
               <li>
-              start on <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong>
-              </li>
-              <li>
               run every Mon - Fri, except public holidays
               </li>
               <li>
@@ -197,7 +195,7 @@
             <span ng-if="book.route.daysLeft && book.route.daysLeft>1">This campaign ends in {{book.route.daysLeft}} days. </span>
             <span ng-if="book.route.daysLeft && book.route.daysLeft==1">This campaign ends in {{book.route.daysLeft}} day. </span>
             <span ng-if="!book.route.daysLeft">This campaign has ended.</span>
-              Payment for the <strong>Route Pass for {{book.route.notes.noPasses}} trips</strong> will only be deducted at the end of the campaign if the route is activated. You will not be charged if the route does not activate by <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>.
+              Payment for the <strong>Route Pass</strong> will only be deducted at the end of the campaign if the route is activated. You will not be charged if the route does not activate by <strong>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>.
           </p>
           <p>
             If activated, you will receive the Route Pass in your account and you can use it to <strong>book any {{book.route.notes.noPasses}} trips within the 1st month</strong> of the activated route.
@@ -207,7 +205,7 @@
           </p>
           <p ng-if="tier.count >= tier.pax">You can still pre-order this pass even though the goal has been met to activate this route. Like the other people who pre-order, you will receive the Route Pass when the campaign ends.</p>
         </div>
-    
+
         <div class="select-bid item-text-wrap" ng-if="book.route.isExpired">
           <button class="button primary-button page-bottom " ui-sref="tabs.kickstarter">
             Back to Main
@@ -223,11 +221,12 @@
               <span>I am willing to pre-order {{book.route.notes.noPasses}} trips at ${{ item.price | number:2 }} per trip.</span>
             </ion-item>
           </ion-list>
+
           <button class="button primary-button page-bottom " ng-disabled="!book.bidPrice" ui-sref="tabs.kickstarter-summary({
                           routeId: book.routeId,
                           bidPrice: book.bidPrice
                         })">
-                        Pre-Order Pass
+                        Review my Pre-order
           </button>
       </div>
     </div>

@@ -66,17 +66,17 @@
 }
 
 .preorder-pass{
-  width: 60%;
+  width: 40%;
   height: auto;
   border: 1px solid #dddbdb;
   background: #f6f0f0;
-  padding: $padding-base-horizontal;
+  padding: $padding-base-horizontal $padding-base-horizontal*2;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: $padding-large-vertical*2 auto;
+  margin: $padding-large-vertical*3 auto;
     h1{
       font-size: 5em;
       padding: 0;
