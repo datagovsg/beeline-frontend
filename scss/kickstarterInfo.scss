@@ -44,11 +44,21 @@
     .route-pass-body{
       padding: $padding-large-vertical*2 $padding-large-vertical*2;
       padding-bottom: $padding-large-vertical*3;
+
+      route-item{
+
+        .bus-number{
+          align-self: flex-start;
+          margin-right: 0px;
+        }
+      }
+
       h1{
         font-size: 5em;
         padding: 0;
         margin: 0;
         color: $royal;
+  
       }
       h4{
         font-size: 1em;
