@@ -63,7 +63,8 @@
         <map-poly-route route-path="map.lines.route.path"></map-poly-route>
         <map-bus-poly-route route="liteRoute"
                             available-trips="data.availableTrips"
-                            has-tracking-data="data.hasTrackingData"></map-bus-poly-route>
+                            has-tracking-data="data.hasTrackingData"
+                            route-msg="data.announcement"></map-bus-poly-route>
         <map-bus-stops available-trips="data.availableTrips"
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
@@ -73,7 +74,7 @@
              src="./img/MapButtonLocateMe.svg"
              on-tap="locateMe()"></img>
       </div>
-      <div class="announcement" ng-show="false"></div>
+      <div class="announcement" ng-show="data.announcement">{{data.announcement}}</div>
     </div>
 
     <!-- Info Tab -->

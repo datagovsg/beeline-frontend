@@ -19,6 +19,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
     scope: {
       availableTrips: '<',
       hasTrackingData: '=?',
+      routeMsg: '=?',
     },
     link: function(scope, element, attributes) {
 
@@ -50,6 +51,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
 
       scope.recentPings = null;
 
+      scope.statusMsgs = [];
+
       scope.$watch('availableTrips', (availableTrips) => {
         if (!availableTrips) return;
 
@@ -65,6 +68,10 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
             }
           })
         })
+      })
+
+      scope.$watchCollection('statusMsgs', ()=>{
+        scope.routeMsg = scope.statusMsgs.join('');
       })
 
       scope.$watchCollection('recentPings', function(recentPings) {
@@ -136,6 +143,9 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         await Promise.all(scope.availableTrips.map((trip, index) => {
           return TripService.DriverPings(trip.id)
           .then((info) => {
+            //get status msg
+            scope.statusMsgs[index] =  (info.statuses &&  info.statuses[0] && info.statuses[0].message) || null;
+
             scope.recentPings = scope.recentPings || [];
 
             /* Only show pings from the last 5 minutes */
