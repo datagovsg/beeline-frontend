@@ -61,8 +61,5 @@
     <span ng-if="route.daysLeft && route.daysLeft==1">This campaign ends in {{route.daysLeft}} day on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. If the route does not activate, your card will not be charged.</span>
     <span ng-if="!route.daysLeft">This campaign has ended.</span>
   </p>
-  <p>
-    You will be notified via email about the route status.
-  </p>
   <p ng-if="route.notes.tier[0].count >= route.notes.tier[0].pax" ng-hide="preorderHide">You can still pre-order this pass even though the goal has been met to activate this route. Like the other people who pre-order, you will receive the Route Pass when the campaign ends.</p>
 </div>
