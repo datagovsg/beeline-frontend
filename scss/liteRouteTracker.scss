@@ -33,7 +33,7 @@
       height: 100%;
       width: 100%;
       position: absolute;
-      
+
       .angular-google-map-container {
         left: 0;
         height: 100%;
@@ -43,11 +43,21 @@
     }
   }
 
+  .announcement {
+    flex: 0 0 100px;
+  }
+
   // Position the locate me button near the bottom right
-  .locate-button {
-    position: absolute;
-    bottom: 2* $content-padding;
-    right: $content-padding;
+  .locate-button-div {
+    flex: 0 0 0px;
+    overflow: visible;
+    position: relative;
+
+    .locate-button {
+      position: absolute;
+      bottom: 2*$content-padding;
+      right: 2*$content-padding;
+    }
   }
 }
 

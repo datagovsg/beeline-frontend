@@ -68,9 +68,12 @@
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>
-      <img class="locate-button"
-           src="./img/MapButtonLocateMe.svg"
-           on-tap="locateMe()"></img>
+      <div class="locate-button-div">
+        <img class="locate-button"
+             src="./img/MapButtonLocateMe.svg"
+             on-tap="locateMe()"></img>
+      </div>
+      <div class="announcement" ng-show="false"></div>
     </div>
 
     <!-- Info Tab -->
