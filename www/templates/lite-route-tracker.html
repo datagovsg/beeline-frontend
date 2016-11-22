@@ -51,7 +51,7 @@
       </div>
       <div class="item item-icon-left item-text-wrap" ng-if="hasTrips && data.inServiceWindow===false">
         <span class="icon ion-android-alert"></span>
-        Tracking will be available between {{ liteRoute.startTime | formatTime}} and {{ liteRoute.endTime | formatTime}}.
+        The bus service will only be available from {{ liteRoute.startTime | formatTime}} to {{ liteRoute.endTime | formatTime}}.
       </div>
       <div class="item item-icon-left item-text-wrap" ng-if="hasTrips && data.inServiceWindow && data.hasTrackingData === false">
         <span class="icon ion-android-alert"></span>
