@@ -7,6 +7,7 @@ export default function () {
       route: '<',
       passHide: '<?',
       paymentHide: '<?',
+      recapHide: '<?',
     },
     link: function(scope, elem, attr) {
       scope.$watchCollection("route.trips",(trips)=>{
