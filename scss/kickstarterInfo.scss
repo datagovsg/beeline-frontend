@@ -22,7 +22,7 @@
   margin: 0 auto;
   margin-top: $padding-large-vertical ;
   margin-bottom: $padding-large-vertical*3 ;
-  box-shadow: 1px 1px 5px darken($light-grey,20%);
+  box-shadow: 1px 1px 10px darken($light-grey,40%);
 
     .route-pass-header{
       border-radius: 5px 5px 0px 0px;
@@ -42,14 +42,20 @@
       }
     }
     .route-pass-body{
-      padding: $padding-large-vertical*3 $padding-large-vertical*2;
+      padding: $padding-large-vertical*2 $padding-large-vertical*2;
+      padding-bottom: $padding-large-vertical*3;
       h1{
         font-size: 5em;
         padding: 0;
         margin: 0;
         color: $royal;
       }
-
+      h4{
+        font-size: 1em;
+        margin-bottom: $padding-large-vertical*2;
+        color: $normal-grey;
+        text-transform: uppercase;
+      }
       .pass-additional{
         margin-top: $padding-large-vertical;
         text-align: left;

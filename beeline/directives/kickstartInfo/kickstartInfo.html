@@ -1,7 +1,7 @@
 
 <div class="kickstarter-info">
-  <p>
-    Pre-order a Route Pass that contains 5 trips:
+  <p ng-hide="paymentHide">
+    Pre-order a Route Pass that contains {{route.notes.noPasses}} trips:
   </p>
   <div class="preorder-pass" ng-hide="passHide">
     <div class="route-pass-header">
@@ -9,7 +9,7 @@
     </div>
     <div class="route-pass-body">
       <h1>{{route.notes.noPasses}}</h1>
-      <p>trips</p>
+      <h4>trips</h4>
       <div class="pass-additional">
       <p>
         <strong>If activated, Route Pass will be valid</strong>
@@ -32,7 +32,7 @@
           </td>
         </tr>
       </table>
-        <p>Valid for any {{route.notes.noPasses}} trips within the 1st month</p>
+        <p>Valid for any {{route.notes.noPasses}} trips within the 1st month of activated route.</p>
       </div>
     </div>
   </div>
@@ -40,13 +40,13 @@
    When <strong>{{route.notes.tier[0].pax}} people</strong> pre-order the Route Pass, this route will activate.
   </p>
   <p>
-      Payment for the <strong>Route Pass</strong> will only be deducted at the end of the campaign if the route meets this goal. Thereafter, you will receive the Route Pass for the activated route and you can <strong>book any {{route.notes.noPasses}} trips within the 1st month</strong>.
+      Payment for the <strong>Route Pass</strong> will only be deducted after the campaign ends and if the route is activated. You will receive the Route Pass within a week and you can use it to <strong>book any {{route.notes.noPasses}} trips</strong>.
   </p>
 
-  <p>
-      If the route is activated, it will
-  </p>
-  <div class="features">
+  <div class="features" ng-hide="paymentHide">
+    <p>
+        If the route is activated, the route will
+    </p>
     <ul>
       <li>
       run every Mon - Fri, except public holidays
@@ -57,12 +57,12 @@
     </ul>
   </div>
   <p>
-    <span ng-if="route.daysLeft && route.daysLeft>1">This campaign ends in {{route.daysLeft}} days on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. Your card will not be charged if the route does not activate by then. </span>
-    <span ng-if="route.daysLeft && route.daysLeft==1">This campaign ends in {{route.daysLeft}} day on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. Your card will not be charged if the route does not activate by then. </span>
+    <span ng-if="route.daysLeft && route.daysLeft>1">This campaign ends in {{route.daysLeft}} days on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. If the route does not activated, your card will not be charged. </span>
+    <span ng-if="route.daysLeft && route.daysLeft==1">This campaign ends in {{route.daysLeft}} day on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. If the route does not activated, your card will not be charged.</span>
     <span ng-if="!route.daysLeft">This campaign has ended.</span>
   </p>
   <p>
     You will be notified via email about the route status as well.
   </p>
-  <p ng-if="route.notes.tier[0].count >= route.notes.tier[0].pax">You can still pre-order this pass even though the goal has been met to activate this route. Like the other people who pre-order, you will receive the Route Pass when the campaign ends.</p>
+  <p ng-if="route.notes.tier[0].count >= route.notes.tier[0].pax" ng-hide="paymentHide">You can still pre-order this pass even though the goal has been met to activate this route. Like the other people who pre-order, you will receive the Route Pass when the campaign ends.</p>
 </div>

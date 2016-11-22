@@ -1,7 +1,9 @@
 
 /* Kickstarter select stops */
 #pg_kickstarter_detail {
-
+  .bar-subheader{
+    height: auto;
+  }
   .map-area {
     height: 250px;
     position: relative;

@@ -6,6 +6,9 @@
        <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
+  <div class="bar bar-subheader item kickstarter-breadcrumbs"ng-if="!book.route.isExpired">
+    <img src="img/KickstarterProgressBar02_RouteDetails.svg" />
+  </div>
 
   <ion-content class="has-header">
     <div class="item item-icon-left item-text-wrap" ng-if="book.route.isExpired">
@@ -16,9 +19,7 @@
         <span ng-if="book.route.isActived">Route is activated.</span>
         <span ng-if="!book.route.isActived">Route is not activated.</span>
     </div>
-    <div class="item kickstarter-breadcrumbs"ng-if="!book.route.isExpired">
-      <img src="img/KickstarterProgressBar02_RouteDetails.svg" />
-    </div>
+
 
       <!-- contains the map, the stop selectors
         and the locate me button -->
