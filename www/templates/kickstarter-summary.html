@@ -29,19 +29,7 @@
       <div class="item-subtitle">
       When will payment be deducted?
       </div>
-      <div class="kickstarter-info">
-        <p>
-            Payment for the <strong>Route Pass</strong> will only be deducted at the end of the campaign if the route activates. Thereafter, you will receive the Route Pass for the activated route and you can <strong>book any {{book.route.notes.noPasses}} trips within the 1st month</strong>.
-        </p>
-        <p>
-          <span ng-if="book.route.daysLeft && book.route.daysLeft>1">This campaign ends in {{book.route.daysLeft}} days on <b>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. Your card will not be charged if the route does not activate by then. </span>
-          <span ng-if="book.route.daysLeft && book.route.daysLeft==1">This campaign ends in {{book.route.daysLeft}} day on <b>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. Your card will not be charged if the route does not activate by then. </span>
-          <span ng-if="!book.route.daysLeft">This campaign has ended.</span>
-        </p>
-        <p>
-          You will be notified via email about the route status as well.
-        </p>
-      </div>
+      <kickstart-info route="book.route"></kickstart-info>
     </div>
 
     <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">

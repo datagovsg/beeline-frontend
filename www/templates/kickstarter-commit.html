@@ -88,49 +88,7 @@
           <div class="item-subtitle">
           What happens next?
           </div>
-          <div class="kickstarter-info">
-            <p>
-              You have pre-ordered a <strong> Route Pass for {{book.route.notes.noPasses}} trips</strong> to show your support to activate this route.
-            </p>
-            <div class="preorder-pass">
-                <h3>Route Pass for</h3>
-                <h1>{{book.route.notes.noPasses}}</h1>
-                <p>trips</p>
-                <div class="pass-additional">
-                <p>
-                  <strong>If route is activated, this route pass will be valid</strong>
-                </p>
-                  <p>From <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong> </p>
-                  <p>To <strong>{{book.route.trips[0].date | date:'dd MMM yyyy'}} ({{book.route.trips[0].date | date:'EEE'}})</strong> </p>
-                  <p>Valid for any {{book.route.notes.noPasses}} trips within the 1st month</p>
-                </div>
-            </div>
-            <p>
-                Payment for the <strong>Route Pass</strong> will only be deducted at the end of the campaign if the route meets this goal. Thereafter, you will receive the Route Pass for the activated route and you can <strong>book any {{book.route.notes.noPasses}} trips within the 1st month</strong>.
-            </p>
-
-            <p>
-                If the route is activated, it will
-            </p>
-            <div class="features">
-              <ul>
-                <li>
-                run every Mon - Fri, except public holidays
-                </li>
-                <li>
-                operate for at least a month.
-                </li>
-              </ul>
-            </div>
-            <p>
-              <span ng-if="book.route.daysLeft && book.route.daysLeft>1">This campaign ends in {{book.route.daysLeft}} days on <b>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. Your card will not be charged if the route does not activate by then. </span>
-              <span ng-if="book.route.daysLeft && book.route.daysLeft==1">This campaign ends in {{book.route.daysLeft}} day on <b>{{book.route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. Your card will not be charged if the route does not activate by then. </span>
-              <span ng-if="!book.route.daysLeft">This campaign has ended.</span>
-            </p>
-            <p>
-              You will be notified via email about the route status as well.
-            </p>
-          </div>
+          <kickstart-info route="book.route"></kickstart-info>
         </div>
           <div class="item item-text-wrap">
             <div class="share-box">
