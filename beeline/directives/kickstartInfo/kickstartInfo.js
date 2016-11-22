@@ -5,6 +5,7 @@ export default function () {
     replace: false,
     scope: {
       route: '<',
+      passHide: '<?',
     },
     link: function(scope, elem, attr) {
       scope.$watchCollection("route.trips",(trips)=>{

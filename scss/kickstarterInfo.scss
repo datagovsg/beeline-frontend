@@ -61,6 +61,9 @@
         table{
           margin-top: $padding-large-vertical;
           margin-bottom: $padding-large-vertical;
+          td.label{
+            width: 30%;
+          }
         }
       }
     }
