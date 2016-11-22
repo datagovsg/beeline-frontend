@@ -1,6 +1,6 @@
 
 <div class="kickstarter-info">
-  <p ng-hide="paymentHide">
+  <p ng-hide="preorderHide">
     Pre-order a Route Pass that contains {{route.notes.noPasses}} trips:
   </p>
   <div class="preorder-pass" ng-hide="passHide">
@@ -43,7 +43,7 @@
       Payment for the <strong>Route Pass</strong> will only be deducted after the campaign ends and if the route is activated. You will receive the Route Pass within a week and you can use it to <strong>book any {{route.notes.noPasses}} trips</strong>.
   </p>
 
-  <div class="features" ng-hide="paymentHide">
+  <div class="features" ng-hide="extraHide">
     <p>
         If the route is activated, the route will
     </p>
@@ -64,5 +64,5 @@
   <p>
     You will be notified via email about the route status.
   </p>
-  <p ng-if="route.notes.tier[0].count >= route.notes.tier[0].pax" ng-hide="paymentHide || recapHide">You can still pre-order this pass even though the goal has been met to activate this route. Like the other people who pre-order, you will receive the Route Pass when the campaign ends.</p>
+  <p ng-if="route.notes.tier[0].count >= route.notes.tier[0].pax" ng-hide="preorderHide">You can still pre-order this pass even though the goal has been met to activate this route. Like the other people who pre-order, you will receive the Route Pass when the campaign ends.</p>
 </div>
