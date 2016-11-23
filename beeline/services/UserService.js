@@ -26,6 +26,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
              JSON.parse(window.localStorage.beelineUser) : null;
   var userEvents = new EventEmitter();
 
+  var routeCreditsCache;
+
   // General purpose wrapper for making http requests to server
   // Adds the appropriate http headers and token if signed in
   var beelineRequest = function(options) {
@@ -447,18 +449,30 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   };
 
   // get all routeCredits associated with the user
-  var getRouteCredits = function(tag){
+  // user can specify the tag to search for
+  // input:
+  // - tag - String: tag associated with route
+  // - ignoreCache - boolean
+  // output:
+  // - Promise containing all routeCredites associated with user
+  var getRouteCredits = function(tag, ignoreCache){
+    if(!ignoreCache && routeCreditsCache){
+      return tag ? routeCreditsCache : routeCreditsCache.then(routeCredits => routeCredits[tag])
+    }
+
     if(tag){
-      return beelineRequest({
+      routeCreditsCache = beelineRequest({
         method: 'GET',
         url: '/routeCredits/'+tag
       })
     } else {
-      return beelineRequest({
+      routeCreditsCache = beelineRequest({
         method: 'GET',
         url: '/routeCredits'
       })
     }
+
+    return routeCreditsCache.then(reply => reply.data)
   }
 
   // ////////////////////////////////////////////////////////////////////////////
