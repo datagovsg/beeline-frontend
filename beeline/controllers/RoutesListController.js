@@ -78,8 +78,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
     })
 
     $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise, allRouteCreditsPromise]).then((results) => {
-      $scope.data.routes.forEach($scope.calcRoutePassCount)
-      $scope.data.recentRoutes.forEach($scope.calcRoutePassCount)
+      $scope.data.routes.forEach(calcRoutePassCount)
+      $scope.data.recentRoutes.forEach(calcRoutePassCount)
 
       $scope.error = null;
     })
@@ -138,6 +138,26 @@ export default function($scope, $state, UserService, RoutesService, $q,
       })
     }
   );
+
+  // Calculates the number of rides left for a route based on available route
+  // specific credits
+  var calcRoutePassCount = function(route){
+    if(!route.tags || $scope.data.allRouteCreditTags.length===0){ return } 
+      
+    let arr = _.intersection(route.tags, $scope.data.allRouteCreditTags)  
+    
+    if(arr.length < 1) { return }
+    if(arr.length > 1) { } // FIXME: throw error? 
+    
+    let tag = arr[0]
+    let price = route.trips[0].priceF
+
+    if(price <= 0) { return }
+
+    let creditsAvailable = parseFloat($scope.data.allRouteCredits[tag])
+
+    route.ridesRemaining = Math.floor(creditsAvailable / price)
+  }
 
   // Don't override the caching in main.js
   var firstRun = true;
