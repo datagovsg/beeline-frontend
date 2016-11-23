@@ -74,9 +74,13 @@
              src="./img/MapButtonLocateMe.svg"
              on-tap="locateMe()"></img>
       </div>
-      <div class="item item-icon-left item-text-wrap announcement" ng-show="data.announcement">
-        <span class="icon ion-android-warning"></span>
-        {{data.announcement.trim()}}
+      <div class="announcement-div" ng-show="data.announcement">
+        <div class="announcement">
+          <span class="icon ion-chatbox-working"></span>
+            <div class="message">
+              {{data.announcement.trim()}}
+            </div>
+        </div>
       </div>
     </div>
 

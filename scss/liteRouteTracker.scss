@@ -42,11 +42,39 @@
       }
     }
   }
+  .announcement-div {
+    flex: 0 0 0px;
+    overflow: visible;
+    position: relative;
+    .announcement {
+      /* flex: 0 0 50px; */
+      position: absolute;
+      background: #000;
+      opacity: 0.7;
+      width: 90%;
+      bottom: 5*$content-padding;
+      right: 5%;
+      left: 5%;
+      height: auto;
+      box-shadow: 1px 1px 1px #aaa;
+      color: $light;
+      vertical-align: baseline;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;;
+      align-items: center;
+      padding: $content-padding*2;
+/*       margin: 0 auto; */
+      .icon{
+        font-size: 32px;
+        margin-right: $content-padding;
+    }
+      .message{
 
-  .announcement {
-    flex: 0 0 50px;
+      }
   }
 
+}
   // Position the locate me button near the bottom right
   .locate-button-div {
     flex: 0 0 0px;
