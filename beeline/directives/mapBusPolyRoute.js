@@ -78,7 +78,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       })
 
       scope.$watchCollection('statusMsgs', ()=>{
-        scope.routeMsg = scope.statusMsgs.join('');
+        scope.routeMsg = scope.statusMsgs.join(' ');
       })
 
       scope.$watchCollection('recentPings', function(recentPings) {
