@@ -53,7 +53,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
-    var allRouteCreditsPromise = UserService.getRouteCredits('kickstart-109')
+    var allRouteCreditsPromise = UserService.getRouteCredits();
 
     // Configure the list of available regions
     allRoutesPromise.then(function(allRoutes) {
@@ -73,10 +73,14 @@ export default function($scope, $state, UserService, RoutesService, $q,
     });
 
     allRouteCreditsPromise.then(function(map){
-      console.log(map)
+      $scope.data.allRouteCredits = map.data
+      $scope.data.allRouteCreditTags = Object.keys(map.data)
     })
 
-    $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
+    $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise, allRouteCreditsPromise]).then((results) => {
+      $scope.data.routes.forEach($scope.calcRoutePassCount)
+      $scope.data.recentRoutes.forEach($scope.calcRoutePassCount)
+
       $scope.error = null;
     })
     .catch(() => {
@@ -93,7 +97,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.regions = getUniqueRegionsFromRoutes(normalAndLiteRoutes);
     $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
     $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
-    console.log($scope.data.filteredActiveRoutes)
   });
 
   // Throttle the actual updating of filter text
