@@ -26,10 +26,6 @@ export default [
       alightStops: null,
     };
 
-    $scope.priceInfo = {
-      bidPrice : null,
-    }
-
     $scope.book.routeId = +$stateParams.routeId;
 
     $scope.modalMap = MapOptions.defaultMapOptions();

@@ -31,11 +31,11 @@
       <!-- recently bid kickstarter -->
       <div class="item item-divider"
           ng-if="data.filteredbackedKickstarter.length > 0">
-        Kickstarter routes you pre-ordered passes
+        Your kickstarter pre-orders
       </div>
 
        <ion-item ng-repeat="route in data.filteredbackedKickstarter"
-
+                  class="item-text-wrap item-icon-right"
                   ui-sref="tabs.kickstarter-recap({
                    routeId: route.id
                  })"
@@ -114,7 +114,7 @@
                 <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
               </span>
               <span class="mini-info">
-                You pre-ordered a pass for {{route.notes.noPasses}} trips.
+                You pre-ordered a Route Pass for {{route.notes.noPasses}} trips.
               </span>
             </div>
 
@@ -132,11 +132,10 @@
       </div>
 
       <ion-item ng-repeat="route in data.filteredKickstarter"
-              class = "item-icon-right"
-              ui-sref="tabs.kickstarter-detail({
-                             routeId: route.id
-                            })">
-
+                 class="item-text-wrap item-icon-right"
+                 ui-sref="tabs.kickstarter-detail({
+                                routeId: route.id
+                               })">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
