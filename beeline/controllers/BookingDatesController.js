@@ -53,7 +53,31 @@ export default [
 
     loadTickets();
 
-    loadRoutes();
+    var routePromise = loadRoutes();
+    var routeCreditsPromise = loadRouteCredits();
+
+    $q.all([routePromise, routeCreditsPromise]).then(function(){
+      let route = $scope.book.route
+      let allRouteCredits = $scope.book.allRouteCredits
+      let allRouteCreditTags = $scope.book.allRouteCreditsTags
+
+      if(!route.tags || allRouteCreditTags.length===0) {return}
+
+      let notableTags = _.intersection(route.tags, allRouteCreditTags)  
+    
+      if(notableTags.length < 1) { return }
+      if(notableTags.length > 1) { } // FIXME: throw error? 
+
+      let tag = notableTags[0]
+      let price = route.trips[0].priceF
+
+      if(price <= 0) { return }
+
+      let creditsAvailable = parseFloat(allRouteCredits[tag])
+      route.ridesRemaining = Math.floor(creditsAvailable / price)
+
+
+    })
 
     $scope.$watch(()=>UserService.getUser(), loadTickets);
 
@@ -68,7 +92,6 @@ export default [
          m => m.valueOf()
        )
      }, true)
-
 
     $scope.$watchGroup(['disp.availabilityDays', 'disp.previouslyBookedDays'],
       ([availabilityDays, previouslyBookedDays]) => {
@@ -133,11 +156,13 @@ export default [
     }
     function loadRoutes() {
       var routePromise = RoutesService.getRoute($scope.book.routeId, true)
-      loadingSpinner(routePromise.then((route) => {
+      return loadingSpinner(routePromise.then((route) => {
         // Route
         $scope.book.route = route;
         updateCalendar(); // updates availabilityDays
       }));
+
+
     }
     function updateCalendar() {
       // ensure cancelled trips are not shown
@@ -167,6 +192,14 @@ export default [
 
         $scope.disp.availabilityDays[trip.date.getTime()] = trip.availability.seatsAvailable;
       }
+    }
+
+    function loadRouteCredits(){
+      var routeCreditsPromise = UserService.getRouteCredits()
+      return routeCreditsPromise.then(function(routeCredits){
+        $scope.book.allRouteCredits = routeCredits
+        $scope.book.allRouteCreditsTags = Object.keys(routeCredits)
+      })
     }
   },
 ];
