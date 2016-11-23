@@ -446,6 +446,21 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
+  // get all routeCredits associated with the user
+  var getRouteCredits = function(tag){
+    if(tag){
+      return beelineRequest({
+        method: 'GET',
+        url: '/routeCredits/'+tag
+      })
+    } else {
+      return beelineRequest({
+        method: 'GET',
+        url: '/routeCredits'
+      })
+    }
+  }
+
   // ////////////////////////////////////////////////////////////////////////////
   // Initialization
   // ////////////////////////////////////////////////////////////////////////////
@@ -465,7 +480,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     userEvents: userEvents,
     savePaymentInfo: savePaymentInfo,
     updatePaymentInfo: updatePaymentInfo,
-    removePaymentInfo: removePaymentInfo
+    removePaymentInfo: removePaymentInfo,
+    getRouteCredits: getRouteCredits,
   };
 
 }
