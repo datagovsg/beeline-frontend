@@ -53,7 +53,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
-    var allRouteCreditsPromise = UserService.getRouteCredits();
+    var allRouteCreditsPromise = UserService.getRouteCredits(null, ignoreCache);
 
     // Configure the list of available regions
     allRoutesPromise.then(function(allRoutes) {
@@ -73,13 +73,13 @@ export default function($scope, $state, UserService, RoutesService, $q,
     });
 
     allRouteCreditsPromise.then(function(map){
-      $scope.data.allRouteCredits = map.data
-      $scope.data.allRouteCreditTags = Object.keys(map.data)
+      $scope.data.allRouteCredits = map
+      $scope.data.allRouteCreditTags = Object.keys(map)
     })
 
     $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise, allRouteCreditsPromise]).then((results) => {
-      $scope.data.routes.forEach(calcRoutePassCount)
-      $scope.data.recentRoutes.forEach(calcRoutePassCount)
+      $scope.data.routes.forEach(calcRemainingRoutePassRides)
+      $scope.data.recentRoutes.forEach(calcRemainingRoutePassRides)
 
       $scope.error = null;
     })
@@ -141,15 +141,15 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // Calculates the number of rides left for a route based on available route
   // specific credits
-  var calcRoutePassCount = function(route){
+  var calcRemainingRoutePassRides = function(route){
     if(!route.tags || $scope.data.allRouteCreditTags.length===0){ return } 
       
-    let arr = _.intersection(route.tags, $scope.data.allRouteCreditTags)  
+    let notableTags = _.intersection(route.tags, $scope.data.allRouteCreditTags)  
     
-    if(arr.length < 1) { return }
-    if(arr.length > 1) { } // FIXME: throw error? 
+    if(notableTags.length < 1) { return }
+    if(notableTags.length > 1) { } // FIXME: throw error? 
     
-    let tag = arr[0]
+    let tag = notableTags[0]
     let price = route.trips[0].priceF
 
     if(price <= 0) { return }
