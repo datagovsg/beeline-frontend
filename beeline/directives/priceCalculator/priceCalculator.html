@@ -38,8 +38,8 @@
   <span class="promoCredits">
     <div class="item-subtitle">Route Pass and Credits </div>
     <ul class="list">
-      <li class="item item-toggle">
-        Use my Route Pass (5 trips remaining)
+      <li class="item item-toggle" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
+        Use my Route Pass ({{ booking.route.ridesRemaining }} trips remaining)
         <label class="toggle toggle-royal">
        <input type="checkbox">
        <div class="track">
