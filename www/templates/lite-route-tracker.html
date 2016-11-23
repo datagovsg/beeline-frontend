@@ -45,15 +45,15 @@
           {{ liteRoute.to }}
         </route-item-end-location>
       </route-item>
-      <div class="item item-icon-left" ng-if="!hasTrips">
+      <div class="item item-icon-left item-text-wrap" ng-if="!hasTrips">
         <span class="icon ion-android-alert"></span>
         There is no bus service scheduled for today.
       </div>
-      <div class="item item-icon-left" ng-if="hasTrips && data.inServiceWindow===false">
+      <div class="item item-icon-left item-text-wrap" ng-if="hasTrips && data.inServiceWindow===false">
         <span class="icon ion-android-alert"></span>
-        Tracking will be available between {{ liteRoute.startTime | formatTime}} and {{ liteRoute.endTime | formatTime}}.
+        The bus service will only be available from {{ liteRoute.startTime | formatTime}} to {{ liteRoute.endTime | formatTime}}.
       </div>
-      <div class="item item-icon-left" ng-if="hasTrips && data.inServiceWindow && data.hasTrackingData === false">
+      <div class="item item-icon-left item-text-wrap" ng-if="hasTrips && data.inServiceWindow && data.hasTrackingData === false">
         <span class="icon ion-android-alert"></span>
         The bus location tracking is not available at the moment.
       </div>
