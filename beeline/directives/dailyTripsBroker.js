@@ -36,8 +36,9 @@ export default function(LiteRoutesService, $timeout) {
           .then((response)=>{
             var route = response[scope.tripLabel];
             var runningTrips = route.trips.filter((trip)=>trip.isRunning);
+            //could be [] if no more valid trips anymore
             scope.dailyTrips = runningTrips[0] &&
-               route.trips.filter(trip => trip.date == runningTrips[0].date);
+               route.trips.filter(trip => trip.date == runningTrips[0].date) || [];
           })
       }
     },
