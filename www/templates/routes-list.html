@@ -146,6 +146,15 @@
                 {{route.schedule}}
               </span>
             </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
+              </span>
+              <span class="mini-info important" ng-if="route.ridesRemaining && route.ridesRemaining > 0">
+                You have {{ route.ridesRemaining }} trips remaining in your Route Pass.
+              </span>
+            </div>
           </route-item-additional-info>
         </route-item>
         <i class="icon ion-ios-arrow-right"></i>
@@ -254,6 +263,15 @@
               </span>
               <span class="mini-info">
                 {{route.schedule}}
+              </span>
+            </div>
+
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
+              </span>
+              <span class="mini-info important" ng-if="route.ridesRemaining && route.ridesRemaining > 0">
+                You have {{ route.ridesRemaining }} trips remaining in your Route Pass.
               </span>
             </div>
           </route-item-additional-info>
