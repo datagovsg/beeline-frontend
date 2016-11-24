@@ -8,7 +8,7 @@
   </ion-nav-buttons>
   <ion-content class="fullscreen-map" scroll="false">
     <daily-trips-broker trip-label="book.route.label"
-                 daily-trips="data.availableTrips">
+                 daily-trips="data.todayTrips">
     </daily-trips-broker>
     <form class="stops-form" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
@@ -49,9 +49,9 @@
           <map-poly-route route-path="map.lines.route.path">
           </map-poly-route>
           <map-bus-poly-route route="book.route"
-                              available-trips="data.availableTrips">
+                              available-trips="data.todayTrips">
           </map-bus-poly-route>
-          <map-bus-stops available-trips="data.availableTrips"
+          <map-bus-stops available-trips="data.nextTrips"
                          is-lite-frequent="book.route['tags'].includes('lite-frequent')">
           </map-bus-stops>
         </ui-gmap-google-map>
