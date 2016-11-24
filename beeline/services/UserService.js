@@ -457,7 +457,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // - Promise containing all routeCredites associated with user
   var getRouteCredits = function(tag, ignoreCache){
     if(!ignoreCache && routeCreditsCache){
-      return tag ? routeCreditsCache : routeCreditsCache.then(routeCredits => routeCredits[tag])
+      return tag ? routeCreditsCache.then(routeCredits => routeCredits[tag]) : routeCreditsCache
     }
 
     if(tag){
@@ -472,7 +472,9 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       })
     }
 
-    return routeCreditsCache.then(reply => reply.data)
+    routeCreditsCache = routeCreditsCache.then(reply => reply.data)
+
+    return routeCreditsCache
   }
 
   // ////////////////////////////////////////////////////////////////////////////
