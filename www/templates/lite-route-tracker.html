@@ -64,8 +64,8 @@
         <map-bus-poly-route route="liteRoute"
                             available-trips="data.availableTrips"
                             has-tracking-data="data.hasTrackingData"
-                            route-msg="data.announcement"></map-bus-poly-route>
-        <map-bus-stops available-trips="data.availableTrips"
+                            route-message="data.announcement"></map-bus-poly-route>
+        <map-bus-stops available-trips="data.routeTrips"
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>
