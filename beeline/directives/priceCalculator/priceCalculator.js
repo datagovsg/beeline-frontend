@@ -21,7 +21,7 @@ export default [
 
         var latestRequest = null;
         scope.$watch(
-          () => _.pick(scope.booking, ['selectedDates' /* qty, promoCode */]),
+          () => _.pick(scope.booking, ['selectedDates', 'useRouteCredits' /* qty, promoCode */]),
           async function () {
             assert(scope.booking.routeId);
             if (!scope.booking.route) {
