@@ -32,6 +32,7 @@ export default [
       priceInfo: {},
       selectedDates: [],
       invalidStopDates: [],
+      useRouteCredits: true,
     };
     // Display Logic;
     $scope.disp = {
@@ -68,13 +69,14 @@ export default [
       if(notableTags.length < 1) { return }
       if(notableTags.length > 1) { } // FIXME: throw error? 
 
+      $scope.book.creditTag = notableTags[0]
       let tag = notableTags[0]
       let price = route.trips[0].priceF
 
       if(price <= 0) { return }
 
-      let creditsAvailable = parseFloat(allRouteCredits[tag])
-      route.ridesRemaining = Math.floor(creditsAvailable / price)
+      let availableRouteCredits = parseFloat(allRouteCredits[tag])
+      route.ridesRemaining = Math.floor(availableRouteCredits / price)
 
 
     })
