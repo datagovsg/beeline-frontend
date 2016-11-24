@@ -64,8 +64,8 @@ export default [
     };
 
     $scope.data = {
-      availableTrips : [],
-      routeTrips: null,
+      todayTrips : [],
+      nextTrips: null,
     }
 
     var routePromise, subscriptionPromise;
@@ -85,8 +85,8 @@ export default [
       RoutesService.getRouteFeatures($scope.book.route.id).then((data)=>{
         $scope.disp.features = data;
       });
-      $scope.data.routeTrips = $scope.book.route.trips.filter(
-        trip=>new Date(trip.date).setHours(0,0,0,0) == new Date($scope.book.route.trips[0].date).setHours(0,0,0,0));
+      $scope.data.nextTrips = $scope.book.route.trips.filter(
+        trip=>trip.date === $scope.book.route.trips[0].date)
     });
 
     var mapPromise = new Promise(function(resolve) {

@@ -18,9 +18,9 @@
   </div>
   <ion-content class="has-tabs-top lite-route-tracker-content" scroll=false>
     <daily-trips-broker trip-label="liteRoute.label"
-                 daily-trips="data.availableTrips">
+                 daily-trips="data.todayTrips">
     </daily-trips-broker>
-    <in-service-window available-trips="data.availableTrips"
+    <in-service-window available-trips="data.todayTrips"
                        in-service-window="data.inServiceWindow">
     </in-service-window>
     <!-- Map Tab -->
@@ -62,10 +62,10 @@
         <my-location></my-location>
         <map-poly-route route-path="map.lines.route.path"></map-poly-route>
         <map-bus-poly-route route="liteRoute"
-                            available-trips="data.availableTrips"
+                            available-trips="data.todayTrips"
                             has-tracking-data="data.hasTrackingData"
                             route-message="data.announcement"></map-bus-poly-route>
-        <map-bus-stops available-trips="data.routeTrips"
+        <map-bus-stops available-trips="data.nextTrips"
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>

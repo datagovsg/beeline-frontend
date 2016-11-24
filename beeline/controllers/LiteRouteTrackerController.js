@@ -22,10 +22,10 @@ export default [
     $scope.hasTrips = true;
 
     $scope.data ={
-      availableTrips : null,
+      todayTrips : null,
       hasTrackingData: true,
       inServiceWindow: false,
-      routeTrips: null,
+      nextTrips: null,
     }
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
@@ -38,19 +38,14 @@ export default [
       RoutesService.getRouteFeatures($scope.liteRoute.id).then((data)=>{
         $scope.disp.features = data;
       });
-      $scope.data.routeTrips = $scope.liteRoute.trips.filter(
+      $scope.data.nextTrips = $scope.liteRoute.trips.filter(
         trip=>trip.date === $scope.liteRoute.trips[0].date);
     })
 
     /* Updated by the view using <daily-trips></daily-trips> (yes, I know, it's ugly) */
-    $scope.$watch('data.availableTrips',(trips)=>{
+    $scope.$watch('data.todayTrips',(trips)=>{
       if (!trips) return;
-      //case could be no more valid trips anymore
-      if (trips && trips.length==0) {
-        $scope.hasTrips = false;
-      } else {
-        $scope.hasTrips = true;
-      }
+      $scope.hasTrips = trips.length > 0
     });
 
 

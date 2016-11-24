@@ -151,8 +151,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
           return TripService.DriverPings(trip.id)
           .then((info) => {
             //get status msg
-            scope.statusMessages[index] =  (info.statuses &&  info.statuses[0] && info.statuses[0].message) || null;
-
+            scope.statusMessages[index] = _.get(info, 'statuses[0].message', null);
             scope.recentPings = scope.recentPings || [];
 
             /* Only show pings from the last 5 minutes */
