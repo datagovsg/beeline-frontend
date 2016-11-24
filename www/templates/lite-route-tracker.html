@@ -69,18 +69,21 @@
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>
-      <div class="locate-button-div">
+      <div class="message-locate-div" ng-if="!data.announcement.trim()">
         <img class="locate-button"
              src="./img/MapButtonLocateMe.svg"
              on-tap="locateMe()"></img>
       </div>
-      <div class="announcement-div" ng-show="data.announcement.trim()">
+      <div class="message-locate-div" ng-show="data.announcement.trim()">
         <div class="announcement">
           <span class="icon ion-chatbox-working"></span>
             <div class="message">
               {{data.announcement.trim()}}
             </div>
         </div>
+        <img class="locate-button fadeable"
+             src="./img/MapButtonLocateMe.svg"
+             on-tap="locateMe()"></img>
       </div>
     </div>
 

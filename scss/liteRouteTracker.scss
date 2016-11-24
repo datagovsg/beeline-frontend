@@ -42,11 +42,28 @@
     }
   }
 
-  .announcement-div {
+  // Position the locate me button near the bottom right
+  .message-locate-div {
     flex: 0 0 0;
     overflow: visible;
     position: relative;
 
+    .locate-button {
+      position: absolute;
+      bottom: 2.5*$content-padding;
+      right: 2.5*$content-padding;
+
+      &.fadeable {
+        z-index: 50;
+        opacity: 0.1;
+        transition: opacity 0.1s linear;
+
+        &:hover {
+          opacity: 1.0;
+          transition: opacity 0.1s linear;
+        }
+      }
+    }
     .announcement {
       /* flex: 0 0 50px; */
       position: absolute;
@@ -71,26 +88,7 @@
         margin-right: $content-padding;
       }
     }
-  }
-  // Position the locate me button near the bottom right
-  .locate-button-div {
-    flex: 0 0 0;
-    overflow: visible;
-    position: relative;
 
-    .locate-button {
-      position: absolute;
-      bottom: 2.5*$content-padding;
-      right: 2.5*$content-padding;
-      opacity: 1;
-      z-index: 50;
-      transition: opacity 0.1s linear;
-
-      &:hover {
-        opacity: 1.0;
-        transition: opacity 0.1s linear;
-      }
-    }
   }
 }
 
