@@ -1,4 +1,4 @@
-<ion-view title="Booking History" class="booking-history">
+<ion-view title="Payment History" class="booking-history">
   <ion-content>
     <ion-list>
       <div class="item text-center" ng-if="transactions.length === 0">
@@ -15,7 +15,7 @@
           <table class="booking-history">
             <tr>
               <th>
-                Transaction Date
+                Date
               </th>
               <td>
                 {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
@@ -37,15 +37,14 @@
                 XXXX XXXX XXXX {{payment.payment.data.source.last4}}
               </td>
             </tr>
-          </table>
-        </div>
-        <!-- FIXME: show the other transaction types - refunds, free tickets -->
-        <div class="item item-divider" ng-if="transaction.itemsByType.ticketSale">
-          Tickets Selected
-        </div>
-
-        <div ng-repeat="ti in transaction.itemsByType.ticketSale track by ti.id" class="item item-text-wrap">
-          <table class="booking-history">
+            <tr>
+              <th>
+              Type
+              </th>
+              <td>
+                Kickstarter or Normal Booking
+              </td>
+            </tr>
             <tr>
               <th>
                 Route
@@ -56,31 +55,28 @@
             </tr>
             <tr>
                 <th>
-                  Trip Date
+                  Trip Date(s)
                 </th>
               <td>
-                {{ti.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
-              </td>
-            </tr>
-            <tr>
-              <th>
-                Pick-up
-              </th>
-              <td>
-                {{ti.ticketSale.boardStop.time | date:'h:mm a'}}&nbsp; {{ti.ticketSale.boardStop.stop.description}}
-              </td>
-            </tr>
-            <tr>
-              <th>
-                Drop-off
-              </th>
-              <td>
-                {{ti.ticketSale.alightStop.time | date:'h:mm a'}}&nbsp; {{ti.ticketSale.alightStop.stop.description}}
+                  # of trips
+                  <br />
+                  <ul>
+                    <li>
+                      DD/MM/YYYY
+                    </li>
+                    <li>
+                      DD/MM/YYYY
+                    </li>
+                    <li>
+                      DD/MM/YYYY
+                    </li>
+                  </ul>
+
               </td>
             </tr>
           </table>
-
         </div>
+        <!-- FIXME: show the other transaction types - refunds, free tickets -->
       </div>
     </ion-list>
 
