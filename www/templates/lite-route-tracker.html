@@ -18,9 +18,9 @@
   </div>
   <ion-content class="has-tabs-top lite-route-tracker-content" scroll=false>
     <daily-trips-broker trip-label="liteRoute.label"
-                 daily-trips="data.availableTrips">
+                 daily-trips="data.todayTrips">
     </daily-trips-broker>
-    <in-service-window available-trips="data.availableTrips"
+    <in-service-window available-trips="data.todayTrips"
                        in-service-window="data.inServiceWindow">
     </in-service-window>
     <!-- Map Tab -->
@@ -62,15 +62,29 @@
         <my-location></my-location>
         <map-poly-route route-path="map.lines.route.path"></map-poly-route>
         <map-bus-poly-route route="liteRoute"
-                            available-trips="data.availableTrips"
-                            has-tracking-data="data.hasTrackingData"></map-bus-poly-route>
-        <map-bus-stops available-trips="data.availableTrips"
+                            available-trips="data.todayTrips"
+                            has-tracking-data="data.hasTrackingData"
+                            route-message="data.announcement"></map-bus-poly-route>
+        <map-bus-stops available-trips="data.nextTrips"
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>
-      <img class="locate-button"
-           src="./img/MapButtonLocateMe.svg"
-           on-tap="locateMe()"></img>
+      <div class="message-locate-div" ng-if="!data.announcement.trim()">
+        <img class="locate-button"
+             src="./img/MapButtonLocateMe.svg"
+             on-tap="locateMe()"></img>
+      </div>
+      <div class="message-locate-div" ng-show="data.announcement.trim()">
+        <div class="announcement">
+          <span class="icon ion-chatbox-working"></span>
+            <div class="message">
+              {{data.announcement.trim()}}
+            </div>
+        </div>
+        <img class="locate-button fadeable"
+             src="./img/MapButtonLocateMe.svg"
+             on-tap="locateMe()"></img>
+      </div>
     </div>
 
     <!-- Info Tab -->
