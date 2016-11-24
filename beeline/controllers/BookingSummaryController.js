@@ -30,11 +30,13 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
+      useRouteCredits: $stateParams.creditTag ? true : false,
     };
     $scope.disp = {};
 
     $scope.book.routeId = +$stateParams.routeId;
     $scope.session.sessionId = +$stateParams.sessionId;
+    $scope.book.creditTag = $stateParams.creditTag;
 
     if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
       $stateParams.selectedDates = [$stateParams.selectedDates]
@@ -130,6 +132,7 @@ export default [
           data: {
             stripeToken: stripeToken.id,
             trips: BookingService.prepareTrips($scope.book),
+            creditTag: $scope.book.creditTag,
           },
         });
         $ionicLoading.hide();
@@ -188,6 +191,7 @@ export default [
             customerId: $scope.user.savedPaymentInfo.id,
             sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
             trips: BookingService.prepareTrips($scope.book),
+            creditTag: $scope.book.creditTag,
           },
         });
         $ionicLoading.hide();

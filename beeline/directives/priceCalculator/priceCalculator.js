@@ -13,6 +13,7 @@ export default [
       },
       link: function(scope, elem, attr) {
         scope.isCalculating = 0;
+        scope.showRouteCredits = true;
 
         function stopCalculating() {
           scope.isCalculating = Math.max(0, scope.isCalculating - 1);
