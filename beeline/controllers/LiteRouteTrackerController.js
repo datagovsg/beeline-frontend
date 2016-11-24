@@ -22,9 +22,10 @@ export default [
     $scope.hasTrips = true;
 
     $scope.data ={
-      availableTrips : null,
+      todayTrips : null,
       hasTrackingData: true,
       inServiceWindow: false,
+      nextTrips: null,
     }
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
@@ -33,17 +34,21 @@ export default [
 
     var availableTripsPromise = routePromise.then((route)=>{
       $scope.liteRoute = route[$scope.liteRouteLabel];
+      //get route features
+      RoutesService.getRouteFeatures($scope.liteRoute.id).then((data)=>{
+        $scope.disp.features = data;
+      });
+      $scope.data.nextTrips = $scope.liteRoute.trips.filter(
+        trip=>trip.date === $scope.liteRoute.trips[0].date);
     })
 
     /* Updated by the view using <daily-trips></daily-trips> (yes, I know, it's ugly) */
-    $scope.$watch('data.availableTrips',(trips)=>{
-      if (!trips || trips.length == 0) return;
-      $scope.hasTrips = !(trips[0] && new Date(trips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0));
-      //get route features
-      RoutesService.getRouteFeatures(trips[0].routeId).then((data)=>{
-        $scope.disp.features = data;
-      })
+    $scope.$watch('data.todayTrips',(trips)=>{
+      if (!trips) return;
+      $scope.hasTrips = trips.length > 0
     });
+
+
 
     var mapPromise = new Promise(function(resolve) {
       $scope.$watch('map.control.getGMap', function(getGMap) {
