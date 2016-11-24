@@ -35,7 +35,22 @@
       </tr>
     </tbody>
   </table>
-  <span class="promoCredits">
+  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+    <tbody>
+      <tr>
+        <th>Total Trips</th>
+        <th>Passengers</th>
+        <th>Total Amount</th>
+      </tr>
+      <tr>
+        <td>{{priceInfo.tripCount || 0}}</td>
+        <td>1</td>
+        <td>{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="promoCredits" ng-if="booking.showRouteCredits">
     <div class="item-subtitle">Route Pass and Credits </div>
     <ul class="list">
       <ion-toggle ng-model="booking.useRouteCredits" ng-check="booking.useRouteCredits" toggle-class="toggle-royal" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
