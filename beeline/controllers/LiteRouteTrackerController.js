@@ -39,7 +39,7 @@ export default [
         $scope.disp.features = data;
       });
       $scope.data.routeTrips = $scope.liteRoute.trips.filter(
-        trip=>new Date(trip.date).setHours(0,0,0,0) == new Date($scope.liteRoute.trips[0].date).setHours(0,0,0,0));
+        trip=>trip.date === $scope.liteRoute.trips[0].date);
     })
 
     /* Updated by the view using <daily-trips></daily-trips> (yes, I know, it's ugly) */
