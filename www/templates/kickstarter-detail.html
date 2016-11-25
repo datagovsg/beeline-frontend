@@ -10,7 +10,7 @@
     <img src="img/KickstarterProgressBar02_RouteDetails.svg" />
   </div>
 
-  <ion-content class="has-header">
+  <ion-content class="has-header has-subheader">
     <div class="item item-icon-left item-text-wrap" ng-if="book.route.isExpired">
         <i class="icon activebid">
             <img src="img/icon_kickstarter_status.svg">
@@ -99,14 +99,14 @@
             <company-info-broker company-id="book.route.transportCompanyId"
                                   company="companyInfo">
             </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="mini-info">
-                {{companyInfo.name}}
-              </span>
-            </div>
+          <!--   <div class="icon-and-schedule">
+            <span class="icon-span company-logo">
+              <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
+            </span>
+            <span class="mini-info">
+              {{companyInfo.name}}
+            </span>
+          </div> -->
 
             <div class="icon-and-schedule">
               <span class="icon-span">
@@ -130,32 +130,29 @@
                 Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
               </span>
             </div>
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+              </span>
+              <span class="mini-info">
+                {{book.route.status}}
+              </span>
+            </div>
+          </div>
            </route-item-additional-info>
         </route-item>
 
+        <ion-item class="item-icon-right" ng-click="showStops()">
+            View Stops
+              <i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
+      <div class="item item-text-wrap">
         <progress-bar backer1="book.route.notes.tier[0].count"
           price1="book.route.notes.tier[0].price"
           pax1="book.route.notes.tier[0].pax"
           detail=true
           needed="book.route.notes.tier[0].moreNeeded">
         </progress-bar>
-        <div class="icon-and-schedule">
-          <span class="icon-span">
-            <img class="mini-icon" src="img/icon_kickstarter_status.svg">
-          </span>
-          <span class="mini-info">
-            {{book.route.status}}
-          </span>
-        </div>
-      </div>
-
-      <ion-list>
-        <ion-item class="item-icon-right" ng-click="showStops()">
-            View Stops
-              <i class="icon ion-ios-arrow-right"></i>
-        </ion-item>
-      </ion-list>
-      <div class="item item-text-wrap">
         <div class="item-subtitle">
         How to activate
         </div>
@@ -174,7 +171,7 @@
               <label class="checkbox">
                   <input type="checkbox" ng-model="checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
               </label>
-              <span>I am willing to pre-order {{book.route.notes.noPasses}} trips at ${{ item.price | number:2 }} per trip.</span>
+              <span>Yes, I want to pre-order the Route Pass for {{book.route.notes.noPasses}} trips at ${{ item.price | number:2 }} per trip.</span>
             </ion-item>
           </ion-list>
 
