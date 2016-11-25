@@ -1,8 +1,7 @@
-// this is found in kickstarter-detail, kickstarter-summary, kickstarter-recap, kickstarter-commit.
+// this is found in kickstarter-detail, kickstarter-summary, kickstarter-recap.
 // information will show and hide accordingly
 // passHide hides the pass in summary page
-// extraHide hides the extra info about the kickstarter route in multiple pages
-// preorderHide hides the info about asking user to "preorder", takes effect in recap and commit page
+// preorderHide hides the info about asking user to "preorder", takes effect in recap page
 
 
 export default function () {
@@ -13,7 +12,6 @@ export default function () {
     scope: {
       route: '<',
       passHide: '<?',
-      extraHide: '<?',
       preorderHide: '<?',
     },
     link: function(scope, elem, attr) {

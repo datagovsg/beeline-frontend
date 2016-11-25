@@ -58,7 +58,7 @@
         padding: 0;
         margin: 0;
         color: $royal;
-  
+
       }
       h4{
         font-size: 1em;
@@ -76,10 +76,11 @@
           padding: 0;
         }
         table{
+          width: 100%;
           margin-top: $padding-large-vertical;
           margin-bottom: $padding-large-vertical;
           td.label{
-            width: 30%;
+            width: 40%;
           }
         }
       }
