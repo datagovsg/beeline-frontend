@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import kickstartHelpTemplate from '../templates/kickstart-popup.html';
 import loadingTemplate from '../templates/loading.html';
 
 // Return an array of regions covered by a given array of routes
@@ -40,7 +41,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   //show loading spinner for the 1st time
   $scope.$watch(()=>KickstarterService.getLelong(), (lelongRoutes)=>{
-    if (lelongRoutes.length==0) {
+    if (!lelongRoutes) {
       $ionicLoading.show({
         template: loadingTemplate
       })
@@ -49,13 +50,14 @@ export default function($scope, $state, UserService, RoutesService, $q,
     }
   });
 
+
   $scope.$watchGroup([
     ()=>KickstarterService.getLelong(),
     ()=>KickstarterService.getBids(),
     'data.selectedRegionId',
     'data.filterText'
   ], ([lelongRoutes, userBids, selectedRegionId, filterText])=>{
-      if (lelongRoutes.length==0) return;
+      if (!lelongRoutes) return;
       $scope.data.kickstarter = _.sortBy(lelongRoutes, 'label');
       $scope.data.regions = getUniqueRegionsFromRoutes($scope.data.kickstarter);
       $scope.userBids = userBids;
@@ -80,6 +82,34 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.filterText = $scope.data.stagingFilterText;
       $scope.$digest();
     }, 0)
-  }, 400, {trailing: true})
+  }, 400, {trailing: true});
+
+
+  $scope.showHelpPopup = function(){
+    $scope.kickstartHelpPopup = $ionicPopup.show({
+      template: kickstartHelpTemplate,
+      buttons: [
+        {
+          text: 'OK',
+          type: 'button-positive',
+          onTap: function(e) {
+            $scope.closePopup();
+          }
+        }
+      ]
+    });
+  }
+
+  $scope.closePopup = function() {
+    $scope.kickstartHelpPopup.close();
+  }
+
+  $scope.$on('$ionicView.afterEnter', () => {
+    // if havnt shown kickstarter help modal before, show it once and mark
+    if (!window.localStorage['showKickstarter']) {
+      window.localStorage['showKickstarter'] = true;
+      $scope.showHelpPopup();
+    }
+  });
 
 }
