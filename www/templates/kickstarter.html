@@ -7,7 +7,7 @@
         There was a problem fetching kickstarter route information from the server. Please try again later.
       </p>
     </div>
-    <div class="item item-text-wrap no-kickstarter" ng-if="false">
+    <div class="item item-text-wrap no-kickstarter">
       <img src="./img/bgnokickstarter.svg">
       <h2>No new kickstarter route</h2>
       <p>There are no new kickstarter routes at the moment.</p>
@@ -30,7 +30,6 @@
     <ion-content class="list">
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshRoutes()">
         </ion-refresher>
-
         <!-- recently bid kickstarter -->
         <div class="item item-divider" ng-if="data.filteredbackedKickstarter.length > 0">
           Your kickstarter pre-orders
