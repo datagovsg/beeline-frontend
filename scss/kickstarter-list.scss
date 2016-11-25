@@ -31,3 +31,21 @@
       margin-left: $start-size/2;
     }
   }
+}
+
+/* Style for the kicsktart help modal in kicsktart list*/
+.kickstart-help {
+  padding: $padding-large-vertical*3;
+
+  p{
+    font-size: $font-size-base;
+    color: $dark;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    padding: 1px;
+    border: 1px solid lighten($normal-grey, 50%);
+  }
+}

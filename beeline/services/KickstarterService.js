@@ -78,8 +78,8 @@ var udpateAfterBid = function(route, price) {
 export default function KickstarterService($http, UserService,$q, $rootScope) {
   var lelongCache;
   var kickstarterStatusCache;
-  var kickstarterSummary = [], bidsById = {};
-  var kickstarterRoutesList = [], kickstarterRoutesById = {};
+  var kickstarterSummary = null, bidsById = null;
+  var kickstarterRoutesList = null, kickstarterRoutesById = null;
 
   UserService.userEvents.on('userChanged', () => {
     fetchBids(true);
@@ -140,7 +140,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     fetchLelong: (ignoreCache)=>fetchKickstarterRoutes(ignoreCache),
 
     getLelongById: function(routeId) {
-      return kickstarterRoutesById[routeId];
+      return  kickstarterRoutesById ?  kickstarterRoutesById[routeId] : null;
     },
 
     //user personal bid information
@@ -150,7 +150,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     fetchBids: (ignoreCache)=>fetchBids(ignoreCache),
 
     isBid: function(routeId) {
-      return bidsById[routeId] ? true : false
+      return  bidsById && bidsById[routeId] ? true : false
     },
 
     getBidInfo: function(routeId) {

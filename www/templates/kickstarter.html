@@ -1,4 +1,12 @@
-<ion-view class="kickstarter-list" view-title="Kickstart Routes" hide-back-button="true">
+
+ <ion-view class="kickstarter-list" hide-back-button="true">
+   <ion-nav-buttons side="right">
+     <button class="button button-clear" ng-click="showHelpPopup()">
+        <i class="icon ion-ios-help-outline"></i>
+     </button>
+   </ion-nav-buttons>
+
+   <ion-nav-title>kickstart Routes</ion-nav-title>
   <ion-content scroll="false">
 
     <div class="item item-text-wrap item-ion-left" ng-if="error">
