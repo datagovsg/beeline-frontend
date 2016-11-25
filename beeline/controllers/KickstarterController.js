@@ -20,8 +20,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
-    kickstarter: [],
-    backedKickstarter: [],
+    kickstarter: null,
+    backedKickstarter: null,
     regions: [],
     filterText: '',
     stagingFilterText: '',
@@ -47,6 +47,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
       })
     } else {
       $ionicLoading.hide();
+      if (!window.localStorage['showKickstarter']) {
+        window.localStorage['showKickstarter'] = true;
+        $scope.showHelpPopup();
+      }
     }
   });
 
@@ -104,12 +108,5 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.kickstartHelpPopup.close();
   }
 
-  $scope.$on('$ionicView.afterEnter', () => {
-    // if havnt shown kickstarter help modal before, show it once and mark
-    if (!window.localStorage['showKickstarter']) {
-      window.localStorage['showKickstarter'] = true;
-      $scope.showHelpPopup();
-    }
-  });
 
 }
