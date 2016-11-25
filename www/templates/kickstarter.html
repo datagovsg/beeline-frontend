@@ -21,7 +21,7 @@
       <p>There are no new kickstarter routes at the moment.</p>
     </div>
 
-    <div ng-if="data.backedKickstarter.length > 0 || data.kickstarter.length > 0">
+    <ion-content ng-if="data.backedKickstarter.length > 0 || data.kickstarter.length > 0" scroll="false">
       <div class="region-filter">
         <label class="item item-input item-icon-left">
             <i class="ionicon ion-ios-search-strong"></i>
@@ -199,9 +199,6 @@
           </ion-item>
 
         </ion-content>
-    </div>
-
-
-
+    </ion-content>
   </ion-content>
 </ion-view>
