@@ -15,7 +15,10 @@
         There was a problem fetching kickstarter route information from the server. Please try again later.
       </p>
     </div>
-    <div class="item item-text-wrap no-kickstarter" ng-if="data.backedKickstarter.length==0 && data.kickstarter.length==0">
+    <div class="item item-text-wrap no-kickstarter" ng-if=" data.backedKickstarter && 
+                                                            data.kickstarter &&
+                                                            data.backedKickstarter.length==0 &&
+                                                            data.kickstarter.length==0">
       <img src="./img/bgnokickstarter.svg">
       <h2>No new kickstarter route</h2>
       <p>There are no new kickstarter routes at the moment.</p>
