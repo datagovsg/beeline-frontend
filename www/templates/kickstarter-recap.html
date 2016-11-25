@@ -36,15 +36,6 @@
                                 company="book.companyInfo">
           </company-info-broker>
           <div class="icon-and-schedule">
-            <span class="icon-span company-logo">
-              <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
-            </span>
-            <span class="mini-info">
-              {{book.companyInfo.name}}
-            </span>
-          </div>
-
-          <div class="icon-and-schedule">
             <span class="icon-span">
               <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
             </span>
@@ -66,6 +57,14 @@
               Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
             </span>
           </div>
+          <div class="icon-and-schedule">
+            <span class="icon-span">
+              <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+            </span>
+            <span class="mini-info">
+              {{book.route.status}}
+            </span>
+          </div>
         </route-item-additional-info>
       </route-item>
       <progress-bar backer1="book.route.notes.tier[0].count"
@@ -74,14 +73,6 @@
         detail=true
         needed="book.route.notes.tier[0].moreNeeded">
       </progress-bar>
-      <div class="icon-and-schedule">
-        <span class="icon-span">
-          <img class="mini-icon" src="img/icon_kickstarter_status.svg">
-        </span>
-        <span class="mini-info">
-          {{book.route.status}}
-        </span>
-      </div>
     </div>
     <ion-list>
       <ion-item class="item-icon-right" ng-click="showStops()">
