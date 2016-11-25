@@ -9,13 +9,13 @@
    <ion-nav-title>kickstart Routes</ion-nav-title>
   <ion-content scroll="false">
 
-    <div class="item item-text-wrap item-ion-left" ng-if="error">
+    <div class="item item-text-wrap item-icon-left" ng-if="error">
       <i class="icon ion-alert-circled"></i>
       <p class="text-center">
         There was a problem fetching kickstarter route information from the server. Please try again later.
       </p>
     </div>
-    <div class="item item-text-wrap no-kickstarter" ng-if=" data.backedKickstarter && 
+    <div class="item item-text-wrap no-kickstarter" ng-if=" data.backedKickstarter &&
                                                             data.kickstarter &&
                                                             data.backedKickstarter.length==0 &&
                                                             data.kickstarter.length==0">

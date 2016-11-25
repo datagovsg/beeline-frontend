@@ -16,7 +16,7 @@ function getUniqueRegionsFromRoutes(routes) {
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
   $ionicScrollDelegate, $ionicPopup, KickstarterService, $ionicLoading,
-  SearchService) {
+  SearchService, $timeout) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -40,13 +40,25 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }
 
   //show loading spinner for the 1st time
+  var timeout;
   $scope.$watch(()=>KickstarterService.getLelong(), (lelongRoutes)=>{
     if (!lelongRoutes) {
       $ionicLoading.show({
         template: loadingTemplate
       })
+      //1 min buffer if list cannot load
+      timeout = $timeout(()=>{
+        if (!lelongRoutes) {
+          $ionicLoading.hide();
+          $scope.error = true;
+        }
+      }, 1000*60)
     } else {
+      if (timeout) {
+        $timeout.cancel(timeout);
+      }
       $ionicLoading.hide();
+      $scope.error = false;
       if (!window.localStorage['showKickstarter']) {
         window.localStorage['showKickstarter'] = true;
         $scope.showHelpPopup();
