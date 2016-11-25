@@ -14,8 +14,9 @@
         </route-item-bus-number>
       </route-item>
 
-      <h1>{{route.notes.noPasses}}</h1>
-      <h4>trips</h4>
+        <h1>{{route.notes.noPasses}}</h1>
+        <h4>trips</h4>
+
       <div class="pass-additional">
         <table>
           <tr>
@@ -28,14 +29,14 @@
           </tr>
           <tr>
             <td class="label">
-            Total
+            Total Price
             </td>
             <td>
               <strong>$ {{route.notes.noPasses*route.notes.tier[0].price | number: 2}}</strong>
             </td>
           </tr>
         </table>
-      <p>
+      <p class="pass-condition">
         If activated, Route Pass will be valid
       </p>
       <table>
@@ -67,8 +68,8 @@
       When the camapign ends, payment for the <strong>Route Pass</strong> will be deducted if the route is activated. Thereafter, you will receive the Route Pass within a week and you can use it to <strong>book any {{route.notes.noPasses}} trips</strong>.
   </p>
   <p>
-    <span ng-if="route.daysLeft && route.daysLeft>1">This campaign ends in {{route.daysLeft}} days on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. If the route does not activate by then, your card will not be charged. </span>
-    <span ng-if="route.daysLeft && route.daysLeft==1">This campaign ends in {{route.daysLeft}} day on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>. If the route does not activate by then, your card will not be charged.</span>
+    <span ng-if="route.daysLeft && route.daysLeft>1">This campaign ends in {{route.daysLeft}} days on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>.</span>
+    <span ng-if="route.daysLeft && route.daysLeft==1">This campaign ends in {{route.daysLeft}} day on <b>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</b>.</span>
     <span ng-if="!route.daysLeft">This campaign has ended.</span>
   </p>
   <p ng-if="route.notes.tier[0].count >= route.notes.tier[0].pax" ng-hide="preorderHide">You can still pre-order this pass even though the goal has been met to activate this route. Like the other people who pre-order, you will receive the Route Pass when the campaign ends.</p>
