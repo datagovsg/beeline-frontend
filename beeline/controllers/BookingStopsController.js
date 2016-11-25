@@ -12,6 +12,7 @@ export default [
   '$cordovaGeolocation',
   'BookingService',
   'RoutesService',
+  'UserService',
   'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
@@ -26,6 +27,7 @@ export default [
     $cordovaGeolocation,
     BookingService,
     RoutesService,
+    UserService,
     uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner
@@ -80,6 +82,12 @@ export default [
     };
     routePromise.then((route) => {
       $scope.book.route = route;
+      $scope.book.route.creditTag = $stateParams.creditTag
+      UserService.getRouteCredits($scope.book.route.creditTag)
+        .then((creditsAvailable)=>{
+          $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/$scope.book.route.trips[0].priceF)
+        })
+
       computeStops(stopOptions);
     });
 

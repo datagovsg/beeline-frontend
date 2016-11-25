@@ -29,6 +29,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     nextSessionId: null,
     liteRoutes: [],
     filteredLiteRoutes: [],
+
   };
 
   $scope.$on('$ionicView.beforeEnter', () => {
@@ -53,10 +54,15 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
-    var allRouteCreditsPromise = UserService.getRouteCredits(null, ignoreCache);
+    var allRouteCreditsPromise = UserService.getRouteCredits(null, ignoreCache)
+        .then(function(map){
+          $scope.data.allRouteCredits = map
+          $scope.data.allRouteCreditTags = Object.keys(map)
+          return map
+        });
 
     // Configure the list of available regions
-    allRoutesPromise.then(function(allRoutes) {
+    var allRoutesPostProcessPromise = allRoutesPromise.then(function(allRoutes) {
       // Need to sort by time of day rather than by absolute time,
       // in case we have routes with missing dates (e.g. upcoming routes)
       $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
@@ -72,15 +78,37 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.recentRoutes = recentRoutes;
     });
 
-    allRouteCreditsPromise.then(function(map){
-      $scope.data.allRouteCredits = map
-      $scope.data.allRouteCreditTags = Object.keys(map)
-    })
+    $q.all([allRouteCreditsPromise, allRoutesPostProcessPromise]).then(()=> {
+      let kickstarterRoutes = []
+      let routeToTagMap = {}
+      let allRouteCreditTags = $scope.data.allRouteCreditTags
+      let allRoutes = $scope.data.routes
 
-    $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise, allRouteCreditsPromise]).then((results) => {
-      $scope.data.routes.forEach(calcRemainingRoutePassRides)
-      $scope.data.recentRoutes.forEach(calcRemainingRoutePassRides)
+      allRoutes.forEach(function(route){
+        let notableTags = _.intersection(route.tags, allRouteCreditTags);
+        if(notableTags.length < 1) return //not a kickstarter route
+        if(notableTags.length > 1) {
+          console.log("Error: Route has more than one kickstarter tag");
+          return // something is wrong..
+        }
 
+        // identify kickstarter routes
+        kickstarterRoutes.push(route)
+        route.creditTag = notableTags[0]
+        routeToTagMap[route.id] = notableTags[0]
+
+        // calculate the rides left in the route pass
+        let price = route.trips[0].priceF
+        if(price <= 0) return
+        let creditsAvailable = parseFloat($scope.data.allRouteCredits[notableTags[0]])
+        route.ridesRemaining = Math.floor(creditsAvailable / price)
+      })
+
+      $scope.data.kickstarterRoutes = kickstarterRoutes;
+    });
+
+
+    $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
       $scope.error = null;
     })
     .catch(() => {
@@ -138,26 +166,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
       })
     }
   );
-
-  // Calculates the number of rides left for a route based on available route
-  // specific credits
-  var calcRemainingRoutePassRides = function(route){
-    if(!route.tags || $scope.data.allRouteCreditTags.length===0){ return } 
-      
-    let notableTags = _.intersection(route.tags, $scope.data.allRouteCreditTags)  
-    
-    if(notableTags.length < 1) { return }
-    if(notableTags.length > 1) { } // FIXME: throw error? 
-    
-    let tag = notableTags[0]
-    let price = route.trips[0].priceF
-
-    if(price <= 0) { return }
-
-    let creditsAvailable = parseFloat($scope.data.allRouteCredits[tag])
-
-    route.ridesRemaining = Math.floor(creditsAvailable / price)
-  }
 
   // Don't override the caching in main.js
   var firstRun = true;
