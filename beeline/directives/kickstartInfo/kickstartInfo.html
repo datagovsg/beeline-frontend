@@ -1,8 +1,5 @@
 
 <div class="kickstarter-info">
-  <p ng-hide="preorderHide">
-    Pre-order a Route Pass that contains {{route.notes.noPasses}} trips:
-  </p>
   <div class="preorder-pass" ng-hide="passHide">
     <div class="route-pass-header">
       <h3>Route Pass</h3>
@@ -48,16 +45,8 @@
             <strong>{{route.trips[0].date | date:'dd MMM yyyy'}} ({{route.trips[0].date | date:'EEE'}})</strong>
           </td>
         </tr>
-        <tr>
-          <td class="label">
-            To
-          </td>
-          <td>
-            <strong>{{validTill | date:'dd MMM yyyy'}} ({{validTill | date:'EEE'}})</strong>
-          </td>
-        </tr>
       </table>
-        <p>For any {{route.notes.noPasses}} trips of the activated route. Operates Mon-Fri, except Public Holidays. </p>
+        <p>For any {{route.notes.noPasses}} trips happening in the 1st  month of the activated route. Operates Mon-Fri, except Public Holidays. </p>
       </div>
     </div>
   </div>

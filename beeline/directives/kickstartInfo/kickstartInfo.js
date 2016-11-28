@@ -14,13 +14,5 @@ export default function () {
       passHide: '<?',
       preorderHide: '<?',
     },
-    link: function(scope, elem, attr) {
-      scope.$watchCollection("route.trips",(trips)=>{
-        if(trips) {
-          var startDate = new Date(trips[0].date);
-          scope.validTill = new Date(startDate.getFullYear(), startDate.getMonth()+1, startDate.getDate());
-        }
-      })
-    }
   };
 }
