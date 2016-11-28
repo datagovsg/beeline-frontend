@@ -1,18 +1,17 @@
-
- <ion-view class="kickstarter-list" hide-back-button="true">
-   <ion-nav-buttons side="right">
-     <button class="button button-clear" ng-click="showHelpPopup()">
+<ion-view class="kickstarter-list" hide-back-button="true">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="showHelpPopup()">
         <i class="icon ion-ios-help-outline"></i>
      </button>
-   </ion-nav-buttons>
+  </ion-nav-buttons>
 
-   <ion-nav-title>kickstart Routes</ion-nav-title>
+  <ion-nav-title>Kickstart Routes</ion-nav-title>
   <ion-content scroll="false">
 
     <div class="item item-text-wrap item-icon-left" ng-if="error">
       <i class="icon ion-alert-circled"></i>
       <p class="text-center">
-        There was a problem fetching kickstarter route information from the server. Please try again later.
+        There was a problem fetching information from the server. Please try again later.
       </p>
     </div>
     <div class="item item-text-wrap no-kickstarter" ng-if=" data.backedKickstarter &&
@@ -40,168 +39,169 @@
         </label>
       </div>
       <ion-content class="list">
-          <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshRoutes()">
-          </ion-refresher>
-          <!-- recently bid kickstarter -->
-          <div class="item item-divider" ng-if="data.filteredbackedKickstarter.length > 0">
-            Your kickstarter pre-orders
-          </div>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshRoutes()">
+        </ion-refresher>
+        <!-- recently bid kickstarter -->
+        <div class="item item-divider" ng-if="data.filteredbackedKickstarter.length > 0">
+          Your kickstarter pre-orders
+        </div>
 
-          <ion-item ng-repeat="route in data.filteredbackedKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.kickstarter-recap({
+        <ion-item ng-repeat="route in data.filteredbackedKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.kickstarter-recap({
                        routeId: route.id
                      })" class="item-icon-right">
-            <route-item>
-              <route-item-bus-number>
-                {{ route.label }}
-              </route-item-bus-number>
-              <route-item-description>
-                {{ route.notes.description }}
-              </route-item-description>
-              <route-item-start-time>
-                {{ route | routeStartTime | formatTime:true }}
-              </route-item-start-time>
-              <route-item-start-location>
-                {{ route.from }}
-              </route-item-start-location>
-              <route-item-end-time>
-                {{ route | routeEndTime | formatTime:true }}
-              </route-item-end-time>
-              <route-item-end-location>
-                {{ route.to }}
-              </route-item-end-location>
-              <route-item-additional-info>
-                <company-info-broker company-id="route.transportCompanyId" company="companyInfo">
-                </company-info-broker>
-                <div class="icon-and-schedule">
-                  <span class="icon-span company-logo">
+          <route-item>
+            <route-item-bus-number>
+              {{ route.label }}
+            </route-item-bus-number>
+            <route-item-description>
+              {{ route.notes.description }}
+            </route-item-description>
+            <route-item-start-time>
+              {{ route | routeStartTime | formatTime:true }}
+            </route-item-start-time>
+            <route-item-start-location>
+              {{ route.from }}
+            </route-item-start-location>
+            <route-item-end-time>
+              {{ route | routeEndTime | formatTime:true }}
+            </route-item-end-time>
+            <route-item-end-location>
+              {{ route.to }}
+            </route-item-end-location>
+            <route-item-additional-info>
+              <company-info-broker company-id="route.transportCompanyId" company="companyInfo">
+              </company-info-broker>
+              <div class="icon-and-schedule">
+                <span class="icon-span company-logo">
                     <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
                   </span>
-                  <span class="mini-info">
+                <span class="mini-info">
                     {{companyInfo.name}}
                   </span>
-                </div>
+              </div>
 
-                <div class="icon-and-schedule">
-                  <span class="icon-span">
+              <div class="icon-and-schedule">
+                <span class="icon-span">
                     <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
                   </span>
-                  <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
+                <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
                     Campaign ends in {{route.daysLeft}} days
                   </span>
-                  <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
+                <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                     Campaign ends in {{route.daysLeft}} day
                   </span>
-                  <span class="mini-info" ng-if="route.isExpired">
+                <span class="mini-info" ng-if="route.isExpired">
                     Campaign has expired
                   </span>
-                </div>
-                <div class="icon-and-schedule">
-                  <span class="icon-span">
+              </div>
+              <div class="icon-and-schedule">
+                <span class="icon-span">
                     <img class="mini-icon" src="img/icon_schedule.svg">
                   </span>
-                  <span class="mini-info">
+                <span class="mini-info">
                     Route starts on {{route.trips[0].date | date:'dd MMM yyyy'}} if activated
                   </span>
-                </div>
+              </div>
 
-                <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price" pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded">
-                </progress-bar>
-                <div class="icon-and-schedule">
-                  <span class="icon-span">
+              <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price" pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded">
+              </progress-bar>
+              <div class="icon-and-schedule">
+                <span class="icon-span">
                     <img class="mini-icon" src="img/icon_kickstarter_status.svg">
                   </span>
-                  <span class="mini-info">
+                <span class="mini-info">
                     {{route.status}}
                   </span>
-                </div>
-                <div class="icon-and-schedule">
-                  <!-- <span class="icon ion-ios-flag-outline"></span> -->
-                  <span class="icon-span">
+              </div>
+              <div class="icon-and-schedule">
+                <!-- <span class="icon ion-ios-flag-outline"></span> -->
+                <span class="icon-span">
                     <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
                   </span>
-                  <span class="mini-info">
+                <span class="mini-info">
                     You pre-ordered a Route Pass for {{route.notes.noPasses}} trips.
                   </span>
-                </div>
+              </div>
 
-              </route-item-additional-info>
-            </route-item>
-            <i class="icon ion-ios-arrow-right">
+            </route-item-additional-info>
+          </route-item>
+          <i class="icon ion-ios-arrow-right">
             </i>
-          </ion-item>
+        </ion-item>
 
 
-          <!-- available kickstarter -->
-          <div class="item item-divider" ng-if="data.filteredKickstarter.length > 0">
-            Kickstarter Routes
-          </div>
 
-          <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.kickstarter-detail({
+        <!-- available kickstarter -->
+        <div class="item item-divider" ng-if="data.filteredKickstarter.length > 0">
+          Available Kickstart Routes
+        </div>
+
+        <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.kickstarter-detail({
                                     routeId: route.id
                                    })">
-            <route-item>
-              <route-item-bus-number>
-                {{ route.label }}
-              </route-item-bus-number>
-              <route-item-description>
-                {{ route.notes.description }}
-              </route-item-description>
-              <route-item-start-time>
-                {{ route | routeStartTime | formatTime:true }}
-              </route-item-start-time>
-              <route-item-start-location>
-                {{ route.from }}
-              </route-item-start-location>
-              <route-item-end-time>
-                {{ route | routeEndTime | formatTime:true }}
-              </route-item-end-time>
-              <route-item-end-location>
-                {{ route.to }}
-              </route-item-end-location>
-              <route-item-additional-info>
-                <company-info-broker company-id="route.transportCompanyId" company="companyInfo">
-                </company-info-broker>
-                <div class="icon-and-schedule">
-                  <span class="icon-span company-logo">
+          <route-item>
+            <route-item-bus-number>
+              {{ route.label }}
+            </route-item-bus-number>
+            <route-item-description>
+              {{ route.notes.description }}
+            </route-item-description>
+            <route-item-start-time>
+              {{ route | routeStartTime | formatTime:true }}
+            </route-item-start-time>
+            <route-item-start-location>
+              {{ route.from }}
+            </route-item-start-location>
+            <route-item-end-time>
+              {{ route | routeEndTime | formatTime:true }}
+            </route-item-end-time>
+            <route-item-end-location>
+              {{ route.to }}
+            </route-item-end-location>
+            <route-item-additional-info>
+              <company-info-broker company-id="route.transportCompanyId" company="companyInfo">
+              </company-info-broker>
+              <div class="icon-and-schedule">
+                <span class="icon-span company-logo">
                     <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
                   </span>
-                  <span class="mini-info">
+                <span class="mini-info">
                     {{companyInfo.name}}
                   </span>
-                </div>
+              </div>
 
-                <div class="icon-and-schedule">
-                  <span class="icon-span">
+              <div class="icon-and-schedule">
+                <span class="icon-span">
                     <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
                   </span>
-                  <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
+                <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
                     Campaign ends in {{route.daysLeft}} days
                   </span>
-                  <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
+                <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
                     Campaign ends in  {{route.daysLeft}} day
                   </span>
-                  <span class="mini-info" ng-if="route.isExpired">
+                <span class="mini-info" ng-if="route.isExpired">
                     Campaign has expired
                   </span>
-                </div>
+              </div>
 
-                <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price" pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded">
-                </progress-bar>
+              <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price" pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded">
+              </progress-bar>
 
-                <div class="icon-and-schedule">
-                  <span class="icon-span">
+              <div class="icon-and-schedule">
+                <span class="icon-span">
                     <img class="mini-icon" src="img/icon_kickstarter_status.svg">
                   </span>
-                  <span class="mini-info">
+                <span class="mini-info">
                     {{route.status}}
                   </span>
-                </div>
-              </route-item-additional-info>
-            </route-item>
-            <i class="icon ion-ios-arrow-right"></i>
-          </ion-item>
+              </div>
+            </route-item-additional-info>
+          </route-item>
+          <i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
 
-        </ion-content>
+      </ion-content>
     </ion-content>
   </ion-content>
 </ion-view>
