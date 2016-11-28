@@ -30,7 +30,7 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
-      useRouteCredits: $stateParams.creditTag ? true : false,
+      useRouteCredits: !!$stateParams.creditTag,
     };
     $scope.disp = {};
 

@@ -16,6 +16,7 @@ export default [
   'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
+  '$q',
   function(
     $rootScope,
     $scope,
@@ -30,7 +31,8 @@ export default [
     UserService,
     uiGmapGoogleMapApi,
     MapOptions,
-    loadingSpinner
+    loadingSpinner,
+    $q
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -85,7 +87,7 @@ export default [
     });
 
     $scope.book.creditTag = $stateParams.creditTag
-    var routeCreditsPromise = UserService.getRouteCredits($scope.book.creditTag)
+    var routeCreditsPromise = UserService.fetchRouteCredits($scope.book.creditTag)
     $q.all([routePostProcessingPromise, routeCreditsPromise]).then(function(values){
       let creditsAvailable = values[1]
       let ticketPrice = $scope.book.route.trips[0].priceF

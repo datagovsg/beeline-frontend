@@ -57,7 +57,7 @@ export default [
 
     var routePromise = loadRoutes();
     $scope.book.creditTag = $stateParams.creditTag
-    var routeCreditsPromise = UserService.getRouteCredits($scope.book.creditTag)
+    var routeCreditsPromise = UserService.fetchRouteCredits($scope.book.creditTag)
     $q.all([routePromise, routeCreditsPromise]).then(function(values){
       let creditsAvailable = values[1]
       let ticketPrice = $scope.book.route.trips[0].priceF
