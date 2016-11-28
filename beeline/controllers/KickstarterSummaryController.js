@@ -93,6 +93,10 @@ export default [
       } catch (err) {
         console.log(err);
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
+      } finally {
+        $scope.$apply(() => {
+          $scope.waitingForPaymentResult = false;
+        })
       }
 
       try {
