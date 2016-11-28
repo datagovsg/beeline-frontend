@@ -180,7 +180,7 @@ export default [
       }
     };
 
-    var checkIfOnKickstarter = async () => {
+    async function checkIfOnKickstarter() {
       let response = await KickstarterService.hasBids();
       return response;
     };
