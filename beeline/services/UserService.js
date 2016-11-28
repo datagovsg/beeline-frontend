@@ -459,25 +459,29 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // - Promise containing all routeCredits associated with user
   // - [tag provided] amount of credits specific to the tag
   var fetchRouteCredits = function(tag, ignoreCache){
+    if(!user){
+      tagToCreditsMap = {};
+      return $q.resolve(tagToCreditsMap)
+    }
     if(!ignoreCache && routeCreditsCache){
       return tag ? routeCreditsCache.then(routeCredits => routeCredits[tag]) : routeCreditsCache
     }
 
-    if(tag){
-      routeCreditsCache = beelineRequest({
-        method: 'GET',
-        url: '/routeCredits/'+tag
-      })
-    } else {
-      routeCreditsCache = beelineRequest({
-        method: 'GET',
-        url: '/routeCredits'
-      })
-    }
+    let url = tag ? '/routeCredits/' + tag : '/routeCredits'
+    return routeCreditsCache = beelineRequest({
+      method: 'GET',
+      url: url
+    }).then((response) => {
+      if(tag){
+        if(!tagToCreditsMap) tagToCreditsMap = {}
+        tagToCreditsMap[tag] = response.data  
+      } else {
+        tagToCreditsMap = response.data
+      }
+      
+      return tagToCreditsMap
+    })
 
-    routeCreditsCache = routeCreditsCache.then(reply => reply.data)
-
-    return routeCreditsCache
   }
 
   // Retrieve routeCredits information from cache

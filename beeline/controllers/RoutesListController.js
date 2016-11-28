@@ -36,6 +36,14 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
+  $scope.$watch(()=>UserService.getRouteCredits(), (routeCredits)=>{
+    if(routeCredits){
+      $scope.data.allRouteCredits = routeCredits
+      $scope.data.allRouteCreditTags = Object.keys(routeCredits)
+      calcRoutePassCount()  
+    }
+  })
+
   // $scope.$watch('data.liteRoutes', updateSubscriptionStatus)
   // $scope.$watch(() => Svc.getSubscriptionSummary(), updateSubscriptionStatus)
   var allLiteRoutesPromise
