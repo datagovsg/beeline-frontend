@@ -7,12 +7,9 @@
 
   <ion-nav-title>Kickstart Routes</ion-nav-title>
   <ion-content scroll="false">
-
-    <div class="item item-text-wrap item-icon-left" ng-if="error">
+    <div class="item item-text-wrap item-icon-left" ng-if="data.error">
       <i class="icon ion-alert-circled"></i>
-      <p class="text-center">
-        There was a problem fetching information from the server. Please try again later.
-      </p>
+      There was a problem fetching information from the server. Please try again later.
     </div>
     <div class="item item-text-wrap no-kickstarter" ng-if=" data.backedKickstarter &&
                                                             data.kickstarter &&

@@ -20,6 +20,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
+    error: null,
     kickstarter: null,
     backedKickstarter: null,
     regions: [],
@@ -27,14 +28,17 @@ export default function($scope, $state, UserService, RoutesService, $q,
     stagingFilterText: '',
   };
 
-  $scope.refreshRoutes = async function() {
-    try {
-      await Promise.all([KickstarterService.fetchKickstarterRoutes(true), KickstarterService.fetchBids(true)]);
-      $scope.error = null;
-    } catch(error) {
-      $scope.error = true;
-    }
-    $scope.$broadcast('scroll.refreshComplete');
+  $scope.refreshRoutes = function() {
+    $q.all([KickstarterService.fetchLelong(true),KickstarterService.fetchBids(true)])
+    .then(()=>{
+      $scope.data.error = null;
+    })
+    .catch(() => {
+      $scope.data.error = true;
+    })
+    .then(() => {
+      $scope.$broadcast('scroll.refreshComplete');
+    })
   }
 
   //show loading spinner for the 1st time
@@ -48,7 +52,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       timeout = $timeout(()=>{
         if (!lelongRoutes) {
           $ionicLoading.hide();
-          $scope.error = true;
+          $scope.data.error = true;
         }
       }, 1000*60)
     } else {
@@ -56,7 +60,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
         $timeout.cancel(timeout);
       }
       $ionicLoading.hide();
-      $scope.error = false;
+      $scope.data.error = null;
       if (!window.localStorage['showKickstarter']) {
         window.localStorage['showKickstarter'] = true;
         $scope.showHelpPopup();

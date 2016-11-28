@@ -130,8 +130,6 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
       kickstarterRoutesList = transformKickstarterData(response.data);
       kickstarterRoutesById = _.keyBy(kickstarterRoutesList, 'id')
       return kickstarterRoutesList
-    }).catch((error)=>{
-      throw error;
     })
   }
 
