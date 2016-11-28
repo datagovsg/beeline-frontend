@@ -29,8 +29,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.refreshRoutes = async function() {
     try {
-      await KickstarterService.fetchKickstarterRoutes(true);
-      await KickstarterService.fetchBids(true);
+      await Promise.all([KickstarterService.fetchKickstarterRoutes(true), KickstarterService.fetchBids(true)]);
       $scope.error = null;
     } catch(error) {
       $scope.error = true;
