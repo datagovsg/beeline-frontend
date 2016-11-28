@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: column;
 
+  .list {
+    flex: 1 1 auto;
+  }
+
   .no-kickstarter.item {
     @include display-flex;
     @include flex-direction(column);
