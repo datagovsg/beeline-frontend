@@ -56,12 +56,12 @@ export default [
     loadTickets();
 
     var routePromise = loadRoutes();
-    routePromise.then(function(){
-      $scope.book.creditTag = $stateParams.creditTag
-      UserService.getRouteCredits($scope.book.route.creditTag)
-        .then((creditsAvailable)=>{
-          $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/$scope.book.route.trips[0].priceF)
-        })
+    $scope.book.creditTag = $stateParams.creditTag
+    var routeCreditsPromise = UserService.getRouteCredits($scope.book.creditTag)
+    $q.all([routePromise, routeCreditsPromise]).then(function(values){
+      let creditsAvailable = values[1]
+      let ticketPrice = $scope.book.route.trips[0].priceF
+      $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
     })
 
     $scope.$watch(()=>UserService.getUser(), loadTickets);

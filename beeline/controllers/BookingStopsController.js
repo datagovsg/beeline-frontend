@@ -69,27 +69,29 @@ export default [
       });
     });
 
-    var routePromise;
-
     $scope.session.sessionId = +$stateParams.sessionId;
     $scope.book.routeId = +$stateParams.routeId;
 
-    routePromise = RoutesService.getRoute($scope.book.routeId);
+    var routePromise = RoutesService.getRoute($scope.book.routeId)
 
     var stopOptions = {
       initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
       initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
     };
-    routePromise.then((route) => {
-      $scope.book.route = route;
-      $scope.book.route.creditTag = $stateParams.creditTag
-      UserService.getRouteCredits($scope.book.route.creditTag)
-        .then((creditsAvailable)=>{
-          $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/$scope.book.route.trips[0].priceF)
-        })
 
+    var routePostProcessingPromise = routePromise.then((route) => {
+      $scope.book.route = route;
       computeStops(stopOptions);
     });
+
+    $scope.book.creditTag = $stateParams.creditTag
+    var routeCreditsPromise = UserService.getRouteCredits($scope.book.creditTag)
+    $q.all([routePostProcessingPromise, routeCreditsPromise]).then(function(values){
+      let creditsAvailable = values[1]
+      let ticketPrice = $scope.book.route.trips[0].priceF
+      $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
+    })
+    
 
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([gmapIsReady, routePromise])
