@@ -84,11 +84,11 @@
                 {{route.schedule}}
               </span>
             </div>
-            <div class="icon-and-schedule">
+            <div class="icon-and-schedule" ng-if="route.ridesRemaining && route.ridesRemaining > 0">
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
               </span>
-              <span class="mini-info important" ng-if="route.ridesRemaining && route.ridesRemaining > 0">
+              <span class="mini-info important">
                 You have {{ route.ridesRemaining }} trip(s) remaining in your Route Pass.
               </span>
             </div>
