@@ -27,16 +27,15 @@ export default function($scope, $state, UserService, RoutesService, $q,
     stagingFilterText: '',
   };
 
-  $scope.refreshRoutes = function() {
+  $scope.refreshRoutes = async function() {
     try {
-      KickstarterService.fetchLelong(true);
-      KickstarterService.fetchBids(true);
+      await KickstarterService.fetchKickstarterRoutes(true);
+      await KickstarterService.fetchBids(true);
       $scope.error = null;
     } catch(error) {
       $scope.error = true;
-    } finally {
-      $scope.$broadcast('scroll.refreshComplete');
     }
+    $scope.$broadcast('scroll.refreshComplete');
   }
 
   //show loading spinner for the 1st time

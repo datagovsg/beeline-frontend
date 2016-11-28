@@ -23,22 +23,22 @@ export default function SearchService() {
     routeContainsString: function(route, string) {
       if (!string) return true;
 
-      function contains(s, t) {
+      function containsIgnoreCase(s, t) {
         if (typeof s == 'string') {
           return s.toUpperCase().includes(t.toUpperCase())
         } else {
           return false;
         }
       }
-      return contains(route.name, string) ||
-        contains(route.notes && route.notes.description, string) ||
-        contains(route.schedule, string) ||
-        contains(route.label, string) ||
+      return containsIgnoreCase(route.name, string) ||
+        containsIgnoreCase(route.notes && route.notes.description, string) ||
+        containsIgnoreCase(route.schedule, string) ||
+        containsIgnoreCase(route.label, string) ||
         (route.trips[0] && (
-          route.trips[0].tripStops.some(ts => contains(ts.stop.description, string)) ||
-          route.trips[0].tripStops.some(ts => contains(ts.stop.road, string))
+          route.trips[0].tripStops.some(ts => containsIgnoreCase(ts.stop.description, string)) ||
+          route.trips[0].tripStops.some(ts => containsIgnoreCase(ts.stop.road, string))
         )) ||
-        route.regions.some(region => contains(region.name, string));
+        route.regions.some(region => containsIgnoreCase(region.name, string));
     }
 
   };
