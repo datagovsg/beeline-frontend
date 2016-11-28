@@ -86,35 +86,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.recentRoutes = recentRoutes;
     });
 
-    $q.all([allRouteCreditsPromise, allRoutesPostProcessPromise]).then(()=> {
-      let kickstarterRoutes = []
-      let routeToTagMap = {}
-      let allRouteCreditTags = $scope.data.allRouteCreditTags
-      let allRoutes = $scope.data.routes
-
-      allRoutes.forEach(function(route){
-        let notableTags = _.intersection(route.tags, allRouteCreditTags);
-        if(notableTags.length < 1) return //not a kickstarter route
-        if(notableTags.length > 1) {
-          console.log("Error: Route has more than one kickstarter tag");
-          return // something is wrong..
-        }
-
-        // identify kickstarter routes
-        kickstarterRoutes.push(route)
-        route.creditTag = notableTags[0]
-        routeToTagMap[route.id] = notableTags[0]
-
-        // calculate the rides left in the route pass
-        let price = route.trips[0].priceF
-        if(price <= 0) return
-        let creditsAvailable = parseFloat($scope.data.allRouteCredits[notableTags[0]])
-        route.ridesRemaining = Math.floor(creditsAvailable / price)
-      })
-
-      $scope.data.kickstarterRoutes = kickstarterRoutes;
-    });
-
+    $q.all([allRouteCreditsPromise, allRoutesPostProcessPromise]).then(calcRoutePassCount);
 
     $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
       $scope.error = null;
@@ -182,5 +154,34 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.refreshRoutes(!firstRun);
       firstRun = false;
     });
+
+  function calcRoutePassCount() {
+    let kickstarterRoutes = []
+    let routeToTagMap = {}
+    let allRouteCreditTags = $scope.data.allRouteCreditTags
+    let allRoutes = $scope.data.routes
+
+    allRoutes.forEach(function(route){
+      let notableTags = _.intersection(route.tags, allRouteCreditTags);
+      if(notableTags.length < 1) return //not a kickstarter route
+      if(notableTags.length > 1) {
+        console.log("Error: Route has more than one kickstarter tag");
+        return // something is wrong..
+      }
+
+      // identify kickstarter routes
+      kickstarterRoutes.push(route)
+      route.creditTag = notableTags[0]
+      routeToTagMap[route.id] = notableTags[0]
+
+      // calculate the rides left in the route pass
+      let price = route.trips[0].priceF
+      if(price <= 0) return
+      let creditsAvailable = parseFloat($scope.data.allRouteCredits[notableTags[0]])
+      route.ridesRemaining = Math.floor(creditsAvailable / price)
+    })
+
+    $scope.data.kickstarterRoutes = kickstarterRoutes;
+  }
 
 }
