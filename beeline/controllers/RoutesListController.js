@@ -54,7 +54,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
-    var allRouteCreditsPromise = UserService.getRouteCredits(null, ignoreCache)
+    var allRouteCreditsPromise = UserService.fetchRouteCredits(null, ignoreCache)
         .then(function(map){
           $scope.data.allRouteCredits = map
           $scope.data.allRouteCreditTags = Object.keys(map)

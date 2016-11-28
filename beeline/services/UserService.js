@@ -160,6 +160,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
         return false;
       }
       userEvents.emit('userChanged')
+
       return true;
     }, function(error) {
       if (error.status == 403 || error.status == 401) {
@@ -449,13 +450,15 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   };
 
   // get all routeCredits associated with the user
+  // performs db query where necessary or specified
   // user can specify the tag to search for
   // input:
-  // - tag - String: tag associated with route
+  // - tag - String: tag associated with route. optional
   // - ignoreCache - boolean
   // output:
-  // - Promise containing all routeCredites associated with user
-  var getRouteCredits = function(tag, ignoreCache){
+  // - Promise containing all routeCredits associated with user
+  // - [tag provided] amount of credits specific to the tag
+  var fetchRouteCredits = function(tag, ignoreCache){
     if(!ignoreCache && routeCreditsCache){
       return tag ? routeCreditsCache.then(routeCredits => routeCredits[tag]) : routeCreditsCache
     }
@@ -475,6 +478,20 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     routeCreditsCache = routeCreditsCache.then(reply => reply.data)
 
     return routeCreditsCache
+  }
+
+  // Retrieve routeCredits information from cache
+  // input: 
+  // - tag - String: tag associated with route. optional
+  // output:
+  // - Promise containing all routeCredits associated with user
+  // - [tag provided] amount of credits specific to the tag
+  var getRouteCredits = function(tag){
+    if(tag){
+      return routeCreditsCache.then(routeCredits => routeCredits[tag])
+    } else {
+      return routeCreditsCache
+    }
   }
 
   // ////////////////////////////////////////////////////////////////////////////
@@ -497,6 +514,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     savePaymentInfo: savePaymentInfo,
     updatePaymentInfo: updatePaymentInfo,
     removePaymentInfo: removePaymentInfo,
+    fetchRouteCredits: fetchRouteCredits,
     getRouteCredits: getRouteCredits,
   };
 
