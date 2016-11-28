@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_detail" view-title="Kickstarter Route Details"
+<ion-view id="pg_kickstarter_detail" view-title="Kickstart Route Details"
  can-swipe-back="false">
   <ion-nav-buttons side="right">
     <button class="button button-clear"
@@ -147,15 +147,19 @@
               <i class="icon ion-ios-arrow-right"></i>
         </ion-item>
       <div class="item item-text-wrap">
+        <div class="item-subtitle">
+        How to activate
+        </div>
+        <p>
+         Pre-order {{book.route.notes.noPasses}} trips at ${{ book.route.notes.tier[0].price | number:2 }} per trip:
+        </p>
+
         <progress-bar backer1="book.route.notes.tier[0].count"
           price1="book.route.notes.tier[0].price"
           pax1="book.route.notes.tier[0].pax"
           detail=true
           needed="book.route.notes.tier[0].moreNeeded">
         </progress-bar>
-        <div class="item-subtitle">
-        How to activate
-        </div>
 
         <kickstart-info route="book.route" ng-hide="book.route.isExpired && !book.route.isActived"></kickstart-info>
 

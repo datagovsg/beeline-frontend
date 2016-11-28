@@ -4,7 +4,7 @@
     <div class="bar-100">
       <div class="price-label" ng-class="{activated: needed==0}">
         <div class="ride-price">${{price1| number:2}}</div>
-        <div class="per-ride">per ride</div>
+        <div class="per-ride">per trip</div>
       </div>
     </div>
   </div>
@@ -39,7 +39,7 @@
 (backer1/pax1)*200 + '%',
             }">
       <span class="line"></span>
-      <div>{{backer1}} joined</div>
+      <div>{{backer1}} pax<br />pre-ordered</div>
   </div>
 
   <!-- dynamic join line ends here -->
@@ -51,7 +51,7 @@
         <div class="needed-label">
         <span class="line"></span>
         <div>{{needed}} more</div>
-        <div>needed</div>
+        <div>pax needed</div>
       </div>
     </div>
   <!-- number needed section ends -->
