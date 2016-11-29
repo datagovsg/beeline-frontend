@@ -50,7 +50,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
         // Find the 'payment' entry in the list of transaction itemss
         var txItems = _.groupBy(resp.data.transactionItems, 'itemType');
         var totalBeforeDiscount = _.reduce(txItems.ticketSale, (sum, n) => {
-          return sum + n.credit
+          return sum + parseFloat(n.credit)
         }, 0)
 
         // FIXME: include discounts, vouchers
