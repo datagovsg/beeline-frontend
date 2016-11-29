@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import kickstartHelpTemplate from '../templates/kickstart-popup.html';
 import loadingTemplate from '../templates/loading.html';
 
 // Return an array of regions covered by a given array of routes
@@ -15,39 +16,58 @@ function getUniqueRegionsFromRoutes(routes) {
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
   $ionicScrollDelegate, $ionicPopup, KickstarterService, $ionicLoading,
-  SearchService) {
+  SearchService, $timeout) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
-    kickstarter: [],
-    backedKickstarter: [],
+    error: null,
+    kickstarter: null,
+    backedKickstarter: null,
     regions: [],
     filterText: '',
     stagingFilterText: '',
   };
 
   $scope.refreshRoutes = function() {
-    try {
-      KickstarterService.fetchLelong(true);
-      KickstarterService.fetchBids(true);
-      $scope.error = null;
-    } catch(error) {
-      $scope.error = true;
-    } finally {
+    $q.all([KickstarterService.fetchLelong(true),KickstarterService.fetchBids(true)])
+    .then(()=>{
+      $scope.data.error = null;
+    })
+    .catch(() => {
+      $scope.data.error = true;
+    })
+    .then(() => {
       $scope.$broadcast('scroll.refreshComplete');
-    }
+    })
   }
 
   //show loading spinner for the 1st time
+  var timeout;
   $scope.$watch(()=>KickstarterService.getLelong(), (lelongRoutes)=>{
-    if (lelongRoutes.length==0) {
+    if (!lelongRoutes) {
       $ionicLoading.show({
         template: loadingTemplate
       })
+      //1 min buffer if list cannot load
+      timeout = $timeout(()=>{
+        if (!lelongRoutes) {
+          $ionicLoading.hide();
+          $scope.data.error = true;
+        }
+      }, 1000*60)
     } else {
+      if (timeout) {
+        $timeout.cancel(timeout);
+      }
       $ionicLoading.hide();
+      $scope.data.error = null;
+      if (!window.localStorage['showKickstarter']) {
+        window.localStorage['showKickstarter'] = true;
+        $scope.showHelpPopup();
+      }
     }
   });
+
 
   $scope.$watchGroup([
     ()=>KickstarterService.getLelong(),
@@ -55,7 +75,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     'data.selectedRegionId',
     'data.filterText'
   ], ([lelongRoutes, userBids, selectedRegionId, filterText])=>{
-      if (lelongRoutes.length==0) return;
+      if (!lelongRoutes) return;
       $scope.data.kickstarter = _.sortBy(lelongRoutes, 'label');
       $scope.data.regions = getUniqueRegionsFromRoutes($scope.data.kickstarter);
       $scope.userBids = userBids;
@@ -80,6 +100,27 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.filterText = $scope.data.stagingFilterText;
       $scope.$digest();
     }, 0)
-  }, 400, {trailing: true})
+  }, 400, {trailing: true});
+
+
+  $scope.showHelpPopup = function(){
+    $scope.kickstartHelpPopup = $ionicPopup.show({
+      template: kickstartHelpTemplate,
+      buttons: [
+        {
+          text: 'OK',
+          type: 'button-positive',
+          onTap: function(e) {
+            $scope.closePopup();
+          }
+        }
+      ]
+    });
+  }
+
+  $scope.closePopup = function() {
+    $scope.kickstartHelpPopup.close();
+  }
+
 
 }

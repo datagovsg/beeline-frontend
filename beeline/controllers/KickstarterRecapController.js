@@ -26,9 +26,6 @@ export default [
       alightStops: null,
     };
 
-    $scope.priceInfo = {
-      bidPrice : null,
-    }
 
     $scope.book.routeId = +$stateParams.routeId;
 
@@ -71,6 +68,31 @@ export default [
       }
       gmap.fitBounds(bounds);
     };
+
+// TODO: move all these modalMap related to directive
+    $scope.panToBoardStop = function(gmap, stop) {
+      if (!stop) {
+        return;
+      }
+      $scope.book.boardStop = stop;
+      $scope.book.alightStop = null;
+      gmap.panTo({
+        lat: stop.coordinates.coordinates[1],
+        lng: stop.coordinates.coordinates[0],
+      })
+    }
+
+    $scope.panToAlightStop = function(gmap, stop) {
+      if (!stop) {
+        return;
+      }
+      $scope.book.alightStop = stop;
+      $scope.book.boardStop = null;
+      gmap.panTo({
+        lat: stop.coordinates.coordinates[1],
+        lng: stop.coordinates.coordinates[0],
+      })
+    }
 
     // var bidPromise, routePromise;
     // routePromise = KickstarterService.getLelongById($scope.book.routeId);

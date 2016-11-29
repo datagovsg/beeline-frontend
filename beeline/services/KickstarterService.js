@@ -68,7 +68,7 @@ var updateStatus = function(route){
   }
 }
 
-var udpateAfterBid = function(route, price) {
+var updateAfterBid = function(route, price) {
   route.notes.tier[0].count = route.notes.tier[0].count + 1;
   route.notes.tier[0].moreNeeded = Math.max(route.notes.tier[0].moreNeeded-1 ,0);
   route.isActived = route.notes.tier[0].moreNeeded==0;
@@ -76,10 +76,10 @@ var udpateAfterBid = function(route, price) {
 }
 
 export default function KickstarterService($http, UserService,$q, $rootScope) {
-  var lelongCache;
-  var kickstarterStatusCache;
-  var kickstarterSummary = [], bidsById = {};
-  var kickstarterRoutesList = [], kickstarterRoutesById = {};
+  var kickstarterRoutesCache;
+  var bidsCache;
+  var kickstarterSummary = null, bidsById = null;
+  var kickstarterRoutesList = null, kickstarterRoutesById = null;
 
   UserService.userEvents.on('userChanged', () => {
     fetchBids(true);
@@ -98,8 +98,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
 
   function fetchBids(ignoreCache) {
     if (UserService.getUser()) {
-      if (kickstarterStatusCache && !ignoreCache) return kickstarterStatusCache;
-      return kickstarterStatusCache = UserService.beeline({
+      if (bidsCache && !ignoreCache) return bidsCache;
+      return bidsCache = UserService.beeline({
         method: 'GET',
         url: '/custom/lelong/bids',
       }).then((response) => {
@@ -121,8 +121,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
   }
 
   function fetchKickstarterRoutes(ignoreCache) {
-    if (lelongCache && !ignoreCache) return lelongCache;
-    return lelongCache = UserService.beeline({
+    if (kickstarterRoutesCache && !ignoreCache) return kickstarterRoutesCache;
+    return kickstarterRoutesCache = UserService.beeline({
       method: 'GET',
       url: '/custom/lelong/status',
     }).then((response)=>{
@@ -140,7 +140,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     fetchLelong: (ignoreCache)=>fetchKickstarterRoutes(ignoreCache),
 
     getLelongById: function(routeId) {
-      return kickstarterRoutesById[routeId];
+      return  kickstarterRoutesById ?  kickstarterRoutesById[routeId] : null;
     },
 
     //user personal bid information
@@ -150,7 +150,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     fetchBids: (ignoreCache)=>fetchBids(ignoreCache),
 
     isBid: function(routeId) {
-      return bidsById[routeId] ? true : false
+      return  bidsById && bidsById[routeId] ? true : false
     },
 
     getBidInfo: function(routeId) {
@@ -159,7 +159,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
 
     //need to return a promise
     hasBids: function() {
-      return kickstarterStatusCache.then(()=>{
+      return bidsCache.then(()=>{
         return kickstarterSummary && kickstarterSummary.length>0;
       })
     },
@@ -180,7 +180,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
           }
         }
       }).then((response)=>{
-        udpateAfterBid(kickstarterRoutesById[route.id], bidPrice);
+        updateAfterBid(kickstarterRoutesById[route.id], bidPrice);
         kickstarterSummary = kickstarterSummary.concat([{
           routeId: route.id,
           boardStopId: boardStopId,

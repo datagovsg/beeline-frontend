@@ -147,6 +147,30 @@ export default [
       gmap.fitBounds(bounds);
     };
 
+    $scope.panToBoardStop = function(gmap, stop) {
+      if (!stop) {
+        return;
+      }
+      $scope.book.boardStop = stop;
+      $scope.book.alightStop = null;
+      gmap.panTo({
+        lat: stop.coordinates.coordinates[1],
+        lng: stop.coordinates.coordinates[0],
+      })
+    }
+
+    $scope.panToAlightStop = function(gmap, stop) {
+      if (!stop) {
+        return;
+      }
+      $scope.book.alightStop = stop;
+      $scope.book.boardStop = null;
+      gmap.panTo({
+        lat: stop.coordinates.coordinates[1],
+        lng: stop.coordinates.coordinates[0],
+      })
+    }
+    
     $scope.updateSelection = function(position, tiers, price) {
       _.forEach(tiers, function(tier, index){
         if (position == index) {

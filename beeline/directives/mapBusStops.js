@@ -43,7 +43,7 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
       })
 
       scope.$watch('availableTrips', (availableTrips) => {
-        if (!availableTrips) return;
+        if (!availableTrips || availableTrips.length==0) return;
         scope.tripStops = LiteRoutesService.computeLiteStops(availableTrips);
         uiGmapCtrlHandle.mapPromise(scope, ctrl).then(panToStops);
       })
