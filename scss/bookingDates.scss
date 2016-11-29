@@ -99,6 +99,11 @@
     margin: 0;
     display: block;
   }
+
+  .button {
+    margin-top: $content-padding*2;
+    margin-bottom: $content-padding*2;
+  }
   .sold-out {
     background: repeating-linear-gradient( 135deg, $empty-day-background, $empty-day-background 3px, #ddd 3px, #ddd 6px );
     color: $non-pickable-day-color;

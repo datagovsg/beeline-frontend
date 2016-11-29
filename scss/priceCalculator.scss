@@ -1,20 +1,13 @@
 price-calculator {
   .booking-info {
     width: 100%;
+    td{
+      text-align: left;
+    }
     /* for 2 column  */
     &.prices {
       td {
         width: 50%;
-      }
-    }
-    /* for 3 column  */
-    &.totals {
-      //border-spacing: 5px;
-      border-collapse: separate;
-      td,
-      th {
-        width: 33%;
-        vertical-align: middle;
       }
     }
     td,
@@ -28,7 +21,7 @@ price-calculator {
     background: $light;
     position: absolute;
     text-align: center;
-    padding: 1em 0;
+    padding: 2em 0;
     width: 100%;
     left: 0;
     top: auto;
