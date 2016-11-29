@@ -101,7 +101,8 @@ export default [
     $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
       if (!route) return;
       $scope.book.route = route;
-      computeStops();
+      /** Summarizes the stops from trips by comparing their stop location and time */
+      [$scope.book.boardStops, $scope.book.alightStops ] = BookingService.computeStops($scope.book.route.trips);
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
       if (!bid) return;
       $scope.book.bid = bid;
@@ -128,13 +129,6 @@ export default [
       await CompanyService.showTerms($scope.book.route.transportCompanyId);
     }
 
-    /** Summarizes the stops from trips by comparing their stop location and time */
-    function computeStops() {
-      var trips = $scope.book.route.trips;
-      var [boardStops, alightStops] = BookingService.computeStops(trips);
-      $scope.book.boardStops = boardStops;
-      $scope.book.alightStops = alightStops;
-    }
 
   }
 ];

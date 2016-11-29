@@ -195,6 +195,15 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       });
     },
 
+// Return an array of regions covered by a given array of routes
+    getUniqueRegionsFromRoutes: function(routes) {
+      return _(routes).map(function(route) {return route.regions;})
+      .flatten()
+      .uniqBy('id')
+      .sortBy('name')
+      .value();
+    },
+
   };
   return instance;
 }

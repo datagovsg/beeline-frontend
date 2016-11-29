@@ -57,7 +57,7 @@ export default [
       if (!route) return;
       $scope.book.route = route;
       $scope.book.bidOptions = route.notes.tier;
-      computeStops();
+      [$scope.book.boardStops, $scope.book.alightStops] = BookingService.computeStops($scope.book.route.trips);
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
       $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
     })
@@ -170,21 +170,13 @@ export default [
         lng: stop.coordinates.coordinates[0],
       })
     }
-    
+
     $scope.updateSelection = function(position, tiers, price) {
       _.forEach(tiers, function(tier, index){
         if (position == index) {
           $scope.book.bidPrice = $scope.book.bidPrice == price ? null : price;
         }
       })
-    }
-
-    /** Summarizes the stops from trips by comparing their stop location and time */
-    function computeStops() {
-      var trips = $scope.book.route.trips;
-      var [boardStops, alightStops] = BookingService.computeStops(trips);
-      $scope.book.boardStops = boardStops;
-      $scope.book.alightStops = alightStops;
     }
 
   }

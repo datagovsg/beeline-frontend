@@ -1,14 +1,5 @@
 import _ from 'lodash';
 
-// Return an array of regions covered by a given array of routes
-function getUniqueRegionsFromRoutes(routes) {
-  return _(routes).map(function(route) {return route.regions;})
-  .flatten()
-  .uniqBy('id')
-  .sortBy('name')
-  .value();
-}
-
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
@@ -102,7 +93,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   // Filter the displayed routes by selected region
   $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId', 'data.filterText'], function([routes, liteRoutes, selectedRegionId, filterText]) {
     var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
-    $scope.data.regions = getUniqueRegionsFromRoutes(normalAndLiteRoutes);
+    $scope.data.regions = RoutesService.getUniqueRegionsFromRoutes(normalAndLiteRoutes);
     $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
     $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
   });

@@ -104,7 +104,7 @@
       <ion-checkbox
         class="item item-text-wrap"
         ng-model="disp.savePaymentChecked"
-        ng-if="!hasSavedPaymentInfo">
+        ng-if="!hasSavedPaymentInfo && !disp.zeroDollarPurchase">
         Yes, I want to save this payment method for fast checkout in the future.
       </ion-checkbox>
     </section>
@@ -125,33 +125,41 @@
       You have invalid booking dates. Please re-select your dates.
     </section>
 
-    <section class="item item-text-wrap"
-             ng-if="isLoggedIn && !hasSavedPaymentInfo">
-      Please ensure that your credit card is ready for the next step in the booking process.
 
+    <section ng-if="isLoggedIn && disp.zeroDollarPurchase">
       <button class="button primary-button"
-              ng-click="payHandler()"
+              ng-click="payZeroDollar()"
               ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
-        Confirm and Pay
+        Complete purchase
       </button>
     </section>
-    <section class="item item-text-wrap text-center"
-             ng-if="isLoggedIn && hasSavedPaymentInfo">
-      This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
-      ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>.
+    <section ng-if="!disp.zeroDollarPurchase">
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn && !hasSavedPaymentInfo">
+        Please ensure that your credit card is ready for the next step in the booking process.
+        <button class="button primary-button"
+                ng-click="payHandler()"
+                ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
+          Confirm and Pay
+        </button>
+      </section>
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn && hasSavedPaymentInfo">
+        This payment will be charged to your <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
+        ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>.
 
-      <button class="button primary-button"
-              ng-click="payWithSavedInfo()"
-              ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
-        Confirm and Pay
-      </button>
-      <div class="text-link-div">
-        <a ng-class="(!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate) ? 'text-link-disabled' : ''"
-            ng-click="payWithoutSavingCard()">
-            Use a different card for this payment
-        </a>
-      </div>
-
+        <button class="button primary-button"
+                ng-click="payWithSavedInfo()"
+                ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
+          Confirm and Pay
+        </button>
+        <div class="text-link-div">
+          <a ng-class="(!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate) ? 'text-link-disabled' : ''"
+              ng-click="payWithoutSavingCard()">
+              Use a different card for this payment
+          </a>
+        </div>
+      </section>
     </section>
   </ion-content>
 </ion-view>
