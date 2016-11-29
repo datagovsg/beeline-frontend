@@ -57,7 +57,7 @@ export default [
       if (!route) return;
       $scope.book.route = route;
       $scope.book.bidOptions = route.notes.tier;
-      [$scope.book.boardStops, $scope.book.aligthStops] = BookingService.computeStops($scope.book.route.trips);
+      [$scope.book.boardStops, $scope.book.alightStops] = BookingService.computeStops($scope.book.route.trips);
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
       $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
     })
