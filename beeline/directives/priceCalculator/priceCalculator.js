@@ -44,6 +44,9 @@ export default [
                 return;
               scope.priceInfo = priceInfo;
               scope.price = priceInfo.totalDue;
+              scope.ridesUsed = scope.booking.useRouteCredits 
+                ? Math.min(scope.booking.route.ridesRemaining, priceInfo.tripCount)
+                : 0
               scope.errorMessage = null;
             })
             .catch((error) => {
