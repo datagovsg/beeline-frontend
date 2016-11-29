@@ -53,19 +53,20 @@
         }
       }
 
-      h1{
-        font-size: 5em;
-        padding: 0;
-        margin: 0;
-        color: $royal;
-  
-      }
-      h4{
-        font-size: 1em;
-        margin-bottom: $padding-large-vertical*2;
-        color: $normal-grey;
-        text-transform: uppercase;
-      }
+        h1{
+          font-size: 5em;
+          padding: 0;
+          margin: 0;
+          color: $royal;
+        }
+        h4{
+          font-size: 1em;
+          margin-bottom: $padding-large-vertical*2;
+          color: $normal-grey;
+          text-transform: uppercase;
+        }
+
+
       .pass-additional{
         margin-top: $padding-large-vertical;
         text-align: left;
@@ -76,13 +77,18 @@
           padding: 0;
         }
         table{
+          width: 100%;
           margin-top: $padding-large-vertical;
           margin-bottom: $padding-large-vertical;
           td.label{
-            width: 30%;
+            width: 40%;
           }
         }
+        .pass-condition{
+          margin-top: $content-padding*2;
+        }
       }
+
     }
 
 }

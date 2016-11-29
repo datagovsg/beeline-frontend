@@ -1,7 +1,7 @@
 <ion-modal-view class="stop-selector">
   <ion-header-bar class="bar bar-royal">
     <h1 class="title">
-      Kickstarter Route Stops
+      Kickstart Route Stops
     </h1>
     <button class="button button-clear icon ion-ios-close-outline"
         ng-click="close()">
@@ -30,10 +30,15 @@
           options="modalMap.markerOptions.alightMarker"
         ></ui-gmap-marker>
 
-        <ui-gmap-marker ng-if="data.selectedStop"
+        <ui-gmap-marker ng-if="book.boardStop"
                         idkey="'selectedStopPin'"
-                        coords="data.selectedStop.coordinates"
-                        options="pinOptions">
+                        coords="book.boardStop.coordinates"
+                        options="modalMap.markerOptions.startMarker">
+        </ui-gmap-marker>
+        <ui-gmap-marker ng-if="book.alightStop"
+                        idkey="'selectedStopPin'"
+                        coords="book.alightStop.coordinates"
+                        options="modalMap.markerOptions.endMarker">
         </ui-gmap-marker>
       </ui-gmap-google-map>
     </div>
@@ -43,12 +48,10 @@
     <ion-content class="stops-list" delegate-handle="stopsListScroll">
       <div class="item item-divider"> Boarding Stops </div>
       <ion-list>
-        <ion-item  ng-repeat="stop in book.boardStops"
-                    ng-model="data.selectedStop"
-                    ng-value="stop"
-                    class="item-text-wrap item-icon-left"
-                    icon="icon ion-ios-checkmark"
-                    ng-click="panToStops(modalMap.control.getGMap(), [stop])">
+        <ion-item ng-repeat="stop in book.boardStops"
+                  class="item-text-wrap item-icon-left"
+                  icon="icon ion-ios-checkmark"
+                  ng-click="panToBoardStop(modalMap.control.getGMap(), stop)">
           <div class="fullStopDetails">
             <div class="time">{{stop.time | formatTime}}</div>
             <div class="details">
@@ -62,11 +65,9 @@
       <div class="item item-divider"> Alighting Stops </div>
       <ion-list>
         <ion-item  ng-repeat="stop in book.alightStops"
-                    ng-model="data.selectedStop"
-                    ng-value="stop"
                     class="item-text-wrap item-icon-left"
                     icon="icon ion-ios-checkmark"
-                    ng-click="panToStops(modalMap.control.getGMap(), [stop])">
+                    ng-click="panToAlightStop(modalMap.control.getGMap(), stop)">
           <div class="fullStopDetails">
             <div class="time">{{stop.time | formatTime}}</div>
             <div class="details">

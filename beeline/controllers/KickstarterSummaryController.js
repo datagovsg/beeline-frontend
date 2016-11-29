@@ -1,7 +1,6 @@
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 import loadingTemplate from '../templates/loading.html';
-import assert from 'assert';
 
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal','$http',
@@ -54,13 +53,13 @@ export default [
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
-        $scope.data.hasCreditInfo = ($scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0);
-        if ($scope.data.hasCreditInfo) {
-          $scope.$watch(()=>UserService.getUser().savedPaymentInfo, (paymentInfo)=>{
+        $scope.$watch(()=>UserService.getUser().savedPaymentInfo, (paymentInfo)=>{
+          $scope.data.hasCreditInfo = $scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0;
+          if ($scope.data.hasCreditInfo) {
             $scope.data.brand = paymentInfo.sources.data[0].brand;
             $scope.data.last4Digtis = paymentInfo.sources.data[0].last4;
-          });
-        }
+          }
+        });
       }
     });
 
@@ -73,6 +72,7 @@ export default [
     $scope.login = function () {
       UserService.promptLogIn()
     }
+
 
     $scope.createBid = async function(){
       try {
@@ -93,6 +93,9 @@ export default [
       } catch (err) {
         console.log(err);
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
+      } finally {
+        $scope.waitingForPaymentResult = false;
+        $scope.$digest();
       }
 
       try {
@@ -115,9 +118,8 @@ export default [
         $state.go('tabs.kickstarter');
       }finally {
         $ionicLoading.hide();
-        $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
-        })
+        $scope.waitingForPaymentResult = false;
+        $scope.$digest();
       }
     }
 
