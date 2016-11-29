@@ -133,10 +133,9 @@
       </button>
     </section>
     <section ng-if="!disp.zeroDollarPurchase">
-      <section class="item item-text-wrap text-center"
-             ng-if="isLoggedIn && hasSavedPaymentInfo">
-        This payment will be charged to your <br /><b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
-        ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>.
+      <section class="item item-text-wrap"
+               ng-if="isLoggedIn && !hasSavedPaymentInfo">
+        Please ensure that your credit card is ready for the next step in the booking process.
         <button class="button primary-button"
                 ng-click="payHandler()"
                 ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
