@@ -89,7 +89,6 @@ export default [
             UserService.savePaymentInfo(stripeToken.id)
           );
         }
-
       } catch (err) {
         console.log(err);
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
@@ -116,7 +115,7 @@ export default [
           `,
         })
         $state.go('tabs.kickstarter');
-      }finally {
+      } finally {
         $ionicLoading.hide();
         $scope.waitingForPaymentResult = false;
         $scope.$digest();
