@@ -470,7 +470,11 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       return $q.resolve(tagToCreditsMap)
     }
     if(!ignoreCache && routeCreditsCache){
-      return tag ? routeCreditsCache.then(routeCredits => routeCredits[tag]) : routeCreditsCache
+      return tag ? routeCreditsCache.then(routeCredits => {
+        let map = {}
+        map[tag] = routeCredits[tag]
+        return map
+      }) : routeCreditsCache
     }
 
     let url = tag ? '/routeCredits/' + tag : '/routeCredits'
