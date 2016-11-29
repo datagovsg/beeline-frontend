@@ -76,6 +76,8 @@ export default [
 
     $scope.createBid = async function(){
       try {
+        //to make $digest not throw errors 
+        await new Promise(resolve => setTimeout(resolve, 0));
         var bidPrice = $scope.priceInfo.bidPrice;
         // disable the button
         $scope.waitingForPaymentResult = true;
