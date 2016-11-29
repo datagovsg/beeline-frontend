@@ -35,16 +35,16 @@
       </tr>
     </tbody>
   </table>
-  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+  <table class="booking-info prices " ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
         <th>Total Trips</th>
-        <th>Passengers</th>
+        <!-- <th>Passengers</th> -->
         <th>Total Amount</th>
       </tr>
       <tr>
         <td>{{priceInfo.tripCount || 0}}</td>
-        <td>1</td>
+      <!--   <td>1</td> -->
         <td>{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
     </tbody>
@@ -69,26 +69,26 @@
       </li> -->
     </ul>
   </div>
-  <div class="item-subtitle">Price Calculator </div>
-  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+  <div class="item-subtitle">Amount to Pay </div>
+  <table class="booking-info" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
-        <th>Total Price</th>
-        <td>{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
+        <td>Total Amount</td>
+        <td class="right">{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.routeCredits && priceInfo.routeCredits.length > 0" ng-repeat="routeCredit in priceInfo.routeCredits">
-        <th>Use Route Pass</th>
-        <td>{{(-routeCredit.debit || 0) | currency}}</td>
-      </tr> 
+        <td>Use # trips from Route Pass</td>
+        <td class="right">{{(-routeCredit.debit || 0) | currency}}</td>
+      </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
-        <th>{{discount.discount.description}}: {{discount.discount.code}}</th>
-        <td>
+        <td>{{discount.discount.description}}: {{discount.discount.code}}</td>
+        <td class="right">
           {{(-discount.debit || 0) | currency}}
         </td>
       </tr>
       <tr>
-        <th>Total Due</th>
-        <td>{{ (priceInfo.totalDue || 0) | currency}}</td>
+        <td class="total-sum" ><b>Total Amount Due</b></td>
+        <td class="total-sum right"><b>{{ (priceInfo.totalDue || 0) | currency}}</b></td>
       </tr>
       <!-- FIXME: include vouchers, discounts here -->
     </tbody>
