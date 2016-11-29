@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_detail" view-title="Kickstarter Route Details"
+<ion-view id="pg_kickstarter_detail" view-title="Kickstart Route Details"
  can-swipe-back="false">
   <ion-nav-buttons side="right">
     <button class="button button-clear"
@@ -6,59 +6,20 @@
        <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
+  <div class="bar bar-subheader item kickstarter-breadcrumbs"ng-if="!book.route.isExpired">
+    <img src="img/KickstarterProgressBar02_RouteDetails.svg" />
+  </div>
 
-  <ion-content>
-    <form class="stops-form" name="stopsForm">
-      <div class=item>
-        <route-item>
-          <route-item-bus-number>
-            {{ book.route.label }}
-          </route-item-bus-number>
-          <route-item-start-time>
-            {{ book.route | routeStartTime | formatTime:true }}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ book.route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ book.route | routeEndTime | formatTime:true }}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ book.route.to }}
-          </route-item-end-location>
-          <route-item-additional-info>
-            <company-info-broker company-id="book.route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="schedule">
-                {{companyInfo.name}}
-              </span>
-            </div>
+  <ion-content class="has-header has-subheader">
+    <div class="item item-icon-left item-text-wrap" ng-if="book.route.isExpired">
+        <i class="icon activebid">
+            <img src="img/icon_kickstarter_status.svg">
+        </i>
+        Campaign has expired.
+        <span ng-if="book.route.isActived">Route is activated.</span>
+        <span ng-if="!book.route.isActived">Route is not activated.</span>
+    </div>
 
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft>1">
-                {{book.route.daysLeft}} days left
-              </span>
-              <span class="schedule" ng-if="book.route.daysLeft && book.route.daysLeft==1">
-                {{book.route.daysLeft}} day left to activate
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
-
-        <progress-bar cur-val={{book.route.notes.tier[0].no}} second-val={{book.route.notes.tier[1].no}}
-          max-val={{book.route.notes.tier[1].pax}} high-price={{book.route.notes.tier[0].price}} low-price={{book.route.notes.tier[1].price}}
-          high-total={{book.route.notes.tier[0].pax}}>
-        </progress-bar>
-
-      </div>
 
       <!-- contains the map, the stop selectors
         and the locate me button -->
@@ -78,10 +39,6 @@
             <div class="popUpStopSelect">
               <b>{{disp.popupStop.time | formatTime }}</b><br/>
               {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
-              <a class="button button-block button-outline button-royal"
-                ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
-                Set {{disp.popupStopType === 'pickup' ? 'pick-up' : 'drop-off'}} stop
-              </a>
             </div>
           </ui-gmap-window>
 
@@ -121,66 +78,115 @@
 
         </ui-gmap-google-map>
       </div>
+      <div class="item item-text-wrap">
+        <route-item>
+          <route-item-bus-number>
+            {{ book.route.label }}
+          </route-item-bus-number>
+          <route-item-start-time>
+            {{ book.route | routeStartTime | formatTime:true }}
+          </route-item-start-time>
+          <route-item-start-location>
+            {{ book.route.from }}
+          </route-item-start-location>
+          <route-item-end-time>
+            {{ book.route | routeEndTime | formatTime:true }}
+          </route-item-end-time>
+          <route-item-end-location>
+            {{ book.route.to }}
+          </route-item-end-location>
+          <route-item-additional-info>
+            <company-info-broker company-id="book.route.transportCompanyId"
+                                  company="companyInfo">
+            </company-info-broker>
+          <!--   <div class="icon-and-schedule">
+            <span class="icon-span company-logo">
+              <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
+            </span>
+            <span class="mini-info">
+              {{companyInfo.name}}
+            </span>
+          </div> -->
 
-      <ion-list class="stop-inputs">
-        <bus-stop-selector
-          ng-model="book.boardStop"
-          bus-stops="book.boardStops"
-          placeholder="Select pick-up stop"
-          title="Select pick-up stop"
-          button="Select pick-up stop"
-          marker-options="map.markerOptions.boardMarker"
-          pin-options="map.markerOptions.startMarker"
-          ng-required="true"
-          name="boardStop"
-          >
-        </bus-stop-selector>
-        <bus-stop-selector
-          ng-model="book.alightStop"
-          bus-stops="book.alightStops"
-          placeholder="Select drop-off stop"
-          title="Select drop-off stop"
-          button="Select drop-off stop"
-          marker-options="map.markerOptions.alightMarker"
-          pin-options="map.markerOptions.endMarker"
-          ng-required="true"
-          name="alightStop"
-          >
-        </bus-stop-selector>
-      </ion-list>
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
+              </span>
+              <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft>1">
+                Campaign ends in {{book.route.daysLeft}} days
+              </span>
+              <span class="mini-info" ng-if="book.route.daysLeft && book.route.daysLeft==1">
+                Campaign ends in {{book.route.daysLeft}} day
+              </span>
+              <span class="mini-info" ng-if="book.route.isExpired">
+                Campaign has expired
+              </span>
+            </div>
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_schedule.svg">
+              </span>
+              <span class="mini-info">
+                Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
+              </span>
+            </div>
+            <div class="icon-and-schedule">
+              <span class="icon-span">
+                <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+              </span>
+              <span class="mini-info">
+                {{book.route.status}}
+              </span>
+            </div>
+          </div>
+           </route-item-additional-info>
+        </route-item>
 
-      <!-- TODO: if user bid kickstarter and it expiries must show in the list!-->
-      <section class="item item-text-wrap continue-button-item"
-               ng-if="!book.notExpired">
-        The kickstarter is over.
-        <button class="button primary-button"
-          ui-sref="tabs.kickstarter">
-          Show Kickstarter List
-        </button>
-      </section>
+        <ion-item class="item-icon-right" ng-click="showStops()">
+            View Stops
+              <i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
+      <div class="item item-text-wrap">
+        <div class="item-subtitle">
+        How to activate
+        </div>
+        <p>
+         Pre-order {{book.route.notes.noPasses}} trips at ${{ book.route.notes.tier[0].price | number:2 }} per trip:
+        </p>
 
-      <section class="item item-text-wrap continue-button-item"
-               ng-if="book.notExpired">
-        <button class="button primary-button"
-                ng-disabled="stopsForm.$invalid"
-                ui-sref="tabs.kickstarter-dates({
+        <progress-bar backer1="book.route.notes.tier[0].count"
+          price1="book.route.notes.tier[0].price"
+          pax1="book.route.notes.tier[0].pax"
+          detail=true
+          needed="book.route.notes.tier[0].moreNeeded">
+        </progress-bar>
+
+        <kickstart-info route="book.route" ng-hide="book.route.isExpired && !book.route.isActived"></kickstart-info>
+
+      <div class="select-bid item-text-wrap" ng-if="book.route.isExpired">
+          <button class="button primary-button page-bottom " ui-sref="tabs.kickstarter">
+            Back to Main
+          </button>
+      </div>
+
+        <div class="select-bid item-text-wrap" ng-if="!book.route.isExpired">
+          <ion-list>
+            <ion-item class="item-checkbox" ng-repeat="item in book.route.notes.tier">
+              <label class="checkbox">
+                  <input type="checkbox" ng-model="checked" ng-click="updateSelection($index, book.route.notes.tier, item.price)">
+              </label>
+              <span>Yes, I want to pre-order the Route Pass for {{book.route.notes.noPasses}} trips at ${{ item.price | number:2 }} per trip.</span>
+            </ion-item>
+          </ion-list>
+
+          <button class="button primary-button page-bottom " ng-disabled="!book.bidPrice" ui-sref="tabs.kickstarter-summary({
                           routeId: book.routeId,
-                          boardStop: book.boardStop.id,
-                          alightStop: book.alightStop.id
+                          bidPrice: book.bidPrice
                         })">
-          Next
-        </button>
-      </section>
-    </form>
-
-    <!-- <section class="item item-text-wrap continue-button-item"
-             ng-if="book.notExpired && isLoggedIn && book.isBid">
-
-      <button class="button primary-button"
-              ng-click="deleteBid()">
-        Delete Bid
-      </button>
-    </section> -->
+                        Review my Pre-order
+          </button>
+      </div>
+    </div>
 
   </ion-content>
 </ion-view>

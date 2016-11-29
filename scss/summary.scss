@@ -11,36 +11,4 @@
       border: 1px solid lighten($normal-grey, 50%);
     }
   }
-  .bus-logo {
-    min-height: 4em;
-    height: 20vw;
-    max-height: 10em;
-    img {
-      padding: 1px;
-      border: 1px solid lighten($normal-grey, 50%);
-      max-width: 100%;
-      max-height: 100%;
-    }
-  }
-  .bus-co-info {
-    padding-left: $content-padding;
-  }
-  .features {
-    ul {
-      list-style: disc;
-      padding-left: $content-padding*2;
-    }
-  }
-  .text-link-div {
-    text-align: center;
-    margin: 1em;
-    a {
-      text-decoration: underline;
-    }
-  }
-  .text-link-disabled {
-    color: $hint-color;
-    text-decoration: underline;
-    pointer-events: none;
-  }
 }

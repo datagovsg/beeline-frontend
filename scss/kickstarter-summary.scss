@@ -2,18 +2,28 @@
   table {
     width: 100%;
   }
-  .bus-logo {
-    min-height: 4em;
-    height: 20vw;
-    max-height: 10em;
-    img {
-      padding: 1px;
-      border: 1px solid lighten($normal-grey, 50%);
-      max-width: 100%;
-      max-height: 100%;
+  .bar-subheader{
+    height: auto;
+  }
+  
+  .button{
+    margin-top: $padding-large-vertical*2;
+    margin-bottom: $padding-large-vertical*2;
+  }
+
+  .booking-info {
+    margin-top: $padding-large-vertical;
+    margin-bottom: $padding-large-vertical*3;
+    td {
+      text-align: left;
+      &.total-sum{
+        background-color: $table-header-bg;
+        border-top: solid $table-header-border-width $royal !important;
+      }
+      &.right{
+        text-align: right;
+      }
     }
   }
-  .bus-co-info {
-    padding-left: $content-padding;
-  }
+
 }

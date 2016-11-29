@@ -1,26 +1,30 @@
 #pg_kickstarter_recap {
-  i.icon.ion-ios-flag-outline {
-    font-size: $font-size-base * 1.5
+
+  .icon{
+    &.activebid{
+      left: $padding-small-horizontal*2;
+      align-items: flex-start;
+      top: $padding-large-vertical*2;
+    }
   }
-  .subTitle {
-    color: $hint-color;
-    line-height:  $line-height-base*2;
-  }
+
   table {
     width: 100%;
   }
-  .bus-logo {
-    min-height: 4em;
-    height: 20vw;
-    max-height: 10em;
-    img {
-      padding: 1px;
-      border: 1px solid lighten($normal-grey, 50%);
-      max-width: 100%;
-      max-height: 100%;
-    }
-  }
-  .bus-co-info {
-    padding-left: $content-padding;
+
+  button{
+    margin-top: $padding-large-vertical*2;
+    margin-bottom: $padding-large-vertical*3;
   }
 }
+
+.kickstarter-breadcrumbs {
+    &.item {
+      padding: $content-padding;
+      img {
+        height: $breadcrumbs-height - 2 * $content-padding;
+        display: block;
+        margin: auto;
+      }
+    }
+  }

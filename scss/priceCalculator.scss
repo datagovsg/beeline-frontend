@@ -1,11 +1,13 @@
 price-calculator {
-  .price-table {
+  .booking-info {
     width: 100%;
+    /* for 2 column  */
     &.prices {
       td {
         width: 50%;
       }
     }
+    /* for 3 column  */
     &.totals {
       //border-spacing: 5px;
       border-collapse: separate;
@@ -39,15 +41,15 @@ price-calculator {
       }
     }
   }
-
+  .item-subtitle {
+    margin-top: $padding-large-vertical*2;
+  }
 }
 .date-price-calculator{
-  h3 {
-    color: $normal-grey;
-    padding-top: 20px;
-    padding-bottom: 10px;
-  }
   table {
     margin-bottom: 10px;
+    td{
+      text-align: center;
+    }
   }
 }

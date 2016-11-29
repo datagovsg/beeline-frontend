@@ -7,14 +7,20 @@
     </div>
 
     <!-- Region Filter  -->
-    <label class="item item-input item-select region-filter">
-      <div class="input-label">Filter By</div>
+    <div class="region-filter">
+      <label class="item item-input item-icon-left">
+          <i class="ionicon ion-ios-search-strong"></i>
+        <input type="text" ng-change="updateFilter(data.stagingFilterText)"
+          placeholder="Search" ng-model="data.stagingFilterText" />
+      </label>
+      <label class="item item-input item-select">
         <select ng-model="data.selectedRegionId">
-          <option value="" disabled selected>Select A Region</option>
+          <option value="" disabled selected>Select Region</option>
           <option value="">All Regions</option>
           <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
         </select>
-    </label>
+      </label>
+    </div>
 
     <ion-content class="list">
       <ion-refresher pulling-text="Pull to refresh..."
@@ -34,7 +40,7 @@
                   alightStop: data.recentRoutesById[route.id].alightStopStopId,
                   sessionId: data.nextSessionId
                 })"
-                class="item-icon-right">
+                class="item-text-wrap item-icon-right">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
@@ -63,7 +69,7 @@
               <span class="icon-span company-logo">
                 <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{companyInfo.name}}
               </span>
             </div>
@@ -72,7 +78,7 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{route.schedule}}
               </span>
             </div>
@@ -121,7 +127,7 @@
               <span class="icon-span company-logo">
                 <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{companyInfo.name}}
               </span>
             </div>
@@ -130,7 +136,7 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{route.schedule}}
               </span>
             </div>
@@ -138,13 +144,13 @@
         </route-item>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
-      
+
       <ion-item ng-repeat="route in data.filteredActiveRoutes"
                 ui-sref="tabs.bookingPickup({
                   routeId: route.id,
                   sessionId: data.nextSessionId
                 })"
-                class="item-icon-right">
+                class="item-text-wrap item-icon-right">
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
@@ -173,7 +179,7 @@
               <span class="icon-span company-logo">
                 <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{companyInfo.name}}
               </span>
             </div>
@@ -182,7 +188,7 @@
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_schedule.svg">
               </span>
-              <span class="schedule">
+              <span class="mini-info">
                 {{route.schedule}}
               </span>
             </div>
@@ -190,6 +196,11 @@
         </route-item>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
+
+      <p ng-if="data.filteredActiveRoutes.length === 0 && data.filteredLiteRoutes.length === 0
+        && data.filterText" class="not-found-message text-center">
+          Sorry, we could not find any routes matching "{{data.filterText}}".
+      </p>
     </ion-content>
   </ion-content>
 </ion-view>

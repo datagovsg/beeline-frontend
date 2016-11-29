@@ -9,20 +9,12 @@ function getUniqueRegionsFromRoutes(routes) {
   .value();
 }
 
-// Returns a new array with routes matching the given regionId
-// If regionId is undefined then returns a new array with all the same routes
-function filterRoutesByRegionId(routes, regionId) {
-  return _.filter(routes, function(route) {
-    if (regionId) return _.some(route.regions, {'id': regionId});
-    else return true;
-  });
-}
-
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
-  BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup, LiteRouteSubscriptionService) {
+  BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup,
+  LiteRouteSubscriptionService, $timeout, SearchService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -30,6 +22,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
     routes: [],
     recentRoutes: [],
     selectedRegionId: undefined,
+    filterText: '',
+    stagingFilterText: '',
     filteredActiveRoutes: [],
     filteredRecentRoutes: [],
     nextSessionId: null,
@@ -89,12 +83,22 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }
 
   // Filter the displayed routes by selected region
-  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId'], function([routes, liteRoutes, selectedRegionId]) {
+  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId', 'data.filterText'], function([routes, liteRoutes, selectedRegionId, filterText]) {
     var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
     $scope.data.regions = getUniqueRegionsFromRoutes(normalAndLiteRoutes);
-    $scope.data.filteredActiveRoutes = filterRoutesByRegionId(routes, +selectedRegionId);
-    $scope.data.filteredLiteRoutes = filterRoutesByRegionId(liteRoutes, +selectedRegionId);
+    $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
+    $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
   });
+
+  // Throttle the actual updating of filter text
+  $scope.updateFilter = _.throttle((value) => {
+    // Some times this function is called synchronously, some times it isn't
+    // Use timeout to ensure that we are always inside a digest cycle.
+    setTimeout(() => {
+      $scope.data.filterText = $scope.data.stagingFilterText;
+      $scope.$digest();
+    }, 0)
+  }, 400, {trailing: true})
 
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block

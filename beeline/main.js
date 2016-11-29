@@ -56,6 +56,7 @@ var app = angular.module('beeline', [
 .factory('StripeService', require('./services/StripeService.js').default)
 .factory('loadingSpinner', require('./services/LoadingSpinner.js').default)
 .factory('GoogleAnalytics', require('./services/GoogleAnalytics.js').default)
+.factory('SearchService', require('./services/SearchService.js').default)
 .service('MapOptions', require('./services/MapOptions').default)
 .service('busStopSelectorDialog', require('./services/busStopSelectorDialog.js').default)
 .service('Legalese', require('./services/legalese.js').default)
@@ -80,7 +81,6 @@ var app = angular.module('beeline', [
 .controller('LiteMoreInfoController', require('./controllers/LiteMoreInfoController.js').default)
 .controller('KickstarterController', require('./controllers/KickstarterController.js').default)
 .controller('KickstarterDetailController', require('./controllers/KickstarterDetailController.js').default)
-.controller('KickstarterDatesController', require('./controllers/KickstarterDatesController.js').default)
 .controller('KickstarterSummaryController', require('./controllers/KickstarterSummaryController.js').default)
 .controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
@@ -103,7 +103,11 @@ var app = angular.module('beeline', [
 .directive('mapBusStops', require('./directives/mapBusStops').default)
 .directive('dynamicSignage', require('./directives/dynamicSignage.js').default)
 .directive('beelineBindHtml', require('./directives/beelineBindHtml.js').default)
+.directive('kickstartInfo', require('./directives/kickstartInfo/kickstartInfo.js').default)
 .directive('progressBar', require('./directives/progressBar/progressBar.js').default)
+.directive('dailyTripsBroker', require('./directives/dailyTripsBroker.js').default)
+.directive('fakeProgressBar', require('./directives/fakeProgressBar.js').default)
+.directive('inServiceWindow', require('./directives/inServiceWindow.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');

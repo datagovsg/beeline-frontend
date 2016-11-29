@@ -1,12 +1,12 @@
 <div id="price-calculator" class="date-price-calculator">
   <!--Selected Dates<br>-->
   <div><b>{{booking.selectedDates.length}} day(s)</b> were selected.</div>
-  <h3>Selected Dates</h3>
+  <div class="item-subtitle">Selected Dates </div>
   <div ng-show="isCalculating" class="spinner-block">
     <ion-spinner></ion-spinner>
       Calculating prices...
   </div>
-  <table class="price-table prices booking-info">
+  <table class="booking-info prices">
     <thead>
       <tr ng-if="booking.selectedDates.length != 0">
         <th>Selected Dates</th>
@@ -37,8 +37,8 @@
       </tr>
     </tbody>
   </table>
-  <h3>Price Calculator </h3>
-  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+  <div class="item-subtitle">Price Calculator </div>
+  <table class="booking-info totals" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
         <th>Total Trips</th>

@@ -97,7 +97,7 @@ export default [
       return mapOptions;
     };
 
-    this.locateMe = (mapControl) => function() {
+    this.locateMe = function(mapControl) {
       var options = {
         timeout: 5000,
         enableHighAccuracy: true

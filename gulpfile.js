@@ -29,7 +29,7 @@ gulp.task('js-libraries', function() {
         .pipe(gulp.dest('./www/js'))
     gulp.src('./node_modules/angular-simple-logger/dist/angular-simple-logger.js')
         .pipe(gulp.dest('./www/js'))
-    gulp.src('./node_modules/ngclipboard/node_modules/clipboard/dist/clipboard.min.js')
+    gulp.src('./node_modules/clipboard/dist/clipboard.min.js')
         .pipe(gulp.dest('./www/js'))
     gulp.src('./node_modules/ngclipboard/dist/ngclipboard.min.js')
         .pipe(gulp.dest('./www/js'))

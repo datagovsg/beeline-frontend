@@ -1,9 +1,27 @@
 #pg_kickstarter_commit {
-  .primary-button {
-    margin-top: 10%;
+  .icon{
+    &.activebid{
+      left: $padding-small-horizontal*2;
+      align-items: flex-start;
+      top: $padding-large-vertical*2;
+    }
   }
-  textarea {
-    width: 90%;
-    height: $line-height-computed*3;
+  .primary-button {
+    margin-top: $padding-large-vertical*2;
+    margin-bottom: $padding-large-vertical*2;
+  }
+
+  .share-box{
+    margin-top: $padding-large-vertical;
+    margin-bottom: $padding-large-vertical;
+
+    textarea {
+      width: 100%;
+      padding: $padding-large-vertical;
+      height: $line-height-computed*3;
+      margin: 0 auto;
+      margin-top: $padding-large-vertical*2;
+      background: $light-grey;
+    }
   }
 }

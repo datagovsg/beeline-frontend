@@ -3,15 +3,6 @@ import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/
 import loadingTemplate from '../templates/loading.html';
 import assert from 'assert';
 
-
-var increaseBidNo = function(route, price) {
-  for (let tier of route.notes.tier) {
-    if (tier.price <= price) {
-      tier.no++;
-    }
-  }
-}
-
 export default [
   '$rootScope','$scope','$state','$stateParams','$http','RoutesService','loadingSpinner',
   'UserService','KickstarterService','$cordovaSocialSharing',
@@ -30,27 +21,19 @@ export default [
     };
 
     $scope.book.routeId = +$stateParams.routeId;
-
     $scope.showCopy = !window.cordova || false;
 
-    var routePromise;
-    routePromise = KickstarterService.getBidInfo($scope.book.routeId);
-
-    routePromise.then((route) => {
-
+    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
+      if (!route) return;
       $scope.book.route = route;
-      console.log("COMMIT");
-      console.log($scope.book.route);
-      if ($scope.book.route.notes && $scope.book.route.notes.lelongExpiry) {
-       var now = new Date().getTime();
-       var expiryTime = new Date($scope.book.route.notes.lelongExpiry).getTime();
-       if (now > expiryTime) {
-         $scope.book.notExpired = false;
-       }
-      }
-      $scope.book.bidPrice = $scope.book.route.bid.userOptions.price;
-      console.log("BID PRICE");
-      console.log($scope.book.bidPrice);
+      if (!bid) return;
+      $scope.book.bidPrice = bid.bidPrice;
+      $scope.book.boardStop = $scope.book.route.trips[0]
+            .tripStops
+            .find(ts => bid.boardStopId == ts.stop.id);
+      $scope.book.alightStop =$scope.book.route.trips[0]
+            .tripStops
+            .find(ts => bid.alightStopId == ts.stop.id);
     });
 
     //if has cordova no need to show shareLink text area

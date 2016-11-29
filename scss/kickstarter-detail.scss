@@ -1,5 +1,9 @@
-#pg_kickstarter_detail {
 
+/* Kickstarter select stops */
+#pg_kickstarter_detail {
+  .bar-subheader{
+    height: auto;
+  }
   .map-area {
     height: 250px;
     position: relative;
@@ -57,4 +61,13 @@
     }
   }
 
+  .button{
+    margin-top: $padding-large-vertical*3;
+    margin-bottom: $padding-large-vertical*2;
+  }
+
+  .progress-bar{
+    margin-top: $content-padding*4;
+    margin-bottom: $content-padding*4;
+  }
 }

@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
 export default [
-  '$scope', '$rootScope', '$state', '$stateParams', '$timeout', 'uiGmapGoogleMapApi',
+  '$scope', '$rootScope', '$state', '$stateParams', 'uiGmapGoogleMapApi',
   'CompanyService', 'TripService', 'UserService', 'MapOptions', 'RoutesService',
   'LiteRoutesService', '$ionicPopup', '$ionicLoading', 'loadingSpinner',
   function(
-    $scope,  $rootScope, $state, $stateParams,  $timeout,  uiGmapGoogleMapApi,
+    $scope,  $rootScope, $state, $stateParams,  uiGmapGoogleMapApi,
     CompanyService, TripService,  UserService, MapOptions, RoutesService,
     LiteRoutesService,  $ionicPopup, $ionicLoading, loadingSpinner
   ) {
@@ -19,17 +19,36 @@ export default [
 
     $scope.disp = {}
 
+    $scope.hasTrips = true;
+
+    $scope.data ={
+      todayTrips : null,
+      hasTrackingData: true,
+      inServiceWindow: false,
+      nextTrips: null,
+    }
+
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
 
     var routePromise = LiteRoutesService.getLiteRoute($scope.liteRouteLabel);
 
     var availableTripsPromise = routePromise.then((route)=>{
       $scope.liteRoute = route[$scope.liteRouteLabel];
-      var runningTrips = $scope.liteRoute.trips.filter((trip)=>trip.isRunning);
-      $scope.availableTrips = runningTrips[0] &&
-          $scope.liteRoute.trips.filter(trip => trip.date == runningTrips[0].date)
-      return $scope.availableTrips
+      //get route features
+      RoutesService.getRouteFeatures($scope.liteRoute.id).then((data)=>{
+        $scope.disp.features = data;
+      });
+      $scope.data.nextTrips = $scope.liteRoute.trips.filter(
+        trip=>trip.date === $scope.liteRoute.trips[0].date);
     })
+
+    /* Updated by the view using <daily-trips></daily-trips> (yes, I know, it's ugly) */
+    $scope.$watch('data.todayTrips',(trips)=>{
+      if (!trips) return;
+      $scope.hasTrips = trips.length > 0
+    });
+
+
 
     var mapPromise = new Promise(function(resolve) {
       $scope.$watch('map.control.getGMap', function(getGMap) {
@@ -38,12 +57,12 @@ export default [
     });
 
     $scope.$on('$ionicView.afterEnter', () => {
+      $scope.$broadcast('startPingLoop');
       loadingSpinner(Promise.all([mapPromise, routePromise])
       .then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
       }));
-      $scope.$broadcast('startPingLoop');
     });
 
     $scope.$on('$ionicView.beforeLeave', () => {
@@ -58,15 +77,8 @@ export default [
       });
     });
 
-    Promise.all([mapPromise, uiGmapGoogleMapApi, availableTripsPromise]).then((values) => {
-      var [map, googleMaps, availTrips] = values;
-      if (availTrips[0] && new Date(availTrips[0].date).setHours(0,0,0,0) != new Date().setHours(0,0,0,0) ){
-        $scope.hasNoTrip = true;
-      }
-      //get route features
-      RoutesService.getRouteFeatures(availTrips[0].routeId).then((data)=>{
-        $scope.disp.features = data;
-      })
+    Promise.all([mapPromise, uiGmapGoogleMapApi]).then((values) => {
+      var [map, googleMaps] = values;
       MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
         googleMaps.event.trigger(map, 'resize');
@@ -101,7 +113,7 @@ export default [
       catch(err) {
         await $ionicLoading.show({
           template: `
-          <div> There was an error unsubscribing. {{err && err.data && err.data.message}} Please try again later.</div>
+          <div> There was an error unsubscribing. ${err && err.data && err.data.message} Please try again later.</div>
           `,
           duration: 1000,
         })
@@ -111,6 +123,12 @@ export default [
     $scope.disp.showTerms = function() {
       if (!$scope.liteRoute.transportCompanyId) return;
       CompanyService.showTerms($scope.liteRoute.transportCompanyId);
+    };
+
+    $scope.locateMe = function(){
+      mapPromise.then(()=>{
+        MapOptions.locateMe($scope.map.control);
+      })
     };
 
   }
