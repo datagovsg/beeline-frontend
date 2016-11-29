@@ -59,7 +59,7 @@ export default [
     $scope.book.creditTag = $stateParams.creditTag
     var routeCreditsPromise = UserService.fetchRouteCredits($scope.book.creditTag)
     $q.all([routePromise, routeCreditsPromise]).then(function(values){
-      let creditsAvailable = values[1]
+      let creditsAvailable = parseFloat(values[1][$scope.book.creditTag])
       let ticketPrice = $scope.book.route.trips[0].priceF
       $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
     })
