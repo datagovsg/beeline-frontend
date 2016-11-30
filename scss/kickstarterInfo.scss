@@ -9,6 +9,20 @@
     }
 }
 
+.kickstart-info-content{
+  margin-top: $content-padding*4;
+  margin-bottom: $content-padding*4;
+  ul{
+    li{
+      list-style: disc;
+      list-style-position: inside;
+      }
+    margin-top: -$content-padding;
+    margin-bottom: $content-padding;
+    padding-left: $content-padding;
+  }
+}
+
 .preorder-pass{
   width: 280px;
   height: auto;
