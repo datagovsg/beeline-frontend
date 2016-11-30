@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!-- iOS build -->
-<widget id="sg.beeline.beeline" version="3.1.0" ios-CFBundleVersion="3.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="sg.beeline.beeline" version="3.2.0" ios-CFBundleVersion="3.2.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
 <!-- android build -->
 <!-- <widget id="sg.beeline" version="3.1.0" android-versionCode="300010" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"> -->
   <name>Beeline</name>
@@ -83,6 +83,6 @@
   </platform>
   <chcp>
     <config-file url="https://app.beeline.sg/chcp.json"/>
-    <native-interface version="1" />
+    <native-interface version="2" />
   </chcp>
 </widget>
