@@ -171,7 +171,7 @@ export default [
         $scope.$apply(() => {
           $scope.waitingForPaymentResult = false;
         })
-        UserService.fetchRouteCredits(null, true);
+        UserService.fetchRouteCredits(true);
       }
     };
 
@@ -243,7 +243,7 @@ export default [
         $scope.$apply(() => {
           $scope.waitingForPaymentResult = false;
         })
-        UserService.fetchRouteCredits(null, true);
+        UserService.fetchRouteCredits(true);
       }
     }
   },
