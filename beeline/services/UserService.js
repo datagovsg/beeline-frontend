@@ -459,36 +459,23 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // performs db query where necessary or specified
   // user can specify the tag to search for
   // input:
-  // - tag - String: tag associated with route. optional
   // - ignoreCache - boolean
   // output:
   // - Promise containing all routeCredits associated with user
-  // - [tag provided] amount of credits specific to the tag
-  var fetchRouteCredits = function(tag, ignoreCache){
+  var fetchRouteCredits = function(ignoreCache){
     if(!user){
       tagToCreditsMap = {};
       return $q.resolve(tagToCreditsMap)
     }
     if(!ignoreCache && routeCreditsCache){
-      return tag ? routeCreditsCache.then(routeCredits => {
-        let map = {}
-        map[tag] = routeCredits[tag]
-        return map
-      }) : routeCreditsCache
+      return routeCreditsCache
     }
 
-    let url = tag ? '/routeCredits/' + tag : '/routeCredits'
     return routeCreditsCache = beelineRequest({
       method: 'GET',
-      url: url
+      url: '/routeCredits'
     }).then((response) => {
-      if(tag){
-        if(!tagToCreditsMap) tagToCreditsMap = {}
-        tagToCreditsMap[tag] = response.data  
-      } else {
-        tagToCreditsMap = response.data
-      }
-      
+      tagToCreditsMap = response.data
       return tagToCreditsMap
     })
 
@@ -507,6 +494,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       return tagToCreditsMap
     }
   }
+
 
   // ////////////////////////////////////////////////////////////////////////////
   // Initialization
