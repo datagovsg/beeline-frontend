@@ -50,7 +50,7 @@
     </tbody>
   </table>
 
-  <span class="promoCredits" ng-if="booking.showRouteCredits && (booking.route.ridesRemaining && booking.route.ridesRemaining > 0)">
+  <span class="promoCredits" ng-if="showRouteCredits && (booking.route.ridesRemaining && booking.route.ridesRemaining > 0)">
     <div class="item-subtitle">Route Pass and Credits </div>
     <ul class="list">
       <ion-toggle ng-model="booking.useRouteCredits" ng-check="booking.useRouteCredits" toggle-class="toggle-royal" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
