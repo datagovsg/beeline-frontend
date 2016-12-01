@@ -40,7 +40,7 @@ price-calculator {
 }
 .date-price-calculator{
   table {
-    margin-bottom: 10px;
+    margin-bottom: $content-padding;
     td{
       text-align: center;
     }
@@ -51,7 +51,11 @@ price-calculator {
   .small-button{
     margin-top: 0px;
   }
-  .item-input-wrapper{
-    padding: 5px 10px;
+  .item-input-inset{
+    padding: 0 $content-padding;
+    .item-input-wrapper{
+      padding: $item-padding-small $item-padding-base;
+    }
   }
+
 }
