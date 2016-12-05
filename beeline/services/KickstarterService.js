@@ -153,7 +153,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     },
 
     getBidInfo: function(routeId) {
-      return kickstarterSummary.find(x=>x.routeId == routeId);
+      return kickstarterSummary ?  kickstarterSummary.find(x=>x.routeId == routeId) : null;
     },
 
     //need to return a promise
