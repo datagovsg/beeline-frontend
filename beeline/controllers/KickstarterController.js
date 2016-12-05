@@ -92,6 +92,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.showHelpPopup = function(){
     $scope.kickstartHelpPopup = $ionicPopup.show({
       template: kickstartHelpTemplate,
+      title: 'Kickstart Routes',
       buttons: [
         {
           text: 'OK',
