@@ -71,7 +71,7 @@ export default [
       var user = UserService.getUser();
       if(user && !user.referrerId){
         try{
-          var codeOwnerMap = (await getReferralCodes()).data
+          var codeOwnerMap = (await getSavedReferralCodes()).data
           $scope.book.promoCodes = $scope.book.processCodeOwnerMap(codeOwnerMap)
         } catch(err){
           await UserService.verifySession()
@@ -87,10 +87,10 @@ export default [
 
     // Retrieves the list of referral codes saved for the user
     // Returns an Obj: Key = referral code, value = Owner information
-    var getReferralCodes = async function() {
+    var getSavedReferralCodes = async function() {
       return UserService.beeline({
         method: "GET",
-        url: "/user/referralCodes",
+        url: "/user/savedReferralCodes",
       })
     }
 
