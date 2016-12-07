@@ -25,7 +25,6 @@ export default function($scope, UserService, RoutesService) {
     })
     .then((routes) => {
       $scope.routesById = _.keyBy(routes, r => r.id);
-      console.log($scope.routesById);
     })
   }
 

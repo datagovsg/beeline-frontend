@@ -90,7 +90,6 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
   var timeout = new SafeInterval(refresh, 1000*60*60, 1000*60);
 
   function refresh() {
-    console.log("Refresh in kickstarter service");
     return Promise.all([fetchKickstarterRoutes(true),fetchBids(true)]);
   }
 
@@ -154,7 +153,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     },
 
     getBidInfo: function(routeId) {
-      return kickstarterSummary.find(x=>x.routeId == routeId);
+      return kickstarterSummary ?  kickstarterSummary.find(x=>x.routeId == routeId) : null;
     },
 
     //need to return a promise

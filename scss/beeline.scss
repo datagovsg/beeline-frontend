@@ -197,8 +197,10 @@ table.booking-info {
 .popup-title {
   padding: 10px 20px 10px;
   font-size: $font-size-large;
-  font-weight: bold;
+  font-weight: normal;
+  color: $royal;
 }
+
 .popup-sub-title {
   margin-bottom: 20px;
   padding: 0 10px;
