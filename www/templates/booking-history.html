@@ -41,37 +41,36 @@
               <th>
               Type
               </th>
-              <td>
-                Kickstarter or Normal Booking
+              <td ng-if="transaction.type !== 'conversion'">
+                Normal Booking
+              </td>
+              <td ng-if="transaction.type === 'conversion'">
+                Kickstarter
               </td>
             </tr>
             <tr>
               <th>
                 Route
               </th>
-              <td>
-                {{ti.route.label}}: {{ti.route.from}} &mdash; {{ti.route.to}}
+              <td ng-if="transaction.itemsByType.ticketSale">
+                {{transaction.itemsByType.ticketSale[0].route.label}}: {{transaction.itemsByType.ticketSale[0].route.from}} &mdash; {{transaction.itemsByType.ticketSale[0].route.to}}
+              </td>
+              <td ng-if="transaction.itemsByType.routeCredits">
+                {{transaction.itemsByType.routeCredits[0].route.label}}: {{transaction.itemsByType.routeCredits[0].route.from}} &mdash; {{transaction.itemsByType.routeCredits[0].route.to}}
               </td>
             </tr>
-            <tr>
+            <tr ng-if="transaction.itemsByType.ticketSale">
                 <th>
                   Trip Date
                 </th>
               <td>
-                  <b># trip(s) in total</b>
+                  <b>{{transaction.itemsByType.ticketSale.length}} trip(s) in total</b>
                   <br />
                   <ul>
-                    <li>
-                      DD/MM/YYYY
-                    </li>
-                    <li>
-                      DD/MM/YYYY
-                    </li>
-                    <li>
-                      DD/MM/YYYY
+                    <li ng-repeat="ticket in transaction.itemsByType.ticketSale">
+                      {{ticket.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
                     </li>
                   </ul>
-
               </td>
             </tr>
           </table>
