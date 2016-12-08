@@ -37,11 +37,11 @@ export default [
     });
 
     //if has cordova no need to show shareLink text area
-    $scope.shareLink = "Hey, check out this new kickstart route from Beeline! https://app.beeline.sg/#/tabs/kickstarter/"+$scope.book.routeId+"/detail";
+    $scope.shareLink = "Hey, check out this new Crowdstart route from Beeline! https://app.beeline.sg/#/tabs/crowdstart/"+$scope.book.routeId+"/detail";
 
     $scope.shareAnywhere = function() {
-      $cordovaSocialSharing.share("Hey, check out this new kickstart route from Beeline!",
-        "New Beeline Kickstart Route", null, "https://app.beeline.sg/#/tabs/kickstarter/"+$scope.book.routeId+"/detail");
+      $cordovaSocialSharing.share("Hey, check out this new Crowdstart route from Beeline!",
+        "New Beeline Crowdstart Route", null, "https://app.beeline.sg/#/tabs/crowdstart/"+$scope.book.routeId+"/detail");
     };
 
   }

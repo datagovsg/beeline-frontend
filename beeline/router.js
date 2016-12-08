@@ -205,20 +205,20 @@ export default function($stateProvider, $urlRouterProvider) {
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Kickstarter Tab
   // ////////////////////////////////////////////////////////////////////////////
-  .state('tabs.kickstarter', {
-    url: '/kickstarter',
+  .state('tabs.crowdstart', {
+    url: '/crowdstart',
     views: {
-      'tab-kickstarter': {
+      'tab-crowdstart': {
         templateUrl: 'templates/kickstarter.html',
         controller: 'KickstarterController'
       }
     }
   })
 
-  .state('tabs.kickstarter-recap', {
-    url: '/kickstarter/:routeId/recap',
+  .state('tabs.crowdstart-recap', {
+    url: '/crowdstart/:routeId/recap',
     views: {
-      'tab-kickstarter': {
+      'tab-crowdstart': {
         templateUrl: 'templates/kickstarter-recap.html',
         controller: 'KickstarterRecapController'
       }
@@ -228,10 +228,10 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tabs.kickstarter-detail', {
-    url: '/kickstarter/:routeId/detail',
+  .state('tabs.crowdstart-detail', {
+    url: '/crowdstart/:routeId/detail',
     views: {
-      'tab-kickstarter': {
+      'tab-crowdstart': {
         templateUrl: 'templates/kickstarter-detail.html',
         controller: 'KickstarterDetailController'
       }
@@ -241,10 +241,10 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tabs.kickstarter-summary', {
-    url: '/kickstarter/:routeId/summary?bidPrice',
+  .state('tabs.crowdstart-summary', {
+    url: '/crowdstart/:routeId/summary?bidPrice',
     views: {
-      'tab-kickstarter': {
+      'tab-crowdstart': {
         templateUrl: 'templates/kickstarter-summary.html',
         controller: 'KickstarterSummaryController'
       }
@@ -254,10 +254,10 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tabs.kickstarter-commit', {
-    url: '/kickstarter/:routeId/commit',
+  .state('tabs.crowdstart-commit', {
+    url: '/crowdstart/:routeId/commit',
     views: {
-      'tab-kickstarter': {
+      'tab-crowdstart': {
         templateUrl: 'templates/kickstarter-commit.html',
         controller: 'KickstarterCommitController'
       }

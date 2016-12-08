@@ -120,7 +120,7 @@ export default [
             </div>
           </div>
           <div class="item item-text-wrap text-center" ng-if="isOnKickstarter">
-            You cannot remove this card unless the kickstart route you back expires.
+            You cannot remove this card unless the Crowdstart route you back expires.
           </div>
         `,
         buttons: [
