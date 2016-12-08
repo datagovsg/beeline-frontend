@@ -48,8 +48,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
                     $scope.data.error = true;
                   })
                   .then(()=>{
-                    if (!window.localStorage['showKickstarter']) {
-                      window.localStorage['showKickstarter'] = true;
+                    if (!window.localStorage['showCrowdstart']) {
+                      window.localStorage['showCrowdstart'] = true;
                       $scope.showHelpPopup();
                     }
                   }));

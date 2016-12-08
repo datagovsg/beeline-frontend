@@ -94,10 +94,6 @@ export default [
       })
     }
 
-    // var bidPromise, routePromise;
-    // routePromise = KickstarterService.getLelongById($scope.book.routeId);
-    // bidPromise = KickstarterService.getBidInfo($scope.book.routeId);
-
     $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
       if (!route) return;
       $scope.book.route = route;
