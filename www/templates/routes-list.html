@@ -29,10 +29,10 @@
 
       <!-- Recent Routes Section -->
       <!-- ng-show doesn't work 100% reliably. angular bug? -->
-      <div class="item item-divider" ng-if="data.kickstarterRoutes && data.kickstarterRoutes.length > 0">
+      <div class="item item-divider" ng-if="data.filteredKickstarterRoutes && data.filteredKickstarterRoutes.length > 0">
         Your Activated Kickstarter Routes
       </div>
-      <ion-item ng-repeat="route in data.kickstarterRoutes"
+      <ion-item ng-repeat="route in data.filteredKickstarterRoutes"
                 ui-sref="tabs.bookingPickup({
                   routeId: route.id,
                   boardStop:  data.recentRoutesById[route.id].boardStopStopId,
@@ -41,7 +41,7 @@
                   creditTag: route.creditTag,
                   ridesRemaining: route.ridesRemaining,
                 })"
-                ng-if="data.kickstarterRoutes && data.kickstarterRoutes.length > 0"
+                ng-if="data.filteredKickstarterRoutes && data.filteredKickstarterRoutes.length > 0"
                 class="item-icon-right">
         <route-item>
           <route-item-bus-number>
