@@ -76,7 +76,7 @@ export default [
 
     $scope.createBid = async function(){
       try {
-        //to make $digest not throw errors 
+        //to make $digest not throw errors
         await new Promise(resolve => setTimeout(resolve, 0));
         var bidPrice = $scope.priceInfo.bidPrice;
         // disable the button
@@ -108,7 +108,7 @@ export default [
         $scope.$apply(() => {
           $scope.book.isBid = true;
         })
-        $state.go('tabs.kickstarter-commit', { routeId: $scope.book.routeId});
+        $state.go('tabs.crowdstart-commit', { routeId: $scope.book.routeId});
       }catch(err){
         await $ionicPopup.alert({
           title: 'Error processing bid',
@@ -116,7 +116,7 @@ export default [
           <div> There was an error creating the bid. ${err && err.data && err.data.message} Please try again later.</div>
           `,
         })
-        $state.go('tabs.kickstarter');
+        $state.go('tabs.crowdstart');
       } finally {
         $ionicLoading.hide();
         $scope.waitingForPaymentResult = false;

@@ -43,7 +43,7 @@
         Your kickstarter pre-orders
       </div>
 
-      <ion-item ng-repeat="route in data.filteredbackedKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.kickstarter-recap({
+      <ion-item ng-repeat="route in data.filteredbackedKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-recap({
                      routeId: route.id
                    })" class="item-icon-right">
         <route-item>
@@ -133,7 +133,7 @@
         Available Kickstart Routes
       </div>
 
-      <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.kickstarter-detail({
+      <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-detail({
                                   routeId: route.id
                                  })">
         <route-item>
