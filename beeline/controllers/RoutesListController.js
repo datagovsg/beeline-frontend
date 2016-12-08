@@ -31,7 +31,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     if(routeCredits){
       $scope.data.allRouteCredits = routeCredits
       $scope.data.allRouteCreditTags = Object.keys(routeCredits)
-      calcRoutePassCount()  
+      calcRoutePassCount()
     }
   })
 
@@ -54,11 +54,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
     var allRouteCreditsPromise = UserService.fetchRouteCredits(ignoreCache)
-        .then(function(map){
-          $scope.data.allRouteCredits = map
-          $scope.data.allRouteCreditTags = Object.keys(map)
-          return map
-        });
+                                  .then(function(map){
+                                    $scope.data.allRouteCredits = map
+                                    $scope.data.allRouteCreditTags = Object.keys(map)
+                                    return map
+                                  });
 
     // Configure the list of available regions
     var allRoutesPostProcessPromise = allRoutesPromise.then(function(allRoutes) {

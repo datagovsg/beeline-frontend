@@ -61,13 +61,19 @@ export default function($scope, $state, UserService, RoutesService, $q,
     'data.filterText'
   ], ([lelongRoutes, userBids, selectedRegionId, filterText])=>{
       if (!lelongRoutes) return;
+      console.log("LELONG");
+      console.log(lelongRoutes);
+      console.log("BIDS");
+      console.log(userBids);
       $scope.data.kickstarter = _.sortBy(lelongRoutes, 'label');
       $scope.userBids = userBids;
       $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
       var recentAndAvailable = _.partition($scope.data.kickstarter, (x)=>{
         return _.includes(_.keys($scope.recentBidsById), x.id.toString());
       });
-      $scope.data.backedKickstarter = recentAndAvailable[0];
+      // $scope.data.backedKickstarter = recentAndAvailable[0];
+      // don't display it in backed list if the pass expires
+      $scope.data.backedKickstarter = recentAndAvailable[0].filter((route)=>!route.passExpired);
       //don't display it in kickstarter if it's expired
       $scope.data.kickstarter = recentAndAvailable[1].filter((route)=>!route.isExpired);
       //regions from list of backed and not expired available

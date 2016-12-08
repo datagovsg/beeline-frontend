@@ -20,14 +20,16 @@ export default [
       boardStopId: null,
       alightStop: null,
       route: null,
-      notExpired: true,
       bidPrice: null,
       boardStops: null,
       alightStops: null,
+      passAvailable: null,
+      creditTag: null,
     };
 
-
     $scope.book.routeId = +$stateParams.routeId;
+
+    $scope.book.creditTag = "kickstarter-"+$scope.book.routeId
 
     $scope.modalMap = MapOptions.defaultMapOptions();
 
@@ -94,37 +96,35 @@ export default [
       })
     }
 
-    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
-      if (!route) return;
-      $scope.book.route = route;
-      /** Summarizes the stops from trips by comparing their stop location and time */
-      [$scope.book.boardStops, $scope.book.alightStops ] = BookingService.computeStops($scope.book.route.trips);
-      $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
-      if (!bid) return;
-      $scope.book.bid = bid;
-      if ($scope.book.route.notes && $scope.book.route.notes.lelongExpiry) {
-       var now = new Date().getTime();
-       var expiryTime = new Date($scope.book.route.notes.lelongExpiry).getTime();
-       if (now > expiryTime) {
-         $scope.book.notExpired = false;
-       }
-      }
-      $scope.book.bidPrice = $scope.book.bid.bidPrice;
-      $scope.book.boardStopId = +$scope.book.bid.boardStopId;
-      $scope.book.alightStopId = +$scope.book.bid.alightStopId;
-      $scope.book.boardStop = route.trips[0]
-            .tripStops
-            .find(ts => $scope.book.boardStopId == ts.stop.id);
-      $scope.book.alightStop =route.trips[0]
-            .tripStops
-            .find(ts => $scope.book.alightStopId == ts.stop.id);
+    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId), ()=>UserService.getRouteCredits($scope.book.creditTag)],
+      ([route, bid, credit])=>{
+        if (!route) return;
+        $scope.book.route = route;
+        /** Summarizes the stops from trips by comparing their stop location and time */
+        [$scope.book.boardStops, $scope.book.alightStops ] = BookingService.computeStops($scope.book.route.trips);
+        $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
+        if (!bid) return;
+        $scope.book.bid = bid;
+        $scope.book.bidPrice = $scope.book.bid.bidPrice;
+        $scope.book.boardStopId = +$scope.book.bid.boardStopId;
+        $scope.book.alightStopId = +$scope.book.bid.alightStopId;
+        $scope.book.boardStop = route.trips[0]
+              .tripStops
+              .find(ts => $scope.book.boardStopId == ts.stop.id);
+        $scope.book.alightStop =route.trips[0]
+              .tripStops
+              .find(ts => $scope.book.alightStopId == ts.stop.id);
+        if(!credit) return;
+        console.log("CREDIT");
+        console.log(credit);
+        $scope.book.passAvailable = credit / $scope.book.bidPrice;
     })
+
 
     $scope.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return;
       await CompanyService.showTerms($scope.book.route.transportCompanyId);
     }
-
 
   }
 ];

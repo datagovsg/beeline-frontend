@@ -53,11 +53,15 @@
             <span class="icon-span">
               <img class="mini-icon" src="img/icon_schedule.svg">
             </span>
-            <span class="mini-info">
+            <span class="mini-info" ng-if="!book.route.isActived">
               Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
             </span>
+            <span class="mini-info" ng-if="book.route.isActived">
+              Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy'}}
+            </span>
           </div>
-          <div class="icon-and-schedule">
+          <!-- show status if pass not granted yet -->
+          <div class="icon-and-schedule" ng-if="!book.route.passAvailable">
             <span class="icon-span">
               <img class="mini-icon" src="img/icon_kickstarter_status.svg">
             </span>
@@ -65,9 +69,19 @@
               {{book.route.status}}
             </span>
           </div>
+          <!-- show no. of pass available -->
+          <div class="icon-and-schedule" ng-if="book.route.passAvailable">
+            <span class="icon-span">
+              <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+            </span>
+            <span class="mini-info">
+              Your route pass is ready. You have {{book.passAvailable}} trips remaining in your Route pass.
+            </span>
+          </div>
         </route-item-additional-info>
       </route-item>
-      <progress-bar backer1="book.route.notes.tier[0].count"
+      <progress-bar ng-hide="book.route.isActived && book.passAvailable"
+        backer1="book.route.notes.tier[0].count"
         price1="book.route.notes.tier[0].price"
         pax1="book.route.notes.tier[0].pax"
         detail=true
@@ -80,11 +94,19 @@
             <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
     </ion-list>
+
     <div class="item item-text-wrap" ng-hide="book.route.isExpired && !book.route.isActived">
       <div class="item-subtitle">
       What happens next?
       </div>
       <kickstart-info route="book.route" preorder-hide="true"></kickstart-info>
+    </div>
+
+    <div class="item item-text-wrap" ng-show="book.route.isExpired && book.passAvailable">
+      <div class="item-subtitle">
+      Here's your pass
+      </div>
+      <kickstart-info route="book.route" preorder-hide="true" content-hide="true"></kickstart-info>
     </div>
 
     <div class="item item-text-wrap">
@@ -100,8 +122,17 @@
       </div>
     </div>
 
-    <button class="primary-button button" ui-sref="tabs.crowdstart">
+    <div class="item item-text-wrap">
+      <p>
+        Note: This page will be dismissed automatically when route pass expires.
+      </p>
+    </div>
+
+    <button class="primary-button button" ui-sref="tabs.crowdstart" ng-if="!book.passAvailable">
       Back to Main Menu
+    </button>
+    <button class="primary-button button" ui-sref="tabs.routes" ng-if="book.passAvailable">
+      Book my Trips
     </button>
   </ion-content>
 </ion-view>
