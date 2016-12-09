@@ -1,8 +1,8 @@
-<ion-view id="pg_kickstarter_detail" view-title="Kickstart Route Details"
+<ion-view id="pg_kickstarter_detail" view-title="Crowdstart Route Details"
  can-swipe-back="false">
   <ion-nav-buttons side="right">
     <button class="button button-clear"
-       ui-sref="tabs.kickstarter">
+       ui-sref="tabs.crowdstart">
        <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
@@ -164,7 +164,7 @@
         <kickstart-info route="book.route" ng-hide="book.route.isExpired && !book.route.isActived"></kickstart-info>
 
       <div class="select-bid item-text-wrap" ng-if="book.route.isExpired">
-          <button class="button primary-button page-bottom " ui-sref="tabs.kickstarter">
+          <button class="button primary-button page-bottom " ui-sref="tabs.crowdstart">
             Back to Main
           </button>
       </div>
@@ -179,7 +179,7 @@
             </ion-item>
           </ion-list>
 
-          <button class="button primary-button page-bottom " ng-disabled="!book.bidPrice" ui-sref="tabs.kickstarter-summary({
+          <button class="button primary-button page-bottom " ng-disabled="!book.bidPrice" ui-sref="tabs.crowdstart-summary({
                           routeId: book.routeId,
                           bidPrice: book.bidPrice
                         })">
