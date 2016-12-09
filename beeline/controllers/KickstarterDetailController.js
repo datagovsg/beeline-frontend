@@ -58,6 +58,8 @@ export default [
       $scope.book.route = route;
       $scope.book.bidOptions = route.notes.tier;
       [$scope.book.boardStops, $scope.book.alightStops] = BookingService.computeStops($scope.book.route.trips);
+      $scope.book.boardStopIds = _.map($scope.book.boardStops, stop=>stop.id);
+      $scope.book.alightStopIds = _.map($scope.book.alightStops, stop=>stop.id);
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
       $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
     })
@@ -95,15 +97,7 @@ export default [
       $scope.disp.popupStop = stop;
       $scope.$digest();
     }
-    $scope.setStop = function (stop, type) {
-      if (type === 'pickup') {
-        $scope.book.boardStop = stop;
-      }
-      else {
-        $scope.book.alightStop = stop;
-      }
-      $scope.disp.popupStop = null;
-    }
+
     $scope.closeWindow = function () {
       $scope.disp.popupStop = null;
     }
@@ -147,28 +141,25 @@ export default [
       gmap.fitBounds(bounds);
     };
 
-    $scope.panToBoardStop = function(gmap, stop) {
-      if (!stop) {
-        return;
-      }
-      $scope.book.boardStop = stop;
-      $scope.book.alightStop = null;
-      gmap.panTo({
-        lat: stop.coordinates.coordinates[1],
-        lng: stop.coordinates.coordinates[0],
-      })
-    }
+    // pans to single stop
+    $scope.panToStop = function(gmap, stop) {
+      if (!stop) return;
 
-    $scope.panToAlightStop = function(gmap, stop) {
-      if (!stop) {
-        return;
+      if ($scope.book.boardStopIds.includes(stop.id)) {
+        $scope.book.boardStop = stop;
+        $scope.book.alightStop = null;
+      } else {
+        $scope.book.alightStop = stop;
+        $scope.book.boardStop = null;
       }
-      $scope.book.alightStop = stop;
-      $scope.book.boardStop = null;
-      gmap.panTo({
-        lat: stop.coordinates.coordinates[1],
-        lng: stop.coordinates.coordinates[0],
-      })
+
+      var bounds = new google.maps.LatLngBounds();
+      bounds.extend(new google.maps.LatLng(
+        stop.coordinates.coordinates[1],
+        stop.coordinates.coordinates[0]
+      ))
+      gmap.fitBounds(bounds);
+      gmap.setZoom(17);
     }
 
     $scope.updateSelection = function(position, tiers, price) {

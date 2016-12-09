@@ -64,18 +64,6 @@
           >
           </ui-gmap-polyline>
 
-          <ui-gmap-marker
-            idkey="'bs'"
-            coords="book.boardStop.coordinates"
-            options="map.markerOptions.startMarker">
-          </ui-gmap-marker>
-
-          <ui-gmap-marker
-            idkey="'as'"
-            coords="book.alightStop.coordinates"
-            options="map.markerOptions.endMarker">
-          </ui-gmap-marker>
-
         </ui-gmap-google-map>
       </div>
       <div class="item item-text-wrap">
@@ -99,15 +87,6 @@
             <company-info-broker company-id="book.route.transportCompanyId"
                                   company="companyInfo">
             </company-info-broker>
-          <!--   <div class="icon-and-schedule">
-            <span class="icon-span company-logo">
-              <img class="mini-icon" ng-src="{{book.route.transportCompanyId | companyLogo}}">
-            </span>
-            <span class="mini-info">
-              {{companyInfo.name}}
-            </span>
-          </div> -->
-
             <div class="icon-and-schedule">
               <span class="icon-span">
                 <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
