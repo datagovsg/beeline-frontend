@@ -424,8 +424,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // Update/change payment info to backend and update user object
   var updatePaymentInfo = function(stripeTokenId) {
     return beelineRequest({
-      method: 'PUT',
-      url: `/users/${user.id}/creditCards`,
+      method: 'POST',
+      url: `/users/${user.id}/creditCards/replace`,
       data: {
         stripeToken: stripeTokenId
       }

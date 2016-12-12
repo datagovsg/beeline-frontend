@@ -41,7 +41,6 @@ export default function TicketService($http, $filter, UserService) {
       return this.getTicketsByRouteId(rid, ignoreCache)
       .then((tickets) => {
         var dates =  _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
-        console.log(dates);
         return dates || {};
       })
     },

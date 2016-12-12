@@ -1,6 +1,6 @@
 <ion-view id="pg_kickstarter_summary" view-title="Pre-Order Summary" hide-back-button="false" can-swipe-back="false">
   <ion-nav-buttons side="right">
-    <button class="button button-clear" ui-sref="tabs.kickstarter">
+    <button class="button button-clear" ui-sref="tabs.crowdstart">
        <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
@@ -77,9 +77,9 @@
         <p class="text-center">
           Please add your card details for future payment when the route activates.
         </p>
-
+        <!-- will be prompted to add card -->
         <button class="button primary-button" ng-click="createBid()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-          Add Card Details
+          Confirm Pre-order
         </button>
       </div>
       <div ng-if="data.hasCreditInfo">
@@ -89,7 +89,7 @@
         <button class="button primary-button"
                 ng-click="createBid()"
                 ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-          Confirm Pre-order Now
+          Confirm Pre-order
         </button>
         <div class="text-link-div">
           <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">

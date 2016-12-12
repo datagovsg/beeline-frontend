@@ -51,7 +51,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       assert.equal(typeof routeId, 'number');
 
       if (!ignoreCache && !options && lastRouteId === routeId) {
-        console.log(`Using route ${routeId} from cache`)
         return lastPromise;
       }
 

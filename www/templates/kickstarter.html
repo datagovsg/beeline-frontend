@@ -5,7 +5,7 @@
      </button>
   </ion-nav-buttons>
 
-  <ion-nav-title>Kickstart Routes</ion-nav-title>
+  <ion-nav-title>Crowdstart Routes</ion-nav-title>
   <ion-content scroll="false">
     <div class="item item-text-wrap item-icon-left" ng-if="data.error">
       <i class="icon ion-alert-circled"></i>
@@ -16,8 +16,8 @@
                                                             data.backedKickstarter.length==0 &&
                                                             data.kickstarter.length==0">
       <img src="./img/bgnokickstarter.svg">
-      <h2>No new kickstarter route</h2>
-      <p>There are no new kickstarter routes at the moment.</p>
+      <h2>No new Crowdstart route</h2>
+      <p>There are no new Crowdstart routes at the moment.</p>
     </div>
 
     <div class="region-filter">
@@ -38,12 +38,12 @@
     <ion-content class="list">
       <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshRoutes()">
       </ion-refresher>
-      <!-- recently bid kickstarter -->
+      <!-- recently bid Crowdstart -->
       <div class="item item-divider" ng-if="data.filteredbackedKickstarter.length > 0">
-        Your kickstarter pre-orders
+        Your Crowdstart pre-orders
       </div>
 
-      <ion-item ng-repeat="route in data.filteredbackedKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.kickstarter-recap({
+      <ion-item ng-repeat="route in data.filteredbackedKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-recap({
                      routeId: route.id
                    })" class="item-icon-right">
         <route-item>
@@ -128,12 +128,12 @@
 
 
 
-      <!-- available kickstarter -->
+      <!-- available Crowdstart -->
       <div class="item item-divider" ng-if="data.filteredKickstarter.length > 0">
-        Available Kickstart Routes
+        Available Crowdstart Routes
       </div>
 
-      <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.kickstarter-detail({
+      <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-detail({
                                   routeId: route.id
                                  })">
         <route-item>
