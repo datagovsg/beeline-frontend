@@ -198,6 +198,11 @@
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
+      <p ng-if="data.filteredbackedKickstarter.length === 0 && data.filteredKickstarter.length === 0
+        && data.filterText" class="not-found-message text-center">
+          Sorry, we could not find any Crowdstart routes matching "{{data.filterText}}".
+      </p>
     </ion-content>
+
   </ion-content>
 </ion-view>

@@ -6,6 +6,10 @@
     flex: 1 1 auto;
   }
 
+  .not-found-message {
+    padding: $content-padding*4
+  }
+
   .no-kickstarter.item {
     @include display-flex;
     @include flex-direction(column);
@@ -28,12 +32,12 @@
     }
   }
 
-    /* simplified progress bar in the kickstarter list */
-    .progress-bar {
-      margin: $padding-large-vertical*2 auto;
-      width: 95%;
-      margin-left: $start-size/2;
-    }
+  /* simplified progress bar in the kickstarter list */
+  .progress-bar {
+    margin: $padding-large-vertical*2 auto;
+    width: 95%;
+    margin-left: $start-size/2;
+  }
 }
 
 
