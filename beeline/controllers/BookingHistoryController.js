@@ -78,7 +78,6 @@ export default function($scope, UserService, RoutesService) {
 
       $scope.transactions = $scope.transactions || [];
       $scope.transactions = $scope.transactions.concat(newTransactions);
-      console.log($scope.transactions);
       $scope.$broadcast('scroll.infiniteScrollComplete');
     })
     .then(null, (error) => {
