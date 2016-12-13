@@ -1,4 +1,4 @@
-<ion-view title="Booking History" class="booking-history">
+<ion-view title="Payment History" class="booking-history">
   <ion-content>
     <ion-list>
       <div class="item text-center" ng-if="transactions.length === 0">
@@ -15,7 +15,7 @@
           <table class="booking-history">
             <tr>
               <th>
-                Transaction Date
+                Date
               </th>
               <td>
                 {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
@@ -37,50 +37,45 @@
                 XXXX XXXX XXXX {{payment.payment.data.source.last4}}
               </td>
             </tr>
-          </table>
-        </div>
-        <!-- FIXME: show the other transaction types - refunds, free tickets -->
-        <div class="item item-divider" ng-if="transaction.itemsByType.ticketSale">
-          Tickets Selected
-        </div>
-
-        <div ng-repeat="ti in transaction.itemsByType.ticketSale track by ti.id" class="item item-text-wrap">
-          <table class="booking-history">
+            <tr>
+              <th>
+              Type
+              </th>
+              <td ng-if="transaction.type !== 'conversion'">
+                Normal Booking
+              </td>
+              <td ng-if="transaction.type === 'conversion'">
+                Crowdstart
+              </td>
+            </tr>
             <tr>
               <th>
                 Route
               </th>
-              <td>
-                {{ti.route.label}}: {{ti.route.from}} &mdash; {{ti.route.to}}
+              <td ng-if="transaction.itemsByType.ticketSale" class="item-text-wrap">
+                {{transaction.itemsByType.ticketSale[0].route.label}}: {{transaction.itemsByType.ticketSale[0].route.from}} &mdash; {{transaction.itemsByType.ticketSale[0].route.to}}
+              </td>
+              <td ng-if="transaction.itemsByType.routeCredits" class="item-text-wrap">
+                {{transaction.itemsByType.routeCredits[0].route.label}}: {{transaction.itemsByType.routeCredits[0].route.from}} &mdash; {{transaction.itemsByType.routeCredits[0].route.to}}
               </td>
             </tr>
-            <tr>
+            <tr ng-if="transaction.itemsByType.ticketSale">
                 <th>
                   Trip Date
                 </th>
               <td>
-                {{ti.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
-              </td>
-            </tr>
-            <tr>
-              <th>
-                Pick-up
-              </th>
-              <td>
-                {{ti.ticketSale.boardStop.time | date:'h:mm a'}}&nbsp; {{ti.ticketSale.boardStop.stop.description}}
-              </td>
-            </tr>
-            <tr>
-              <th>
-                Drop-off
-              </th>
-              <td>
-                {{ti.ticketSale.alightStop.time | date:'h:mm a'}}&nbsp; {{ti.ticketSale.alightStop.stop.description}}
+                  <b>{{transaction.itemsByType.ticketSale.length}} trip(s) in total</b>
+                  <br />
+                  <ul>
+                    <li ng-repeat="ticket in transaction.itemsByType.ticketSale">
+                      {{ticket.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
+                    </li>
+                  </ul>
               </td>
             </tr>
           </table>
-
         </div>
+        <!-- FIXME: show the other transaction types - refunds, free tickets -->
       </div>
     </ion-list>
 
