@@ -29,7 +29,7 @@ export default [
 
     $scope.book.routeId = +$stateParams.routeId;
 
-    $scope.book.creditTag = "kickstarter-"+$scope.book.routeId
+    $scope.book.creditTag = "kickstart-"+$scope.book.routeId
 
     $scope.modalMap = MapOptions.defaultMapOptions();
 
@@ -96,7 +96,9 @@ export default [
       })
     }
 
-    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId), ()=>UserService.getRouteCredits($scope.book.creditTag)],
+    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId),
+      ()=>KickstarterService.getBidInfo($scope.book.routeId),
+      ()=>UserService.getRouteCredits($scope.book.creditTag)],
       ([route, bid, credit])=>{
         if (!route) return;
         $scope.book.route = route;
@@ -115,8 +117,6 @@ export default [
               .tripStops
               .find(ts => $scope.book.alightStopId == ts.stop.id);
         if(!credit) return;
-        console.log("CREDIT");
-        console.log(credit);
         $scope.book.passAvailable = credit / $scope.book.bidPrice;
     })
 

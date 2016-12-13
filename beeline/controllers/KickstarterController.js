@@ -72,8 +72,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
         return _.includes(_.keys($scope.recentBidsById), x.id.toString());
       });
       // $scope.data.backedKickstarter = recentAndAvailable[0];
-      // don't display it in backed list if the pass expires
-      $scope.data.backedKickstarter = recentAndAvailable[0].filter((route)=>!route.passExpired);
+      // don't display it in backed list if the pass expires after 1 month of 1st trip
+      //and don't display it if it's expired and not activated
+      $scope.data.backedKickstarter = recentAndAvailable[0].filter((route)=>(!route.passExpired && route.isActived) || !route.isExpired);
       //don't display it in kickstarter if it's expired
       $scope.data.kickstarter = recentAndAvailable[1].filter((route)=>!route.isExpired);
       //regions from list of backed and not expired available

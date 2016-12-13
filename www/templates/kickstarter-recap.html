@@ -8,7 +8,8 @@
         </i>
         You pre-ordered a Route Pass for {{book.route.notes.noPasses}} trips on this route at ${{book.bidPrice | number:2}} per trip.
         <span ng-if="!book.route.isExpired && book.route.isActived">Route is activated. Payment will be deducted when campaign ends and you will receive the Route Pass.</span>
-        <span ng-if="book.route.isExpired && book.route.isActived">Route is activated. Payment will be deducted and you will receive your route pass.</span>
+        <span ng-if="book.route.isExpired && book.route.isActived && !book.passAvailable">Route is activated. Payment will be deducted and you will receive your route pass.</span>
+        <span ng-if="book.route.isExpired && book.route.isActived && book.passAvailable">Route is activated. Payment has been processed. Your route pass is ready.</span>
         <span ng-if="!book.route.isExpired && !book.route.isActived">Route is not activated yet.</span>
         <span ng-if="book.route.isExpired && !book.route.isActived">Route is not activated. Payment will not be deducted.</span>
 
@@ -61,7 +62,7 @@
             </span>
           </div>
           <!-- show status if pass not granted yet -->
-          <div class="icon-and-schedule" ng-if="!book.route.passAvailable">
+          <div class="icon-and-schedule" ng-if="!book.passAvailable">
             <span class="icon-span">
               <img class="mini-icon" src="img/icon_kickstarter_status.svg">
             </span>
@@ -70,7 +71,7 @@
             </span>
           </div>
           <!-- show no. of pass available -->
-          <div class="icon-and-schedule" ng-if="book.route.passAvailable">
+          <div class="icon-and-schedule" ng-if="book.passAvailable">
             <span class="icon-span">
               <img class="mini-icon" src="img/icon_kickstarter_status.svg">
             </span>
@@ -95,7 +96,7 @@
       </ion-item>
     </ion-list>
 
-    <div class="item item-text-wrap" ng-hide="book.route.isExpired && !book.route.isActived">
+    <div class="item item-text-wrap" ng-hide="book.route.isExpired && book.passAvailable">
       <div class="item-subtitle">
       What happens next?
       </div>
