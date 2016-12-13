@@ -251,14 +251,14 @@ export default function(UserService, CompanyService, RoutesService, $http) {
     var boardStops = _(uniqueStops)
       .filter(ts => ts.canBoard)
       .map(ts => {
-        return _.extend({time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
+        return _.extend({canBoard: true, time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
       })
       .orderBy(s => s.timeSinceMidnight)
       .value();
     var alightStops = _(uniqueStops)
       .filter(ts => ts.canAlight)
       .map(ts => {
-        return _.extend({time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
+        return _.extend({canBoard: false, time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
       })
       .orderBy(s => s.timeSinceMidnight)
       .value();

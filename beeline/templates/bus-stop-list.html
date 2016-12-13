@@ -30,15 +30,10 @@
           options="modalMap.markerOptions.alightMarker"
         ></ui-gmap-marker>
 
-        <ui-gmap-marker ng-if="book.boardStop"
+        <ui-gmap-marker ng-if="book.chosenStop"
                         idkey="'selectedStopPin'"
-                        coords="book.boardStop.coordinates"
-                        options="modalMap.markerOptions.startMarker">
-        </ui-gmap-marker>
-        <ui-gmap-marker ng-if="book.alightStop"
-                        idkey="'selectedStopPin'"
-                        coords="book.alightStop.coordinates"
-                        options="modalMap.markerOptions.endMarker">
+                        coords="book.chosenStop.coordinates"
+                        options="book.chosenStop.canBoard ? modalMap.markerOptions.startMarker : modalMap.markerOptions.endMarker">
         </ui-gmap-marker>
       </ui-gmap-google-map>
     </div>

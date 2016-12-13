@@ -60,8 +60,6 @@ export default [
       $scope.book.route = route;
       /** Summarizes the stops from trips by comparing their stop location and time */
       [$scope.book.boardStops, $scope.book.alightStops ] = BookingService.computeStops($scope.book.route.trips);
-      $scope.book.boardStopIds = _.map($scope.book.boardStops, stop=>stop.id);
-      $scope.book.alightStopIds = _.map($scope.book.alightStops, stop=>stop.id);
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
       if (!bid) return;
       $scope.book.bid = bid;
@@ -106,21 +104,11 @@ export default [
     // pans to single stop
     $scope.panToStop = function(gmap, stop) {
       if (!stop) return;
-
-      if ($scope.book.boardStopIds.includes(stop.id)) {
-        $scope.book.boardStop = stop;
-        $scope.book.alightStop = null;
-      } else {
-        $scope.book.alightStop = stop;
-        $scope.book.boardStop = null;
-      }
-
-      var bounds = new google.maps.LatLngBounds();
-      bounds.extend(new google.maps.LatLng(
-        stop.coordinates.coordinates[1],
-        stop.coordinates.coordinates[0]
-      ))
-      gmap.fitBounds(bounds);
+      $scope.book.chosenStop = stop;
+      gmap.panTo({
+        lat: stop.coordinates.coordinates[1],
+        lng: stop.coordinates.coordinates[0],
+      })
       gmap.setZoom(17);
     }
 
