@@ -123,9 +123,15 @@
       </div>
     </div>
 
-    <div class="item item-text-wrap">
+    <div class="item item-text-wrap" ng-show="book.passAvailable">
       <p>
         Note: This page will be dismissed automatically when route pass expires.
+      </p>
+    </div>
+
+    <div class="item item-text-wrap" ng-show="book.route.isExpired && !book.route.isActived">
+      <p>
+        Note: This page will be dismissed automatically after 1 week from campaign expiry date.
       </p>
     </div>
 
