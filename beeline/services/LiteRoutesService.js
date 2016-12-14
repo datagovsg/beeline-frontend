@@ -187,6 +187,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
       var newStops = [];
       for (let stopId in boardStops){
         var stop = boardStops[stopId][0].stop;
+        stop.canBoard = boardStops[stopId][0].canBoard;
         var timeArray = _.map(boardStops[stopId], (stop)=>{
           return stop.time
         })
