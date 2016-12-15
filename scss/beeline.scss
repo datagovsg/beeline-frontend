@@ -330,3 +330,17 @@ textarea{
     padding-left: $content-padding*2;
   }
 }
+
+.share-box{
+  margin-top: $padding-large-vertical;
+  margin-bottom: $padding-large-vertical;
+
+  textarea {
+    width: 100%;
+    padding: $padding-large-vertical;
+    height: $line-height-computed*3;
+    margin: 0 auto;
+    margin-top: $padding-large-vertical*2;
+    background: $light-grey;
+  }
+}
