@@ -4,7 +4,7 @@ export default function($cordovaSocialSharing) {
     restrict: 'E',
     template: `<div class="item item-text-wrap">
                 <div class="share-box">
-                  Share this campaign to your friends and colleagues to increase the chance of activating this route! </br>
+                  Share this campaign to your friends and colleagues to increase the chance of activating this route!
                   <div class="text-center">
                     <textarea>{{shareLink}}</textarea>
                   </div>
