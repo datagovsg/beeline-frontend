@@ -108,6 +108,7 @@ var app = angular.module('beeline', [
 .directive('dailyTripsBroker', require('./directives/dailyTripsBroker.js').default)
 .directive('fakeProgressBar', require('./directives/fakeProgressBar.js').default)
 .directive('inServiceWindow', require('./directives/inServiceWindow.js').default)
+.directive('crowdstartShare', require('./directives/crowdstartShare.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
