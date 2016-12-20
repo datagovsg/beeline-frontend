@@ -54,45 +54,6 @@ export default [
     $scope.$on('$destroy', function() {
       $scope.modal.remove();
     });
-    /* Pans to the stops on the screen */
-    $scope.panToStops = function(gmap, stops) {
-      if (stops.length == 0) {
-        return;
-      }
-      var bounds = new google.maps.LatLngBounds();
-      for (let s of stops) {
-        bounds.extend(new google.maps.LatLng(
-          s.coordinates.coordinates[1],
-          s.coordinates.coordinates[0]
-        ));
-      }
-      gmap.fitBounds(bounds);
-    };
-
-// TODO: move all these modalMap related to directive
-    $scope.panToBoardStop = function(gmap, stop) {
-      if (!stop) {
-        return;
-      }
-      $scope.book.boardStop = stop;
-      $scope.book.alightStop = null;
-      gmap.panTo({
-        lat: stop.coordinates.coordinates[1],
-        lng: stop.coordinates.coordinates[0],
-      })
-    }
-
-    $scope.panToAlightStop = function(gmap, stop) {
-      if (!stop) {
-        return;
-      }
-      $scope.book.alightStop = stop;
-      $scope.book.boardStop = null;
-      gmap.panTo({
-        lat: stop.coordinates.coordinates[1],
-        lng: stop.coordinates.coordinates[0],
-      })
-    }
 
     $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
       if (!route) return;
@@ -125,6 +86,31 @@ export default [
       await CompanyService.showTerms($scope.book.route.transportCompanyId);
     }
 
+    /* Pans to the stops on the screen */
+    $scope.panToStops = function(gmap, stops) {
+      if (stops.length == 0) {
+        return;
+      }
+      var bounds = new google.maps.LatLngBounds();
+      for (let s of stops) {
+        bounds.extend(new google.maps.LatLng(
+          s.coordinates.coordinates[1],
+          s.coordinates.coordinates[0]
+        ));
+      }
+      gmap.fitBounds(bounds);
+    };
+
+    // pans to single stop
+    $scope.panToStop = function(gmap, stop) {
+      if (!stop) return;
+      $scope.book.chosenStop = stop;
+      gmap.panTo({
+        lat: stop.coordinates.coordinates[1],
+        lng: stop.coordinates.coordinates[0],
+      })
+      gmap.setZoom(17);
+    }
 
   }
 ];

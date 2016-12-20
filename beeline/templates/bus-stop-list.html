@@ -30,15 +30,10 @@
           options="modalMap.markerOptions.alightMarker"
         ></ui-gmap-marker>
 
-        <ui-gmap-marker ng-if="book.boardStop"
+        <ui-gmap-marker ng-if="book.chosenStop"
                         idkey="'selectedStopPin'"
-                        coords="book.boardStop.coordinates"
-                        options="modalMap.markerOptions.startMarker">
-        </ui-gmap-marker>
-        <ui-gmap-marker ng-if="book.alightStop"
-                        idkey="'selectedStopPin'"
-                        coords="book.alightStop.coordinates"
-                        options="modalMap.markerOptions.endMarker">
+                        coords="book.chosenStop.coordinates"
+                        options="book.chosenStop.canBoard ? modalMap.markerOptions.startMarker : modalMap.markerOptions.endMarker">
         </ui-gmap-marker>
       </ui-gmap-google-map>
     </div>
@@ -51,7 +46,7 @@
         <ion-item ng-repeat="stop in book.boardStops"
                   class="item-text-wrap item-icon-left"
                   icon="icon ion-ios-checkmark"
-                  ng-click="panToBoardStop(modalMap.control.getGMap(), stop)">
+                  ng-click="panToStop(modalMap.control.getGMap(), stop)">
           <div class="fullStopDetails">
             <div class="time">{{stop.time | formatTime}}</div>
             <div class="details">
@@ -67,7 +62,7 @@
         <ion-item  ng-repeat="stop in book.alightStops"
                     class="item-text-wrap item-icon-left"
                     icon="icon ion-ios-checkmark"
-                    ng-click="panToAlightStop(modalMap.control.getGMap(), stop)">
+                    ng-click="panToStop(modalMap.control.getGMap(), stop)">
           <div class="fullStopDetails">
             <div class="time">{{stop.time | formatTime}}</div>
             <div class="details">

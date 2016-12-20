@@ -95,15 +95,7 @@ export default [
       $scope.disp.popupStop = stop;
       $scope.$digest();
     }
-    $scope.setStop = function (stop, type) {
-      if (type === 'pickup') {
-        $scope.book.boardStop = stop;
-      }
-      else {
-        $scope.book.alightStop = stop;
-      }
-      $scope.disp.popupStop = null;
-    }
+
     $scope.closeWindow = function () {
       $scope.disp.popupStop = null;
     }
@@ -147,28 +139,15 @@ export default [
       gmap.fitBounds(bounds);
     };
 
-    $scope.panToBoardStop = function(gmap, stop) {
-      if (!stop) {
-        return;
-      }
-      $scope.book.boardStop = stop;
-      $scope.book.alightStop = null;
+    // pans to single stop
+    $scope.panToStop = function(gmap, stop) {
+      if (!stop) return;
+      $scope.book.chosenStop = stop;
       gmap.panTo({
         lat: stop.coordinates.coordinates[1],
         lng: stop.coordinates.coordinates[0],
       })
-    }
-
-    $scope.panToAlightStop = function(gmap, stop) {
-      if (!stop) {
-        return;
-      }
-      $scope.book.alightStop = stop;
-      $scope.book.boardStop = null;
-      gmap.panTo({
-        lat: stop.coordinates.coordinates[1],
-        lng: stop.coordinates.coordinates[0],
-      })
+      gmap.setZoom(17);
     }
 
     $scope.updateSelection = function(position, tiers, price) {

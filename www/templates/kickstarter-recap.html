@@ -86,7 +86,7 @@
       </div>
       <kickstart-info route="book.route" preorder-hide="true"></kickstart-info>
     </div>
-
+    <crowdstart-share ng-if="!book.route.isExpired" route-id="book.routeId"></crowdstart-share>
     <div class="item item-text-wrap">
       <div class="item-subtitle">Operated by</div>
       <div class="row">
