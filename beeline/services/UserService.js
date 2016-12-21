@@ -482,14 +482,14 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   }
 
   // Retrieve routeCredits information from cache
-  // input: 
+  // input:
   // - tag - String: tag associated with route. optional
   // output:
   // - Promise containing all routeCredits associated with user
   // - [tag provided] amount of credits specific to the tag
   var getRouteCredits = function(tag){
     if(tag){
-      return tagToCreditsMap[tag]
+      return tagToCreditsMap ? tagToCreditsMap[tag] : null
     } else {
       return tagToCreditsMap
     }

@@ -29,7 +29,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.$watch(()=>UserService.getRouteCredits(), (routeCredits)=>{
     if(routeCredits){
-      $scope.data.allRouteCredits = routeCredits
+      $scope.data.allRouteCredits = routeCredits;
       $scope.data.allRouteCreditTags = _.keys(routeCredits);
       calcRoutePassCount()
     }

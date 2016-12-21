@@ -27,8 +27,8 @@ var transformKickstarterData = function (kickstarterRoutes) {
 
     kickstarter.isExpired = false;
     kickstarter.is7DaysOld = false;
+    var now = new Date().getTime();
     if (kickstarter.notes && kickstarter.notes.lelongExpiry) {
-      var now = new Date().getTime();
       var expiryTime = new Date(kickstarter.notes.lelongExpiry).getTime();
       if (now >= expiryTime) {
         kickstarter.isExpired = true;
@@ -50,6 +50,15 @@ var transformKickstarterData = function (kickstarterRoutes) {
     _.forEach(kickstarter.trips, function(trip){
       trip.tripStops = _.orderBy(trip.tripStops, stop=>stop.time)
     });
+
+    //calculate the pass expiry date
+    kickstarter.passExpired = false;
+    var firstTripDate = new Date(kickstarter.trips[0].date);
+    var passExpiryTime = new Date(firstTripDate.getFullYear(), firstTripDate.getMonth()+1, firstTripDate.getDate()).getTime();
+    if (now >= passExpiryTime)
+      kickstarter.passExpired = true;
+    else
+      kickstarter.passExpired = false;
 
     updateStatus(kickstarter);
   }
@@ -83,6 +92,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
 
   UserService.userEvents.on('userChanged', () => {
     fetchBids(true);
+    //to load route credits
+    UserService.fetchRouteCredits(true);
   })
 
   //first load
