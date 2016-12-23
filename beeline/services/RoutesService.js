@@ -261,7 +261,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     getRoutePassCount: function(routeId, creditTag){
       let routePromise = this.getRoute(routeId, true)
       let routeCreditsPromise = this.fetchRouteCredits()
-      var ridesRemainingPromise = $q.all([routePromise, routeCreditsPromise]).then(function(values){
+      
+      return $q.all([routePromise, routeCreditsPromise]).then(function(values){
         let creditsAvailable = parseFloat(values[1][creditTag])
         let ticketPrice = values[0].trips[0].priceF
         let ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
@@ -269,7 +270,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         return ridesRemaining
       })
 
-      return ridesRemainingPromise
     }
 
   };
