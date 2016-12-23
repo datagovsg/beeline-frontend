@@ -26,14 +26,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
              JSON.parse(window.localStorage.beelineUser) : null;
   var userEvents = new EventEmitter();
 
-  // Route Credits cache
-  var routeCreditsCache;
-  var tagToCreditsMap;
-
-  userEvents.on('userChanged', ()=>{
-    fetchRouteCredits()
-  })
-
   // General purpose wrapper for making http requests to server
   // Adds the appropriate http headers and token if signed in
   var beelineRequest = function(options) {
@@ -455,46 +447,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
-  // get all routeCredits associated with the user
-  // performs db query where necessary or specified
-  // user can specify the tag to search for
-  // input:
-  // - ignoreCache - boolean
-  // output:
-  // - Promise containing all routeCredits associated with user
-  var fetchRouteCredits = function(ignoreCache){
-    if(!user){
-      tagToCreditsMap = {};
-      return $q.resolve(tagToCreditsMap)
-    }
-    if(!ignoreCache && routeCreditsCache){
-      return routeCreditsCache
-    }
-
-    return routeCreditsCache = beelineRequest({
-      method: 'GET',
-      url: '/routeCredits'
-    }).then((response) => {
-      tagToCreditsMap = response.data
-      return tagToCreditsMap
-    })
-
-  }
-
-  // Retrieve routeCredits information from cache
-  // input: 
-  // - tag - String: tag associated with route. optional
-  // output:
-  // - Promise containing all routeCredits associated with user
-  // - [tag provided] amount of credits specific to the tag
-  var getRouteCredits = function(tag){
-    if(tag){
-      return tagToCreditsMap[tag]
-    } else {
-      return tagToCreditsMap
-    }
-  }
-
 
   // ////////////////////////////////////////////////////////////////////////////
   // Initialization
@@ -516,8 +468,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     savePaymentInfo: savePaymentInfo,
     updatePaymentInfo: updatePaymentInfo,
     removePaymentInfo: removePaymentInfo,
-    fetchRouteCredits: fetchRouteCredits,
-    getRouteCredits: getRouteCredits,
   };
 
 }

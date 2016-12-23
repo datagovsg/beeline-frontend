@@ -27,7 +27,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-  $scope.$watch(()=>UserService.getRouteCredits(), (routeCredits)=>{
+  $scope.$watch(()=>RoutesService.getRouteCredits(), (routeCredits)=>{
     if(routeCredits){
       $scope.data.allRouteCredits = routeCredits
       $scope.data.allRouteCreditTags = _.keys(routeCredits);
@@ -53,7 +53,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
     var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
     var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
-    var allRouteCreditsPromise = UserService.fetchRouteCredits(ignoreCache)
+    var allRouteCreditsPromise = RoutesService.fetchRouteCredits(ignoreCache)
         .then(function(map){
           $scope.data.allRouteCredits = map
           $scope.data.allRouteCreditTags = _.keys(map);

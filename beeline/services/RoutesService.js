@@ -42,6 +42,15 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var lastRouteId = null;
   var lastPromise = null;
 
+  // For Route Credits 
+  var routeCreditsCache;
+  var tagToCreditsMap;
+
+  UserService.userEvents.on('userChanged', () => {
+    instance.fetchRouteCredits()
+    console.log("To Implement: Refresh cache on route credits on user change")
+  })
+
   var instance = {
 
     // Retrive the data on a single route, but pulls a lot more data
@@ -202,6 +211,66 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       .sortBy('name')
       .value();
     },
+
+    // get all routeCredits associated with the user
+    // performs db query where necessary or specified
+    // input:
+    // - ignoreCache - boolean
+    // output:
+    // - Promise containing all routeCredits associated with user
+    fetchRouteCredits: function(ignoreCache){
+      let user = UserService.getUser();
+      if(!user){
+        tagToCreditsMap = {};
+        return $q.resolve(tagToCreditsMap)
+      }
+      if(!ignoreCache && routeCreditsCache){
+        return routeCreditsCache
+      }
+
+      return routeCreditsCache = UserService.beeline({
+        method: 'GET',
+        url: '/routeCredits'
+      }).then((response) => {
+        tagToCreditsMap = response.data
+        return tagToCreditsMap
+      })
+
+    },
+
+    // Retrieve routeCredits information from cache
+    // input: 
+    // - tag - String: tag associated with route. optional
+    // output:
+    // - Promise containing all routeCredits associated with user
+    // - [tag provided] amount of credits specific to the tag
+    getRouteCredits: function(tag){
+      if(tag){
+        return tagToCreditsMap[tag]
+      } else {
+        return tagToCreditsMap
+      }
+    },
+
+    // Retrieve the amount of rides remaining for a specific route
+    // input:
+    // - routeId - number: id of route
+    // - creditTag - string: tag associated with route
+    // output:
+    // - promise containing number of rides remaining on the route pass for specified route
+    getRoutePassCount: function(routeId, creditTag){
+      let routePromise = this.getRoute(routeId, true)
+      let routeCreditsPromise = this.fetchRouteCredits()
+      var ridesRemainingPromise = $q.all([routePromise, routeCreditsPromise]).then(function(values){
+        let creditsAvailable = parseFloat(values[1][creditTag])
+        let ticketPrice = values[0].trips[0].priceF
+        let ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
+
+        return ridesRemaining
+      })
+
+      return ridesRemainingPromise
+    }
 
   };
   return instance;

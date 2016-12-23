@@ -87,11 +87,9 @@ export default [
     });
 
     $scope.book.creditTag = $stateParams.creditTag
-    var routeCreditsPromise = UserService.fetchRouteCredits()
-    $q.all([routePostProcessingPromise, routeCreditsPromise]).then(function(values){
-      let creditsAvailable = parseFloat(values[1][$scope.book.creditTag])
-      let ticketPrice = $scope.book.route.trips[0].priceF
-      $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
+    
+    RoutesService.getRoutePassCount($scope.book.routeId, $scope.book.creditTag).then(function(ridesRemaining){
+      $scope.book.route.ridesRemaining = ridesRemaining
     })
     
 
