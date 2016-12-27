@@ -62,6 +62,18 @@ export default [
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
 
+    var routeCreditsPromise = RoutesService.fetchRouteCredits()
+    $q.all([routePromise, routeCreditsPromise]).then(([route, routeCredits])=>{
+      let routeCreditTags = _.keys(routeCredits);
+      let notableTags = _.intersection(route.tags, routeCreditTags)
+
+      if(notableTags.length === 1){
+        $scope.book.creditTag = notableTags[0]
+      } else {
+        console.log("Error: Route has incorrect number of tags.")
+      }
+    })
+
     $scope.$watch(()=>UserService.getUser(), loadTickets);
 
     $scope.$watch(
@@ -143,6 +155,7 @@ export default [
         // Route
         $scope.book.route = route;
         updateCalendar(); // updates availabilityDays
+        return route
       }));
 
 
