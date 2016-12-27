@@ -33,51 +33,27 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   RoutesService.fetchRoutesWithRoutePass();
 
-
-
   // $scope.$watch('data.liteRoutes', updateSubscriptionStatus)
   // $scope.$watch(() => Svc.getSubscriptionSummary(), updateSubscriptionStatus)
   var allLiteRoutesPromise
 
   $scope.refreshRoutes = function (ignoreCache) {
+    // RoutesService.fetchRoutes(true);
+    var routesPromise = RoutesService.fetchRoutesWithRoutePass(true);
+    
+    // Lite Routes
     allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
+    var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
     // allLiteRoutesPromise.then(function(allLiteRoutes){
     //   $scope.data.liteRoutes = allLiteRoutes;
     // })
-    var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
     $q.all([allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then((response)=>{
       var allLiteRoutes, liteRouteSubscriptions;
       [allLiteRoutes, liteRouteSubscriptions] = response;
       $scope.data.liteRoutes = _.sortBy(allLiteRoutes, 'label');
     })
 
-    var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
-    var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
-    var allRouteCreditsPromise = RoutesService.fetchRouteCredits(ignoreCache)
-        .then(function(map){
-          $scope.data.allRouteCredits = map
-          $scope.data.allRouteCreditTags = _.keys(map);
-          return map
-        });
-
-    // Configure the list of available regions
-    var allRoutesPostProcessPromise = allRoutesPromise.then(function(allRoutes) {
-      // Need to sort by time of day rather than by absolute time,
-      // in case we have routes with missing dates (e.g. upcoming routes)
-      $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
-        var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
-
-        var midnightOfTrip = new Date(firstTripStop.time.getTime());
-        midnightOfTrip.setHours(0,0,0,0);
-        return firstTripStop.time.getTime() - midnightOfTrip.getTime();
-      });
-    });
-
-    recentRoutesPromise.then(function(recentRoutes) {
-      $scope.data.recentRoutes = recentRoutes;
-    });
-    
-    $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
+    $q.all([routesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
       $scope.error = null;
     })
     .catch(() => {
@@ -86,7 +62,38 @@ export default function($scope, $state, UserService, RoutesService, $q,
     .then(() => {
       $scope.$broadcast('scroll.refreshComplete');
     })
-  }
+
+  };
+
+  $scope.$watch(() => RoutesService.getRoutes(), (allRoutes) => {
+    // Configure the list of available regions
+    
+    // Need to sort by time of day rather than by absolute time,
+    // in case we have routes with missing dates (e.g. upcoming routes)
+    $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
+      var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
+
+      var midnightOfTrip = new Date(firstTripStop.time.getTime());
+      midnightOfTrip.setHours(0,0,0,0);
+      return firstTripStop.time.getTime() - midnightOfTrip.getTime();
+    });
+
+    var recentRoutesPromise = RoutesService.getRecentRoutes(true);
+
+    recentRoutesPromise.then(function(recentRoutes) {
+      $scope.data.recentRoutes = recentRoutes;
+    });
+    
+    // $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
+    //   $scope.error = null;
+    // })
+    // .catch(() => {
+    //   $scope.error = true;
+    // })
+    // .then(() => {
+    //   $scope.$broadcast('scroll.refreshComplete');
+    // })
+  })
 
   // Filter the displayed routes by selected region
   $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.kickstarterRoutes', 'data.selectedRegionId', 'data.filterText'], function([routes, liteRoutes, kickstarterRoutes, selectedRegionId, filterText]) {
