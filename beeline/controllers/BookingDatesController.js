@@ -54,8 +54,6 @@ export default [
 
     loadTickets();
 
-    loadRoutes();
-    $scope.book.creditTag = $stateParams.creditTag
     var routePromise = loadRoutes();
 
     var ridesRemainingPromise = RoutesService.fetchRoutePassCount()

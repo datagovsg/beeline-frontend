@@ -86,15 +86,12 @@ export default [
       computeStops(stopOptions);
     });
 
-    $scope.book.creditTag = $stateParams.creditTag
-    
     var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
 
     $q.all([routePromise, ridesRemainingPromise]).then(function(values){
       let ridesRemainingMap = values[1]
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
-    
 
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([gmapIsReady, routePromise])
