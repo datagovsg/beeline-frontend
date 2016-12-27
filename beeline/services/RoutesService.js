@@ -33,6 +33,7 @@ function transformRouteData(data) {
 export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q) {
   // For all routes
   var routesCache;
+  var activeRoutes;
   var recentRoutesCache;
 
   // For single routes
@@ -47,7 +48,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routesWithRoutePass;
 
   UserService.userEvents.on('userChanged', () => {
-    instance.fetchRouteCredits(true)
     instance.fetchRoutePassCount(true)
     instance.fetchRoutesWithRoutePass(true)
   })
@@ -87,11 +87,17 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       });
     },
 
+    // Returns list of all routes
+    getRoutes: function(){
+      return activeRoutes
+    },
+
     // Retrive the data on all the routes
     // But limits the amount of data retrieved
     // getRoutes() now returns a list of routes, but with very limited
     // trip data (limited to 5 trips, no path)
-    getRoutes: function(ignoreCache, options) {
+    // Return promise with all routes
+    fetchRoutes: function(ignoreCache, options) {
       if (routesCache && !ignoreCache && !options) return routesCache;
 
       var url = '/routes?';
@@ -120,6 +126,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         // on trips[0]
         var routes = response.data.filter(r => r.trips && r.trips.length);
         transformRouteData(routes)
+        activeRoutes = routes
         return routes;
       });
 
@@ -270,7 +277,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // - promise containing a map of routeId to Rides Remaining
     fetchRoutePassCount: function(ignoreCache){
       if(ignoreCache || !routeToRidesRemainingMap){
-        let allRoutesPromise = this.getRoutes(ignoreCache)
+        let allRoutesPromise = this.fetchRoutes(ignoreCache)
         let allRouteCreditsPromise = this.fetchRouteCredits(ignoreCache)
 
         routePassCache = $q.all([allRoutesPromise, allRouteCreditsPromise]).then(function(values){
@@ -309,7 +316,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     fetchRoutesWithRoutePass: function(ignoreCache) {
       if(ignoreCache || !routesWithRoutePass){
         return $q.all([
-          this.getRoutes(ignoreCache),
+          this.fetchRoutes(ignoreCache),
           this.fetchRoutePassCount(ignoreCache),
         ]).then(([allRoutes, routeToRidesRemainingMap]) => {
           let kickstarterRouteIds = _.keys(routeToRidesRemainingMap)
