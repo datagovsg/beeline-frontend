@@ -88,8 +88,11 @@ export default [
 
     $scope.book.creditTag = $stateParams.creditTag
     
-    RoutesService.getRoutePassCount($scope.book.routeId, $scope.book.creditTag).then(function(ridesRemaining){
-      $scope.book.route.ridesRemaining = ridesRemaining
+    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
+
+    $q.all([routePromise, ridesRemainingPromise]).then(function(values){
+      let ridesRemainingMap = values[1]
+      $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
     
 

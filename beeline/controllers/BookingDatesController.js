@@ -56,9 +56,12 @@ export default [
 
     loadRoutes();
     $scope.book.creditTag = $stateParams.creditTag
+    var routePromise = loadRoutes();
 
-    RoutesService.getRoutePassCount($scope.book.routeId, $stateParams.creditTag).then(function(ridesRemaining){
-      $scope.book.route.ridesRemaining = ridesRemaining
+    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
+    $q.all([routePromise, ridesRemainingPromise]).then(function(values){
+      let ridesRemainingMap = values[1]
+      $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
 
     $scope.$watch(()=>UserService.getUser(), loadTickets);

@@ -27,11 +27,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-  $scope.$watch(()=>RoutesService.getRouteCredits(), (routeCredits)=>{
-    if(routeCredits){
-      $scope.data.allRouteCredits = routeCredits
-      $scope.data.allRouteCreditTags = _.keys(routeCredits);
-      calcRoutePassCount()
+  $scope.$watch(()=>RoutesService.getRoutePassCount(), (routeToRidesRemainingMap) =>{
+    if(routeToRidesRemainingMap){
+      calcRoutePassCount(routeToRidesRemainingMap)
+    } else {
+      RoutesService.fetchRoutePassCount(true);
     }
   })
 
@@ -76,9 +76,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     recentRoutesPromise.then(function(recentRoutes) {
       $scope.data.recentRoutes = recentRoutes;
     });
-
-    $q.all([allRouteCreditsPromise, allRoutesPostProcessPromise]).then(calcRoutePassCount);
-
+    
     $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
       $scope.error = null;
     })
@@ -149,33 +147,21 @@ export default function($scope, $state, UserService, RoutesService, $q,
       firstRun = false;
     });
 
-  function calcRoutePassCount() {
-    let kickstarterRoutes = []
-    let routeToTagMap = {}
-    let allRouteCreditTags = $scope.data.allRouteCreditTags
+  function calcRoutePassCount(routeToRidesRemainingMap) {    
     let allRoutes = $scope.data.routes
-
-    allRoutes.forEach(function(route){
-      let notableTags = _.intersection(route.tags, allRouteCreditTags);
-      if(notableTags.length < 1) return //not a kickstarter route
-      if(notableTags.length > 1) {
-        console.log("Error: Route has more than one kickstarter tag");
-        return // something is wrong..
-      }
-
-      // identify kickstarter routes
-      kickstarterRoutes.push(route)
-      route.creditTag = notableTags[0]
-      routeToTagMap[route.id] = notableTags[0]
-
-      // calculate the rides left in the route pass
-      let price = route.trips[0].priceF
-      if(price <= 0) return
-      let creditsAvailable = parseFloat($scope.data.allRouteCredits[notableTags[0]])
-      route.ridesRemaining = Math.floor(creditsAvailable / price)
-    })
+    let kickstarterRouteIds = _.keys(routeToRidesRemainingMap)
+    let allRoutesById = _.keyBy(allRoutes, 'id')
+    
+    let kickstarterRoutes = kickstarterRouteIds.map(
+      id => allRoutesById[id]
+    )
 
     $scope.data.kickstarterRoutes = kickstarterRoutes;
+
+    kickstarterRoutes.forEach(function(route){
+      route.ridesRemaining = routeToRidesRemainingMap[route.id]
+    })
+
   }
 
 }

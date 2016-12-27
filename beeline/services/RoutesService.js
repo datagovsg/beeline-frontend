@@ -45,10 +45,11 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   // For Route Credits 
   var routeCreditsCache;
   var tagToCreditsMap;
+  var routePassCache;
+  var routeToRidesRemainingMap;
 
   UserService.userEvents.on('userChanged', () => {
-    instance.fetchRouteCredits()
-    console.log("To Implement: Refresh cache on route credits on user change")
+    instance.fetchRouteCredits(true)
   })
 
   var instance = {
@@ -242,7 +243,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // input: 
     // - tag - String: tag associated with route. optional
     // output:
-    // - Promise containing all routeCredits associated with user
+    // - Object containing all routeCredits associated with user
     // - [tag provided] amount of credits specific to the tag
     getRouteCredits: function(tag){
       if(tag){
@@ -258,19 +259,50 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // - creditTag - string: tag associated with route
     // output:
     // - promise containing number of rides remaining on the route pass for specified route
-    getRoutePassCount: function(routeId, creditTag){
-      let routePromise = this.getRoute(routeId, true)
-      let routeCreditsPromise = this.fetchRouteCredits()
-      
-      return $q.all([routePromise, routeCreditsPromise]).then(function(values){
-        let creditsAvailable = parseFloat(values[1][creditTag])
-        let ticketPrice = values[0].trips[0].priceF
-        let ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
+    getRoutePassCount: function(){
+      return routeToRidesRemainingMap
+    },
 
-        return ridesRemaining
-      })
+    // Retrieve the amount of rides remaining for a specific route
+    // input:
+    // - ignoreCache - boolean to determine if cache should be ignored
+    // output: 
+    // - promise containing a map of routeId to Rides Remaining
+    fetchRoutePassCount: function(ignoreCache){
+      if(ignoreCache || !routeToRidesRemainingMap){
+        let allRoutesPromise = this.getRoutes()
+        let allRouteCreditsPromise = this.fetchRouteCredits()
 
-    }
+        routePassCache = $q.all([allRoutesPromise, allRouteCreditsPromise]).then(function(values){
+          let allRoutes = values[0]
+          let allRouteCredits = values[1];
+          let allRouteCreditTags = _.keys(allRouteCredits);
+          routeToRidesRemainingMap = {}
+
+          allRoutes.forEach(function(route){
+            let notableTags = _.intersection(route.tags, allRouteCreditTags);
+            if(notableTags.length < 1) return //not a kickstarter route
+            if(notableTags.length > 1) {
+              console.log("Error: Route has more than one kickstarter tag");
+              return // something is wrong..
+            }
+
+            // calculate the rides left in the route pass
+            let creditTag = notableTags[0]
+            let price = route.trips[0].priceF
+            if(price <= 0) return
+            let creditsAvailable = parseFloat(allRouteCredits[creditTag])
+            routeToRidesRemainingMap[route.id] = Math.floor(creditsAvailable / price)
+          })
+
+          return routeToRidesRemainingMap
+        })
+
+      }
+
+      return routePassCache
+
+    },
 
   };
   return instance;
