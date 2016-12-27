@@ -48,6 +48,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
   UserService.userEvents.on('userChanged', () => {
     instance.fetchRouteCredits(true)
+    instance.fetchRoutePassCount(true)
+    instance.fetchRoutesWithRoutePass(true)
   })
 
   var instance = {
