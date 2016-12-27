@@ -32,7 +32,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.routes
   ], ([routeToRidesRemainingMap, allRoutes]) => {
     if(routeToRidesRemainingMap) {
-      if (allRoutes) {
+      if (allRoutes && allRoutes.length > 0) {
         calcRoutePassCount(routeToRidesRemainingMap, allRoutes)
       }
     } else {
