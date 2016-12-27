@@ -35,9 +35,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routesCache;
   var recentRoutesCache;
 
-  // For kickstarter routes
-  var kickstarterRoutesCache;
-
   // For single routes
   var lastRouteId = null;
   var lastPromise = null;
@@ -47,6 +44,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var tagToCreditsMap;
   var routePassCache;
   var routeToRidesRemainingMap;
+  var routesWithRoutePass;
 
   UserService.userEvents.on('userChanged', () => {
     instance.fetchRouteCredits(true)
@@ -303,6 +301,37 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       return routePassCache
 
     },
+
+    // returns a promise that maps routeId to the number of rides 
+    // remaining on the route pass
+    fetchRoutesWithRoutePass: function(ignoreCache) {
+      if(ignoreCache || !routesWithRoutePass){
+        return $q.all([
+          this.getRoutes(),
+          this.fetchRoutePassCount(),
+        ]).then(([allRoutes, routeToRidesRemainingMap]) => {
+          let kickstarterRouteIds = _.keys(routeToRidesRemainingMap)
+          let allRoutesById = _.keyBy(allRoutes, 'id')
+          
+          let kickstarterRoutes = kickstarterRouteIds.map(
+            id => allRoutesById[id]
+          )
+
+          kickstarterRoutes.forEach(function(route){
+            route.ridesRemaining = routeToRidesRemainingMap[route.id]
+          });
+
+          routesWithRoutePass = kickstarterRoutes
+        })
+      }
+
+    },
+
+    // returns an object that maps routeId to the number of rides 
+    // remaining on the route pass
+    getRoutesWithRoutePass: function() {
+      return routesWithRoutePass
+    }
 
   };
   return instance;

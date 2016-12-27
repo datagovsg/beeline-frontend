@@ -27,18 +27,13 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-  $scope.$watchCollection(() => [
-    RoutesService.getRoutePassCount(),
-    $scope.data.routes
-  ], ([routeToRidesRemainingMap, allRoutes]) => {
-    if(routeToRidesRemainingMap) {
-      if (allRoutes && allRoutes.length > 0) {
-        calcRoutePassCount(routeToRidesRemainingMap, allRoutes)
-      }
-    } else {
-      RoutesService.fetchRoutePassCount(true);
-    }  
-  })
+  $scope.$watch(() => RoutesService.getRoutesWithRoutePass(), (rpRoutes) => {
+    $scope.data.kickstarterRoutes = rpRoutes;
+  });
+
+  RoutesService.fetchRoutesWithRoutePass();
+
+
 
   // $scope.$watch('data.liteRoutes', updateSubscriptionStatus)
   // $scope.$watch(() => Svc.getSubscriptionSummary(), updateSubscriptionStatus)
@@ -151,21 +146,5 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.refreshRoutes(!firstRun);
       firstRun = false;
     });
-
-  function calcRoutePassCount(routeToRidesRemainingMap, allRoutes) {    
-    let kickstarterRouteIds = _.keys(routeToRidesRemainingMap)
-    let allRoutesById = _.keyBy(allRoutes, 'id')
-    
-    let kickstarterRoutes = kickstarterRouteIds.map(
-      id => allRoutesById[id]
-    )
-
-    $scope.data.kickstarterRoutes = kickstarterRoutes;
-
-    kickstarterRoutes.forEach(function(route){
-      route.ridesRemaining = routeToRidesRemainingMap[route.id]
-    })
-
-  }
 
 }
