@@ -148,15 +148,6 @@ export default [
         $ionicLoading.show({
           template: processingPaymentsTemplate
         })
-        var result = await UserService.beeline({
-          method: 'POST',
-          url: '/transactions/payment_ticket_sale',
-          data: {
-            stripeToken: stripeToken.id,
-            trips: BookingService.prepareTrips($scope.book),
-            creditTag: $scope.book.creditTag,
-          },
-        });
           
         completePayment({
           stripeToken: stripeToken.id,
@@ -167,13 +158,7 @@ export default [
           title: 'Error contacting the payment gateway',
           template: err.data.message,
         })
-      } finally {
-        $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
-        })
-        RoutesService.fetchRoutePassCount(true);
-        RoutesService.fetchRoutesWithRoutePass(true);
-      }
+      } 
     };
 
     // Processes payment with customer object. If customer object does not exist,
