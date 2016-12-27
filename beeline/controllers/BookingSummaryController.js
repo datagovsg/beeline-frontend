@@ -171,7 +171,8 @@ export default [
         $scope.$apply(() => {
           $scope.waitingForPaymentResult = false;
         })
-        RoutesService.fetchRouteCredits(true);
+        RoutesService.fetchRoutePassCount(true);
+        RoutesService.fetchRoutesWithRoutePass(true);
       }
     };
 
@@ -243,7 +244,6 @@ export default [
         $scope.$apply(() => {
           $scope.waitingForPaymentResult = false;
         })
-        RoutesService.fetchRouteCredits(true);
         RoutesService.fetchRoutePassCount(true);
         RoutesService.fetchRoutesWithRoutePass(true);
       }
