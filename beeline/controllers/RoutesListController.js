@@ -27,12 +27,17 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-  $scope.$watch(()=>RoutesService.getRoutePassCount(), (routeToRidesRemainingMap) =>{
-    if(routeToRidesRemainingMap){
-      calcRoutePassCount(routeToRidesRemainingMap)
+  $scope.$watchCollection(() => [
+    RoutesService.getRoutePassCount(),
+    $scope.data.routes
+  ], ([routeToRidesRemainingMap, allRoutes]) => {
+    if(routeToRidesRemainingMap) {
+      if (allRoutes) {
+        calcRoutePassCount(routeToRidesRemainingMap, allRoutes)
+      }
     } else {
       RoutesService.fetchRoutePassCount(true);
-    }
+    }  
   })
 
   // $scope.$watch('data.liteRoutes', updateSubscriptionStatus)
@@ -147,8 +152,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       firstRun = false;
     });
 
-  function calcRoutePassCount(routeToRidesRemainingMap) {    
-    let allRoutes = $scope.data.routes
+  function calcRoutePassCount(routeToRidesRemainingMap, allRoutes) {    
     let kickstarterRouteIds = _.keys(routeToRidesRemainingMap)
     let allRoutesById = _.keyBy(allRoutes, 'id')
     
