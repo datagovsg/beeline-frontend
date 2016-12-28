@@ -46,11 +46,13 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var tagToCreditsMap;
   var routePassCache;
   var routeToRidesRemainingMap;
+  var routesWithRoutePassPromise;
   var routesWithRoutePass;
   var activatedKickstarterRoutes;
 
   UserService.userEvents.on('userChanged', () => {
-    instance.fetchRoutesWithRoutePass(true)
+    instance.fetchRouteCredits(true)
+    instance.fetchRoutesWithRoutePass()
   })
 
   var instance = {
@@ -242,6 +244,11 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         return routeCreditsCache
       }
 
+      // Destroy the cache for dependent calls
+      // This is a hack
+      routesWithRoutePassPromise = null;
+      routePassCache = null;
+
       return routeCreditsCache = UserService.beeline({
         method: 'GET',
         url: '/routeCredits'
@@ -282,7 +289,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // output: 
     // - promise containing a map of routeId to Rides Remaining
     fetchRoutePassCount: function(ignoreCache){
-      if(ignoreCache || !routeToRidesRemainingMap){
+      if(ignoreCache || !routePassCache){
         let allRoutesPromise = this.fetchRoutes(ignoreCache)
         let allRouteCreditsPromise = this.fetchRouteCredits(ignoreCache)
 
@@ -330,8 +337,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // - updates routesWithRoutePass: array containing all avaialable routes,
     // modifying those with route credits remaining with a ridesRemaining property
     fetchRoutesWithRoutePass: function(ignoreCache) {
-      if(ignoreCache || !routesWithRoutePass){
-        return $q.all([
+      if(ignoreCache || !routesWithRoutePassPromise){
+        return routesWithRoutePassPromise = $q.all([
           this.fetchRoutes(ignoreCache),
           this.fetchRoutePassCount(ignoreCache),
         ]).then(([allRoutes, routeToRidesRemainingMap]) => {
@@ -350,7 +357,10 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           routesWithRoutePass = allRoutes
           return routesWithRoutePass
         })
+
       }
+
+      return routesWithRoutePassPromise
 
     },
 

@@ -38,9 +38,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
   var allLiteRoutesPromise
 
   $scope.refreshRoutes = function (ignoreCache) {
-    // RoutesService.fetchRoutes(true);
-    var routesPromise = RoutesService.fetchRoutesWithRoutePass(ignoreCache);
-    var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache);
+    RoutesService.fetchRouteCredits(ignoreCache);
+    RoutesService.fetchRoutes(ignoreCache);
+    var routesPromise = RoutesService.fetchRoutesWithRoutePass();
+    var recentRoutesPromise = RoutesService.fetchRecentRoutes();
     
     // Lite Routes
     allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
@@ -145,11 +146,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
   );
 
   // Don't override the caching in main.js
-  var firstRun = true;
-  $scope.$watch(() => UserService.getUser() && UserService.getUser().id,
-    () => {
-      $scope.refreshRoutes(!firstRun);
-      firstRun = false;
-    });
+  $scope.refreshRoutes();
 
 }

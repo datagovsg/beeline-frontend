@@ -229,9 +229,9 @@ export default [
         $scope.$apply(() => {
           $scope.waitingForPaymentResult = false;
         })
-        // RoutesService.fetchRouteCredits(true)
-        // RoutesService.fetchRoutePassCount(true)
-       RoutesService.fetchRoutesWithRoutePass(true) 
+        RoutesService.fetchRouteCredits(true)
+        RoutesService.fetchRoutePassCount()
+        RoutesService.fetchRoutesWithRoutePass() 
       }
     }
   },
