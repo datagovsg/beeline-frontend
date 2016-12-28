@@ -47,7 +47,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routePassCache;
   var routeToRidesRemainingMap;
   var routesWithRoutePass;
-  var kickstarterRoutes;
+  var activatedKickstarterRoutes;
 
   UserService.userEvents.on('userChanged', () => {
     instance.fetchRoutesWithRoutePass(true)
@@ -325,7 +325,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // output:
     // - promise containing all routes, modified with ridesRemaining property
     // side effect:
-    // - updates kickstarterRoutes: array containing only those routes with 
+    // - updates activatedKickstarterRoutes: array containing only those routes with 
     // ridesRemaining property
     // - updates routesWithRoutePass: array containing all avaialable routes,
     // modifying those with route credits remaining with a ridesRemaining property
@@ -346,7 +346,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
             route.ridesRemaining = routeToRidesRemainingMap[route.id]
           });
 
-          kickstarterRoutes = ksRoutes
+          activatedKickstarterRoutes = ksRoutes
           routesWithRoutePass = allRoutes
           return routesWithRoutePass
         })
@@ -364,8 +364,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // Returns array containing only those routes with 
     // ridesRemaining property
     // Updated by: fetchRoutesWithRoutePass
-    getKickstarterRoutes: function(){
-      return kickstarterRoutes
+    getActivatedKickstarterRoutes: function(){
+      return activatedKickstarterRoutes
     },
 
 

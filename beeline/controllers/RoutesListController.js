@@ -27,8 +27,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-  $scope.$watch(() => RoutesService.getKickstarterRoutes(), (rpRoutes) => {
-    $scope.data.kickstarterRoutes = rpRoutes;
+  $scope.$watch(() => RoutesService.getActivatedKickstarterRoutes(), (rpRoutes) => {
+    $scope.data.activatedKickstarterRoutes = rpRoutes;
   });
 
   RoutesService.fetchRoutesWithRoutePass();
@@ -91,12 +91,12 @@ export default function($scope, $state, UserService, RoutesService, $q,
   })
 
   // Filter the displayed routes by selected region
-  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.kickstarterRoutes', 'data.selectedRegionId', 'data.filterText'], function([routes, liteRoutes, kickstarterRoutes, selectedRegionId, filterText]) {
+  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.activatedKickstarterRoutes', 'data.selectedRegionId', 'data.filterText'], function([routes, liteRoutes, activatedKickstarterRoutes, selectedRegionId, filterText]) {
     var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
     $scope.data.regions = RoutesService.getUniqueRegionsFromRoutes(normalAndLiteRoutes);
     $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
     $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
-    $scope.data.filteredKickstarterRoutes = SearchService.filterRoutes(kickstarterRoutes, +selectedRegionId, filterText);
+    $scope.data.filteredActivatedKickstarterRoutes = SearchService.filterRoutes(activatedKickstarterRoutes, +selectedRegionId, filterText);
   });
 
   // Throttle the actual updating of filter text
@@ -111,7 +111,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block
-  $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes', 'data.filteredKickstarterRoutes'], function([newActiveRoutes, recentRoutes, newKickstarterRoutes]) {
+  $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes', 'data.filteredActivatedKickstarterRoutes'], function([newActiveRoutes, recentRoutes, newKickstarterRoutes]) {
     if(!recentRoutes) return
       
     $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
@@ -123,7 +123,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.filteredRecentRoutes = _.difference($scope.data.filteredRecentRoutes, newKickstarterRoutes);
   });
 
-  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes', 'data.filteredKickstarterRoutes'],
+  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes', 'data.filteredActivatedKickstarterRoutes'],
     () => {
       $ionicScrollDelegate.resize();
   });
