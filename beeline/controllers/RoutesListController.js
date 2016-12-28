@@ -27,7 +27,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-  $scope.$watch(() => RoutesService.getRoutesWithRoutePass(), (rpRoutes) => {
+  $scope.$watch(() => RoutesService.getKickstarterRoutes(), (rpRoutes) => {
     $scope.data.kickstarterRoutes = rpRoutes;
   });
 
@@ -39,7 +39,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.refreshRoutes = function (ignoreCache) {
     // RoutesService.fetchRoutes(true);
-    var routesPromise = RoutesService.fetchRoutesWithRoutePass(true);
+    var routesPromise = RoutesService.fetchRoutesWithRoutePass(ignoreCache);
+    var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache);
     
     // Lite Routes
     allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
@@ -53,7 +54,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.liteRoutes = _.sortBy(allLiteRoutes, 'label');
     })
 
-    $q.all([routesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
+    $q.all([routesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
       $scope.error = null;
     })
     .catch(() => {
@@ -65,34 +66,28 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   };
 
-  $scope.$watch(() => RoutesService.getRoutes(), (allRoutes) => {
-    // Configure the list of available regions
-    
-    // Need to sort by time of day rather than by absolute time,
-    // in case we have routes with missing dates (e.g. upcoming routes)
+  $scope.$watch(() => RoutesService.getRoutesWithRoutePass(), (allRoutes) => {
+
     $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
       var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
-
       var midnightOfTrip = new Date(firstTripStop.time.getTime());
+
       midnightOfTrip.setHours(0,0,0,0);
       return firstTripStop.time.getTime() - midnightOfTrip.getTime();
     });
+  })
 
-    var recentRoutesPromise = RoutesService.getRecentRoutes(true);
+  $scope.$watchCollection(() => [
+    RoutesService.getRecentRoutes(),
+    RoutesService.getRoutesWithRoutePass(),
+  ], ([recentRoutes, allRoutes]) => {
+    if(recentRoutes && allRoutes){
+      let allRoutesById = _.keyBy(allRoutes, 'id')
 
-    recentRoutesPromise.then(function(recentRoutes) {
-      $scope.data.recentRoutes = recentRoutes;
-    });
-    
-    // $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
-    //   $scope.error = null;
-    // })
-    // .catch(() => {
-    //   $scope.error = true;
-    // })
-    // .then(() => {
-    //   $scope.$broadcast('scroll.refreshComplete');
-    // })
+      $scope.data.recentRoutes = recentRoutes
+        .map(r => allRoutesById[r.id])
+        .filter(r => r !== undefined)
+    }
   })
 
   // Filter the displayed routes by selected region
@@ -117,12 +112,15 @@ export default function($scope, $state, UserService, RoutesService, $q,
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block
   $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes', 'data.filteredKickstarterRoutes'], function([newActiveRoutes, recentRoutes, newKickstarterRoutes]) {
+    if(!recentRoutes) return
+      
     $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
     $scope.data.filteredRecentRoutes = recentRoutes.map(
       recent => newActiveRoutes.find(route => route.id === recent.id)
     ).filter(x => x) // Exclude null values (e.g. expired routes)
-    //filter out duplicate ones in recent booked
-   $scope.data.filteredRecentRoutes = _.difference($scope.data.filteredRecentRoutes, newKickstarterRoutes);
+    
+    // filter out duplicate ones in recently booked to prevent displaying it too many times
+    $scope.data.filteredRecentRoutes = _.difference($scope.data.filteredRecentRoutes, newKickstarterRoutes);
   });
 
   $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes', 'data.filteredKickstarterRoutes'],

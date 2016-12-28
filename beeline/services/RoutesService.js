@@ -35,6 +35,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routesCache;
   var activeRoutes;
   var recentRoutesCache;
+  var recentRoutes;
 
   // For single routes
   var lastRouteId = null;
@@ -49,7 +50,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var kickstarterRoutes;
 
   UserService.userEvents.on('userChanged', () => {
-    instance.fetchRoutePassCount(true)
     instance.fetchRoutesWithRoutePass(true)
   })
 
@@ -176,18 +176,23 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
     // Retrieves the recent routes for a user
     // If not logged in then just returns an empty array
-    getRecentRoutes: function(ignoreCache) {
+    fetchRecentRoutes: function(ignoreCache) {
       if (UserService.getUser()) {
         if (recentRoutesCache && !ignoreCache) return recentRoutesCache;
         return recentRoutesCache = UserService.beeline({
           method: 'GET',
           url: '/routes/recent?limit=10'
         }).then(function(response) {
-          return response.data
+          recentRoutes = response.data
+          return recentRoutes
         });
       } else {
         return $q.resolve([]);
       }
+    },
+
+    getRecentRoutes: function(){
+      return recentRoutes
     },
 
 // TODO: make a directive, otherwise literoute need to inject this routeservice
