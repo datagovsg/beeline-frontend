@@ -46,6 +46,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routePassCache;
   var routeToRidesRemainingMap;
   var routesWithRoutePass;
+  var kickstarterRoutes;
 
   UserService.userEvents.on('userChanged', () => {
     instance.fetchRoutePassCount(true)
@@ -311,36 +312,57 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
     },
 
-    // returns a promise that maps routeId to the number of rides 
-    // remaining on the route pass
+    // Generates a list of all routes, modifying those with route
+    // credits remaining with a "ridesRemaining" property
+    // input:
+    // - ignoreCache: boolean determining if cache should be ignored. 
+    // carries over to dependencies fetchRoutes and fetchRoutePassCount
+    // output:
+    // - promise containing all routes, modified with ridesRemaining property
+    // side effect:
+    // - updates kickstarterRoutes: array containing only those routes with 
+    // ridesRemaining property
+    // - updates routesWithRoutePass: array containing all avaialable routes,
+    // modifying those with route credits remaining with a ridesRemaining property
     fetchRoutesWithRoutePass: function(ignoreCache) {
       if(ignoreCache || !routesWithRoutePass){
         return $q.all([
           this.fetchRoutes(ignoreCache),
           this.fetchRoutePassCount(ignoreCache),
         ]).then(([allRoutes, routeToRidesRemainingMap]) => {
-          let kickstarterRouteIds = _.keys(routeToRidesRemainingMap)
+          let ksRouteIds = _.keys(routeToRidesRemainingMap)
           let allRoutesById = _.keyBy(allRoutes, 'id')
           
-          let kickstarterRoutes = kickstarterRouteIds.map(
+          let ksRoutes = ksRouteIds.map(
             id => allRoutesById[id]
           )
 
-          kickstarterRoutes.forEach(function(route){
+          ksRoutes.forEach(function(route){
             route.ridesRemaining = routeToRidesRemainingMap[route.id]
           });
 
-          routesWithRoutePass = kickstarterRoutes
+          kickstarterRoutes = ksRoutes
+          routesWithRoutePass = allRoutes
+          return routesWithRoutePass
         })
       }
 
     },
 
-    // returns an object that maps routeId to the number of rides 
-    // remaining on the route pass
+    // Returns array containing all avaialable routes,
+    // modifying those with route credits remaining with a ridesRemaining property
+    // Updated by: fetchRoutesWithRoutePass
     getRoutesWithRoutePass: function() {
       return routesWithRoutePass
-    }
+    },
+
+    // Returns array containing only those routes with 
+    // ridesRemaining property
+    // Updated by: fetchRoutesWithRoutePass
+    getKickstarterRoutes: function(){
+      return kickstarterRoutes
+    },
+
 
   };
   return instance;
