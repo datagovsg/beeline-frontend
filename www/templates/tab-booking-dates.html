@@ -64,7 +64,7 @@
     </div>
 
     <div class="item">
-      <price-calculator booking="book"></price-calculator>
+      <price-calculator booking="book" show-route-credits="true"></price-calculator>
     </div>
 
     <div class="item">
@@ -73,7 +73,8 @@
                 boardStop: book.boardStopId,
                 alightStop: book.alightStopId,
                 selectedDates: book.selectedDates,
-                sessionId: session.sessionId
+                sessionId: session.sessionId,
+                creditTag: book.useRouteCredits ? book.creditTag : null,
               })">
         Review Booking
       </button>
