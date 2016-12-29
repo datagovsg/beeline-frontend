@@ -34,7 +34,7 @@ export default [
       features: null,
       userCredits: 0,
       useCredits: false,
-      allowEnterPromoCode: true
+      allowEnterPromoCode: true,
       useRouteCredits: !!$stateParams.creditTag,
     };
     $scope.disp = {
