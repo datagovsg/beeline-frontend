@@ -235,28 +235,27 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // output:
     // - Promise containing all routeCredits associated with user
     fetchRouteCredits: function(ignoreCache){
-      let user = UserService.getUser();
-      if(!user){
-        tagToCreditsMap = {};
-        return $q.resolve(tagToCreditsMap)
-      }
       if(!ignoreCache && routeCreditsCache){
         return routeCreditsCache
       }
-
       // Destroy the cache for dependent calls
       // This is a hack
       routesWithRoutePassPromise = null;
       routePassCache = null;
-
-      return routeCreditsCache = UserService.beeline({
-        method: 'GET',
-        url: '/routeCredits'
-      }).then((response) => {
-        tagToCreditsMap = response.data
-        return tagToCreditsMap
-      })
-
+      
+      let user = UserService.getUser();
+      if(!user){
+        return routeCreditsCache = Promise.resolve(tagToCreditsMap = {});
+      }
+      else {
+        return routeCreditsCache = UserService.beeline({
+          method: 'GET',
+          url: '/routeCredits'
+        }).then((response) => {
+          tagToCreditsMap = response.data
+          return tagToCreditsMap
+        })
+      }
     },
 
     // Retrieve routeCredits information from cache
@@ -342,20 +341,16 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           this.fetchRoutes(ignoreCache),
           this.fetchRoutePassCount(ignoreCache),
         ]).then(([allRoutes, routeToRidesRemainingMap]) => {
-          let ksRouteIds = _.keys(routeToRidesRemainingMap)
-          let allRoutesById = _.keyBy(allRoutes, 'id')
-          
-          let ksRoutes = ksRouteIds.map(
-            id => allRoutesById[id]
-          )
+          routesWithRoutePass = allRoutes.map(route => {
+            var clone = _.clone(route);
+            clone.ridesRemaining = (route.id in routeToRidesRemainingMap) ?
+              routeToRidesRemainingMap[route.id] : null;
+            return clone;
+          })
+          activatedKickstarterRoutes = routesWithRoutePass.filter(
+            route => route.id in routeToRidesRemainingMap)
 
-          ksRoutes.forEach(function(route){
-            route.ridesRemaining = routeToRidesRemainingMap[route.id]
-          });
-
-          activatedKickstarterRoutes = ksRoutes
-          routesWithRoutePass = allRoutes
-          return routesWithRoutePass
+          return routesWithRoutePass;
         })
 
       }
