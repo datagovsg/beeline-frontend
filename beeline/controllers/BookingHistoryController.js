@@ -18,14 +18,13 @@ export default function($scope, UserService, RoutesService) {
       transactions: null,
     })
 
-    routesPromise = RoutesService.getRoutes(true, {
-      end_date: Date.now(),
+    routesPromise = RoutesService.fetchRoutes(true, {
+      end_date: Date.now() +  14*24*60*60*1000,
       start_date: Date.now() - 365*24*60*60*1000,
       tags: '[]',
     })
     .then((routes) => {
       $scope.routesById = _.keyBy(routes, r => r.id);
-      console.log($scope.routesById);
     })
   }
 
@@ -59,7 +58,7 @@ export default function($scope, UserService, RoutesService) {
         t.itemsByType = _.groupBy(t.transactionItems, ti => ti.itemType)
       }
 
-      // add route information to ticket sale items
+      // add route information to ticket sale items and route credit items
       routesPromise.then(() => {
         for (let t of newTransactions) {
           for (let ticketSaleItem of t.itemsByType.ticketSale || []) {
@@ -70,6 +69,9 @@ export default function($scope, UserService, RoutesService) {
           }
           for (let ticketExpenseItem of t.itemsByType.ticketExpense || []) {
             ticketExpenseItem.route = $scope.routesById[ticketExpenseItem.ticketExpense.boardStop.trip.routeId]
+          }
+          for (let routeCreditItem of t.itemsByType.routeCredits || []) {
+            routeCreditItem.route = $scope.routesById[routeCreditItem.routeCredits.tag.substring(routeCreditItem.routeCredits.tag.indexOf("-") + 1)]
           }
         }
       })

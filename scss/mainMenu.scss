@@ -1,3 +1,6 @@
+/* $tab-item-active-bg: #594672; */
+$tab-item-active-bg: $royal;
+
 .nav-text {
   color: #fff;
   padding-top:  33px;
@@ -13,6 +16,7 @@
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
+    background-color: $tab-item-active-bg;
   }
 }
 
@@ -22,6 +26,7 @@
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuSuggestActive.svg') center 4px no-repeat;
+    background-color: $tab-item-active-bg;
   }
 }
 
@@ -31,6 +36,17 @@
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuTicketsActive.svg') center 2px no-repeat;
+    background-color: $tab-item-active-bg;
+  }
+}
+
+.nav-kickstarter {
+  background: url('../img/menu/MenuKickstartNormal.svg') center 4px no-repeat;
+  display: block;
+  &:hover,
+  &.tab-item-active {
+    background: url('../img/menu/MenuKickstartActive.svg') center 4px no-repeat;
+    background-color: $tab-item-active-bg;
   }
 }
 
@@ -41,5 +57,6 @@
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuSettingsActive.svg') center 3px no-repeat;
+    background-color: $tab-item-active-bg;
   }
 }

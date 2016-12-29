@@ -63,6 +63,11 @@ export default [
       isSubscribed: false,
     };
 
+    $scope.data = {
+      todayTrips : [],
+      nextTrips: null,
+    }
+
     var routePromise, subscriptionPromise;
 
     $scope.book.label = $stateParams.label;
@@ -76,9 +81,12 @@ export default [
 
     var availableTripsPromise = routePromise.then((route)=>{
       $scope.book.route = route[$scope.book.label];
-      var runningTrips = $scope.book.route.trips.filter((trip)=>trip.isRunning);
-      $scope.availableTrips = runningTrips[0] && $scope.book.route.trips.filter(lr=>lr.date==runningTrips[0].date);
-      return $scope.nextAvailableTrip
+      //get route features
+      RoutesService.getRouteFeatures($scope.book.route.id).then((data)=>{
+        $scope.disp.features = data;
+      });
+      $scope.data.nextTrips = $scope.book.route.trips.filter(
+        trip=>trip.date === $scope.book.route.trips[0].date)
     });
 
     var mapPromise = new Promise(function(resolve) {
@@ -88,12 +96,12 @@ export default [
     });
 
     $scope.$on('$ionicView.afterEnter', () => {
+      $scope.$broadcast('startPingLoop');
       loadingSpinner(Promise.all([mapPromise, routePromise, subscriptionPromise])
       .then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
       }));
-      $scope.$broadcast('startPingLoop');
     });
 
     $scope.$on('$ionicView.beforeLeave', () => {
@@ -109,8 +117,8 @@ export default [
       });
     });
 
-    Promise.all([mapPromise, uiGmapGoogleMapApi, availableTripsPromise]).then((values) => {
-      var [map, googleMaps, avaialableTrips] = values;
+    Promise.all([mapPromise, uiGmapGoogleMapApi]).then((values) => {
+      var [map, googleMaps] = values;
 
       MapOptions.disableMapLinks();
       $scope.$on("$ionicView.afterEnter", function(event, data) {
@@ -145,10 +153,10 @@ export default [
         template: `
         <div class="item item-text-wrap">
           <div>
-              Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions</a>.
+              Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions of Service</a>.
           </div>
           <ion-checkbox ng-model="disp.termsChecked">
-            I read and agree to the above terms and would like to proceed.
+            Yes, I have read and agree to the above Terms and Conditions and would like to proceed.
           </ion-checkbox>
         </div>
         `,

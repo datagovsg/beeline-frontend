@@ -33,11 +33,27 @@ function transformRouteData(data) {
 export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q) {
   // For all routes
   var routesCache;
+  var activeRoutes;
   var recentRoutesCache;
+  var recentRoutes;
 
   // For single routes
   var lastRouteId = null;
   var lastPromise = null;
+
+  // For Route Credits 
+  var routeCreditsCache;
+  var tagToCreditsMap;
+  var routePassCache;
+  var routeToRidesRemainingMap;
+  var routesWithRoutePassPromise;
+  var routesWithRoutePass;
+  var activatedKickstarterRoutes;
+
+  UserService.userEvents.on('userChanged', () => {
+    instance.fetchRouteCredits(true)
+    instance.fetchRoutesWithRoutePass()
+  })
 
   var instance = {
 
@@ -48,7 +64,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       assert.equal(typeof routeId, 'number');
 
       if (!ignoreCache && !options && lastRouteId === routeId) {
-        console.log(`Using route ${routeId} from cache`)
         return lastPromise;
       }
 
@@ -75,11 +90,17 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       });
     },
 
+    // Returns list of all routes
+    getRoutes: function(){
+      return activeRoutes
+    },
+
     // Retrive the data on all the routes
     // But limits the amount of data retrieved
     // getRoutes() now returns a list of routes, but with very limited
     // trip data (limited to 5 trips, no path)
-    getRoutes: function(ignoreCache, options) {
+    // Return promise with all routes
+    fetchRoutes: function(ignoreCache, options) {
       if (routesCache && !ignoreCache && !options) return routesCache;
 
       var url = '/routes?';
@@ -108,6 +129,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         // on trips[0]
         var routes = response.data.filter(r => r.trips && r.trips.length);
         transformRouteData(routes)
+        activeRoutes = routes
         return routes;
       });
 
@@ -156,18 +178,23 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
     // Retrieves the recent routes for a user
     // If not logged in then just returns an empty array
-    getRecentRoutes: function(ignoreCache) {
+    fetchRecentRoutes: function(ignoreCache) {
       if (UserService.getUser()) {
         if (recentRoutesCache && !ignoreCache) return recentRoutesCache;
         return recentRoutesCache = UserService.beeline({
           method: 'GET',
           url: '/routes/recent?limit=10'
         }).then(function(response) {
-          return response.data
+          recentRoutes = response.data
+          return recentRoutes
         });
       } else {
         return $q.resolve([]);
       }
+    },
+
+    getRecentRoutes: function(){
+      return recentRoutes
     },
 
 // TODO: make a directive, otherwise literoute need to inject this routeservice
@@ -190,7 +217,168 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       .catch((err) => {
         console.error(err);
       });
-    }
+    },
+
+// Return an array of regions covered by a given array of routes
+    getUniqueRegionsFromRoutes: function(routes) {
+      return _(routes).map(function(route) {return route.regions;})
+      .flatten()
+      .uniqBy('id')
+      .sortBy('name')
+      .value();
+    },
+
+    // get all routeCredits associated with the user
+    // performs db query where necessary or specified
+    // input:
+    // - ignoreCache - boolean
+    // output:
+    // - Promise containing all routeCredits associated with user
+    fetchRouteCredits: function(ignoreCache){
+      let user = UserService.getUser();
+      if(!user){
+        tagToCreditsMap = {};
+        return $q.resolve(tagToCreditsMap)
+      }
+      if(!ignoreCache && routeCreditsCache){
+        return routeCreditsCache
+      }
+
+      // Destroy the cache for dependent calls
+      // This is a hack
+      routesWithRoutePassPromise = null;
+      routePassCache = null;
+
+      return routeCreditsCache = UserService.beeline({
+        method: 'GET',
+        url: '/routeCredits'
+      }).then((response) => {
+        tagToCreditsMap = response.data
+        return tagToCreditsMap
+      })
+
+    },
+
+    // Retrieve routeCredits information from cache
+    // input: 
+    // - tag - String: tag associated with route. optional
+    // output:
+    // - Object containing all routeCredits associated with user
+    // - [tag provided] amount of credits specific to the tag
+    getRouteCredits: function(tag){
+      if(tag){
+        return tagToCreditsMap[tag]
+      } else {
+        return tagToCreditsMap
+      }
+    },
+
+    // Retrieve the amount of rides remaining for a specific route
+    // input:
+    // - routeId - number: id of route
+    // - creditTag - string: tag associated with route
+    // output:
+    // - promise containing number of rides remaining on the route pass for specified route
+    getRoutePassCount: function(){
+      return routeToRidesRemainingMap
+    },
+
+    // Retrieve the amount of rides remaining for a specific route
+    // input:
+    // - ignoreCache - boolean to determine if cache should be ignored
+    // output: 
+    // - promise containing a map of routeId to Rides Remaining
+    fetchRoutePassCount: function(ignoreCache){
+      if(ignoreCache || !routePassCache){
+        let allRoutesPromise = this.fetchRoutes(ignoreCache)
+        let allRouteCreditsPromise = this.fetchRouteCredits(ignoreCache)
+
+        routePassCache = $q.all([allRoutesPromise, allRouteCreditsPromise]).then(function(values){
+          let allRoutes = values[0]
+          let allRouteCredits = values[1];
+          let allRouteCreditTags = _.keys(allRouteCredits);
+          routeToRidesRemainingMap = {}
+
+          allRoutes.forEach(function(route){
+            let notableTags = _.intersection(route.tags, allRouteCreditTags);
+            if(notableTags.length < 1) return //not a kickstarter route
+            if(notableTags.length > 1) {
+              console.log("Error: Route has more than one kickstarter tag");
+              return // something is wrong..
+            }
+
+            // calculate the rides left in the route pass
+            let creditTag = notableTags[0]
+            let price = route.trips[0].priceF
+            if(price <= 0) return
+            let creditsAvailable = parseFloat(allRouteCredits[creditTag])
+            routeToRidesRemainingMap[route.id] = Math.floor(creditsAvailable / price)
+          })
+
+          return routeToRidesRemainingMap
+        })
+
+      }
+
+      return routePassCache
+
+    },
+
+    // Generates a list of all routes, modifying those with route
+    // credits remaining with a "ridesRemaining" property
+    // input:
+    // - ignoreCache: boolean determining if cache should be ignored. 
+    // carries over to dependencies fetchRoutes and fetchRoutePassCount
+    // output:
+    // - promise containing all routes, modified with ridesRemaining property
+    // side effect:
+    // - updates activatedKickstarterRoutes: array containing only those routes with 
+    // ridesRemaining property
+    // - updates routesWithRoutePass: array containing all avaialable routes,
+    // modifying those with route credits remaining with a ridesRemaining property
+    fetchRoutesWithRoutePass: function(ignoreCache) {
+      if(ignoreCache || !routesWithRoutePassPromise){
+        return routesWithRoutePassPromise = $q.all([
+          this.fetchRoutes(ignoreCache),
+          this.fetchRoutePassCount(ignoreCache),
+        ]).then(([allRoutes, routeToRidesRemainingMap]) => {
+          let ksRouteIds = _.keys(routeToRidesRemainingMap)
+          let allRoutesById = _.keyBy(allRoutes, 'id')
+          
+          let ksRoutes = ksRouteIds.map(
+            id => allRoutesById[id]
+          )
+
+          ksRoutes.forEach(function(route){
+            route.ridesRemaining = routeToRidesRemainingMap[route.id]
+          });
+
+          activatedKickstarterRoutes = ksRoutes
+          routesWithRoutePass = allRoutes
+          return routesWithRoutePass
+        })
+
+      }
+
+      return routesWithRoutePassPromise
+
+    },
+
+    // Returns array containing all avaialable routes,
+    // modifying those with route credits remaining with a ridesRemaining property
+    // Updated by: fetchRoutesWithRoutePass
+    getRoutesWithRoutePass: function() {
+      return routesWithRoutePass
+    },
+
+    // Returns array containing only those routes with 
+    // ridesRemaining property
+    // Updated by: fetchRoutesWithRoutePass
+    getActivatedKickstarterRoutes: function(){
+      return activatedKickstarterRoutes
+    },
+
+
   };
   return instance;
 }

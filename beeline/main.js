@@ -14,7 +14,6 @@ import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 
 // Configuration Imports
 import configureRoutes from './router.js';
-
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
 // //////////////////////////////////////////////////////////////////////////////
@@ -57,10 +56,12 @@ var app = angular.module('beeline', [
 .factory('StripeService', require('./services/StripeService.js').default)
 .factory('loadingSpinner', require('./services/LoadingSpinner.js').default)
 .factory('GoogleAnalytics', require('./services/GoogleAnalytics.js').default)
+.factory('SearchService', require('./services/SearchService.js').default)
 .service('MapOptions', require('./services/MapOptions').default)
 .service('busStopSelectorDialog', require('./services/busStopSelectorDialog.js').default)
 .service('Legalese', require('./services/legalese.js').default)
 .service('LoginDialog', require('./services/login.js').default)
+.service('KickstarterService', require('./services/KickstarterService.js').default)
 .controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
 .controller('RoutesController', require('./controllers/RoutesController.js').default)
 .controller('RoutesMapController', require('./controllers/RoutesMapController.js').default)
@@ -79,6 +80,11 @@ var app = angular.module('beeline', [
 .controller('LiteSummaryController', require('./controllers/LiteSummaryController.js').default)
 .controller('LiteMoreInfoController', require('./controllers/LiteMoreInfoController.js').default)
 .controller('WelcomeController', require('./controllers/WelcomeController.js').default)
+.controller('KickstarterController', require('./controllers/KickstarterController.js').default)
+.controller('KickstarterDetailController', require('./controllers/KickstarterDetailController.js').default)
+.controller('KickstarterSummaryController', require('./controllers/KickstarterSummaryController.js').default)
+.controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
+.controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
@@ -98,12 +104,20 @@ var app = angular.module('beeline', [
 .directive('mapBusStops', require('./directives/mapBusStops').default)
 .directive('dynamicSignage', require('./directives/dynamicSignage.js').default)
 .directive('beelineBindHtml', require('./directives/beelineBindHtml.js').default)
+.directive('kickstartInfo', require('./directives/kickstartInfo/kickstartInfo.js').default)
+.directive('progressBar', require('./directives/progressBar/progressBar.js').default)
+.directive('dailyTripsBroker', require('./directives/dailyTripsBroker.js').default)
+.directive('fakeProgressBar', require('./directives/fakeProgressBar.js').default)
+.directive('inServiceWindow', require('./directives/inServiceWindow.js').default)
+.directive('crowdstartShare', require('./directives/crowdstartShare.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.tabs.style('standard');
   $ionicConfigProvider.navBar.alignTitle('center');
   $ionicConfigProvider.scrolling.jsScrolling(false);
+  //kickstart-summary use default history stack
+  $ionicConfigProvider.backButton.previousTitleText(false).text(' ');
 })
 .config(function ($httpProvider) {
   $httpProvider.useApplyAsync(true);
@@ -142,7 +156,7 @@ var app = angular.module('beeline', [
 })
 .run(function (RoutesService) {
   // Pre-fetch the routes
-  RoutesService.getRoutes();
+  RoutesService.fetchRoutes();
   RoutesService.getRecentRoutes();
 })
 .run(function ($templateCache) {

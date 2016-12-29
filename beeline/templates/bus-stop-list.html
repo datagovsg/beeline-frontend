@@ -1,0 +1,86 @@
+<ion-modal-view class="stop-selector">
+  <ion-header-bar class="bar bar-royal">
+    <h1 class="title">
+      Crowdstart Route Stops
+    </h1>
+    <button class="button button-clear icon ion-ios-close-outline"
+        ng-click="close()">
+   </button>
+  </ion-header-bar>
+
+  <ion-content class="stops-list-main" scroll="false">
+    <div class="map-area">
+      <ui-gmap-google-map center="modalMap.center"
+                          zoom="modalMap.zoom"
+                          bounds="modalMap.bounds"
+                          control="modalMap.control"
+                          options="modalMap.options"
+                          data-tap-disabled="true">
+        <my-location></my-location>
+        <ui-gmap-marker
+          ng-repeat="stop in book.boardStops"
+          idKey="stop.id"
+          coords="stop.coordinates"
+          options="modalMap.markerOptions.boardMarker"
+        ></ui-gmap-marker>
+        <ui-gmap-marker
+          ng-repeat="stop in book.alightStops"
+          idKey="stop.id"
+          coords="stop.coordinates"
+          options="modalMap.markerOptions.alightMarker"
+        ></ui-gmap-marker>
+
+        <ui-gmap-marker ng-if="book.chosenStop"
+                        idkey="'selectedStopPin'"
+                        coords="book.chosenStop.coordinates"
+                        options="book.chosenStop.canBoard ? modalMap.markerOptions.startMarker : modalMap.markerOptions.endMarker">
+        </ui-gmap-marker>
+      </ui-gmap-google-map>
+    </div>
+
+    <div class="item item-divider num-stops">{{busStops.length}} stops available</div>
+
+    <ion-content class="stops-list" delegate-handle="stopsListScroll">
+      <div class="item item-divider"> Boarding Stops </div>
+      <ion-list>
+        <ion-item ng-repeat="stop in book.boardStops"
+                  class="item-text-wrap item-icon-left"
+                  icon="icon ion-ios-checkmark"
+                  ng-click="panToStop(modalMap.control.getGMap(), stop)">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
+          </div>
+          <i class="icon stop-icon board"></i>
+        </ion-item>
+      </ion-list>
+      <div class="item item-divider"> Alighting Stops </div>
+      <ion-list>
+        <ion-item  ng-repeat="stop in book.alightStops"
+                    class="item-text-wrap item-icon-left"
+                    icon="icon ion-ios-checkmark"
+                    ng-click="panToStop(modalMap.control.getGMap(), stop)">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
+          </div>
+          <i class="icon stop-icon alight"></i>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <div class="item select-button">
+      <button class="button primary-button button-item"
+              ng-click="close()">
+        close
+      </button>
+    </div>
+
+  </ion-content>
+</ion-modal-view>

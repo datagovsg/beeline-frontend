@@ -1,12 +1,12 @@
 <div id="price-calculator" class="date-price-calculator">
   <!--Selected Dates<br>-->
   <div><b>{{booking.selectedDates.length}} day(s)</b> were selected.</div>
-  <h3>Selected Dates</h3>
+  <div class="item-subtitle">Selected Dates </div>
   <div ng-show="isCalculating" class="spinner-block">
     <ion-spinner></ion-spinner>
-      Calculating prices...
+    Calculating prices...
   </div>
-  <table class="price-table prices booking-info">
+  <table class="booking-info prices">
     <thead>
       <tr ng-if="booking.selectedDates.length != 0">
         <th>Selected Dates</th>
@@ -21,16 +21,14 @@
       </tr>
       <tr ng-if="errorMessage">
         <td colspan="2" class="text-left">
-          <i class="icon ion-alert-circled padding-right"></i>
-            {{errorMessage}}
+          <i class="icon ion-alert-circled padding-right"></i> {{errorMessage}}
         </td>
       </tr>
       <tr ng-if="booking.selectedDates.length > 0" ng-repeat="pinfo in priceInfo.pricesPerTrip">
         <td>
           {{pinfo.startDate | date:'dd MMM (EEE)'}}
-          <div ng-if="pinfo.bookingInfo.notes" class="trip-notes">
-            <i class="ionicon ion-information-circled"></i>
-            {{pinfo.bookingInfo.notes}}
+          <div ng-if="pinfo.bookingInfo.notes" class="trd ip-notes">
+            <i class="ionicon ion-information-circled"></i> {{pinfo.bookingInfo.notes}}
           </div>
         </td>
         <td>${{pinfo.price | number:2}}</td>
@@ -38,62 +36,62 @@
     </tbody>
   </table>
 
-  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+  <table class="booking-info prices " ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
         <th>Total Trips</th>
-        <th>Passengers</th>
+        <!-- <th>Passengers</th> -->
         <th>Total Amount</th>
       </tr>
       <tr>
         <td>{{priceInfo.tripCount || 0}}</td>
-        <td>1</td>
+      <!--   <td>1</td> -->
         <td>{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
     </tbody>
   </table>
 
-  <section class="card" ng-if="booking.allowEnterPromoCode">
-    <div class="item item-input-inset">
-      <label class="item-input-wrapper">
-        <input class="item" placeholder="Enter your Promo Code here" type="text" name="promoCodeField" ng-model="booking.currentPromoCode" style="padding-top: 16px; height: auto; width: 100%" ng-blur="addPromoCode()"/>    
-      </label>
-      <button type="button" ng-click="addPromoCode()" class='button button-royal' >Apply</button>
-    </div>
-    <div ng-if="booking.promoCodes.length > 1">
-      <div ng-repeat="pCode in booking.promoCodes">
-        <input type="radio" ng-model="booking.currentPromoCode" value="{{pCode.refCode}}" ng-change="selectCode(pCode.refCode)" > {{pCode.name + " : " + pCode.refCode}}
-      </div>
-    </div>
-  </section>
-
-
-  <h3>Price Calculator </h3>
-  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
+  <div class="promoCredits" ng-if="showRouteCredits && (booking.route.ridesRemaining && booking.route.ridesRemaining > 0)">
+    <div class="item-subtitle">Route Pass</div>
+    <ul class="list">
+      <ion-toggle ng-model="booking.useRouteCredits" toggle-class="toggle-royal" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
+        Use my Route Pass ({{ booking.route.ridesRemaining }} trips remaining)
+      </ion-toggle>
+      <!-- <ion-toggle toggle-class="toggle-royal">
+        Use my Welcome Credits ($10.00)
+      </ion-toggle>
+      <li class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <input type="text" placeholder="Enter Promo Code">
+        </label>
+        <button type="submit" class="button button-royal small-button">
+          Apply
+        </button>
+      </li> -->
+    </ul>
+  </div>
+  <div class="item-subtitle">Amount to Pay </div>
+  <table class="booking-info" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
-        <th>Total Price</th>
-        <td>{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
+        <td>Total Amount</td>
+        <td class="right">{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
-      <tr ng-if="priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
-        <th>{{discount.discount.description}}: {{discount.discount.code}}</th>
-        <td>
+      <tr ng-if="priceInfo.routeCredits && priceInfo.routeCredits.length > 0" ng-repeat="routeCredit in priceInfo.routeCredits">
+        <td>Route pass - Using {{ ridesUsed }} of {{ booking.route.ridesRemaining}} trips remaining</td>
+        <td class="right">{{(-routeCredit.debit || 0) | currency}}</td>
+      </tr>
+      <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
+        <td>{{discount.discount.description}}: {{discount.discount.code}}</td>
+        <td class="right">
           {{(-discount.debit || 0) | currency}}
         </td>
+      </tr>
+      <tr>
+        <td class="total-sum" ><b>Total Amount Due</b></td>
+        <td class="total-sum right"><b>{{ (priceInfo.totalDue || 0) | currency}}</b></td>
       </tr>
       <!-- FIXME: include vouchers, discounts here -->
     </tbody>
   </table>
-
-  <hr>
-
-  <table class="price-table totals booking-info" ng-if="booking.selectedDates.length > 0">
-    <tbody>
-      <tr>
-        <th>Amount To Pay</th>
-        <td>{{(priceInfo.totalDue || 0) | currency}}</td>
-      </tr>
-    </tbody>
-  </table>
-
 </div>

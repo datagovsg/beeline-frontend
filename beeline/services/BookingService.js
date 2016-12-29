@@ -41,6 +41,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
         method: 'POST',
         url: '/transactions/ticket_sale',
         data: {
+          creditTag: booking.useRouteCredits ? booking.creditTag : null,
           trips: trips,
           dryRun: true, 
           promoCode: booking.promoCode ? {
@@ -51,17 +52,18 @@ export default function(UserService, CompanyService, RoutesService, $http) {
       .then((resp) => {
         // Find the 'payment' entry in the list of transaction itemss
         var txItems = _.groupBy(resp.data.transactionItems, 'itemType');
-        // console.log("TransactionItems:",txItems)
         var totalBeforeDiscount = _.reduce(txItems.ticketSale, (sum, n) => {
-          return sum + n.credit
+          return sum + parseFloat(n.credit)
         }, 0)
+
         // FIXME: include discounts, vouchers
         return {
           totalDue: txItems.payment[0].debit,
           tripCount: trips.length,
           pricesPerTrip: this.summarizePrices(booking),
+          routeCredits: txItems['routeCredits'],
           discounts: txItems.discount,
-          totalBeforeDiscount: totalBeforeDiscount
+          totalBeforeDiscount,
         };
       })
       .then(null, (err) => {
@@ -259,14 +261,14 @@ export default function(UserService, CompanyService, RoutesService, $http) {
     var boardStops = _(uniqueStops)
       .filter(ts => ts.canBoard)
       .map(ts => {
-        return _.extend({time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
+        return _.extend({canBoard: true, time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
       })
       .orderBy(s => s.timeSinceMidnight)
       .value();
     var alightStops = _(uniqueStops)
       .filter(ts => ts.canAlight)
       .map(ts => {
-        return _.extend({time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
+        return _.extend({canBoard: false, time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop);
       })
       .orderBy(s => s.timeSinceMidnight)
       .value();

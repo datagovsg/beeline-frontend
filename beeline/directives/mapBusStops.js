@@ -3,13 +3,13 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
     replace: false,
     require: '^uiGmapGoogleMap',
     template: `
-    <ui-gmap-markers  ng-if="tripStops"
-                      models="tripStops"
-                      idkey="'id'"
-                      options="boardMarker"
-                      coords="'coordinates'"
-                      click="applyTapBoard"
-                      ></ui-gmap-markers>
+    <ui-gmap-marker
+      ng-repeat="stop in tripStops"
+      idKey="stop.id"
+      coords="stop.coordinates"
+      options="stop.canBoard ? boardMarker : alightMarker"
+      click="applyTapBoard(stop)"
+    ></ui-gmap-marker>
     <ui-gmap-window ng-if="disp.popupStop"
                     coords="disp.popupStop.coordinates"
                     show="disp.popupStop"
@@ -40,17 +40,24 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
           },
           zIndex: google.maps.Marker.MAX_ZINDEX + 1,
         }
+        scope.alightMarker = {
+          icon: {
+            url: 'img/map/MapRouteDropoffStop@2x.png',
+            scaledSize: new googleMaps.Size(26, 25),
+            anchor: new googleMaps.Point(13, 13),
+          },
+          zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+        }
       })
 
       scope.$watch('availableTrips', (availableTrips) => {
-        if (!availableTrips) return;
+        if (!availableTrips || availableTrips.length==0) return;
         scope.tripStops = LiteRoutesService.computeLiteStops(availableTrips);
         uiGmapCtrlHandle.mapPromise(scope, ctrl).then(panToStops);
       })
 
-      scope.applyTapBoard = function (values) {
-        scope.disp.popupStop = values.model;
-        // scope.digest();
+      scope.applyTapBoard = function (stop) {
+        scope.disp.popupStop = stop;
       }
 
       scope.closeWindow = function () {

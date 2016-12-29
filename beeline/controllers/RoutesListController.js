@@ -1,28 +1,11 @@
 import _ from 'lodash';
 
-// Return an array of regions covered by a given array of routes
-function getUniqueRegionsFromRoutes(routes) {
-  return _(routes).map(function(route) {return route.regions;})
-  .flatten()
-  .uniqBy('id')
-  .sortBy('name')
-  .value();
-}
-
-// Returns a new array with routes matching the given regionId
-// If regionId is undefined then returns a new array with all the same routes
-function filterRoutesByRegionId(routes, regionId) {
-  return _.filter(routes, function(route) {
-    if (regionId) return _.some(route.regions, {'id': regionId});
-    else return true;
-  });
-}
-
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
-  BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup, LiteRouteSubscriptionService) {
+  BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup,
+  LiteRouteSubscriptionService, $timeout, SearchService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -30,54 +13,49 @@ export default function($scope, $state, UserService, RoutesService, $q,
     routes: [],
     recentRoutes: [],
     selectedRegionId: undefined,
+    filterText: '',
+    stagingFilterText: '',
     filteredActiveRoutes: [],
     filteredRecentRoutes: [],
     nextSessionId: null,
     liteRoutes: [],
     filteredLiteRoutes: [],
+
   };
 
   $scope.$on('$ionicView.beforeEnter', () => {
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
+  $scope.$watch(() => RoutesService.getActivatedKickstarterRoutes(), (rpRoutes) => {
+    $scope.data.activatedKickstarterRoutes = rpRoutes;
+  });
+
+  RoutesService.fetchRoutesWithRoutePass();
+
   // $scope.$watch('data.liteRoutes', updateSubscriptionStatus)
   // $scope.$watch(() => Svc.getSubscriptionSummary(), updateSubscriptionStatus)
   var allLiteRoutesPromise
 
   $scope.refreshRoutes = function (ignoreCache) {
+    RoutesService.fetchRouteCredits(ignoreCache);
+    RoutesService.fetchRoutes(ignoreCache);
+    var routesPromise = RoutesService.fetchRoutesWithRoutePass();
+    var recentRoutesPromise = RoutesService.fetchRecentRoutes();
+    
+    // Lite Routes
     allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
+    var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
     // allLiteRoutesPromise.then(function(allLiteRoutes){
     //   $scope.data.liteRoutes = allLiteRoutes;
     // })
-    var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
     $q.all([allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then((response)=>{
       var allLiteRoutes, liteRouteSubscriptions;
       [allLiteRoutes, liteRouteSubscriptions] = response;
       $scope.data.liteRoutes = _.sortBy(allLiteRoutes, 'label');
     })
 
-    var allRoutesPromise = RoutesService.getRoutes(ignoreCache);
-    var recentRoutesPromise = RoutesService.getRecentRoutes(ignoreCache);
-
-    // Configure the list of available regions
-    allRoutesPromise.then(function(allRoutes) {
-      // Need to sort by time of day rather than by absolute time,
-      // in case we have routes with missing dates (e.g. upcoming routes)
-      $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
-        var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
-
-        var midnightOfTrip = new Date(firstTripStop.time.getTime());
-        midnightOfTrip.setHours(0,0,0,0);
-        return firstTripStop.time.getTime() - midnightOfTrip.getTime();
-      });
-    });
-
-    recentRoutesPromise.then(function(recentRoutes) {
-      $scope.data.recentRoutes = recentRoutes;
-    });
-
-    $q.all([allRoutesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
+    $q.all([routesPromise, recentRoutesPromise, allLiteRoutesPromise, liteRouteSubscriptionsPromise]).then(() => {
       $scope.error = null;
     })
     .catch(() => {
@@ -86,26 +64,67 @@ export default function($scope, $state, UserService, RoutesService, $q,
     .then(() => {
       $scope.$broadcast('scroll.refreshComplete');
     })
-  }
+
+  };
+
+  $scope.$watch(() => RoutesService.getRoutesWithRoutePass(), (allRoutes) => {
+
+    $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
+      var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
+      var midnightOfTrip = new Date(firstTripStop.time.getTime());
+
+      midnightOfTrip.setHours(0,0,0,0);
+      return firstTripStop.time.getTime() - midnightOfTrip.getTime();
+    });
+  })
+
+  $scope.$watchCollection(() => [
+    RoutesService.getRecentRoutes(),
+    RoutesService.getRoutesWithRoutePass(),
+  ], ([recentRoutes, allRoutes]) => {
+    if(recentRoutes && allRoutes){
+      let allRoutesById = _.keyBy(allRoutes, 'id')
+
+      $scope.data.recentRoutes = recentRoutes
+        .map(r => allRoutesById[r.id])
+        .filter(r => r !== undefined)
+    }
+  })
 
   // Filter the displayed routes by selected region
-  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.selectedRegionId'], function([routes, liteRoutes, selectedRegionId]) {
+  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.activatedKickstarterRoutes', 'data.selectedRegionId', 'data.filterText'], function([routes, liteRoutes, activatedKickstarterRoutes, selectedRegionId, filterText]) {
     var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
-    $scope.data.regions = getUniqueRegionsFromRoutes(normalAndLiteRoutes);
-    $scope.data.filteredActiveRoutes = filterRoutesByRegionId(routes, +selectedRegionId);
-    $scope.data.filteredLiteRoutes = filterRoutesByRegionId(liteRoutes, +selectedRegionId);
+    $scope.data.regions = RoutesService.getUniqueRegionsFromRoutes(normalAndLiteRoutes);
+    $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
+    $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
+    $scope.data.filteredActivatedKickstarterRoutes = SearchService.filterRoutes(activatedKickstarterRoutes, +selectedRegionId, filterText);
   });
+
+  // Throttle the actual updating of filter text
+  $scope.updateFilter = _.throttle((value) => {
+    // Some times this function is called synchronously, some times it isn't
+    // Use timeout to ensure that we are always inside a digest cycle.
+    setTimeout(() => {
+      $scope.data.filterText = $scope.data.stagingFilterText;
+      $scope.$digest();
+    }, 0)
+  }, 400, {trailing: true})
 
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block
-  $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes'], function([newActiveRoutes, recentRoutes]) {
+  $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes', 'data.filteredActivatedKickstarterRoutes'], function([newActiveRoutes, recentRoutes, newKickstarterRoutes]) {
+    if(!recentRoutes) return
+      
     $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
     $scope.data.filteredRecentRoutes = recentRoutes.map(
       recent => newActiveRoutes.find(route => route.id === recent.id)
     ).filter(x => x) // Exclude null values (e.g. expired routes)
+    
+    // filter out duplicate ones in recently booked to prevent displaying it too many times
+    $scope.data.filteredRecentRoutes = _.difference($scope.data.filteredRecentRoutes, newKickstarterRoutes);
   });
 
-  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes'],
+  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes', 'data.filteredActivatedKickstarterRoutes'],
     () => {
       $ionicScrollDelegate.resize();
   });
@@ -127,11 +146,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
   );
 
   // Don't override the caching in main.js
-  var firstRun = true;
-  $scope.$watch(() => UserService.getUser() && UserService.getUser().id,
-    () => {
-      $scope.refreshRoutes(!firstRun);
-      firstRun = false;
-    });
+  $scope.refreshRoutes();
 
 }

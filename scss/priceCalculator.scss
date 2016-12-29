@@ -1,18 +1,13 @@
 price-calculator {
-  .price-table {
+  .booking-info {
     width: 100%;
+    td{
+      text-align: left;
+    }
+    /* for 2 column  */
     &.prices {
       td {
         width: 50%;
-      }
-    }
-    &.totals {
-      //border-spacing: 5px;
-      border-collapse: separate;
-      td,
-      th {
-        width: 33%;
-        vertical-align: middle;
       }
     }
     td,
@@ -26,7 +21,7 @@ price-calculator {
     background: $light;
     position: absolute;
     text-align: center;
-    padding: 1em 0;
+    padding: 2em 0;
     width: 100%;
     left: 0;
     top: auto;
@@ -39,15 +34,28 @@ price-calculator {
       }
     }
   }
-
+  .item-subtitle {
+    margin-top: $padding-large-vertical*2;
+  }
 }
 .date-price-calculator{
-  h3 {
-    color: $normal-grey;
-    padding-top: 20px;
-    padding-bottom: 10px;
-  }
   table {
-    margin-bottom: 10px;
+    margin-bottom: $content-padding;
+    td{
+      text-align: center;
+    }
   }
+}
+
+.promoCredits{
+  .small-button{
+    margin-top: 0px;
+  }
+  .item-input-inset{
+    padding: 0 $content-padding;
+    .item-input-wrapper{
+      padding: $item-padding-small $item-padding-base;
+    }
+  }
+
 }

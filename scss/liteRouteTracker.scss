@@ -1,22 +1,118 @@
 /* ---------- tracker PAGE ---------- */
 #lite_route_tracker {
+  ion-content.lite-route-tracker-content {
+    display: flex;
+    flex-direction: column;
+
+    .lite-route-tracker-tab {
+      flex-direction: column;
+      display: flex;
+      flex: 1 1 auto;
+    }
+  }
 
   .tab-item {
     text-transform: uppercase;
+
     &.active {
       opacity: 1;
     }
+
     &:not(.active) {
       opacity: 0.3;
     }
   }
-
   // Have the map fill the container
-  .angular-google-map-container {
-    position: absolute;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 0;
+  ui-gmap-google-map {
+    flex: 1 1 auto;
+    display: block;
+    position: relative;
+
+    .angular-google-map {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+
+      .angular-google-map-container {
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 0;
+      }
+    }
+  }
+
+  // Position the locate me button near the bottom right
+  .message-locate-div {
+    flex: 0 0 0;
+    overflow: visible;
+    position: relative;
+
+    .locate-button {
+      position: absolute;
+      bottom: 2.5*$content-padding;
+      right: 2.5*$content-padding;
+
+      &.fadeable {
+        z-index: 50;
+        opacity: 0.1;
+        transition: opacity 0.1s linear;
+
+        &:hover {
+          opacity: 1.0;
+          transition: opacity 0.1s linear;
+        }
+      }
+    }
+    .announcement {
+      /* flex: 0 0 50px; */
+      position: absolute;
+      background: #000;
+      opacity: 0.7;
+      width: 90%;
+      bottom: 2*$content-padding;
+      right: 5%;
+      left: 5%;
+      height: auto;
+      box-shadow: 1px 1px 1px #aaa;
+      color: $light;
+      vertical-align: baseline;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      padding: $content-padding*2;
+      /*       margin: 0 auto; */
+      .icon {
+        font-size: 32px;
+        margin-right: $content-padding;
+      }
+    }
+
+  }
+}
+
+progress.fakeProgressBar {
+  -webkit-appearance: progress-bar;
+  appearance: none;
+  margin: 0;
+  height: 3px;
+  background-color: #eee;
+  border: none;
+
+  &[value] {
+    background-color: #eee;
+  }
+
+  &::-moz-progress-bar {
+    background: lighten($hint-color, 20%);
+  }
+
+  &::-webkit-progress-value {
+    background: lighten($hint-color, 20%);
+  }
+
+  &::-webkit-progress-bar {
+    background: #eee;
   }
 }

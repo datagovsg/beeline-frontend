@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+<svg width="27px" height="26px" viewBox="0 0 27 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.2 (33826) - http://www.bohemiancoding.com/sketch -->
     <title>MenuRoutesActive</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="1MainTabMap" transform="translate(-32.000000, -616.000000)" stroke="#FFE76E">
-            <g id="Menu-Bar" transform="translate(0.000000, 603.000000)">
-                <g id="Icons" transform="translate(27.000000, 11.500000)">
-                    <g id="MenuRoutes" transform="translate(5.000000, 2.000000)">
-                        <g id="MenuRoutesActive" transform="translate(0.734375, 0.367188)">
-                            <g id="Group-6">
-                                <path d="M3.37104531,16.3351541 L3.37104531,6.90156033 C3.37104531,4.46895096 5.21063802,2.49921658 7.47989948,2.49921658 C9.7503349,2.49921658 11.5887536,4.46895096 11.5887536,6.90156033 L11.5887536,16.9640603 C11.5887536,19.3966697 13.4283464,21.3664041 15.6976078,21.3664041 C17.9680432,21.3664041 19.806462,19.3966697 19.806462,16.9640603 L19.806462,7.53046658" id="Stroke-160"></path>
-                                <path d="M22.885,3.72671875 C22.885,5.4625 21.47625,6.87125 19.7404687,6.87125 C18.0046875,6.87125 16.5959375,5.4625 16.5959375,3.72671875 C16.5959375,1.9909375 18.0046875,0.5821875 19.7404687,0.5821875 C21.47625,0.5821875 22.885,1.9909375 22.885,3.72671875 L22.885,3.72671875 Z" id="Stroke-1104"></path>
-                                <path d="M6.5334375,20.0782813 C6.5334375,21.8140625 5.1246875,23.2228125 3.38890625,23.2228125 C1.653125,23.2228125 0.244375,21.8140625 0.244375,20.0782813 C0.244375,18.3425 1.653125,16.93375 3.38890625,16.93375 C5.1246875,16.93375 6.5334375,18.3425 6.5334375,20.0782813 L6.5334375,20.0782813 Z" id="Stroke-1104"></path>
+    <g id="Add-Payment-Method" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Main_Settings_Payment-Method-Added" transform="translate(-32.000000, -928.000000)" stroke="#FFE76E">
+            <g id="Menu-Bar" transform="translate(0.000000, 914.000000)">
+                <g id="Icons" transform="translate(27.000000, 12.500000)">
+                    <g id="MenuRoutes" transform="translate(5.000000, 1.000000)">
+                        <g id="MenuRoutesActive">
+                            <g transform="translate(0.734375, 0.367188)" id="Group-6">
+                                <g>
+                                    <path d="M3.66417969,17.7556023 L3.66417969,7.50169601 C3.66417969,4.85755539 5.66373698,2.71653976 8.13032552,2.71653976 C10.5981901,2.71653976 12.5964714,4.85755539 12.5964714,7.50169601 L12.5964714,18.439196 C12.5964714,21.0833366 14.5960286,23.2243523 17.0626172,23.2243523 C19.5304818,23.2243523 21.528763,21.0833366 21.528763,18.439196 L21.528763,8.18528976" id="Stroke-160"></path>
+                                    <path d="M24.875,4.05078125 C24.875,5.9375 23.34375,7.46875 21.4570312,7.46875 C19.5703125,7.46875 18.0390625,5.9375 18.0390625,4.05078125 C18.0390625,2.1640625 19.5703125,0.6328125 21.4570312,0.6328125 C23.34375,0.6328125 24.875,2.1640625 24.875,4.05078125 L24.875,4.05078125 Z" id="Stroke-1104" fill="#FFE76E"></path>
+                                    <path d="M7.1015625,21.8242188 C7.1015625,23.7109375 5.5703125,25.2421875 3.68359375,25.2421875 C1.796875,25.2421875 0.265625,23.7109375 0.265625,21.8242188 C0.265625,19.9375 1.796875,18.40625 3.68359375,18.40625 C5.5703125,18.40625 7.1015625,19.9375 7.1015625,21.8242188 L7.1015625,21.8242188 Z" id="Stroke-1104" fill="#FFE76E"></path>
+                                </g>
                             </g>
                         </g>
                     </g>

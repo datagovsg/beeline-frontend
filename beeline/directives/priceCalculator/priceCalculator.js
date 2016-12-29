@@ -11,6 +11,7 @@ export default [
       scope: {
         'booking': '=',
         'price': '=?',
+        'showRouteCredits': '<',
       },
       link: function(scope, elem, attr) {
         scope.isCalculating = 0;
@@ -67,11 +68,13 @@ export default [
 
         var latestRequest = null;
         scope.$watch(
-          () => _.pick(scope.booking, ['selectedDates', 'promoCode' /* qty */]),
+          () => _.pick(scope.booking, ['selectedDates', 'promoCode', 'useRouteCredits' /* qty, promoCode */]),
           async function () {
             assert(scope.booking.routeId);
             if (!scope.booking.route) {
               scope.booking.route = await RoutesService.getRoute(scope.booking.routeId)
+              let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
+              scope.booking.route.ridesRemaining = routeToRidesRemainingMap[scope.booking.routeId]
             }
 
             // Provide a price summary first (don't count total due)
@@ -89,6 +92,9 @@ export default [
                 return;
               scope.priceInfo = priceInfo;
               scope.price = priceInfo.totalDue;
+              scope.ridesUsed = scope.booking.useRouteCredits 
+                ? Math.min(scope.booking.route.ridesRemaining, priceInfo.tripCount)
+                : 0
               scope.errorMessage = null;
             })
             .catch((error) => {

@@ -11,18 +11,17 @@ export default function CompanyService(UserService, $ionicModal, $rootScope, $q)
   return {
     getCompany: function(id, ignoreCache) {
       assert(typeof id === 'number');
-      if (companyCache[id] && !ignoreCache) return $q.resolve(companyCache[id]);
-      return UserService.beeline({
+      if (companyCache[id] && !ignoreCache) return companyCache[id];
+
+      return companyCache[id] = UserService.beeline({
         url: '/companies/' + id,
         method: 'GET',
       })
       .then(function(response) {
-        companyCache[id] = response.data;
-        return companyCache[id];
+        return response.data;
       });
     },
     showTerms: function (id) {
-
       termsScope = $rootScope.$new();
       termsScope.termsModal = $ionicModal.fromTemplate(
         require('../templates/termsModal.html'),

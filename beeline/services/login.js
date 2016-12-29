@@ -1,5 +1,5 @@
 import loginModalTemplate from '../templates/login-modal.html';
-const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$/;
+const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$|^########$/;
 
 export default function ($rootScope, $ionicModal, Legalese) {
   this.show = () => {

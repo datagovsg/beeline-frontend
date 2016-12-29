@@ -16,10 +16,15 @@
         <span class="tab-title-large"><i class="track-moreInfo"></i>Info</span>
       </a>
   </div>
-  <ion-content class="has-tabs-top" scroll=false>
-
+  <ion-content class="has-tabs-top lite-route-tracker-content" scroll=false>
+    <daily-trips-broker trip-label="liteRoute.label"
+                 daily-trips="data.todayTrips">
+    </daily-trips-broker>
+    <in-service-window available-trips="data.todayTrips"
+                       in-service-window="data.inServiceWindow">
+    </in-service-window>
     <!-- Map Tab -->
-    <div ng-show="activeTab===0">
+    <div ng-show="activeTab===0" class="lite-route-tracker-tab">
       <route-item class="lite item lite-tracked">
         <route-item-bus-number>
           {{ liteRoute.label }}
@@ -40,18 +45,46 @@
           {{ liteRoute.to }}
         </route-item-end-location>
       </route-item>
-      <h2 class="item" ng-if="!hasTrips">
-        There is no service at the moment.
-      </h2>
+      <div class="item item-icon-left item-text-wrap" ng-if="!hasTrips">
+        <span class="icon ion-android-alert"></span>
+        There is no bus service scheduled for today.
+      </div>
+      <div class="item item-icon-left item-text-wrap" ng-if="hasTrips && data.inServiceWindow===false">
+        <span class="icon ion-android-alert"></span>
+        The bus service will only be available from {{ liteRoute.startTime | formatTime}} to {{ liteRoute.endTime | formatTime}}.
+      </div>
+      <div class="item item-icon-left item-text-wrap" ng-if="hasTrips && data.inServiceWindow && data.hasTrackingData === false">
+        <span class="icon ion-android-alert"></span>
+        The bus location tracking is not available at the moment.
+      </div>
+      <fake-progress-bar max="100" interval="100"></fake-progress-bar>
       <ui-gmap-google-map center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
         <my-location></my-location>
         <map-poly-route route-path="map.lines.route.path"></map-poly-route>
         <map-bus-poly-route route="liteRoute"
-                            available-trips="availableTrips"></map-bus-poly-route>
-        <map-bus-stops available-trips="availableTrips"
+                            available-trips="data.todayTrips"
+                            has-tracking-data="data.hasTrackingData"
+                            route-message="data.announcement"></map-bus-poly-route>
+        <map-bus-stops available-trips="data.nextTrips"
                        is-lite-frequent="liteRoute['tags'].includes('lite-frequent')">
         </map-bus-stops>
       </ui-gmap-google-map>
+      <div class="message-locate-div" ng-if="!data.announcement.trim()">
+        <img class="locate-button"
+             src="./img/MapButtonLocateMe.svg"
+             on-tap="locateMe()"></img>
+      </div>
+      <div class="message-locate-div" ng-show="data.announcement.trim()">
+        <div class="announcement">
+          <span class="icon ion-chatbox-working"></span>
+            <div class="message">
+              {{data.announcement.trim()}}
+            </div>
+        </div>
+        <img class="locate-button fadeable"
+             src="./img/MapButtonLocateMe.svg"
+             on-tap="locateMe()"></img>
+      </div>
     </div>
 
     <!-- Info Tab -->
@@ -63,7 +96,7 @@
       <div class="item-text-wrap"
            ng-click="disp.showTerms()">
         <div class="item">
-          Terms and Conditions
+          Terms and Conditions of Service
         </div>
       </div>
       <div class="item-text-wrap"

@@ -83,7 +83,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.bookingPickup', {
-    url: '/booking/:routeId/stops?boardStop&alightStop&sessionId',
+    url: '/booking/:routeId/stops?boardStop&alightStop&sessionId&creditTag',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-stops.html',
@@ -96,7 +96,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.booking-dates', {
-    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId',
+    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId&creditTag',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-dates.html',
@@ -108,7 +108,7 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
   .state('tabs.booking-summary', {
-    url: '/booking/:routeId/summary?boardStop&alightStop&selectedDates&sessionId',
+    url: '/booking/:routeId/summary?boardStop&alightStop&selectedDates&sessionId&creditTag',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-summary.html',
@@ -201,6 +201,71 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-tickets': {
         templateUrl: 'templates/lite-route-tracker.html',
         controller: 'LiteRouteTrackerController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  // ////////////////////////////////////////////////////////////////////////////
+  // Main interface, Kickstarter Tab
+  // ////////////////////////////////////////////////////////////////////////////
+  .state('tabs.crowdstart', {
+    url: '/crowdstart',
+    views: {
+      'tab-crowdstart': {
+        templateUrl: 'templates/kickstarter.html',
+        controller: 'KickstarterController'
+      }
+    }
+  })
+
+  .state('tabs.crowdstart-recap', {
+    url: '/crowdstart/:routeId/recap',
+    views: {
+      'tab-crowdstart': {
+        templateUrl: 'templates/kickstarter-recap.html',
+        controller: 'KickstarterRecapController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  .state('tabs.crowdstart-detail', {
+    url: '/crowdstart/:routeId/detail',
+    views: {
+      'tab-crowdstart': {
+        templateUrl: 'templates/kickstarter-detail.html',
+        controller: 'KickstarterDetailController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  .state('tabs.crowdstart-summary', {
+    url: '/crowdstart/:routeId/summary?bidPrice',
+    views: {
+      'tab-crowdstart': {
+        templateUrl: 'templates/kickstarter-summary.html',
+        controller: 'KickstarterSummaryController'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
+  .state('tabs.crowdstart-commit', {
+    url: '/crowdstart/:routeId/commit',
+    views: {
+      'tab-crowdstart': {
+        templateUrl: 'templates/kickstarter-commit.html',
+        controller: 'KickstarterCommitController'
       }
     },
     data: {
