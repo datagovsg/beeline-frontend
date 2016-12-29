@@ -17,16 +17,26 @@ async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserSer
 
 		if($scope.isValidReferral){
 			var query = queryString.stringify({code: $scope.refCode})
+			
+			try {
+				var refCodeOwner = await UserService.beeline({
+					method: 'GET',
+					url: '/promotions/refCodeOwner?'+query,
+				});
 
-			var refCodeOwner = await UserService.beeline({
-				method: 'GET',
-				url: '/promotions/refCodeOwner?'+query,
-			});
+				if(refCodeOwner.data){
+					$scope.refCodeOwner = refCodeOwner.data	
+				} else {
+					$scope.isValidReferral = false;
+				}
 
-			if(refCodeOwner.data){
-				$scope.refCodeOwner = refCodeOwner.data	
-			} else {
-				$scope.isValidReferral = false;
+			} catch (error){
+				$ionicPopup.alert({
+					title: error.data.message,
+					subTitle: error.statusText
+				});
+
+				$scope.isValidReferral = false
 			}
 		} 
 
