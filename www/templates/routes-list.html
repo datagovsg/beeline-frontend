@@ -1,4 +1,4 @@
-<ion-view class="routes-list" view-title="Routes">
+<ion-view class="routes-list" view-title="Search">
   <ion-content scroll="false">
     <div class="item item-text-wrap" ng-if="error">
       <i class="icon ion-alert-circled"></i>
@@ -41,49 +41,7 @@
                   sessionId: data.nextSessionId
                 })"
                 class="item-text-wrap item-icon-right">
-        <route-item>
-          <route-item-bus-number>
-            {{ route.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ route.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ route | routeStartTime | formatTime:true }}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ route | routeEndTime | formatTime:true }}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ route.to }}
-          </route-item-end-location>
-
-          <route-item-additional-info>
-            <company-info-broker company-id="route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="mini-info">
-                {{companyInfo.name}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="mini-info">
-                {{route.schedule}}
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
+        <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
@@ -98,50 +56,7 @@
                   label: route.label,
                 })"
                 class="item-icon-right">
-        <route-item class="lite"
-                    ng-class="{'lite-tracked': route.isSubscribed}">
-          <route-item-bus-number>
-            {{ route.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ route.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ route.startTime | formatTime}}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ route.endTime | formatTime}}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ route.to }}
-          </route-item-end-location>
-
-          <route-item-additional-info>
-            <company-info-broker company-id="route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="mini-info">
-                {{companyInfo.name}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="mini-info">
-                {{route.schedule}}
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
+        <lite-route route="route"></lite-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
@@ -151,49 +66,7 @@
                   sessionId: data.nextSessionId
                 })"
                 class="item-text-wrap item-icon-right">
-        <route-item>
-          <route-item-bus-number>
-            {{ route.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ route.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ route | routeStartTime | formatTime:true }}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ route | routeEndTime | formatTime:true }}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ route.to }}
-          </route-item-end-location>
-
-          <route-item-additional-info>
-            <company-info-broker company-id="route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="mini-info">
-                {{companyInfo.name}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="mini-info">
-                {{route.schedule}}
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
+        <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 

@@ -1,0 +1,46 @@
+@import "scss/routeItem"; /* import the busnum mixin */
+
+#pg-search {
+  ui-gmap-google-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    .angular-google-map, .angular-google-map-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
+  .search-inputs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    label {
+      margin: 0.5em;
+    }
+  }
+
+  .go-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0.5em;
+  }
+
+  .crosshair {
+    position: absolute;
+    background-color: #000;
+    left: 50%;
+    bottom: 50%;
+    color: white;
+    padding: 0.5em;
+  }
+}

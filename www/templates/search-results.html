@@ -1,0 +1,31 @@
+<ion-view id="pg-search" view-title="Search">
+  <ion-content scroll="false">
+    <div class="item item-divider">
+      Running Routes
+    </div>
+
+    <ion-spinner ng-if="!runningRoutes"></ion-spinner>
+    <div class="item" ng-if="runningRoutes" ng-repeat="route in runningRoutes"
+        ui-sref="tabs.bookingPickup({
+          routeId: route.id,
+          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
+          alightStop: data.recentRoutesById[route.id].alightStopStopId,
+          sessionId: data.nextSessionId
+        })">
+      <regular-route route="route"></regular-route>
+    </div>
+
+    <div class="item item-divider">
+      Crowdstart Routes
+    </div>
+
+    <ion-spinner ng-if="!crowdstartRoutes"></ion-spinner>
+    <div class="item" ng-if="crowdstartRoutes" ng-repeat="route in crowdstartRoutes"
+    ui-sref="tabs.crowdstart-detail({
+                               routeId: route.id
+                              })">
+
+      <kickstart-route route="route"></kickstart-route>
+    </div>
+  </ion-content>
+</ion-view>

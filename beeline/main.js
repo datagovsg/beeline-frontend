@@ -84,6 +84,8 @@ var app = angular.module('beeline', [
 .controller('KickstarterSummaryController', require('./controllers/KickstarterSummaryController.js').default)
 .controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
+.controller('SearchController', require('./controllers/SearchController.js').default)
+.controller('SearchResultsController', require('./controllers/SearchResultsController.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
@@ -109,6 +111,10 @@ var app = angular.module('beeline', [
 .directive('fakeProgressBar', require('./directives/fakeProgressBar.js').default)
 .directive('inServiceWindow', require('./directives/inServiceWindow.js').default)
 .directive('crowdstartShare', require('./directives/crowdstartShare.js').default)
+.directive('gmapAutocomplete', require('./directives/autocomplete.js').default)
+.directive('regularRoute', require('./directives/routeItem/regularRoute.js').default)
+.directive('kickstartRoute', require('./directives/routeItem/kickstartRoute.js').default)
+.directive('liteRoute', require('./directives/routeItem/liteRoute.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
@@ -123,7 +129,7 @@ var app = angular.module('beeline', [
 })
 .config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
-    client: 'gme-infocommunications',
+    key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
 //        v: ', //defaults to latest 3.X anyhow
     libraries: 'places,geometry'
   });
