@@ -26,6 +26,8 @@ export default function($scope, $state, $stateParams, $http, SuggestionService,
     }
 
     $scope.data[`${a}Text`] = `${center.lat()}, ${center.lng()}`
+    $scope.disp.active = null;
+    $scope.disp.showCrosshair = false;
 
     var promise = $scope.disp.latestRequest = UserService.beeline({
       url: '/onemap/revgeocode?' + querystring.stringify({
@@ -51,10 +53,7 @@ export default function($scope, $state, $stateParams, $http, SuggestionService,
     })
     .finally(() => {
       if (promise !== $scope.disp.latestRequest) return;
-
       $scope.disp.latestRequest = null;
-      $scope.disp.active = null;
-      $scope.disp.showCrosshair = false;
     })
   }
 
