@@ -43,4 +43,13 @@
     color: white;
     padding: 0.5em;
   }
+
+  .suggest-form{
+    margin-top: $item-padding-base*3;
+    margin-bottom: $item-padding-base*3;
+  }
+
+  .primary-button{
+    margin-bottom: $item-padding-base*2;
+  }
 }

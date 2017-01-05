@@ -1,12 +1,15 @@
-<ion-view id="pg-search" view-title="Search">
+<ion-view id="pg-search" view-title="Search Results">
   <ion-content scroll="false">
-    <div class="item item-divider">
-      Running Routes
+    <div class="item">
+      # routes found.
     </div>
-
-    <ion-spinner ng-if="!runningRoutes"></ion-spinner>
-    <div class="item" ng-if="runningRoutes" ng-repeat="route in runningRoutes"
-        ui-sref="tabs.bookingPickup({
+    <div class="item item-divider">
+      Available Running Routes
+    </div>
+    <div class="item text-center" ng-if="!runningRoutes">
+      <ion-spinner class="text-center"></ion-spinner>
+    </div>
+    <div class="item" ng-if="runningRoutes" ng-repeat="route in runningRoutes" ui-sref="tabs.bookingPickup({
           routeId: route.id,
           boardStop:  data.recentRoutesById[route.id].boardStopStopId,
           alightStop: data.recentRoutesById[route.id].alightStopStopId,
@@ -18,14 +21,52 @@
     <div class="item item-divider">
       Crowdstart Routes
     </div>
-
-    <ion-spinner ng-if="!crowdstartRoutes"></ion-spinner>
-    <div class="item" ng-if="crowdstartRoutes" ng-repeat="route in crowdstartRoutes"
-    ui-sref="tabs.crowdstart-detail({
+    <div class="item text-center" ng-if="!crowdstartRoutes">
+      <ion-spinner class="text-center"></ion-spinner>
+    </div>
+    <div class="item" ng-if="crowdstartRoutes" ng-repeat="route in crowdstartRoutes" ui-sref="tabs.crowdstart-detail({
                                routeId: route.id
                               })">
 
       <kickstart-route route="route"></kickstart-route>
+    </div>
+    <div class="item item-divider">
+      Tracking-Only Routes
+    </div>
+    <div class="item text-center" ng-if="!crowdstartRoutes">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    </div>
+    <div class="item item-divider">
+      Suggest a new Route
+    </div>
+    <div class="item item-text-wrap">
+      <p class="no-suggestion">
+       Can't find a suitable route? Please submit a route suggestion.</p>
+      <div>
+      Origin <br />
+      Destination
+      </div>
+      <div class = "suggest-form">
+
+        <label class="item item-input item-icon-right">
+          Time at Destination:
+          <input type="text">
+          <!-- <i class="icon ion-android-close" ng-click="data.originText = ''"></i> -->
+        </label>
+
+        <label class="item item-input item-icon-right">
+        Email Address
+          <input type="text"/>
+          <!-- <i class="icon ion-android-close" ng-click="data.destinationText = ''"></i> -->
+        </label>
+
+      </div>
+  <button class="button primary-button button-item">
+    Submit Suggestion
+  </button>
+      </div>
     </div>
   </ion-content>
 </ion-view>

@@ -1,4 +1,4 @@
-<ion-view id="pg-search" view-title="Search">
+<ion-view id="pg-search" view-title="Search Routes">
   <ion-content scroll="false">
     <ui-gmap-google-map
         center="map.center"
@@ -37,9 +37,9 @@
     </div>
 
     <div class="go-button">
-      <button class="button button-full button-positive" ng-click="goSearch()"
+      <button class="button primary-button button-item" ng-click="goSearch()"
           ng-disabled="!data.origin || !data.destination">
-        Take me there! &gt; &gt; &gt; &gt;
+        Search Routes
       </button>
     </div>
   </ion-content>
