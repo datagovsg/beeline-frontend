@@ -29,7 +29,7 @@ export default [
 
     $scope.book.routeId = +$stateParams.routeId;
 
-    $scope.book.creditTag = "kickstart-"+$scope.book.routeId
+    $scope.book.creditTag = "crowdstart-"+$scope.book.routeId
 
     $scope.modalMap = MapOptions.defaultMapOptions();
 
