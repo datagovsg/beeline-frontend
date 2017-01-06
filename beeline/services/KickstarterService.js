@@ -169,7 +169,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
       return bidsCache.then(()=>{
         return kickstarterSummary &&
                kickstarterSummary.length>0 &&
-               kickstarterSummary.find(x=>x.ticketStatus == 'bidded') != null;
+               kickstarterSummary.find(x=>x.ticketStatus === 'bidded');
       })
     },
 
