@@ -55,11 +55,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
     kickstarter.passExpired = false;
     var firstTripDate = new Date(kickstarter.trips[0].date);
     var passExpiryTime = new Date(firstTripDate.getFullYear(), firstTripDate.getMonth()+1, firstTripDate.getDate()).getTime();
-    if (now >= passExpiryTime)
-      kickstarter.passExpired = true;
-    else
-      kickstarter.passExpired = false;
-
+    kickstarter.passExpired =  (now >= passExpiryTime);
     updateStatus(kickstarter);
   }
   return kickstarterRoutes;
