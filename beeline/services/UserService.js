@@ -296,8 +296,8 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       // Is the user name null?
       await checkNewUser(user);
       if(refCode && refCodeOwner){
-        await saveRefCode(refCode, refCodeOwner)  
-      }
+        await applyRefCode(refCode)  
+      } 
     }
     // If an error occurs at any point stop and alert the user
     catch(error) {
@@ -315,13 +315,12 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // Input:
   // - refCode - String: referral code
   // - refCodeOwner - Obj: {name, referrerId}
-  async function saveRefCode(refCode, refCodeOwner){
+  async function applyRefCode(refCode){
     return beelineRequest({
-      method: "GET",
-      url: "/user/referralCode",
+      method: "POST",
+      url: "/user/applyRefCode",
       data: {
         refCode: refCode,
-        refCodeOwner: refCodeOwner,
       }
     })
   }
@@ -527,7 +526,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     promptLogOut: promptLogOut,
     registerViaReferralWelcome: registerViaReferralWelcome,
     verifySession: verifySession,
-    saveRefCode: saveRefCode,
+    applyRefCode: applyRefCode,
     verifySession: verifySession,
     userEvents: userEvents,
     savePaymentInfo: savePaymentInfo,
