@@ -317,7 +317,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // - refCodeOwner - Obj: {name, referrerId}
   async function saveRefCode(refCode, refCodeOwner){
     return beelineRequest({
-      method: "PUT",
+      method: "GET",
       url: "/user/referralCode",
       data: {
         refCode: refCode,
