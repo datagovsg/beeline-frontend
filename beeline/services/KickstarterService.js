@@ -114,7 +114,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
           return   {routeId: bid.id,
                     boardStopId: bid.bid.tickets[0].boardStop.stopId,
                     alightStopId: bid.bid.tickets[0].alightStop.stopId,
-                    bidPrice: bid.bid.userOptions.price}
+                    bidPrice: bid.bid.userOptions.price,
+                    ticketStatus: bid.bid.tickets[0].status}
         })
         bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
         return kickstarterSummary;
@@ -166,7 +167,9 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
     //need to return a promise
     hasBids: function() {
       return bidsCache.then(()=>{
-        return kickstarterSummary && kickstarterSummary.length>0;
+        return kickstarterSummary &&
+               kickstarterSummary.length>0 &&
+               kickstarterSummary.find(x=>x.ticketStatus == 'bidded') != null;
       })
     },
 
@@ -191,7 +194,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
           routeId: route.id,
           boardStopId: boardStopId,
           alightStopId: alightStopId,
-          bidPrice: bidPrice
+          bidPrice: bidPrice,
+          ticketStatus: 'bidded'
         }])
         return response.data;
       })
