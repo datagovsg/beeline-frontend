@@ -527,7 +527,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     registerViaReferralWelcome: registerViaReferralWelcome,
     verifySession: verifySession,
     applyRefCode: applyRefCode,
-    verifySession: verifySession,
     userEvents: userEvents,
     savePaymentInfo: savePaymentInfo,
     updatePaymentInfo: updatePaymentInfo,
