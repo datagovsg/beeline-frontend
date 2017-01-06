@@ -80,7 +80,7 @@ var updateAfterBid = function(route, price) {
   updateStatus(route);
 }
 
-export default function KickstarterService($http, UserService,$q, $rootScope) {
+export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService) {
   var kickstarterRoutesCache;
   var bidsCache;
   var kickstarterSummary = null, bidsById = null;
@@ -89,7 +89,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
   UserService.userEvents.on('userChanged', () => {
     fetchBids(true);
     //to load route credits
-    UserService.fetchRouteCredits(true);
+    RoutesService.fetchRoutePassCount(true);
   })
 
   //first load

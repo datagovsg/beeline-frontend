@@ -59,7 +59,7 @@ export default [
 
     $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId),
       ()=>KickstarterService.getBidInfo($scope.book.routeId),
-      ()=>UserService.getRouteCredits($scope.book.creditTag)],
+      ()=>RoutesService.getRouteCredits($scope.book.creditTag)],
       ([route, bid, credit])=>{
         if (!route) return;
         $scope.book.route = route;
