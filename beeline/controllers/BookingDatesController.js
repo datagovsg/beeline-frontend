@@ -55,12 +55,23 @@ export default [
     loadTickets();
 
     var routePromise = loadRoutes();
-    $scope.book.creditTag = $stateParams.creditTag
-    var routeCreditsPromise = UserService.fetchRouteCredits()
-    $q.all([routePromise, routeCreditsPromise]).then(function(values){
-      let creditsAvailable = parseFloat(values[1][$scope.book.creditTag])
-      let ticketPrice = $scope.book.route.trips[0].priceF
-      $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
+
+    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
+    $q.all([routePromise, ridesRemainingPromise]).then(function(values){
+      let ridesRemainingMap = values[1]
+      $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
+    })
+
+    var routeCreditsPromise = RoutesService.fetchRouteCredits()
+    $q.all([routePromise, routeCreditsPromise]).then(([route, routeCredits])=>{
+      let routeCreditTags = _.keys(routeCredits);
+      let notableTags = _.intersection(route.tags, routeCreditTags)
+
+      if(notableTags.length === 1){
+        $scope.book.creditTag = notableTags[0]
+      } else {
+        console.log("Error: Route has incorrect number of tags.")
+      }
     })
 
     $scope.$watch(()=>UserService.getUser(), loadTickets);
@@ -144,6 +155,7 @@ export default [
         // Route
         $scope.book.route = route;
         updateCalendar(); // updates availabilityDays
+        return route
       }));
 
 

@@ -86,14 +86,12 @@ export default [
       computeStops(stopOptions);
     });
 
-    $scope.book.creditTag = $stateParams.creditTag
-    var routeCreditsPromise = UserService.fetchRouteCredits()
-    $q.all([routePostProcessingPromise, routeCreditsPromise]).then(function(values){
-      let creditsAvailable = parseFloat(values[1][$scope.book.creditTag])
-      let ticketPrice = $scope.book.route.trips[0].priceF
-      $scope.book.route.ridesRemaining = Math.floor(parseFloat(creditsAvailable)/ticketPrice)
+    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
+
+    $q.all([routePromise, ridesRemainingPromise]).then(function(values){
+      let ridesRemainingMap = values[1]
+      $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
-    
 
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([gmapIsReady, routePromise])
