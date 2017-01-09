@@ -33,6 +33,8 @@ export default [
       selectedDates: [],
       invalidStopDates: [],
       useRouteCredits: true,
+      useReferralCredits: false,
+      applyCredits: false,
     };
     // Display Logic;
     $scope.disp = {
