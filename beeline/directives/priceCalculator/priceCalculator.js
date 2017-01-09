@@ -3,8 +3,8 @@ import assert from 'assert';
 const queryString = require('querystring')
 
 export default [
-  'BookingService', 'RoutesService', 'UserService', '$ionicPopup',
-  function(BookingService, RoutesService, UserService, $ionicPopup) {
+  'BookingService', 'RoutesService', 'UserService', '$ionicPopup', 'CreditsService',
+  function(BookingService, RoutesService, UserService, $ionicPopup, CreditsService) {
     return {
       restrict: 'E',
       template: priceCalculatorTemplate,
@@ -64,11 +64,18 @@ export default [
         //   } 
         // }
 
-
+        var userCreditsPromise = CreditsService.fetchUserCredits().then((userCredits) => {
+          console.log("UserCreds:", userCredits)
+          scope.userCredits = userCredits
+        });
+        var referralCreditsPromise = CreditsService.fetchReferralCredits().then((referralCredits) => {
+          console.log("ReferralCreds:", referralCredits)
+          scope.referralCredits = referralCredits
+        });
 
         var latestRequest = null;
         scope.$watch(
-          () => _.pick(scope.booking, ['selectedDates', 'useRouteCredits', /* 'promoCode', qty */]),
+          () => _.pick(scope.booking, ['selectedDates', 'useRouteCredits', 'applyCredits', 'useReferralCredits', 'promoCode'/* , qty */]),
           async function () {
             assert(scope.booking.routeId);
             if (!scope.booking.route) {
