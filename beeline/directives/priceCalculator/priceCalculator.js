@@ -11,7 +11,7 @@ export default [
       scope: {
         'booking': '=',
         'price': '=?',
-        'showRouteCredits': '<',
+        'showCredits': '<',
       },
       link: function(scope, elem, attr) {
         scope.isCalculating = 0;
