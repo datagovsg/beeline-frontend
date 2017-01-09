@@ -96,7 +96,7 @@
       </tr>
       <tr ng-if="priceInfo.credits && priceInfo.credits.length > 0" ng-repeat="credits in priceInfo.credits">
         <td>General Credits - Using {{ credits.debit || 0 | currency }} of {{ userCredits || 0 | currency }} </td>
-        <td class="right">{{(-userCredits.debit || 0) | currency}}</td>
+        <td class="right">{{(-credits.debit || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
         <td>{{discount.discount.description}}: {{discount.discount.code}}</td>
