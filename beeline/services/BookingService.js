@@ -64,6 +64,8 @@ export default function(UserService, CompanyService, RoutesService, $http) {
           tripCount: trips.length,
           pricesPerTrip: this.summarizePrices(booking),
           routeCredits: txItems['routeCredits'],
+          referralCredits: txItems['referralCredits'],
+          credits: txItems['credits'],
           discounts: txItems.discount,
           totalBeforeDiscount,
         };
