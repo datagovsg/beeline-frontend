@@ -50,6 +50,11 @@ export default function CreditsService($http, UserService, $q) {
 			return referralCredits
 		},
 
+		// get referral credits associated with user
+		// input:
+		// - ignoreCache - boolean
+		// output: 
+		// - Promise containing amount of referral credits associated with user
 		fetchReferralCredits: function(ignoreCache){
 			if(!ignoreCache && referralCreditsCache) {
 				return referralCreditsCache
