@@ -256,6 +256,8 @@ export default [
             trips: BookingService.prepareTrips($scope.book),
             promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
             creditTag: $scope.book.creditTag,
+            applyCredits: $scope.book.applyCredits,
+            useReferralCredits: $scope.book.useReferralCredits,
           }),
         });
 
