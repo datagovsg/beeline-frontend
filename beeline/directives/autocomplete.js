@@ -4,7 +4,9 @@ export default function(uiGmapGoogleMapApi) {
     scope: true,
     link(scope, element, attribute) {
       uiGmapGoogleMapApi.then((googleMaps) => {
-        scope.$autocomplete = new googleMaps.places.Autocomplete(element[0]);
+        scope.$autocomplete = new googleMaps.places.Autocomplete(element[0], {
+          componentRestrictions: {country: 'SG'}
+        });
 
         scope.$autocomplete.addListener('place_changed', (place) => {
           scope.$apply(() => {
