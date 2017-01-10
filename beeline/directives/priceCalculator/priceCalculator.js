@@ -65,11 +65,9 @@ export default [
         // }
 
         var userCreditsPromise = CreditsService.fetchUserCredits().then((userCredits) => {
-          console.log("UserCreds:", userCredits)
           scope.userCredits = userCredits
         });
         var referralCreditsPromise = CreditsService.fetchReferralCredits().then((referralCredits) => {
-          console.log("ReferralCreds:", referralCredits)
           scope.referralCredits = referralCredits
         });
 

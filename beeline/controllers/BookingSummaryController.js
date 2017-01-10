@@ -37,6 +37,8 @@ export default [
       useCredits: false,
       allowEnterPromoCode: true,
       useRouteCredits: !!$stateParams.creditTag,
+      useReferralCredits: $stateParams.useReferralCredits || false,
+      applyCredits: $stateParams.applyCredits || false,
     };
     $scope.disp = {
       zeroDollarPurchase: false
