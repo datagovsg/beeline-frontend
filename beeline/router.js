@@ -108,7 +108,7 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
   .state('tabs.booking-summary', {
-    url: '/booking/:routeId/summary?boardStop&alightStop&selectedDates&sessionId&creditTag',
+    url: '/booking/:routeId/summary?boardStop&alightStop&selectedDates&sessionId&creditTag&useReferralCredits&applyCredits',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-summary.html',
