@@ -42,7 +42,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
     var recentRoutesPromise = RoutesService.fetchRecentRoutes();
-    
+
     // Lite Routes
     allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
     var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
@@ -114,12 +114,12 @@ export default function($scope, $state, UserService, RoutesService, $q,
   // This cascades the region filter from the previous block
   $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes', 'data.filteredActivatedKickstarterRoutes'], function([newActiveRoutes, recentRoutes, newKickstarterRoutes]) {
     if(!recentRoutes) return
-      
+
     $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
     $scope.data.filteredRecentRoutes = recentRoutes.map(
       recent => newActiveRoutes.find(route => route.id === recent.id)
     ).filter(x => x) // Exclude null values (e.g. expired routes)
-    
+
     // filter out duplicate ones in recently booked to prevent displaying it too many times
     $scope.data.filteredRecentRoutes = _.difference($scope.data.filteredRecentRoutes, newKickstarterRoutes);
   });

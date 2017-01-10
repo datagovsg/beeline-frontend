@@ -13,6 +13,7 @@ export default function () {
       route: '<',
       passHide: '<?',
       preorderHide: '<?',
+      contentHide: '<?',
     },
   };
 }
