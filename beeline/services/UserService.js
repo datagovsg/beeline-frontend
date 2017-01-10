@@ -24,7 +24,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var sessionToken = window.localStorage.sessionToken || null;
   var user = window.localStorage.beelineUser ?
              JSON.parse(window.localStorage.beelineUser) : null;
-  var userPromise;
   var userEvents = new EventEmitter();
 
   // General purpose wrapper for making http requests to server
@@ -158,36 +157,29 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // Updates the user info if necessary
   // If the session is invalid then log out
   var verifySession = function() {
-    return fetchUser(true).then(function(user){
-      if(!user){
-        logOut();
+    return beelineRequest({
+      url: '/user',
+      method: 'GET'
+    })
+    .then(function(response) {
+      user = response.data;
+
+      if (!user) {
+        logOut(); // user not found
         return false;
       }
       userEvents.emit('userChanged')
 
-      window.localStorage.beelineUser = JSON.stringify(user)
+      window.localStorage.beelineUser = JSON.stringify(response.data)
       return true;
-    }, function(error){
+    }, function(error) {
       if (error.status == 403 || error.status == 401) {
         logOut();
         return false;
       }
-    })
+    });
   };
-  
-  var fetchUser = function(ignoreCache){
-    if(!ignoreCache && userPromise){
-      return userPromise
-    }
 
-    return userPromise = beelineRequest({
-      method: "GET",
-      url: "/user",
-    }).then((response) => {
-      user = response.data
-      return user
-    })
-  }
 
   // ////////////////////////////////////////////////////////////////////////////
   // UI methods
@@ -272,7 +264,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
 
       // Is the user name null?
       checkNewUser(user);
-      fetchUser(true);
     }
     // If an error occurs at any point stop and alert the user
     catch(error) {
@@ -304,8 +295,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       
       // Is the user name null?
       await checkNewUser(user);
-      await fetchUser(true);
-
       if(refCode && refCodeOwner){
         await applyRefCode(refCode)  
       } 
