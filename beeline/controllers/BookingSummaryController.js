@@ -7,11 +7,12 @@ const queryString = require('querystring')
 export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
-  'RoutesService', '$ionicScrollDelegate', 'TicketService', 'loadingSpinner',
+  'RoutesService', '$ionicScrollDelegate', 'TicketService', 
+  'loadingSpinner', 'CreditsService',
   function ($scope, $state, $http, $ionicPopup,
     BookingService, UserService, $ionicLoading,
     StripeService, $stateParams, RoutesService, $ionicScrollDelegate, TicketService,
-    loadingSpinner) {
+    loadingSpinner, CreditsService) {
 
     // Booking session logic
     $scope.session = {
@@ -276,6 +277,9 @@ export default [
         RoutesService.fetchRouteCredits(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass() 
+
+        CreditsService.fetchReferralCredits(true);
+        CreditsService.fetchUserCredits(true);
       }
     }
   },
