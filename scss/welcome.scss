@@ -1,5 +1,6 @@
 .welcome-page {
-      background: url('../img/welcome-background.png') center no-repeat;
+      background: url('../img/welcome-background.png') no-repeat center center fixed;
+      background-size: cover;
 
   .welcome-content {
     h1 {
@@ -10,6 +11,11 @@
 
     p {
       margin: $padding-large-vertical*2 $padding-small-horizontal;
+      &.small-text{
+        text-align: center;
+        color: $hint-color;
+        font-size: $font-size-small;
+      }
     }
 
     h2 {
