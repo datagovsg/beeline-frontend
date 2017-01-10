@@ -1,7 +1,7 @@
 <ion-view id="pg-search" view-title="Search Results">
   <ion-content scroll="false">
-    <div class="item">
-      # routes found.
+    <div class="item" v-if="routesFoundCount">
+      {{routesFoundCount}} routes found.
     </div>
     <div class="item item-divider">
       Available Running Routes
@@ -30,11 +30,18 @@
 
       <kickstart-route route="route"></kickstart-route>
     </div>
+
     <div class="item item-divider">
       Tracking-Only Routes
     </div>
-    <div class="item text-center" ng-if="!crowdstartRoutes">
-      <ion-spinner></ion-spinner>
+    <div class="item text-center" ng-if="!liteRoutes">
+      <ion-spinner class="text-center"></ion-spinner>
+    </div>
+    <div class="item" ng-if="liteRoutes" ng-repeat="route in liteRoutes"
+      ui-sref="tabs.lite-summary({
+       label: route.label
+      })">
+      <lite-route route="route"></lite-route>
     </div>
 
     </div>
@@ -43,30 +50,11 @@
     </div>
     <div class="item item-text-wrap">
       <p class="no-suggestion">
-       Can't find a suitable route? Please submit a route suggestion.</p>
-      <div>
-      Origin <br />
-      Destination
-      </div>
-      <div class = "suggest-form">
-
-        <label class="item item-input item-icon-right">
-          Time at Destination:
-          <input type="text">
-          <!-- <i class="icon ion-android-close" ng-click="data.originText = ''"></i> -->
-        </label>
-
-        <label class="item item-input item-icon-right">
-        Email Address
-          <input type="text"/>
-          <!-- <i class="icon ion-android-close" ng-click="data.destinationText = ''"></i> -->
-        </label>
-
-      </div>
-  <button class="button primary-button button-item">
-    Submit Suggestion
-  </button>
-      </div>
+       Can't find a suitable route? Is the timing unsuitable?
+     </p>
+      <button class="button primary-button button-item" ng-click="submitSuggestion()">
+       Please submit a route suggestion.
+      </button>
     </div>
   </ion-content>
 </ion-view>
