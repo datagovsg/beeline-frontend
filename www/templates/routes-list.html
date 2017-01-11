@@ -281,11 +281,19 @@
         </route-item>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
-
+      <ion-item class="item-text-wrap text-center">
+        Can't find a suitable route?</br>
+        <a href="#" ng-click="openSuggestionLink($event)">Suggest a new route</a>
+        <div class="powered-by">
+        Powered by
+        <img src="../img/poweredbybeeline.svg" />
+        </div>
+      </ion-item>
       <p ng-if="data.filteredActiveRoutes.length === 0 && data.filteredLiteRoutes.length === 0
         && data.filterText" class="not-found-message text-center">
           Sorry, we could not find any routes matching "{{data.filterText}}".
       </p>
+
     </ion-content>
   </ion-content>
 </ion-view>
