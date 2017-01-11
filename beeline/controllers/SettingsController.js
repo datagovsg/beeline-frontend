@@ -46,7 +46,7 @@ export default [
     // templates for sharing of referrals
     $scope.referralSharing = {
       title: "Try out Beeline!",
-      instructions_msg: "Share the following so that your friend can receive $10 off Beeline rides.  You'll automatically get $10 worth of ride credits, once they claim their first ride.",
+      instructions_msg: "Share this to your friend so that they receive $10 off Beeline rides.  You'll automatically get $10 ride credits, once they claim their first ride too.",
       invitation_msg: "Here is FREE $10 credits for you to try out Beeline rides, a marketplace for crowdsourced bus services. Visit "  ,
       invitation_msg_url: "https://app.beeline.sg/#/welcome?refCode=",
     }
