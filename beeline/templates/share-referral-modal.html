@@ -1,6 +1,6 @@
 <ion-modal-view >
   <ion-header-bar class="bar-royal bar bar-header">
-    <h1 class="title">Share Rides, Get Rides</h1>
+    <h1 class="title">Invite friends</h1>
     <button class="button button-clear icon ion-ios-close-outline" ng-click="shareReferralModal.hide()">
     </button>
   </ion-header-bar>
@@ -11,9 +11,7 @@
       </div>
       <p>{{ referralSharing.instructions_msg }}</p>
       <div class="share-box">
-          <textarea rows="5">
-          {{ referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code }}
-        </textarea>
+          <textarea rows="5">{{referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code}}</textarea>
         <div class="text-right">
           <button ng-if="!hasCordova" class="button button-outline button-royal small-button" ngclipboard data-clipboard-text="{{ referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code }}">Copy</button>
           <button ng-if="hasCordova" class="button button-outline button-royal small-button" ng-click="cordovaShare()">Share</button>
