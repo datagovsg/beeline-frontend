@@ -2,14 +2,12 @@
   p{
     margin-top: $padding-large-vertical*2;
     margin-bottom: $padding-large-vertical*2;
+    text-align: left;
   }
   button{
-    margin-top: $padding-large-vertical*2;
-    margin-bottom: $padding-large-vertical*2;
-    display: inline-block;
+    text-align: right;
   }
   .referral-code{
-    background-color: $light-grey;
     border: 1px $hint-color dotted;
     padding: $padding-base-vertical*4;
     margin: $padding-large-vertical*2 auto;
@@ -17,4 +15,10 @@
     font-size: $font-size-large*2;
     width: 300px;
   }
+  .share-box{
+    textarea{
+      overflow: auto;
+    }
+  }
+
 }

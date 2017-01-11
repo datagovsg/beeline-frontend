@@ -6,17 +6,19 @@
   </ion-header-bar>
   <ion-content id="share-rides">
     <div class="item item-text-wrap">
-      <p>{{ referralSharing.instructions_msg }}</p>
       <div class="referral-code">
         {{user.referralCode.code}}
       </div>
-      <label class="item-input">
-        <p>
-        {{ referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code }}
-        </p>
-      </label>
-      <button ng-if="!hasCordova" class="button button-block button-royal" ngclipboard data-clipboard-text="{{ referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code }}">Copy to Clipboard</button>
-      <button ng-if="hasCordova" class="button button-block button-royal" ng-click="cordovaShare()">Share</button>
+      <p>{{ referralSharing.instructions_msg }}</p>
+      <div class="share-box">
+          <textarea rows="5">
+          {{ referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code }}
+        </textarea>
+        <div class="text-right">
+          <button ng-if="!hasCordova" class="button button-outline button-royal small-button" ngclipboard data-clipboard-text="{{ referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code }}">Copy</button>
+          <button ng-if="hasCordova" class="button button-outline button-royal small-button" ng-click="cordovaShare()">Share</button>
+        </div>
+      </div>
     </div>
   </ion-content>
 </ion-modal-view>
