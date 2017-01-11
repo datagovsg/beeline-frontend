@@ -13,8 +13,8 @@ export default [
   '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading',
   '$state','$cordovaSocialSharing',
   function(
-    $scope, UserService, StripeService, KickstarterService, 
-    $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, 
+    $scope, UserService, StripeService, KickstarterService,
+    $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading,
     $state, $cordovaSocialSharing) {
 
     $scope.data = {};
@@ -41,14 +41,14 @@ export default [
           // console.log("Error")
         })
 
-    } 
+    }
 
     // templates for sharing of referrals
     $scope.referralSharing = {
       title: "Try out Beeline!",
-      instructions_msg: "Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.",
-      invitation_msg: "Here is FREE $10 credits for you to try out Beeline rides, a marketplace for crowdsourced bus services. Visit "  ,        
-      invitation_msg_url: "https://app.beeline.sg/#/welcome?refCode=",        
+      instructions_msg: "Share the following so that your friend can receive $10 off Beeline rides.  You'll automatically get $10 worth of ride credits, once they claim their first ride.",
+      invitation_msg: "Here is FREE $10 credits for you to try out Beeline rides, a marketplace for crowdsourced bus services. Visit "  ,
+      invitation_msg_url: "https://app.beeline.sg/#/welcome?refCode=",
     }
 
     // Map in the login items
