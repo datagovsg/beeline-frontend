@@ -11,7 +11,7 @@
       </div>
       <p>{{ referralSharing.instructions_msg }}</p>
       <div class="share-box">
-          <textarea rows="5">{{referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code}}</textarea>
+          <textarea rows="4">{{referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code}}</textarea>
         <div class="text-right">
           <button ng-if="!hasCordova" class="button button-outline button-royal small-button" ngclipboard data-clipboard-text="{{ referralSharing.invitation_msg + referralSharing.invitation_msg_url + user.referralCode.code }}">Copy</button>
           <button ng-if="hasCordova" class="button button-outline button-royal small-button" ng-click="cordovaShare()">Share</button>
