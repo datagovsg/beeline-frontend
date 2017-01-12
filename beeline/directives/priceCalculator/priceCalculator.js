@@ -73,7 +73,7 @@ export default [
 
         var latestRequest = null;
         scope.$watch(
-          () => _.pick(scope.booking, ['selectedDates', 'useRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode'/* , qty */]),
+          () => _.pick(scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode'/* , qty */]),
           async function () {
             assert(scope.booking.routeId);
             if (!scope.booking.route) {
@@ -97,7 +97,7 @@ export default [
                 return;
               scope.priceInfo = priceInfo;
               scope.price = priceInfo.totalDue;
-              scope.ridesUsed = scope.booking.useRouteCredits 
+              scope.ridesUsed = scope.booking.applyRouteCredits 
                 ? Math.min(scope.booking.route.ridesRemaining, priceInfo.tripCount)
                 : 0
               scope.errorMessage = null;

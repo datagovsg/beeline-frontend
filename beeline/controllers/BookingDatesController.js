@@ -32,7 +32,7 @@ export default [
       priceInfo: {},
       selectedDates: [],
       invalidStopDates: [],
-      useRouteCredits: true,
+      applyRouteCredits: true,
       applyReferralCredits: false,
       applyCredits: false,
     };

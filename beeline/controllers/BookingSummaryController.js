@@ -36,7 +36,7 @@ export default [
       userCredits: 0,
       useCredits: false,
       allowEnterPromoCode: true,
-      useRouteCredits: !!$stateParams.creditTag,
+      applyRouteCredits: !!$stateParams.creditTag,
       applyReferralCredits: $stateParams.applyReferralCredits || false,
       applyCredits: $stateParams.applyCredits || false,
     };
