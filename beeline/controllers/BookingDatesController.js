@@ -33,7 +33,7 @@ export default [
       selectedDates: [],
       invalidStopDates: [],
       useRouteCredits: true,
-      useReferralCredits: false,
+      applyReferralCredits: false,
       applyCredits: false,
     };
     // Display Logic;

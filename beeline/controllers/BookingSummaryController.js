@@ -37,7 +37,7 @@ export default [
       useCredits: false,
       allowEnterPromoCode: true,
       useRouteCredits: !!$stateParams.creditTag,
-      useReferralCredits: $stateParams.useReferralCredits || false,
+      applyReferralCredits: $stateParams.applyReferralCredits || false,
       applyCredits: $stateParams.applyCredits || false,
     };
     $scope.disp = {
@@ -257,7 +257,7 @@ export default [
             promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
             creditTag: $scope.book.creditTag,
             applyCredits: $scope.book.applyCredits,
-            useReferralCredits: $scope.book.useReferralCredits,
+            applyReferralCredits: $scope.book.applyReferralCredits,
           }),
         });
 

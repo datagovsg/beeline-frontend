@@ -48,7 +48,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
             code: booking.promoCode
           } : undefined,
           applyCredits: booking.applyCredits,
-          useReferralCredits: booking.useReferralCredits
+          applyReferralCredits: booking.applyReferralCredits
         },
       })
       .then((resp) => {
