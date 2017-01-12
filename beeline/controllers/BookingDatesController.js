@@ -32,6 +32,7 @@ export default [
       priceInfo: {},
       selectedDates: [],
       invalidStopDates: [],
+      useRouteCredits: true,
     };
     // Display Logic;
     $scope.disp = {
@@ -53,7 +54,25 @@ export default [
 
     loadTickets();
 
-    loadRoutes();
+    var routePromise = loadRoutes();
+
+    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
+    $q.all([routePromise, ridesRemainingPromise]).then(function(values){
+      let ridesRemainingMap = values[1]
+      $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
+    })
+
+    var routeCreditsPromise = RoutesService.fetchRouteCredits()
+    $q.all([routePromise, routeCreditsPromise]).then(([route, routeCredits])=>{
+      let routeCreditTags = _.keys(routeCredits);
+      let notableTags = _.intersection(route.tags, routeCreditTags)
+
+      if(notableTags.length === 1){
+        $scope.book.creditTag = notableTags[0]
+      } else {
+        console.log("Error: Route has incorrect number of tags.")
+      }
+    })
 
     $scope.$watch(()=>UserService.getUser(), loadTickets);
 
@@ -68,7 +87,6 @@ export default [
          m => m.valueOf()
        )
      }, true)
-
 
     $scope.$watchGroup(['disp.availabilityDays', 'disp.previouslyBookedDays'],
       ([availabilityDays, previouslyBookedDays]) => {
@@ -133,11 +151,14 @@ export default [
     }
     function loadRoutes() {
       var routePromise = RoutesService.getRoute($scope.book.routeId, true)
-      loadingSpinner(routePromise.then((route) => {
+      return loadingSpinner(routePromise.then((route) => {
         // Route
         $scope.book.route = route;
         updateCalendar(); // updates availabilityDays
+        return route
       }));
+
+
     }
     function updateCalendar() {
       // ensure cancelled trips are not shown

@@ -7,7 +7,12 @@ export default function LiteRouteSubscriptionService($http, UserService, $q) {
   var LiteRouteSubscriptionCache = null;
   var liteRouteSubscriptionsSummary = [];
 
-  return {
+
+  UserService.userEvents.on('userChanged', () => {
+    instance.getSubscriptions(true)
+  })
+
+  var instance = {
 
     getSubscriptionSummary: function() {
       return liteRouteSubscriptionsSummary;
@@ -43,4 +48,6 @@ export default function LiteRouteSubscriptionService($http, UserService, $q) {
       }
     }
   };
+
+  return instance;
 }

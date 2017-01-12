@@ -6,7 +6,7 @@
         boardStop: book.boardStopId,
         alightStop: book.alightStopId,
         routeId: book.routeId,
-        sessionId: session.sessionId
+        sessionId: session.sessionId,
       })">
        <i class="icon ion-ios-arrow-back"></i> Dates
     </button>
@@ -59,7 +59,7 @@
       <h3 class="item item-divider">
         Selected Dates
       </h3>
-      <price-calculator class="item" booking="book" price="book.price">
+      <price-calculator class="item" booking="book" price="book.price" show-route-credits="false">
       </price-calculator>
     </section>
 

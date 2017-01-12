@@ -12,9 +12,11 @@ export default [
   '$cordovaGeolocation',
   'BookingService',
   'RoutesService',
+  'UserService',
   'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
+  '$q',
   function(
     $rootScope,
     $scope,
@@ -26,9 +28,11 @@ export default [
     $cordovaGeolocation,
     BookingService,
     RoutesService,
+    UserService,
     uiGmapGoogleMapApi,
     MapOptions,
-    loadingSpinner
+    loadingSpinner,
+    $q
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -67,21 +71,27 @@ export default [
       });
     });
 
-    var routePromise;
-
     $scope.session.sessionId = +$stateParams.sessionId;
     $scope.book.routeId = +$stateParams.routeId;
 
-    routePromise = RoutesService.getRoute($scope.book.routeId);
+    var routePromise = RoutesService.getRoute($scope.book.routeId)
 
     var stopOptions = {
       initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
       initialAlightStopId: $stateParams.alightStop ? parseInt($stateParams.alightStop) : undefined,
     };
-    routePromise.then((route) => {
+
+    var routePostProcessingPromise = routePromise.then((route) => {
       $scope.book.route = route;
       computeStops(stopOptions);
     });
+
+    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
+
+    $q.all([routePromise, ridesRemainingPromise]).then(function(values){
+      let ridesRemainingMap = values[1]
+      $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
+    })
 
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([gmapIsReady, routePromise])

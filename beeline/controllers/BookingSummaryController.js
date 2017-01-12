@@ -31,6 +31,7 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
+      useRouteCredits: !!$stateParams.creditTag,
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -38,6 +39,7 @@ export default [
 
     $scope.book.routeId = +$stateParams.routeId;
     $scope.session.sessionId = +$stateParams.sessionId;
+    $scope.book.creditTag = $stateParams.creditTag;
 
     if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
       $stateParams.selectedDates = [$stateParams.selectedDates]
@@ -143,6 +145,10 @@ export default [
           return;
         }
 
+        $ionicLoading.show({
+          template: processingPaymentsTemplate
+        })
+          
         completePayment({
           stripeToken: stripeToken.id,
         });
@@ -152,7 +158,7 @@ export default [
           title: 'Error contacting the payment gateway',
           template: err.data.message,
         })
-      }
+      } 
     };
 
     // Processes payment with customer object. If customer object does not exist,
@@ -202,6 +208,7 @@ export default [
           url: '/transactions/payment_ticket_sale',
           data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips($scope.book),
+            creditTag: $scope.book.creditTag,
           }),
         });
 
@@ -222,6 +229,9 @@ export default [
         $scope.$apply(() => {
           $scope.waitingForPaymentResult = false;
         })
+        RoutesService.fetchRouteCredits(true)
+        RoutesService.fetchRoutePassCount()
+        RoutesService.fetchRoutesWithRoutePass() 
       }
     }
   },

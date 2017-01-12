@@ -18,7 +18,7 @@ export default function($scope, UserService, RoutesService) {
       transactions: null,
     })
 
-    routesPromise = RoutesService.getRoutes(true, {
+    routesPromise = RoutesService.fetchRoutes(true, {
       end_date: Date.now() +  14*24*60*60*1000,
       start_date: Date.now() - 365*24*60*60*1000,
       tags: '[]',

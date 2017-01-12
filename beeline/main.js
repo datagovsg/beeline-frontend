@@ -161,7 +161,7 @@ var app = angular.module('beeline', [
 })
 .run(function (RoutesService) {
   // Pre-fetch the routes
-  RoutesService.getRoutes();
+  RoutesService.fetchRoutes();
   RoutesService.getRecentRoutes();
 })
 .run(function ($templateCache) {
