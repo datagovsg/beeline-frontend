@@ -36,7 +36,10 @@ gulp.task('js-libraries', function() {
 });
 
 gulp.task('sass', function(done) {
-  gulp.src('./scss/ionic.app.scss')
+  gulp.src([
+    './scss/ionic.app.scss',
+    './scss/operator-grab.scss',
+  ])
     .pipe(sass())
     .on('error', sass.logError)
     .pipe(gulp.dest('./www/css/'))

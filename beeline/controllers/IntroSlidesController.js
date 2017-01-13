@@ -1,4 +1,4 @@
-export default['$scope',function($scope) {
+export default function($rootScope, $scope) {
   $scope.options = {
     loop: false,
     effect: 'slide',
@@ -32,4 +32,4 @@ export default['$scope',function($scope) {
     }
     $scope.$digest();
   });
-}]
+}

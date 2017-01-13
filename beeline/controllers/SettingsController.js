@@ -9,10 +9,11 @@ var writer = new commonmark.HtmlRenderer({safe: true});
 export default [
   '$scope', 'UserService', 'StripeService', 'KickstarterService',
   '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading',
-  '$state',
+  '$state', 'o',
   function(
     $scope, UserService, StripeService, KickstarterService,
-    $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state) {
+    $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state,
+    o) {
 
     $scope.data = {};
 
@@ -50,7 +51,7 @@ export default [
       newScope.$on('modal.shown', () => {
         UserService.beeline({
           method: 'GET',
-          url: `/assets/${assetName}`
+          url: o(`/assets/${assetName}`)
         })
         .then((response) => {
           newScope.html = writer.render(reader.parse(response.data.data));

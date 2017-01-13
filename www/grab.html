@@ -9,10 +9,10 @@
                                    user-scalable=no,
                                    width=device-width">
 
-  <title>Beeline</title>
+  <title>Grab Shuttle</title>
   <!-- compiled css output -->
   <link href="https://fonts.googleapis.com/css?family=Lato%3A400%2C300%2C700" rel="stylesheet" type="text/css">
-  <link href="css/ionic.app.css" rel="stylesheet">
+  <link href="css/operator-grab.css" rel="stylesheet">
   <!-- favicon -->
   <link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="apple-touch-icon-60x60.png">
@@ -54,14 +54,30 @@
   <script src="lib/beeline/bundle.js"></script>
   <script>
 angular.module('beeline')
-.factory('p', function () {
-  return {
+.factory('o', function () {
+  var replacements = {
+    '/assets/FAQ': '/assets/FAQ-grab',
+    'img/introTrackOnly.svg': 'img/introSuggest.svg'
+  };
+
+  return function (x) {
+    if (x in replacements) {
+      return replacements[x];
+    } else {
+      return x;
+    }
   }
 })
-.run(function($rootScope) {
+.factory('p', function () {
+  return {
+    transportCompanyId: 2
+  }
+})
+.run(function($rootScope, o) {
   $rootScope.o = {
+    o,
     introSlides: {
-      showAddHomeScreen: true,
+      showAddHomeScreen: false,
       showViewMobile: true,
       showBookRide: true,
       showTrackingOnly: true,
