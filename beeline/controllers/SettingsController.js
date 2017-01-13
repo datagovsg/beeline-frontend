@@ -32,17 +32,8 @@ export default [
 
     // Function that allows user to share an invitation with a referral code to other apps on the phone
     $scope.cordovaShare = async function(){
-      var url = $scope.referralSharing.invitation_msg_url + $scope.user.referralCode.code
-      var msg = $scope.referralSharing.invitation_msg
-      $cordovaSocialSharing.share(msg, $scope.referralSharing.title, null, url)
-
-    }
-
-    // templates for sharing of referrals
-    $scope.referralSharing = {
-      title: "Try out Beeline!",
-      invitation_msg: "Hey, here is $10 credits for you to try out Beeline rides. Visit "  ,
-      invitation_msg_url: "https://app.beeline.sg/#/welcome?refCode=",
+      const msg = document.getElementById('shareMsg').value
+      $cordovaSocialSharing.share(msg, "Try out Beeline!")
     }
 
     // Map in the login items
@@ -86,8 +77,8 @@ export default [
     $scope.shareReferralModal = $ionicModal.fromTemplate(
       shareReferralModalTemplate,
       {scope: $scope}
-
     );
+
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,
       {scope: assetScope('FAQ')}

@@ -160,7 +160,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       }
       userEvents.emit('userChanged')
 
-      window.localStorage.beelineUser = JSON.stringify(response.data)
       return true;
     }, function(error) {
       if (error.status == 403 || error.status == 401) {
@@ -300,11 +299,9 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     };
   }
 
-  // Saves refCode into user's notes, along with relevant
-  // data on the owner of the refCode
+  // Use the referral code and apply rewards to newUser
   // Input:
   // - refCode - String: referral code
-  // - refCodeOwner - Obj: {name, referrerId}
   async function applyRefCode(refCode){
     return beelineRequest({
       method: "POST",
