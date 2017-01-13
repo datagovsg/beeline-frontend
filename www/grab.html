@@ -53,38 +53,38 @@
   <script src="js/ngclipboard.min.js"></script>
   <script src="lib/beeline/bundle.js"></script>
   <script>
-angular.module('beeline')
-.factory('o', function () {
-  var replacements = {
-    '/assets/FAQ': '/assets/FAQ-grab',
-    'img/introTrackOnly.svg': 'img/introSuggest.svg'
-  };
+    angular.module('beeline')
+    .factory('replace', function () {
+      var replacements = {
+        '/assets/FAQ': '/assets/FAQ-grab',
+        'img/introTrackOnly.svg': 'img/introSuggest.svg'
+      };
 
-  return function (x) {
-    if (x in replacements) {
-      return replacements[x];
-    } else {
-      return x;
-    }
-  }
-})
-.factory('p', function () {
-  return {
-    transportCompanyId: 2
-  }
-})
-.run(function($rootScope, o) {
-  $rootScope.o = {
-    o,
-    introSlides: {
-      showAddHomeScreen: false,
-      showViewMobile: true,
-      showBookRide: true,
-      showTrackingOnly: true,
-      showCrowdstart: true,
-    }
-  }
-})
+      return function (x) {
+        if (x in replacements) {
+          return replacements[x];
+        } else {
+          return x;
+        }
+      }
+    })
+    .factory('p', function () {
+      return {
+        transportCompanyId: 2
+      }
+    })
+    .run(function($rootScope, replace) {
+      $rootScope.o = {
+        replace,
+        introSlides: {
+          showAddHomeScreen: false,
+          showViewMobile: true,
+          showBookRide: true,
+          showTrackingOnly: true,
+          showCrowdstart: true,
+        }
+      }
+    })
   </script>
 </head>
 

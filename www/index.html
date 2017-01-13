@@ -54,15 +54,17 @@
   <script src="lib/beeline/bundle.js"></script>
   <script>
 angular.module('beeline')
-.factory('o', function () {
-
+.factory('replace', function () {
+  return {
+  }
 })
 .factory('p', function () {
   return {
   }
 })
-.run(function($rootScope) {
+.run(function($rootScope, replace) {
   $rootScope.o = {
+    replace : replace,
     introSlides: {
       showAddHomeScreen: true,
       showViewMobile: true,
