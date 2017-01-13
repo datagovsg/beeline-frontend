@@ -1,4 +1,4 @@
-<div id="price-calculator" class="date-price-calculator">
+<div id="price-calculator">
   <!--Selected Dates<br>-->
   <div><b>{{booking.selectedDates.length}} day(s)</b> were selected.</div>
   <div class="item-subtitle">Selected Dates </div>
@@ -36,7 +36,7 @@
     </tbody>
   </table>
 
-  <table class="booking-info prices " ng-if="booking.selectedDates.length > 0">
+  <table class="booking-info prices" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
         <th>Total Trips</th>
@@ -51,9 +51,9 @@
     </tbody>
   </table>
 
-  <div class="promoCredits" ng-if="showCredits &&
-    ( (booking.route.ridesRemaining && booking.route.ridesRemaining > 0) || 
-      (userCredits && userCredits > 0) || 
+<!--   <div class="promoCredits" ng-if="showCredits &&
+    ( (booking.route.ridesRemaining && booking.route.ridesRemaining > 0) ||
+      (userCredits && userCredits > 0) ||
       (referralCredits && referralCredits > 0)
     )">
     <div class="item-subtitle">Credits and Route Pass</div>
@@ -67,8 +67,8 @@
       <ion-toggle ng-model="booking.applyCredits" toggle-class="toggle-royal" ng-if="userCredits && userCredits > 0">
         Use my General Credits ({{ userCredits || 0 | currency}} remaining)
       </ion-toggle>
-      
-      <!-- 
+
+
       <li class="item item-input-inset">
         <label class="item-input-wrapper">
           <input type="text" placeholder="Enter Promo Code">
@@ -76,11 +76,11 @@
         <button type="submit" class="button button-royal small-button">
           Apply
         </button>
-      </li> -->
+      </li>
     </ul>
-  </div>
+  </div> -->
   <div class="item-subtitle">Amount to Pay </div>
-  <table class="booking-info" ng-if="booking.selectedDates.length > 0">
+  <table class="booking-info calculator" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
         <td>Total Amount</td>
@@ -91,11 +91,11 @@
         <td class="right">{{(-routeCredit.debit || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.referralCredits && priceInfo.referralCredits.length > 0" ng-repeat="referralCredit in priceInfo.referralCredits">
-        <td>Welcome Credits - Using {{ referralCredit.debit || 0 | currency }} of {{ referralCredits || 0 | currency }} </td>
+        <td>Welcome Credits (use for up to 50% of the remaining transaction)<br />Using {{ referralCredit.debit || 0 | currency }} of {{ referralCredits || 0 | currency }}</td>
         <td class="right">{{(-referralCredit.debit || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.credits && priceInfo.credits.length > 0" ng-repeat="credits in priceInfo.credits">
-        <td>General Credits - Using {{ credits.debit || 0 | currency }} of {{ userCredits || 0 | currency }} </td>
+        <td>Credits - Using {{ credits.debit || 0 | currency }} of {{ userCredits || 0 | currency }} </td>
         <td class="right">{{(-credits.debit || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
