@@ -21,49 +21,6 @@ export default [
           scope.$emit('priceCalculator.done')
         }
 
-        // // makes the promo code that's selected in the radio list 
-        // // the primary promo code to be used for the current purchase
-        // scope.selectCode = function(promoCode){
-        //   scope.booking.promoCode = promoCode
-        // }
-
-        // // Saves promo codes entered by users into notes for future use and
-        // // makes it the primary promo code to be used for the current purchase
-        // // TODO: Currently only handles referral codes. Implement for other promotion codes
-        // scope.addPromoCode = async function() {
-        //   try{
-        //     if(scope.booking.currentPromoCode.length > 0){
-        //       // retrieve refCode owner data
-        //       var refCode = scope.booking.currentPromoCode
-        //       var query = queryString.stringify({code: refCode})
-              
-        //       var refCodeOwner = await UserService.beeline({
-        //         method: 'GET',
-        //         url: '/promotions/refCodeOwner?'+query,
-        //       });
-        //       var user = UserService.getUser();
-
-        //       // if code proves to be valid (has data)
-        //       if(refCodeOwner.data && refCodeOwner.data.referrerId !== user.id) {
-        //         var codeOwnerMap = (await UserService.saveRefCode(refCode, refCodeOwner.data)).data
-        //         scope.booking.promoCodes = scope.booking.processCodeOwnerMap(codeOwnerMap)
-        //       }
-
-        //       scope.booking.promoCode = refCode
-            
-        //     } else if(scope.booking.promoCodes && scope.booking.promoCodes.length > 0){
-        //         scope.booking.promoCode = scope.booking.promoCodes[0].refCode
-        //     } else {
-        //       scope.booking.promoCode = undefined  
-        //     }
-        //   } catch(err){
-        //     await $ionicPopup.alert({
-        //       title: 'Error processing input',
-        //       template: err.data.message,
-        //     })
-        //   } 
-        // }
-
         var userCreditsPromise = CreditsService.fetchUserCredits().then((userCredits) => {
           scope.userCredits = userCredits
         });
@@ -73,7 +30,7 @@ export default [
 
         var latestRequest = null;
         scope.$watch(
-          () => _.pick(scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode'/* , qty */]),
+          () => _.pick(scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits'/* , qty */]),
           async function () {
             assert(scope.booking.routeId);
             if (!scope.booking.route) {
