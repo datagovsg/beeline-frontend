@@ -7,5 +7,11 @@ export default function () {
       powerHide:'<?',
       suggestHide: '<?',
     },
+    link: function(scope, elem, attr) {
+      scope.openSuggestionLink = function(event) {
+        event.preventDefault();
+        window.open('https://www.beeline.sg/suggest.html', '_system');
+      }
+    }
   };
 }
