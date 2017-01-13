@@ -17,8 +17,8 @@ async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserSer
           method: 'GET',
           url: '/promotions/refCodeOwner?'+query,
         });
-
-        if(!refCodeOwner) {
+        
+        if(refCodeOwner) {
         	$scope.refCodeOwner = refCodeOwner.data
         }
 
