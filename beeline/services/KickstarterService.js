@@ -80,7 +80,7 @@ var updateAfterBid = function(route, price) {
   updateStatus(route);
 }
 
-export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService) {
+export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService, p) {
   var kickstarterRoutesCache;
   var bidsCache;
   var kickstarterSummary = null, bidsById = null;
@@ -129,9 +129,13 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
 
   function fetchKickstarterRoutes(ignoreCache) {
     if (kickstarterRoutesCache && !ignoreCache) return kickstarterRoutesCache;
+    var url = '/custom/lelong/status';
+    if (p.transportCompanyId) {
+      url += '?'+querystring.stringify({transportCompanyId: p.transportCompanyId})
+    }
     return kickstarterRoutesCache = UserService.beeline({
       method: 'GET',
-      url: '/custom/lelong/status',
+      url: url,
     }).then((response)=>{
       //return expired kickstarter too
       kickstarterRoutesList = transformKickstarterData(response.data);
