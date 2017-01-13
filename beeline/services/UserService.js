@@ -83,16 +83,6 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       userEvents.emit("userChanged");
       window.localStorage.setItem('beelineUser', JSON.stringify(user));
 
-      // beelineRequest({
-      //   // get user's refCode
-      //   url: '/user/getReferralCode',
-      //   method: 'GET',
-      // })
-      // .then(refcode => {
-      //   console.log("Called")
-      //   user.refCode = refcode
-      // });
-
       return user;
     });
   };

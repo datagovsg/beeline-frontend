@@ -35,17 +35,11 @@ export default [
       var url = $scope.referralSharing.invitation_msg_url + $scope.user.referralCode.code
       var msg = $scope.referralSharing.invitation_msg
       $cordovaSocialSharing.share(msg, $scope.referralSharing.title, null, url)
-        .then(function(result){
-          // console.log("Success")
-        }, function(err){
-          // console.log("Error")
-        })
 
     } 
 
     // templates for sharing of referrals
     $scope.referralSharing = {
-      title: "Try out Beeline!",
       instructions_msg: "Share your code so that your friend receives $10 off Beeline rides. Once they take their first ride, you'll automatically get $10 worth of ride credits.",
       invitation_msg: "Here is FREE $10 credits for you to try out Beeline rides, a marketplace for crowdsourced bus services. Visit "  ,        
       invitation_msg_url: "https://app.beeline.sg/#/welcome?refCode=",        

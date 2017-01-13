@@ -2,57 +2,47 @@ const queryString = require('querystring')
 
 export default['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'UserService', 'LoginDialog', 
 async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserService, LoginDialog) {
-	$scope.$on('$ionicView.beforeEnter', async function(){
-		// Verify if refCode is provided
-		$scope.isLoaded = false;
-		$scope.isValidReferral = false;
-		$ionicLoading.show()
+  $scope.$on('$ionicView.beforeEnter', async function(){
+    // Verify if refCode is provided
+    $scope.isLoaded = false;
+    $ionicLoading.show()
 
-		if($stateParams.refCode){
-			$scope.refCode = $stateParams.refCode;
-			$scope.isValidReferral = true;
-		} else {
-			$scope.isValidReferral = false;
-		}
+    $scope.refCode = $stateParams.refCode;
 
-		if($scope.isValidReferral){
-			var query = queryString.stringify({code: $scope.refCode})
-			
-			try {
-				var refCodeOwner = await UserService.beeline({
-					method: 'GET',
-					url: '/promotions/refCodeOwner?'+query,
-				});
+    if($scope.refCode) {
+    	var query = queryString.stringify({code: $scope.refCode})
 
-				if(refCodeOwner.data){
-					$scope.refCodeOwner = refCodeOwner.data	
-				} else {
-					$scope.isValidReferral = false;
-				}
+    	try {
+        var refCodeOwner = await UserService.beeline({
+          method: 'GET',
+          url: '/promotions/refCodeOwner?'+query,
+        });
 
-			} catch (error){
-				$ionicPopup.alert({
-					title: error.data.message,
-					subTitle: error.statusText
-				});
+        if(!refCodeOwner) {
+        	$scope.refCodeOwner = refCodeOwner.data
+        }
 
-				$scope.isValidReferral = false
-			}
-		} 
+      } catch (error){
+        $ionicPopup.alert({
+          title: error.data.message,
+          subTitle: error.statusText
+        });
+      }
+    }
 
-		$ionicLoading.hide();
-		$scope.isLoaded = true;
-	});
+    $ionicLoading.hide();
+    $scope.isLoaded = true;
+  });
 
-	$scope.data = {}
+  $scope.data = {}
 
-	$scope.register = async function(){
-		await UserService.registerViaReferralWelcome($scope.data.telephone, 
-			$scope.refCode, $scope.refCodeOwner)
+  $scope.register = async function(){
+    await UserService.registerViaReferralWelcome($scope.data.telephone, 
+      $scope.refCode, $scope.refCodeOwner)
 
-		$state.go('tabs.routes')
-	}
-	
+    $state.go('tabs.routes')
+  }
+  
 }]
 
 

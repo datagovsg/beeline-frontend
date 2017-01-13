@@ -3,13 +3,13 @@
     <div class="card welcome-content" ng-if='isLoaded'>
       <div class="item item-text-wrap" ng-form="form.validation">
         <h1 class="text-center">Welcome to Beeline</h1>
-          <p ng-if='isValidReferral'>
+          <p ng-if='refCode && refCodeOwner'>
             Your friend, {{ refCodeOwner.name }}, would like you to try Beeline.
           </p>
           <p>
             Beeline is Singapore's first marketplace for crowdsourced bus services. Our bus routes are derived from analysing transportation data and community demand.
           </p>
-        <h2 class="text-center" ng-if='isValidReferral'>
+        <h2 class="text-center" ng-if='refCode && refCodeOwner'>
           Register now with Beeline to claim $10 worth of ride credits.
         </h2>
         <p>

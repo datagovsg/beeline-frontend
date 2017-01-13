@@ -2,7 +2,7 @@ import assert from 'assert';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 import loadingTemplate from '../templates/loading.html';
 import _ from 'lodash';
-const queryString = require('querystring')
+import queryString from 'querystring'
 
 export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
@@ -70,49 +70,6 @@ export default [
     .then((features)=>{
       $scope.book.features = features;
     })
-
-    // // On entering page, 
-    // // Retrieve saved referral codes of the user and select 
-    // // the first one in the list
-    // $scope.$on('$ionicView.beforeEnter', async function(){
-
-    //   var user = UserService.getUser();
-    //   if(user && !user.referrerId){
-    //     try{
-    //       var codeOwnerMap = (await getSavedReferralCodes()).data
-    //       $scope.book.promoCodes = $scope.book.processCodeOwnerMap(codeOwnerMap)
-    //     } catch(err){
-    //       await UserService.verifySession()
-    //       $scope.book.promoCodes = []
-    //     }
-    //     if($scope.book.promoCodes.length>0){
-    //       $scope.book.currentPromoCode = $scope.book.promoCodes[0].refCode
-    //       $scope.book.promoCode = $scope.book.promoCodes[0].refCode
-    //     }  
-    //   }
-      
-    // });
-
-    // // Retrieves the list of referral codes saved for the user
-    // // Returns an Obj: Key = referral code, value = Owner information
-    // var getSavedReferralCodes = async function() {
-    //   return UserService.beeline({
-    //     method: "GET",
-    //     url: "/user/savedReferralCodes",
-    //   })
-    // }
-
-    // // Converts object that maps referral code to owner info
-    // // into an array of owner info, with referral code as part of 
-    // // the owner info
-    // $scope.book.processCodeOwnerMap = function(codeOwnerMap){
-    //   var promoCodes = []
-    //   for(var entry in codeOwnerMap){
-    //     codeOwnerMap[entry]["refCode"] = entry
-    //     promoCodes.push(codeOwnerMap[entry])
-    //   }
-    //   return promoCodes
-    // }
 
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
