@@ -33,7 +33,7 @@ export default [
         
         var latestRequest = null;
         scope.$watch(
-          () => _.pick(scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits'/* , qty */]),
+          () => _.pick(scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode' /* , qty */]),
           async function () {
             assert(scope.booking.routeId);
             if (!scope.booking.route) {

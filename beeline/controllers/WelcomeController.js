@@ -2,37 +2,36 @@ const queryString = require('querystring')
 
 export default['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'UserService', 'LoginDialog', 
 async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserService, LoginDialog) {
-  $scope.$on('$ionicView.beforeEnter', async function(){
-    // Verify if refCode is provided
-    $scope.isLoaded = false;
-    $ionicLoading.show()
 
-    $scope.refCode = $stateParams.refCode;
+  // Verify if refCode is provided
+  $scope.isLoaded = false;
+  $ionicLoading.show()
 
-    if($scope.refCode) {
-    	var query = queryString.stringify({code: $scope.refCode})
+  $scope.refCode = $stateParams.refCode;
 
-    	try {
-        var refCodeOwner = await UserService.beeline({
-          method: 'GET',
-          url: '/promotions/refCodeOwner?'+query,
-        });
-        
-        if(refCodeOwner) {
-        	$scope.refCodeOwner = refCodeOwner.data
-        }
+  if($scope.refCode) {
+  	var query = queryString.stringify({code: $scope.refCode})
 
-      } catch (error){
-        $ionicPopup.alert({
-          title: error.data.message,
-          subTitle: error.statusText
-        });
+  	try {
+      var refCodeOwner = await UserService.beeline({
+        method: 'GET',
+        url: '/promotions/refCodeOwner?'+query,
+      });
+      
+      if(refCodeOwner) {
+      	$scope.refCodeOwner = refCodeOwner.data
       }
-    }
 
-    $ionicLoading.hide();
-    $scope.isLoaded = true;
-  });
+    } catch (error){
+      $ionicPopup.alert({
+        title: error.data.message,
+        subTitle: error.statusText
+      });
+    }
+  }
+
+  $ionicLoading.hide();
+  $scope.isLoaded = true;
 
   $scope.data = {}
 

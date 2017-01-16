@@ -33,7 +33,6 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
-      allowEnterPromoCode: true,
       applyRouteCredits: !!$stateParams.creditTag,
       
     };
