@@ -111,11 +111,5 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.closePopup = function() {
     $scope.kickstartHelpPopup.close();
   }
-
-  $scope.openSuggestionLink = function(event) {
-    event.preventDefault();
-    window.open('https://www.beeline.sg/suggest.html', '_system');
-  }
-
-
+  
 }
