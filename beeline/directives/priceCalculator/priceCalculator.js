@@ -21,13 +21,16 @@ export default [
           scope.$emit('priceCalculator.done')
         }
 
-        var userCreditsPromise = CreditsService.fetchUserCredits().then((userCredits) => {
-          scope.userCredits = userCredits
-        });
-        var referralCreditsPromise = CreditsService.fetchReferralCredits().then((referralCredits) => {
-          scope.referralCredits = referralCredits
-        });
+        scope.$watch(UserService.getUser(), (user)=>{
+          CreditsService.fetchUserCredits().then((userCredits) => {
+            scope.userCredits = userCredits
+          });
 
+          CreditsService.fetchReferralCredits().then((referralCredits) => {
+            scope.referralCredits = referralCredits
+          });
+        })
+        
         var latestRequest = null;
         scope.$watch(
           () => _.pick(scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits'/* , qty */]),
