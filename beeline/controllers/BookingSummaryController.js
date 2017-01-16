@@ -37,8 +37,7 @@ export default [
       useCredits: false,
       allowEnterPromoCode: true,
       applyRouteCredits: !!$stateParams.creditTag,
-      applyReferralCredits: true,
-      applyCredits: true,
+      
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -75,6 +74,8 @@ export default [
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       $scope.hasSavedPaymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
+      $scope.book.applyReferralCredits = !!user
+      $scope.book.applyCredits = !!user
       if ($scope.isLoggedIn) {
         $ionicLoading.show({
           template: loadingTemplate

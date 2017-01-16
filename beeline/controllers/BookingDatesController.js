@@ -33,8 +33,7 @@ export default [
       selectedDates: [],
       invalidStopDates: [],
       applyRouteCredits: true,
-      applyReferralCredits: true,
-      applyCredits: true,
+      
     };
     // Display Logic;
     $scope.disp = {
@@ -76,7 +75,11 @@ export default [
       }
     })
 
-    $scope.$watch(()=>UserService.getUser(), loadTickets);
+    $scope.$watch(()=>UserService.getUser(), async (user)=>{
+      loadTickets();
+      $scope.book.applyReferralCredits = !!user
+      $scope.book.applyCredits = !!user
+    });
 
     $scope.$watch(
        /* Don't watch the entire moment objects, just their value */
