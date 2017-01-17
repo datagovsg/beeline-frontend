@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import assert from 'assert';
+import querystring from 'querystring';
 
-export default function TicketService($http, $filter, UserService) {
+export default function TicketService($http, $filter, UserService, p) {
   var ticketsCache = null;
   var ticketsByRouteId = null;
 
@@ -21,9 +22,13 @@ export default function TicketService($http, $filter, UserService) {
 
     getTickets: function(ignoreCache) {
       if (ticketsCache && !ignoreCache) return ticketsCache;
+      var url = '/tickets';
+      if (p.transportCompanyId) {
+        url += '?'+querystring.stringify({transportCompanyId: p.transportCompanyId})
+      }
       return ticketsCache = UserService.beeline({
         method: 'GET',
-        url: '/tickets',
+        url: url,
       }).then((response) => {
         ticketsByRouteId = _.groupBy(response.data, ticket => ticket.boardStop.trip.routeId);
         return response.data;
