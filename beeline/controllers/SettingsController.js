@@ -13,7 +13,7 @@ export default [
   function(
     $scope, UserService, StripeService, KickstarterService,
     $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state,
-    o) {
+    replace) {
 
     $scope.data = {};
 
