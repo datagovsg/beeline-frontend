@@ -86,8 +86,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
       let allRoutesById = _.keyBy(allRoutes, 'id')
 
       $scope.data.recentRoutes = recentRoutes
-        .map(r => allRoutesById[r.id])
-        .filter(r => r !== undefined)
+        .map(r => _.assign({
+                            alightStopStopId: r.alightStopStopId,
+                            boardStopStopId: r.boardStopStopId
+                          },allRoutesById[r.id]))
+        .filter(r => r.id !== undefined)
     }
   })
 
