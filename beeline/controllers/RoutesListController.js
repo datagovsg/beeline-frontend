@@ -20,7 +20,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
     nextSessionId: null,
     liteRoutes: [],
     filteredLiteRoutes: [],
-
   };
 
   $scope.$on('$ionicView.beforeEnter', () => {
@@ -41,7 +40,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     RoutesService.fetchRouteCredits(ignoreCache);
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
-    var recentRoutesPromise = RoutesService.fetchRecentRoutes();
+    var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache);
 
     // Lite Routes
     allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
