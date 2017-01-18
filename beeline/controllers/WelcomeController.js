@@ -10,16 +10,16 @@ async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserSer
   $scope.refCode = $stateParams.refCode;
 
   if($scope.refCode) {
-  	var query = queryString.stringify({code: $scope.refCode})
+    var query = queryString.stringify({code: $scope.refCode})
 
-  	try {
+    try {
       var refCodeOwner = await UserService.beeline({
         method: 'GET',
         url: '/promotions/refCodeOwner?'+query,
       });
       
       if(refCodeOwner) {
-      	$scope.refCodeOwner = refCodeOwner.data
+        $scope.refCodeOwner = refCodeOwner.data
       }
 
     } catch (error){
@@ -41,12 +41,6 @@ async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserSer
 
     $state.go('tabs.routes')
   }
-  
+
 }]
-
-
-
-
-
-
 
