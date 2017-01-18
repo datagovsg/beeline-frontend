@@ -41,7 +41,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var lastRouteId = null;
   var lastPromise = null;
 
-  // For Route Credits 
+  // For Route Credits
   var routeCreditsCache;
   var tagToCreditsMap;
   var routePassCache;
@@ -51,6 +51,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var activatedKickstarterRoutes;
 
   UserService.userEvents.on('userChanged', () => {
+    instance.fetchRecentRoutes(true)
     instance.fetchRouteCredits(true)
     instance.fetchRoutesWithRoutePass()
   })
@@ -189,6 +190,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           return recentRoutes
         });
       } else {
+        //if user not logged in clear recentRoutes
+        recentRoutes = null;
         return $q.resolve([]);
       }
     },
@@ -260,7 +263,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     },
 
     // Retrieve routeCredits information from cache
-    // input: 
+    // input:
     // - tag - String: tag associated with route. optional
     // output:
     // - Object containing all routeCredits associated with user
@@ -286,7 +289,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // Retrieve the amount of rides remaining for a specific route
     // input:
     // - ignoreCache - boolean to determine if cache should be ignored
-    // output: 
+    // output:
     // - promise containing a map of routeId to Rides Remaining
     fetchRoutePassCount: function(ignoreCache){
       if(ignoreCache || !routePassCache){
@@ -327,12 +330,12 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // Generates a list of all routes, modifying those with route
     // credits remaining with a "ridesRemaining" property
     // input:
-    // - ignoreCache: boolean determining if cache should be ignored. 
+    // - ignoreCache: boolean determining if cache should be ignored.
     // carries over to dependencies fetchRoutes and fetchRoutePassCount
     // output:
     // - promise containing all routes, modified with ridesRemaining property
     // side effect:
-    // - updates activatedKickstarterRoutes: array containing only those routes with 
+    // - updates activatedKickstarterRoutes: array containing only those routes with
     // ridesRemaining property
     // - updates routesWithRoutePass: array containing all avaialable routes,
     // modifying those with route credits remaining with a ridesRemaining property
@@ -344,7 +347,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         ]).then(([allRoutes, routeToRidesRemainingMap]) => {
           let ksRouteIds = _.keys(routeToRidesRemainingMap)
           let allRoutesById = _.keyBy(allRoutes, 'id')
-          
+
           let ksRoutes = ksRouteIds.map(
             id => allRoutesById[id]
           )
@@ -371,7 +374,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       return routesWithRoutePass
     },
 
-    // Returns array containing only those routes with 
+    // Returns array containing only those routes with
     // ridesRemaining property
     // Updated by: fetchRoutesWithRoutePass
     getActivatedKickstarterRoutes: function(){
