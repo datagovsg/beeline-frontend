@@ -69,8 +69,6 @@ export default [
 
       if(notableTags.length === 1){
         $scope.book.creditTag = notableTags[0]
-      } else {
-        console.log("Error: Route has incorrect number of tags.")
       }
     })
 

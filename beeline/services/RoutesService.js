@@ -191,7 +191,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         });
       } else {
         //if user not logged in clear recentRoutes
-        recentRoutes = null;
+        recentRoutes = [];
         return $q.resolve([]);
       }
     },
