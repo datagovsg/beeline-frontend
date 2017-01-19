@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import shareReferralModalTemplate from '../templates/share-referral-modal.html';
+// import shareReferralModalTemplate from '../templates/share-referral-modal.html';
 
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
@@ -25,15 +25,16 @@ export default function($scope, $state, UserService, RoutesService, $q,
   };
 
   // Modal for sharing referral
-  $scope.hasCordova = !!window.cordova || false
-  $scope.shareReferralModal = $ionicModal.fromTemplate(
-    shareReferralModalTemplate,
-    {scope: $scope}
-  );
-  $scope.cordovaShare = async function(){
-    const msg = document.getElementById('shareMsg').value
-    $cordovaSocialSharing.share(msg, "Try out Beeline!")
-  }
+  // $scope.hasCordova = !!window.cordova || false
+  // $scope.shareReferralModal = $ionicModal.fromTemplate(
+  //   shareReferralModalTemplate,
+  //   {scope: $scope}
+  // );
+  // $scope.cordovaShare = async function(){
+  //   // const msg = document.getElementById('shareMsg').value
+  //   // $cordovaSocialSharing.share(msg, "Try out Beeline!")
+  //   $cordovaSocialSharing.share($scope.shareMsg, "Try out Beeline!")
+  // }
 
   $scope.$on('$ionicView.beforeEnter', () => {
     $scope.data.nextSessionId = BookingService.newSession();
@@ -48,10 +49,12 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }, function(newUser) {
     $scope.user = newUser;
 
-    if(!JSON.parse(window.localStorage.showedReferralModal) && $scope.user){
-      window.localStorage.showedReferralModal = true
-      $scope.shareReferralModal.show()
-    }  
+    // const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. Visit https://app.beeline.sg/#/welcome?refCode="
+    // $scope.shareMsg = shareMsgTemplate + newUser.referralCode.code
+    // if(!JSON.parse(window.localStorage.showedReferralModal) && $scope.user){
+    //   window.localStorage.showedReferralModal = true
+    //   $scope.shareReferralModal.show()
+    // }  
   });
 
   RoutesService.fetchRoutesWithRoutePass();

@@ -1,4 +1,4 @@
-<ion-modal-view>
+<!-- <ion-modal-view>
   <ion-header-bar class="bar-royal bar bar-header">
     <h1 class="title">Invite friends</h1>
     <button class="button button-clear icon ion-ios-close-outline" ng-click="shareReferralModal.hide()">
@@ -12,12 +12,13 @@
       <p>Share this to your friend so that they receive $10 off Beeline rides.  You'll automatically get $10 ride credits, once they claim their first ride.</p>
       <div class="share-box">
         <textarea rows="4" id="shareMsg">Hey, here is $10 credits for you to try out Beeline rides. Visit https://app.beeline.sg/#/welcome?refCode={{user.referralCode.code}}</textarea>
-
+        <textarea rows="4" ng-model="shareMsg"></textarea>
         <div class="text-right">
           <button ng-if="!hasCordova" class="button button-outline button-royal small-button" ngclipboard data-clipboard-target="#shareMsg">Copy</button>
+          <button ng-if="!hasCordova" class="button button-outline button-royal small-button" ngclipboard data-clipboard-text="{{ shareMsg }}">Copy</button>
           <button ng-if="hasCordova" class="button button-outline button-royal small-button" ng-click="cordovaShare()">Share</button>
         </div>
       </div>
     </div>
   </ion-content>
-</ion-modal-view>
+</ion-modal-view> -->
