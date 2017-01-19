@@ -20,20 +20,20 @@ export default [
     // Defines the set of variables that, when changed, all user inputs
     // on this page should be cleared.
     $scope.session = {
-      sessionId: null,
+      sessionId: $stateParams.sessionId,
       userId: null,
     }
     // Data logic;
     $scope.book = {
-      routeId: '',
+      routeId: +$stateParams.routeId,
       route: null,
-      boardStopId: undefined,
-      alightStopId: undefined,
+      boardStopId: parseInt($stateParams.boardStop),
+      alightStopId: parseInt($stateParams.alightStop),
       priceInfo: {},
       selectedDates: [],
       invalidStopDates: [],
       applyRouteCredits: true,
-      
+      creditTag: null,
     };
     // Display Logic;
     $scope.disp = {
@@ -48,10 +48,6 @@ export default [
       daysAllowed: [],
       selectedDatesMoments: [],
     };
-    $scope.book.routeId = +$stateParams.routeId;
-    $scope.session.sessionId = $stateParams.sessionId;
-    $scope.book.boardStopId = parseInt($stateParams.boardStop);
-    $scope.book.alightStopId = parseInt($stateParams.alightStop);
 
     loadTickets();
 
