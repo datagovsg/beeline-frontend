@@ -8,10 +8,10 @@
     <ion-item class="item item-text-wrap">
       <div class="settings-modal">
         <p>
-          If you face any issues with the app or have suggestions that can help us improve Beeline, please contact us at:
+          If you face any issues with the app or have suggestions that can help us improve {{o.app.name || "Beeline"}}, please contact us at:
         </p>
         <p class="text-center">
-          feedback@beeline.sg
+          {{o.contacts.email || "feedback@beeline.sg"}}
         </p>
       </div>
     </ion-item>
