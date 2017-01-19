@@ -16,33 +16,27 @@ export default [
 
     // Booking session logic
     $scope.session = {
-      sessionId: null,
+      sessionId: +$stateParams.sessionId,
     };
     $scope.book = {
-      routeId: null,
+      routeId: +$stateParams.routeId,
       route: null,
       qty: 1,
       waitingForPaymentResult : false,
-      currentPromoCode: "",
-      promoCode: undefined,
       selectedDates: [],
-      boardStopId: undefined,
-      alightStopId: undefined,
+      boardStopId: parseInt($stateParams.boardStop),
+      alightStopId: parseInt($stateParams.alightStop),
       boardStop: undefined,
       alightStop: undefined,
       price: undefined,
       hasInvalidDate: false,
       features: null,
       applyRouteCredits: !!$stateParams.creditTag,
-      
+      creditTag: $stateParams.creditTag
     };
     $scope.disp = {
       zeroDollarPurchase: false
     };
-
-    $scope.book.routeId = +$stateParams.routeId;
-    $scope.session.sessionId = +$stateParams.sessionId;
-    $scope.book.creditTag = $stateParams.creditTag;
 
     if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
       $stateParams.selectedDates = [$stateParams.selectedDates]
@@ -50,10 +44,8 @@ export default [
     $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
         return parseInt(item);
     });
-    $scope.book.boardStopId  = parseInt($stateParams.boardStop);
-    $scope.book.alightStopId = parseInt($stateParams.alightStop);
-    RoutesService.getRoute(parseInt($scope.book.routeId))
-    .then((route) => {
+
+    RoutesService.getRoute(parseInt($scope.book.routeId)).then((route) => {
       $scope.book.route = route;
       $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]]
             .tripStops
@@ -62,6 +54,7 @@ export default [
             .tripStops
             .filter(ts => $scope.book.alightStopId == ts.stop.id)[0];
     });
+
     RoutesService.getRouteFeatures(parseInt($scope.book.routeId))
     .then((features)=>{
       $scope.book.features = features;
