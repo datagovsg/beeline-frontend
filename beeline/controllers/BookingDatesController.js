@@ -32,7 +32,7 @@ export default [
       priceInfo: {},
       selectedDates: [],
       invalidStopDates: [],
-      applyRouteCredits: true,
+      applyRouteCredits: false,
       creditTag: null,
     };
     // Display Logic;
@@ -60,6 +60,7 @@ export default [
     })
 
     RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
+      $scope.book.applyRouteCredits = !!creditTag
       $scope.book.creditTag = creditTag
     })
 

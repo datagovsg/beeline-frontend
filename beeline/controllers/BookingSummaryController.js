@@ -31,8 +31,10 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
-      applyRouteCredits: !!$stateParams.creditTag,
-      creditTag: $stateParams.creditTag
+      applyRouteCredits: JSON.parse($stateParams.applyRouteCredits) || false,
+      applyReferralCredits: JSON.parse($stateParams.applyReferralCredits) || false,
+      applyCredits: JSON.parse($stateParams.applyCredits) || false,
+      creditTag: null,
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -60,12 +62,19 @@ export default [
       $scope.book.features = features;
     })
 
+    if($scope.book.applyRouteCredits){
+      RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
+        $scope.book.applyRouteCredits = !!creditTag
+        $scope.book.creditTag = creditTag
+      })
+    }
+
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       $scope.hasSavedPaymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
-      $scope.book.applyReferralCredits = !!user
-      $scope.book.applyCredits = !!user
+      if($scope.book.applyReferralCredits) { $scope.book.applyReferralCredits = !!user }
+      if($scope.book.applyCredits) { $scope.book.applyCredits = !!user } 
       if ($scope.isLoggedIn) {
         $ionicLoading.show({
           template: loadingTemplate
