@@ -40,6 +40,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   // For single routes
   var lastRouteId = null;
   var lastPromise = null;
+  var creditTagPromise = null;
+  var creditTag = null;
 
   // For Route Credits 
   var routeCreditsCache;
@@ -374,6 +376,39 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       return activatedKickstarterRoutes
     },
 
+    // Returns promise containing the credit tag used to match the specified 
+    // route and the route passes the user owns
+    fetchRouteCreditTag: function(routeId, ignoreCache){
+      assert.equal(typeof routeId, 'number');
+
+      if (!ignoreCache && lastRouteId === routeId && creditTagPromise) {
+        return creditTagPromise;
+      }
+
+      let routePromise = this.getRoute(routeId)
+      let routeCreditsPromise = this.fetchRouteCredits()
+
+      return creditTagPromise = $q.all([routePromise, routeCreditsPromise]).then(([route, routeCredits])=>{
+        let routeCreditTags = _.keys(routeCredits);
+        let notableTags = _.intersection(route.tags, routeCreditTags)
+
+        if(notableTags.length === 1){
+          creditTag = notableTags[0]
+        } else if(notableTags.length > 1){
+          console.log("Error: Route has incorrect number of tags. Total: ", notableTags.length)
+        } else {
+          creditTag = null
+        }
+
+        return creditTag
+      })
+    },
+
+    // Returns the credit tag used to match the specified 
+    // route and the route passes the user owns
+    getRouteCreditTag: function(){
+      return creditTag
+    },
 
   };
   return instance;

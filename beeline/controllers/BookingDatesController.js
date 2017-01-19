@@ -59,16 +59,8 @@ export default [
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
 
-    var routeCreditsPromise = RoutesService.fetchRouteCredits()
-    $q.all([routePromise, routeCreditsPromise]).then(([route, routeCredits])=>{
-      let routeCreditTags = _.keys(routeCredits);
-      let notableTags = _.intersection(route.tags, routeCreditTags)
-
-      if(notableTags.length === 1){
-        $scope.book.creditTag = notableTags[0]
-      } else if(notableTags.length > 1){
-        console.log("Error: Route has incorrect number of tags. Total: ", notableTags.length)
-      }
+    RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
+      $scope.book.creditTag = creditTag
     })
 
     $scope.$watch(()=>UserService.getUser(), async (user)=>{
