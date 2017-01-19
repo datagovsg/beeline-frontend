@@ -27,8 +27,8 @@ var transformKickstarterData = function (kickstarterRoutes) {
 
     kickstarter.isExpired = false;
     kickstarter.is7DaysOld = false;
+    var now = new Date().getTime();
     if (kickstarter.notes && kickstarter.notes.lelongExpiry) {
-      var now = new Date().getTime();
       var expiryTime = new Date(kickstarter.notes.lelongExpiry).getTime();
       if (now >= expiryTime) {
         kickstarter.isExpired = true;
@@ -51,6 +51,11 @@ var transformKickstarterData = function (kickstarterRoutes) {
       trip.tripStops = _.orderBy(trip.tripStops, stop=>stop.time)
     });
 
+    //calculate the pass expiry date
+    kickstarter.passExpired = false;
+    var firstTripDate = new Date(kickstarter.trips[0].date);
+    var passExpiryTime = new Date(firstTripDate.getFullYear(), firstTripDate.getMonth()+1, firstTripDate.getDate()).getTime();
+    kickstarter.passExpired =  (now >= passExpiryTime);
     updateStatus(kickstarter);
   }
   return kickstarterRoutes;
@@ -75,7 +80,7 @@ var updateAfterBid = function(route, price) {
   updateStatus(route);
 }
 
-export default function KickstarterService($http, UserService,$q, $rootScope) {
+export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService) {
   var kickstarterRoutesCache;
   var bidsCache;
   var kickstarterSummary = null, bidsById = null;
@@ -83,6 +88,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
 
   UserService.userEvents.on('userChanged', () => {
     fetchBids(true);
+    //to load route credits
+    RoutesService.fetchRoutePassCount(true);
   })
 
   //first load
@@ -107,7 +114,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
           return   {routeId: bid.id,
                     boardStopId: bid.bid.tickets[0].boardStop.stopId,
                     alightStopId: bid.bid.tickets[0].alightStop.stopId,
-                    bidPrice: bid.bid.userOptions.price}
+                    bidPrice: bid.bid.userOptions.price,
+                    ticketStatus: bid.bid.tickets[0].status}
         })
         bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
         return kickstarterSummary;
@@ -159,7 +167,9 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
     //need to return a promise
     hasBids: function() {
       return bidsCache.then(()=>{
-        return kickstarterSummary && kickstarterSummary.length>0;
+        return kickstarterSummary &&
+               kickstarterSummary.length>0 &&
+               kickstarterSummary.find(x=>x.ticketStatus === 'bidded');
       })
     },
 
@@ -184,7 +194,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope) {
           routeId: route.id,
           boardStopId: boardStopId,
           alightStopId: alightStopId,
-          bidPrice: bidPrice
+          bidPrice: bidPrice,
+          ticketStatus: 'bidded'
         }])
         return response.data;
       })

@@ -158,7 +158,7 @@ var app = angular.module('beeline', [
 .run(function (RoutesService) {
   // Pre-fetch the routes
   RoutesService.fetchRoutes();
-  RoutesService.getRecentRoutes();
+  RoutesService.fetchRecentRoutes();
 })
 .run(function ($templateCache) {
   $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))
