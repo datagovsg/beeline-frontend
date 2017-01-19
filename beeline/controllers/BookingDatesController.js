@@ -49,8 +49,6 @@ export default [
       selectedDatesMoments: [],
     };
 
-    loadTickets();
-
     var routePromise = loadRoutes();
 
     var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
