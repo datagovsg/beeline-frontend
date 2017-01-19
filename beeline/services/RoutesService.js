@@ -51,6 +51,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var activatedKickstarterRoutes;
 
   UserService.userEvents.on('userChanged', () => {
+    instance.fetchRecentRoutes(true)
     instance.fetchRouteCredits(true)
     instance.fetchRoutesWithRoutePass()
   })
@@ -190,6 +191,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           return recentRoutes
         });
       } else {
+        //if user not logged in clear recentRoutes
+        recentRoutes = [];
         return $q.resolve([]);
       }
     },
