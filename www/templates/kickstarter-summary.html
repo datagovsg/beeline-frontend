@@ -56,7 +56,7 @@
       <div class="checkTerms">
         Please read {{book.companyInfo.name}} <a ng-click="showTerms()">Terms and Conditions of Service</a>.
         <ion-checkbox ng-model="book.acceptPolicy">
-          I read and agree to the above terms and would like to proceed using Beeline.
+          I read and agree to the above terms and would like to proceed using {{o.app.name || "Beeline"}}.
         </ion-checkbox>
       </div>
     </div>
