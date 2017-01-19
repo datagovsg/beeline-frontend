@@ -57,7 +57,7 @@
     .factory('replace', function () {
       var replacements = {
         '/assets/FAQ': '/assets/FAQ-grab',
-        'img/introTrackOnly.svg': 'img/introSuggest.svg'
+        // 'img/introTrackOnly.svg': 'img/introSuggest.svg'
       };
 
       return function (x) {
@@ -75,14 +75,7 @@
     })
     .run(function($rootScope, replace) {
       $rootScope.o = {
-        replace,
-        introSlides: {
-          showAddHomeScreen: false,
-          showViewMobile: true,
-          showBookRide: true,
-          showTrackingOnly: true,
-          showCrowdstart: true,
-        }
+        replace: replace
       }
     })
   </script>

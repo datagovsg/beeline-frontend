@@ -1,7 +1,7 @@
 <ion-view class="intro-slides" cache-view="false" can-swipe-back="false">
   <ion-content scroll="false">
     <ion-slides options="options" slider="data.slider">
-      <ion-slide-page ng-if="data.showHome && o.introSlides.showAddHomeScreen">
+      <ion-slide-page ng-if="data.showHome">
         <h2>Add to home screen</h2>
         <img src="img/introHomeScreen.svg">
         <p>
@@ -9,7 +9,7 @@
         </p>
       </ion-slide-page>
 
-      <ion-slide-page ng-if="o.introSlides.showViewMobile">
+      <ion-slide-page>
         <h2>Best viewed on mobile</h2>
         <img src="img/introSuggest.svg">
         <p>
@@ -17,7 +17,7 @@
         </p>
       </ion-slide-page>
 
-      <ion-slide-page ng-if="o.introSlides.showBookRide">
+      <ion-slide-page>
         <h2>Book a ride</h2>
         <img src="img/introActivate.svg">
         <p>
@@ -26,15 +26,15 @@
         </p>
       </ion-slide-page>
 
-      <ion-slide-page ng-if="o.introSlides.showTrackingOnly">
+      <ion-slide-page>
         <h2>Tracking-only routes</h2>
-        <img ng-src="{{o.replace('img/introTrackOnly.svg')}}">
+        <img ng-src="img/introTrackOnly.svg">
         <p>
           Tracking-only routes are indicated by a "map pin" icon. You can track the bus and do not have to book seats via the app to ride the bus. Payment details for the ride can be found in the route information.
         </p>
       </ion-slide-page>
 
-      <ion-slide-page ng-if="o.introSlides.showCrowdstart">
+      <ion-slide-page>
         <h2>Crowdstart new routes</h2>
         <img src="img/introKickstart.svg">
         <p>

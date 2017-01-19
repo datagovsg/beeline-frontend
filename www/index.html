@@ -53,27 +53,21 @@
   <script src="js/ngclipboard.min.js"></script>
   <script src="lib/beeline/bundle.js"></script>
   <script>
-angular.module('beeline')
-.factory('replace', function () {
-  return {
-  }
-})
-.factory('p', function () {
-  return {
-  }
-})
-.run(function($rootScope, replace) {
-  $rootScope.o = {
-    replace : replace,
-    introSlides: {
-      showAddHomeScreen: true,
-      showViewMobile: true,
-      showBookRide: true,
-      showTrackingOnly: true,
-      showCrowdstart: true,
-    }
-  }
-})
+    angular.module('beeline')
+    .factory('replace', function () {
+      return function(x){
+        return x;
+      }
+    })
+    .factory('p', function () {
+      return {
+      }
+    })
+    .run(function($rootScope, replace) {
+      $rootScope.o = {
+        replace : replace,
+      }
+    })
   </script>
 </head>
 

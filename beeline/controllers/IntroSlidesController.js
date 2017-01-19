@@ -1,4 +1,4 @@
-export default function($rootScope, $scope) {
+export default function($scope) {
   $scope.options = {
     loop: false,
     effect: 'slide',
