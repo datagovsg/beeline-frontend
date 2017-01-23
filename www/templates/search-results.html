@@ -1,7 +1,7 @@
 <ion-view id="pg-search" view-title="Search Results">
   <ion-content scroll="false">
     <div class="item" v-if="routesFoundCount">
-      {{routesFoundCount}} routes found.
+      {{routesFoundCount}} route(s) found.
     </div>
     <div class="item item-divider">
       Available Running Routes
@@ -49,11 +49,12 @@
       Suggest a new Route
     </div>
     <div class="item item-text-wrap">
-      <p class="no-suggestion">
-       Can't find a suitable route? Is the timing unsuitable?
+      <p class="no-suggestion text-center">
+       Can't find a suitable route or find the route timing unsuitable?<br />
+       Please submit a route suggestion.
      </p>
       <button class="button primary-button button-item suggest-button" ng-click="submitSuggestion()">
-       Please submit a route suggestion.
+       Suggest a new Route
       </button>
     </div>
   </ion-content>
