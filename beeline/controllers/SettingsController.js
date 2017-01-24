@@ -18,6 +18,7 @@ export default [
     $state, $cordovaSocialSharing) {
 
     $scope.data = {};
+    $scope.hasCordova = !!window.cordova || false
     $scope.isOnKickstarter = false;
 
     let isPressed = false;
@@ -27,18 +28,13 @@ export default [
       return UserService.getUser();
     }, function(newUser) {
       $scope.user = newUser;
-
-      // const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. Visit https://app.beeline.sg/#/welcome?refCode="
-      // $scope.shareMsg = shareMsgTemplate + newUser.referralCode.code
     });
 
     // Function that allows user to share an invitation with a referral code to other apps on the phone
-    // $scope.hasCordova = !!window.cordova || false
-    // $scope.cordovaShare = async function(){
-    //   // const msg = document.getElementById('shareMsg').value
-    //   // $cordovaSocialSharing.share(msg, "Try out Beeline!")
-    //   $cordovaSocialSharing.share($scope.shareMsg, "Try out Beeline!")
-    // }
+    $scope.cordovaShare = async function(){
+      const msg = document.getElementById('shareMsg').value
+      $cordovaSocialSharing.share(msg, "Try out Beeline!")
+    }
 
     // Map in the login items
     $scope.logIn = UserService.promptLogIn;
