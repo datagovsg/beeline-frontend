@@ -8,12 +8,20 @@ export default function($scope, $state, $stateParams, $http, SuggestionService,
   uiGmapGoogleMapApi.then(function(googleMaps) {
     MapOptions.disableMapLinks();
     $scope.$on("$ionicView.afterEnter", function(event, data) {
-      let map = $scope.map && $scope.map.control && $scope.map.control.getGMap();
-      if (map) {
-        googleMaps.event.trigger(map, 'resize');
+      if ($scope.map && $scope.map.control && $scope.map.control.getGMap) {
+        MapOptions.resizePreserveCenter($scope.map.control.getGMap())
       }
     });
   });
+
+  //
+  $scope.goBack = function () {
+    if (!$stateParams.backPage) {
+      $state.go('tabs.routes')
+    } else {
+      $state.go($stateParams.backPage)
+    }
+  }
 
   $scope.map = MapOptions.defaultMapOptions()
 
@@ -90,7 +98,7 @@ export default function($scope, $state, $stateParams, $http, SuggestionService,
   }
 
   $scope.goSearch = function() {
-    $state.go('tabs.crowdstart-search-results', {
+    $state.go('tabs.search-results', {
       originLat: $scope.data.origin.latitude,
       originLng: $scope.data.origin.longitude,
       destinationLat: $scope.data.destination.latitude,

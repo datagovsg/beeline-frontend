@@ -145,5 +145,11 @@ export default [
       }, 300);
     }
 
+    this.resizePreserveCenter = function(map) {
+      let oldCenter = map.getCenter();
+      google.maps.event.trigger(map, 'resize');
+      map.setCenter(oldCenter);
+    };
+
   }
 ];

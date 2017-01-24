@@ -293,22 +293,25 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
 
-  .state('tabs.crowdstart-search', {
-    url: '/crowdstart/search',
+  .state('tabs.search', {
+    url: '/search',
     views: {
-      'tab-crowdstart': {
+      'tab-search': {
         templateUrl: 'templates/search.html',
         controller: 'SearchController'
       }
+    },
+    params: {
+      backPage: null
     },
     data: {
       hideTabs: true,
     }
   })
-  .state('tabs.crowdstart-search-results', {
-    url: '/crowdstart/search-results?originLat&originLng&destinationLat&destinationLng',
+  .state('tabs.search-results', {
+    url: '/search-results?originLat&originLng&destinationLat&destinationLng',
     views: {
-      'tab-crowdstart': {
+      'tab-search': {
         templateUrl: 'templates/search-results.html',
         controller: 'SearchResultsController'
       }
