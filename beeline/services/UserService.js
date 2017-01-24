@@ -527,6 +527,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     savePaymentInfo: savePaymentInfo,
     updatePaymentInfo: updatePaymentInfo,
     removePaymentInfo: removePaymentInfo,
+    getReferralMsg,
   };
 
 }
