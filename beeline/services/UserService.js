@@ -169,6 +169,10 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
+  var getReferralMsg = function(){
+    const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. \nVisit https://app.beeline.sg/#/welcome?refCode="
+    return shareMsgTemplate + user.referralCode.code
+  }
 
   // ////////////////////////////////////////////////////////////////////////////
   // UI methods

@@ -30,8 +30,7 @@ export default [
       $scope.user = newUser;
 
       if(newUser){
-        const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. \nVisit https://app.beeline.sg/#/welcome?refCode="
-        $scope.shareMsg = shareMsgTemplate + newUser.referralCode.code
+        $scope.shareMsg = UserService.getReferralMsg()
       } else {
         $scope.shareMsg = null
       }

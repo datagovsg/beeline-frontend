@@ -47,11 +47,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.user = newUser;
 
     if(newUser){
-      const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. \nVisit https://app.beeline.sg/#/welcome?refCode="
-      $scope.shareMsg = shareMsgTemplate + newUser.referralCode.code
+      $scope.shareMsg = UserService.getReferralMsg()
     } else {
       $scope.shareMsg = null
     }
+    
     if(!JSON.parse(window.localStorage.showedReferralModal) && newUser){
       window.localStorage.showedReferralModal = true
       $scope.shareReferralModal.show()
