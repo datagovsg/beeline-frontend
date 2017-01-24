@@ -2,44 +2,43 @@ import assert from 'assert';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
 import loadingTemplate from '../templates/loading.html';
 import _ from 'lodash';
+import queryString from 'querystring'
 
 export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
-  'RoutesService', '$ionicScrollDelegate', 'TicketService', 'loadingSpinner',
+  'RoutesService', '$ionicScrollDelegate', 'TicketService', 
+  'loadingSpinner', 'CreditsService',
   function ($scope, $state, $http, $ionicPopup,
     BookingService, UserService, $ionicLoading,
     StripeService, $stateParams, RoutesService, $ionicScrollDelegate, TicketService,
-    loadingSpinner) {
+    loadingSpinner, CreditsService) {
 
     // Booking session logic
     $scope.session = {
-      sessionId: null,
+      sessionId: +$stateParams.sessionId,
     };
     $scope.book = {
-      routeId: null,
+      routeId: +$stateParams.routeId,
       route: null,
       qty: 1,
       waitingForPaymentResult : false,
-      promoCodes: [],
-      currentPromoCode: undefined,
       selectedDates: [],
-      boardStopId: undefined,
-      alightStopId: undefined,
+      boardStopId: parseInt($stateParams.boardStop),
+      alightStopId: parseInt($stateParams.alightStop),
       boardStop: undefined,
       alightStop: undefined,
       price: undefined,
       hasInvalidDate: false,
       features: null,
-      useRouteCredits: !!$stateParams.creditTag,
+      applyRouteCredits: JSON.parse($stateParams.applyRouteCredits) || false,
+      applyReferralCredits: JSON.parse($stateParams.applyReferralCredits) || false,
+      applyCredits: JSON.parse($stateParams.applyCredits) || false,
+      creditTag: null,
     };
     $scope.disp = {
       zeroDollarPurchase: false
     };
-
-    $scope.book.routeId = +$stateParams.routeId;
-    $scope.session.sessionId = +$stateParams.sessionId;
-    $scope.book.creditTag = $stateParams.creditTag;
 
     if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
       $stateParams.selectedDates = [$stateParams.selectedDates]
@@ -47,10 +46,8 @@ export default [
     $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
         return parseInt(item);
     });
-    $scope.book.boardStopId  = parseInt($stateParams.boardStop);
-    $scope.book.alightStopId = parseInt($stateParams.alightStop);
-    RoutesService.getRoute(parseInt($scope.book.routeId))
-    .then((route) => {
+
+    RoutesService.getRoute(parseInt($scope.book.routeId)).then((route) => {
       $scope.book.route = route;
       $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]]
             .tripStops
@@ -59,19 +56,25 @@ export default [
             .tripStops
             .filter(ts => $scope.book.alightStopId == ts.stop.id)[0];
     });
+
     RoutesService.getRouteFeatures(parseInt($scope.book.routeId))
     .then((features)=>{
       $scope.book.features = features;
     })
 
-    $scope.addPromoCode = function() {
-      $scope.book.promoCodes.push($scope.book.currentPromoCode);
+    if($scope.book.applyRouteCredits){
+      RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
+        $scope.book.applyRouteCredits = !!creditTag
+        $scope.book.creditTag = creditTag
+      })
     }
 
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       $scope.hasSavedPaymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
+      if($scope.book.applyReferralCredits) { $scope.book.applyReferralCredits = !!user }
+      if($scope.book.applyCredits) { $scope.book.applyCredits = !!user } 
       if ($scope.isLoggedIn) {
         $ionicLoading.show({
           template: loadingTemplate
@@ -208,7 +211,10 @@ export default [
           url: '/transactions/payment_ticket_sale',
           data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips($scope.book),
+            promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
             creditTag: $scope.book.creditTag,
+            applyCredits: $scope.book.applyCredits,
+            applyReferralCredits: $scope.book.applyReferralCredits,
           }),
         });
 
@@ -232,6 +238,9 @@ export default [
         RoutesService.fetchRouteCredits(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass() 
+
+        CreditsService.fetchReferralCredits(true);
+        CreditsService.fetchUserCredits(true);
       }
     }
   },

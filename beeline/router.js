@@ -29,6 +29,12 @@ export default function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/intro-slides.html',
     controller: 'IntroSlidesController'
   })
+  .state('welcome', {
+    url: '/welcome?refCode',
+    templateUrl: 'templates/welcome.html',
+    controller: 'WelcomeController'
+  })
+
 
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface
@@ -77,7 +83,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.bookingPickup', {
-    url: '/booking/:routeId/stops?boardStop&alightStop&sessionId&creditTag',
+    url: '/booking/:routeId/stops?boardStop&alightStop&sessionId',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-stops.html',
@@ -90,7 +96,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.booking-dates', {
-    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId&creditTag',
+    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-dates.html',
@@ -102,7 +108,7 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
   .state('tabs.booking-summary', {
-    url: '/booking/:routeId/summary?boardStop&alightStop&selectedDates&sessionId&creditTag',
+    url: '/booking/:routeId/summary?boardStop&alightStop&selectedDates&sessionId&applyRouteCredits&applyReferralCredits&applyCredits',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-summary.html',
