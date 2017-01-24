@@ -280,9 +280,14 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       if (!verificationCode) return;
       $ionicLoading.show({template: sendingVerificationCodeTemplate});
       var user = await verifyTelephone(telephoneNumber, verificationCode.code);
-      
+
+      $ionicLoading.hide();
+
       // Is the user name null?
       await checkNewUser(user);
+      
+      $ionicLoading.show({template: sendingVerificationCodeTemplate});
+
       if(refCode && refCodeOwner){
         await applyRefCode(refCode)  
       } 
