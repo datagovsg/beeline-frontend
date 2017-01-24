@@ -19,21 +19,10 @@
   display: flex;
   flex-direction: row;
 
-  .ionicon{
-    position: relative;
-    top:1px;
-    font-size: $font-size-large;
-  }
-
-  .item-input {
+  & > :nth-child(1) {
     flex: 1 1 50%;
-    padding-right: $line-height-computed;
-
-    input {
-      text-align: left;
-    }
   }
-  .item-select {
+  & > :nth-child(2) {
     flex: 1 1 50%;
 
     select {

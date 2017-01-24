@@ -86,6 +86,7 @@ var app = angular.module('beeline', [
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
 .controller('SearchController', require('./controllers/SearchController.js').default)
 .controller('SearchResultsController', require('./controllers/SearchResultsController.js').default)
+.directive('searchButton', require('./directives/searchButton.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)

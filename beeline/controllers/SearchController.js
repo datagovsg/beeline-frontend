@@ -2,7 +2,18 @@ import _ from 'lodash';
 import querystring from 'querystring';
 
 export default function($scope, $state, $stateParams, $http, SuggestionService,
-  UserService, $ionicModal, $ionicPopup, MapOptions) {
+  UserService, $ionicModal, $ionicPopup, MapOptions, uiGmapGoogleMapApi) {
+
+  /* Fix the map not resizing */
+  uiGmapGoogleMapApi.then(function(googleMaps) {
+    MapOptions.disableMapLinks();
+    $scope.$on("$ionicView.afterEnter", function(event, data) {
+      let map = $scope.map && $scope.map.control && $scope.map.control.getGMap();
+      if (map) {
+        googleMaps.event.trigger(map, 'resize');
+      }
+    });
+  });
 
   $scope.map = MapOptions.defaultMapOptions()
 
@@ -79,7 +90,7 @@ export default function($scope, $state, $stateParams, $http, SuggestionService,
   }
 
   $scope.goSearch = function() {
-    $state.go('tabs.search-results', {
+    $state.go('tabs.crowdstart-search-results', {
       originLat: $scope.data.origin.latitude,
       originLng: $scope.data.origin.longitude,
       destinationLat: $scope.data.destination.latitude,

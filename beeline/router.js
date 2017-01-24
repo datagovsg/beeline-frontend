@@ -293,10 +293,10 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
 
-  .state('tabs.search', {
-    url: '/search',
+  .state('tabs.crowdstart-search', {
+    url: '/crowdstart/search',
     views: {
-      'tab-search': {
+      'tab-crowdstart': {
         templateUrl: 'templates/search.html',
         controller: 'SearchController'
       }
@@ -305,10 +305,10 @@ export default function($stateProvider, $urlRouterProvider) {
       hideTabs: true,
     }
   })
-  .state('tabs.search-results', {
-    url: '/search-results?originLat&originLng&destinationLat&destinationLng',
+  .state('tabs.crowdstart-search-results', {
+    url: '/crowdstart/search-results?originLat&originLng&destinationLat&destinationLng',
     views: {
-      'tab-search': {
+      'tab-crowdstart': {
         templateUrl: 'templates/search-results.html',
         controller: 'SearchResultsController'
       }
