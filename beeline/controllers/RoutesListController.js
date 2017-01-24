@@ -30,8 +30,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     {scope: $scope}
   );
   $scope.cordovaShare = async function(){
-    const msg = document.getElementById('shareMsg').value
-    $cordovaSocialSharing.share(msg, "Try out Beeline!")
+    $cordovaSocialSharing.share($scope.shareMsg, "Try out Beeline!")
   }
 
   $scope.$on('$ionicView.beforeEnter', () => {
@@ -47,7 +46,13 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }, function(newUser) {
     $scope.user = newUser;
 
-    if(!JSON.parse(window.localStorage.showedReferralModal) && $scope.user){
+    if(newUser){
+      const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. \nVisit https://app.beeline.sg/#/welcome?refCode="
+      $scope.shareMsg = shareMsgTemplate + newUser.referralCode.code
+    } else {
+      $scope.shareMsg = null
+    }
+    if(!JSON.parse(window.localStorage.showedReferralModal) && newUser){
       window.localStorage.showedReferralModal = true
       $scope.shareReferralModal.show()
     }  
