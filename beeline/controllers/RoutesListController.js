@@ -1,11 +1,12 @@
 import _ from 'lodash';
+// import shareReferralModalTemplate from '../templates/share-referral-modal.html';
 
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
   BookingService, $ionicScrollDelegate, LiteRoutesService, $ionicPopup,
-  LiteRouteSubscriptionService, $timeout, SearchService) {
+  LiteRouteSubscriptionService, $timeout, SearchService, $ionicModal, $cordovaSocialSharing) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -20,8 +21,19 @@ export default function($scope, $state, UserService, RoutesService, $q,
     nextSessionId: null,
     liteRoutes: [],
     filteredLiteRoutes: [],
-
   };
+
+  // Modal for sharing referral
+  // $scope.hasCordova = !!window.cordova || false
+  // $scope.shareReferralModal = $ionicModal.fromTemplate(
+  //   shareReferralModalTemplate,
+  //   {scope: $scope}
+  // );
+  // $scope.cordovaShare = async function(){
+  //   // const msg = document.getElementById('shareMsg').value
+  //   // $cordovaSocialSharing.share(msg, "Try out Beeline!")
+  //   $cordovaSocialSharing.share($scope.shareMsg, "Try out Beeline!")
+  // }
 
   $scope.$on('$ionicView.beforeEnter', () => {
     $scope.data.nextSessionId = BookingService.newSession();
@@ -29,6 +41,19 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.$watch(() => RoutesService.getActivatedKickstarterRoutes(), (rpRoutes) => {
     $scope.data.activatedKickstarterRoutes = rpRoutes;
+  });
+
+  $scope.$watch(function() {
+    return UserService.getUser();
+  }, function(newUser) {
+    $scope.user = newUser;
+
+    // const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. Visit https://app.beeline.sg/#/welcome?refCode="
+    // $scope.shareMsg = shareMsgTemplate + newUser.referralCode.code
+    // if(!JSON.parse(window.localStorage.showedReferralModal) && $scope.user){
+    //   window.localStorage.showedReferralModal = true
+    //   $scope.shareReferralModal.show()
+    // }  
   });
 
   RoutesService.fetchRoutesWithRoutePass();
@@ -41,7 +66,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     RoutesService.fetchRouteCredits(ignoreCache);
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
-    var recentRoutesPromise = RoutesService.fetchRecentRoutes();
+    var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache);
 
     // Lite Routes
     allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
@@ -86,8 +111,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
       let allRoutesById = _.keyBy(allRoutes, 'id')
 
       $scope.data.recentRoutes = recentRoutes
-        .map(r => allRoutesById[r.id])
-        .filter(r => r !== undefined)
+        .map(r => _.assign({
+                            alightStopStopId: r.alightStopStopId,
+                            boardStopStopId: r.boardStopStopId
+                          },allRoutesById[r.id]))
+        .filter(r => r.id !== undefined)
     }
   })
 

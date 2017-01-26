@@ -1,0 +1,46 @@
+const queryString = require('querystring')
+
+export default['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'UserService', 'LoginDialog', 
+async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserService, LoginDialog) {
+
+  // Verify if refCode is provided
+  $scope.isLoaded = false;
+  $ionicLoading.show()
+
+  $scope.refCode = $stateParams.refCode;
+
+  if($scope.refCode) {
+    var query = queryString.stringify({code: $scope.refCode})
+
+    try {
+      var refCodeOwner = await UserService.beeline({
+        method: 'GET',
+        url: '/promotions/refCodeOwner?'+query,
+      });
+      
+      if(refCodeOwner) {
+        $scope.refCodeOwner = refCodeOwner.data
+      }
+
+    } catch (error){
+      $ionicPopup.alert({
+        title: error.data.message,
+        subTitle: error.statusText
+      });
+    }
+  }
+
+  $ionicLoading.hide();
+  $scope.isLoaded = true;
+
+  $scope.data = {}
+
+  $scope.register = async function(){
+    await UserService.registerViaReferralWelcome($scope.data.telephone, 
+      $scope.refCode, $scope.refCodeOwner)
+
+    $state.go('tabs.routes')
+  }
+
+}]
+

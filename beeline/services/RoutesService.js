@@ -40,8 +40,10 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   // For single routes
   var lastRouteId = null;
   var lastPromise = null;
+  var creditTagPromise = null;
+  var creditTag = null;
 
-  // For Route Credits 
+  // For Route Credits
   var routeCreditsCache;
   var tagToCreditsMap;
   var routePassCache;
@@ -51,8 +53,10 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var activatedKickstarterRoutes;
 
   UserService.userEvents.on('userChanged', () => {
+    instance.fetchRecentRoutes(true)
     instance.fetchRouteCredits(true)
     instance.fetchRoutesWithRoutePass()
+    instance.fetchRecentRoutes(true)
   })
 
   var instance = {
@@ -189,6 +193,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           return recentRoutes
         });
       } else {
+        //if user not logged in clear recentRoutes
+        recentRoutes = [];
         return $q.resolve([]);
       }
     },
@@ -235,32 +241,31 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // output:
     // - Promise containing all routeCredits associated with user
     fetchRouteCredits: function(ignoreCache){
-      let user = UserService.getUser();
-      if(!user){
-        tagToCreditsMap = {};
-        return $q.resolve(tagToCreditsMap)
-      }
       if(!ignoreCache && routeCreditsCache){
         return routeCreditsCache
       }
-
       // Destroy the cache for dependent calls
       // This is a hack
       routesWithRoutePassPromise = null;
       routePassCache = null;
-
-      return routeCreditsCache = UserService.beeline({
-        method: 'GET',
-        url: '/routeCredits'
-      }).then((response) => {
-        tagToCreditsMap = response.data
-        return tagToCreditsMap
-      })
-
+      
+      let user = UserService.getUser();
+      if(!user){
+        return routeCreditsCache = Promise.resolve(tagToCreditsMap = {});
+      }
+      else {
+        return routeCreditsCache = UserService.beeline({
+          method: 'GET',
+          url: '/routeCredits'
+        }).then((response) => {
+          tagToCreditsMap = response.data
+          return tagToCreditsMap
+        })
+      }
     },
 
     // Retrieve routeCredits information from cache
-    // input: 
+    // input:
     // - tag - String: tag associated with route. optional
     // output:
     // - Object containing all routeCredits associated with user
@@ -286,7 +291,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // Retrieve the amount of rides remaining for a specific route
     // input:
     // - ignoreCache - boolean to determine if cache should be ignored
-    // output: 
+    // output:
     // - promise containing a map of routeId to Rides Remaining
     fetchRoutePassCount: function(ignoreCache){
       if(ignoreCache || !routePassCache){
@@ -327,12 +332,12 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // Generates a list of all routes, modifying those with route
     // credits remaining with a "ridesRemaining" property
     // input:
-    // - ignoreCache: boolean determining if cache should be ignored. 
+    // - ignoreCache: boolean determining if cache should be ignored.
     // carries over to dependencies fetchRoutes and fetchRoutePassCount
     // output:
     // - promise containing all routes, modified with ridesRemaining property
     // side effect:
-    // - updates activatedKickstarterRoutes: array containing only those routes with 
+    // - updates activatedKickstarterRoutes: array containing only those routes with
     // ridesRemaining property
     // - updates routesWithRoutePass: array containing all avaialable routes,
     // modifying those with route credits remaining with a ridesRemaining property
@@ -342,20 +347,16 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           this.fetchRoutes(ignoreCache),
           this.fetchRoutePassCount(ignoreCache),
         ]).then(([allRoutes, routeToRidesRemainingMap]) => {
-          let ksRouteIds = _.keys(routeToRidesRemainingMap)
-          let allRoutesById = _.keyBy(allRoutes, 'id')
-          
-          let ksRoutes = ksRouteIds.map(
-            id => allRoutesById[id]
-          )
+          routesWithRoutePass = allRoutes.map(route => {
+            var clone = _.clone(route);
+            clone.ridesRemaining = (route.id in routeToRidesRemainingMap) ?
+              routeToRidesRemainingMap[route.id] : null;
+            return clone;
+          })
+          activatedKickstarterRoutes = routesWithRoutePass.filter(
+            route => route.id in routeToRidesRemainingMap)
 
-          ksRoutes.forEach(function(route){
-            route.ridesRemaining = routeToRidesRemainingMap[route.id]
-          });
-
-          activatedKickstarterRoutes = ksRoutes
-          routesWithRoutePass = allRoutes
-          return routesWithRoutePass
+          return routesWithRoutePass;
         })
 
       }
@@ -371,13 +372,46 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       return routesWithRoutePass
     },
 
-    // Returns array containing only those routes with 
+    // Returns array containing only those routes with
     // ridesRemaining property
     // Updated by: fetchRoutesWithRoutePass
     getActivatedKickstarterRoutes: function(){
       return activatedKickstarterRoutes
     },
 
+    // Returns promise containing the credit tag used to match the specified 
+    // route and the route passes the user owns
+    fetchRouteCreditTag: function(routeId, ignoreCache){
+      assert.equal(typeof routeId, 'number');
+
+      if (!ignoreCache && lastRouteId === routeId && creditTagPromise) {
+        return creditTagPromise;
+      }
+
+      let routePromise = this.getRoute(routeId)
+      let routeCreditsPromise = this.fetchRouteCredits()
+
+      return creditTagPromise = $q.all([routePromise, routeCreditsPromise]).then(([route, routeCredits])=>{
+        let routeCreditTags = _.keys(routeCredits);
+        let notableTags = _.intersection(route.tags, routeCreditTags)
+
+        if(notableTags.length === 1){
+          creditTag = notableTags[0]
+        } else if(notableTags.length > 1){
+          console.log("Error: Route has incorrect number of tags. Total: ", notableTags.length)
+        } else {
+          creditTag = null
+        }
+
+        return creditTag
+      })
+    },
+
+    // Returns the credit tag used to match the specified 
+    // route and the route passes the user owns
+    getRouteCreditTag: function(){
+      return creditTag
+    },
 
   };
   return instance;

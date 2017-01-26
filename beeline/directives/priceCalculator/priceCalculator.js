@@ -1,16 +1,17 @@
 import priceCalculatorTemplate from './priceCalculator.html';
 import assert from 'assert';
+const queryString = require('querystring')
 
 export default [
-  'BookingService', 'RoutesService',
-  function(BookingService, RoutesService) {
+  'BookingService', 'RoutesService', 'UserService', '$ionicPopup', 'CreditsService',
+  function(BookingService, RoutesService, UserService, $ionicPopup, CreditsService) {
     return {
       restrict: 'E',
       template: priceCalculatorTemplate,
       scope: {
         'booking': '=',
         'price': '=?',
-        'showRouteCredits': '<',
+        'showCredits': '<',
       },
       link: function(scope, elem, attr) {
         scope.isCalculating = 0;
@@ -20,9 +21,19 @@ export default [
           scope.$emit('priceCalculator.done')
         }
 
+        scope.$watch(UserService.getUser(), (user)=>{
+          CreditsService.fetchUserCredits().then((userCredits) => {
+            scope.userCredits = userCredits
+          });
+
+          CreditsService.fetchReferralCredits().then((referralCredits) => {
+            scope.referralCredits = referralCredits
+          });
+        })
+        
         var latestRequest = null;
         scope.$watch(
-          () => _.pick(scope.booking, ['selectedDates', 'useRouteCredits' /* qty, promoCode */]),
+          () => _.pick(scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode' /* , qty */]),
           async function () {
             assert(scope.booking.routeId);
             if (!scope.booking.route) {
@@ -46,7 +57,7 @@ export default [
                 return;
               scope.priceInfo = priceInfo;
               scope.price = priceInfo.totalDue;
-              scope.ridesUsed = scope.booking.useRouteCredits 
+              scope.ridesUsed = scope.booking.applyRouteCredits 
                 ? Math.min(scope.booking.route.ridesRemaining, priceInfo.tripCount)
                 : 0
               scope.errorMessage = null;

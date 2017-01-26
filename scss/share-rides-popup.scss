@@ -1,0 +1,24 @@
+#share-rides{
+  p{
+    margin-top: $padding-large-vertical*2;
+    margin-bottom: $padding-large-vertical*2;
+    text-align: left;
+  }
+  button{
+    text-align: right;
+  }
+  .referral-code{
+    border: 1px $hint-color dotted;
+    padding: $padding-base-vertical*4;
+    margin: $padding-large-vertical*2 auto;
+    text-align: center;
+    font-size: $font-size-large*2;
+    width: 300px;
+  }
+  .share-box{
+    textarea{
+      overflow: auto;
+    }
+  }
+
+}

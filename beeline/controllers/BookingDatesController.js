@@ -20,19 +20,20 @@ export default [
     // Defines the set of variables that, when changed, all user inputs
     // on this page should be cleared.
     $scope.session = {
-      sessionId: null,
+      sessionId: $stateParams.sessionId,
       userId: null,
     }
     // Data logic;
     $scope.book = {
-      routeId: '',
+      routeId: +$stateParams.routeId,
       route: null,
-      boardStopId: undefined,
-      alightStopId: undefined,
+      boardStopId: parseInt($stateParams.boardStop),
+      alightStopId: parseInt($stateParams.alightStop),
       priceInfo: {},
       selectedDates: [],
       invalidStopDates: [],
-      useRouteCredits: true,
+      applyRouteCredits: false,
+      creditTag: null,
     };
     // Display Logic;
     $scope.disp = {
@@ -47,12 +48,6 @@ export default [
       daysAllowed: [],
       selectedDatesMoments: [],
     };
-    $scope.book.routeId = +$stateParams.routeId;
-    $scope.session.sessionId = $stateParams.sessionId;
-    $scope.book.boardStopId = parseInt($stateParams.boardStop);
-    $scope.book.alightStopId = parseInt($stateParams.alightStop);
-
-    loadTickets();
 
     var routePromise = loadRoutes();
 
@@ -62,19 +57,16 @@ export default [
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
 
-    var routeCreditsPromise = RoutesService.fetchRouteCredits()
-    $q.all([routePromise, routeCreditsPromise]).then(([route, routeCredits])=>{
-      let routeCreditTags = _.keys(routeCredits);
-      let notableTags = _.intersection(route.tags, routeCreditTags)
-
-      if(notableTags.length === 1){
-        $scope.book.creditTag = notableTags[0]
-      } else {
-        console.log("Error: Route has incorrect number of tags.")
-      }
+    RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
+      $scope.book.applyRouteCredits = !!creditTag
+      $scope.book.creditTag = creditTag
     })
 
-    $scope.$watch(()=>UserService.getUser(), loadTickets);
+    $scope.$watch(()=>UserService.getUser(), async (user)=>{
+      loadTickets();
+      $scope.book.applyReferralCredits = !!user
+      $scope.book.applyCredits = !!user
+    });
 
     $scope.$watch(
        /* Don't watch the entire moment objects, just their value */
