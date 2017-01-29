@@ -52,12 +52,18 @@
   <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
   <script src="js/clipboard.min.js"></script>
   <script src="js/ngclipboard.min.js"></script>
-  <script src="lib/beeline/bundle.js"></script>
   <script>
-    angular.module('beeline')
-    .factory('replace', function () {
+    var app = angular.module('beeline', [
+      'ionic',
+      'ngCordova',
+      'uiGmapgoogle-maps',
+      'multipleDatePicker',
+      'ngclipboard',
+    ])
+
+    app.factory('replace', function () {
       var replacements = {
-        '/assets/FAQ': '/assets/FAQ-grab',
+        '/assets/FAQ': '/assets/FAQ-grab'
         // 'img/introTrackOnly.svg': 'img/introSuggest.svg'
       };
 
@@ -78,7 +84,8 @@
       $rootScope.o = {
         replace: replace,
         app: {
-          name: "Grab Shuttle"
+          name: "Grab Shuttle",
+          prefix: "grab"
         },
         contacts: {
           email: "help@grab.com.sg"
@@ -86,6 +93,7 @@
       }
     })
   </script>
+  <script src="lib/beeline/bundle.js"></script>
 </head>
 
 <body ng-app="beeline">

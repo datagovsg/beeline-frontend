@@ -51,10 +51,16 @@
   <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
   <script src="js/clipboard.min.js"></script>
   <script src="js/ngclipboard.min.js"></script>
-  <script src="lib/beeline/bundle.js"></script>
   <script>
-    angular.module('beeline')
-    .factory('replace', function () {
+    var app = angular.module('beeline', [
+      'ionic',
+      'ngCordova',
+      'uiGmapgoogle-maps',
+      'multipleDatePicker',
+      'ngclipboard',
+    ])
+    
+    app.factory('replace', function () {
       return function(x){
         return x;
       }
@@ -65,10 +71,11 @@
     })
     .run(function($rootScope, replace) {
       $rootScope.o = {
-        replace : replace,
+        replace : replace
       }
     })
   </script>
+  <script src="lib/beeline/bundle.js"></script>
 </head>
 
 <body ng-app="beeline">
