@@ -15,7 +15,7 @@ export default [
   function(
     $scope, UserService, StripeService, KickstarterService,
     $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state,
-    ,$cordovaSocialSharing, replace) {
+    $cordovaSocialSharing, replace) {
 
     $scope.data = {};
     $scope.hasCordova = !!window.cordova || false
