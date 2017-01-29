@@ -1,7 +1,9 @@
 import faqModalTemplate from '../templates/faq-modal.html';
 import contactUsModalTemplate from '../templates/contact-us-modal.html';
+import shareReferralModalTemplate from '../templates/share-referral-modal.html';
 import commonmark from 'commonmark';
 import _ from 'lodash';
+
 
 var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
@@ -9,14 +11,14 @@ var writer = new commonmark.HtmlRenderer({safe: true});
 export default [
   '$scope', 'UserService', 'StripeService', 'KickstarterService',
   '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading',
-  '$state', 'replace',
+  '$state', '$cordovaSocialSharing','replace',
   function(
     $scope, UserService, StripeService, KickstarterService,
     $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state,
-    replace) {
+    ,$cordovaSocialSharing, replace) {
 
     $scope.data = {};
-
+    $scope.hasCordova = !!window.cordova || false
     $scope.isOnKickstarter = false;
 
     let isPressed = false;
@@ -26,7 +28,18 @@ export default [
       return UserService.getUser();
     }, function(newUser) {
       $scope.user = newUser;
+
+      if(newUser){
+        $scope.shareMsg = UserService.getReferralMsg()
+      } else {
+        $scope.shareMsg = null
+      }
     });
+
+    // Function that allows user to share an invitation with a referral code to other apps on the phone
+    $scope.cordovaShare = async function(){
+      $cordovaSocialSharing.share($scope.shareMsg, "Try out Beeline!")
+    }
 
     // Map in the login items
     $scope.logIn = UserService.promptLogIn;
@@ -66,6 +79,11 @@ export default [
       return newScope;
     };
 
+    $scope.shareReferralModal = $ionicModal.fromTemplate(
+      shareReferralModalTemplate,
+      {scope: $scope}
+    );
+
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,
       {scope: assetScope('FAQ')}
@@ -79,6 +97,7 @@ export default [
     $scope.$on('$destroy', function() {
       $scope.faqModal.destroy();
       $scope.contactUsModal.destroy();
+      $scope.shareReferralModal.destroy();
     });
 
     $scope.hasPaymentInfo = function() {

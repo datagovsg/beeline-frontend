@@ -4,6 +4,7 @@ import querystring from 'querystring';
 
 export default function TicketService($http, $filter, UserService, p) {
   var ticketsCache = null;
+  var allTickets = null;
   var ticketsByRouteId = null;
 
   //set to true with setShouldRefreshTickets once a ticket is bought
@@ -20,7 +21,7 @@ export default function TicketService($http, $filter, UserService, p) {
       shouldRefreshTickets = true;
     },
 
-    getTickets: function(ignoreCache) {
+    fetchTickets: function(ignoreCache) {
       if (ticketsCache && !ignoreCache) return ticketsCache;
       var url = '/tickets';
       if (p.transportCompanyId) {
@@ -31,12 +32,16 @@ export default function TicketService($http, $filter, UserService, p) {
         url: url,
       }).then((response) => {
         ticketsByRouteId = _.groupBy(response.data, ticket => ticket.boardStop.trip.routeId);
-        return response.data;
+        return allTickets = response.data;
 			});
     },
 
+    getTickets: function(){
+      return allTickets
+    },
+
     getTicketsByRouteId(rid, ignoreCache) {
-      return this.getTickets(ignoreCache)
+      return this.fetchTickets(ignoreCache)
       .then(() => {
         return ticketsByRouteId[rid];
       });
@@ -52,14 +57,14 @@ export default function TicketService($http, $filter, UserService, p) {
 
     getTicketById: function(id, ignoreCache) {
       assert.equal(typeof id, 'number');
-      return this.getTickets(ignoreCache).then(function(tickets) {
+      return this.fetchTickets(ignoreCache).then(function(tickets) {
         return _.find(tickets, {id: id});
       });
     },
 
     getCategorizedTickets: function(ignoreCache) {
       shouldRefreshTickets = false;
-      return this.getTickets(ignoreCache).then(function(tickets) {
+      return this.fetchTickets(ignoreCache).then(function(tickets) {
         var now = new Date();
         var lastMidnight = now.setHours(0, 0, 0, 0);
         var nextMidnight = now.setHours(24, 0, 0, 0);

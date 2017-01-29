@@ -82,6 +82,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       user = response.data.user;
       userEvents.emit("userChanged");
       window.localStorage.setItem('beelineUser', JSON.stringify(user));
+
       return user;
     });
   };
@@ -168,6 +169,10 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
+  var getReferralMsg = function(){
+    const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. \nVisit https://app.beeline.sg/#/welcome?refCode="
+    return shareMsgTemplate + user.referralCode.code
+  }
 
   // ////////////////////////////////////////////////////////////////////////////
   // UI methods
@@ -263,6 +268,59 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       throw error; // Allow the calling function to catch the error
     };
   };
+
+  // Registration Sequence used for Welcome page (via Referral Link)
+  // Verifies telephone number and prompts for name and email for registration
+  // Saves referral code to user data
+  var registerViaReferralWelcome = async function(telephoneNumber, refCode, refCodeOwner){
+    try {  
+      if (!telephoneNumber) return;
+      $ionicLoading.show({template: requestingVerificationCodeTemplate});
+      await sendTelephoneVerificationCode(telephoneNumber);
+      $ionicLoading.hide();
+
+      // Ask for verification code
+      var verificationCode = await promptVerificationCode(telephoneNumber);
+      if (!verificationCode) return;
+      $ionicLoading.show({template: sendingVerificationCodeTemplate});
+      var user = await verifyTelephone(telephoneNumber, verificationCode.code);
+
+      $ionicLoading.hide();
+
+      // Is the user name null?
+      await checkNewUser(user);
+      
+      $ionicLoading.show({template: sendingVerificationCodeTemplate});
+
+      if(refCode && refCodeOwner){
+        await applyRefCode(refCode)  
+      } 
+
+      $ionicLoading.hide();
+    }
+    // If an error occurs at any point stop and alert the user
+    catch(error) {
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+        title: "Error while trying to connect to server.",
+        subTitle: error && error.data && error.data.message
+      });
+      throw error; // Allow the calling function to catch the error
+    };
+  }
+
+  // Use the referral code and apply rewards to newUser
+  // Input:
+  // - refCode - String: referral code
+  async function applyRefCode(refCode){
+    return beelineRequest({
+      method: "POST",
+      url: "/user/applyRefCode",
+      data: {
+        refCode: refCode,
+      }
+    })
+  }
 
   function register(newUser) {
     return beelineRequest({
@@ -458,15 +516,18 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   return {
     getUser: function() { return (user); },
     beeline: beelineRequest,
-    promptLogIn: promptLogIn,
-    promptUpdatePhone: promptUpdatePhone,
-    promptUpdateUserInfo: promptUpdateUserInfo,
-    promptLogOut: promptLogOut,
-    verifySession: verifySession,
-    userEvents: userEvents,
-    savePaymentInfo: savePaymentInfo,
-    updatePaymentInfo: updatePaymentInfo,
-    removePaymentInfo: removePaymentInfo,
+    promptLogIn,
+    promptUpdatePhone,
+    promptUpdateUserInfo,
+    promptLogOut,
+    registerViaReferralWelcome,
+    verifySession,
+    applyRefCode,
+    userEvents,
+    savePaymentInfo,
+    updatePaymentInfo,
+    removePaymentInfo,
+    getReferralMsg,
   };
 
 }

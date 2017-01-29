@@ -41,9 +41,14 @@ export default function(UserService, CompanyService, RoutesService, $http) {
         method: 'POST',
         url: '/transactions/ticket_sale',
         data: {
-          creditTag: booking.useRouteCredits ? booking.creditTag : null,
+          creditTag: booking.applyRouteCredits ? booking.creditTag : null,
           trips: trips,
-          dryRun: true,
+          dryRun: true, 
+          promoCode: booking.promoCode ? {
+            code: booking.promoCode
+          } : null,
+          applyCredits: booking.applyCredits,
+          applyReferralCredits: booking.applyReferralCredits
         },
       })
       .then((resp) => {
@@ -59,6 +64,8 @@ export default function(UserService, CompanyService, RoutesService, $http) {
           tripCount: trips.length,
           pricesPerTrip: this.summarizePrices(booking),
           routeCredits: txItems['routeCredits'],
+          referralCredits: txItems['referralCredits'],
+          credits: txItems['credits'],
           discounts: txItems.discount,
           totalBeforeDiscount,
         };

@@ -1,19 +1,28 @@
 price-calculator {
   .booking-info {
     width: 100%;
-    td{
-      text-align: left;
-    }
+    margin-bottom: $padding-large-vertical*3;
     /* for 2 column  */
     &.prices {
       td {
         width: 50%;
       }
     }
+
+    &.calculator{
+      td{
+        text-align: left;
+        &.right{
+          text-align: right;
+        }
+      }
+    }
+
     td,
     th {
       white-space: normal;
     }
+
   }
 
 
@@ -38,14 +47,14 @@ price-calculator {
     margin-top: $padding-large-vertical*2;
   }
 }
-.date-price-calculator{
+/* .date-price-calculator{
   table {
     margin-bottom: $content-padding;
     td{
       text-align: center;
     }
   }
-}
+} */
 
 .promoCredits{
   .small-button{

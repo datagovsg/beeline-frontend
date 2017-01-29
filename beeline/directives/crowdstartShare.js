@@ -6,7 +6,7 @@ export default function($cordovaSocialSharing) {
                 <div class="share-box">
                   Share this campaign to your friends and colleagues to increase the chance of activating this route!
                   <div class="text-center">
-                    <textarea>{{shareLink}}</textarea>
+                    <textarea rows="4">{{shareLink}}</textarea>
                   </div>
                   <div class="text-right">
                     <button class="button button-outline button-royal small-button" ng-click="shareAnywhere()" ng-if="!showCopy">Share</button>
