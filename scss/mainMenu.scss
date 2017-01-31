@@ -1,6 +1,3 @@
-/* $tab-item-active-bg: #594672; */
-$tab-item-active-bg: $royal;
-
 .nav-text {
   color: #fff;
   padding-top:  33px;
@@ -16,7 +13,6 @@ $tab-item-active-bg: $royal;
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
-    background-color: $tab-item-active-bg;
   }
 }
 
@@ -26,7 +22,6 @@ $tab-item-active-bg: $royal;
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuSuggestActive.svg') center 4px no-repeat;
-    background-color: $tab-item-active-bg;
   }
 }
 
@@ -36,7 +31,6 @@ $tab-item-active-bg: $royal;
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuTicketsActive.svg') center 2px no-repeat;
-    background-color: $tab-item-active-bg;
   }
 }
 
@@ -46,7 +40,6 @@ $tab-item-active-bg: $royal;
   &:hover,
   &.tab-item-active {
     background: url('../img/menu/MenuKickstartActive.svg') center 4px no-repeat;
-    background-color: $tab-item-active-bg;
   }
 }
 
