@@ -88,19 +88,20 @@
   padding: 20px 20px;
   font-size: 16px;
   line-height: 0px;
-  background-color: #ffe76e; // FIXME: variables?
+  background-color: $energized;
   border: 0px;
-  border-bottom: 4px solid #f7c639;
+  border-bottom: 4px solid $primary-button-shadow;
   border-radius: 20px;
   box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  color: #333;
+  color: $primary-button-font;
   z-index: 3;
   text-transform: uppercase;
 
-  &:active, :hover {
-    border-bottom: 1px solid #f7c639;
+  &:active, &:hover {
+    border-bottom: 1px solid $primary-button-shadow;
     box-shadow: 1px 1px 1px rgba(0,0,0,0.6);
+    color: $primary-button-font;
   }
 
   &[disabled="disabled"] {
@@ -115,7 +116,8 @@
   }
 
   &.activated{
-    border-color: #f7c639;
+    border-color: $primary-button-shadow;
+    color: $primary-button-font;
   }
 
   &.page-bottom {
