@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 19 26" style="enable-background:new 0 0 19 26;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#898D97;stroke-linejoin:round;}
+	.st1{fill:none;stroke:#898D97;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<title>MenuSuggestNormal</title>
+<desc>Created with Sketch.</desc>
+<g id="Main">
+	<g id="_x31_MainTabMap" transform="translate(-130.000000, -616.000000)">
+		<g id="Menu-Bar" transform="translate(0.000000, 603.000000)">
+			<g id="Icons" transform="translate(27.000000, 11.500000)">
+				<g id="MenuSuggest" transform="translate(104.000000, 2.500000)">
+					<g id="MenuSuggestNormal">
+						<g id="Group" transform="translate(2.967033, 2.478966)">
+							<path id="Stroke-218" class="st0" d="M10.5,5.5c0,2.8-2.2,5-5,5c-2.8,0-5-2.3-5-5s2.2-5,5-5C8.2,0.4,10.5,2.7,10.5,5.5
+								L10.5,5.5z"/>
+							<path id="Stroke-220" class="st1" d="M3.3,5.5h4.2"/>
+							<path id="Stroke-222" class="st1" d="M5.4,7.6V3.4"/>
+						</g>
+						<g id="Group-2">
+							<path id="Stroke-146" class="st1" d="M8.5,24.7C8.5,24.7,0,13.9,0,9c0-5,3.8-9,8.5-9c4.7,0,8.5,4,8.5,9
+								C17.1,13.9,8.5,24.7,8.5,24.7z"/>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
