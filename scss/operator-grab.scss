@@ -1,10 +1,21 @@
 // Start with our variables
 // To customize Ionic override the variables in ionic's _variables.scss file.
 
-$positive: #00B140;
 $royal: #00B140;
+$positive: #EAEFF2;
 $energized: #00B140;
 $primary-button-shadow: #008D33;
 $primary-button-font: #fff;
+
+$nav-routes-normal: '../img/menu/Grab_MenuRoutesNormal.svg';
+$nav-routes-active: '../img/menu/Grab_MenuRoutesActive.svg';
+$nav-suggest-normal: '../img/menu/Grab_MenuSuggestNormal.svg' ;
+$nav-suggest-active: '../img/menu/Grab_MenuSuggestActive.svg' ;
+$nav-tickets-normal: '../img/menu/Grab_MenuTicketsNormal.svg' ;
+$nav-tickets-active: '../img/menu/Grab_MenuTicketsActive.svg' ;
+$nav-kickstarter-normal: '../img/menu/Grab_MenuKickstartNormal.svg' ;
+$nav-kickstarter-active: '../img/menu/Grab_MenuKickstartActive.svg' ;
+$nav-settings-normal: '../img/menu/Grab_MenuSettingsNormal.svg' ;
+$nav-settings-active: '../img/menu/Grab_MenuSettingsActive.svg' ;
 
 @import "scss/ionic.app.scss";

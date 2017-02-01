@@ -1,55 +1,76 @@
+
 .nav-text {
   color: #fff;
   padding-top:  33px;
 }
 
 .nav-text:hover, .nav-text:active, .tab-item-active {
-    color: #ffe76e;
+    color: $energized;
 }
 
 .nav-routes {
-  background: url('../img/menu/MenuRoutesNormal.svg') center 4px no-repeat;
+  width: 10px;
+  background-image: url($nav-routes-normal);
+  background-position: center 4px;
+  background-repeat: no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background: url('../img/menu/MenuRoutesActive.svg') center 4px no-repeat;
+    background-image: url($nav-routes-active);
+    background-position: center 4px;
+    background-repeat: no-repeat;
   }
 }
 
 .nav-suggest {
-  background: url('../img/menu/MenuSuggestNormal.svg') center 4px no-repeat;
+  background-image: url($nav-suggest-normal);
+  background-position: center 4px;
+  background-repeat: no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background: url('../img/menu/MenuSuggestActive.svg') center 4px no-repeat;
+    background-image: url($nav-suggest-active);
+    background-position: center 4px;
+    background-repeat: no-repeat;
   }
 }
 
 .nav-tickets {
-  background: url('../img/menu/MenuTicketsNormal.svg') center 2px no-repeat;
+  background-image: url($nav-tickets-normal);
+  background-position: center 2px;
+  background-repeat: no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background: url('../img/menu/MenuTicketsActive.svg') center 2px no-repeat;
+    background-image: url($nav-tickets-active);
+    background-position: center 2px;
+    background-repeat: no-repeat;
   }
 }
 
 .nav-kickstarter {
-  background: url('../img/menu/MenuKickstartNormal.svg') center 4px no-repeat;
+  background-image: url($nav-kickstarter-normal);
+  background-position: center 4px;
+  background-repeat: no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background: url('../img/menu/MenuKickstartActive.svg') center 4px no-repeat;
+    background-image: url($nav-kickstarter-active);
+    background-position: center 4px;
+    background-repeat: no-repeat;
   }
 }
 
 
 .nav-settings {
-  background: url('../img/menu/MenuSettingsNormal.svg') center 3px no-repeat;
+  background-image: url($nav-settings-normal);
+  background-position: center 3px;
+  background-repeat: no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background: url('../img/menu/MenuSettingsActive.svg') center 3px no-repeat;
-    background-color: $tab-item-active-bg;
+    background-image: url($nav-settings-active);
+    background-position: center 3px;
+    background-repeat: no-repeat;
   }
 }
