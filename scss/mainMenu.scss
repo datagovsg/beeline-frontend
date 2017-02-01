@@ -9,68 +9,47 @@
 }
 
 .nav-routes {
-  width: 10px;
-  background-image: url($nav-routes-normal);
-  background-position: center 4px;
-  background-repeat: no-repeat;
+  background: url($menu-asset-folder+'MenuRoutesNormal.svg') center 4px no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background-image: url($nav-routes-active);
-    background-position: center 4px;
-    background-repeat: no-repeat;
+    background: url($menu-asset-folder+'MenuRoutesActive.svg') center 4px no-repeat;
   }
 }
 
 .nav-suggest {
-  background-image: url($nav-suggest-normal);
-  background-position: center 4px;
-  background-repeat: no-repeat;
+  background: url($menu-asset-folder+'MenuSuggestNormal.svg') center 4px no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background-image: url($nav-suggest-active);
-    background-position: center 4px;
-    background-repeat: no-repeat;
+    background: url($menu-asset-folder+'MenuSuggestActive.svg') center 4px no-repeat;
   }
 }
 
 .nav-tickets {
-  background-image: url($nav-tickets-normal);
-  background-position: center 2px;
-  background-repeat: no-repeat;
+  background: url($menu-asset-folder+'MenuTicketsNormal.svg') center 2px no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background-image: url($nav-tickets-active);
-    background-position: center 2px;
-    background-repeat: no-repeat;
+    background: url($menu-asset-folder+'MenuTicketsActive.svg') center 2px no-repeat;
   }
 }
 
 .nav-kickstarter {
-  background-image: url($nav-kickstarter-normal);
-  background-position: center 4px;
-  background-repeat: no-repeat;
+  background: url($menu-asset-folder+'MenuKickstartNormal.svg') center 4px no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background-image: url($nav-kickstarter-active);
-    background-position: center 4px;
-    background-repeat: no-repeat;
+    background: url($menu-asset-folder+'MenuKickstartActive.svg') center 4px no-repeat;
   }
 }
 
 
 .nav-settings {
-  background-image: url($nav-settings-normal);
-  background-position: center 3px;
-  background-repeat: no-repeat;
+  background: url($menu-asset-folder+'MenuSettingsNormal.svg') center 3px no-repeat;
   display: block;
   &:hover,
   &.tab-item-active {
-    background-image: url($nav-settings-active);
-    background-position: center 3px;
-    background-repeat: no-repeat;
+    background: url($menu-asset-folder+'MenuSettingsActive.svg') center 3px no-repeat;
   }
 }

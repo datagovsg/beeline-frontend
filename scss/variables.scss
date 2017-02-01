@@ -9,18 +9,7 @@
 
 $primary-button-shadow: #f7c639 !default;
 $primary-button-font: #333 !default;
-
-$nav-routes-normal: '../img/menu/MenuRoutesNormal.svg' !default;
-$nav-routes-active: '../img/menu/MenuRoutesActive.svg' !default;
-$nav-suggest-normal: '../img/menu/MenuSuggestNormal.svg' !default;
-$nav-suggest-active: '../img/menu/MenuSuggestActive.svg' !default;
-$nav-tickets-normal: '../img/menu/MenuTicketsNormal.svg' !default;
-$nav-tickets-active: '../img/menu/MenuTicketsActive.svg' !default;
-$nav-kickstarter-normal: '../img/menu/MenuKickstartNormal.svg' !default;
-$nav-kickstarter-active: '../img/menu/MenuKickstartActive.svg' !default;
-$nav-settings-normal: '../img/menu/MenuSettingsNormal.svg' !default;
-$nav-settings-active: '../img/menu/MenuSettingsActive.svg' !default;
-
+$menu-asset-folder: '../img/menu/' !default;
 
 $hint-color: #888 !default;
 $breadcrumbs-height: 54px !default;
