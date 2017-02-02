@@ -52,10 +52,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.shareMsg = null
     }
     
-    if(!JSON.parse(window.localStorage.showedReferralModal) && newUser){
-      window.localStorage.showedReferralModal = true
-      $scope.shareReferralModal.show()
-    }  
+    // Referral Sharing - hidden for now
+    // if(!JSON.parse(window.localStorage.showedReferralModal) && newUser){
+    //   window.localStorage.showedReferralModal = true
+    //   $scope.shareReferralModal.show()
+    // }  
   });
 
   RoutesService.fetchRoutesWithRoutePass();
