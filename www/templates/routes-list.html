@@ -8,11 +8,7 @@
 
     <!-- Region Filter  -->
     <div class="region-filter">
-      <label class="item item-input item-icon-left">
-          <i class="ionicon ion-ios-search-strong"></i>
-        <input type="text" ng-change="updateFilter(data.stagingFilterText)"
-          placeholder="Search" ng-model="data.stagingFilterText" />
-      </label>
+      <search-button ui-sref="tabs.search({backPage: 'tabs.routes'})"></search-button>
       <label class="item item-input item-select" data-tap-disabled="true">
         <select ng-model="data.selectedRegionId">
           <option value="" disabled selected>Select Region</option>
@@ -38,61 +34,10 @@
                   boardStop:  data.recentRoutesById[route.id].boardStopStopId,
                   alightStop: data.recentRoutesById[route.id].alightStopStopId,
                   sessionId: data.nextSessionId,
-                  ridesRemaining: route.ridesRemaining,
                 })"
                 ng-if="data.filteredActivatedKickstarterRoutes && data.filteredActivatedKickstarterRoutes.length > 0"
                 class="item-icon-right">
-        <route-item>
-          <route-item-bus-number>
-            {{ route.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ route.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ route | routeStartTime | formatTime:true }}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ route | routeEndTime | formatTime:true }}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ route.to }}
-          </route-item-end-location>
-
-          <route-item-additional-info>
-            <company-info-broker company-id="route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="mini-info">
-                {{companyInfo.name}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="mini-info">
-                {{route.schedule}}
-              </span>
-            </div>
-            <div class="icon-and-schedule" ng-if="route.ridesRemaining && route.ridesRemaining > 0">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
-              </span>
-              <span class="mini-info important">
-                You have {{ route.ridesRemaining }} trip(s) remaining in your Route Pass.
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
+        <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
       <div class="item item-divider"
@@ -105,66 +50,15 @@
                   boardStop:  data.recentRoutesById[route.id].boardStopStopId,
                   alightStop: data.recentRoutesById[route.id].alightStopStopId,
                   sessionId: data.nextSessionId,
-                  ridesRemaining: route.ridesRemaining,
                 })"
                 class="item-text-wrap item-icon-right">
-        <route-item>
-          <route-item-bus-number>
-            {{ route.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ route.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ route | routeStartTime | formatTime:true }}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ route | routeEndTime | formatTime:true }}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ route.to }}
-          </route-item-end-location>
-
-          <route-item-additional-info>
-            <company-info-broker company-id="route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="mini-info">
-                {{companyInfo.name}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="mini-info">
-                {{route.schedule}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule" ng-if="route.ridesRemaining && route.ridesRemaining > 0">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
-              </span>
-              <span class="mini-info important" >
-                You have {{ route.ridesRemaining }} trip(s) remaining in your Route Pass.
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
+        <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
       <!-- Available Routes Section -->
-      <div class="item item-divider">
+      <div class="item item-divider"
+           ng-if="data.filteredLiteRoutes.length > 0 || data.filteredActiveRoutes.length > 0">
         Available Routes
       </div>
 
@@ -174,50 +68,7 @@
                   label: route.label,
                 })"
                 class="item-icon-right">
-        <route-item class="lite"
-                    ng-class="{'lite-tracked': route.isSubscribed}">
-          <route-item-bus-number>
-            {{ route.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ route.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ route.startTime | formatTime}}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ route.endTime | formatTime}}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ route.to }}
-          </route-item-end-location>
-
-          <route-item-additional-info>
-            <company-info-broker company-id="route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="mini-info">
-                {{companyInfo.name}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="mini-info">
-                {{route.schedule}}
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
+        <lite-route route="route"></lite-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
@@ -227,58 +78,7 @@
                   sessionId: data.nextSessionId,
                 })"
                 class="item-text-wrap item-icon-right">
-        <route-item>
-          <route-item-bus-number>
-            {{ route.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ route.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ route | routeStartTime | formatTime:true }}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ route | routeEndTime | formatTime:true }}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ route.to }}
-          </route-item-end-location>
-
-          <route-item-additional-info>
-            <company-info-broker company-id="route.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-              </span>
-              <span class="mini-info">
-                {{companyInfo.name}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="mini-info">
-                {{route.schedule}}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule" ng-if="route.ridesRemaining && route.ridesRemaining > 0">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
-              </span>
-              <span class="mini-info important" >
-                You have {{ route.ridesRemaining }} trip(s) remaining in your Route Pass.
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
+        <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
       <powered-by-beeline power-hide="o.APP.NAME=='Beeline'"></powered-by-beeline>

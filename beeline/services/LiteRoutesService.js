@@ -7,7 +7,7 @@ import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
 
-export default function LiteRoutesService($http, UserService, $q, LiteRouteSubscriptionService) {
+export default function LiteRoutesService($http, UserService, $q, LiteRouteSubscriptionService, p) {
 
   var liteRoutesCache;
   var liteRoutesPromise;
@@ -48,7 +48,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         result[label].isSubscribed = false;
       }
       return result;
-    },{});
+    }, {});
     transformTime(liteRoutesByLabel);
     //ignor the startingTime and endTime for now
     return liteRoutesByLabel;
@@ -75,7 +75,8 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         include_trips: true,
         limit_trips: 5,
         tags: JSON.stringify(['lite']),
-      }, options)
+      }, options,
+    p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {})
 
       url += querystring.stringify(finalOptions)
 
@@ -114,7 +115,8 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         tags: JSON.stringify(['lite']),
         label: liteRouteLabel,
         include_path: true,
-      }, options)
+      }, options,
+      p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {})
 
       var url = '/routes?';
       url+= querystring.stringify(finalOptions);
@@ -204,6 +206,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     clearShouldRefreshLiteTickets: function() {
       shouldRefreshLiteTickets = false;
     },
+    transformLiteRouteData
   };
 
   return instance;

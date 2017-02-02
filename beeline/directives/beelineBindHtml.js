@@ -9,7 +9,7 @@ export default function ($compile) {
         elem[0].innerHTML = html || '';
 
         scope.$openOpenLink = (href) => {
-          if (cordova) {
+          if (typeof cordova !== 'undefined') {
             cordova.InAppBrowser.open(href, '_system');
           }
           else {
