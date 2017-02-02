@@ -19,8 +19,8 @@
           The phone no. you provide does not appear to be in the correct format. Please provide a valid 8-digit phone no. starting with the number 8 or 9.
         </div>
         <div class="checkTerms">
-            Please read {{o.APP.NAME || "Beeline"}}'s <a ng-click="showPrivacyPolicy()">Privacy Policy</a> and <a ng-click="showTermsOfUse()">Terms of Use</a>.
-          <ion-checkbox ng-model="acceptPolicy" ng-required="true">I read and agree to the above terms and would like to proceed using {{o.APP.NAME || "Beeline"}}.
+            Please read {{o.APP.NAME}}'s <a ng-click="showPrivacyPolicy()">Privacy Policy</a> and <a ng-click="showTermsOfUse()">Terms of Use</a>.
+          <ion-checkbox ng-model="acceptPolicy" ng-required="true">I read and agree to the above terms and would like to proceed using {{o.APP.NAME}}.
           </ion-checkbox>
           </div>
           <button class="primary-button button" ng-click="accept()" ng-disabled="form.validation.$invalid">

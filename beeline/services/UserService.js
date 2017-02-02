@@ -59,7 +59,11 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     return beelineRequest({
       method: 'POST',
       url: '/users/sendTelephoneVerification',
-      data: {telephone: '+65' + number},
+      data: {
+        telephone: '+65' + number,
+        alphanumericId: ($rootScope.o.APP.SMS_OTP_FROM).replace(/\s/g, ''),
+        appName: $rootScope.o.APP.NAME
+      },
       headers: {'Content-Type': 'application/json'}
     }).then(function() {
       return true;
@@ -273,7 +277,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   // Verifies telephone number and prompts for name and email for registration
   // Saves referral code to user data
   var registerViaReferralWelcome = async function(telephoneNumber, refCode, refCodeOwner){
-    try {  
+    try {
       if (!telephoneNumber) return;
       $ionicLoading.show({template: requestingVerificationCodeTemplate});
       await sendTelephoneVerificationCode(telephoneNumber);
@@ -289,12 +293,12 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
 
       // Is the user name null?
       await checkNewUser(user);
-      
+
       $ionicLoading.show({template: sendingVerificationCodeTemplate});
 
       if(refCode && refCodeOwner){
-        await applyRefCode(refCode)  
-      } 
+        await applyRefCode(refCode)
+      }
 
       $ionicLoading.hide();
     }
