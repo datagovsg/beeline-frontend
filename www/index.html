@@ -59,7 +59,7 @@
       'multipleDatePicker',
       'ngclipboard',
     ])
-    
+
     app.factory('replace', function () {
       return function(x){
         return x;
@@ -71,7 +71,10 @@
     })
     .run(function($rootScope, replace) {
       $rootScope.o = {
-        replace : replace
+        replace : replace,
+        APP: {
+          PREFIX: ""
+        },
       }
     })
   </script>

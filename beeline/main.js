@@ -17,13 +17,6 @@ import configureRoutes from './router.js';
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
 // //////////////////////////////////////////////////////////////////////////////
-// var app = angular.module('beeline', [
-//   'ionic',
-//   'ngCordova',
-//   'uiGmapgoogle-maps',
-//   'multipleDatePicker',
-//   'ngclipboard',
-// ])
 angular.module('beeline')
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)

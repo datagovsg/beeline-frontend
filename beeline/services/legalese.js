@@ -1,7 +1,6 @@
 export default function ($rootScope, $ionicModal) {
-  let prefix = $rootScope.o.app && $rootScope.o.app.prefix ? $rootScope.o.app.prefix+'-' : '';
-  let privacyPolicyModalTemplate =  require('../templates/'+prefix+'privacy-policy-modal.html');
-  let termsOfUseModalTemplate =  require('../templates/'+prefix+'terms-of-use-modal.html');
+  let privacyPolicyModalTemplate =  require('../templates/'+$rootScope.o.APP.PREFIX+'privacy-policy-modal.html');
+  let termsOfUseModalTemplate =  require('../templates/'+$rootScope.o.APP.PREFIX+'terms-of-use-modal.html');
 
   function showModal(template) {
     var scope = $rootScope.$new();
