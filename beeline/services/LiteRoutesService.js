@@ -48,7 +48,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         result[label].isSubscribed = false;
       }
       return result;
-    },{});
+    }, {});
     transformTime(liteRoutesByLabel);
     //ignor the startingTime and endTime for now
     return liteRoutesByLabel;
@@ -204,6 +204,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     clearShouldRefreshLiteTickets: function() {
       shouldRefreshLiteTickets = false;
     },
+    transformLiteRouteData
   };
 
   return instance;

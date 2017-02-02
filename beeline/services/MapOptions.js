@@ -50,6 +50,14 @@ export default [
             weight: 3.0,
             opacity: 1.0
           }
+        },
+        bounds: {
+          Singapore: {
+  	        north: 1.516329,
+  	        east: 104.08,
+  	        south: 1.1954,
+  	        west: 103.5814
+  	      }
         }
       };
     });
@@ -77,7 +85,8 @@ export default [
                   visibility: "off"
                 }]
             }],
-          draggable: true
+          draggable: true,
+          gestureHandling: 'greedy',
         },
         markerOptions: {
           alightMarker: {},
@@ -135,6 +144,12 @@ export default [
         }
       }, 300);
     }
+
+    this.resizePreserveCenter = function(map) {
+      let oldCenter = map.getCenter();
+      google.maps.event.trigger(map, 'resize');
+      map.setCenter(oldCenter);
+    };
 
   }
 ];
