@@ -1,27 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="19px" height="26px" viewBox="0 0 19 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
-    <title>MenuSuggestActive</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
-        <g id="1MainTabMap" transform="translate(-130.000000, -616.000000)" stroke="#FFE76E">
-            <g id="Menu-Bar" transform="translate(0.000000, 603.000000)">
-                <g id="Icons" transform="translate(27.000000, 11.500000)">
-                    <g id="MenuSuggest" transform="translate(104.000000, 2.500000)">
-                        <g id="MenuSuggestActive">
-                            <g id="Group" transform="translate(2.967033, 2.478966)">
-                                <path d="M10.4606932,5.45372596 C10.4606932,8.23428717 8.21206255,10.4879345 5.43956044,10.4879345 C2.66622147,10.4879345 0.418427726,8.23428717 0.418427726,5.45372596 C0.418427726,2.67316476 2.66622147,0.419517382 5.43956044,0.419517382 C8.21206255,0.419517382 10.4606932,2.67316476 10.4606932,5.45372596 L10.4606932,5.45372596 Z" id="Stroke-218"></path>
-                                <path d="M3.34742181,5.45372596 L7.53169907,5.45372596" id="Stroke-220" stroke-linecap="round"></path>
-                                <path d="M5.43956044,7.55131287 L5.43956044,3.35613905" id="Stroke-222" stroke-linecap="round"></path>
-                            </g>
-                            <g id="Group-2" stroke-linecap="round">
-                                <path d="M8.54700855,24.6682447 C8.54700855,24.6682447 0,13.9241029 0,8.9702708 C0,4.01419618 3.82478632,0 8.54700855,0 C13.267094,0 17.0940171,4.01419618 17.0940171,8.9702708 C17.0940171,13.9241029 8.54700855,24.6682447 8.54700855,24.6682447 Z" id="Stroke-146"></path>
-                            </g>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg width="26px" height="27px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 19 26" style="enable-background:new 0 0 19 26;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#00B140;stroke-linecap:round;stroke-linejoin:round;}
+	.st1{fill:#00B140;stroke:#00B140;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<title>MenuSuggestActive</title>
+<desc>Created with Sketch.</desc>
+<path id="Stroke-220" class="st0" d="M7.3,8.9h4.2"/>
+<path id="Stroke-222" class="st0" d="M9.4,11V6.8"/>
+<path class="st1" d="M9.5,1C4.8,1,1,5,1,10c0,5,8.5,15.7,8.5,15.7s8.5-10.7,8.5-15.7C18.1,5,14.3,1,9.5,1z M9.4,14c-2.8,0-5-2.3-5-5
+	c0-2.8,2.2-5,5-5c2.8,0,5,2.3,5,5C14.4,11.7,12.2,14,9.4,14z"/>
 </svg>
