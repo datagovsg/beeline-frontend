@@ -169,6 +169,10 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     });
   };
 
+  var getReferralMsg = function(){
+    const shareMsgTemplate = "Hey, here is $10 credits for you to try out Beeline rides. \nVisit https://app.beeline.sg/#/welcome?refCode="
+    return shareMsgTemplate + user.referralCode.code
+  }
 
   // ////////////////////////////////////////////////////////////////////////////
   // UI methods
@@ -280,9 +284,14 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       if (!verificationCode) return;
       $ionicLoading.show({template: sendingVerificationCodeTemplate});
       var user = await verifyTelephone(telephoneNumber, verificationCode.code);
-      
+
+      $ionicLoading.hide();
+
       // Is the user name null?
       await checkNewUser(user);
+      
+      $ionicLoading.show({template: sendingVerificationCodeTemplate});
+
       if(refCode && refCodeOwner){
         await applyRefCode(refCode)  
       } 
@@ -507,17 +516,18 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   return {
     getUser: function() { return (user); },
     beeline: beelineRequest,
-    promptLogIn: promptLogIn,
-    promptUpdatePhone: promptUpdatePhone,
-    promptUpdateUserInfo: promptUpdateUserInfo,
-    promptLogOut: promptLogOut,
-    registerViaReferralWelcome: registerViaReferralWelcome,
-    verifySession: verifySession,
-    applyRefCode: applyRefCode,
-    userEvents: userEvents,
-    savePaymentInfo: savePaymentInfo,
-    updatePaymentInfo: updatePaymentInfo,
-    removePaymentInfo: removePaymentInfo,
+    promptLogIn,
+    promptUpdatePhone,
+    promptUpdateUserInfo,
+    promptLogOut,
+    registerViaReferralWelcome,
+    verifySession,
+    applyRefCode,
+    userEvents,
+    savePaymentInfo,
+    updatePaymentInfo,
+    removePaymentInfo,
+    getReferralMsg,
   };
 
 }

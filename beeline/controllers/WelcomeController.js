@@ -40,6 +40,11 @@ async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserSer
       $scope.refCode, $scope.refCodeOwner)
 
     $state.go('tabs.routes')
+
+    await $ionicPopup.alert({
+      title: 'Welcome to Beeline',
+      subTitle: 'Success! You can now use your $10 ride credits when you make bookings.'
+    })
   }
 
 }]
