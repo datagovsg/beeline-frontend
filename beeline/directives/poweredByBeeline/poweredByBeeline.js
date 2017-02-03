@@ -10,7 +10,8 @@ export default function ($rootScope) {
     link: function(scope, elem, attr) {
       scope.openSuggestionLink = function(event) {
         event.preventDefault();
-        window.open('https://www.beeline.sg/suggest.html', '_system');
+        let appName = $rootScope.o.APP.NAME.replace(/\s/g, '')
+        window.open('https://www.beeline.sg/suggest.html?referer='+appName, '_system');
       }
       scope.powerHide = scope.powerHide ? scope.powerHide : $rootScope.o.APP.NAME=='Beeline'
     }
