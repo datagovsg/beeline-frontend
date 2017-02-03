@@ -1,4 +1,4 @@
-export default function () {
+export default function ($rootScope) {
   return {
     template: require('./poweredByBeeline.html'),
     restrict : 'E',
@@ -12,6 +12,7 @@ export default function () {
         event.preventDefault();
         window.open('https://www.beeline.sg/suggest.html', '_system');
       }
+      scope.powerHide = scope.powerHide ? scope.powerHide : $rootScope.o.APP.NAME=='Beeline'
     }
   };
 }
