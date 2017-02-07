@@ -30,6 +30,20 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
       $scope.runningRoutes = result.data;
     })
 
+    const runningReversePromise = UserService.beeline({
+      url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
+        maxDistance: 2000,
+        tags: JSON.stringify(['public'])
+      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
+         elat? {startLat: elat} : {},
+         elng? {startLng: elng} : {},
+         slat? {endLat: slat} : {},
+         slng? {endLng: slng} : {}))
+    })
+    .then((result) => {
+      $scope.runningReverseRoutes = result.data;
+    })
+
     const lelongPromise = UserService.beeline({
       url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
         maxDistance: 2000,
@@ -42,6 +56,20 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
     })
     .then((result) => {
       $scope.crowdstartRoutes = result.data;
+    })
+
+    const lelongReversePromise = UserService.beeline({
+      url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
+        maxDistance: 2000,
+        tags: JSON.stringify(['lelong'])
+      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
+        elat? {startLat: elat} : {},
+        elng? {startLng: elng} : {},
+        slat? {endLat: slat} : {},
+        slng? {endLng: slng} : {}))
+    })
+    .then((result) => {
+      $scope.crowdstartReverseRoutes = result.data;
     })
 
     const litePromise = UserService.beeline({
@@ -57,6 +85,21 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
     .then((result) => {
       $scope.liteRoutes = LiteRoutesService.transformLiteRouteData(result.data);
     })
+
+    const liteReversePromise = UserService.beeline({
+      url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
+        maxDistance: 2000,
+        tags: JSON.stringify(['lite'])
+      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
+        elat? {startLat: elat} : {},
+        elng? {startLng: elng} : {},
+        slat? {endLat: slat} : {},
+        slng? {endLng: slng} : {}))
+    })
+    .then((result) => {
+      $scope.liteReverseRoutes = LiteRoutesService.transformLiteRouteData(result.data);
+    })
+
 
   })
 
