@@ -104,7 +104,8 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
   })
 
   $scope.$watchGroup(['liteRoutes', 'crowdstartRoutes', 'runningRoutes'], (routes) => {
-    $scope.routesFoundCount = _.sumBy(routes, r => r ? r.length : 0)
+    //liteRoutes is {'OCC':{}, 'JTC':{}} 
+    $scope.routesFoundCount = _.sumBy(routes, r => r ? (r.length || _.keys(r).length) : 0)
   })
 
   $scope.submitSuggestion = () => {
