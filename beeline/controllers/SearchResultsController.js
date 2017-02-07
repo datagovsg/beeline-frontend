@@ -22,7 +22,7 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
         startLng: slng,
         endLat: elat,
         endLng: elng,
-        maxDistance: 500,
+        maxDistance: 2000,
         tags: JSON.stringify(['public'])
       }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}))
     })
@@ -36,7 +36,7 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
         startLng: slng,
         endLat: elat,
         endLng: elng,
-        maxDistance: 500,
+        maxDistance: 2000,
         tags: JSON.stringify(['lelong']),
       }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}))
     })
@@ -50,7 +50,7 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
         startLng: slng,
         endLat: elat,
         endLng: elng,
-        maxDistance: 500,
+        maxDistance: 2000,
         tags: JSON.stringify(['lite']),
       }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}))
     })
