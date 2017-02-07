@@ -2,7 +2,7 @@ import _ from 'lodash';
 import assert from 'assert';
 import querystring from 'querystring';
 
-export default function($scope, $state, $stateParams, $http, UserService, LiteRoutesService, p) {
+export default function($scope, $state, $stateParams, $http, UserService, LiteRoutesService, p, $rootScope) {
 
   $scope.runningRoutes = null;
   $scope.crowdstartRoutes = null;
@@ -70,6 +70,7 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
       originLng: $stateParams.originLng,
       destinationLat: $stateParams.destinationLat,
       destinationLng: $stateParams.destinationLng,
+      referrer: $rootScope.o.APP.NAME.replace(/\s/g, '')
     });
 
     if (typeof cordova !== 'undefined') {
