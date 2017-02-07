@@ -14,17 +14,17 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
     $stateParams.destinationLat,
     $stateParams.destinationLng,
   ], ([slat, slng, elat, elng]) => {
-    assert(slat && slng && elat && elng);
+    assert((slat && slng) || (elat && elng));
 
     const runningPromise = UserService.beeline({
       url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
-        startLat: slat,
-        startLng: slng,
-        endLat: elat,
-        endLng: elng,
         maxDistance: 2000,
         tags: JSON.stringify(['public'])
-      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}))
+      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
+         slat? {startLat: slat} : {},
+         slng? {startLng: slng} : {},
+         elat? {endLat: elat} : {},
+         elng? {endLng: elng} : {}))
     })
     .then((result) => {
       $scope.runningRoutes = result.data;
@@ -32,13 +32,13 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
 
     const lelongPromise = UserService.beeline({
       url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
-        startLat: slat,
-        startLng: slng,
-        endLat: elat,
-        endLng: elng,
         maxDistance: 2000,
-        tags: JSON.stringify(['lelong']),
-      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}))
+        tags: JSON.stringify(['lelong'])
+      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
+        slat? {startLat: slat} : {},
+        slng? {startLng: slng} : {},
+        elat? {endLat: elat} : {},
+        elng? {endLng: elng} : {}))
     })
     .then((result) => {
       $scope.crowdstartRoutes = result.data;
@@ -46,13 +46,13 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
 
     const litePromise = UserService.beeline({
       url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
-        startLat: slat,
-        startLng: slng,
-        endLat: elat,
-        endLng: elng,
         maxDistance: 2000,
-        tags: JSON.stringify(['lite']),
-      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}))
+        tags: JSON.stringify(['lite'])
+      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
+        slat? {startLat: slat} : {},
+        slng? {startLng: slng} : {},
+        elat? {endLat: elat} : {},
+        elng? {endLng: elng} : {}))
     })
     .then((result) => {
       $scope.liteRoutes = LiteRoutesService.transformLiteRouteData(result.data);

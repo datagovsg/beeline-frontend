@@ -98,11 +98,21 @@ export default function($scope, $state, $stateParams, $http, SuggestionService,
   }
 
   $scope.goSearch = function() {
-    $state.go('tabs.search-results', {
-      originLat: $scope.data.origin.latitude,
-      originLng: $scope.data.origin.longitude,
-      destinationLat: $scope.data.destination.latitude,
-      destinationLng: $scope.data.destination.longitude,
-    })
+    var searchQuery = _.assign({},
+      $scope.data.origin? {
+        originLat: $scope.data.origin.latitude,
+        originLng: $scope.data.origin.longitude,
+      } : {
+        originLat: null,
+        originLng: null,
+      },
+      $scope.data.destination? {
+        destinationLat: $scope.data.destination.latitude,
+        destinationLng: $scope.data.destination.longitude,
+      } : {
+        destinationLat: null,
+        destinationLng: null,
+      })
+    $state.go('tabs.search-results', searchQuery)
   }
 };
