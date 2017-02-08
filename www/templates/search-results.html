@@ -11,8 +11,6 @@
     </div>
     <div class="item" ng-if="runningRoutes" ng-repeat="route in runningRoutes" ui-sref="tabs.bookingPickup({
           routeId: route.id,
-          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-          alightStop: data.recentRoutesById[route.id].alightStopStopId,
           sessionId: data.nextSessionId
         })">
       <regular-route route="route"></regular-route>
@@ -51,8 +49,6 @@
     </div>
     <div class="item" ng-if="runningReverseRoutes" ng-repeat="route in runningReverseRoutes" ui-sref="tabs.bookingPickup({
           routeId: route.id,
-          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-          alightStop: data.recentRoutesById[route.id].alightStopStopId,
           sessionId: data.nextSessionId
         })">
       <regular-route route="route"></regular-route>
@@ -63,12 +59,12 @@
 
       <kickstart-route route="route"></kickstart-route>
     </div>
-    <div class="item" ng-if="liteReverseRoutes" ng-repeat="route in liteReverseRoutes"
+    <!-- <div class="item" ng-if="liteReverseRoutes" ng-repeat="route in liteReverseRoutes"
       ui-sref="tabs.lite-summary({
        label: route.label
       })">
       <lite-route route="route"></lite-route>
-    </div>
+    </div> -->
 
     <div class="item item-text-wrap">
       <p class="no-suggestion text-center">

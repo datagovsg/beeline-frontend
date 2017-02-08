@@ -2,11 +2,19 @@ import _ from 'lodash';
 import assert from 'assert';
 import querystring from 'querystring';
 
-export default function($scope, $state, $stateParams, $http, UserService, LiteRoutesService, p, $rootScope) {
+export default function($scope, $state, $stateParams, $http, UserService, LiteRoutesService, p, $rootScope, BookingService) {
 
   $scope.runningRoutes = null;
   $scope.crowdstartRoutes = null;
   $scope.liteRoutes = null;
+
+  $scope.data  = {
+    nextSessionId: null
+  }
+
+  $scope.$on('$ionicView.beforeEnter', () => {
+    $scope.data.nextSessionId = BookingService.newSession();
+  })
 
   $scope.$watchCollection(() => [
     $stateParams.originLat,
@@ -21,10 +29,8 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
         maxDistance: 2000,
         tags: JSON.stringify(['public'])
       }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
-         slat? {startLat: slat} : {},
-         slng? {startLng: slng} : {},
-         elat? {endLat: elat} : {},
-         elng? {endLng: elng} : {}))
+         (slat && slng) ? {startLat: slat, startLng: slng} : {},
+         (elat && elng) ? {endLat: elat, endLng: elng} : {}))
     })
     .then((result) => {
       $scope.runningRoutes = result.data;
@@ -35,10 +41,8 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
         maxDistance: 2000,
         tags: JSON.stringify(['public'])
       }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
-         elat? {startLat: elat} : {},
-         elng? {startLng: elng} : {},
-         slat? {endLat: slat} : {},
-         slng? {endLng: slng} : {}))
+         (elat && elng) ? {startLat: elat, startLng: elng} : {},
+         (slat && slng)? {endLat: slat, endLng: slng} : {}))
     })
     .then((result) => {
       $scope.runningReverseRoutes = result.data;
@@ -49,10 +53,8 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
         maxDistance: 2000,
         tags: JSON.stringify(['lelong'])
       }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
-        slat? {startLat: slat} : {},
-        slng? {startLng: slng} : {},
-        elat? {endLat: elat} : {},
-        elng? {endLng: elng} : {}))
+        (slat && slng) ? {startLat: slat, startLng: slng} : {},
+        (elat && elng) ? {endLat: elat, endLng: elng} : {}))
     })
     .then((result) => {
       $scope.crowdstartRoutes = result.data;
@@ -63,10 +65,8 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
         maxDistance: 2000,
         tags: JSON.stringify(['lelong'])
       }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
-        elat? {startLat: elat} : {},
-        elng? {startLng: elng} : {},
-        slat? {endLat: slat} : {},
-        slng? {endLng: slng} : {}))
+        (elat && elng) ? {startLat: elat, startLng: elng} : {},
+        (slat && slng)? {endLat: slat, endLng: slng} : {}))
     })
     .then((result) => {
       $scope.crowdstartReverseRoutes = result.data;
@@ -77,34 +77,31 @@ export default function($scope, $state, $stateParams, $http, UserService, LiteRo
         maxDistance: 2000,
         tags: JSON.stringify(['lite'])
       }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
-        slat? {startLat: slat} : {},
-        slng? {startLng: slng} : {},
-        elat? {endLat: elat} : {},
-        elng? {endLng: elng} : {}))
+        (slat && slng) ? {startLat: slat, startLng: slng} : {},
+        (elat && elng) ? {endLat: elat, endLng: elng} : {}))
     })
     .then((result) => {
       $scope.liteRoutes = LiteRoutesService.transformLiteRouteData(result.data);
     })
 
-    const liteReversePromise = UserService.beeline({
-      url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
-        maxDistance: 2000,
-        tags: JSON.stringify(['lite'])
-      }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
-        elat? {startLat: elat} : {},
-        elng? {startLng: elng} : {},
-        slat? {endLat: slat} : {},
-        slng? {endLng: slng} : {}))
-    })
-    .then((result) => {
-      $scope.liteReverseRoutes = LiteRoutesService.transformLiteRouteData(result.data);
-    })
+    //not needed in most cases as lite routes are looping services
+    // const liteReversePromise = UserService.beeline({
+    //   url: '/routes/search_by_latlon?' + querystring.stringify(_.assign({
+    //     maxDistance: 2000,
+    //     tags: JSON.stringify(['lite'])
+    //   }, p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {},
+    //     (elat && elng) ? {startLat: elat, startLng: elng} : {},
+    //     (slat && slng)? {endLat: slat, endLng: slng} : {}))
+    // })
+    // .then((result) => {
+    //   $scope.liteReverseRoutes = LiteRoutesService.transformLiteRouteData(result.data);
+    // })
 
 
   })
 
   $scope.$watchGroup(['liteRoutes', 'crowdstartRoutes', 'runningRoutes'], (routes) => {
-    //liteRoutes is {'OCC':{}, 'JTC':{}} 
+    //liteRoutes is {'OCC':{}, 'JTC':{}}
     $scope.routesFoundCount = _.sumBy(routes, r => r ? (r.length || _.keys(r).length) : 0)
   })
 
