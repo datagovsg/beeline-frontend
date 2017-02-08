@@ -37,16 +37,12 @@
     <div class="item text-center" ng-if="!liteRoutes">
       <ion-spinner class="text-center"></ion-spinner>
     </div>
+
     <div class="item" ng-if="liteRoutes" ng-repeat="route in liteRoutes"
       ui-sref="tabs.lite-summary({
        label: route.label
       })">
       <lite-route route="route"></lite-route>
-    </div>
-
-    </div>
-    <div class="item item-divider">
-      Suggest a new Route
     </div>
     <div class="item item-text-wrap">
       <p class="no-suggestion text-center">
