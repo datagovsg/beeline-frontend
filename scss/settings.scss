@@ -19,6 +19,9 @@
 .legal {
   padding: $content-padding*4 $content-padding*3;
 
+  h1{
+    font-size: $font-size-large*1.5;
+  }
   h2 {
     padding-top: $padding-large-vertical;
   }
