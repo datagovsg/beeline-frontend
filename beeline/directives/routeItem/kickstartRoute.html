@@ -52,8 +52,11 @@
         </span>
     </div>
 
-    <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price" pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded">
+    <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price"
+      pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded"
+      ng-if="!route.isConverted">
     </progress-bar>
+
     <div class="icon-and-schedule">
       <span class="icon-span">
           <img class="mini-icon" src="img/icon_kickstarter_status.svg">
@@ -62,11 +65,10 @@
           {{route.status}}
         </span>
     </div>
-    <div class="icon-and-schedule">
-      <!-- <span class="icon ion-ios-flag-outline"></span> -->
+    <div class="icon-and-schedule" ng-if="bids[route.id]">
       <span class="icon-span">
-          <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
-        </span>
+        <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
+      </span>
       <span class="mini-info">
           You pre-ordered a Route Pass for {{route.notes.noPasses}} trips.
         </span>

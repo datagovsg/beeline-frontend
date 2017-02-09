@@ -27,6 +27,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
 
     kickstarter.isExpired = false;
     kickstarter.is7DaysOld = false;
+
     var now = new Date().getTime();
     if (kickstarter.notes && kickstarter.notes.lelongExpiry) {
       var expiryTime = new Date(kickstarter.notes.lelongExpiry).getTime();
@@ -40,6 +41,11 @@ var transformKickstarterData = function (kickstarterRoutes) {
         kickstarter.daysLeft =  Math.ceil((expiryTime - now)/day);
       }
     }
+
+    // isSuccess / isFailure
+    kickstarter.isFailed = kickstarter.tags.indexOf('failed') != -1
+    kickstarter.isSuccess = kickstarter.tags.indexOf('success') != -1
+    kickstarter.isConverted = kickstarter.isFailed || kickstarter.isSuccess
 
     //filter only isRunning trips
     //sort trips date in ascending order
@@ -68,6 +74,8 @@ var updateStatus = function(route){
     route.status = "Yay! Route is activated at $" + route.notes.tier[0].price.toFixed(2) + " per trip."
   } else if (!route.isExpired) {
     route.status = route.notes.tier[0].moreNeeded + " more pax to activate the route at $"+route.notes.tier[0].price.toFixed(2)+" per trip."
+  } else if (route.isSuccess) {
+    route.status = "Campaign was successful! Check out the running routes for more info"
   } else {
     route.status = "Campaign has expired and the route is not activated."
   }
@@ -203,7 +211,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         }])
         return response.data;
       })
-    }
+    },
 
+    transformKickstarterData
   }
 }
