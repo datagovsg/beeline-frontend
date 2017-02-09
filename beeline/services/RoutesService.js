@@ -57,6 +57,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     instance.fetchRouteCredits(true)
     instance.fetchRoutesWithRoutePass()
     instance.fetchRecentRoutes(true)
+    instance.fetchRouteCreditTags(true)
   })
 
   var instance = {
@@ -252,7 +253,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       
       let user = UserService.getUser();
       if(!user){
-        return routeCreditsCache = Promise.resolve(tagToCreditsMap = {});
+        return routeCreditsCache = Promise.resolve(tagToCreditsMap = null);
       }
       else {
         return routeCreditsCache = UserService.beeline({
