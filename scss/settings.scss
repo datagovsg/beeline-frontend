@@ -23,14 +23,15 @@
     font-size: $font-size-large*1.5;
   }
   h2 {
-    padding-top: $padding-large-vertical;
+    padding-top: $padding-large-vertical*3;
+    padding-bottom: $padding-large-vertical;
   }
 
   p{
     color: $dark;
-    padding-top: $padding-large-vertical*2;
+    padding-top: $padding-large-vertical;
     padding-left: $padding-large-horizontal;
-    padding-bottom: $padding-large-vertical*2;
+    padding-bottom: $padding-large-vertical;
   }
   ol {
     list-style-type: decimal;
