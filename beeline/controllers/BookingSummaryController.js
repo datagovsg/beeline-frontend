@@ -75,11 +75,10 @@ export default [
       $scope.book.applyReferralCredits = !!user;
       $scope.book.applyCredits = !!user;
       if ($scope.isLoggedIn) {
-        $ionicLoading.show({
-          template: loadingTemplate
-        })
-        await $scope.checkValidDate();
-        $ionicLoading.hide();
+        loadingSpinner(Promise.all([
+          $scope.checkValidDate(),
+          RoutesService.fetchRouteCreditTags(),
+        ]))
       }
     })
 
