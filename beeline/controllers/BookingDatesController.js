@@ -33,6 +33,8 @@ export default [
       selectedDates: [],
       invalidStopDates: [],
       applyRouteCredits: false,
+      applyReferralCredits: false,
+      applyCredits: false,
       creditTag: null,
     };
     // Display Logic;
@@ -64,7 +66,7 @@ export default [
       $scope.book.creditTag = creditTag
     })
 
-    $scope.$watch(()=>UserService.getUser(), async (user)=>{
+    $scope.$watch(()=>UserService.getUser(), (user)=>{
       loadTickets();
       $scope.book.applyReferralCredits = !!user
       $scope.book.applyCredits = !!user

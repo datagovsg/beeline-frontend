@@ -259,8 +259,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           method: 'GET',
           url: '/routeCredits'
         }).then((response) => {
-          tagToCreditsMap = response.data
-          return tagToCreditsMap
+          return tagToCreditsMap = response.data
         })
       }
     },

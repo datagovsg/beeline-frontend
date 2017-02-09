@@ -68,12 +68,12 @@ export default [
       $scope.book.creditTag = creditTag
     })
 
-    $scope.$watch(() => UserService.getUser(), async(user) => {
+    $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       $scope.hasSavedPaymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
-      if($scope.book.applyReferralCredits) { $scope.book.applyReferralCredits = !!user }
-      if($scope.book.applyCredits) { $scope.book.applyCredits = !!user } 
+      $scope.book.applyReferralCredits = !!user;
+      $scope.book.applyCredits = !!user;
       if ($scope.isLoggedIn) {
         $ionicLoading.show({
           template: loadingTemplate
