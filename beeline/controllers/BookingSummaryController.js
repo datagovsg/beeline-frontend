@@ -62,12 +62,11 @@ export default [
       $scope.book.features = features;
     })
 
-    if($scope.book.applyRouteCredits){
-      RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
-        $scope.book.applyRouteCredits = !!creditTag
-        $scope.book.creditTag = creditTag
-      })
-    }
+    $scope.$watch(() => RoutesService.getRouteCreditTags(), async (routeToCreditTags) => {
+      let creditTag = routeToCreditTags ? routeToCreditTags[$scope.book.routeId] : null
+      $scope.book.applyRouteCredits = !!creditTag
+      $scope.book.creditTag = creditTag
+    })
 
     $scope.$watch(() => UserService.getUser(), async(user) => {
       $scope.isLoggedIn = user ? true : false;

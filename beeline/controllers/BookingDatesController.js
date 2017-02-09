@@ -57,7 +57,9 @@ export default [
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
 
-    RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
+    RoutesService.fetchRouteCreditTags();
+    $scope.$watch(() => RoutesService.getRouteCreditTags(), (routeToCreditTags) => {
+      let creditTag = routeToCreditTags ? routeToCreditTags[$scope.book.routeId] : null
       $scope.book.applyRouteCredits = !!creditTag
       $scope.book.creditTag = creditTag
     })

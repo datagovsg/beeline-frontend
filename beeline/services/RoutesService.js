@@ -40,8 +40,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   // For single routes
   var lastRouteId = null;
   var lastPromise = null;
-  var creditTagPromise = null;
-  var creditTag = null;
 
   // For Route Credits
   var routeCreditsCache;
@@ -51,6 +49,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var routesWithRoutePassPromise;
   var routesWithRoutePass;
   var activatedKickstarterRoutes;
+  var routeToCreditTagsPromise = null;
+  var routeToCreditTags = null;
 
   UserService.userEvents.on('userChanged', () => {
     instance.fetchRecentRoutes(true)
@@ -380,38 +380,49 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       return activatedKickstarterRoutes
     },
 
-    // Returns promise containing the credit tag used to match the specified 
-    // route and the route passes the user owns
-    fetchRouteCreditTag: function(routeId, ignoreCache){
-      assert.equal(typeof routeId, 'number');
-
-      if (!ignoreCache && lastRouteId === routeId && creditTagPromise) {
-        return creditTagPromise;
+    // Returns promise containing a map of all routeId to their corresponding tags
+    // based on the routeCredits available to a user
+    fetchRouteCreditTags: function(ignoreCache){
+      if (!ignoreCache && routeToCreditTagsPromise) {
+        return routeToCreditTagsPromise;
       }
 
-      let routePromise = this.getRoute(routeId)
+      let routesPromise = this.fetchRoutesWithRoutePass()
       let routeCreditsPromise = this.fetchRouteCredits()
 
-      return creditTagPromise = $q.all([routePromise, routeCreditsPromise]).then(([route, routeCredits])=>{
-        let routeCreditTags = _.keys(routeCredits);
-        let notableTags = _.intersection(route.tags, routeCreditTags)
+      return routeToCreditTagsPromise = $q.all([routesPromise, routeCreditsPromise])
+      .then(([routes, routeCredits])=>{
+        if(routeCredits){
+          routeToCreditTags = {}
+          routes.forEach(route => {
+            let routeCreditTags = _.keys(routeCredits);
+            let notableTags = _.intersection(route.tags, routeCreditTags)
 
-        if(notableTags.length === 1){
-          creditTag = notableTags[0]
-        } else if(notableTags.length > 1){
-          console.log("Error: Route has incorrect number of tags. Total: ", notableTags.length)
+            if(notableTags.length === 1){
+              routeToCreditTags[route.id] = notableTags[0]
+            } else if(notableTags.length > 1){
+              console.log("Error: Route has incorrect number of tags. Total: ", notableTags.length)
+            } else {
+              routeToCreditTags[route.id] = null
+            }
+          })
+
+          return routeToCreditTags
         } else {
-          creditTag = null
-        }
-
-        return creditTag
+          return routeToCreditTags = null
+        } 
       })
     },
 
-    // Returns the credit tag used to match the specified 
-    // route and the route passes the user owns
-    getRouteCreditTag: function(){
-      return creditTag
+    // Returns the credit tag matched to a route if routeId is given 
+    // Otherwise, returns a map of all routeId to their corresponding tags
+    // based on the routeCredits available to a user
+    getRouteCreditTags: function(routeId){
+      if(routeId){
+        return routeToCreditTags[routeId]
+      } else {
+        return routeToCreditTags        
+      }
     },
 
   };
