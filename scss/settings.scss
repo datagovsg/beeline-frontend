@@ -19,12 +19,26 @@
 .legal {
   padding: $content-padding*4 $content-padding*3;
 
+  h1{
+    font-size: $font-size-large*1.5;
+  }
   h2 {
-    padding-top: $padding-large-vertical;
+    padding-top: $padding-large-vertical*3;
+    padding-bottom: $padding-large-vertical;
   }
 
+  p{
+    color: $dark;
+    padding-top: $padding-large-vertical;
+    padding-left: $padding-large-horizontal;
+    padding-bottom: $padding-large-vertical;
+  }
   ol {
     list-style-type: decimal;
+  }
+  ul{
+    list-style-type: disc;
+    list-style-position: inside;
   }
   ol, ul {
     padding-top: $padding-large-vertical;
