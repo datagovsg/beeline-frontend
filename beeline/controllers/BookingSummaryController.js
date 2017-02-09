@@ -31,9 +31,9 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
-      applyRouteCredits: JSON.parse($stateParams.applyRouteCredits) || false,
-      applyReferralCredits: JSON.parse($stateParams.applyReferralCredits) || false,
-      applyCredits: JSON.parse($stateParams.applyCredits) || false,
+      applyRouteCredits: false,
+      applyReferralCredits: false,
+      applyCredits: false,
       creditTag: null,
     };
     $scope.disp = {
