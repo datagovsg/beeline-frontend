@@ -7,7 +7,7 @@ import queryString from 'querystring'
 export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
-  'RoutesService', '$ionicScrollDelegate', 'TicketService', 
+  'RoutesService', '$ionicScrollDelegate', 'TicketService',
   'loadingSpinner', 'CreditsService',
   function ($scope, $state, $http, $ionicPopup,
     BookingService, UserService, $ionicLoading,

@@ -22,7 +22,18 @@
     top: 0;
     left: 0;
     right: 0;
-    label {
+
+    .clearable-input {
+      input {
+        margin-right: 1.5em;
+      }
+      .ion-android-close {
+        color: #999;
+        font-size: 100%;
+      }
+    }
+
+    .item.item-input {
       margin: 0.5em;
     }
   }
