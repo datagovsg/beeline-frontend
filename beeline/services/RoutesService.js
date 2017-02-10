@@ -300,6 +300,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         let allRouteCreditsPromise = this.fetchRouteCredits(ignoreCache)
 
         routePassCache = $q.all([allRoutesPromise, allRouteCreditsPromise]).then(function(values){
+          if(!values[1]) return routeToRidesRemainingMap = null
+
           let allRoutes = values[0]
           let allRouteCredits = values[1];
           let allRouteCreditTags = _.keys(allRouteCredits);
@@ -348,18 +350,21 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           this.fetchRoutes(ignoreCache),
           this.fetchRoutePassCount(ignoreCache),
         ]).then(([allRoutes, routeToRidesRemainingMap]) => {
-          routesWithRoutePass = allRoutes.map(route => {
-            var clone = _.clone(route);
-            clone.ridesRemaining = (route.id in routeToRidesRemainingMap) ?
-              routeToRidesRemainingMap[route.id] : null;
-            return clone;
-          })
-          activatedKickstarterRoutes = routesWithRoutePass.filter(
-            route => route.id in routeToRidesRemainingMap)
+          if(routeToRidesRemainingMap){
+            routesWithRoutePass = allRoutes.map(route => {
+              var clone = _.clone(route);
+              clone.ridesRemaining = (route.id in routeToRidesRemainingMap) ?
+                routeToRidesRemainingMap[route.id] : null;
+              return clone;
+            })
+            activatedKickstarterRoutes = routesWithRoutePass.filter(
+              route => route.id in routeToRidesRemainingMap)
 
-          return routesWithRoutePass;
+            return routesWithRoutePass;
+          } else {
+            return routesWithRoutePass = allRoutes
+          }
         })
-
       }
 
       return routesWithRoutePassPromise
