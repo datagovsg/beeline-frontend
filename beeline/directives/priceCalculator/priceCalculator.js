@@ -20,16 +20,6 @@ export default [
           scope.isCalculating = Math.max(0, scope.isCalculating - 1);
           scope.$emit('priceCalculator.done')
         }
-
-        scope.$watch(UserService.getUser(), (user)=>{
-          CreditsService.fetchUserCredits().then((userCredits) => {
-            scope.userCredits = userCredits
-          });
-
-          CreditsService.fetchReferralCredits().then((referralCredits) => {
-            scope.referralCredits = referralCredits
-          });
-        })
         
         var latestRequest = null;
         scope.$watch(
@@ -41,9 +31,15 @@ export default [
             }
 
             let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
-            if(routeToRidesRemainingMap){
-              scope.booking.route.ridesRemaining = routeToRidesRemainingMap[scope.booking.routeId]
-            }
+            scope.booking.route.ridesRemaining = routeToRidesRemainingMap[scope.booking.routeId]
+
+            CreditsService.fetchUserCredits().then((userCredits) => {
+              scope.userCredits = userCredits
+            });
+
+            CreditsService.fetchReferralCredits().then((referralCredits) => {
+              scope.referralCredits = referralCredits
+            });
 
             // Provide a price summary first (don't count total due)
             // This allows the page to resize earlier, so that when
