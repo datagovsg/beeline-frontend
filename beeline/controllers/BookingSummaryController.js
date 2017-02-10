@@ -143,6 +143,7 @@ export default [
           null);
 
         if (!stripeToken) {
+          $scope.waitingForPaymentResult = false; // re-enable button
           return;
         }
 
@@ -155,6 +156,7 @@ export default [
         });
 
       } catch (err) {
+        $scope.waitingForPaymentResult = false; // re-enable button
         await $ionicPopup.alert({
           title: 'Error contacting the payment gateway',
           template: err.data.message,
@@ -176,6 +178,7 @@ export default [
             null);
 
           if (!stripeToken) {
+            $scope.waitingForPaymentResult = false; // re-enable button
             return;
           }
         }
@@ -190,6 +193,7 @@ export default [
           sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
         });
       } catch (err) {
+        $scope.waitingForPaymentResult = false; // re-enable button
         await $ionicPopup.alert({
           title: 'Error saving payment method',
           template: err.data.message,
