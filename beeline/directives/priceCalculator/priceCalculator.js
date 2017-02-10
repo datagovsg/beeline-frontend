@@ -38,7 +38,10 @@ export default [
             assert(scope.booking.routeId);
             if (!scope.booking.route) {
               scope.booking.route = await RoutesService.getRoute(scope.booking.routeId)
-              let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
+            }
+
+            let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
+            if(routeToRidesRemainingMap){
               scope.booking.route.ridesRemaining = routeToRidesRemainingMap[scope.booking.routeId]
             }
 
