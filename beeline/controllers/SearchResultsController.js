@@ -5,8 +5,6 @@ import querystring from 'querystring';
 export default function($scope, $state, $stateParams, $http, UserService,
   LiteRoutesService, p, $rootScope, BookingService, KickstarterService) {
 
-  const {transformKickstarterData} = KickstarterService
-
   $scope.runningRoutes = null;
   $scope.crowdstartRoutes = null;
   $scope.liteRoutes = null;
@@ -62,21 +60,24 @@ export default function($scope, $state, $stateParams, $http, UserService,
       $scope.runningReverseRoutes = result.data;
     })
 
+    // Crowdstart routes need extra meta data
+    const allLelongRoutes = KickstarterService.fetchLelong()
+
     const lelongPromise = search({
       tags: JSON.stringify(['lelong'])
     }, false)
-    .then((result) => {
-      transformKickstarterData(result.data)
-      $scope.crowdstartRoutes = result.data;
-    })
 
     const lelongReversePromise = search({
       tags: JSON.stringify(['lelong'])
     }, true)
-    .then((result) => {
-      transformKickstarterData(result.data)
-      $scope.crowdstartReverseRoutes = result.data;
-    })
+
+    Promise.all([allLelongRoutes, lelongPromise, lelongReversePromise])
+    .then(([ksRoutes, fwd, bwd]) => {
+      const routesByKey = _.keyBy(ksRoutes, 'id')
+
+      $scope.crowdstartRoutes = _.map(fwd.data, r => routesByKey[r.id]);
+      $scope.crowdstartReverseRoutes = _.map(bwd.data, r => routesByKey[r.id]);
+    });
 
     const litePromise = search({
       tags: JSON.stringify(['lite'])

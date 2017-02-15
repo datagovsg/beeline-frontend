@@ -212,7 +212,5 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         return response.data;
       })
     },
-
-    transformKickstarterData
   }
 }
