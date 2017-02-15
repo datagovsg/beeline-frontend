@@ -140,7 +140,7 @@
     <section ng-if="isLoggedIn && disp.zeroDollarPurchase">
       <button class="button primary-button"
               ng-click="payZeroDollar()"
-              ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
+              ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate || isCalculating">
         Complete purchase
       </button>
     </section>
@@ -150,7 +150,7 @@
         Please ensure that your credit card is ready for the next step in the booking process.
         <button class="button primary-button"
                 ng-click="payHandler()"
-                ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
+                ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate || isCalculating">
           Confirm and Pay
         </button>
       </section>
@@ -161,11 +161,11 @@
 
         <button class="button primary-button"
                 ng-click="payWithSavedInfo()"
-                ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate">
+                ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate || isCalculating">
           Confirm and Pay
         </button>
         <div class="text-link-div">
-          <a ng-class="(!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate) ? 'text-link-disabled' : ''"
+          <a ng-class="(!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate || isCalculating) ? 'text-link-disabled' : ''"
               ng-click="payWithoutSavingCard()">
               Use a different card for this payment
           </a>

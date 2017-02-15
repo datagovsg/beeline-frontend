@@ -84,10 +84,12 @@ export default [
 
     $scope.login = function () {
       UserService.promptLogIn()
+      $scope.isCalculating = true;
     }
 
     $scope.$on('priceCalculator.done', () => {
       $ionicScrollDelegate.resize();
+      $scope.isCalculating = false;
     })
     $scope.$on('companyTnc.done', () => {
       $ionicScrollDelegate.resize();
