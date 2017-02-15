@@ -8,11 +8,11 @@ export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
   'RoutesService', '$ionicScrollDelegate', 'TicketService',
-  'loadingSpinner', 'CreditsService',
-  function ($scope, $state, $http, $ionicPopup,
-    BookingService, UserService, $ionicLoading,
-    StripeService, $stateParams, RoutesService, $ionicScrollDelegate, TicketService,
-    loadingSpinner, CreditsService) {
+  'loadingSpinner', 'CreditsService', '$location',
+  function ($scope, $state, $http, $ionicPopup, BookingService, 
+    UserService, $ionicLoading, StripeService, $stateParams, 
+    RoutesService, $ionicScrollDelegate, TicketService,
+    loadingSpinner, CreditsService, $location) {
 
     // Booking session logic
     $scope.session = {
@@ -82,9 +82,10 @@ export default [
       }
     })
 
-    $scope.login = function () {
-      UserService.promptLogIn()
+    $scope.login = async function () {
       $scope.isCalculating = true;
+      UserService.promptLogIn();
+      $scope.scrollToPriceCalculator();
     }
 
     $scope.$on('priceCalculator.done', () => {
@@ -202,6 +203,11 @@ export default [
         })
       }
     };
+
+    $scope.scrollToPriceCalculator = function(){
+      $location.hash('priceCalc');
+      $ionicScrollDelegate.anchorScroll(true);
+    }
 
     /** After you have settled the payment mode **/
     async function completePayment(paymentOptions) {
