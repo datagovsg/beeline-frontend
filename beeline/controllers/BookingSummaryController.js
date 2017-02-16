@@ -82,7 +82,7 @@ export default [
       }
     })
 
-    $scope.login = async function () {
+    $scope.login = function () {
       $scope.isCalculating = true;
       UserService.promptLogIn();
       $scope.scrollToPriceCalculator();
