@@ -8,11 +8,11 @@ export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
   'RoutesService', '$ionicScrollDelegate', 'TicketService',
-  'loadingSpinner', 'CreditsService', '$location',
+  'loadingSpinner', 'CreditsService', '$ionicPosition',
   function ($scope, $state, $http, $ionicPopup, BookingService, 
     UserService, $ionicLoading, StripeService, $stateParams, 
     RoutesService, $ionicScrollDelegate, TicketService,
-    loadingSpinner, CreditsService, $location) {
+    loadingSpinner, CreditsService, $ionicPosition) {
 
     // Booking session logic
     $scope.session = {
@@ -205,8 +205,8 @@ export default [
     };
 
     $scope.scrollToPriceCalculator = function(){
-      $location.hash('priceCalc');
-      $ionicScrollDelegate.anchorScroll(true);
+      var priceCalculatorPosition = $ionicPosition.position(angular.element(document.getElementById('priceCalc')));
+      $ionicScrollDelegate.scrollTo(priceCalculatorPosition.left, priceCalculatorPosition.top, true);
     }
 
     /** After you have settled the payment mode **/
