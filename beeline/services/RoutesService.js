@@ -421,7 +421,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // Otherwise, returns a map of all routeId to their corresponding tags
     // based on the routeCredits available to a user
     getRouteCreditTags: function(routeId){
-      if(routeId){
+      if(routeId && routeToCreditTags){
         return routeToCreditTags[routeId]
       } else {
         return routeToCreditTags        
