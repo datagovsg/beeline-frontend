@@ -272,7 +272,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     // - Object containing all routeCredits associated with user
     // - [tag provided] amount of credits specific to the tag
     getRouteCredits: function(tag){
-      if(tag){
+      if(tag && tagToCreditsMap){
         return tagToCreditsMap[tag]
       } else {
         return tagToCreditsMap
