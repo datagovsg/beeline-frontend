@@ -1,5 +1,5 @@
 
-export default function initStripe(UserService, $ionicPopup, $ionicPlatform) {
+export default function initStripe(UserService, $ionicPopup, $ionicPlatform, $rootScope) {
   var stripeKeyPromise = UserService.beeline({
     url: '/stripe-key',
     method: 'GET',
@@ -32,7 +32,7 @@ export default function initStripe(UserService, $ionicPopup, $ionicPlatform) {
         }, 401);
 
         let handlerOptions = {
-          name: 'Beeline',
+          name: $rootScope.o.APP.NAME,
           description: description,
           amount: Math.round(amount),
           allowRememberMe: false,
