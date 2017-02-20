@@ -22,7 +22,6 @@ export default [
       routeId: +$stateParams.routeId,
       route: null,
       qty: 1,
-      waitingForPaymentResult : false,
       selectedDates: [],
       boardStopId: parseInt($stateParams.boardStop),
       alightStopId: parseInt($stateParams.alightStop),
@@ -39,6 +38,8 @@ export default [
     $scope.disp = {
       zeroDollarPurchase: false
     };
+
+    $scope.isPaymentProcessing = false,
 
     if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
       $stateParams.selectedDates = [$stateParams.selectedDates]
@@ -83,14 +84,14 @@ export default [
     })
 
     $scope.login = function () {
-      $scope.isCalculating = true;
+      $scope.isPreviewCalculating = true;
       UserService.promptLogIn();
       $scope.scrollToPriceCalculator();
     }
 
     $scope.$on('priceCalculator.done', () => {
       $ionicScrollDelegate.resize();
-      $scope.isCalculating = false;
+      $scope.isPreviewCalculating = false;
     })
     $scope.$on('companyTnc.done', () => {
       $ionicScrollDelegate.resize();
@@ -138,7 +139,7 @@ export default [
     $scope.payWithoutSavingCard = async function() {
       try {
         // disable the button
-        $scope.waitingForPaymentResult = true;
+        $scope.isPaymentProcessing = true;
 
         var stripeToken = await StripeService.promptForToken(
           null,
@@ -146,7 +147,7 @@ export default [
           null);
 
         if (!stripeToken) {
-          $scope.waitingForPaymentResult = false; // re-enable button
+          $scope.isPaymentProcessing = false; // re-enable button
           return;
         }
 
@@ -159,7 +160,7 @@ export default [
         });
 
       } catch (err) {
-        $scope.waitingForPaymentResult = false; // re-enable button
+        $scope.isPaymentProcessing = false; // re-enable button
         await $ionicPopup.alert({
           title: 'Error contacting the payment gateway',
           template: err.data.message,
@@ -172,7 +173,7 @@ export default [
     $scope.payWithSavedInfo = async function () {
       try {
         // disable the button
-        $scope.waitingForPaymentResult = true;
+        $scope.isPaymentProcessing = true;
 
         if (!$scope.hasSavedPaymentInfo) {
           var stripeToken = await StripeService.promptForToken(
@@ -181,7 +182,7 @@ export default [
             null);
 
           if (!stripeToken) {
-            $scope.waitingForPaymentResult = false; // re-enable button
+            $scope.isPaymentProcessing = false; // re-enable button
             return;
           }
         }
@@ -196,7 +197,7 @@ export default [
           sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
         });
       } catch (err) {
-        $scope.waitingForPaymentResult = false; // re-enable button
+        $scope.isPaymentProcessing = false; // re-enable button
         await $ionicPopup.alert({
           title: 'Error saving payment method',
           template: err.data.message,
@@ -243,7 +244,7 @@ export default [
         })
       } finally {
         $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
+          $scope.isPaymentProcessing = false;
         })
         RoutesService.fetchRouteCredits(true)
         RoutesService.fetchRoutePassCount()

@@ -126,7 +126,7 @@
 
       <button class="button primary-button"
               ng-click="login()"
-              ng-disabled="!disp.termsChecked || waitingForPaymentResult">
+              ng-disabled="!disp.termsChecked || isPaymentProcessing">
         Log In
       </button>
     </section>
@@ -140,7 +140,7 @@
     <section ng-if="isLoggedIn && disp.zeroDollarPurchase">
       <button class="button primary-button"
               ng-click="payZeroDollar()"
-              ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate || isCalculating">
+              ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating">
         Complete purchase
       </button>
     </section>
@@ -150,7 +150,7 @@
         Please ensure that your credit card is ready for the next step in the booking process.
         <button class="button primary-button"
                 ng-click="payHandler()"
-                ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate || isCalculating">
+                ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating">
           Confirm and Pay
         </button>
       </section>
@@ -161,11 +161,11 @@
 
         <button class="button primary-button"
                 ng-click="payWithSavedInfo()"
-                ng-disabled="!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate || isCalculating">
+                ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating">
           Confirm and Pay
         </button>
         <div class="text-link-div">
-          <a ng-class="(!disp.termsChecked || waitingForPaymentResult || book.hasInvalidDate || isCalculating) ? 'text-link-disabled' : ''"
+          <a ng-class="(!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating) ? 'text-link-disabled' : ''"
               ng-click="payWithoutSavingCard()">
               Use a different card for this payment
           </a>
