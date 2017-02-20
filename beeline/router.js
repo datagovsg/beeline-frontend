@@ -1,5 +1,8 @@
 import _ from 'lodash';
 
+// Version follows '[date] comment' format
+const introSlidesVersion = '2017-02-20'
+
 /**
   * If you want to hide tabs while maintaining proper back button functionality
   * then add data: {hideTabs: true} to the state definition. The hiding of the
@@ -327,11 +330,15 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   });
 
+  let viewedIntroSlidesVersion = window.localStorage['viewedBeelineSlidesVersion']
   // if none of the above states are matched, use this as the fallback
-  if (window.localStorage['sessionToken'] && window.localStorage['sessionToken'] != null) {
+  if (viewedIntroSlidesVersion  
+    && viewedIntroSlidesVersion >= introSlidesVersion) {
     $urlRouterProvider.otherwise('/tabs/routes');
   } else {
     // $urlRouterProvider.otherwise('/tabs/routes/map');
+    window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
+    
     $urlRouterProvider.otherwise('/intro');
   }
 
