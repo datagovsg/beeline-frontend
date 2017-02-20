@@ -26,7 +26,7 @@ export default function(uiGmapGoogleMapApi) {
           for (let pac of pacContainers) {
             pac.dataset.tapDisabled = true;
           }
-        }, 300)
+        }, 2000)
       })
     }
   }
