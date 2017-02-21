@@ -1,4 +1,4 @@
-export default function($cordovaSocialSharing) {
+export default function($cordovaSocialSharing, $rootScope) {
   return {
     replace: true,
     restrict: 'E',
@@ -22,11 +22,12 @@ export default function($cordovaSocialSharing) {
     link: function(scope, element, attributes) {
       scope.showCopy = !window.cordova || false;
       //if has cordova no need to show shareLink text area
-      scope.shareLink = "Hey, check out this new Crowdstart route from Beeline! https://app.beeline.sg/#/tabs/crowdstart/"+scope.routeId+"/detail";
+      // scope.shareLink = "Hey, check out this new Crowdstart route from "+$rootScope.o.APP.NAME +"! "+$rootScope.o.APP.INDEX+"#/tabs/crowdstart/"+scope.routeId+"/detail";
+      scope.shareLink =  `Hey, check out this new Crowdstart route from ${$rootScope.o.APP.NAME}! ${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`
 
       scope.shareAnywhere = function() {
-        $cordovaSocialSharing.share("Hey, check out this new Crowdstart route from Beeline!",
-          "New Beeline Crowdstart Route", null, "https://app.beeline.sg/#/tabs/crowdstart/"+scope.routeId+"/detail");
+        $cordovaSocialSharing.share(`Hey, check out this new Crowdstart route from ${$rootScope.o.APP.NAME}!`,
+          `New ${$rootScope.o.APP.NAME} Crowdstart Route`, null, `${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`);
       };
     },
   };
