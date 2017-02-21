@@ -34,6 +34,7 @@ export default [
       applyReferralCredits: false,
       applyCredits: false,
       creditTag: null,
+      promoCode: $stateParams.promoCode
     };
     $scope.disp = {
       zeroDollarPurchase: false
