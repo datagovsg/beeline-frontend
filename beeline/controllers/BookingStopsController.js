@@ -92,6 +92,8 @@ export default [
       let ridesRemainingMap = values[1]
       if(ridesRemainingMap){
         $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
+      } else {
+        $scope.book.route.ridesRemaining = null;
       }
     })
 
