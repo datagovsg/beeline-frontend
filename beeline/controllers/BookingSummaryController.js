@@ -39,7 +39,7 @@ export default [
       zeroDollarPurchase: false
     };
 
-    $scope.isPaymentProcessing = false,
+    $scope.isPaymentProcessing = false;
 
     if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
       $stateParams.selectedDates = [$stateParams.selectedDates]
