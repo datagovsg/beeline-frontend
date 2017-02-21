@@ -36,14 +36,6 @@ export default [
             .find(ts => bid.alightStopId == ts.stop.id);
     });
 
-    //if has cordova no need to show shareLink text area
-    $scope.shareLink = "Hey, check out this new Crowdstart route from Beeline! https://app.beeline.sg/#/tabs/crowdstart/"+$scope.book.routeId+"/detail";
-
-    $scope.shareAnywhere = function() {
-      $cordovaSocialSharing.share("Hey, check out this new Crowdstart route from Beeline!",
-        "New Beeline Crowdstart Route", null, "https://app.beeline.sg/#/tabs/crowdstart/"+$scope.book.routeId+"/detail");
-    };
-
   }
 ];
 //
