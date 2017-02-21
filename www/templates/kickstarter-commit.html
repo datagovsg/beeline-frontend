@@ -63,7 +63,7 @@
                   <img class="mini-icon" src="img/icon_schedule.svg">
                 </span>
                 <span class="mini-info">
-                  Start on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
+                  Start on {{book.route.trips[0].date | date:'dd MMM yyyy' : 'Z'}} if activated
                 </span>
               </div>
               <div class="icon-and-schedule">

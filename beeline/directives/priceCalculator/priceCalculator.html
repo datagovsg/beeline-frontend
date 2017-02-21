@@ -26,7 +26,7 @@
       </tr>
       <tr ng-if="booking.selectedDates.length > 0" ng-repeat="pinfo in priceInfo.pricesPerTrip">
         <td>
-          {{pinfo.startDate | date:'dd MMM (EEE)'}}
+          {{pinfo.startDate | date:'dd MMM (EEE)' : 'Z'}}
           <div ng-if="pinfo.bookingInfo.notes" class="trd ip-notes">
             <i class="ionicon ion-information-circled"></i> {{pinfo.bookingInfo.notes}}
           </div>

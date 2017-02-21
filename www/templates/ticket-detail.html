@@ -7,7 +7,7 @@
     </button>
   </ion-nav-buttons>
 
-  <ion-nav-title>Ticket for {{ticket.boardStop.time | date:'d MMM y'}}</ion-nav-title>
+  <ion-nav-title>Ticket for {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}</ion-nav-title>
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
     <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
       <span class="tab-title-large"><i class="ticket-nav-ticket"></i>Ticket</a>
@@ -44,12 +44,12 @@
       <div class="row">
         <div class="route-info">
           <div class="start">
-            <span class="time" ng-bind="ticket.boardStop.time | date:'h:mm a'"></span><img class="route-icon" src="./img/RoutePairSmallStart.svg" />
+            <span class="time" ng-bind="ticket.boardStop.time | date:'h:mm a' : '+0800'"></span><img class="route-icon" src="./img/RoutePairSmallStart.svg" />
               <div class="routeDetailDesc">
                 {{ticket.boardStop.stop.description}}, {{ticket.boardStop.stop.road}}</div>
           </div>
             <div class="end">
-            <span class="time" ng-bind="ticket.alightStop.time | date:'h:mm a'"></span><img class="route-icon" src="./img/RoutePairSmallEnd.svg" />
+            <span class="time" ng-bind="ticket.alightStop.time | date:'h:mm a' : '+0800'"></span><img class="route-icon" src="./img/RoutePairSmallEnd.svg" />
               <div class="routeDetailDesc">{{ticket.alightStop.stop.description}}, {{ticket.alightStop.stop.road}}</div>
           </div>
         </div>

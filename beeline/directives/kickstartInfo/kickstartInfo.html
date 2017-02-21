@@ -42,7 +42,7 @@
             From
           </td>
           <td>
-            <strong>{{route.trips[0].date | date:'dd MMM yyyy'}} ({{route.trips[0].date | date:'EEE'}})</strong>
+            <strong>{{route.trips[0].date | date:'dd MMM yyyy' : 'Z'}} ({{route.trips[0].date | date:'EEE' : 'Z'}})</strong>
           </td>
         </tr>
       </table>
@@ -52,7 +52,8 @@
   </div>
   <div class="kickstart-info-content" ng-hide="contentHide">
     <p>
-     This route will activate when <strong>{{route.notes.tier[0].pax}} people</strong> pre-order this Route Pass by <strong>{{route.notes.lelongExpiry | date:'dd MMM yy'}}</strong>.
+     This route will activate when <strong>{{route.notes.tier[0].pax}} people</strong>
+     pre-order this Route Pass by <strong>{{route.notes.lelongExpiry | date:'dd MMM yy' : '+0800'}}</strong>.
    </p>
    <p ng-if="!route.daysLeft">This campaign has ended.</p>
    <p>

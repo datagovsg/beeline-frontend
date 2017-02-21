@@ -48,7 +48,7 @@
           <img class="mini-icon" src="img/icon_schedule.svg">
         </span>
       <span class="mini-info">
-          Route starts on {{route.trips[0].date | date:'dd MMM yyyy'}} if activated
+          Route starts on {{route.trips[0].date | date:'dd MMM yyyy' : 'Z'}} if activated
         </span>
     </div>
 
