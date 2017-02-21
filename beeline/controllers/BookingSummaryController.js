@@ -130,14 +130,14 @@ export default [
         template: 'Are you sure you want to complete the purchase?'
       })) {
         try {
-          $scope.waitingForPaymentResult = true;
+          $scope.isPaymentProcessing = true;
 
           await completePayment({
             stripeToken: 'this-will-not-be-used'
           })
         } finally {
           $scope.$apply(() => {
-            $scope.waitingForPaymentResult = false;
+            $scope.isPaymentProcessing = false;
           })
         }
       }
@@ -155,7 +155,6 @@ export default [
           null);
 
         if (!stripeToken) {
-          $scope.isPaymentProcessing = false; // re-enable button
           return;
         }
 
@@ -163,14 +162,13 @@ export default [
           stripeToken: stripeToken.id,
         });
       } catch (err) {
-        $scope.isPaymentProcessing = false; // re-enable button
         await $ionicPopup.alert({
           title: 'Error contacting the payment gateway',
           template: err.data.message,
         })
       } finally {
         $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
+          $scope.isPaymentProcessing = false;
         })
       }
     };
@@ -211,7 +209,7 @@ export default [
         })
       } finally {
         $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
+          $scope.isPaymentProcessing = false;
         })
       }
     };
