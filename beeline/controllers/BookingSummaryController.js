@@ -8,11 +8,11 @@ export default [
   '$scope', '$state', '$http', '$ionicPopup', 'BookingService',
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
   'RoutesService', '$ionicScrollDelegate', 'TicketService',
-  'loadingSpinner', 'CreditsService',
-  function ($scope, $state, $http, $ionicPopup,
-    BookingService, UserService, $ionicLoading,
-    StripeService, $stateParams, RoutesService, $ionicScrollDelegate, TicketService,
-    loadingSpinner, CreditsService) {
+  'loadingSpinner', 'CreditsService', '$ionicPosition',
+  function ($scope, $state, $http, $ionicPopup, BookingService, 
+    UserService, $ionicLoading, StripeService, $stateParams, 
+    RoutesService, $ionicScrollDelegate, TicketService,
+    loadingSpinner, CreditsService, $ionicPosition) {
 
     // Booking session logic
     $scope.session = {
@@ -22,7 +22,6 @@ export default [
       routeId: +$stateParams.routeId,
       route: null,
       qty: 1,
-      waitingForPaymentResult : false,
       selectedDates: [],
       boardStopId: parseInt($stateParams.boardStop),
       alightStopId: parseInt($stateParams.alightStop),
@@ -31,14 +30,16 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
-      applyRouteCredits: JSON.parse($stateParams.applyRouteCredits) || false,
-      applyReferralCredits: JSON.parse($stateParams.applyReferralCredits) || false,
-      applyCredits: JSON.parse($stateParams.applyCredits) || false,
+      applyRouteCredits: false,
+      applyReferralCredits: false,
+      applyCredits: false,
       creditTag: null,
     };
     $scope.disp = {
       zeroDollarPurchase: false
     };
+
+    $scope.isPaymentProcessing = false;
 
     if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
       $stateParams.selectedDates = [$stateParams.selectedDates]
@@ -62,34 +63,35 @@ export default [
       $scope.book.features = features;
     })
 
-    if($scope.book.applyRouteCredits){
-      RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
-        $scope.book.applyRouteCredits = !!creditTag
-        $scope.book.creditTag = creditTag
-      })
-    }
+    $scope.$watch(() => RoutesService.getRouteCreditTags(), async (routeToCreditTags) => {
+      let creditTag = routeToCreditTags ? routeToCreditTags[$scope.book.routeId] : null
+      $scope.book.applyRouteCredits = !!creditTag
+      $scope.book.creditTag = creditTag
+    })
 
-    $scope.$watch(() => UserService.getUser(), async(user) => {
+    $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       $scope.hasSavedPaymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
-      if($scope.book.applyReferralCredits) { $scope.book.applyReferralCredits = !!user }
-      if($scope.book.applyCredits) { $scope.book.applyCredits = !!user } 
+      $scope.book.applyReferralCredits = !!user;
+      $scope.book.applyCredits = !!user;
       if ($scope.isLoggedIn) {
-        $ionicLoading.show({
-          template: loadingTemplate
-        })
-        await $scope.checkValidDate();
-        $ionicLoading.hide();
+        loadingSpinner(Promise.all([
+          $scope.checkValidDate(),
+          RoutesService.fetchRouteCreditTags(),
+        ]))
       }
     })
 
     $scope.login = function () {
-      UserService.promptLogIn()
+      $scope.isPreviewCalculating = true;
+      UserService.promptLogIn();
+      $scope.scrollToPriceCalculator();
     }
 
     $scope.$on('priceCalculator.done', () => {
       $ionicScrollDelegate.resize();
+      $scope.isPreviewCalculating = false;
     })
     $scope.$on('companyTnc.done', () => {
       $ionicScrollDelegate.resize();
@@ -137,7 +139,7 @@ export default [
     $scope.payWithoutSavingCard = async function() {
       try {
         // disable the button
-        $scope.waitingForPaymentResult = true;
+        $scope.isPaymentProcessing = true;
 
         var stripeToken = await StripeService.promptForToken(
           null,
@@ -145,6 +147,7 @@ export default [
           null);
 
         if (!stripeToken) {
+          $scope.isPaymentProcessing = false; // re-enable button
           return;
         }
 
@@ -157,6 +160,7 @@ export default [
         });
 
       } catch (err) {
+        $scope.isPaymentProcessing = false; // re-enable button
         await $ionicPopup.alert({
           title: 'Error contacting the payment gateway',
           template: err.data.message,
@@ -169,7 +173,7 @@ export default [
     $scope.payWithSavedInfo = async function () {
       try {
         // disable the button
-        $scope.waitingForPaymentResult = true;
+        $scope.isPaymentProcessing = true;
 
         if (!$scope.hasSavedPaymentInfo) {
           var stripeToken = await StripeService.promptForToken(
@@ -178,6 +182,7 @@ export default [
             null);
 
           if (!stripeToken) {
+            $scope.isPaymentProcessing = false; // re-enable button
             return;
           }
         }
@@ -192,12 +197,18 @@ export default [
           sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
         });
       } catch (err) {
+        $scope.isPaymentProcessing = false; // re-enable button
         await $ionicPopup.alert({
           title: 'Error saving payment method',
           template: err.data.message,
         })
       }
     };
+
+    $scope.scrollToPriceCalculator = function(){
+      var priceCalculatorPosition = $ionicPosition.position(angular.element(document.getElementById('priceCalc')));
+      $ionicScrollDelegate.scrollTo(priceCalculatorPosition.left, priceCalculatorPosition.top, true);
+    }
 
     /** After you have settled the payment mode **/
     async function completePayment(paymentOptions) {
@@ -233,7 +244,7 @@ export default [
         })
       } finally {
         $scope.$apply(() => {
-          $scope.waitingForPaymentResult = false;
+          $scope.isPaymentProcessing = false;
         })
         RoutesService.fetchRouteCredits(true)
         RoutesService.fetchRoutePassCount()

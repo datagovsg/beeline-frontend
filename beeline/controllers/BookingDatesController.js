@@ -33,6 +33,8 @@ export default [
       selectedDates: [],
       invalidStopDates: [],
       applyRouteCredits: false,
+      applyReferralCredits: false,
+      applyCredits: false,
       creditTag: null,
     };
     // Display Logic;
@@ -57,12 +59,14 @@ export default [
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
 
-    RoutesService.fetchRouteCreditTag($scope.book.routeId).then(function(creditTag){
+    RoutesService.fetchRouteCreditTags();
+    $scope.$watch(() => RoutesService.getRouteCreditTags(), (routeToCreditTags) => {
+      let creditTag = routeToCreditTags ? routeToCreditTags[$scope.book.routeId] : null
       $scope.book.applyRouteCredits = !!creditTag
       $scope.book.creditTag = creditTag
     })
 
-    $scope.$watch(()=>UserService.getUser(), async (user)=>{
+    $scope.$watch(()=>UserService.getUser(), (user)=>{
       loadTickets();
       $scope.book.applyReferralCredits = !!user
       $scope.book.applyCredits = !!user

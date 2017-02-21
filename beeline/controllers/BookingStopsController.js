@@ -90,7 +90,11 @@ export default [
 
     $q.all([routePromise, ridesRemainingPromise]).then(function(values){
       let ridesRemainingMap = values[1]
-      $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
+      if(ridesRemainingMap){
+        $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
+      } else {
+        $scope.book.route.ridesRemaining = null;
+      }
     })
 
     $scope.$on('$ionicView.afterEnter', () => {
