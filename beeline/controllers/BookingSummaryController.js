@@ -9,8 +9,8 @@ export default [
   'UserService', '$ionicLoading', 'StripeService', '$stateParams',
   'RoutesService', '$ionicScrollDelegate', 'TicketService',
   'loadingSpinner', 'CreditsService', '$ionicPosition',
-  function ($scope, $state, $http, $ionicPopup, BookingService, 
-    UserService, $ionicLoading, StripeService, $stateParams, 
+  function ($scope, $state, $http, $ionicPopup, BookingService,
+    UserService, $ionicLoading, StripeService, $stateParams,
     RoutesService, $ionicScrollDelegate, TicketService,
     loadingSpinner, CreditsService, $ionicPosition) {
 
@@ -129,9 +129,17 @@ export default [
         title: 'Complete Purchase',
         template: 'Are you sure you want to complete the purchase?'
       })) {
-        completePayment({
-          stripeToken: 'this-will-not-be-used'
-        })
+        try {
+          $scope.isPaymentProcessing = true;
+
+          await completePayment({
+            stripeToken: 'this-will-not-be-used'
+          })
+        } finally {
+          $scope.$apply(() => {
+            $scope.isPaymentProcessing = false;
+          })
+        }
       }
     }
 
@@ -147,25 +155,22 @@ export default [
           null);
 
         if (!stripeToken) {
-          $scope.isPaymentProcessing = false; // re-enable button
           return;
         }
 
-        $ionicLoading.show({
-          template: processingPaymentsTemplate
-        })
-          
-        completePayment({
+        await completePayment({
           stripeToken: stripeToken.id,
         });
-
       } catch (err) {
-        $scope.isPaymentProcessing = false; // re-enable button
         await $ionicPopup.alert({
           title: 'Error contacting the payment gateway',
           template: err.data.message,
         })
-      } 
+      } finally {
+        $scope.$apply(() => {
+          $scope.isPaymentProcessing = false;
+        })
+      }
     };
 
     // Processes payment with customer object. If customer object does not exist,
@@ -192,7 +197,7 @@ export default [
           await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
         }
 
-        completePayment({
+        await completePayment({
           customerId: $scope.user.savedPaymentInfo.id,
           sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
         });
@@ -201,6 +206,10 @@ export default [
         await $ionicPopup.alert({
           title: 'Error saving payment method',
           template: err.data.message,
+        })
+      } finally {
+        $scope.$apply(() => {
+          $scope.isPaymentProcessing = false;
         })
       }
     };
@@ -243,12 +252,9 @@ export default [
           template: err.data.message,
         })
       } finally {
-        $scope.$apply(() => {
-          $scope.isPaymentProcessing = false;
-        })
         RoutesService.fetchRouteCredits(true)
         RoutesService.fetchRoutePassCount()
-        RoutesService.fetchRoutesWithRoutePass() 
+        RoutesService.fetchRoutesWithRoutePass()
 
         CreditsService.fetchReferralCredits(true);
         CreditsService.fetchUserCredits(true);
