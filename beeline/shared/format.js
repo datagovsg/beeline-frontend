@@ -59,14 +59,17 @@ export function formatTime(date, prePadding) {
     date = new Date(date);
   }
 
-  var hours = date.getHours();
+  // Fix time zone to +0800
+  date = new Date(date.getTime() + 8*60*60*1000)
+
+  var hours = date.getUTCHours();
 
   var hourPart = 12 - (24 - hours) % 12;
   hourPart = prePadding ? twoPad(hourPart, 2, '\u2007') : hourPart;
 
     /* \u2007 is a figure space */
   return hourPart + ':' +
-            twoPad(date.getMinutes()) + '\u00a0' /* non-breaking space */
+            twoPad(date.getUTCMinutes()) + '\u00a0' /* non-breaking space */
             + (hours >= 12 ? 'pm' : 'am')/* + ':' +
             twoPad(date.getSeconds()) */;
 }
