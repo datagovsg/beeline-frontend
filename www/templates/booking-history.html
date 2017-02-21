@@ -18,7 +18,7 @@
                 Date
               </th>
               <td>
-                {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}
+                {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss' : '+0800'}}
               </td>
             </tr>
             <tr ng-repeat-start="payment in transaction.itemsByType.payment track by payment.id">
@@ -68,7 +68,7 @@
                   <br />
                   <ul>
                     <li ng-repeat="ticket in transaction.itemsByType.ticketSale">
-                      {{ticket.ticketSale.boardStop.trip.date | date:'dd MMM yyyy'}}
+                      {{ticket.ticketSale.boardStop.trip.date | date:'dd MMM yyyy' : 'Z'}}
                     </li>
                   </ul>
               </td>

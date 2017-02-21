@@ -55,10 +55,10 @@
               <img class="mini-icon" src="img/icon_schedule.svg">
             </span>
             <span class="mini-info" ng-if="!book.route.isActived">
-              Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy'}} if activated
+              Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy' : 'Z'}} if activated
             </span>
             <span class="mini-info" ng-if="book.route.isActived">
-              Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy'}}
+              Route starts on {{book.route.trips[0].date | date:'dd MMM yyyy' : 'Z'}}
             </span>
           </div>
           <!-- show status if pass not granted yet -->
@@ -109,7 +109,7 @@
       </div>
       <kickstart-info route="book.route" preorder-hide="true" content-hide="true"></kickstart-info>
     </div>
-    
+
     <crowdstart-share ng-if="!book.route.isExpired" route-id="book.routeId"></crowdstart-share>
     <div class="item item-text-wrap">
       <div class="item-subtitle">Operated by</div>
