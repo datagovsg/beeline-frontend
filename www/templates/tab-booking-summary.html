@@ -150,7 +150,7 @@
         Please ensure that your credit card is ready for the next step in the booking process.
         <button class="button primary-button"
                 ng-click="payHandler()"
-                ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating">
+                ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating || book.price===undefined">
           Confirm and Pay
         </button>
       </section>
@@ -161,7 +161,7 @@
 
         <button class="button primary-button"
                 ng-click="payWithSavedInfo()"
-                ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating">
+                ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating || book.price===undefined">
           Confirm and Pay
         </button>
         <div class="text-link-div">

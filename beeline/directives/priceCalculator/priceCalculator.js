@@ -25,9 +25,8 @@ export default [
           $scope.booking.promoCode = promoCode;
         }
 
-        $scope.$watch(UserService.getUser(), (user)=>{
-          $scope.isLoggedIn = !!user
-
+        $scope.$watch(()=>UserService.getUser(), (user)=>{
+          $scope.isLoggedIn = !!user;
           CreditsService.fetchUserCredits().then((userCredits) => {
             $scope.userCredits = userCredits
           });
@@ -36,7 +35,7 @@ export default [
             $scope.referralCredits = referralCredits
           });
         })
-        
+
         var latestRequest = null;
         $scope.$watch(
           () => _.pick($scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode' /* , qty */]),
