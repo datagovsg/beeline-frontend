@@ -100,6 +100,8 @@ export default [
     $scope.$watch('book.price', (price) => {
       if (parseFloat(price) === 0) {
         $scope.disp.zeroDollarPurchase = true;
+      } else {
+        $scope.disp.zeroDollarPurchase = false;
       }
     })
 
