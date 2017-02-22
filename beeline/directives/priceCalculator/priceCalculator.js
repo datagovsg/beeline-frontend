@@ -11,60 +11,66 @@ export default [
       scope: {
         'booking': '=',
         'price': '=?',
-        'showCredits': '<',
+        'showPromoField': '<',
       },
-      link: function(scope, elem, attr) {
-        scope.isCalculating = 0;
+      controller($scope) {
+        $scope.isCalculating = 0;
 
         function stopCalculating() {
-          scope.isCalculating = Math.max(0, scope.isCalculating - 1);
-          scope.$emit('priceCalculator.done')
+          $scope.isCalculating = Math.max(0, $scope.isCalculating - 1);
+          $scope.$emit('priceCalculator.done')
         }
-        
+
+        $scope.updatePromoCode = function(promoCode){
+          $scope.booking.promoCode = promoCode;
+        }
+
+        $scope.$watch(()=>UserService.getUser(), (user)=>{
+          $scope.isLoggedIn = !!user;
+          CreditsService.fetchUserCredits().then((userCredits) => {
+            $scope.userCredits = userCredits
+          });
+
+          CreditsService.fetchReferralCredits().then((referralCredits) => {
+            $scope.referralCredits = referralCredits
+          });
+        })
+
         var latestRequest = null;
-        scope.$watch(
-          () => _.pick(scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode' /* , qty */]),
+        $scope.$watch(
+          () => _.pick($scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode' /* , qty */]),
           async function () {
-            assert(scope.booking.routeId);
-            if (!scope.booking.route) {
-              scope.booking.route = await RoutesService.getRoute(scope.booking.routeId)
+            assert($scope.booking.routeId);
+            if (!$scope.booking.route) {
+              $scope.booking.route = await RoutesService.getRoute($scope.booking.routeId)
+              let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
+              $scope.booking.route.ridesRemaining = routeToRidesRemainingMap[$scope.booking.routeId]
             }
-
-            let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
-            scope.booking.route.ridesRemaining = routeToRidesRemainingMap[scope.booking.routeId]
-
-            CreditsService.fetchUserCredits().then((userCredits) => {
-              scope.userCredits = userCredits
-            });
-
-            CreditsService.fetchReferralCredits().then((referralCredits) => {
-              scope.referralCredits = referralCredits
-            });
 
             // Provide a price summary first (don't count total due)
             // This allows the page to resize earlier, so that when
             // users scroll down the bounce works ok.
-            scope.priceInfo = scope.priceInfo || {};
-            scope.priceInfo.pricesPerTrip = BookingService.summarizePrices(scope.booking);
+            $scope.priceInfo = $scope.priceInfo || {};
+            $scope.priceInfo.pricesPerTrip = BookingService.summarizePrices($scope.booking);
 
-            scope.isCalculating++;
-            var promise = BookingService.computePriceInfo(scope.booking)
+            $scope.isCalculating++;
+            var promise = BookingService.computePriceInfo($scope.booking)
             .then((priceInfo) => {
               // Check to ensure that the order of
               // replies don't affect the result
               if (promise != latestRequest)
                 return;
-              scope.priceInfo = priceInfo;
-              scope.price = priceInfo.totalDue;
-              scope.ridesUsed = scope.booking.applyRouteCredits 
-                ? Math.min(scope.booking.route.ridesRemaining, priceInfo.tripCount)
+              $scope.priceInfo = priceInfo;
+              $scope.price = priceInfo.totalDue;
+              $scope.ridesUsed = $scope.booking.applyRouteCredits 
+                ? Math.min($scope.booking.route.ridesRemaining, priceInfo.tripCount)
                 : 0
-              scope.errorMessage = null;
+              $scope.errorMessage = null;
             })
             .catch((error) => {
-              scope.priceInfo = {};
-              scope.price = undefined;
-              scope.errorMessage = error.data.message;
+              $scope.priceInfo = {};
+              $scope.price = undefined;
+              $scope.errorMessage = error.data.message;
             })
             .then(stopCalculating);
 

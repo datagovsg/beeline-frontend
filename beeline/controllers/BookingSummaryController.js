@@ -34,6 +34,7 @@ export default [
       applyReferralCredits: false,
       applyCredits: false,
       creditTag: null,
+      promoCode: $stateParams.promoCode
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -99,6 +100,8 @@ export default [
     $scope.$watch('book.price', (price) => {
       if (parseFloat(price) === 0) {
         $scope.disp.zeroDollarPurchase = true;
+      } else {
+        $scope.disp.zeroDollarPurchase = false;
       }
     })
 

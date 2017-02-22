@@ -64,7 +64,7 @@
     </div>
 
     <div class="item">
-      <price-calculator booking="book" show-credits="true"></price-calculator>
+      <price-calculator booking="book" show-promo-field="false"></price-calculator>
     </div>
 
     <div class="item">
@@ -74,6 +74,7 @@
                 alightStop: book.alightStopId,
                 selectedDates: book.selectedDates,
                 sessionId: session.sessionId,
+                promoCode: book.promoCode,
               })">
         Review Booking
       </button>
