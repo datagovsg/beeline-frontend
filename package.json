@@ -38,6 +38,7 @@
     "ngclipboard": "^1.1.1",
     "q": "^1.4.1",
     "shelljs": "^0.7.4",
+    "shx": "^0.2.2",
     "uuid": "^2.0.3",
     "webpack-dev-server": "^1.16.1",
     "webpack-stream": "^3.1.0"
@@ -68,7 +69,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "gulp",
     "clean": "ionic platform remove android; ionic platform remove ios; ionic platform remove browser; git checkout package.json",
-    "deploy": "gulp deploy && gh-pages -r git@github.com:datagovsg/beeline-frontend-deploy.git -d build"
+    "stg-deploy": "npm run clean-deploy && gulp stg-deploy && gh-pages -d build-stg",
+    "deploy": "npm run clean-deploy && node warn.js && gulp deploy && gh-pages -r git@github.com:datagovsg/beeline-frontend-deploy.git -d build",
+    "clean-deploy": "shx rm -rf node_modules/gh-pages/.cache"
   },
   "author": "",
   "license": "ISC"
