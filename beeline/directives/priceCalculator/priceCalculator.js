@@ -48,17 +48,6 @@ export default [
               $scope.booking.route.ridesRemaining = routeToRidesRemainingMap[$scope.booking.routeId]
             }
 
-            let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
-            scope.booking.route.ridesRemaining = routeToRidesRemainingMap[scope.booking.routeId]
-
-            CreditsService.fetchUserCredits().then((userCredits) => {
-              scope.userCredits = userCredits
-            });
-
-            CreditsService.fetchReferralCredits().then((referralCredits) => {
-              scope.referralCredits = referralCredits
-            });
-
             // Provide a price summary first (don't count total due)
             // This allows the page to resize earlier, so that when
             // users scroll down the bounce works ok.
