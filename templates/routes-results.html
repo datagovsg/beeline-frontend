@@ -1,0 +1,30 @@
+<ion-view view-title="Search Results">
+  <ion-content>
+    <ion-spinner ng-if="!data.activeRoutes"></ion-spinner>
+
+    <div class="item item-text-wrap" ng-if="data.activeRoutes.length === 0">
+      <p>Sorry! There are no matching routes corresponding to your Start and End locations.</p>
+    </div>
+    <div class="item item-text-wrap" ng-if="data.activeRoutes.length === 1">
+      <p><strong>{{ data.activeRoutes.length }} route</strong> found. Nearest stops are shown.</p>
+    </div>
+    <div class="item item-text-wrap" ng-if="data.activeRoutes.length > 1">
+      <p><strong>{{ data.activeRoutes.length }} routes</strong> found. Nearest stops are shown.</p>
+    </div>
+
+    <ul class="list" ng-if="data.activeRoutes.length > 0">
+      <!-- Available Routes Section -->
+      <div class="item item-divider">Available Routes</div>
+      <ion-item ng-repeat="route in data.activeRoutes"
+                ui-sref="tabs.bookingPickup({ routeId: route.id,
+                                              boardStop: route.nearestBoardStop.stopId,
+                                              alightStop: route.nearestAlightStop.stopId})">
+        <route-item route="route"></route-item>
+        <a class="item-icon-right">
+          <i class="icon ion-ios-arrow-right"></i>
+        </a>
+      </ion-item>
+    </ul>
+
+  </ion-content>
+</ion-view>

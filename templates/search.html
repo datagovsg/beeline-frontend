@@ -1,0 +1,54 @@
+<ion-view id="pg-search" view-title="Search Routes">
+  <ion-nav-buttons side="left">
+    <a class="button button-clear back-button"
+       ng-click="goBack()" nav-direction="back">
+       <i class="icon ion-ios-arrow-back"></i> Back
+    </a>
+  </ion-nav-buttons>
+
+  <ion-content scroll="false">
+    <ui-gmap-google-map
+        center="map.center"
+        zoom="map.zoom"
+        events="map.events"
+        control="map.control"
+        options="map.options">
+      <my-location></my-location>
+
+      <ui-gmap-marker idkey="'my-origin'" ng-if="data.origin" coords="data.origin" options="map.markerOptions.startMarker">
+      </ui-gmap-marker>
+      <ui-gmap-marker idkey="'my-destination'" ng-if="data.destination" coords="data.destination" options="map.markerOptions.endMarker">
+      </ui-gmap-marker>
+    </ui-gmap-google-map>
+
+    <!-- don't want / need crosshair since for us exact positions not necessary -->
+    <!-- <div class="crosshair" ng-click="useCenter()" ng-show="disp.showCrosshair" >
+      ↙ Use this location!
+    </div> -->
+
+    <div class="search-inputs">
+
+      <div class="item item-input item-icon-right clearable-input">
+        Origin:
+        <input type="text" gmap-autocomplete ng-model="data.originText" place-changed="updatePlace('origin', $event)"
+          bounds="map.bounds.Singapore" ng-focus="focus('origin')" ng-blur="blur('origin')"/>
+        <i class="icon ion-android-close" ng-click="data.originText = ''; data.origin=null"></i>
+      </div>
+
+      <div class="item item-input item-icon-right clearable-input">
+        Destination:
+        <input type="text" gmap-autocomplete ng-model="data.destinationText"  place-changed="updatePlace('destination', $event)"
+                    bounds="map.bounds.Singapore" ng-focus="focus('destination')" ng-blur="blur('destination')" />
+        <i class="icon ion-android-close" ng-click="data.destinationText = ''; data.destination=null"></i>
+      </div>
+
+    </div>
+
+    <div class="go-button">
+      <button class="button primary-button button-item" ng-click="goSearch()"
+          ng-disabled="!data.origin && !data.destination">
+        Search Routes
+      </button>
+    </div>
+  </ion-content>
+</ion-view>
