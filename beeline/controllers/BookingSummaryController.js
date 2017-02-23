@@ -37,7 +37,8 @@ export default [
       promoCode: null,
       promoCodeEntered: undefined,
       feedback: null,
-      promoCodeIsValid: null
+      promoCodeIsValid: null,
+      isVerifying: null
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -277,54 +278,73 @@ export default [
       };
       let bookClone = _.cloneDeep($scope.book);
       let book = _.assign(bookClone,{'promoCode': $scope.book.promoCodeEntered.toUpperCase()});
-      //FIXME: error thrown could be other error while promoCode is valid
+      $scope.book.isVerifying = true;
       BookingService.computePriceInfo(book)
         .then((priceInfo) => {
           $scope.book.feedback = 'Valid';
           $scope.book.promoCodeIsValid = true;
         })
         .catch((error) => {
-          $scope.book.feedback = 'Invalid';
+          // console.log(error.data);
+          // if (error.data  && error.data.source === 'promoCode') {
+          //   $scope.book.feedback = error.data.message;
+          //   $scope.book.promoCodeIsValid = null;
+          // } else {
+          //   $scope.book.feedback = 'Valid';
+          //   $scope.book.promoCodeIsValid = true;
+          // }
+
+          $scope.book.feedback = error.data.message;
           $scope.book.promoCodeIsValid = null;
+        }).finally(()=>{
+          $scope.book.isVerifying = null;
         })
     }
 
     $scope.$watch(('book.promoCodeEntered'),
-      _.debounce(verifyPromoCode, 1000, {leading: false, trailing: true})
+      _.debounce(verifyPromoCode, 500, {leading: false, trailing: true})
     );
 
-    $scope.promptPromoCode = function() {
-      $scope.enterPromoCodePopup = $ionicPopup.show({
-        scope: $scope,
-        template: `
-          <label>
-            <input type="text" style="text-transform: uppercase" placeholder="abcxyz" ng-model="book.promoCodeEntered">
-          </label>
-          {{book.feedback}}
-        `,
-        title: 'Enter Promo Code',
-        buttons: [
-          { text: 'Close',
-            onTap: function(e) {
-              $scope.book.feedback = null;
-              $scope.book.promoCodeEntered = null;
-            }
-          },
-          {
-            text: 'Apply',
-            //FIXME: why not update
-            type: ($scope.book.promoCodeIsValid!==null ? 'button-positive' : 'button-disabled'),
-            onTap: function(e) {
-              e.preventDefault();
-              if ($scope.book.promoCodeIsValid) {
-                $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase();
-                $scope.book.feedback = $scope.book.promoCodeEntered = null;
-                $scope.enterPromoCodePopup.close();
+    $scope.promptPromoCode = async function() {
+      if (!$scope.isLoggedIn) {
+        await $ionicPopup.alert({
+          title: 'You need to log in before enter any promo code',
+        })
+        $scope.login();
+      } else {
+        $scope.enterPromoCodePopup = $ionicPopup.show({
+          scope: $scope,
+          template: `
+            <label>
+              <input type="text" style="text-transform: uppercase" placeholder="abcxyz" ng-model="book.promoCodeEntered">
+                  <ion-spinner ng-show="book.isVerifying"></ion-spinner>
+              </input>
+            </label>
+            {{book.feedback}}
+          `,
+          title: 'Enter Promo Code',
+          buttons: [
+            { text: 'Close',
+              onTap: function(e) {
+                $scope.book.feedback = null;
+                $scope.book.promoCodeEntered = null;
               }
-            }
-          },
-        ]
-      });
+            },
+            {
+              text: 'Apply',
+              type: 'button-positive',
+              onTap: function(e) {
+                e.preventDefault();
+                if ($scope.book.promoCodeIsValid) {
+                  $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase();
+                  $scope.book.feedback = $scope.book.promoCodeEntered = null;
+                  $scope.enterPromoCodePopup.close();
+                }
+              }
+            },
+          ]
+        });
+      }
     }
   },
 ];
