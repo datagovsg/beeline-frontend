@@ -48,7 +48,8 @@
     </tbody>
   </table>
 
-  <div class="promoCredits" ng-if="showPromoField && isLoggedIn">
+  <!-- hide from calculator -->
+  <!-- <div class="promoCredits" ng-if="showPromoField && isLoggedIn">
     <ul class="list">
       <li class="item item-input-inset">
         <label class="item-input-wrapper">
@@ -59,7 +60,7 @@
         </button>
       </li>
     </ul>
-  </div>
+  </div> -->
   <div class="item-subtitle">Amount to Pay </div>
   <table class="booking-info calculator" ng-if="booking.selectedDates.length > 0">
     <tbody>
@@ -80,7 +81,9 @@
         <td class="right">{{(-credits.debit || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
-        <td>{{discount.discount.description}}: {{discount.discount.code}}</td>
+        <td>
+          {{discount.discount.description}}: {{discount.discount.code}}  <button class="button icon ion-android-close"ng-click="removePromoCode()"></button>
+        </td>
         <td class="right">
           {{(-discount.debit || 0) | currency}}
         </td>

@@ -35,8 +35,9 @@ export default [
       applyCredits: false,
       creditTag: null,
       promoCode: null,
-      promoCodeEntered: null,
-      feedback: null
+      promoCodeEntered: undefined,
+      feedback: null,
+      promoCodeIsValid: null
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -266,6 +267,33 @@ export default [
       }
     }
 
+    function verifyPromoCode() {
+      if ($scope.book.promoCodeEntered===undefined
+          || $scope.book.promoCodeEntered===null
+          || !$scope.book.promoCodeEntered) {
+          $scope.book.feedback = $scope.book.promoCodeEntered = $scope.book.promoCodeIsValid = null;
+          $scope.$digest();
+          return;
+      };
+      $scope.book.promoCodeEntered = $scope.book.promoCodeEntered.toUpperCase();
+      let bookClone = _.cloneDeep($scope.book);
+      let book = _.assign(bookClone,{'promoCode': $scope.book.promoCodeEntered});
+      //FIXME: error thrown could be other error while promoCode is valid
+      BookingService.computePriceInfo(book)
+        .then((priceInfo) => {
+          $scope.book.feedback = 'Valid';
+          $scope.book.promoCodeIsValid = true;
+        })
+        .catch((error) => {
+          $scope.book.feedback = 'Invalid';
+          $scope.book.promoCodeIsValid = null;
+        })
+    }
+
+    $scope.$watch(('book.promoCodeEntered'),
+      _.debounce(verifyPromoCode, 1000, {leading: false, trailing: true})
+    );
+
     $scope.promptPromoCode = function() {
       $scope.enterPromoCodePopup = $ionicPopup.show({
         scope: $scope,
@@ -273,43 +301,33 @@ export default [
           <label class="item-input-wrapper">
             <input type="text" placeholder="Enter Promo Code" ng-model="book.promoCodeEntered">
           </label>
-          <div>
+          <label class="item-input-wrapper">
             {{book.feedback}}
-          </div>
+          </label>
         `,
         title: 'Enter Promo Code',
         buttons: [
-          {
-            text: 'Apply',
-            type: 'button-positive',
+          { text: 'Close',
             onTap: function(e) {
-              e.preventDefault();
-              if ($scope.book.promoCodeEntered) {
-                $scope.book.promoCodeEntered = $scope.book.promoCodeEntered.toUpperCase();
-              }
-              console.log($scope.book.promoCodeEntered);
-              let bookClone = _.cloneDeep($scope.book);
-
-              let book = _.assign(bookClone,{'promoCode': $scope.book.promoCodeEntered});
-              BookingService.computePriceInfo(book)
-                .then((priceInfo) => {
-                  console.log(priceInfo);
-                  $scope.book.feedback = 'Valid';
-                })
-                .catch((error) => {
-                  console.log(error);
-                  $scope.book.feedback = 'Invalid';
-                })
+              $scope.book.feedback = null;
+              $scope.book.promoCodeEntered = null;
             }
           },
-          { text: 'Close'},
+          {
+            text: 'Apply',
+            //FIXME: why not update
+            type: ($scope.book.promoCodeIsValid!==null ? 'button-positive' : 'button-disabled'),
+            onTap: function(e) {
+              e.preventDefault();
+              if ($scope.book.promoCodeIsValid) {
+                $scope.book.promoCode = $scope.book.promoCodeEntered;
+                $scope.book.feedback = $scope.book.promoCodeEntered = null;
+                $scope.enterPromoCodePopup.close();
+              }
+            }
+          },
         ]
       });
-    }
-
-    $scope.closePopup = function() {
-      $scope.book.feedback = null;
-      $scope.enterPromoCodePopup.close();
     }
   },
 ];
