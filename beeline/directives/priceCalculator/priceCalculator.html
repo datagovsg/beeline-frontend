@@ -82,7 +82,7 @@
       </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
         <td>
-          {{discount.discount.description}}: {{discount.discount.code}}  <button class="button icon ion-android-close"ng-click="removePromoCode()"></button>
+          {{discount.discount.description}}: {{discount.discount.code}}  <i class="icon ion-close-circled" ng-click="removePromoCode()"></i>
         </td>
         <td class="right">
           {{(-discount.debit || 0) | currency}}

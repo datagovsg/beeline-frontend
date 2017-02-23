@@ -275,9 +275,8 @@ export default [
           $scope.$digest();
           return;
       };
-      $scope.book.promoCodeEntered = $scope.book.promoCodeEntered.toUpperCase();
       let bookClone = _.cloneDeep($scope.book);
-      let book = _.assign(bookClone,{'promoCode': $scope.book.promoCodeEntered});
+      let book = _.assign(bookClone,{'promoCode': $scope.book.promoCodeEntered.toUpperCase()});
       //FIXME: error thrown could be other error while promoCode is valid
       BookingService.computePriceInfo(book)
         .then((priceInfo) => {
@@ -298,12 +297,10 @@ export default [
       $scope.enterPromoCodePopup = $ionicPopup.show({
         scope: $scope,
         template: `
-          <label class="item-input-wrapper">
-            <input type="text" placeholder="Enter Promo Code" ng-model="book.promoCodeEntered">
+          <label>
+            <input type="text" style="text-transform: uppercase" placeholder="abcxyz" ng-model="book.promoCodeEntered">
           </label>
-          <label class="item-input-wrapper">
-            {{book.feedback}}
-          </label>
+          {{book.feedback}}
         `,
         title: 'Enter Promo Code',
         buttons: [
@@ -320,7 +317,7 @@ export default [
             onTap: function(e) {
               e.preventDefault();
               if ($scope.book.promoCodeIsValid) {
-                $scope.book.promoCode = $scope.book.promoCodeEntered;
+                $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase();
                 $scope.book.feedback = $scope.book.promoCodeEntered = null;
                 $scope.enterPromoCodePopup.close();
               }
