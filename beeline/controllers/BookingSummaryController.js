@@ -316,11 +316,11 @@ export default [
           scope: $scope,
           template: `
             <label>
-              <input type="text" style="text-transform: uppercase" placeholder="abcxyz" ng-model="book.promoCodeEntered">
-                  <ion-spinner ng-show="book.isVerifying"></ion-spinner>
+              <input type="text" style="text-transform: uppercase" placeholder="PROMOCODE" ng-model="book.promoCodeEntered">
               </input>
             </label>
-            {{book.feedback}}
+            <div class="text-center"><ion-spinner ng-show="book.isVerifying"></ion-spinner></div>
+            <div class="text-center"> {{book.feedback}}</div>
           `,
           title: 'Enter Promo Code',
           buttons: [
