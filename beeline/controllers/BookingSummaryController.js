@@ -34,7 +34,9 @@ export default [
       applyReferralCredits: false,
       applyCredits: false,
       creditTag: null,
-      promoCode: $stateParams.promoCode
+      promoCode: null,
+      promoCodeEntered: null,
+      feedback: null
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -262,6 +264,52 @@ export default [
         CreditsService.fetchReferralCredits(true);
         CreditsService.fetchUserCredits(true);
       }
+    }
+
+    $scope.promptPromoCode = function() {
+      $scope.enterPromoCodePopup = $ionicPopup.show({
+        scope: $scope,
+        template: `
+          <label class="item-input-wrapper">
+            <input type="text" placeholder="Enter Promo Code" ng-model="book.promoCodeEntered">
+          </label>
+          <div>
+            {{book.feedback}}
+          </div>
+        `,
+        title: 'Enter Promo Code',
+        buttons: [
+          {
+            text: 'Apply',
+            type: 'button-positive',
+            onTap: function(e) {
+              e.preventDefault();
+              if ($scope.book.promoCodeEntered) {
+                $scope.book.promoCodeEntered = $scope.book.promoCodeEntered.toUpperCase();
+              }
+              console.log($scope.book.promoCodeEntered);
+              let bookClone = _.cloneDeep($scope.book);
+
+              let book = _.assign(bookClone,{'promoCode': $scope.book.promoCodeEntered});
+              BookingService.computePriceInfo(book)
+                .then((priceInfo) => {
+                  console.log(priceInfo);
+                  $scope.book.feedback = 'Valid';
+                })
+                .catch((error) => {
+                  console.log(error);
+                  $scope.book.feedback = 'Invalid';
+                })
+            }
+          },
+          { text: 'Close'},
+        ]
+      });
+    }
+
+    $scope.closePopup = function() {
+      $scope.book.feedback = null;
+      $scope.enterPromoCodePopup.close();
     }
   },
 ];

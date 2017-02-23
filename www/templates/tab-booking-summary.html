@@ -61,46 +61,11 @@
       </h3>
       <price-calculator id="priceCalc" class="item" booking="book" price="book.price" show-promo-field="true">
       </price-calculator>
+      <button class="button primary-button"
+              ng-click="promptPromoCode()">
+        Enter Promo Code
+      </button>
     </section>
-
-    <!-- <section class="card">
-      <h3 class="item item-divider">
-        Promo Code
-      </h3>
-      <ol>
-        <li ng-repeat="pc in book.promoCodes track by $index" class="item">
-         {{pc}}
-        </li>
-      </ol>
-      <form ng-submit="addPromoCode()" class="item" name="promoCode">
-        <label class="item item-input">
-          Promo Code
-          <input type="text"
-                 placeholder="Enter your code here"
-                 ng-required="true"
-                 name="promocode"
-                 ng-model="book.currentPromoCode"
-                 />
-        </label>
-        <button type="submit"
-                class="button button-block button-royal"
-                ng-disabled="promoCode.$invalid">
-            Add Code
-        </button>
-      </form>
-    </section> -->
-
-<!--     <section class="card" ng-if="userCredits > 0">
-      <div class="item item-toggle">
-      Apply your Beeline Crdits: {{book.userCredits | currency}}
-      <label class="toggle toggle-royal">
-         <input type="checkbox" ng-model="book.useCredits">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-      </label>
-      </div>
-    </section> -->
 
     <section class="card">
       <h3 class="item item-divider">
