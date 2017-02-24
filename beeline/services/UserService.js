@@ -246,7 +246,10 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptLogIn = async function() {
     try {
       // Ask for telephone number
-      var [telephoneNumber, wantVerification] = await LoginDialog.show()
+      var result = await LoginDialog.show();
+      // if user close the model
+      if (!result) return;
+      var [telephoneNumber, wantVerification] = result;
       if (!telephoneNumber) return;
 
       if (wantVerification) {
