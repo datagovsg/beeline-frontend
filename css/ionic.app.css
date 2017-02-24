@@ -11644,7 +11644,8 @@ route-item {
   margin-left: 5px;
   white-space: nowrap; }
 
-.loginContent .primary-button {
+.loginContent .buttons {
+  text-align: center;
   margin-bottom: 30px; }
 
 .checkTerms {
