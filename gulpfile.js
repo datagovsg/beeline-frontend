@@ -124,6 +124,7 @@ gulp.task('deploy-build', ['deploy-copy'], function (done) {
 
 gulp.task('deploy-hot-code-push', ['deploy-build'], function (done) {
   sh.cp('cordova-hcp-live.json', 'cordova-hcp.json')
+  fs.writeFileSync('build/CNAME', 'app.beeline.sg')
 
   promiseExec('cordova-hcp build build')
   .then(done, done);

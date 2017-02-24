@@ -70,7 +70,7 @@
     "heroku-postbuild": "gulp",
     "clean": "ionic platform remove android; ionic platform remove ios; ionic platform remove browser; git checkout package.json",
     "stg-deploy": "npm run clean-deploy && gulp stg-deploy && gh-pages -d build-stg",
-    "deploy": "npm run clean-deploy && node warn.js && gulp deploy && gh-pages -r git@github.com:datagovsg/beeline-frontend-deploy.git -d build",
+    "deploy": "npm run clean-deploy && node warn.js && gulp deploy && gh-pages -r https://github.com/datagovsg/beeline-frontend-deploy.git -d build",
     "clean-deploy": "shx rm -rf node_modules/gh-pages/.cache"
   },
   "author": "",
