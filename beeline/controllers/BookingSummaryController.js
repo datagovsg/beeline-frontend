@@ -285,24 +285,20 @@ export default [
           $scope.book.promoCodeIsValid = true;
         })
         .catch((error) => {
-          // console.log(error.data);
-          // if (error.data  && error.data.source === 'promoCode') {
-          //   $scope.book.feedback = error.data.message;
-          //   $scope.book.promoCodeIsValid = null;
-          // } else {
-          //   $scope.book.feedback = 'Valid';
-          //   $scope.book.promoCodeIsValid = true;
-          // }
-
-          $scope.book.feedback = error.data.message;
-          $scope.book.promoCodeIsValid = null;
+          if (error.data  && error.data.source === 'promoCode') {
+            $scope.book.feedback = error.data.message;
+            $scope.book.promoCodeIsValid = null;
+          } else {
+            $scope.book.feedback = 'Valid';
+            $scope.book.promoCodeIsValid = true;
+          }
         }).finally(()=>{
           $scope.book.isVerifying = null;
         })
     }
 
     $scope.$watch(('book.promoCodeEntered'),
-      _.debounce(verifyPromoCode, 500, {leading: false, trailing: true})
+      _.debounce(verifyPromoCode, 2000, {leading: false, trailing: true})
     );
 
     $scope.promptPromoCode = async function() {
