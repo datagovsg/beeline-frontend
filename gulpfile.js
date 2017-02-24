@@ -109,16 +109,10 @@ gulp.task('deploy-prepare-git', function (done) {
   new Promise((resolve, reject) => {
     fs.mkdir(path.resolve('build'), (err) => err ? resolve() : reject(err))
   })
-  .then(() => promiseExec('git init .', {cwd: path.resolve('build')}))
-  .then(() => promiseExec('git pull', {cwd: path.resolve('build')}))
-  // Pull the latest (avoid conflicts)
-  .then(() => {
-    fs.writeFileSync(path.resolve('build') + '/CNAME', 'app.beeline.sg')
-  })
   .then(done, errHandler);
 });
 
-gulp.task('deploy-copy', ['deploy-prepare-git', 'sass', 'js-libraries'], function (done) {
+gulp.task('deploy-copy', ['deploy-prepare-git','sass', 'js-libraries'], function (done) {
   return gulp.src('./www/**/*')
     .pipe(gulp.dest('build'))
 })
@@ -129,6 +123,9 @@ gulp.task('deploy-build', ['deploy-copy'], function (done) {
 })
 
 gulp.task('deploy-hot-code-push', ['deploy-build'], function (done) {
+  sh.cp('cordova-hcp-live.json', 'cordova-hcp.json')
+  fs.writeFileSync('build/CNAME', 'app.beeline.sg')
+
   promiseExec('cordova-hcp build build')
   .then(done, done);
 })
@@ -137,13 +134,36 @@ gulp.task('deploy', ['deploy-build', 'deploy-hot-code-push'], function (done) {
   done();
 })
 
-gulp.task('deploy!', ['deploy'], function (done) {
-  fs.writeFileSync(path.resolve('.tmp-commit-message'),
-                    'Deploy on ' + new Date().toISOString() + ' by ')
-
-  promiseExec('git add .', {cwd: path.resolve('build')})
-  .then(() => promiseExec(`git commit -m "Deployed on ${new Date().toISOString()}"`, {cwd: path.resolve('build')}))
-  .then(() => promiseExec('git push', {cwd: path.resolve('build')}))
-  .catch(errHandler)
-  .then(done)
+/////////////////////////////////////////
+////// Staging only
+gulp.task('stg-deploy-prepare-git', function (done) {
+  // Ensure that build/ is a git repo
+  new Promise((resolve, reject) => {
+    fs.mkdir(path.resolve('build-stg'), (err) => err ? resolve() : reject(err))
+  })
+  .then(done, errHandler);
 });
+
+gulp.task('stg-deploy-copy', ['stg-deploy-prepare-git', 'sass', 'js-libraries'], function (done) {
+  return gulp.src('./www/**/*')
+    .pipe(gulp.dest('build-stg'))
+})
+
+gulp.task('stg-deploy-build', ['stg-deploy-copy'], function (done) {
+  process.env.BACKEND_URL='https://api.beeline.sg'
+  return webpackPrefix('build-stg', done)
+})
+
+gulp.task('stg-deploy-hot-code-push', ['stg-deploy-build'], function (done) {
+  fs.writeFileSync('cordova-hcp.json',
+    fs.readFileSync('cordova-hcp-live.json', 'utf-8').replace('app.beeline.sg', 'app-staging.beeline.sg')
+  )
+  fs.writeFileSync('build-stg/CNAME', 'app-staging.beeline.sg')
+
+  promiseExec('cordova-hcp build build-stg')
+  .then(done, done);
+})
+
+gulp.task('stg-deploy', ['stg-deploy-build', 'stg-deploy-hot-code-push'], function (done) {
+  done();
+})
