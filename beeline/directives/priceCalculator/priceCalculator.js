@@ -76,6 +76,10 @@ export default [
 
             latestRequest = promise;
           }, true);
+
+        $scope.removePromoCode = function(){
+          $scope.booking.promoCode = null;
+        }
       }
     };
   }];

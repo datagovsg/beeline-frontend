@@ -34,7 +34,14 @@ export default [
       applyReferralCredits: false,
       applyCredits: false,
       creditTag: null,
-      promoCode: $stateParams.promoCode
+      promoCode: null,
+      promoCodeEntered: null,
+      feedback: null,
+      promoCodeIsValid: null,
+      isVerifying: null,
+      // if 2 requests sent to verify promo code, only the latter triggered matters
+      // always need to have this if using debounce with promise
+      lastestVerifyPromoCodePromise: null
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -261,6 +268,89 @@ export default [
 
         CreditsService.fetchReferralCredits(true);
         CreditsService.fetchUserCredits(true);
+      }
+    }
+
+    function verifyPromoCode() {
+      if ($scope.book.promoCodeEntered===null
+          || !$scope.book.promoCodeEntered) {
+          $scope.book.feedback = $scope.book.promoCodeEntered = $scope.book.promoCodeIsValid = null;
+          $scope.$digest();
+          return;
+      };
+      let bookClone = _.cloneDeep($scope.book);
+      let book = _.assign(bookClone,{'promoCode': $scope.book.promoCodeEntered.toUpperCase()});
+      $scope.book.isVerifying = true;
+      const currentVerifyPromoCodePromise
+            = $scope.book.lastestVerifyPromoCodePromise
+            = BookingService.computePriceInfo(book)
+                .then((priceInfo) => {
+                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                    $scope.book.feedback = 'Valid';
+                    $scope.book.promoCodeIsValid = true;
+                  }
+                })
+                .catch((error) => {
+                  //still need this check as the latter promise may come back earlier than the 1st one
+                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                    if (error.data  && error.data.source === 'promoCode') {
+                      $scope.book.feedback = error.data.message || 'Invalid';
+                      $scope.book.promoCodeIsValid = null;
+                    } else {
+                      $scope.book.feedback = 'Valid';
+                      $scope.book.promoCodeIsValid = true;
+                    }
+                  }
+                }).finally(()=>{
+                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                    $scope.book.isVerifying = null;
+                  }
+                })
+    }
+
+    $scope.$watch(('book.promoCodeEntered'),
+      _.debounce(verifyPromoCode, 800, {leading: false, trailing: true})
+    );
+
+    $scope.promptPromoCode = async function() {
+      if (!$scope.isLoggedIn) {
+        await $ionicPopup.alert({
+          title: 'You need to log in before enter any promo code',
+        })
+        $scope.login();
+      } else {
+        $scope.enterPromoCodePopup = $ionicPopup.show({
+          scope: $scope,
+          template: `
+            <label>
+              <input type="text" style="text-transform: uppercase" placeholder="PROMOCODE" ng-model="book.promoCodeEntered">
+              </input>
+            </label>
+            <div class="text-center"><ion-spinner ng-show="book.isVerifying"></ion-spinner></div>
+            <div class="text-center"> {{book.feedback}}</div>
+          `,
+          title: 'Enter Promo Code',
+          buttons: [
+            { text: 'Close',
+              onTap: function(e) {
+                $scope.book.feedback = null;
+                $scope.book.promoCodeEntered = null;
+              }
+            },
+            {
+              text: 'Apply',
+              type: 'button-positive',
+              onTap: function(e) {
+                e.preventDefault();
+                if ($scope.book.promoCodeIsValid) {
+                  $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase();
+                  $scope.book.feedback = $scope.book.promoCodeEntered = null;
+                  $scope.enterPromoCodePopup.close();
+                }
+              }
+            },
+          ]
+        });
       }
     }
   },
