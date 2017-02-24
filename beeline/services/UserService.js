@@ -246,11 +246,14 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
   var promptLogIn = async function() {
     try {
       // Ask for telephone number
-      var telephoneNumber = await LoginDialog.show()
+      var [telephoneNumber, wantVerification] = await LoginDialog.show()
       if (!telephoneNumber) return;
-      await loadingSpinner(
-        sendTelephoneVerificationCode(telephoneNumber)
-      );
+
+      if (wantVerification) {
+        await loadingSpinner(
+          sendTelephoneVerificationCode(telephoneNumber)
+        );
+      }
 
       // Ask for verification code
       var verificationCode = await promptVerificationCode(telephoneNumber);
@@ -264,10 +267,17 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     }
     // If an error occurs at any point stop and alert the user
     catch(error) {
-      $ionicPopup.alert({
-        title: "Error while trying to connect to server.",
-        subTitle: error && error.data && error.data.message
-      });
+      if (error.status === 401) {
+        $ionicPopup.alert({
+          title: "Incorrect login",
+          subTitle: error && error.data && error.data.message
+        });
+      } else {
+        $ionicPopup.alert({
+          title: "Error while trying to connect to server.",
+          subTitle: error && error.data && error.data.message
+        });
+      }
       throw error; // Allow the calling function to catch the error
     };
   };
