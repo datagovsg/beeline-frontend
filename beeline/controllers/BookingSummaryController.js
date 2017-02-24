@@ -35,10 +35,13 @@ export default [
       applyCredits: false,
       creditTag: null,
       promoCode: null,
-      promoCodeEntered: undefined,
+      promoCodeEntered: null,
       feedback: null,
       promoCodeIsValid: null,
-      isVerifying: null
+      isVerifying: null,
+      // if 2 requests sent to verify promo code, only the latter triggered matters
+      // always need to have this if using debounce with promise
+      lastestVerifyPromoCodePromise: null
     };
     $scope.disp = {
       zeroDollarPurchase: false
@@ -269,8 +272,7 @@ export default [
     }
 
     function verifyPromoCode() {
-      if ($scope.book.promoCodeEntered===undefined
-          || $scope.book.promoCodeEntered===null
+      if ($scope.book.promoCodeEntered===null
           || !$scope.book.promoCodeEntered) {
           $scope.book.feedback = $scope.book.promoCodeEntered = $scope.book.promoCodeIsValid = null;
           $scope.$digest();
@@ -279,22 +281,31 @@ export default [
       let bookClone = _.cloneDeep($scope.book);
       let book = _.assign(bookClone,{'promoCode': $scope.book.promoCodeEntered.toUpperCase()});
       $scope.book.isVerifying = true;
-      BookingService.computePriceInfo(book)
-        .then((priceInfo) => {
-          $scope.book.feedback = 'Valid';
-          $scope.book.promoCodeIsValid = true;
-        })
-        .catch((error) => {
-          if (error.data  && error.data.source === 'promoCode') {
-            $scope.book.feedback = error.data.message;
-            $scope.book.promoCodeIsValid = null;
-          } else {
-            $scope.book.feedback = 'Valid';
-            $scope.book.promoCodeIsValid = true;
-          }
-        }).finally(()=>{
-          $scope.book.isVerifying = null;
-        })
+      const currentVerifyPromoCodePromise
+            = $scope.book.lastestVerifyPromoCodePromise
+            = BookingService.computePriceInfo(book)
+                .then((priceInfo) => {
+                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                    $scope.book.feedback = 'Valid';
+                    $scope.book.promoCodeIsValid = true;
+                  }
+                })
+                .catch((error) => {
+                  //still need this check as the latter promise may come back earlier than the 1st one
+                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                    if (error.data  && error.data.source === 'promoCode') {
+                      $scope.book.feedback = error.data.message || 'Invalid';
+                      $scope.book.promoCodeIsValid = null;
+                    } else {
+                      $scope.book.feedback = 'Valid';
+                      $scope.book.promoCodeIsValid = true;
+                    }
+                  }
+                }).finally(()=>{
+                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                    $scope.book.isVerifying = null;
+                  }
+                })
     }
 
     $scope.$watch(('book.promoCodeEntered'),
