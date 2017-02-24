@@ -23,9 +23,16 @@
           <ion-checkbox ng-model="acceptPolicy" ng-required="true">I read and agree to the above terms and would like to proceed using {{o.APP.NAME}}.
           </ion-checkbox>
           </div>
-          <button class="primary-button button" ng-click="accept()" ng-disabled="form.validation.$invalid">
-            Log in
-          </button>
+
+          <div class="buttons">
+            <button class="primary-button button" ng-click="accept()" ng-disabled="form.validation.$invalid">
+              Log in
+            </button>
+
+            <button class="button button-clear button-royal" ng-click="bypass()" ng-disabled="form.validation.$invalid">
+              I already have a PIN
+            </button>
+          </div>
 
       </div>
     </div>
