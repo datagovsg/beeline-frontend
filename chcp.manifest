@@ -81,7 +81,7 @@
   },
   {
     "file": "css/ionic.app.min.css",
-    "hash": "c5441e122ce968c57709373dc12572e8"
+    "hash": "35a9cccf4a97e9e5b7cfdf822387ee1c"
   },
   {
     "file": "css/operator-grab.css",
@@ -89,7 +89,7 @@
   },
   {
     "file": "css/operator-grab.min.css",
-    "hash": "73ddcb0b196de05b69d3f48866ffcf35"
+    "hash": "365cdb367b86a6aad5b5f65af08e0a4d"
   },
   {
     "file": "favicon-16x16.png",
@@ -581,7 +581,7 @@
   },
   {
     "file": "js/lodash.js",
-    "hash": "20eb6e04c50e5e25725f2e4cfee48d5b"
+    "hash": "7baebecc8d47b9bc5ba33025176653a8"
   },
   {
     "file": "js/ng-cordova.min.js",
@@ -592,16 +592,20 @@
     "hash": "9459cbc70b529454029535a130876a2e"
   },
   {
+    "file": "js/operator-customizations.js",
+    "hash": "74dc047aa43065f038deb3d17717d545"
+  },
+  {
     "file": "js/qrcode.min.js",
     "hash": "517b55d3688ce9ef1085a3d9632bcb97"
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "58e0cd1d4db05bdff7a3791c474019d4"
+    "hash": "6f976df7b84df5f5411c32af16f5fcea"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "47f79311d9efaf4bbdf41024214fe498"
+    "hash": "d551210acdf070ba7d6d9fdc2df3b159"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -957,7 +961,7 @@
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "f7d351456ae67e11ac4f4ee47a796900"
+    "hash": "7963d5142d3b071d02eaafa450afc40a"
   },
   {
     "file": "templates/tab-lite-more-info.html",
