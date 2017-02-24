@@ -309,7 +309,7 @@ export default [
     }
 
     $scope.$watch(('book.promoCodeEntered'),
-      _.debounce(verifyPromoCode, 2000, {leading: false, trailing: true})
+      _.debounce(verifyPromoCode, 800, {leading: false, trailing: true})
     );
 
     $scope.promptPromoCode = async function() {
