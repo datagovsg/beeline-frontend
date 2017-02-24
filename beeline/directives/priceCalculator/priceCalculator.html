@@ -48,7 +48,8 @@
     </tbody>
   </table>
 
-  <div class="promoCredits" ng-if="showPromoField && isLoggedIn">
+  <!-- hide from calculator -->
+  <!-- <div class="promoCredits" ng-if="showPromoField && isLoggedIn">
     <ul class="list">
       <li class="item item-input-inset">
         <label class="item-input-wrapper">
@@ -59,7 +60,7 @@
         </button>
       </li>
     </ul>
-  </div>
+  </div> -->
   <div class="item-subtitle">Amount to Pay </div>
   <table class="booking-info calculator" ng-if="booking.selectedDates.length > 0">
     <tbody>
@@ -71,6 +72,14 @@
         <td>Route pass - Using {{ ridesUsed }} of {{ booking.route.ridesRemaining}} trips remaining</td>
         <td class="right">{{(-routeCredit.debit || 0) | currency}}</td>
       </tr>
+      <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
+        <td>
+          {{discount.discount.description}}: {{discount.discount.code}}  <i class="icon ion-close-circled" ng-click="removePromoCode()"></i>
+        </td>
+        <td class="right">
+          {{(-discount.debit || 0) | currency}}
+        </td>
+      </tr>
       <tr ng-if="priceInfo.referralCredits && priceInfo.referralCredits.length > 0" ng-repeat="referralCredit in priceInfo.referralCredits">
         <td>Welcome Credits (use for up to 50% of the remaining transaction)<br />Using {{ referralCredit.debit || 0 | currency }} of {{ referralCredits || 0 | currency }}</td>
         <td class="right">{{(-referralCredit.debit || 0) | currency}}</td>
@@ -78,12 +87,6 @@
       <tr ng-if="priceInfo.credits && priceInfo.credits.length > 0" ng-repeat="credits in priceInfo.credits">
         <td>Credits - Using {{ credits.debit || 0 | currency }} of {{ userCredits || 0 | currency }} </td>
         <td class="right">{{(-credits.debit || 0) | currency}}</td>
-      </tr>
-      <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
-        <td>{{discount.discount.description}}: {{discount.discount.code}}</td>
-        <td class="right">
-          {{(-discount.debit || 0) | currency}}
-        </td>
       </tr>
       <tr>
         <td class="total-sum" ><b>Total Amount Due</b></td>
