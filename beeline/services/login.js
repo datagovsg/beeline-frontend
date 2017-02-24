@@ -33,8 +33,17 @@ export default function ($rootScope, $ionicModal, Legalese) {
       scope.accept = () => {
         scope.accept = scope.reject = null;
         loginModal.hide();
-        resolve(scope.data.telephone);
+        // returns [ telephone-number, want-telephone-verification ]
+        resolve([scope.data.telephone, true]);
       };
+
+      scope.bypass = () => {
+        scope.accept = scope.reject = null;
+        loginModal.hide();
+        // returns [ telephone-number, want-telephone-verification ]
+        resolve([scope.data.telephone, false]);
+      };
+
       loginModal.show();
     })
 
