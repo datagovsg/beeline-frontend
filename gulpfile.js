@@ -112,7 +112,7 @@ gulp.task('deploy-prepare-git', function (done) {
   .then(done, errHandler);
 });
 
-gulp.task('deploy-copy', ['sass', 'js-libraries'], function (done) {
+gulp.task('deploy-copy', ['deploy-prepare-git','sass', 'js-libraries'], function (done) {
   return gulp.src('./www/**/*')
     .pipe(gulp.dest('build'))
 })
@@ -143,7 +143,7 @@ gulp.task('stg-deploy-prepare-git', function (done) {
   .then(done, errHandler);
 });
 
-gulp.task('stg-deploy-copy', ['sass', 'js-libraries'], function (done) {
+gulp.task('stg-deploy-copy', ['stg-deploy-prepare-git', 'sass', 'js-libraries'], function (done) {
   return gulp.src('./www/**/*')
     .pipe(gulp.dest('build-stg'))
 })
