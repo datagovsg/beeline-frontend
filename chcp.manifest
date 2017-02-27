@@ -85,11 +85,11 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "06b8ed94b0e2599c5ee2f5d26ce4ff3c"
+    "hash": "3b47b55070f99d43d6c759e9370d4622"
   },
   {
     "file": "css/operator-grab.min.css",
-    "hash": "0441b513089033a55ae6dd9140bd7018"
+    "hash": "6019686b25b9ed1c50a6d0849ba1348e"
   },
   {
     "file": "favicon-16x16.png",
@@ -569,7 +569,7 @@
   },
   {
     "file": "js/angular-google-maps.js",
-    "hash": "06038ce66f99673cefbc782ea218a2ab"
+    "hash": "2037d98a4bda0277250f7b432b4a0337"
   },
   {
     "file": "js/angular-simple-logger.js",
@@ -577,15 +577,11 @@
   },
   {
     "file": "js/clipboard.min.js",
-    "hash": "d3d323fd9a370c90e83427d50f383a63"
+    "hash": "1f91008d9fb39b45db0978805499ad9c"
   },
   {
     "file": "js/lodash.js",
-    "hash": "f8107451e16ffb8da7a2f679f13e186e"
-  },
-  {
-    "file": "js/lodash.min.js",
-    "hash": "7271c09c2dbd9a7be40f34ff40a93e6e"
+    "hash": "7baebecc8d47b9bc5ba33025176653a8"
   },
   {
     "file": "js/ng-cordova.min.js",
@@ -596,24 +592,20 @@
     "hash": "9459cbc70b529454029535a130876a2e"
   },
   {
+    "file": "js/operator-customizations.js",
+    "hash": "74dc047aa43065f038deb3d17717d545"
+  },
+  {
     "file": "js/qrcode.min.js",
     "hash": "517b55d3688ce9ef1085a3d9632bcb97"
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "b8a4f53bc5e0baff43d410c85bf6dc83"
+    "hash": "c9b757f1870dc6a7ce1f18ce48fa3c4a"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "b1b91cf7806a57b880dcdb807c46bc27"
-  },
-  {
-    "file": "lib/beeline/wrs.js",
-    "hash": "f6a2980b394966f09d4116a4293a53db"
-  },
-  {
-    "file": "lib/beeline/wrs.js.map",
-    "hash": "ee27938c9458a7b58fe36d5f7b4497d8"
+    "hash": "610b0e3c5f2c8c6db7b2de9dad8ae628"
   },
   {
     "file": "lib/ionic/css/ionic.css",
