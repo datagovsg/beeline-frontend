@@ -154,7 +154,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
   }
 
   function fetchNearByLelongIds() {
-    return navigator.geolocation.getCurrentPosition(
+      navigator.geolocation.getCurrentPosition(
       (success) => {
         let coords = {
           latitude: success.coords.latitude,
