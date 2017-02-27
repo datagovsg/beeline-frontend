@@ -73,7 +73,7 @@
   },
   {
     "file": "CNAME",
-    "hash": "b797570bd773665caaae0a617ce58d65"
+    "hash": "2eeb34bba2571f5ada86ebc3ad601af3"
   },
   {
     "file": "css/ionic.app.css",
@@ -236,16 +236,32 @@
     "hash": "eabf8850a13ffeaff453c9b7d8a4183f"
   },
   {
+    "file": "img/booking-breadcrumbs/ProgressBar01_ChooseStops.png",
+    "hash": "1652eb2f5059e625b398328b8f8c4703"
+  },
+  {
     "file": "img/booking-breadcrumbs/ProgressBar01_ChooseStops.svg",
     "hash": "f2385d1ed0976c387cd44e9e61589f3a"
+  },
+  {
+    "file": "img/booking-breadcrumbs/ProgressBar02_ChooseDates.png",
+    "hash": "be464ebb8692c28ab8f4e3868ebbd9d2"
   },
   {
     "file": "img/booking-breadcrumbs/ProgressBar02_ChooseDates.svg",
     "hash": "b649697d574131bd473c3c0468a438c2"
   },
   {
+    "file": "img/booking-breadcrumbs/ProgressBar03_ReviewBooking.png",
+    "hash": "fbce2bec14e89ce3d9a361c9a519fbe9"
+  },
+  {
     "file": "img/booking-breadcrumbs/ProgressBar03_ReviewBooking.svg",
     "hash": "4d8382f78c12c1908efd1f97d27e4bdf"
+  },
+  {
+    "file": "img/booking-breadcrumbs/ProgressBar04_MakePayment.png",
+    "hash": "15fb682af4887ba1805af112f63d459f"
   },
   {
     "file": "img/booking-breadcrumbs/ProgressBar04_MakePayment.svg",
@@ -256,8 +272,20 @@
     "hash": "80431063dc31e7f96943fb39c45a3b71"
   },
   {
+    "file": "img/BusMarker.svg",
+    "hash": "80431063dc31e7f96943fb39c45a3b71"
+  },
+  {
+    "file": "img/busMarker01.png",
+    "hash": "15afe26183deb9f829fae1b93b08c43f"
+  },
+  {
     "file": "img/busstopselector_default.svg",
     "hash": "728f619b03a2dbe9968f66b55b67b7e0"
+  },
+  {
+    "file": "img/dash.png",
+    "hash": "101f8ab7c29ac7e5ff8208998c4cccc9"
   },
   {
     "file": "img/grab-booking-breadcrumbs/ProgressBar01_ChooseStops.svg",
@@ -352,6 +380,14 @@
     "hash": "16930e4a977f84f77f92c2cccd3db83f"
   },
   {
+    "file": "img/icon-pax.png",
+    "hash": "51f5e9c31dded2d6ab74532aff3a898e"
+  },
+  {
+    "file": "img/icon-stop-big.png",
+    "hash": "5f26f4af15bc4e5770564cf94cc1b4ce"
+  },
+  {
     "file": "img/introActivate.svg",
     "hash": "1b1b598c0cee006fa89e5ce805f8138c"
   },
@@ -388,24 +424,76 @@
     "hash": "722c1a1c996b4f652bffd06f08fef371"
   },
   {
+    "file": "img/loader120.gif",
+    "hash": "29ff918c3261a94a05962f4433306ba7"
+  },
+  {
+    "file": "img/logo-aedge.jpg",
+    "hash": "5a74c0b775bf12c2e13ed686d1cadb4c"
+  },
+  {
     "file": "img/logo.svg",
     "hash": "4b8f229990f1c12b70108c08b7d97860"
+  },
+  {
+    "file": "img/map/MapButtonLocateMe.png",
+    "hash": "c5087bf4686eae0b1970b103bbb35f8d"
+  },
+  {
+    "file": "img/map/MapButtonLocateMe@2x.png",
+    "hash": "515ae628031b669f812e2f66b16f39c6"
+  },
+  {
+    "file": "img/map/MapPinEnd.png",
+    "hash": "21062bb4f394f9d424f5763001260a33"
+  },
+  {
+    "file": "img/map/MapPinEnd@2x.png",
+    "hash": "5b02e21bcbd84bae6e9a33a77fee248f"
+  },
+  {
+    "file": "img/map/MapPinStart.png",
+    "hash": "21de692a5ac5cf6c9c4dcfa8d0df48ba"
+  },
+  {
+    "file": "img/map/MapPinStart@2x.png",
+    "hash": "e0afdf5dc7c5f0918a8d7b9d2736a205"
+  },
+  {
+    "file": "img/map/MapRouteDropoffStop.png",
+    "hash": "bf2c5be99d06bd9196f6db6e64d2b3ea"
   },
   {
     "file": "img/map/MapRouteDropoffStop@2x.png",
     "hash": "c339d0c697e4b37a87e384f162139f79"
   },
   {
+    "file": "img/map/MapRouteNormalStop.png",
+    "hash": "6dbf2060d5fa3a5e07e70880d4b5a35d"
+  },
+  {
     "file": "img/map/MapRouteNormalStop@2x.png",
     "hash": "c69b8d8db0dad288ed95928b5e99f6c8"
+  },
+  {
+    "file": "img/map/MapRoutePickupStop.png",
+    "hash": "7f9c0b55f320f5f87a9a891c09282586"
   },
   {
     "file": "img/map/MapRoutePickupStop@2x.png",
     "hash": "26ceb3c98e09377405ff18b927402f4d"
   },
   {
+    "file": "img/map/SelectedPinStart.png",
+    "hash": "20cea5dbbc8e07dc23d8da2066e14023"
+  },
+  {
     "file": "img/map/SelectedPinStart@2x.png",
     "hash": "39c7555331380e942c5fcae22eba097e"
+  },
+  {
+    "file": "img/map/SelectedPinStop.png",
+    "hash": "ee5345cb1023a9ce0575941d18b066e8"
   },
   {
     "file": "img/map/SelectedPinStop@2x.png",
@@ -438,6 +526,10 @@
   {
     "file": "img/MapRouteNormalStop.png",
     "hash": "6dbf2060d5fa3a5e07e70880d4b5a35d"
+  },
+  {
+    "file": "img/MapRouteNormalStop.svg",
+    "hash": "b2ef51592a90d9c8b9795e0076b953b2"
   },
   {
     "file": "img/MapRouteNormalStop@2x.png",
@@ -496,6 +588,42 @@
     "hash": "0445f92ecc7c4396afdcb461f18816ff"
   },
   {
+    "file": "img/MenuRoutesActive.svg",
+    "hash": "9c8d87430b5a6782e7e00f9d11b55c83"
+  },
+  {
+    "file": "img/MenuRoutesNormal.svg",
+    "hash": "046cb08e531f1aaeffbb3a6e0b9a3d61"
+  },
+  {
+    "file": "img/MenuSettingsActive.svg",
+    "hash": "62f436bc2bda575e27f1a1460758bb50"
+  },
+  {
+    "file": "img/MenuSettingsNormal.svg",
+    "hash": "183e6e89da0d0e90e3648d82c60c4f6e"
+  },
+  {
+    "file": "img/MenuSuggestActive.svg",
+    "hash": "d9e65d0293777272934eee33f5f4dcb5"
+  },
+  {
+    "file": "img/MenuSuggestNormal.svg",
+    "hash": "46c8a3d680d8917c5e9ca76e9e08876e"
+  },
+  {
+    "file": "img/MenuTicketsActive.svg",
+    "hash": "7ada9462a350c01605c6db2982847fa5"
+  },
+  {
+    "file": "img/MenuTicketsNormal.svg",
+    "hash": "0445f92ecc7c4396afdcb461f18816ff"
+  },
+  {
+    "file": "img/MyLocation.svg",
+    "hash": "177f9b3dd4708bc4254c829e35a03e09"
+  },
+  {
     "file": "img/paymentComplete_paid.svg",
     "hash": "eb275f01352e7e91b01c108be8a810f1"
   },
@@ -516,8 +644,16 @@
     "hash": "f27e91cd3056917f0ca6acd98eaee6ae"
   },
   {
+    "file": "img/RoutePairBigLine.png",
+    "hash": "ccdc93be323017dc991b0121a6493911"
+  },
+  {
     "file": "img/RoutePairBigLine.svg",
     "hash": "04432b5d909bb628ec436cc07e57e43d"
+  },
+  {
+    "file": "img/RoutePairBigLine@2x.png",
+    "hash": "41b51ad7d5b83d371cd6823827b0a90d"
   },
   {
     "file": "img/RoutePairBigStart.svg",
@@ -542,6 +678,22 @@
   {
     "file": "img/RoutePairSmallStart.svg",
     "hash": "bae792ee50886793958a08f17dfbac95"
+  },
+  {
+    "file": "img/SelectedPinStart.svg",
+    "hash": "e2eab75024da4c51d07536ca163c8360"
+  },
+  {
+    "file": "img/SelectedPinStop.svg",
+    "hash": "e7a0eb1c0f493221398f7ecf18708196"
+  },
+  {
+    "file": "img/suggestRoute.svg",
+    "hash": "3d57f19748835a52b9b606732b9013b6"
+  },
+  {
+    "file": "img/terms-sign.png",
+    "hash": "e60e3a9079b9e759aa2043adbd28a648"
   },
   {
     "file": "img/TicketCancelledTrip.svg",
@@ -864,6 +1016,10 @@
     "hash": "37204d759a9eb7bfc074034fd1bf95fb"
   },
   {
+    "file": "lib/ionic/scss/tsconfig.json",
+    "hash": "eb3bd36ec35e05eb37dae41e3617420f"
+  },
+  {
     "file": "lib/ionic/version.json",
     "hash": "ed5c1b8e334024f12a529b2054a02f8a"
   },
@@ -890,6 +1046,10 @@
   {
     "file": "mstile-70x70.png",
     "hash": "8a19ec90be8438a8b4de1fbc1aa0e405"
+  },
+  {
+    "file": "README.md",
+    "hash": "363ff189613d3a005d4af3622945dd6c"
   },
   {
     "file": "safari-pinned-tab.svg",
@@ -926,6 +1086,10 @@
   {
     "file": "templates/lite-route-tracker.html",
     "hash": "d52fd4268fdc9af9777f25db9ca8c859"
+  },
+  {
+    "file": "templates/login-register.html",
+    "hash": "15bb947d6631f56447ac7c312d896e4e"
   },
   {
     "file": "templates/routes-list.html",
@@ -998,5 +1162,9 @@
   {
     "file": "templates/welcome.html",
     "hash": "627ea573fbbabdfcb9871f9edee819ea"
+  },
+  {
+    "file": "wrs.html",
+    "hash": "f53e5d6a0ffc3b2321d060485a0b0f0c"
   }
 ]
