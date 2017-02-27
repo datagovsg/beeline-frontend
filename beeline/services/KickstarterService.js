@@ -93,6 +93,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
   var bidsCache;
   var kickstarterSummary = null, bidsById = null;
   var kickstarterRoutesList = null, kickstarterRoutesById = null;
+  var nearbyKickstarterRoutesById = null;
 
   UserService.userEvents.on('userChanged', () => {
     fetchBids(true);
@@ -105,7 +106,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
   var timeout = new SafeInterval(refresh, 1000*60*60, 1000*60);
 
   function refresh() {
-    return Promise.all([fetchKickstarterRoutes(true),fetchBids(true)]);
+    return Promise.all([fetchKickstarterRoutes(true),fetchBids(true), fetchNearByLelongIds()]);
   }
 
   timeout.start();
@@ -151,6 +152,37 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
       return kickstarterRoutesList
     })
   }
+
+  function fetchNearByLelongIds() {
+    return navigator.geolocation.getCurrentPosition(
+      (success) => {
+        let coords = {
+          latitude: success.coords.latitude,
+          longitude: success.coords.longitude,
+        };
+        UserService.beeline({
+          method: 'GET',
+          url: '/routes/search_by_latlon?' + querystring.stringify(
+            _.assign(
+              { maxDistance: 5000,
+                startTime: Date.now(),
+                tags: JSON.stringify(['lelong']),
+                startLat: coords.latitude,
+                startLng: coords.longitude
+              },
+              p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}
+            )
+          )
+        }).then((response) => {
+          nearbyKickstarterRoutesById = _.keyBy(response.data, 'id');
+        })
+      }, (error) => {
+        nearbyKickstarterRoutesById = null;
+      }, {
+        enableHighAccuracy: false,
+      });
+  }
+
 
 
   return {
@@ -212,5 +244,11 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         return response.data;
       })
     },
+
+    getNearByLelongIds: ()=> {
+      return nearbyKickstarterRoutesById;
+    },
+
+    fetchNearByLelongIds: ()=>fetchNearByLelongIds(),
   }
 }

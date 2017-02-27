@@ -18,10 +18,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
     regions: [],
     filterText: '',
     stagingFilterText: '',
+    nearbyKickstarterRoutes: null
   };
 
   $scope.refreshRoutes = function() {
-    $q.all([KickstarterService.fetchLelong(true),KickstarterService.fetchBids(true)])
+    $q.all([KickstarterService.fetchLelong(true),KickstarterService.fetchBids(true), KickstarterService.fetchNearByLelongIds(), KickstarterService.fetchNearByLelongIds()])
     .then(()=>{
       $scope.data.error = null;
     })
@@ -56,10 +57,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.$watchGroup([
     ()=>KickstarterService.getLelong(),
+    ()=>KickstarterService.getNearByLelongIds(),
     ()=>KickstarterService.getBids(),
     'data.selectedRegionId',
-    'data.filterText'
-  ], ([lelongRoutes, userBids, selectedRegionId, filterText])=>{
+    'data.filterText',
+  ], ([lelongRoutes, nearByLelongIds, userBids, selectedRegionId, filterText])=>{
       if (!lelongRoutes) return;
       $scope.data.kickstarter = _.sortBy(lelongRoutes, 'label');
       $scope.userBids = userBids;
@@ -76,6 +78,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.kickstarter = recentAndAvailable[1].filter((route)=>!route.isExpired);
       //regions from list of backed and not expired available
       $scope.data.regions = RoutesService.getUniqueRegionsFromRoutes($scope.data.backedKickstarter.concat($scope.data.kickstarter));
+      //nearby Lelong routes and the rest
+      if (nearByLelongIds) {
+        [$scope.data.nearbyKickstarterRoutes, $scope.data.kickstarter] = _.partition($scope.data.kickstarter, (r)=>nearByLelongIds[r.id]);
+        $scope.data.filteredNearbyKickstarter = SearchService.filterRoutes($scope.data.nearbyKickstarterRoutes, +selectedRegionId, filterText);
+      }
       $scope.data.filteredKickstarter = SearchService.filterRoutes($scope.data.kickstarter, +selectedRegionId, filterText);
       $scope.data.filteredbackedKickstarter = SearchService.filterRoutes($scope.data.backedKickstarter, +selectedRegionId, filterText);
   });
@@ -111,5 +118,5 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.closePopup = function() {
     $scope.kickstartHelpPopup.close();
   }
-  
+
 }
