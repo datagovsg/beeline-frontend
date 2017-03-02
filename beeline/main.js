@@ -130,7 +130,7 @@ angular.module('beeline')
 })
 .config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
-    key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
+    key: 'gme-infocommunications',
 //        v: ', //defaults to latest 3.X anyhow
     libraries: 'places,geometry'
   });
