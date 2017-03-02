@@ -38,6 +38,16 @@
     width: 95%;
     margin-left: $start-size/2;
   }
+
+  .expendable-area {
+    max-height: 100px;
+    transition: max-height 0.3s linear;
+    &.expended {
+      max-height: 9999px;
+      transition: max-height 0.3s linear;
+    }
+  }
+
 }
 
 
