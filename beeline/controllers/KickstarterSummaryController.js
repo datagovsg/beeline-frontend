@@ -4,11 +4,11 @@ import loadingTemplate from '../templates/loading.html';
 
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal','$http',
-  'BookingService','RoutesService','loadingSpinner','UserService','$ionicLoading',
+  'BookingService','RoutesService','loadingSpinner','UserService',
   '$ionicPopup','KickstarterService','CompanyService', 'StripeService',
   function(
     $rootScope,$scope,$interpolate,$state,$stateParams,$ionicModal,$http,
-    BookingService,RoutesService,loadingSpinner,UserService,$ionicLoading,
+    BookingService,RoutesService,loadingSpinner,UserService,
     $ionicPopup,KickstarterService,CompanyService,StripeService
   ) {
     // Default settings for various info used in the page
@@ -76,8 +76,6 @@ export default [
 
     $scope.createBid = async function(){
       try {
-        //to make $digest not throw errors
-        await new Promise(resolve => setTimeout(resolve, 0));
         var bidPrice = $scope.priceInfo.bidPrice;
         // disable the button
         $scope.waitingForPaymentResult = true;
@@ -96,6 +94,8 @@ export default [
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
       } finally {
         $scope.waitingForPaymentResult = false;
+        //to make $digest not throw errors
+        await new Promise(resolve => setTimeout(resolve, 0));
         $scope.$digest();
       }
 
@@ -118,7 +118,6 @@ export default [
         })
         $state.go('tabs.crowdstart');
       } finally {
-        $ionicLoading.hide();
         $scope.waitingForPaymentResult = false;
         $scope.$digest();
       }
