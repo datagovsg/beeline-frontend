@@ -1,4 +1,4 @@
-/*! angular-google-maps 2.4.1 2017-01-05
+/*! angular-google-maps 2.4.0 2016-09-19
  *  AngularJS directives for Google Maps
  *  git: https://github.com/angular-ui/angular-google-maps.git
  */
@@ -2029,6 +2029,7 @@ Nicholas McCready - https://twitter.com/nmccready
           }
           this.opt_options = opt_options != null ? opt_options : {};
           this.opt_events = opt_events;
+          this.checkSync = bind(this.checkSync, this);
           this.getGMarkers = bind(this.getGMarkers, this);
           this.fit = bind(this.fit, this);
           this.destroy = bind(this.destroy, this);
@@ -2346,12 +2347,14 @@ Nicholas McCready - https://twitter.com/nmccready
           this.opt_options = opt_options != null ? opt_options : {};
           this.opt_events = opt_events;
           this.scope = scope;
+          this.checkSync = bind(this.checkSync, this);
           this.isSpiderfied = bind(this.isSpiderfied, this);
           this.getGMarkers = bind(this.getGMarkers, this);
           this.fit = bind(this.fit, this);
           this.destroy = bind(this.destroy, this);
           this.attachEvents = bind(this.attachEvents, this);
           this.clear = bind(this.clear, this);
+          this.draw = bind(this.draw, this);
           this.removeMany = bind(this.removeMany, this);
           this.remove = bind(this.remove, this);
           this.addMany = bind(this.addMany, this);
@@ -6177,8 +6180,13 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
         Control.prototype.link = function(scope, element, attrs, ctrl, transclude) {
           return GoogleMapApi.then((function(_this) {
             return function(maps) {
-              var hasTranscludedContent, index, position;
-              hasTranscludedContent = angular.isUndefined(scope.template);
+              var hasTranscludedContent, index, position, transcludedContent;
+              transcludedContent = transclude();
+              hasTranscludedContent = transclude().length > 0;
+              if (!hasTranscludedContent && angular.isUndefined(scope.template)) {
+                _this.$log.error('mapControl: could not find a valid template property or elements for transclusion');
+                return;
+              }
               index = angular.isDefined(scope.index && !isNaN(parseInt(scope.index))) ? parseInt(scope.index) : void 0;
               position = angular.isDefined(scope.position) ? scope.position.toUpperCase().replace(/-/g, '_') : 'TOP_CENTER';
               if (!maps.ControlPosition[position]) {
@@ -6198,16 +6206,15 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
                 if (hasTranscludedContent) {
                   return transclude(function(transcludeEl) {
                     controlDiv.append(transcludeEl);
-                    return pushControl(map, controlDiv.children(), index);
+                    return pushControl(map, controlDiv, index);
                   });
                 } else {
                   return $http.get(scope.template, {
                     cache: $templateCache
-                  }).then(function(arg) {
-                    var data, templateCtrl, templateScope;
-                    data = arg.data;
+                  }).success(function(template) {
+                    var templateCtrl, templateScope;
                     templateScope = scope.$new();
-                    controlDiv.append(data);
+                    controlDiv.append(template);
                     if (angular.isDefined(scope.controller)) {
                       templateCtrl = $controller(scope.controller, {
                         $scope: templateScope
@@ -6215,7 +6222,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
                       controlDiv.children().data('$ngControllerController', templateCtrl);
                     }
                     return control = $compile(controlDiv.children())(templateScope);
-                  })["catch"](function(error) {
+                  }).error(function(error) {
                     return _this.$log.error('mapControl: template could not be found');
                   }).then(function() {
                     return pushControl(map, control, index);
@@ -6382,6 +6389,8 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
 ;(function() {
   angular.module("uiGmapgoogle-maps.directives.api").service("uiGmapICircle", [
     function() {
+      var DEFAULTS;
+      DEFAULTS = {};
       return {
         restrict: "EA",
         replace: true,
@@ -6443,7 +6452,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
         }
 
         IControl.prototype.link = function(scope, element, attrs, ctrl) {
-          throw new Error("Not implemented!!");
+          throw new Exception("Not implemented!!");
         };
 
         return IControl;
@@ -6624,6 +6633,8 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
   angular.module('uiGmapgoogle-maps.directives.api').service('uiGmapIRectangle', [
     function() {
       'use strict';
+      var DEFAULTS;
+      DEFAULTS = {};
       return {
         restrict: 'EMA',
         require: '^' + 'uiGmapGoogleMap',
@@ -6855,7 +6866,6 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
                 });
               });
               updateCenter = function(c, s) {
-                var cLat, cLng;
                 if (c == null) {
                   c = _gMap.center;
                 }
@@ -6863,22 +6873,11 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
                   s = scope;
                 }
                 if (!_.includes(disabledEvents, 'center')) {
-                  cLat = c.lat();
-                  cLng = c.lng();
-                  if (angular.isDefined(s.center.type)) {
-                    if (s.center.coordinates[1] !== cLat) {
-                      s.center.coordinates[1] = cLat;
-                    }
-                    if (s.center.coordinates[0] !== cLng) {
-                      return s.center.coordinates[0] = cLng;
-                    }
-                  } else {
-                    if (s.center.latitude !== cLat) {
-                      s.center.latitude = cLat;
-                    }
-                    if (s.center.longitude !== cLng) {
-                      return s.center.longitude = cLng;
-                    }
+                  if (s.center.latitude !== c.lat()) {
+                    s.center.latitude = c.lat();
+                  }
+                  if (s.center.longitude !== c.lng()) {
+                    return s.center.longitude = c.lng();
                   }
                 }
               };
@@ -8102,9 +8101,7 @@ This directive creates a new scope.
               }
               return $http.get(scope.template, {
                 cache: $templateCache
-              }).then(function(arg) {
-                var data;
-                data = arg.data;
+              }).success(function(template) {
                 if (angular.isUndefined(scope.events)) {
                   _this.$log.error('searchBox: the events property is required');
                   return;
@@ -8116,7 +8113,7 @@ This directive creates a new scope.
                     _this.$log.error('searchBox: invalid position property');
                     return;
                   }
-                  return new SearchBoxParentModel(scope, element, attrs, map, ctrlPosition, $compile(data)(scope));
+                  return new SearchBoxParentModel(scope, element, attrs, map, ctrlPosition, $compile(template)(scope));
                 });
               });
             };
