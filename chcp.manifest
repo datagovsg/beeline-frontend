@@ -77,19 +77,19 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "c24ec3670972f67129fbc7a7d090f529"
+    "hash": "a8ece8940a46a36325a70241a1af9179"
   },
   {
     "file": "css/ionic.app.min.css",
-    "hash": "f23a0f97a3fbe496850ef12e75c644ff"
+    "hash": "27e075ef055fd46012903e0de5e56555"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "39f257ab42334c726dd0e3ee7bcb5fa0"
+    "hash": "381a1df62616cb7588378b96216714fa"
   },
   {
     "file": "css/operator-grab.min.css",
-    "hash": "d75e0cca6f3537b1e65e462a2194d30d"
+    "hash": "b63f194a45509c2e56a666c36a901ed1"
   },
   {
     "file": "favicon-16x16.png",
@@ -601,11 +601,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "7878b734d2a2dfb3f599f7f0e526f2fb"
+    "hash": "0e366326e53fb06bbd3ff8ea40624dc2"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "69b5ea897c3d2d739c01083e0981e9fd"
+    "hash": "00465f03d15a02400e9d17bbefd812f7"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -893,7 +893,7 @@
   },
   {
     "file": "templates/intro-slides.html",
-    "hash": "1c53962031ad9c42c6ca9041931d3182"
+    "hash": "d3d861d037c5df5318fdc3b7ad61d487"
   },
   {
     "file": "templates/kickstarter-commit.html",
@@ -913,7 +913,7 @@
   },
   {
     "file": "templates/kickstarter.html",
-    "hash": "1b08bf4e9049ad5c10b6b6b08a070a0a"
+    "hash": "469c2ed9717906ac661abc36698e628b"
   },
   {
     "file": "templates/lite-route-tracker.html",
