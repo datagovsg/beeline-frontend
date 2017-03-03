@@ -149,6 +149,25 @@ angular.module('beeline')
     }
   });
 })
+.run(function($ionicPopup) {
+  // Check that external dependencies have loaded
+  if (typeof StripeCheckout === 'undefined'
+    || typeof Stripe === 'undefined') {
+
+      document.addEventListener('online', () => {
+        window.location.reload(true);
+      })
+
+
+      $ionicPopup.alert({
+        title: 'Unable to connect to the Internet',
+        template: `Please check your Internet connection`
+      })
+      .then(() => {
+        window.location.reload(true);
+      })
+  }
+})
 .run(function($rootScope, $ionicTabsDelegate) {
   // hide/show tabs bar depending on how the route is configured
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {

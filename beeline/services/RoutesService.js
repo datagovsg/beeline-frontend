@@ -250,7 +250,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       // This is a hack
       routesWithRoutePassPromise = null;
       routePassCache = null;
-      
+
       let user = UserService.getUser();
       if(!user){
         return routeCreditsCache = Promise.resolve(tagToCreditsMap = null);

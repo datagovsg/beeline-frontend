@@ -100,6 +100,6 @@ export default function initStripe(UserService, $ionicPopup, $ionicPlatform, $ro
 
       return tokenPromise;
     },
-    loaded: StripeCheckout ? true : false,
+    loaded: (typeof StripeCheckout !== 'undefined') ? true : false,
   };
 }
