@@ -29,6 +29,7 @@ require('./services/RotatedImageService');
 require('./services/GeoUtils');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
+require('./intents');
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -224,6 +225,8 @@ var devicePromise = new Promise((resolve, reject) => {
 })
 
 app.service('DevicePromise', () => devicePromise);
+
+app.service('DevicePromise', () => devicePromise)
 
 app.run(['UserService', '$ionicPopup', async function (UserService, $ionicPopup) {
   // Version check, if we're in an app
