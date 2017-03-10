@@ -16,6 +16,7 @@ import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 import configureRoutes from './router.js';
 
 require('./directives/extA');
+require('./intents');
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -203,6 +204,8 @@ var devicePromise = window.cordova ?
   new Promise((resolve) => {
     document.addEventListener('deviceready', resolve, false);
   }) : null;
+
+app.service('DevicePromise', () => devicePromise)
 
 app.run(['UserService', '$ionicPopup', async function (UserService, $ionicPopup) {
   // Version check, if we're in an app
