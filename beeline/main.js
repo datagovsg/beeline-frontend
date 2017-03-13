@@ -141,7 +141,7 @@ angular.module('beeline')
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-      cordova.plugins.Keyboard.disableScroll(true);
+      cordova.plugins.Keyboard.disableScroll(false);
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
@@ -199,10 +199,17 @@ angular.module('beeline')
   $templateCache.put('templates/tab-booking-confirmation.html', require('../www/templates/tab-booking-confirmation.html'))
 })
 
-var devicePromise = window.cordova ?
-  new Promise((resolve) => {
+var devicePromise = new Promise((resolve, reject) => {
+  if (window.cordova) {
     document.addEventListener('deviceready', resolve, false);
-  }) : null;
+  }
+  else {
+    console.log('No cordova detected')
+    resolve();
+  }
+})
+
+app.service('DevicePromise', () => devicePromise);
 
 app.run(['UserService', '$ionicPopup', async function (UserService, $ionicPopup) {
   // Version check, if we're in an app

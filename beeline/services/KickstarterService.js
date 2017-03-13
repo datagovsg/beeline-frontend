@@ -88,7 +88,7 @@ var updateAfterBid = function(route, price) {
   updateStatus(route);
 }
 
-export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService, p) {
+export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService, p, DevicePromise) {
   var kickstarterRoutesCache;
   var bidsCache;
   var kickstarterSummary = null, bidsById = null;
@@ -162,6 +162,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
   async function fetchNearbyKickstarterIds() {
     let locationOrNull = null;
     try {
+      await DevicePromise();
       locationOrNull = await getLocationPromise(false);
     } catch (err) {
       // Location not found -- suppress error
