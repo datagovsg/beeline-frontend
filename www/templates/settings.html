@@ -49,6 +49,9 @@
       <ion-item on-tap="showPrivacyPolicy()">Privacy Policy</ion-item>
       <ion-item on-tap="showTermsOfUse()">Terms of Use</ion-item>
       <ion-item on-tap="contactUsModal.show()">Contact Us</ion-item>
+      <div class="item" ng-show="hasCordova">
+        Current Version <span class="item-note">{{data.currentVersion}}</span>
+      </div>
       <powered-by-beeline suggest-hide="true" power-hide="false"></powered-by-beeline>
     </div>
 
