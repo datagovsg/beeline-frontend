@@ -11,15 +11,23 @@ var writer = new commonmark.HtmlRenderer({safe: true});
 export default [
   '$scope', 'UserService', 'StripeService', 'KickstarterService',
   '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading',
-  '$state', '$cordovaSocialSharing','replace',
+  '$state', '$cordovaSocialSharing','replace', 'DevicePromise',
   function(
     $scope, UserService, StripeService, KickstarterService,
     $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state,
-    $cordovaSocialSharing, replace) {
+    $cordovaSocialSharing, replace, DevicePromise) {
 
     $scope.data = {};
     $scope.hasCordova = !!window.cordova || false
     $scope.isOnKickstarter = false;
+
+    DevicePromise.then(()=>{
+      if ($scope.hasCordova) {
+        chcp.getVersionInfo((error, data)=>{
+          $scope.data.currentVersion = data.currentWebVersion || null;
+        })
+      }
+    })
 
     let isPressed = false;
 
