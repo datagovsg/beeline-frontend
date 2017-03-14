@@ -4,7 +4,7 @@
     <button class="button button-clear icon ion-ios-close-outline" ng-click="modal.hide()">
     </button>
   </ion-header-bar>
-  <ion-content ng-form="form.validation">
+  <ion-content ng-form="form.validation" scroll="false">
     <div class="item item-text-wrap loginContent">
       <div class="list list-inset">
         <p>
@@ -22,17 +22,17 @@
             Please read {{o.APP.NAME}}'s <a ng-click="showPrivacyPolicy()">Privacy Policy</a> and <a ng-click="showTermsOfUse()">Terms of Use</a>.
           <ion-checkbox ng-model="acceptPolicy" ng-required="true">I read and agree to the above terms and would like to proceed using {{o.APP.NAME}}.
           </ion-checkbox>
-          </div>
+        </div>
 
-          <div class="buttons">
-            <button class="primary-button button" ng-click="accept()" ng-disabled="form.validation.$invalid">
-              Log in
-            </button>
+        <div class="buttons">
+          <button class="primary-button button" ng-click="accept()" ng-disabled="form.validation.$invalid">
+            Log in
+          </button>
 
-            <button class="button button-clear button-royal" ng-click="bypass()" ng-disabled="form.validation.$invalid">
-              I already have a PIN
-            </button>
-          </div>
+          <button class="button button-clear button-royal" ng-click="bypass()" ng-disabled="form.validation.$invalid">
+            I already have a PIN
+          </button>
+        </div>
 
       </div>
     </div>
