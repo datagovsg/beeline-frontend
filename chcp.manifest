@@ -601,11 +601,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "0e366326e53fb06bbd3ff8ea40624dc2"
+    "hash": "e6e76877244630b961e931f222245178"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "00465f03d15a02400e9d17bbefd812f7"
+    "hash": "4514b4bc8fee20a42376eff2c4f68da1"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -889,7 +889,7 @@
   },
   {
     "file": "templates/booking-history.html",
-    "hash": "c492e23528095701c732f047f4b6ee63"
+    "hash": "07638edc924aac7e188219a2ea1ef67d"
   },
   {
     "file": "templates/intro-slides.html",
@@ -913,7 +913,7 @@
   },
   {
     "file": "templates/kickstarter.html",
-    "hash": "469c2ed9717906ac661abc36698e628b"
+    "hash": "58755e0ec241f1999b4172e40dc23a2e"
   },
   {
     "file": "templates/lite-route-tracker.html",
@@ -945,7 +945,7 @@
   },
   {
     "file": "templates/settings.html",
-    "hash": "7b5ab57df3b0807d27202e61e2c2e965"
+    "hash": "c27007b3c9d7e18cebe66af2685d5445"
   },
   {
     "file": "templates/tab-booking-confirmation.html",

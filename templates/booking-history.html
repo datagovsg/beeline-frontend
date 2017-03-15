@@ -37,15 +37,26 @@
                 XXXX XXXX XXXX {{payment.payment.data.source.last4}}
               </td>
             </tr>
+            <tr ng-if="transaction.itemsByType.refundPayment">
+              <th>
+                Refund Amount
+              </th>
+              <td>
+                ${{transaction.itemsByType.refundPayment[0].credit | number:'2'}}
+              </td>
+            </tr>
             <tr>
               <th>
               Type
               </th>
-              <td ng-if="transaction.type !== 'conversion'">
+              <td ng-if="transaction.itemsByType.ticketSale">
                 Normal Booking
               </td>
               <td ng-if="transaction.type === 'conversion'">
                 Crowdstart
+              </td>
+              <td ng-if="transaction.itemsByType.ticketRefund">
+                Refund
               </td>
             </tr>
             <tr>
@@ -58,6 +69,9 @@
               <td ng-if="transaction.itemsByType.routeCredits" class="item-text-wrap">
                 {{transaction.itemsByType.routeCredits[0].route.label}}: {{transaction.itemsByType.routeCredits[0].route.from}} &mdash; {{transaction.itemsByType.routeCredits[0].route.to}}
               </td>
+              <td ng-if="transaction.itemsByType.ticketRefund" class="item-text-wrap">
+                {{transaction.itemsByType.ticketRefund[0].route.label}}: {{transaction.itemsByType.ticketRefund[0].route.from}} &mdash; {{transaction.itemsByType.ticketRefund[0].route.to}}
+              </td>
             </tr>
             <tr ng-if="transaction.itemsByType.ticketSale">
                 <th>
@@ -69,6 +83,20 @@
                   <ul>
                     <li ng-repeat="ticket in transaction.itemsByType.ticketSale">
                       {{ticket.ticketSale.boardStop.trip.date | date:'dd MMM yyyy' : 'Z'}}
+                    </li>
+                  </ul>
+              </td>
+            </tr>
+            <tr ng-if="transaction.itemsByType.ticketRefund">
+                <th>
+                  Trip Date
+                </th>
+              <td>
+                  <b>{{transaction.itemsByType.ticketRefund.length}} trip(s) in total</b>
+                  <br />
+                  <ul>
+                    <li ng-repeat="ticket in transaction.itemsByType.ticketRefund">
+                      {{ticket.ticketRefund.boardStop.trip.date | date:'dd MMM yyyy' : 'Z'}}
                     </li>
                   </ul>
               </td>
