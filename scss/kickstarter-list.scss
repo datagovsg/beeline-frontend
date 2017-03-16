@@ -39,12 +39,13 @@
     margin-left: $start-size/2;
   }
 
+// FIXME: overflow issue - suggestion link is not shown
   .expendable-area {
-    max-height: 100px;
-    transition: max-height 0.3s linear;
+    // max-height: 100px;
+    // transition: max-height 0.3s linear;
     &.expended {
-      max-height: 9999px;
-      transition: max-height 0.3s linear;
+      // max-height: 9999px;
+      // transition: max-height 0.3s linear;
     }
   }
 
