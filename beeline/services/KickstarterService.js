@@ -162,12 +162,14 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
   async function fetchNearbyKickstarterIds() {
     let locationOrNull = null;
     try {
-      await DevicePromise();
+      await DevicePromise;
       locationOrNull = await getLocationPromise(false);
     } catch (err) {
       // Location not found -- suppress error
       nearbyKickstarterRoutesById = nearbyKickstarterRoutesById  || null;
-      return nearbyKickstarterRoutesById;
+      return new Promise((resolve, reject)=>{
+        resolve(nearbyKickstarterRoutesById);
+      })
     }
 
     let coords = {
@@ -204,8 +206,10 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         )
       )
     })
-    let [np, nvp] = await Promise.all([nearbyPromise, nearbyReversePromise])
-    return nearbyKickstarterRoutesById = _((np.data).concat(nvp.data)).map(r=>r.id).uniq().value();
+    return Promise.all([nearbyPromise, nearbyReversePromise]).then((values) =>{
+      let [np, nvp] = values;
+      return nearbyKickstarterRoutesById = _((np.data).concat(nvp.data)).map(r=>r.id).uniq().value();
+    });
   }
 
   return {
