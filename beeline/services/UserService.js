@@ -50,6 +50,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       options.headers['Beeline-Device-Model'] = window.navigator.userAgent;
       options.headers['Beeline-Device-Platform'] = 'Browser';
     }
+    options.headers['Beeline-App-Name'] = $rootScope.o.APP.NAME.replace(/\s/g, '');
     return $http(options);
   };
 
