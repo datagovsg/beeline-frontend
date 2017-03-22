@@ -37,7 +37,7 @@
 
       <div class="item item-input item-icon-right clearable-input">
         Destination:
-        <input type="text" gmap-autocomplete ng-model="data.destinationText"  place-changed="updatePlace('destination', $event)"
+        <input type="text" placeholder="(Optional)" gmap-autocomplete ng-model="data.destinationText"  place-changed="updatePlace('destination', $event)"
                     bounds="map.bounds.Singapore" ng-focus="focus('destination')" ng-blur="blur('destination')" />
         <i class="icon ion-android-close" ng-click="data.destinationText = ''; data.destination=null"></i>
       </div>
