@@ -77,6 +77,8 @@ export default function($scope, $state, $stateParams, $http, UserService,
 
       $scope.crowdstartRoutes = _.map(fwd.data, r => routesByKey[r.id]);
       $scope.crowdstartReverseRoutes = _.map(bwd.data, r => routesByKey[r.id]);
+
+      $scope.$digest();
     });
 
     const litePromise = search({
