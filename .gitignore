@@ -6,6 +6,8 @@ platforms/
 plugins/
 www/lib/beeline/bundle.js
 www/lib/beeline/bundle.js.map
+www/chcp.json
+www/chcp.manifest
 www/css
 www/css/ionic.app.css
 www/css/ionic.app.min.css
