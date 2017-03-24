@@ -10,17 +10,17 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
-    regions: [],
-    routes: [],
-    recentRoutes: [],
-    selectedRegionId: undefined,
-    filterText: '',
-    stagingFilterText: '',
-    filteredActiveRoutes: [],
-    filteredRecentRoutes: [],
-    nextSessionId: null,
-    liteRoutes: [],
-    filteredLiteRoutes: [],
+    regions: [], // Regions user can select from to filter
+    selectedRegionId: undefined, // The selected region from above
+    filterText: '', // Text filter - unused
+    stagingFilterText: '', // Temporary filter text - used for async updating
+    routes: [], // List of all routes available, not directly displayed
+    recentRoutes: [], // List recent routes, not directly displayed
+    liteRoutes: [], // List of lite routes not directly displayed
+    filteredActiveRoutes: [], // Displayed active routes
+    filteredRecentRoutes: [], // Displayed recent routes
+    filteredLiteRoutes: [], // Displayed lite routes
+    nextSessionId: null, // ???
   };
 
   // Modal for sharing referral
@@ -37,9 +37,12 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-  $scope.$watch(() => RoutesService.getActivatedKickstarterRoutes(), (rpRoutes) => {
-    $scope.data.activatedKickstarterRoutes = rpRoutes;
-  });
+  $scope.$watch(
+    () => RoutesService.getActivatedKickstarterRoutes(), 
+    (rpRoutes) => {
+      $scope.data.activatedKickstarterRoutes = rpRoutes;
+    }
+  );
 
   $scope.$watch(function() {
     return UserService.getUser();
@@ -95,17 +98,18 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   };
 
+  // Keep the list of routes updated
   $scope.$watch(() => RoutesService.getRoutesWithRoutePass(), (allRoutes) => {
-
+    // Sort the routes by the time of day
     $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
       var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
       var midnightOfTrip = new Date(firstTripStop.time.getTime());
-
       midnightOfTrip.setHours(0,0,0,0);
       return firstTripStop.time.getTime() - midnightOfTrip.getTime();
     });
   })
 
+  // modify the full routes list with recent routes saved info
   $scope.$watchCollection(() => [
     RoutesService.getRecentRoutes(),
     RoutesService.getRoutesWithRoutePass(),
@@ -123,13 +127,28 @@ export default function($scope, $state, UserService, RoutesService, $q,
   })
 
   // Filter the displayed routes by selected region
-  $scope.$watchGroup(['data.routes',  'data.liteRoutes', 'data.activatedKickstarterRoutes', 'data.selectedRegionId', 'data.filterText'], function([routes, liteRoutes, activatedKickstarterRoutes, selectedRegionId, filterText]) {
-    var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
-    $scope.data.regions = RoutesService.getUniqueRegionsFromRoutes(normalAndLiteRoutes);
-    $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
-    $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
-    $scope.data.filteredActivatedKickstarterRoutes = SearchService.filterRoutes(activatedKickstarterRoutes, +selectedRegionId, filterText);
-  });
+  $scope.$watchGroup(
+    [
+      'data.routes', 
+      'data.liteRoutes',
+      'data.activatedKickstarterRoutes',
+      'data.selectedRegionId',
+      'data.filterText'
+    ], 
+    function([
+      routes,
+      liteRoutes,
+      activatedKickstarterRoutes,
+      selectedRegionId,
+      filterText
+    ]) {
+      var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
+      $scope.data.regions = RoutesService.getUniqueRegionsFromRoutes(normalAndLiteRoutes);
+      $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
+      $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
+      $scope.data.filteredActivatedKickstarterRoutes = SearchService.filterRoutes(activatedKickstarterRoutes, +selectedRegionId, filterText);
+    }
+  );
 
   // Throttle the actual updating of filter text
   $scope.updateFilter = _.throttle((value) => {
@@ -143,22 +162,39 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block
-  $scope.$watchGroup(['data.filteredActiveRoutes', 'data.recentRoutes', 'data.filteredActivatedKickstarterRoutes'], function([newActiveRoutes, recentRoutes, newKickstarterRoutes]) {
-    if(!recentRoutes) return
+  $scope.$watchGroup(
+    [
+      'data.filteredActiveRoutes',
+      'data.recentRoutes',
+      'data.filteredActivatedKickstarterRoutes'
+    ], 
+    function([
+      newActiveRoutes, 
+      recentRoutes, 
+      newKickstarterRoutes
+    ]) {
+      if(!recentRoutes) return
+      $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
+      $scope.data.filteredRecentRoutes = recentRoutes.map(
+        recent => newActiveRoutes.find(route => route.id === recent.id)
+      ).filter(x => x) // Exclude null values (e.g. expired routes)
 
-    $scope.data.recentRoutesById = _.keyBy(recentRoutes, r => r.id);
-    $scope.data.filteredRecentRoutes = recentRoutes.map(
-      recent => newActiveRoutes.find(route => route.id === recent.id)
-    ).filter(x => x) // Exclude null values (e.g. expired routes)
+      // filter out duplicate ones in recently booked to prevent displaying it too many times
+      $scope.data.filteredRecentRoutes = _.difference($scope.data.filteredRecentRoutes, newKickstarterRoutes);
+    }
+  );
 
-    // filter out duplicate ones in recently booked to prevent displaying it too many times
-    $scope.data.filteredRecentRoutes = _.difference($scope.data.filteredRecentRoutes, newKickstarterRoutes);
-  });
-
-  $scope.$watchGroup(['data.filteredRecentRoutes', 'data.filteredActiveRoutes', 'data.filteredLiteRoutes', 'data.filteredActivatedKickstarterRoutes'],
+  $scope.$watchGroup(
+    [
+      'data.filteredRecentRoutes', 
+      'data.filteredActiveRoutes', 
+      'data.filteredLiteRoutes', 
+      'data.filteredActivatedKickstarterRoutes'
+    ],
     () => {
       $ionicScrollDelegate.resize();
-  });
+    }
+  );
 
   $scope.$watchCollection(() =>
     [].concat(LiteRouteSubscriptionService.getSubscriptionSummary())
