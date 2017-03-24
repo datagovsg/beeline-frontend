@@ -6,8 +6,14 @@ platforms/
 plugins/
 www/lib/beeline/bundle.js
 www/lib/beeline/bundle.js.map
+www/css
 www/css/ionic.app.css
 www/css/ionic.app.min.css
+www/js/angular-google-maps.js
+www/js/angular-simple-logger.js
+www/js/clipboard.min.js
+www/js/lodash.js
+www/js/ngclipboard.min.js
 beeline/env.json
 .io-config.json
 *.DS_Store
