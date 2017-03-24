@@ -4,24 +4,12 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
   return {
     replace: false,
     restrict: 'E',
-    // template: `
-    // <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
-    //                   ng-if="actualPath.path.length"
-    //                   path="actualPath.path"
-    //                   stroke="strokeOptions"
-    //                   icons="strokeIcons"></ui-gmap-polyline>
-    // <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
-    //                 ng-if="busLocation.coordinates"
-    //                 idkey="'bus-location{{index}}'"
-    //                 coords="busLocation.coordinates"
-    //                 icon="busLocation.icon"></ui-gmap-marker>
-    // `,
     template: `
     <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
                     ng-if="busLocation.coordinates"
                     idkey="'bus-location{{index}}'"
                     coords="busLocation.coordinates"
-                    icon="busLocation.icon"></ui-gmap-marker>
+                    icon="busLocation.icons[$index % 10]"></ui-gmap-marker>
     `,
     scope: {
       availableTrips: '<',
