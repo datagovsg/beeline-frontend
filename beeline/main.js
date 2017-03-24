@@ -186,7 +186,6 @@ angular.module('beeline')
 .run(function ($templateCache) {
   $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))
   $templateCache.put('templates/settings.html', require('../www/templates/settings.html'))
-  $templateCache.put('templates/routes-results.html', require('../www/templates/routes-results.html'))
   $templateCache.put('templates/routes-list.html', require('../www/templates/routes-list.html'))
   $templateCache.put('templates/tickets.html', require('../www/templates/tickets.html'))
   $templateCache.put('templates/ticket-detail.html', require('../www/templates/ticket-detail.html'))
