@@ -66,20 +66,6 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-// Putting this here temporarily to test before routing it in properly
-  .state('tabs.results', {
-    url: '/routes/results?pickupLat&pickupLng&dropoffLat&dropoffLng',
-    views: {
-      'tab-routes': {
-        templateUrl: 'templates/routes-results.html',
-        controller: 'RoutesResultsController',
-        data: {
-          hideTabs: true,
-        }
-      }
-    }
-  })
-
   .state('tabs.booking', {
     url: '/booking',
     abstract: true
