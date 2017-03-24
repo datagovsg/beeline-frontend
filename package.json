@@ -32,6 +32,7 @@
     "gulp-util": "^3.0.7",
     "html-loader": "^0.4.4",
     "json-loader": "^0.5.4",
+    "left-pad": "^1.1.3",
     "lodash": "^4.16.2",
     "moment": "^2.15.1",
     "multiple-date-picker": "git+https://github.com/datagovsg/MultipleDatePicker.git#annotations",

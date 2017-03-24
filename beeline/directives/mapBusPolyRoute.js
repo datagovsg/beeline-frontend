@@ -1,4 +1,5 @@
 import {SafeInterval} from '../SafeInterval';
+const leftPad = require('left-pad');
 
 export default function(TripService, uiGmapGoogleMapApi, $timeout) {
   return {
@@ -9,7 +10,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
                     ng-if="busLocation.coordinates"
                     idkey="'bus-location{{index}}'"
                     coords="busLocation.coordinates"
-                    icon="busLocation.icons[$index % 10]"></ui-gmap-marker>
+                    icon="busLocation.icon"></ui-gmap-marker>
     `,
     scope: {
       availableTrips: '<',
@@ -52,14 +53,13 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         if (!availableTrips) return;
 
         uiGmapGoogleMapApi.then((googleMaps) => {
-          var icon = {
-            url: 'img/busMarker.svg',
-            scaledSize: new googleMaps.Size(68, 86),
-            anchor: new googleMaps.Point(34, 78),
-          };
           scope.availableTrips.map((trip, index)=>{
             scope.map.busLocations[index] = {
-              icon: icon
+              icon: {
+                url: `img/busMarker_${leftPad((index % 10) + 1, 2, '0')}.svg`,
+                scaledSize: new googleMaps.Size(68, 86),
+                anchor: new googleMaps.Point(34, 78),
+              }
             }
           })
         })

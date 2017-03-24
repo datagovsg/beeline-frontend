@@ -1,5 +1,4 @@
 import _ from 'lodash';
-const leftPad = require('left-pad');
 
 export default [
   '$scope',
@@ -104,11 +103,11 @@ export default [
     });
 
     uiGmapGoogleMapApi.then((googleMaps) => {
-      $scope.map.busLocation.icons = _.range(1,11).map(i => ({
-        url: `img/busMarker_${leftPad(i, 2, '0')}.svg`,
+      $scope.map.busLocation.icon = {
+        url: `img/busMarker_01.svg`,
         scaledSize: new googleMaps.Size(68, 86),
         anchor: new googleMaps.Point(34, 78),
-      });
+      }
     })
 
     // Draw the icon for latest bus location
