@@ -123,7 +123,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         }
       });
 
-      scope.timeout = new SafeInterval(pingLoop, 8000, 1000);
+      //fetch driver pings every 4s 
+      scope.timeout = new SafeInterval(pingLoop, 4000, 1000);
 
       scope.$on("killPingLoop", () => {
         scope.timeout.stop();
