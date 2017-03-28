@@ -39,8 +39,8 @@ export default [
 
           //update ridesRemaining when user login at the booking summary page
           RoutesService.fetchRoutePassCount().then((routePassCountMap) => {
+            assert($scope.booking.routeId);
             if (!$scope.booking.route) {
-              assert($scope.booking.routeId);
               RoutesService.getRoute($scope.booking.routeId).then((route)=>{
                 $scope.booking.route = route;
                 if (routePassCountMap) {
