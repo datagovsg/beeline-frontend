@@ -69,22 +69,39 @@ export default function(
   // Watchers
   // ---------------------------------------------------------------------------
   // Kickstarted routes
-  $scope.$watch(
-    () => RoutesService.getActivatedKickstarterRoutes(), 
-    (x) => { $scope.data.activatedKickstarterRoutes = x; }
+  $scope.$watchGroup(
+    [
+      () => RoutesService.getActivatedKickstarterRoutes(),
+      'data.placeFilter'
+    ],
+    ([routes, placeFilter]) => { 
+      if (!routes) return;
+      if (placeFilter) {
+        console.log("filtering kickstarted");
+        routes = SearchService.filterRoutesByPlace(routes, placeFilter);
+      }
+      $scope.data.activatedKickstarterRoutes = routes;
+    }
   );
 
   // Recent routes
   // Need to pull in the "full" data from all routes
-  $scope.$watchCollection(
-    () => [
+  $scope.$watchGroup(
+    [
       RoutesService.getRecentRoutes(),
       RoutesService.getRoutesWithRoutePass(),
+      'data.placeFilter'
     ], 
     ([
       recentRoutes, 
-      allRoutes
+      allRoutes,
+      placeFilter
     ]) => {
+      if (!allRoutes) return;
+      if (placeFilter) {
+        console.log("filtering recent");
+        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
+      }
       if(recentRoutes && allRoutes) {
         let allRoutesById = _.keyBy(allRoutes, 'id')
         $scope.data.recentRoutes = recentRoutes.map(r => {
@@ -101,6 +118,15 @@ export default function(
   // Mark which lite routes are subscribed
   $interval(() => {
     LiteRoutesService.getLiteRoutes().then((liteRoutes) => {
+      if (!liteRoutes) return;
+      if ($scope.data.placeFilter) { 
+        console.log("filtering lite");
+        console.log(liteRoutes);
+        liteRoutes = SearchService.filterRoutesByPlace(
+          Object.values(liteRoutes), 
+          $scope.data.placeFilter
+        );
+      }
       var subscribed = LiteRouteSubscriptionService.getSubscriptionSummary();
       _.forEach(liteRoutes, (liteRoute) => {
         liteRoute.isSubscribed = !!subscribed.includes(liteRoute.label);
@@ -120,6 +146,7 @@ export default function(
       // Sort the routes by the time of day
       if (!allRoutes) return;
       if (placeFilter) {
+        console.log("filtering normal");
         allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
       }
       $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
