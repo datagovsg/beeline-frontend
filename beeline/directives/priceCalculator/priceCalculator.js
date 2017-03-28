@@ -12,8 +12,10 @@ export default [
         'booking': '=',
         'price': '=?',
         'showPromoField': '<',
+        'showCredits': '<?'
       },
       controller($scope) {
+        $scope.showCredits = $scope.showCredits || false;
         $scope.isCalculating = 0;
 
         function stopCalculating() {
@@ -34,6 +36,25 @@ export default [
           CreditsService.fetchReferralCredits().then((referralCredits) => {
             $scope.referralCredits = referralCredits
           });
+
+          //update ridesRemaining when user login at the booking summary page
+          RoutesService.fetchRoutePassCount().then((routePassCountMap) => {
+            if (!$scope.booking.route) {
+              assert($scope.booking.routeId);
+              RoutesService.getRoute($scope.booking.routeId).then((route)=>{
+                $scope.booking.route = route;
+                if (routePassCountMap) {
+                  $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
+                }
+              })
+            }
+            else {
+              if (routePassCountMap) {
+                $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
+              }
+            }
+          });
+
         })
 
         var latestRequest = null;
@@ -62,7 +83,7 @@ export default [
                 return;
               $scope.priceInfo = priceInfo;
               $scope.price = priceInfo.totalDue;
-              $scope.ridesUsed = $scope.booking.applyRouteCredits 
+              $scope.ridesUsed = $scope.booking.applyRouteCredits
                 ? Math.min($scope.booking.route.ridesRemaining, priceInfo.tripCount)
                 : 0
               $scope.errorMessage = null;

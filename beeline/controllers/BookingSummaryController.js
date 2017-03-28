@@ -242,7 +242,8 @@ export default [
           data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips($scope.book),
             promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
-            creditTag: $scope.book.creditTag,
+            // don't use route credits if toggle if off
+            creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
             applyCredits: $scope.book.applyCredits,
             applyReferralCredits: $scope.book.applyReferralCredits,
           }),

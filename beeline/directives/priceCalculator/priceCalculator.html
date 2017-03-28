@@ -48,19 +48,25 @@
     </tbody>
   </table>
 
-  <!-- hide from calculator -->
-  <!-- <div class="promoCredits" ng-if="showPromoField && isLoggedIn">
+  <div class="promoCredits" ng-if="showCredits &&
+    ( (booking.route.ridesRemaining && booking.route.ridesRemaining > 0) ||
+      (userCredits && userCredits > 0) ||
+      (referralCredits && referralCredits > 0)
+    )">
+    <div class="item-subtitle">Credits and Route Pass</div>
     <ul class="list">
-      <li class="item item-input-inset">
-        <label class="item-input-wrapper">
-          <input type="text" placeholder="Enter Promo Code" ng-model="currentPromoCode" ng-blur="updatePromoCode(currentPromoCode)">
-        </label>
-        <button class="button button-royal small-button" ng-click="updatePromoCode(currentPromoCode)">
-          Apply
-        </button>
-      </li>
+      <ion-toggle ng-model="booking.applyRouteCredits" toggle-class="toggle-royal" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
+        Use my Route Pass ({{ booking.route.ridesRemaining }} trips remaining)
+      </ion-toggle>
+      <ion-toggle ng-model="booking.applyReferralCredits" toggle-class="toggle-royal" ng-if="referralCredits && referralCredits > 0">
+        Use my Welcome Credits ({{ referralCredits || 0 | currency}} remaining)
+      </ion-toggle>
+      <ion-toggle ng-model="booking.applyCredits" toggle-class="toggle-royal" ng-if="userCredits && userCredits > 0">
+        Use my General Credits ({{ userCredits || 0 | currency}} remaining)
+      </ion-toggle>
     </ul>
-  </div> -->
+  </div>
+
   <div class="item-subtitle">Amount to Pay </div>
   <table class="booking-info calculator" ng-if="booking.selectedDates.length > 0">
     <tbody>
