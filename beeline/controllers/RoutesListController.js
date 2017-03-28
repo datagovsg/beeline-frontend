@@ -12,6 +12,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   $scope.data = {
     regions: [], // Regions user can select from to filter
     selectedRegionId: undefined, // The selected region from above
+    placeFilter: null, // location search filter
     filterText: '', // Text filter - unused
     stagingFilterText: '', // Temporary filter text - used for async updating
     routes: [], // List of all routes available, not directly displayed
@@ -21,6 +22,11 @@ export default function($scope, $state, UserService, RoutesService, $q,
     filteredRecentRoutes: [], // Displayed recent routes
     filteredLiteRoutes: [], // Displayed lite routes
     nextSessionId: null, // ???
+  };
+
+  // Hook for google maps autocomplete to set the place filter
+  $scope.setPlaceFilter = (place) => { 
+    $scope.placeFilter = place; 
   };
 
   // Modal for sharing referral
