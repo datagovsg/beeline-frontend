@@ -9,6 +9,31 @@ window.handleOpenURL = function (url) {
   taskQueue.emit('newUrl')
 }
 
+// Universal links for iOS
+var app = {
+  // Application Constructor
+  initialize: function() {
+    this.bindEvents();
+  },
+
+  // Bind Event Listeners
+  bindEvents: function() {
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+  },
+
+  // deviceready Event Handler
+  onDeviceReady: function() {
+    universalLinks.subscribe(null, app.didLaunchAppFromLink);
+  },
+
+  didLaunchAppFromLink: function(eventData) {
+    taskQueue.queue.push(eventData.url);
+    taskQueue.emit('newUrl');
+  }
+};
+
+app.initialize();
+
 angular.module('beeline')
 .run(function () {
   function handleUrl() {
