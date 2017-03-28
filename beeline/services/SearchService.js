@@ -19,8 +19,6 @@ export default function SearchService() {
     },
 
     filterRoutesByPlace: function(routes, place) {
-      console.log("filtering routes by place");
-      console.log(routes.length);
 
       const maxDistance = 3000; // Arbitrary constant for closeness
 
@@ -52,7 +50,6 @@ export default function SearchService() {
         });
       });
 
-      console.log(filteredRoutes.length);
       return filteredRoutes;
     },
 

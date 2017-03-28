@@ -40,7 +40,6 @@ export default function(
   // ---------------------------------------------------------------------------
   $scope.setPlaceFilter = (place) => { 
     $scope.data.placeFilter = place; 
-    console.log($scope.data.placeFilter);
   };
 
   // Manually pull the newest data from the server
@@ -77,7 +76,6 @@ export default function(
     ([routes, placeFilter]) => { 
       if (!routes) return;
       if (placeFilter) {
-        console.log("filtering kickstarted");
         routes = SearchService.filterRoutesByPlace(routes, placeFilter);
       }
       $scope.data.activatedKickstarterRoutes = routes;
@@ -99,7 +97,6 @@ export default function(
     ]) => {
       if (!allRoutes) return;
       if (placeFilter) {
-        console.log("filtering recent");
         allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
       }
       if(recentRoutes && allRoutes) {
@@ -120,8 +117,6 @@ export default function(
     LiteRoutesService.getLiteRoutes().then((liteRoutes) => {
       if (!liteRoutes) return;
       if ($scope.data.placeFilter) { 
-        console.log("filtering lite");
-        console.log(liteRoutes);
         liteRoutes = SearchService.filterRoutesByPlace(
           Object.values(liteRoutes), 
           $scope.data.placeFilter
@@ -146,7 +141,6 @@ export default function(
       // Sort the routes by the time of day
       if (!allRoutes) return;
       if (placeFilter) {
-        console.log("filtering normal");
         allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
       }
       $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
