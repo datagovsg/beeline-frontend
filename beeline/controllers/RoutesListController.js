@@ -13,8 +13,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
     regions: [], // Regions user can select from to filter
     selectedRegionId: undefined, // The selected region from above
     placeFilter: null, // location search filter
-    filterText: '', // Text filter - unused
-    stagingFilterText: '', // Temporary filter text - used for async updating
     routes: [], // List of all routes available, not directly displayed
     recentRoutes: [], // List recent routes, not directly displayed
     liteRoutes: [], // List of lite routes not directly displayed
@@ -139,32 +137,20 @@ export default function($scope, $state, UserService, RoutesService, $q,
       'data.liteRoutes',
       'data.activatedKickstarterRoutes',
       'data.selectedRegionId',
-      'data.filterText'
     ], 
     function([
       routes,
       liteRoutes,
       activatedKickstarterRoutes,
       selectedRegionId,
-      filterText
     ]) {
       var normalAndLiteRoutes = routes.concat(_.values(liteRoutes));
       $scope.data.regions = RoutesService.getUniqueRegionsFromRoutes(normalAndLiteRoutes);
-      $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, filterText);
-      $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, filterText);
-      $scope.data.filteredActivatedKickstarterRoutes = SearchService.filterRoutes(activatedKickstarterRoutes, +selectedRegionId, filterText);
+      $scope.data.filteredActiveRoutes = SearchService.filterRoutes(routes, +selectedRegionId, "");
+      $scope.data.filteredLiteRoutes = SearchService.filterRoutes(liteRoutes, +selectedRegionId, "");
+      $scope.data.filteredActivatedKickstarterRoutes = SearchService.filterRoutes(activatedKickstarterRoutes, +selectedRegionId, "");
     }
   );
-
-  // Throttle the actual updating of filter text
-  $scope.updateFilter = _.throttle((value) => {
-    // Some times this function is called synchronously, some times it isn't
-    // Use timeout to ensure that we are always inside a digest cycle.
-    setTimeout(() => {
-      $scope.data.filterText = $scope.data.stagingFilterText;
-      $scope.$digest();
-    }, 0)
-  }, 400, {trailing: true})
 
   // Filter the recent routes display whenever the active routes is changed
   // This cascades the region filter from the previous block
@@ -190,6 +176,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     }
   );
 
+  // Manually resize the thing when routes change
   $scope.$watchGroup(
     [
       'data.filteredRecentRoutes', 
@@ -202,6 +189,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     }
   );
 
+  // auto update when subscriptions change
   $scope.$watchCollection(() =>
     [].concat(LiteRouteSubscriptionService.getSubscriptionSummary())
     .concat([$scope.data.liteRoutes]),
