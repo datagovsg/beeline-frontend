@@ -11428,12 +11428,6 @@ route-item {
     margin: 20px auto;
     width: 95%;
     margin-left: 8px; }
-  .kickstarter-list ion-content .expendable-area {
-    max-height: 100px;
-    transition: max-height 0.3s linear; }
-    .kickstarter-list ion-content .expendable-area.expended {
-      max-height: 9999px;
-      transition: max-height 0.3s linear; }
 
 /* Style for the kickstart help modal in kickstart list*/
 .kickstart-help {

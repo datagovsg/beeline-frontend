@@ -77,19 +77,19 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "a8ece8940a46a36325a70241a1af9179"
+    "hash": "c24ec3670972f67129fbc7a7d090f529"
   },
   {
     "file": "css/ionic.app.min.css",
-    "hash": "27e075ef055fd46012903e0de5e56555"
+    "hash": "f23a0f97a3fbe496850ef12e75c644ff"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "381a1df62616cb7588378b96216714fa"
+    "hash": "39f257ab42334c726dd0e3ee7bcb5fa0"
   },
   {
     "file": "css/operator-grab.min.css",
-    "hash": "b63f194a45509c2e56a666c36a901ed1"
+    "hash": "d75e0cca6f3537b1e65e462a2194d30d"
   },
   {
     "file": "favicon-16x16.png",
@@ -109,7 +109,7 @@
   },
   {
     "file": "grab.html",
-    "hash": "63b050f05bf2dabff0263f45e3b6262a"
+    "hash": "6e5702f2d924789167bfa3da05ec103c"
   },
   {
     "file": "grab/android-chrome-144x144.png",
@@ -252,8 +252,48 @@
     "hash": "e5b5439e2278b7c724b031e830c0296e"
   },
   {
+    "file": "img/busMarker_01.svg",
+    "hash": "fff0a61b63a1f0c7d7ea955323afb5f4"
+  },
+  {
+    "file": "img/busMarker_02.svg",
+    "hash": "b9ffaecaedd6a4c70e4aa6b46c2d2b11"
+  },
+  {
+    "file": "img/busMarker_03.svg",
+    "hash": "a6dceb9a757a2405c86c7cadf3453550"
+  },
+  {
+    "file": "img/busMarker_04.svg",
+    "hash": "5c7da4940f50c704be7737f2cb4eb8f6"
+  },
+  {
+    "file": "img/busMarker_05.svg",
+    "hash": "6ffafed5ef182f2d4ac5bbea54c71e63"
+  },
+  {
+    "file": "img/busMarker_06.svg",
+    "hash": "89d12ea50dec7e09df94282237d77e3c"
+  },
+  {
+    "file": "img/busMarker_07.svg",
+    "hash": "60af8ca846a450eb8e2d7a4a5a0b3596"
+  },
+  {
+    "file": "img/busMarker_08.svg",
+    "hash": "9b36d5f6354b4edf33cecbdb4f86c315"
+  },
+  {
+    "file": "img/busMarker_09.svg",
+    "hash": "26a51ad7dd602ed8b1ee68d9d44f59de"
+  },
+  {
+    "file": "img/busMarker_10.svg",
+    "hash": "d006cf00ca568d527d4a0413c16edccb"
+  },
+  {
     "file": "img/busMarker.svg",
-    "hash": "80431063dc31e7f96943fb39c45a3b71"
+    "hash": "e05312d7d20f29ca8940d19f067e114d"
   },
   {
     "file": "img/busstopselector_default.svg",
@@ -601,11 +641,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "e6e76877244630b961e931f222245178"
+    "hash": "915e1db8a100d0860b8308be3df78de1"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "4514b4bc8fee20a42376eff2c4f68da1"
+    "hash": "6a5e4470ea6e7eefb920b69aec0f94ac"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -913,7 +953,7 @@
   },
   {
     "file": "templates/kickstarter.html",
-    "hash": "58755e0ec241f1999b4172e40dc23a2e"
+    "hash": "954e98c27e83a8ac3655576f36549f39"
   },
   {
     "file": "templates/lite-route-tracker.html",
@@ -941,7 +981,7 @@
   },
   {
     "file": "templates/search.html",
-    "hash": "28ff048f905462b4e0622a336c1bf1d8"
+    "hash": "0b479bf88f107f145cd7100c7905e752"
   },
   {
     "file": "templates/settings.html",
