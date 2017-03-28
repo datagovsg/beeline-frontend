@@ -413,18 +413,18 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           return routeToCreditTags
         } else {
           return routeToCreditTags = null
-        }
+        } 
       })
     },
 
-    // Returns the credit tag matched to a route if routeId is given
+    // Returns the credit tag matched to a route if routeId is given 
     // Otherwise, returns a map of all routeId to their corresponding tags
     // based on the routeCredits available to a user
     getRouteCreditTags: function(routeId){
       if(routeId && routeToCreditTags){
         return routeToCreditTags[routeId]
       } else {
-        return routeToCreditTags
+        return routeToCreditTags        
       }
     },
 
