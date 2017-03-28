@@ -39,7 +39,8 @@ export default function(
   // Hooks
   // ---------------------------------------------------------------------------
   $scope.setPlaceFilter = (place) => { 
-    $scope.placeFilter = place; 
+    $scope.data.placeFilter = place; 
+    console.log($scope.data.placeFilter);
   };
 
   // Manually pull the newest data from the server
@@ -110,10 +111,17 @@ export default function(
 
   // Normal routes
   // Sort them by start time
-  $scope.$watch(
-    () => RoutesService.getRoutesWithRoutePass(), 
-    (allRoutes) => {
+  $scope.$watchGroup(
+    [
+      () => RoutesService.getRoutesWithRoutePass(),
+      "data.placeFilter"
+    ], 
+    ([allRoutes, placeFilter]) => {
       // Sort the routes by the time of day
+      if (!allRoutes) return;
+      if (placeFilter) {
+        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
+      }
       $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
         var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
         var midnightOfTrip = new Date(firstTripStop.time.getTime());
@@ -122,7 +130,6 @@ export default function(
       });
     }
   );
-
 
   // ---------------------------------------------------------------------------
   // Misc
