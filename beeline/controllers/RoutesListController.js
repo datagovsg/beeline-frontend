@@ -11,6 +11,7 @@ export default function(
   RoutesService, 
   $q,
   BookingService, 
+  KickstarterService,
   $ionicScrollDelegate, 
   LiteRoutesService, 
   $ionicPopup,
@@ -202,6 +203,28 @@ export default function(
         midnightOfTrip.setHours(0,0,0,0);
         return firstTripStop.time.getTime() - midnightOfTrip.getTime();
       });
+    }
+  );
+
+  // Unactivated kickstarter routes
+  $scope.$watchGroup(
+    [
+      () => KickstarterService.getLelong(),
+      'data.placeFilter',
+      'data.placeFilterText'
+    ],
+    ([routes, placeFilter, placeFilterText]) => {
+      console.log("here", routes);
+      if (!routes) return;
+      // Filter the routes
+      if (placeFilter) { 
+        routes = SearchService.filterRoutesByPlace(routes, placeFilter);
+      }
+      else {
+        routes = SearchService.filterRoutesByText(routes, placeFilterText);
+      }
+      // Map to scope once done filtering and sorting
+      $scope.data.crowdstartRoutes = _.sortBy(routes, 'label');
     }
   );
 
