@@ -16,7 +16,6 @@
   // Using this method since it's easily compatible with the ionic structure
   .filter {
     flex: 0 0 ($line-height-computed + $content-padding * 2);
-    text-align: left;
     input {
       text-align: left !important; //Reoverride our ionic override
     }

@@ -9,8 +9,6 @@ www/lib/beeline/bundle.js.map
 www/chcp.json
 www/chcp.manifest
 www/css
-www/css/ionic.app.css
-www/css/ionic.app.min.css
 www/js/angular-google-maps.js
 www/js/angular-simple-logger.js
 www/js/clipboard.min.js

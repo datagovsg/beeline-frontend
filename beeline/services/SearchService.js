@@ -20,7 +20,7 @@ export default function SearchService() {
 
     filterRoutesByPlace: function(routes, place) {
 
-      const maxDistance = 3000; // Arbitrary constant for closeness
+      const maxDistance = 1000; // Arbitrary constant for closeness
 
       // Helper to calculate distance in meters between a pair of coordinates
       let latlngDistance = (ll1, ll2) => {

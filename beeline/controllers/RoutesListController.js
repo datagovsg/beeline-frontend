@@ -157,18 +157,12 @@ export default function(
   // ---------------------------------------------------------------------------
 
   // Session ID cache for some reason?
+  // let ionic to clear page cache if user goes through booking process of the 
+  // same route few times, always start with clean form (pre-chosen stops etc.
+  // are cleared),this is the internal mechanism of ionic (as any part of query 
+  // string change, the cache are cleared)
   $scope.$on('$ionicView.beforeEnter', () => {
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-  // Manually resize the thing when routes change
-  $scope.$watchGroup(
-    [
-      'data.recentRoutes', 
-      'data.liteRoutes',
-      'data.routes',
-      'data.crowdstartRoutes'
-    ],
-    () => $ionicScrollDelegate.resize()
-  );
 }
