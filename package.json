@@ -62,7 +62,8 @@
     {
       "locator": "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
       "id": "cordova-plugin-x-socialsharing"
-    }
+    },
+    "cordova-universal-links-plugin"
   ],
   "cordovaPlatforms": [
     "ios",
