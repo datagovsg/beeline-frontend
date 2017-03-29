@@ -6,14 +6,16 @@
       Please try again later.
     </div>
 
-    <!-- Region Filter  -->
+    <!-- Places Filter  -->
     <label class="filter item item-input">
       <input 
         type="text" 
+        ng-model="data.placeFilterText"
         gmap-autocomplete 
         place-changed="setPlaceFilter($event)"
-        bounds="map.bounds.Singapore" 
+        bounds="map.bounds.Singapore"
       />
+      <i class="icon ion-android-close" on-tap="data.placeFilterText = ''"></i>
     </label>
 
     <ion-content class="list">

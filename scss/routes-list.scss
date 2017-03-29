@@ -19,6 +19,9 @@
     input {
       text-align: left !important; //Reoverride our ionic override
     }
+    .icon {
+      padding-right: $content-padding;
+    }
   }
 
 }
