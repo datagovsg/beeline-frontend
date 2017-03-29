@@ -48,8 +48,7 @@
     </tbody>
   </table>
 
-  <div class="promoCredits" ng-if="showCredits &&
-    ( (booking.route.ridesRemaining && booking.route.ridesRemaining > 0) ||
+  <div class="promoCredits" ng-if="( (booking.route.ridesRemaining && booking.route.ridesRemaining > 0) ||
       (userCredits && userCredits > 0) ||
       (referralCredits && referralCredits > 0)
     )">

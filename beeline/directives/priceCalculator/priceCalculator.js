@@ -11,11 +11,8 @@ export default [
       scope: {
         'booking': '=',
         'price': '=?',
-        'showPromoField': '<',
-        'showCredits': '<?'
       },
       controller($scope) {
-        $scope.showCredits = $scope.showCredits || false;
         $scope.isCalculating = 0;
 
         function stopCalculating() {
