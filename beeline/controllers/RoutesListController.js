@@ -1,36 +1,30 @@
 import _ from 'lodash';
-import shareReferralModalTemplate from '../templates/share-referral-modal.html';
 
-// Parse out the available regions from the routes
-// Filter what is displayed by the region filter
-// Split the routes into those the user has recently booked and the rest
 export default function(
+  // Angular Tools
   $scope, 
-  $state, 
-  UserService, 
-  RoutesService, 
   $q,
-  BookingService, 
+  $interval,
+  // Route Information
+  RoutesService, 
   KickstarterService,
   $ionicScrollDelegate, 
   LiteRoutesService, 
-  $ionicPopup,
+  // Meta
   LiteRouteSubscriptionService, 
-  $timeout, 
   SearchService, 
-  $ionicModal, 
-  $interval,
-  $cordovaSocialSharing
+  BookingService 
 ) {
 
-  // https://github.com/angular/angular.js/wiki/Understanding-Scopes
+  // ---------------------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------------------
+  // Explicitly declare/initialize of scope variables we use
   $scope.data = {
-    // Use the place filter if we have one
-    // otherwise fall back to normal text filtering
-    placeFilterText: "", // The text in the input box 
     placeFilter: null, // The place object chosen from autocomplete
-    // The different types of routes in the results
-    activatedKickstarterRoutes: [],
+    placeFilterText: "", // Plain text fallback if no object is chosen
+    // Different types of route data
+    activatedCrowdstartRoutes: [],
     recentRoutes: [],
     liteRoutes: [],
     routes: [],
@@ -42,33 +36,39 @@ export default function(
   // ---------------------------------------------------------------------------
   // UI Hooks
   // ---------------------------------------------------------------------------
-
   // When setting the place object keep the UI text in sync
+  // BUG: This causes a "flicker" as the country "Singapore" or region is
+  // appended to the string initially but disappears after the sync
+  // there doesnt seem to be a simple way to get the "full" autocomplete string
   $scope.setPlaceFilter = (place) => { 
     if (place) {
       $scope.data.placeFilter = place;
       $scope.data.placeFilterText = place.name;
-    }
-    else {
+    } else {
       $scope.data.placeFilter = null;
       $scope.data.placeFilterText = "";
     }
   };
 
-  // If the text is changed without selecting a place, then remove the place
+  // Consistency check to remove the place if the text is changed to something
+  // else
   $scope.$watch(
     'data.placeFilterText',
     (text) => { 
+      // Do nothing if the text is still valid
       if (
         $scope.data.placeFilter && 
         $scope.data.placeFilter.name === $scope.data.placeFilterText
       ) return;
+      // Otherwise just the object
       $scope.data.placeFilter = null;
     }
   );
 
   // Manually pull the newest data from the server
   // Report any errors that happen
+  // Note that theres no need to update the scope manually
+  // since this is done by the service watchers
   $scope.refreshRoutes = function (ignoreCache) {
     RoutesService.fetchRouteCredits(ignoreCache);
     RoutesService.fetchRoutes(ignoreCache);
@@ -83,14 +83,13 @@ export default function(
       liteRouteSubscriptionsPromise
     ]).then(() => {
       $scope.error = null;
-    })
-    .catch(() => {
+    }).catch(() => {
       $scope.error = true;
-    })
+    });
   };
 
   // ---------------------------------------------------------------------------
-  // Data Watchers
+  // Model Hooks
   // ---------------------------------------------------------------------------
   // Kickstarted routes
   $scope.$watchGroup(
@@ -99,19 +98,17 @@ export default function(
       'data.placeFilter',
       'data.placeFilterText'
     ],
-    ([
-      routes, 
-      placeFilter, 
-      placeFilterText
-    ]) => { 
-      if (!routes) return;
+    ([routes, placeFilter, placeFilterText]) => {
+      // Input validation
+      if (!routes) routes = [];
+      // Filtering
       if (placeFilter) {
         routes = SearchService.filterRoutesByPlace(routes, placeFilter);
-      }
-      else {
+      } else {
         routes = SearchService.filterRoutesByText(routes, placeFilterText);
       }
-      $scope.data.activatedKickstarterRoutes = routes;
+      // Publish
+      $scope.data.activatedCrowdstartRoutes = routes;
     }
   );
 
@@ -124,13 +121,12 @@ export default function(
       'data.placeFilter',
       'data.placeFilterText'
     ], 
-    ([
-      recentRoutes, 
-      allRoutes,
-      placeFilter,
-      placeFilterText
-    ]) => {
-      if (!allRoutes) return;
+    ([recentRoutes, allRoutes, placeFilter, placeFilterText]) => {
+      // If we cant find route data here then proceed with empty
+      // This allows it to organically "clear" any state
+      if (!recentRoutes) recentRoutes = [];
+      if (!allRoutes) allRoutes = [];
+      // Filter the routes depending on existence of object or text
       if (placeFilter) {
         allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
       } else {
@@ -139,43 +135,47 @@ export default function(
           placeFilterText
         );
       }
-      if(recentRoutes && allRoutes) {
-        let allRoutesById = _.keyBy(allRoutes, 'id')
-        $scope.data.recentRoutes = recentRoutes.map(r => {
-          _.assign({
-            alightStopStopId: r.alightStopStopId,
-            boardStopStopId: r.boardStopStopId
-          }, allRoutesById[r.id]);
-        }).filter(r => r.id !== undefined);
-      }
+      // "Fill in" the recent routes with the all routes data
+      let allRoutesById = _.keyBy(allRoutes, 'id')
+      $scope.data.recentRoutes = recentRoutes.map(recentRoute => {
+        _.assign({
+          alightStopStopId: recentRoute.alightStopStopId,
+          boardStopStopId: recentRoute.boardStopStopId
+        }, allRoutesById[recentRoute.id]);
+      // Clean out "junk" routes which may be old/obsolete
+      }).filter(route => route.id !== undefined);
     }
   );
 
   // Lite routes - doing this interval hack because promises are hard  
+  // Will do it properly once we get literoutes service to be synchronous
   // Mark which lite routes are subscribed
   $interval(() => {
     LiteRoutesService.getLiteRoutes().then((liteRoutes) => {
-      if (!liteRoutes) return;
+      // Input validation
+      if (!liteRoutes) liteRoutes = [];
       liteRoutes = Object.values(liteRoutes);
+      // Filtering
       if ($scope.data.placeFilter) { 
         liteRoutes = SearchService.filterRoutesByPlace(
           liteRoutes, 
           $scope.data.placeFilter
         );
-      }
-      else {
+      } else {
         liteRoutes = SearchService.filterRoutesByText(
           liteRoutes,
           $scope.data.placeFilterText
         );
       }
+      // Add the subscription information
       var subscribed = LiteRouteSubscriptionService.getSubscriptionSummary();
       _.forEach(liteRoutes, (liteRoute) => {
         liteRoute.isSubscribed = !!subscribed.includes(liteRoute.label);
       });
+      // Publish
       $scope.data.liteRoutes = liteRoutes;
     });
-  }, 2000)
+  }, 2000);
 
   // Normal routes
   // Sort them by start time
@@ -186,17 +186,18 @@ export default function(
       "data.placeFilterText"
     ], 
     ([allRoutes, placeFilter, placeFilterText]) => {
-      // Sort the routes by the time of day
-      if (!allRoutes) return;
+      // Input validation
+      if (!allRoutes) allRoutes = [];
+      // Filter routes
       if (placeFilter) {
         allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
-      }
-      else {
+      } else {
         allRoutes = SearchService.filterRoutesByText(
           allRoutes, 
           placeFilterText
         );
       }
+      // Sort the routes by the time of day
       $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
         var firstTripStop = _.get(route, 'trips[0].tripStops[0]');
         var midnightOfTrip = new Date(firstTripStop.time.getTime());
@@ -214,13 +215,11 @@ export default function(
       'data.placeFilterText'
     ],
     ([routes, placeFilter, placeFilterText]) => {
-      console.log("here", routes);
-      if (!routes) return;
+      if (!routes) routes = [];
       // Filter the routes
       if (placeFilter) { 
         routes = SearchService.filterRoutesByPlace(routes, placeFilter);
-      }
-      else {
+      } else {
         routes = SearchService.filterRoutesByText(routes, placeFilterText);
       }
       // Map to scope once done filtering and sorting

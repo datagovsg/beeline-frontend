@@ -1,12 +1,7 @@
-<ion-view class="routes-list" view-title="Routes">
+<ion-view class="routes-list">
   <ion-content scroll="false">
-    <div class="item item-text-wrap" ng-if="error">
-      <i class="icon ion-alert-circled"></i>
-      There was a problem fetching the routes from the server.
-      Please try again later.
-    </div>
 
-    <!-- Places Filter  -->
+    <!-- Search Filter  -->
     <label class="filter item item-input">
       <input 
         type="text" 
@@ -24,75 +19,99 @@
       </i>
     </label>
 
+    <!-- Scrollable routes list -->
     <ion-content class="list">
-      <ion-refresher pulling-text="Pull to refresh..."
-                     on-refresh="refreshRoutes(true)">
-      </ion-refresher>
+
+      <!-- Pull to refresh element -->
+      <ion-refresher 
+        pulling-text="Pull to refresh..."
+        on-refresh="refreshRoutes(true)"
+      ></ion-refresher>
+
+      <!-- Error message if problem getting routes data -->
+      <div class="item item-text-wrap" ng-if="error">
+        <i class="icon ion-alert-circled"></i>
+        There was a problem fetching the routes from the server.
+        Please try again later and let us know at feedback@beeline.sg if the problem persists.
+      </div>
 
       <!-- Recent Routes Section -->
-      <!-- ng-show doesn't work 100% reliably. angular bug? -->
-      <div class="item item-divider" ng-if="data.activatedKickstarterRoutes && data.activatedKickstarterRoutes.length > 0">
-        Your Activated Crowdstart Routes
+      <div 
+        class="item item-divider" 
+        ng-if="data.activatedCrowdstartRoutes && 
+               data.activatedCrowdstartRoutes.length > 0"
+      >
+        Activated Crowdstart Routes
       </div>
-      <ion-item ng-repeat="route in data.activatedKickstarterRoutes"
-                ui-sref="tabs.bookingPickup({
-                  routeId: route.id,
-                  boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-                  alightStop: data.recentRoutesById[route.id].alightStopStopId,
-                  sessionId: data.nextSessionId,
-                })"
-                ng-if="data.activatedKickstarterRoutes && data.activatedKickstarterRoutes.length > 0"
-                class="item-icon-right">
+      <ion-item 
+        ng-repeat="route in data.activatedCrowdstartRoutes"
+        ui-sref="tabs.bookingPickup({
+          routeId: route.id,
+          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
+          alightStop: data.recentRoutesById[route.id].alightStopStopId,
+          sessionId: data.nextSessionId,
+        })"
+        ng-if="data.activatedCrowdstartRoutes && 
+               data.activatedCrowdstartRoutes.length > 0"
+        class="item-icon-right"
+      >
         <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
       <!-- Recently booked routes -->
-      <div class="item item-divider"
-          ng-if="data.recentRoutes.length > 0">
+      <div class="item item-divider" ng-if="data.recentRoutes.length > 0">
         Recently Booked Routes
       </div>
-      <ion-item ng-repeat="route in data.recentRoutes"
-                ui-sref="tabs.bookingPickup({
-                  routeId: route.id,
-                  boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-                  alightStop: data.recentRoutesById[route.id].alightStopStopId,
-                  sessionId: data.nextSessionId,
-                })"
-                class="item-text-wrap item-icon-right">
+      <ion-item 
+        ng-repeat="route in data.recentRoutes"
+        ui-sref="tabs.bookingPickup({
+          routeId: route.id,
+          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
+          alightStop: data.recentRoutesById[route.id].alightStopStopId,
+          sessionId: data.nextSessionId,
+        })"
+        class="item-text-wrap item-icon-right"
+      >
         <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
       <!-- Available Routes Section -->
-      <div class="item item-divider"
-           ng-if="data.liteRoutes.length > 0 || data.routes.length > 0">
+      <div 
+        class="item item-divider"
+        ng-if="data.liteRoutes.length > 0 || data.routes.length > 0"
+      >
         Available Routes
       </div>
-
-      <!-- Available regular routes -->
-      <ion-item ng-repeat="route in data.routes"
-                ui-sref="tabs.bookingPickup({
-                  routeId: route.id,
-                  sessionId: data.nextSessionId,
-                })"
-                class="item-text-wrap item-icon-right">
+      <ion-item 
+        ng-repeat="route in data.routes"
+        ui-sref="tabs.bookingPickup({
+          routeId: route.id,
+          sessionId: data.nextSessionId,
+        })"
+        class="item-text-wrap item-icon-right"
+      >
         <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
       <!-- Available Lite Routes Section -->
-      <ion-item ng-repeat="route in data.liteRoutes"
-                ui-sref="tabs.lite-summary({
-                  label: route.label,
-                })"
-                class="item-icon-right">
+      <ion-item 
+        ng-repeat="route in data.liteRoutes"
+        ui-sref="tabs.lite-summary({ label: route.label })"
+        class="item-icon-right"
+      >
         <lite-route route="route"></lite-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
-      <!-- Available Kickstarter Routes -->
-      <div class="item item-divider">
+      <!-- Available Crowdstart Routes -->
+      <div 
+        class="item item-divider"
+        ng-if="data.crowdstartRoutes.length &&
+               data.crowdstartRoutes.length > 0"
+      >
         Crowdstart Routes
       </div>
       <ion-item 
@@ -100,6 +119,7 @@
         class="item-text-wrap item-icon-right" 
         ui-sref="tabs.crowdstart-detail({ routeId: route.id })"
       >
+        <!-- TODO - refactor this into a directive -->
         <route-item>
           <route-item-bus-number>
             {{ route.label }}
@@ -165,9 +185,14 @@
       <powered-by-beeline></powered-by-beeline>
 
       <!-- No results found message -->
-      <p ng-if="data.routes.length === 0 && data.liteRoutes.length === 0
-        && data.filterText" class="not-found-message text-center">
-          Sorry, we could not find any routes matching "{{data.filterText}}".
+      <p 
+        ng-if="data.routes.length === 0 && 
+              data.liteRoutes.length === 0 && 
+              data.crowdstartRoutes.length === 0 &&
+              data.placeFilterText" 
+        class="not-found-message text-center"
+      >
+        Sorry, we could not find any routes matching "{{data.placeFilterText}}".
       </p>
 
     </ion-content>
