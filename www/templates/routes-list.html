@@ -12,10 +12,16 @@
         type="text" 
         ng-model="data.placeFilterText"
         gmap-autocomplete 
+        placeholder="Search Routes" 
         place-changed="setPlaceFilter($event)"
         bounds="map.bounds.Singapore"
       />
-      <i class="icon ion-android-close" on-tap="data.placeFilterText = ''"></i>
+      <i 
+        class="icon ion-android-close" 
+        on-tap="data.placeFilterText = ''"
+        ng-show="data.placeFilterText.length > 0"
+      >
+      </i>
     </label>
 
     <ion-content class="list">
