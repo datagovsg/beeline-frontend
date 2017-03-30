@@ -116,8 +116,8 @@ export default function(
   // Need to pull in the "full" data from all routes
   $scope.$watchGroup(
     [
-      RoutesService.getRecentRoutes(),
-      RoutesService.getRoutesWithRoutePass(),
+      () => RoutesService.getRecentRoutes(),
+      () => RoutesService.getRoutesWithRoutePass(),
       'data.placeFilter',
       'data.placeFilterText'
     ], 
@@ -126,6 +126,7 @@ export default function(
       // This allows it to organically "clear" any state
       if (!recentRoutes) recentRoutes = [];
       if (!allRoutes) allRoutes = [];
+
       // Filter the routes depending on existence of object or text
       if (placeFilter) {
         allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
@@ -136,18 +137,18 @@ export default function(
         );
       }
       // "Fill in" the recent routes with the all routes data
-      let allRoutesById = _.keyBy(allRoutes, 'id')
-      $scope.data.recentRoutes = recentRoutes.map(recentRoute => {
-        _.assign({
+      let allRoutesById = _.keyBy(allRoutes, 'id');
+      $scope.data.recentRoutes = recentRoutes.map( (recentRoute) => {
+        return _.assign({
           alightStopStopId: recentRoute.alightStopStopId,
           boardStopStopId: recentRoute.boardStopStopId
         }, allRoutesById[recentRoute.id]);
       // Clean out "junk" routes which may be old/obsolete
-      }).filter(route => route.id !== undefined);
+      }).filter( (route)=> route && route.id !== undefined);
     }
   );
 
-  // Lite routes - doing this interval hack because promises are hard  
+  // Lite routes - doing this interval hack because promises are hard
   // Will do it properly once we get literoutes service to be synchronous
   // Mark which lite routes are subscribed
   $interval(() => {
@@ -156,9 +157,9 @@ export default function(
       if (!liteRoutes) liteRoutes = [];
       liteRoutes = Object.values(liteRoutes);
       // Filtering
-      if ($scope.data.placeFilter) { 
+      if ($scope.data.placeFilter) {
         liteRoutes = SearchService.filterRoutesByPlace(
-          liteRoutes, 
+          liteRoutes,
           $scope.data.placeFilter
         );
       } else {
