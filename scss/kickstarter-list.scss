@@ -68,3 +68,29 @@
     margin-bottom: $content-padding*2;
   }
 }
+
+
+
+.region-filter {
+  flex: 0 0 ($line-height-computed + $content-padding * 2);
+  display: flex;
+  flex-direction: row;
+
+  & > :nth-child(1) {
+    flex: 1 1 50%;
+  }
+  & > :nth-child(2) {
+    flex: 1 1 50%;
+
+    select {
+      padding: inherit;
+      width: 100%;
+      max-width:none;
+      direction: ltr;
+    }
+
+    &:after {
+      /* display: none;  */
+    }
+  }
+}
