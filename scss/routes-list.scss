@@ -9,11 +9,24 @@
   .not-found-message {
     padding: $content-padding*4;
   }
+
+
+  // Get the Region filter to be center aligned
+  // Use % widths on both components to get them roughly to the center
+  // Using this method since it's easily compatible with the ionic structure
+  .filter {
+    flex: 0 0 ($line-height-computed + $content-padding * 2);
+    input {
+      text-align: left !important; //Reoverride our ionic override
+    }
+    .icon {
+      padding-right: $content-padding;
+    }
+  }
+
 }
 
-// Get the Region filter to be center aligned
-// Use % widths on both components to get them roughly to the center
-// Using this method since it's easily compatible with the ionic structure
+
 .region-filter {
   flex: 0 0 ($line-height-computed + $content-padding * 2);
   display: flex;
