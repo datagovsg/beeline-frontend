@@ -1,26 +1,29 @@
-.routes-list ion-content {
-  display: flex;
-  flex-direction: column;
+.routes-list {
 
-  .list {
-    flex: 1 1 auto;
-  }
-
-  .not-found-message {
-    padding: $content-padding*4;
-  }
-
-
-  // Get the Region filter to be center aligned
-  // Use % widths on both components to get them roughly to the center
-  // Using this method since it's easily compatible with the ionic structure
   .filter {
-    flex: 0 0 ($line-height-computed + $content-padding * 2);
+    position: absolute;
+    top: $content-padding;
+    left: $content-padding;
+    right: $content-padding;
     input {
-      text-align: left !important; //Reoverride our ionic override
+      text-align: left !important; //HACK: reoverride our ionic override 
+      padding-left: 0; // HACK: override the "double padding"
     }
     .icon {
-      padding-right: $content-padding;
+      font-size: 1.5em;
+      padding-right: 1.5 * $content-padding;
+    }
+  }
+
+  .map {
+    height: 50%;
+    background-color: green;
+  }
+
+  .list {
+    height: 50%;
+    .not-found-message {
+      padding: $content-padding*4;
     }
   }
 

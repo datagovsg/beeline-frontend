@@ -19,15 +19,17 @@
       </i>
     </label>
 
-    <!-- Scrollable routes list -->
-    <ion-content class="list">
+    <div class="map">
+      
+    </div>
 
-      <!-- Pull to refresh element -->
+    <!-- Scrollable routes list -->
+    <ion-scroll class="list">
       <ion-refresher 
         pulling-text="Pull to refresh..."
         on-refresh="refreshRoutes(true)"
       ></ion-refresher>
-
+      
       <!-- Error message if problem getting routes data -->
       <div class="item item-text-wrap" ng-if="error">
         <i class="icon ion-alert-circled"></i>
@@ -194,7 +196,7 @@
       >
         Sorry, we could not find any routes matching "{{data.placeFilterText}}".
       </p>
+    </ion-scroll>
 
-    </ion-content>
   </ion-content>
 </ion-view>
