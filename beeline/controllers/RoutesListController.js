@@ -31,7 +31,8 @@ export default function(
     routes: [],
     crowdstartRoutes: [],
     // ???
-    nextSessionId: null
+    nextSessionId: null,
+    paths: []
   };
 
   $scope.map = MapOptions.defaultMapOptions()
@@ -208,6 +209,21 @@ export default function(
         midnightOfTrip.setHours(0,0,0,0);
         return firstTripStop.time.getTime() - midnightOfTrip.getTime();
       });
+      // Draw the paths
+      let fullRoutePromises = $scope.data.routes.map(route => {
+        return RoutesService.getRoute(route.id);
+      });
+      $q.all(fullRoutePromises)
+      .then(routes => routes.map(route => route.path))
+      .then(paths => {
+        return Promise.all(
+          paths.map(path => {
+            if (path) return RoutesService.decodeRoutePath(path);
+            else return [];
+          })
+        );
+      })
+      .then(decodedPaths => $scope.data.paths = decodedPaths);
     }
   );
 

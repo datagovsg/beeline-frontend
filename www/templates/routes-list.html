@@ -25,7 +25,14 @@
       events="map.events"
       control="map.control"
       options="map.options"
-    ></ui-gmap-google-map>
+    >
+      <ui-gmap-polyline
+        ng-repeat="path in data.paths track by $index"
+        path="path"
+        static="true"
+        stroke="map.pathOptions.routePath"
+      ></ui-gmap-polyline>
+    </ui-gmap-google-map>
 
     <!-- Scrollable routes list -->
     <ion-scroll class="list">
