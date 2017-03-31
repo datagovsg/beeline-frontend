@@ -19,9 +19,13 @@
       </i>
     </label>
 
-    <div class="map">
-      
-    </div>
+    <ui-gmap-google-map
+      center="map.center"
+      zoom="map.zoom"
+      events="map.events"
+      control="map.control"
+      options="map.options"
+    ></ui-gmap-google-map>
 
     <!-- Scrollable routes list -->
     <ion-scroll class="list">
@@ -29,7 +33,7 @@
         pulling-text="Pull to refresh..."
         on-refresh="refreshRoutes(true)"
       ></ion-refresher>
-      
+
       <!-- Error message if problem getting routes data -->
       <div class="item item-text-wrap" ng-if="error">
         <i class="icon ion-alert-circled"></i>

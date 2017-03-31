@@ -15,9 +15,14 @@
     }
   }
 
-  .map {
+  ui-gmap-google-map {
+    display: block;
     height: 50%;
     background-color: green;
+    .angular-google-map, .angular-google-map-container {
+      height: 100%;
+      width: 100%;
+    }
   }
 
   .list {

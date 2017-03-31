@@ -5,15 +5,16 @@ export default function(
   $scope, 
   $q,
   $interval,
+  $ionicScrollDelegate, 
   // Route Information
   RoutesService, 
   KickstarterService,
-  $ionicScrollDelegate, 
   LiteRoutesService, 
   // Meta
   LiteRouteSubscriptionService, 
   SearchService, 
-  BookingService 
+  BookingService,
+  MapOptions
 ) {
 
   // ---------------------------------------------------------------------------
@@ -32,6 +33,8 @@ export default function(
     // ???
     nextSessionId: null
   };
+
+  $scope.map = MapOptions.defaultMapOptions()
 
   // ---------------------------------------------------------------------------
   // UI Hooks
