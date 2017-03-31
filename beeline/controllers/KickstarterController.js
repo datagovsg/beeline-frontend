@@ -68,7 +68,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
     'data.filterText',
   ], ([lelongRoutes, nearByLelongIds, userBids, selectedRegionId, filterText])=>{
       if (!lelongRoutes) return;
-      $scope.data.kickstarter = _.sortBy(lelongRoutes, 'label');
+      //sort by numeric part of label (to fix c100 appears before c99)
+      $scope.data.kickstarter = _.sortBy(lelongRoutes, (x)=>{
+        return parseInt(x.label.slice(1))
+      })
       $scope.userBids = userBids;
       $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
       var recentAndAvailable = _.partition($scope.data.kickstarter, (x)=>{

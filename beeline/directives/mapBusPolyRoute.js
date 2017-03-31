@@ -1,21 +1,10 @@
 import {SafeInterval} from '../SafeInterval';
+const leftPad = require('left-pad');
 
 export default function(TripService, uiGmapGoogleMapApi, $timeout) {
   return {
     replace: false,
     restrict: 'E',
-    // template: `
-    // <ui-gmap-polyline ng-repeat ="actualPath in map.lines.actualPaths"
-    //                   ng-if="actualPath.path.length"
-    //                   path="actualPath.path"
-    //                   stroke="strokeOptions"
-    //                   icons="strokeIcons"></ui-gmap-polyline>
-    // <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
-    //                 ng-if="busLocation.coordinates"
-    //                 idkey="'bus-location{{index}}'"
-    //                 coords="busLocation.coordinates"
-    //                 icon="busLocation.icon"></ui-gmap-marker>
-    // `,
     template: `
     <ui-gmap-marker ng-repeat="busLocation in map.busLocations"
                     ng-if="busLocation.coordinates"
@@ -64,14 +53,13 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         if (!availableTrips) return;
 
         uiGmapGoogleMapApi.then((googleMaps) => {
-          var icon = {
-            url: 'img/busMarker.svg',
-            scaledSize: new googleMaps.Size(68, 86),
-            anchor: new googleMaps.Point(34, 78),
-          };
           scope.availableTrips.map((trip, index)=>{
             scope.map.busLocations[index] = {
-              icon: icon
+              icon: {
+                url: `img/busMarker_${leftPad((index % 10) + 1, 2, '0')}.svg`,
+                scaledSize: new googleMaps.Size(68, 86),
+                anchor: new googleMaps.Point(34, 78),
+              }
             }
           })
         })
@@ -123,7 +111,8 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         }
       });
 
-      scope.timeout = new SafeInterval(pingLoop, 8000, 1000);
+      //fetch driver pings every 4s 
+      scope.timeout = new SafeInterval(pingLoop, 4000, 1000);
 
       scope.$on("killPingLoop", () => {
         scope.timeout.stop();
