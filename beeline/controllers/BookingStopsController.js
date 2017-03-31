@@ -17,6 +17,7 @@ export default [
   'MapOptions',
   'loadingSpinner',
   '$q',
+  'TicketService',
   function(
     $rootScope,
     $scope,
@@ -32,7 +33,8 @@ export default [
     uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner,
-    $q
+    $q,
+    TicketService
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -51,6 +53,9 @@ export default [
       boardStop: null,
       alightStop: null,
       changes: {},
+      nextTripDate: null,
+      hasNextTripTicket: null, // user already bought the ticket
+      previouslyBookedDays: null
     };
     $scope.disp = {
       popupStop: null,
@@ -178,6 +183,76 @@ export default [
       if (typeof(initialAlightStopId) === 'number') {
         $scope.book.alightStop = alightStops.find(ts =>
             ts.id === initialAlightStopId);
+      }
+    }
+
+
+    //get the next available trip date everytime when this view is active
+    $scope.$on('$ionicView.enter', () => {
+      loadingSpinner(routePromise.then((route) => {
+        var runningTrips = route.trips.filter(tr => tr.isRunning);
+        //compare current date with nearest date trip's 1st board stop time
+        var sortedTripInDates = _.sortBy(runningTrips,'date');
+        console.log(sortedTripInDates);
+        var now = Date.now();
+        for (let trip of sortedTripInDates) {
+          var sortedTripStopsInTime = _.sortBy(trip.tripStops,'time');
+          //FIXME: need to take booking window into account
+          //check seat is available
+          if (now < sortedTripStopsInTime[0].time.getTime() && trip.availability.seatsAvailable > 0) {
+            $scope.book.nextTripDate = [trip.date.getTime()];
+            console.log("next available trip date");
+            console.log(new Date($scope.book.nextTripDate[0]));
+            break;
+          }
+        }
+      }));
+    });
+
+    // get user object
+    $scope.$watchGroup([() => UserService.getUser(), 'book.nextTripDate', 'book.previouslyBookedDays'], ([user, nextTripDate, previouslyBookedDays]) => {
+      console.log(nextTripDate);
+      $scope.isLoggedIn = user ? true : false;
+      $scope.user = user;
+      if ($scope.isLoggedIn) {
+        //check user has next trip ticket or not
+        if (previouslyBookedDays == null) {
+          console.log("refresh");
+          //FIXME: return list instead of Promise
+          loadingSpinner(TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true).then ((tickets)=>{
+            $scope.book.previouslyBookedDays = tickets || {};
+          }));
+        }
+        if (previouslyBookedDays) {
+          var bookedDays = Object.keys(previouslyBookedDays).map(x=>{return parseInt(x)});
+          //compare current date with next trip
+          if (nextTripDate && _.includes(bookedDays,nextTripDate[0])) {
+            $scope.book.hasNextTripTicket = true;
+          } else {
+            $scope.book.hasNextTripTicket = false;
+          }
+
+        } else {
+          $scope.book.hasNextTripTicket = false;
+        }
+      } else {
+        $scope.book.previouslyBookedDays = null;
+        $scope.book.hasNextTripTicket = false;
+      }
+      console.log("user");
+      console.log($scope.book.hasNextTripTicket);
+      console.log($scope.book.previouslyBookedDays);
+    })
+
+    $scope.fastCheckout = function(){
+      if ($scope.isLoggedIn) {
+        $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
+        boardStop: $scope.book.boardStop.id,
+        alightStop: $scope.book.alightStop.id,
+        sessionId: $scope.session.sessionId,
+        selectedDates: $scope.book.nextTripDate,});
+      } else {
+        UserService.promptLogIn();
       }
     }
   }
