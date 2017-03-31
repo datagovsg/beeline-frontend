@@ -32,7 +32,7 @@ export default function(LiteRoutesService, $timeout) {
       });
 
       function grabTrips(label) {
-        return LiteRoutesService.getLiteRoute(label, true)
+        return LiteRoutesService.fetchLiteRoute(label, true)
           .then((response)=>{
             var route = response[scope.tripLabel];
             scope.dailyTrips = route.trips.filter(trip => trip.isRunning && new Date(trip.date).setHours(0,0,0,0) == new Date().setHours(0,0,0,0));

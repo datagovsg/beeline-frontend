@@ -47,7 +47,7 @@ angular.module('beeline')
 .factory('SuggestionService', require('./services/SuggestionService.js').default)
 .factory('RoutesService', require('./services/RoutesService.js').default)
 .factory('CreditsService', require('./services/CreditsService.js').default)
-.factory('LiteRoutesService', require('./services/LiteRoutesService.js').default)
+.service('LiteRoutesService', require('./services/LiteRoutesService.js').default)
 .service('BookingService', require('./services/BookingService.js').default)
 .factory('OneMapService', require('./services/OneMapService.js').default)
 .factory('DateService', require('./services/DateService.js').default)
@@ -176,12 +176,13 @@ angular.module('beeline')
     }
   });
 })
-.run(function (RoutesService, KickstarterService) {
+.run(function (RoutesService, KickstarterService, LiteRoutesService) {
   // Pre-fetch the routes
   RoutesService.fetchRoutes();
   RoutesService.fetchRecentRoutes();
   KickstarterService.fetchLelong();
   KickstarterService.fetchBids();
+  LiteRoutesService.fetchLiteRoutes();
 })
 .run(function ($templateCache) {
   $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))

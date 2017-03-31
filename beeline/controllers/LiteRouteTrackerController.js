@@ -30,7 +30,7 @@ export default [
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
 
-    var routePromise = LiteRoutesService.getLiteRoute($scope.liteRouteLabel);
+    var routePromise = LiteRoutesService.fetchLiteRoute($scope.liteRouteLabel);
 
     var availableTripsPromise = routePromise.then((route)=>{
       $scope.liteRoute = route[$scope.liteRouteLabel];
