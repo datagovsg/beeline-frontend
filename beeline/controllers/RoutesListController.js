@@ -2,18 +2,18 @@ import _ from 'lodash';
 
 export default function(
   // Angular Tools
-  $scope, 
+  $scope,
   $q,
   $interval,
   // Route Information
-  RoutesService, 
+  RoutesService,
   KickstarterService,
-  $ionicScrollDelegate, 
-  LiteRoutesService, 
+  $ionicScrollDelegate,
+  LiteRoutesService,
   // Meta
-  LiteRouteSubscriptionService, 
-  SearchService, 
-  BookingService 
+  LiteRouteSubscriptionService,
+  SearchService,
+  BookingService
 ) {
 
   // ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ export default function(
   // BUG: This causes a "flicker" as the country "Singapore" or region is
   // appended to the string initially but disappears after the sync
   // there doesnt seem to be a simple way to get the "full" autocomplete string
-  $scope.setPlaceFilter = (place) => { 
+  $scope.setPlaceFilter = (place) => {
     if (place) {
       $scope.data.placeFilter = place;
       $scope.data.placeFilterText = place.name;
@@ -54,10 +54,10 @@ export default function(
   // else
   $scope.$watch(
     'data.placeFilterText',
-    (text) => { 
+    (text) => {
       // Do nothing if the text is still valid
       if (
-        $scope.data.placeFilter && 
+        $scope.data.placeFilter &&
         $scope.data.placeFilter.name === $scope.data.placeFilterText
       ) return;
       // Otherwise just the object
@@ -74,12 +74,12 @@ export default function(
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
     var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache);
-    var allLiteRoutesPromise = LiteRoutesService.getLiteRoutes(ignoreCache);
+    var allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(ignoreCache);
     var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
     $q.all([
-      routesPromise, 
-      recentRoutesPromise, 
-      allLiteRoutesPromise, 
+      routesPromise,
+      recentRoutesPromise,
+      allLiteRoutesPromise,
       liteRouteSubscriptionsPromise
     ]).then(() => {
       $scope.error = null;
@@ -120,7 +120,7 @@ export default function(
       () => RoutesService.getRoutesWithRoutePass(),
       'data.placeFilter',
       'data.placeFilterText'
-    ], 
+    ],
     ([recentRoutes, allRoutes, placeFilter, placeFilterText]) => {
       // If we cant find route data here then proceed with empty
       // This allows it to organically "clear" any state
@@ -132,7 +132,7 @@ export default function(
         allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
       } else {
         allRoutes = SearchService.filterRoutesByText(
-          allRoutes, 
+          allRoutes,
           placeFilterText
         );
       }
@@ -148,11 +148,14 @@ export default function(
     }
   );
 
-  // Lite routes - doing this interval hack because promises are hard
-  // Will do it properly once we get literoutes service to be synchronous
-  // Mark which lite routes are subscribed
-  $interval(() => {
-    LiteRoutesService.getLiteRoutes().then((liteRoutes) => {
+  $scope.$watchGroup(
+    [
+      () => LiteRoutesService.getLiteRoutes(),
+      () => LiteRouteSubscriptionService.getSubscriptionSummary(),
+      'data.placeFilter',
+      'data.placeFilterText'
+    ],
+    ([liteRoutes, subscribed, placeFilter, placeFilterText]) =>{
       // Input validation
       if (!liteRoutes) liteRoutes = [];
       liteRoutes = Object.values(liteRoutes);
@@ -167,16 +170,15 @@ export default function(
           liteRoutes,
           $scope.data.placeFilterText
         );
-      }
-      // Add the subscription information
-      var subscribed = LiteRouteSubscriptionService.getSubscriptionSummary();
+     }
+     // Add the subscription information
       _.forEach(liteRoutes, (liteRoute) => {
         liteRoute.isSubscribed = !!subscribed.includes(liteRoute.label);
       });
       // Publish
       $scope.data.liteRoutes = liteRoutes;
-    });
-  }, 2000);
+    }
+  )
 
   // Normal routes
   // Sort them by start time
@@ -185,7 +187,7 @@ export default function(
       () => RoutesService.getRoutesWithRoutePass(),
       "data.placeFilter",
       "data.placeFilterText"
-    ], 
+    ],
     ([allRoutes, placeFilter, placeFilterText]) => {
       // Input validation
       if (!allRoutes) allRoutes = [];
@@ -194,7 +196,7 @@ export default function(
         allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
       } else {
         allRoutes = SearchService.filterRoutesByText(
-          allRoutes, 
+          allRoutes,
           placeFilterText
         );
       }
@@ -218,7 +220,7 @@ export default function(
     ([routes, placeFilter, placeFilterText]) => {
       if (!routes) routes = [];
       // Filter the routes
-      if (placeFilter) { 
+      if (placeFilter) {
         routes = SearchService.filterRoutesByPlace(routes, placeFilter);
       } else {
         routes = SearchService.filterRoutesByText(routes, placeFilterText);
@@ -233,9 +235,9 @@ export default function(
   // ---------------------------------------------------------------------------
 
   // Session ID cache for some reason?
-  // let ionic to clear page cache if user goes through booking process of the 
+  // let ionic to clear page cache if user goes through booking process of the
   // same route few times, always start with clean form (pre-chosen stops etc.
-  // are cleared),this is the internal mechanism of ionic (as any part of query 
+  // are cleared),this is the internal mechanism of ionic (as any part of query
   // string change, the cache are cleared)
   $scope.$on('$ionicView.beforeEnter', () => {
     $scope.data.nextSessionId = BookingService.newSession();

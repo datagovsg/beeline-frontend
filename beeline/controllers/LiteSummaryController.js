@@ -72,7 +72,7 @@ export default [
 
     $scope.book.label = $stateParams.label;
 
-    routePromise = LiteRoutesService.getLiteRoute($scope.book.label);
+    routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label);
     subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label);
 
     subscriptionPromise.then((response)=>{
