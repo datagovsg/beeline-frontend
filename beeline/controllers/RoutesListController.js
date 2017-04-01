@@ -26,10 +26,10 @@ export default function(
     // Different types of route data
     activatedCrowdstartRoutes: [],
     recentRoutes: [],
+    recentRoutesById: null,
     liteRoutes: [],
     routes: [],
     crowdstartRoutes: [],
-    // ???
     nextSessionId: null
   };
 
@@ -145,6 +145,8 @@ export default function(
         }, allRoutesById[recentRoute.id]);
       // Clean out "junk" routes which may be old/obsolete
       }).filter( (route)=> route && route.id !== undefined);
+
+      $scope.data.recentRoutesById = _.keyBy($scope.data.recentRoutes,'id');
     }
   );
 
