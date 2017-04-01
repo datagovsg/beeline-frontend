@@ -210,10 +210,7 @@ export default function(
         return firstTripStop.time.getTime() - midnightOfTrip.getTime();
       });
       // Draw the paths
-      let fullRoutePromises = $scope.data.routes.map(route => {
-        return RoutesService.getRoute(route.id);
-      });
-      $q.all(fullRoutePromises)
+      $q.all($scope.data.routes)
       .then(routes => routes.map(route => route.path))
       .then(paths => {
         return Promise.all(
