@@ -8,7 +8,7 @@ export default function($scope, $state, $stateParams, LiteRoutesService, RoutesS
 
   $scope.data.companyId = $stateParams.companyId;
   $scope.data.label = $stateParams.label;
-  LiteRoutesService.getLiteRoute($scope.data.label).then((liteRoute) => {
+  LiteRoutesService.fetchLiteRoute($scope.data.label).then((liteRoute) => {
     $scope.data.liteRoute = liteRoute[$scope.data.label];
     RoutesService.getRouteFeatures($scope.data.liteRoute.id).then((data)=>{
      $scope.data.features = data;
