@@ -7,7 +7,7 @@ import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
 
-var transformTime = function(liteRoutesByLabel) {
+function transformTime(liteRoutesByLabel) {
   for (let label in liteRoutesByLabel){
     var liteRoute = liteRoutesByLabel[label]
     //no starting time and ending time
