@@ -1,5 +1,5 @@
 import {NetworkError} from '../shared/errors';
-import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
+import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm, formatDateMMMdd} from '../shared/format';
 
 export default [
   '$rootScope',
@@ -55,7 +55,8 @@ export default [
       changes: {},
       nextTripDate: null,
       hasNextTripTicket: null, // user already bought the ticket
-      previouslyBookedDays: null
+      previouslyBookedDays: null,
+      buttonText: 'Book Next Trip'
     };
     $scope.disp = {
       popupStop: null,
@@ -193,7 +194,6 @@ export default [
         var runningTrips = route.trips.filter(tr => tr.isRunning);
         //compare current date with nearest date trip's 1st board stop time
         var sortedTripInDates = _.sortBy(runningTrips,'date');
-        console.log(sortedTripInDates);
         var now = Date.now();
         for (let trip of sortedTripInDates) {
           var sortedTripStopsInTime = _.sortBy(trip.tripStops,'time');
@@ -201,8 +201,7 @@ export default [
           //check seat is available
           if (now < sortedTripStopsInTime[0].time.getTime() && trip.availability.seatsAvailable > 0) {
             $scope.book.nextTripDate = [trip.date.getTime()];
-            console.log("next available trip date");
-            console.log(new Date($scope.book.nextTripDate[0]));
+            $scope.book.buttonText = $scope.book.buttonText.concat(' ('+formatDateMMMdd($scope.book.nextTripDate[0])+' )');
             break;
           }
         }
@@ -211,14 +210,11 @@ export default [
 
     // get user object
     $scope.$watchGroup([() => UserService.getUser(), 'book.nextTripDate', 'book.previouslyBookedDays'], ([user, nextTripDate, previouslyBookedDays]) => {
-      console.log(nextTripDate);
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
         //check user has next trip ticket or not
         if (previouslyBookedDays == null) {
-          console.log("refresh");
-          //FIXME: return list instead of Promise
           loadingSpinner(TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true).then ((tickets)=>{
             $scope.book.previouslyBookedDays = tickets || {};
           }));
@@ -228,6 +224,7 @@ export default [
           //compare current date with next trip
           if (nextTripDate && _.includes(bookedDays,nextTripDate[0])) {
             $scope.book.hasNextTripTicket = true;
+            $scope.book.buttonText = 'Go to Ticket View';
           } else {
             $scope.book.hasNextTripTicket = false;
           }
@@ -239,9 +236,6 @@ export default [
         $scope.book.previouslyBookedDays = null;
         $scope.book.hasNextTripTicket = false;
       }
-      console.log("user");
-      console.log($scope.book.hasNextTripTicket);
-      console.log($scope.book.previouslyBookedDays);
     })
 
     $scope.fastCheckout = function(){
@@ -253,6 +247,14 @@ export default [
         selectedDates: $scope.book.nextTripDate,});
       } else {
         UserService.promptLogIn();
+      }
+    }
+
+    $scope.continue = function() {
+      if ($scope.book.hasNextTripTicket) {
+        $state.go('tabs.tickets');
+      } else {
+        $scope.fastCheckout();
       }
     }
   }

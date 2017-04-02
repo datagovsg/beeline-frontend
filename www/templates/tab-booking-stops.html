@@ -137,28 +137,10 @@
       </ion-list>
 
       <div class="item continue-button-item">
-        <!-- <button class="button primary-button button-item"
-          ui-sref="tabs.booking-summary({
-            routeId: book.routeId,
-            boardStop: book.boardStop.id,
-            alightStop: book.alightStop.id,
-            sessionId: session.sessionId,
-            selectedDates: book.nextTripDate,
-          })"
-          ng-disabled="stopsForm.$invalid || book.hasNextTripTicket"
-          ng-if="!book.hasNextTripTicket">
-          Book Next Trip ({{book.nextTripDate[0] | formatDateMMMdd}})
-        </button> -->
         <button class="button primary-button button-item"
-          ng-click="fastCheckout()"
-          ng-disabled="stopsForm.$invalid || book.hasNextTripTicket"
-          ng-if="!book.hasNextTripTicket">
-          Book Next Trip ({{book.nextTripDate[0] | formatDateMMMdd}})
-        </button>
-        <button class="button primary-button button-item"
-          ui-sref="tabs.tickets"
-          ng-if="book.hasNextTripTicket">
-          Go to Ticket View
+          ng-click="continue()"
+          ng-disabled="stopsForm.$invalid">
+          {{book.buttonText}}
         </button>
         <button class="button button-clear button-royal"
           ui-sref="tabs.booking-dates({
