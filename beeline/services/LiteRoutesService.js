@@ -6,6 +6,7 @@
 import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
+import moment from 'moment';
 
 export default function LiteRoutesService($http, UserService, $q, LiteRouteSubscriptionService, p) {
 
@@ -27,8 +28,10 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         liteRoute.endTime = null;
         return;
       }
-      var allTripStops = _.flatten(liteRoute.trips.map(trip=>trip.tripStops));
-      var allStopTimes = allTripStops.map(stop=>stop.time).sort();
+      var minTripDate = _.min(liteRoute.trips.map(trip => trip.date));
+      var tripAsMinTripDate = liteRoute.trips.filter(trip=>trip.date === minTripDate);
+      var tripStops = _.flatten(tripAsMinTripDate.map(trip=>trip.tripStops));
+      var allStopTimes = tripStops.map(stop=>stop.time).sort();
       liteRoute.startTime = allStopTimes[0];
       liteRoute.endTime = allStopTimes[allStopTimes.length-1];
     }
