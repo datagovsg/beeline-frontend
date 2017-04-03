@@ -25,11 +25,40 @@
       options="map.options"
     >
       <ui-gmap-polyline
+        ng-repeat="path in data.activatedCrowdstartPaths track by $index"
+        path="path"
+        static="true"
+        stroke="map.pathOptions.routePath"
+      ></ui-gmap-polyline>
+      
+      <ui-gmap-polyline
+        ng-repeat="path in data.recentPaths track by $index"
+        path="path"
+        static="true"
+        stroke="map.pathOptions.routePath"
+      ></ui-gmap-polyline>
+
+      <ui-gmap-polyline
+        ng-repeat="path in data.litePaths track by $index"
+        path="path"
+        static="true"
+        stroke="map.pathOptions.routePath"
+      ></ui-gmap-polyline>
+
+      <ui-gmap-polyline
         ng-repeat="path in data.paths track by $index"
         path="path"
         static="true"
         stroke="map.pathOptions.routePath"
       ></ui-gmap-polyline>
+      
+      <ui-gmap-polyline
+        ng-repeat="path in data.crowdstartPaths track by $index"
+        path="path"
+        static="true"
+        stroke="map.pathOptions.routePath"
+      ></ui-gmap-polyline>
+
       <ui-gmap-marker
         idkey="0"
         coords="data.searchCoordinates"

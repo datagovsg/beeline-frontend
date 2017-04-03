@@ -32,7 +32,11 @@ export default function(
     crowdstartRoutes: [],
     // ???
     nextSessionId: null,
+    activatedCrowdstartPaths: [],
+    recentPaths: [],
+    litePaths: [],
     paths: [], // This should be in an angular filter
+    crowdstartPaths: [],
     searchCoordinates: null // This should be an angular filter too
   };
 
@@ -98,6 +102,20 @@ export default function(
       }
       // Publish
       $scope.data.activatedCrowdstartRoutes = routes;
+      // Draw the paths
+      $q.all($scope.data.activatedCrowdstartRoutes)
+      .then(routes => routes.map(route => route.path))
+      .then(paths => {
+        return Promise.all(
+          paths.map(path => {
+            if (path) return RoutesService.decodeRoutePath(path);
+            else return [];
+          })
+        );
+      })
+      .then(decodedPaths => {
+        $scope.data.activatedCrowdstartPaths = decodedPaths
+      });
     }
   );
 
@@ -133,8 +151,19 @@ export default function(
         }, allRoutesById[recentRoute.id]);
       // Clean out "junk" routes which may be old/obsolete
       }).filter( (route)=> route && route.id !== undefined);
-
       $scope.data.recentRoutesById = _.keyBy($scope.data.recentRoutes,'id');
+      // Draw the paths
+      $q.all($scope.data.recentRoutes)
+      .then(routes => routes.map(route => route.path))
+      .then(paths => {
+        return Promise.all(
+          paths.map(path => {
+            if (path) return RoutesService.decodeRoutePath(path);
+            else return [];
+          })
+        );
+      })
+      .then(decodedPaths => $scope.data.recentPaths = decodedPaths);
     }
   );
 
@@ -166,6 +195,18 @@ export default function(
       });
       // Publish
       $scope.data.liteRoutes = liteRoutes;
+      // Draw the paths
+      $q.all($scope.data.liteRoutes)
+      .then(routes => routes.map(route => route.path))
+      .then(paths => {
+        return Promise.all(
+          paths.map(path => {
+            if (path) return RoutesService.decodeRoutePath(path);
+            else return [];
+          })
+        );
+      })
+      .then(decodedPaths => $scope.data.litePaths = decodedPaths);
     }
   )
 
@@ -220,8 +261,21 @@ export default function(
       }
       // Map to scope once done filtering and sorting
       $scope.data.crowdstartRoutes = _.sortBy(routes, 'label');
+      // Draw the paths
+      $q.all($scope.data.crowdstartRoutes)
+      .then(routes => routes.map(route => route.path))
+      .then(paths => {
+        return Promise.all(
+          paths.map(path => {
+            if (path) return RoutesService.decodeRoutePath(path);
+            else return [];
+          })
+        );
+      })
+      .then(decodedPaths => $scope.data.crowdstartPaths = decodedPaths);
     }
   );
+
 
   // ---------------------------------------------------------------------------
   // Misc

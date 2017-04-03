@@ -113,7 +113,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
 
     var finalOptions = _.assign({
       start_date: startDate.getTime(),
-      include_path: false,
+      include_path: true,
       include_trips: true,
       limit_trips: 5,
       tags: JSON.stringify(['lite']),
