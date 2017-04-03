@@ -28,20 +28,12 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
         liteRoute.endTime = null;
         return;
       }
-      var allTripStops = _.flatten(liteRoute.trips.map(trip=>trip.tripStops));
-      var allStopTimes = allTripStops.map(stop=>stop.time).sort();
+      var minTripDate = _.min(liteRoute.trips.map(trip => trip.date));
+      var tripAsMinTripDate = liteRoute.trips.filter(trip=>trip.date === minTripDate);
+      var tripStops = _.flatten(tripAsMinTripDate.map(trip=>trip.tripStops));
+      var allStopTimes = tripStops.map(stop=>stop.time).sort();
       liteRoute.startTime = allStopTimes[0];
-      // not working for T12(PM) which has more trips on certain days
-      // liteRoute.endTime = allStopTimes[allStopTimes.length-1];
-
-      // get the list of stoptime fall on the same day as startTime
-      var stopTimesOnThatDay = [];
-      for(let time of allStopTimes) {
-        if (moment(liteRoute.startTime).diff(moment(time), 'days')==0){
-          stopTimesOnThatDay.push(time);
-        }
-      }
-      liteRoute.endTime = stopTimesOnThatDay.sort().reverse()[0];
+      liteRoute.endTime = allStopTimes[allStopTimes.length-1];
     }
   }
 
