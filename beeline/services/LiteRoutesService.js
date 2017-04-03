@@ -6,6 +6,7 @@
 import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
+import moment from 'moment';
 
 function transformTime(liteRoutesByLabel) {
   for (let label in liteRoutesByLabel){
@@ -35,6 +36,23 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
   var shouldRefreshLiteTickets = false;
   var liteRoutes = null;
 
+  function transformTime(liteRoutesByLabel) {
+    for (let label in liteRoutesByLabel){
+      var liteRoute = liteRoutesByLabel[label]
+      //no starting time and ending time
+      if (!liteRoute.trips) {
+        liteRoute.startTime = null;
+        liteRoute.endTime = null;
+        return;
+      }
+      var minTripDate = _.min(liteRoute.trips.map(trip => trip.date));
+      var tripAsMinTripDate = liteRoute.trips.filter(trip=>trip.date === minTripDate);
+      var tripStops = _.flatten(tripAsMinTripDate.map(trip=>trip.tripStops));
+      var allStopTimes = tripStops.map(stop=>stop.time).sort();
+      liteRoute.startTime = allStopTimes[0];
+      liteRoute.endTime = allStopTimes[allStopTimes.length-1];
+    }
+  }
 
   // TODO the same label lite route all data fileds should be the same except trips
   //otherwise reduce make no sense
