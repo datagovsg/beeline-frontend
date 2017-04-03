@@ -24,6 +24,10 @@
     "hash": "c7d6acbbccf5c8c99e086ae23b29c5cb"
   },
   {
+    "file": "apple-app-site-association",
+    "hash": "607ad86720b7c317edafad91368e07c2"
+  },
+  {
     "file": "apple-touch-icon-114x114.png",
     "hash": "2059c01a19b591a04325e81770b3c9e7"
   },
@@ -641,11 +645,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "915e1db8a100d0860b8308be3df78de1"
+    "hash": "8256bf1f7f7aa93f673993c47a9f705b"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "6a5e4470ea6e7eefb920b69aec0f94ac"
+    "hash": "898bc0c03a1c4b664ab4797d58e11ff1"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -993,7 +997,7 @@
   },
   {
     "file": "templates/tab-booking-dates.html",
-    "hash": "c85a6db18bf6f0258ee0fa0a78d0f1ae"
+    "hash": "b809fc0815a35da7baa92ab7ffa76e7e"
   },
   {
     "file": "templates/tab-booking-stops.html",
@@ -1001,7 +1005,7 @@
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "7963d5142d3b071d02eaafa450afc40a"
+    "hash": "ad2ec8e64bb2738093f21ec2cbb5565e"
   },
   {
     "file": "templates/tab-lite-more-info.html",
