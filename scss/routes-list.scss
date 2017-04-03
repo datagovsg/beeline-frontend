@@ -6,13 +6,16 @@
     top: $content-padding;
     left: $content-padding;
     right: $content-padding;
+    @include elevation(2);
+
     @include desktop {
       // Aligned at the top of the "master" master-detail view
       position: relative;
       top: initial;
       left: initial;
       right: initial;
-      max-width: $master-width;
+      max-width: $master-width; 
+      box-shadow: none;
     }
 
     input {
@@ -26,7 +29,6 @@
       font-size: 1.5em;
       padding-right: 1.5 * $content-padding;
     }
-
   }
 
   ui-gmap-google-map {
@@ -54,10 +56,12 @@
   .list {
     // Occupy the bottom half of the screen
     height: 50%;
+    @include elevation(2);
     @include desktop {
       // Fill the rest of the "master" master-detail view
       height: auto;
       max-width: $master-width;
+      box-shadow: none;
     }
 
     .not-found-message {
