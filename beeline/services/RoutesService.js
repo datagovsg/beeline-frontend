@@ -119,7 +119,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
         start_date: startDate.getTime(),
         include_trips: true,
         limit_trips: 5,
-        include_path: false,
+        include_path: true,
         tags: JSON.stringify(['public']),
       }, options,
       p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {})

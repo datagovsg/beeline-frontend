@@ -1,52 +1,73 @@
-.routes-list ion-content {
-  display: flex;
-  flex-direction: column;
+.routes-list {
+
+  .search {
+    // Floating centered at the top of the screen
+    position: absolute;
+    top: $content-padding;
+    left: $content-padding;
+    right: $content-padding;
+    @include elevation(2);
+
+    @include desktop {
+      // Aligned at the top of the "master" master-detail view
+      position: relative;
+      top: initial;
+      left: initial;
+      right: initial;
+      max-width: $master-width; 
+      box-shadow: none;
+    }
+
+    input {
+      // HACK: re-left aligning overriding our previous ionic override
+      text-align: left !important;
+      padding-left: 0;
+    }
+
+    .icon {
+      // Scaled and moved to taste
+      font-size: 1.5em;
+      padding-right: 1.5 * $content-padding;
+    }
+  }
+
+  ui-gmap-google-map {
+    // Fill the top half of the screen
+    display: block;
+    height: 50%;
+    @include desktop {
+      // The "detail" of the master-detail view
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: $master-width;
+      right: 0;
+      height: auto;
+    }
+
+    // Force it to fill the parent container
+    .angular-google-map, .angular-google-map-container {
+      display: block;
+      height: 100%;
+    }
+
+  }
 
   .list {
-    flex: 1 1 auto;
-  }
-
-  .not-found-message {
-    padding: $content-padding*4;
-  }
-
-
-  // Get the Region filter to be center aligned
-  // Use % widths on both components to get them roughly to the center
-  // Using this method since it's easily compatible with the ionic structure
-  .filter {
-    flex: 0 0 ($line-height-computed + $content-padding * 2);
-    input {
-      text-align: left !important; //Reoverride our ionic override
-    }
-    .icon {
-      padding-right: $content-padding;
-    }
-  }
-
-}
-
-
-.region-filter {
-  flex: 0 0 ($line-height-computed + $content-padding * 2);
-  display: flex;
-  flex-direction: row;
-
-  & > :nth-child(1) {
-    flex: 1 1 50%;
-  }
-  & > :nth-child(2) {
-    flex: 1 1 50%;
-
-    select {
-      padding: inherit;
-      width: 100%;
-      max-width:none;
-      direction: ltr;
+    // Occupy the bottom half of the screen
+    height: 50%;
+    @include elevation(2);
+    @include desktop {
+      // Fill the rest of the "master" master-detail view
+      height: auto;
+      max-width: $master-width;
+      box-shadow: none;
     }
 
-    &:after {
-      /* display: none;  */
+    .not-found-message {
+      padding: $content-padding*4;
     }
+
   }
+
 }

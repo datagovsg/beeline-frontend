@@ -5,15 +5,16 @@ export default function(
   $scope,
   $q,
   $interval,
+  $ionicScrollDelegate, 
   // Route Information
   RoutesService,
   KickstarterService,
-  $ionicScrollDelegate,
-  LiteRoutesService,
+  LiteRoutesService, 
   // Meta
-  LiteRouteSubscriptionService,
-  SearchService,
-  BookingService
+  LiteRouteSubscriptionService, 
+  SearchService, 
+  BookingService,
+  MapOptions
 ) {
 
   // ---------------------------------------------------------------------------
@@ -21,8 +22,7 @@ export default function(
   // ---------------------------------------------------------------------------
   // Explicitly declare/initialize of scope variables we use
   $scope.data = {
-    placeFilter: null, // The place object chosen from autocomplete
-    placeFilterText: "", // Plain text fallback if no object is chosen
+    placeQuery: null, // The place object used to search
     // Different types of route data
     activatedCrowdstartRoutes: [],
     recentRoutes: [],
@@ -30,40 +30,33 @@ export default function(
     liteRoutes: [],
     routes: [],
     crowdstartRoutes: [],
-    nextSessionId: null
+    // ???
+    nextSessionId: null,
+    paths: [], // This should be in an angular filter
+    searchCoordinates: null // This should be an angular filter too
   };
+
+  $scope.map = MapOptions.defaultMapOptions()
 
   // ---------------------------------------------------------------------------
   // UI Hooks
   // ---------------------------------------------------------------------------
-  // When setting the place object keep the UI text in sync
-  // BUG: This causes a "flicker" as the country "Singapore" or region is
-  // appended to the string initially but disappears after the sync
-  // there doesnt seem to be a simple way to get the "full" autocomplete string
-  $scope.setPlaceFilter = (place) => {
-    if (place) {
-      $scope.data.placeFilter = place;
-      $scope.data.placeFilterText = place.name;
-    } else {
-      $scope.data.placeFilter = null;
-      $scope.data.placeFilterText = "";
-    }
-  };
 
-  // Consistency check to remove the place if the text is changed to something
-  // else
-  $scope.$watch(
-    'data.placeFilterText',
-    (text) => {
-      // Do nothing if the text is still valid
-      if (
-        $scope.data.placeFilter &&
-        $scope.data.placeFilter.name === $scope.data.placeFilterText
-      ) return;
-      // Otherwise just the object
-      $scope.data.placeFilter = null;
+  // When setting the place check that it is a proper place with a geometry
+  // The input sends a name only "place" object if you dont choose an option
+  $scope.setPlaceQuery = (place) => { $scope.data.placeQuery = place; }
+  $scope.$watch("data.placeQuery", (place) => {
+    if (place && place.geometry) {
+      $scope.data.searchCoordinates = {
+        latitude: place.geometry.location.lat(),
+        longitude: place.geometry.location.lng()
+      };
+      // Need to copy so that panning doesnt change the search coordinates
+      $scope.map.center = Object.create($scope.data.searchCoordinates);
+    } else {
+      $scope.data.searchCoordinates = null;
     }
-  );
+  });
 
   // Manually pull the newest data from the server
   // Report any errors that happen
@@ -93,19 +86,15 @@ export default function(
   // ---------------------------------------------------------------------------
   // Kickstarted routes
   $scope.$watchGroup(
-    [
-      () => RoutesService.getActivatedKickstarterRoutes(),
-      'data.placeFilter',
-      'data.placeFilterText'
-    ],
-    ([routes, placeFilter, placeFilterText]) => {
+    [() => RoutesService.getActivatedKickstarterRoutes(), 'data.placeQuery'],
+    ([routes, placeQuery]) => {
       // Input validation
       if (!routes) routes = [];
       // Filtering
-      if (placeFilter) {
-        routes = SearchService.filterRoutesByPlace(routes, placeFilter);
-      } else {
-        routes = SearchService.filterRoutesByText(routes, placeFilterText);
+      if (placeQuery && placeQuery.geometry) {
+        routes = SearchService.filterRoutesByPlace(routes, placeQuery);
+      } else if (placeQuery && placeQuery.name) {
+        routes = SearchService.filterRoutesByText(routes, placeQuery.name);
       }
       // Publish
       $scope.data.activatedCrowdstartRoutes = routes;
@@ -118,22 +107,21 @@ export default function(
     [
       () => RoutesService.getRecentRoutes(),
       () => RoutesService.getRoutesWithRoutePass(),
-      'data.placeFilter',
-      'data.placeFilterText'
-    ],
-    ([recentRoutes, allRoutes, placeFilter, placeFilterText]) => {
+      'data.placeQuery'
+    ], 
+    ([recentRoutes, allRoutes, placeQuery]) => {
       // If we cant find route data here then proceed with empty
       // This allows it to organically "clear" any state
       if (!recentRoutes) recentRoutes = [];
       if (!allRoutes) allRoutes = [];
 
       // Filter the routes depending on existence of object or text
-      if (placeFilter) {
-        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
-      } else {
+      if (placeQuery && placeQuery.geometry) {
+        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeQuery);
+      } else if (placeQuery && placeQuery.name) {
         allRoutes = SearchService.filterRoutesByText(
-          allRoutes,
-          placeFilterText
+          allRoutes, 
+          placeQuery.name
         );
       }
       // "Fill in" the recent routes with the all routes data
@@ -154,23 +142,22 @@ export default function(
     [
       () => LiteRoutesService.getLiteRoutes(),
       () => LiteRouteSubscriptionService.getSubscriptionSummary(),
-      'data.placeFilter',
-      'data.placeFilterText'
+      'data.placeQuery'
     ],
-    ([liteRoutes, subscribed, placeFilter, placeFilterText]) =>{
+    ([liteRoutes, subscribed, placeQuery]) =>{
       // Input validation
       if (!liteRoutes) liteRoutes = [];
       liteRoutes = Object.values(liteRoutes);
       // Filtering
-      if ($scope.data.placeFilter) {
+      if ($scope.data.placeQuery && $scope.data.placeQuery.geometry) {
         liteRoutes = SearchService.filterRoutesByPlace(
           liteRoutes,
-          $scope.data.placeFilter
+          $scope.data.placeQuery
         );
-      } else {
+      } else if ($scope.data.placeQuery && $scope.data.placeQuery.name) {
         liteRoutes = SearchService.filterRoutesByText(
           liteRoutes,
-          $scope.data.placeFilterText
+          $scope.data.placeQuery.name
         );
      }
      // Add the subscription information
@@ -185,21 +172,17 @@ export default function(
   // Normal routes
   // Sort them by start time
   $scope.$watchGroup(
-    [
-      () => RoutesService.getRoutesWithRoutePass(),
-      "data.placeFilter",
-      "data.placeFilterText"
-    ],
-    ([allRoutes, placeFilter, placeFilterText]) => {
+    [() => RoutesService.getRoutesWithRoutePass(), "data.placeQuery"],
+    ([allRoutes, placeQuery]) => {
       // Input validation
       if (!allRoutes) allRoutes = [];
       // Filter routes
-      if (placeFilter) {
-        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
-      } else {
+      if (placeQuery && placeQuery.geometry) {
+        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeQuery);
+      } else if (placeQuery && placeQuery.name) {
         allRoutes = SearchService.filterRoutesByText(
-          allRoutes,
-          placeFilterText
+          allRoutes, 
+          placeQuery.name
         );
       }
       // Sort the routes by the time of day
@@ -209,23 +192,31 @@ export default function(
         midnightOfTrip.setHours(0,0,0,0);
         return firstTripStop.time.getTime() - midnightOfTrip.getTime();
       });
+      // Draw the paths
+      $q.all($scope.data.routes)
+      .then(routes => routes.map(route => route.path))
+      .then(paths => {
+        return Promise.all(
+          paths.map(path => {
+            if (path) return RoutesService.decodeRoutePath(path);
+            else return [];
+          })
+        );
+      })
+      .then(decodedPaths => $scope.data.paths = decodedPaths);
     }
   );
 
   // Unactivated kickstarter routes
   $scope.$watchGroup(
-    [
-      () => KickstarterService.getLelong(),
-      'data.placeFilter',
-      'data.placeFilterText'
-    ],
-    ([routes, placeFilter, placeFilterText]) => {
+    [() => KickstarterService.getLelong(), 'data.placeQuery'],
+    ([routes, placeQuery]) => {
       if (!routes) routes = [];
       // Filter the routes
-      if (placeFilter) {
-        routes = SearchService.filterRoutesByPlace(routes, placeFilter);
-      } else {
-        routes = SearchService.filterRoutesByText(routes, placeFilterText);
+      if (placeQuery && placeQuery.geometry) { 
+        routes = SearchService.filterRoutesByPlace(routes, placeQuery);
+      } else if (placeQuery && placeQuery.name) {
+        routes = SearchService.filterRoutesByText(routes, placeQuery.name);
       }
       // Map to scope once done filtering and sorting
       $scope.data.crowdstartRoutes = _.sortBy(routes, 'label');
