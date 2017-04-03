@@ -31,7 +31,8 @@ export default function(
     crowdstartRoutes: [],
     // ???
     nextSessionId: null,
-    paths: [] // This should be in an angular filter
+    paths: [], // This should be in an angular filter
+    searchCoordinates: null // This should be an angular filter too
   };
 
   $scope.map = MapOptions.defaultMapOptions()
@@ -40,11 +41,19 @@ export default function(
   // UI Hooks
   // ---------------------------------------------------------------------------
 
-  $scope.$watch("data.textQuery", ()=> console.log("text updated"));
-
   // When setting the place check that it is a proper place with a geometry
   // The input sends a name only "place" object if you dont choose an option
   $scope.setPlaceQuery = (place) => { $scope.data.placeQuery = place; }
+  $scope.$watch("data.placeQuery", (place) => {
+    if (place && place.geometry) {
+      $scope.data.searchCoordinates = {
+        latitude: place.geometry.location.lat(),
+        longitude: place.geometry.location.lng()
+      };
+    } else {
+      $scope.data.searchCoordinates = null;
+    }
+  });
 
   // Manually pull the newest data from the server
   // Report any errors that happen
