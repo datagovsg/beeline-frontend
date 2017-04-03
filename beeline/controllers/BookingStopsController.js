@@ -192,8 +192,6 @@ export default [
 
     //get the next available trip date everytime when this view is active
     loadingSpinner(routePromise.then((route) => {
-      console.log("Route");
-      console.log(route);
       var runningTrips = route.trips.filter(tr => tr.isRunning);
       //compare current date with nearest date trip's 1st board stop time
       var sortedTripInDates = _.sortBy(runningTrips,'date');
@@ -229,17 +227,19 @@ export default [
     }));
 
     // get user object
-    $scope.$watchGroup([() => UserService.getUser(), 'book.nextTripDate', 'book.previouslyBookedDays'], ([user, nextTripDate, previouslyBookedDays]) => {
+    $scope.$watchGroup([() => UserService.getUser(), 'book.nextTripDate', ()=>TicketService.getTickets()], ([user, nextTripDate, allTickets]) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
-        //check user has next trip ticket or not
-        if (previouslyBookedDays == null) {
-          loadingSpinner(TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true).then ((tickets)=>{
-            $scope.book.previouslyBookedDays = tickets || {};
-          }));
+        var previouslyBookedDays = null;
+        if (allTickets) {
+          var ticketsByRouteId = _.groupBy(allTickets, ticket => ticket.boardStop.trip.routeId);
+          if (ticketsByRouteId && ticketsByRouteId[$scope.book.routeId]) {
+            previouslyBookedDays =  _.keyBy(ticketsByRouteId[$scope.book.routeId], t => new Date(t.boardStop.trip.date).getTime());
+          }
         }
         if (previouslyBookedDays) {
+          $scope.book.previouslyBookedDays = previouslyBookedDays;
           var bookedDays = Object.keys(previouslyBookedDays).map(x=>{return parseInt(x)});
           //compare current date with next trip
           if (nextTripDate && _.includes(bookedDays,nextTripDate[0])) {
@@ -250,6 +250,7 @@ export default [
           }
 
         } else {
+          $scope.book.previouslyBookedDays = null;
           $scope.book.hasNextTripTicket = false;
         }
       } else {
