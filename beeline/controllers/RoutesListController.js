@@ -23,7 +23,6 @@ export default function(
   // Explicitly declare/initialize of scope variables we use
   $scope.data = {
     placeQuery: null, // The place object used to search
-    textQuery: "", // Plain text inside the search box
     // Different types of route data
     activatedCrowdstartRoutes: [],
     recentRoutes: [],
@@ -40,6 +39,8 @@ export default function(
   // ---------------------------------------------------------------------------
   // UI Hooks
   // ---------------------------------------------------------------------------
+
+  $scope.$watch("data.textQuery", ()=> console.log("text updated"));
 
   // When setting the place check that it is a proper place with a geometry
   // The input sends a name only "place" object if you dont choose an option

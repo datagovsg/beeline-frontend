@@ -6,11 +6,8 @@
       <input 
         type="text" 
         placeholder="Search Routes" 
-        ng-model="data.textQuery"
-        ng-model-options="{updateOn: 'blur'}"
         gmap-autocomplete 
         place-changed="setPlaceQuery($event)"
-        bounds="map.bounds.Singapore"
       />
       <i 
         class="icon ion-android-close" 
