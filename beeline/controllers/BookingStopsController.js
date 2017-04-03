@@ -56,7 +56,9 @@ export default [
       nextTripDate: null,
       hasNextTripTicket: null, // user already bought the ticket
       previouslyBookedDays: null,
-      buttonText: 'Book Next Trip'
+      buttonText: 'Book Next Trip',
+      nextTripIsAvailable: null, //if availability==0
+      buttonNotes: null //if availability==0
     };
     $scope.disp = {
       popupStop: null,
@@ -189,24 +191,42 @@ export default [
 
 
     //get the next available trip date everytime when this view is active
-    $scope.$on('$ionicView.enter', () => {
-      loadingSpinner(routePromise.then((route) => {
-        var runningTrips = route.trips.filter(tr => tr.isRunning);
-        //compare current date with nearest date trip's 1st board stop time
-        var sortedTripInDates = _.sortBy(runningTrips,'date');
-        var now = Date.now();
-        for (let trip of sortedTripInDates) {
-          var sortedTripStopsInTime = _.sortBy(trip.tripStops,'time');
-          //FIXME: need to take booking window into account
-          //check seat is available
-          if (now < sortedTripStopsInTime[0].time.getTime() && trip.availability.seatsAvailable > 0) {
-            $scope.book.nextTripDate = [trip.date.getTime()];
-            $scope.book.buttonText = $scope.book.buttonText.concat(' ('+formatDateMMMdd($scope.book.nextTripDate[0])+' )');
-            break;
+    loadingSpinner(routePromise.then((route) => {
+      console.log("Route");
+      console.log(route);
+      var runningTrips = route.trips.filter(tr => tr.isRunning);
+      //compare current date with nearest date trip's 1st board stop time
+      var sortedTripInDates = _.sortBy(runningTrips,'date');
+      var now = Date.now();
+      for (let trip of sortedTripInDates) {
+        var sortedTripStopsInTime = _.sortBy(trip.tripStops,'time');
+        var bookingWindow = 0;
+        var boardTime = null;
+        if (trip.bookingInfo.windowSize && trip.bookingInfo.windowType) {
+          if (trip.bookingInfo.windowType === 'firstStop') {
+            boardTime = sortedTripStopsInTime[0].time.getTime() + trip.bookingInfo.windowSize;
           }
+          //FIXME : windowType == "stop"
         }
-      }));
-    });
+        if (boardTime == null) {
+          boardTime = sortedTripStopsInTime[0].time.getTime();
+        }
+        //check seat is available
+        if (now < boardTime) {
+          $scope.book.nextTripDate = [trip.date.getTime()];
+          $scope.book.buttonText = $scope.book.buttonText.concat(' ('+formatDateMMMdd($scope.book.nextTripDate[0])+' )');
+          if (trip.availability.seatsAvailable > 0) {
+            $scope.book.nextTripIsAvailable = true;
+            $scope.book.buttonNotes = null;
+          }
+          else {
+            $scope.book.nextTripIsAvailable = false;
+            $scope.book.buttonNotes = 'No Ticket Left';
+          }
+          break;
+        }
+      }
+    }));
 
     // get user object
     $scope.$watchGroup([() => UserService.getUser(), 'book.nextTripDate', 'book.previouslyBookedDays'], ([user, nextTripDate, previouslyBookedDays]) => {
