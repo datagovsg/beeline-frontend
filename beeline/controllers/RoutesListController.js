@@ -22,8 +22,8 @@ export default function(
   // ---------------------------------------------------------------------------
   // Explicitly declare/initialize of scope variables we use
   $scope.data = {
-    placeFilter: null, // The place object chosen from autocomplete
-    placeFilterText: "", // Plain text fallback if no object is chosen
+    placeQuery: null, // The place object used to search
+    textQuery: "", // Plain text inside the search box
     // Different types of route data
     activatedCrowdstartRoutes: [],
     recentRoutes: [],
@@ -32,7 +32,7 @@ export default function(
     crowdstartRoutes: [],
     // ???
     nextSessionId: null,
-    paths: []
+    paths: [] // This should be in an angular filter
   };
 
   $scope.map = MapOptions.defaultMapOptions()
@@ -40,34 +40,13 @@ export default function(
   // ---------------------------------------------------------------------------
   // UI Hooks
   // ---------------------------------------------------------------------------
-  // When setting the place object keep the UI text in sync
-  // BUG: This causes a "flicker" as the country "Singapore" or region is
-  // appended to the string initially but disappears after the sync
-  // there doesnt seem to be a simple way to get the "full" autocomplete string
-  $scope.setPlaceFilter = (place) => { 
-    if (place) {
-      $scope.data.placeFilter = place;
-      $scope.data.placeFilterText = place.name;
-    } else {
-      $scope.data.placeFilter = null;
-      $scope.data.placeFilterText = "";
-    }
-  };
 
-  // Consistency check to remove the place if the text is changed to something
-  // else
-  $scope.$watch(
-    'data.placeFilterText',
-    (text) => { 
-      // Do nothing if the text is still valid
-      if (
-        $scope.data.placeFilter && 
-        $scope.data.placeFilter.name === $scope.data.placeFilterText
-      ) return;
-      // Otherwise just the object
-      $scope.data.placeFilter = null;
-    }
-  );
+  // When setting the place check that it is a proper place with a geometry
+  // The input sends a name only "place" object if you dont choose an option
+  $scope.setPlaceQuery = (place) => { 
+    if (place && place.geometry) $scope.data.placeQuery = place;
+    else $scope.data.placeQuery = null;
+  };
 
   // Manually pull the newest data from the server
   // Report any errors that happen
@@ -99,17 +78,17 @@ export default function(
   $scope.$watchGroup(
     [
       () => RoutesService.getActivatedKickstarterRoutes(),
-      'data.placeFilter',
-      'data.placeFilterText'
+      'data.placeQuery',
+      'data.textQuery'
     ],
-    ([routes, placeFilter, placeFilterText]) => {
+    ([routes, placeQuery, textQuery]) => {
       // Input validation
       if (!routes) routes = [];
       // Filtering
-      if (placeFilter) {
-        routes = SearchService.filterRoutesByPlace(routes, placeFilter);
+      if (placeQuery) {
+        routes = SearchService.filterRoutesByPlace(routes, placeQuery);
       } else {
-        routes = SearchService.filterRoutesByText(routes, placeFilterText);
+        routes = SearchService.filterRoutesByText(routes, textQuery);
       }
       // Publish
       $scope.data.activatedCrowdstartRoutes = routes;
@@ -122,22 +101,22 @@ export default function(
     [
       () => RoutesService.getRecentRoutes(),
       () => RoutesService.getRoutesWithRoutePass(),
-      'data.placeFilter',
-      'data.placeFilterText'
+      'data.placeQuery',
+      'data.textQuery'
     ], 
-    ([recentRoutes, allRoutes, placeFilter, placeFilterText]) => {
+    ([recentRoutes, allRoutes, placeQuery, textQuery]) => {
       // If we cant find route data here then proceed with empty
       // This allows it to organically "clear" any state
       if (!recentRoutes) recentRoutes = [];
       if (!allRoutes) allRoutes = [];
 
       // Filter the routes depending on existence of object or text
-      if (placeFilter) {
-        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
+      if (placeQuery) {
+        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeQuery);
       } else {
         allRoutes = SearchService.filterRoutesByText(
           allRoutes, 
-          placeFilterText
+          textQuery
         );
       }
       // "Fill in" the recent routes with the all routes data
@@ -161,15 +140,15 @@ export default function(
       if (!liteRoutes) liteRoutes = [];
       liteRoutes = Object.values(liteRoutes);
       // Filtering
-      if ($scope.data.placeFilter) {
+      if ($scope.data.placeQuery) {
         liteRoutes = SearchService.filterRoutesByPlace(
           liteRoutes,
-          $scope.data.placeFilter
+          $scope.data.placeQuery
         );
       } else {
         liteRoutes = SearchService.filterRoutesByText(
           liteRoutes,
-          $scope.data.placeFilterText
+          $scope.data.textQuery
         );
       }
       // Add the subscription information
@@ -187,20 +166,17 @@ export default function(
   $scope.$watchGroup(
     [
       () => RoutesService.getRoutesWithRoutePass(),
-      "data.placeFilter",
-      "data.placeFilterText"
+      "data.placeQuery",
+      "data.textQuery"
     ], 
-    ([allRoutes, placeFilter, placeFilterText]) => {
+    ([allRoutes, placeQuery, textQuery]) => {
       // Input validation
       if (!allRoutes) allRoutes = [];
       // Filter routes
-      if (placeFilter) {
-        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeFilter);
-      } else {
-        allRoutes = SearchService.filterRoutesByText(
-          allRoutes, 
-          placeFilterText
-        );
+      if (placeQuery) {
+        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeQuery);
+      } else if (textQuery) {
+        allRoutes = SearchService.filterRoutesByText(allRoutes, textQuery);
       }
       // Sort the routes by the time of day
       $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
@@ -228,16 +204,16 @@ export default function(
   $scope.$watchGroup(
     [
       () => KickstarterService.getLelong(),
-      'data.placeFilter',
-      'data.placeFilterText'
+      'data.placeQuery',
+      'data.textQuery'
     ],
-    ([routes, placeFilter, placeFilterText]) => {
+    ([routes, placeQuery, textQuery]) => {
       if (!routes) routes = [];
       // Filter the routes
-      if (placeFilter) { 
-        routes = SearchService.filterRoutesByPlace(routes, placeFilter);
+      if (placeQuery) { 
+        routes = SearchService.filterRoutesByPlace(routes, placeQuery);
       } else {
-        routes = SearchService.filterRoutesByText(routes, placeFilterText);
+        routes = SearchService.filterRoutesByText(routes, textQuery);
       }
       // Map to scope once done filtering and sorting
       $scope.data.crowdstartRoutes = _.sortBy(routes, 'label');

@@ -5,10 +5,11 @@
     <label class="search item item-input">
       <input 
         type="text" 
-        ng-model="data.placeFilterText"
-        gmap-autocomplete 
         placeholder="Search Routes" 
-        place-changed="setPlaceFilter($event)"
+        ng-model="data.textQuery"
+        ng-model-options="{updateOn: 'blur'}"
+        gmap-autocomplete 
+        place-changed="setPlaceQuery($event)"
         bounds="map.bounds.Singapore"
       />
       <i 
