@@ -19,7 +19,8 @@ export default function(uiGmapGoogleMapApi) {
           // Augment the object with the autocomplete string
           place.description = element[0].value;
           // If a proper autocomplete option is selected then just callback
-          if (place.geometry) {
+          // Also do so if theres nothing to autocomplete
+          if (place.geometry || place.name.length === 0) {
             scope.$apply(() => {
               scope.$eval(attribute['placeChanged'], { '$event': place });
             });
