@@ -56,6 +56,7 @@ export default function(uiGmapGoogleMapApi) {
                 place = result;
                 // Augment the object with the prediction string
                 place.description = predictions[0].description;
+                element[0].value = place.description;
                 // Return the found place
                 scope.$apply(() => {
                   scope.$eval(attribute['placeChanged'], { '$event': place });
@@ -69,11 +70,6 @@ export default function(uiGmapGoogleMapApi) {
         element[0].addEventListener("keypress", function(event) {
           if (event.key === "Enter") this.blur();
         });
-
-        // element[0].addEventListener("blur", function(event) {
-        //   console.log("hello");
-
-        // });
 
         // Hack to get ionic fast tap working nicely with google maps
         // see http://ionicframework.com/docs/v1/api/page/tap/
