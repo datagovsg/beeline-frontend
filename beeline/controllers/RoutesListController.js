@@ -50,6 +50,8 @@ export default function(
         latitude: place.geometry.location.lat(),
         longitude: place.geometry.location.lng()
       };
+      // Need to copy so that panning doesnt change the search coordinates
+      $scope.map.center = Object.create($scope.data.searchCoordinates);
     } else {
       $scope.data.searchCoordinates = null;
     }
