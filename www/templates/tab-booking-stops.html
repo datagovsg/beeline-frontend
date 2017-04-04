@@ -139,7 +139,7 @@
       <div class="item continue-button-item">
         <button class="button primary-button button-item"
           ng-click="continue()"
-          ng-disabled="stopsForm.$invalid || !book.nextTripIsAvailable">
+          ng-disabled="stopsForm.$invalid || !book.nextTripIsAvailable || book.isVerifying">
           {{book.buttonText}}
         </button>
         <div class="button button-clear button-royal" ng-if="book.buttonNotes">{{book.buttonNotes}}</div>

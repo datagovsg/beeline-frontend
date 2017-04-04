@@ -58,7 +58,8 @@ export default [
       previouslyBookedDays: null,
       buttonText: 'Book Next Trip',
       nextTripIsAvailable: null, //if availability==0
-      buttonNotes: null //if availability==0
+      buttonNotes: null, //if availability==0
+      isVerifying: null //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
     };
     $scope.disp = {
       popupStop: null,
@@ -82,7 +83,7 @@ export default [
     $scope.session.sessionId = +$stateParams.sessionId;
     $scope.book.routeId = +$stateParams.routeId;
 
-    var routePromise = RoutesService.getRoute($scope.book.routeId)
+    var routePromise = RoutesService.getRoute($scope.book.routeId);
 
     var stopOptions = {
       initialBoardStopId: $stateParams.boardStop ? parseInt($stateParams.boardStop) : undefined,
@@ -219,7 +220,7 @@ export default [
           }
           else {
             $scope.book.nextTripIsAvailable = false;
-            $scope.book.buttonNotes = 'No Ticket Left';
+            $scope.book.buttonNotes = 'Tickets are sold out';
           }
           break;
         }
@@ -231,8 +232,11 @@ export default [
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
+        //if user is logged, disable the button if tickets are not loaded
+        $scope.book.isVerifying = true;
         var previouslyBookedDays = null;
         if (allTickets) {
+          $scope.book.isVerifying = false;
           var ticketsByRouteId = _.groupBy(allTickets, ticket => ticket.boardStop.trip.routeId);
           if (ticketsByRouteId && ticketsByRouteId[$scope.book.routeId]) {
             previouslyBookedDays =  _.keyBy(ticketsByRouteId[$scope.book.routeId], t => new Date(t.boardStop.trip.date).getTime());
@@ -248,12 +252,12 @@ export default [
           } else {
             $scope.book.hasNextTripTicket = false;
           }
-
         } else {
           $scope.book.previouslyBookedDays = null;
           $scope.book.hasNextTripTicket = false;
         }
       } else {
+        $scope.book.isVerifying = false;
         $scope.book.previouslyBookedDays = null;
         $scope.book.hasNextTripTicket = false;
       }
