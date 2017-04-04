@@ -74,12 +74,11 @@ export default [
 
     gmapIsReady.then(function() {
       MapOptions.disableMapLinks();
-      $scope.gmap = $scope.map.control.getGMap();
     });
 
-    $scope.$watchGroup(['busStops','gmap'],([stops, gmap])=>{
+    $scope.$watchGroup(['busStops',()=>$scope.map.control],([stops, gmap])=>{
       if (stops && gmap) {
-        $scope.panToStops(gmap, stops);
+        $scope.panToStops(gmap.getGMap(), stops);
       }
     })
 
