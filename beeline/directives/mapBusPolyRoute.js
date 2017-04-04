@@ -111,7 +111,7 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
         }
       });
 
-      //fetch driver pings every 4s 
+      //fetch driver pings every 4s
       scope.timeout = new SafeInterval(pingLoop, 4000, 1000);
 
       scope.$on("killPingLoop", () => {
@@ -123,18 +123,15 @@ export default function(TripService, uiGmapGoogleMapApi, $timeout) {
       });
 
       //load icons and path earlier by restart timeout on watching trips
-      var availableTripsPromise = new Promise((resolve) => {
-        scope.$watchCollection("availableTrips", ()=>{
-          if (scope.availableTrips) {
-            resolve();
-          }
-          scope.timeout.stop();
-          scope.timeout.start();
-        })
-      });
+      scope.$watchCollection("availableTrips", ()=>{
+        scope.timeout.stop();
+        scope.timeout.start();
+      })
 
       async function pingLoop() {
-        await availableTripsPromise;
+        if (!scope.availableTrips) {
+          return
+        }
 
         await Promise.all(scope.availableTrips.map((trip, index) => {
           return TripService.DriverPings(trip.id)
