@@ -11,6 +11,7 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
     template: `
     <map-bus-icon ng-repeat="recentPings in allRecentPings track by $index"
                   idkey="'bus-icon' + $index"
+                  ng-if="recentPings.isRecent"
                   pings="recentPings.pings"
                   overlay="$index + 1"></map-bus-icon>
     `,
