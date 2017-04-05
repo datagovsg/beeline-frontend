@@ -35,8 +35,11 @@ export default function(LiteRoutesService, $timeout) {
         return LiteRoutesService.getLiteRoute(label, true)
           .then((response)=>{
             var route = response[scope.tripLabel];
-            // FIXME: new Date(trip.date) is incorrect for our time zone
-            var todayTrips = route.trips.filter(trip => trip.isRunning && new Date(trip.date).setHours(0,0,0,0) == new Date().setHours(0,0,0,0));
+
+            var now = new Date();
+            var todayTrips = route.trips.filter(trip => trip.isRunning &&
+              new Date(trip.date).getTime() == Date.UTC(now.getFullYear(), now.getMonth(),now.getDate()));
+
             scope.dailyTrips = _.sortBy(todayTrips, (trip)=>{
               return trip.tripStops[0];
             });
