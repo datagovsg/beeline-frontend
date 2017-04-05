@@ -114,7 +114,11 @@ export default [
     $scope.$watch('recentPings', function(recentPings) {
       if (recentPings && recentPings.length > 0) {
         $scope.map.busLocation.coordinates = recentPings[0].coordinates;
-        $scope.map.lines.actualPath.path = recentPings;
+        $scope.map.lines.actualPath.path = recentPings.map(p => ({
+          latitude: p.coordinates.coordinates[1],
+          longitude: p.coordinates.coordinates[0],
+        }));
+        $scope.map.lines.actualPath.pings = recentPings;
       }
     });
 

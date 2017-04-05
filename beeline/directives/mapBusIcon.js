@@ -38,7 +38,12 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
         */
       const now = Date.now()
 
-      $scope.$watchGroup(['pings', () => (typeof google)], ([pings, gapi]) => {
+      busIconImage.imageLoadPromise.then(() => $scope.$digest())
+
+      $scope.$watchGroup(['pings', () => (typeof google !== 'undefined') && (busIconImage.loaded)],
+                         ([pings, gapi]) => {
+        // Do not update if google maps is not loaded (we need Size and Point)
+        // Do not update if bus icon image is not loaded yet
         if (!gapi || !pings) return
         const bearing = bearingFromPings(pings)
         const oldLocationStatus = $scope.locationStatus && $scope.locationStatus[index]
@@ -48,11 +53,11 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
             $scope.busIcon : busIconImage.rotate(bearing);
 
         $scope.busIcon = busIcon
-        $scope.icon = (typeof google !== 'undefined') ? {
+        $scope.icon = {
           url: busIcon,
-          scaledSize: new google.maps.Size(100, 100),
-          anchor: new google.maps.Point(50, 50),
-        } : null
+          scaledSize: new google.maps.Size(80, 80),
+          anchor: new google.maps.Point(40, 40),
+        }
 
         $scope.coordinates = (pings.length > 0) ? pings[0].coordinates : null
         $scope.bearing = bearing

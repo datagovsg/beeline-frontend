@@ -46,7 +46,6 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
 
       //load icons and path earlier by restart timeout on watching trips
       $scope.$watchCollection('availableTrips', () => {
-        console.log($scope.availableTrips)
         $scope.timeout.stop();
         $scope.timeout.start();
       });
