@@ -10,9 +10,9 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
     restrict: 'E',
     template: `
     <map-bus-icon ng-repeat="recentPings in allRecentPings track by $index"
-                  ng-if="recentPings.isRecent"
                   idkey="'bus-icon' + $index"
-                  pings="recentPings.pings"></map-bus-icon>
+                  pings="recentPings.pings"
+                  overlay="$index + 1"></map-bus-icon>
     `,
     scope: {
       availableTrips: '<',

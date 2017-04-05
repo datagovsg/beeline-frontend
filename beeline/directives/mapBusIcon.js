@@ -11,18 +11,20 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
     replace: false,
     restrict: 'E',
     template: `
-    <ui-gmap-marker ng-if="pings"
+    <ui-gmap-marker ng-if="icon"
                     coords="coordinates"
                     idkey="idkey"
                     icon="icon"></ui-gmap-marker>
     `,
     scope: {
       pings: '<',
-      idkey: '<'
+      idkey: '<',
+      overlay: '<'
     },
     controller($scope) {
       $scope.bearing = null;
       $scope.busIcon = null;
+      $scope.icon = null;
 
       /**
         Here's the algorithm:
@@ -50,7 +52,7 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
 
         const busIcon = ($scope.busIcon && $scope.bearing !== null &&
                 Math.abs($scope.bearing - bearing) < 0.1) ?
-            $scope.busIcon : busIconImage.rotate(bearing);
+            $scope.busIcon : busIconImage.rotate(bearing, $scope.overlay || '');
 
         $scope.busIcon = busIcon
         $scope.icon = {

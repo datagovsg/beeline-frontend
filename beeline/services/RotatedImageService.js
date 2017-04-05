@@ -20,7 +20,7 @@ angular.module('beeline')
       })
     }
 
-    rotate(radians) {
+    rotate(radians, overlayText) {
       if (!this.loaded) {
         return null
       }
@@ -34,6 +34,17 @@ angular.module('beeline')
       ctx.translate(-WIDTH / 2, -HEIGHT / 2)
 
       ctx.drawImage(this.image, 0, 0, WIDTH, HEIGHT)
+
+
+      if (overlayText) {
+        ctx.font = '60px sans-serif'
+        ctx.fillStyle = 'white'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.rotate(Math.PI)
+        ctx.fillText(overlayText + '', -WIDTH / 2, -HEIGHT / 2)
+        ctx.rotate(Math.PI)
+      }
 
       return canvas.toDataURL()
     }
