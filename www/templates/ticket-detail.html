@@ -91,10 +91,9 @@
                       ng-if="map.markers.alightStop.stop"
                       coords="map.markers.alightStop.stop.coordinates"
                       options="map.markerOptions.endMarker"></ui-gmap-marker>
-      <ui-gmap-marker ng-if="map.busLocation.coordinates"
+      <map-bus-icon ng-if="map.lines.actualPath.path"
                       idkey="'bus-location'"
-                      coords="map.busLocation.coordinates"
-                      icon="map.busLocation.icon"></ui-gmap-marker>
+                      pings="map.lines.actualPath.path"></map-bus-icon>
       <ui-gmap-markers  ng-if="trip.tripStops"
                         models="trip.tripStops"
                         idkey="'id'"
