@@ -19,7 +19,8 @@ export class SafeInterval {
           this.timeout = setTimeout(this.loop, interval);
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         if (promise == this.currentPromise && this.isRunning) {
           this.timeout = setTimeout(this.loop, retryTimeout);
         }
