@@ -1,79 +1,30 @@
-<ion-view class="routes-list">
-  <ion-content scroll="false">
+<ion-view class="routes-view">
 
-    <!-- Search Filter  -->
-    <label class="search item item-input">
-      <input 
-        type="text" 
-        placeholder="Search Routes" 
-        gmap-autocomplete 
-        place-changed="setPlaceQuery($event)"
-      />
-      <i 
-        class="icon ion-android-close" 
-        on-tap="data.placeFilterText = ''"
-        ng-show="data.placeFilterText.length > 0"
-      >
-      </i>
-    </label>
+  <!-- Search Filter  -->
+  <label class="search item item-input">
+    <input 
+      type="text"
+      ng-model="queryText"
+      placeholder="Search Routes" 
+      gmap-autocomplete 
+      place-changed="setPlaceQuery($event)"
+    />
+    <i 
+      class="icon ion-android-close" 
+      on-tap="data.placeFilterText = ''"
+      ng-show="data.placeFilterText.length > 0"
+    ></i>
+  </label>
 
-    <ui-gmap-google-map
-      center="map.center"
-      zoom="map.zoom"
-      events="map.events"
-      control="map.control"
-      options="map.options"
-    >
-      <ui-gmap-polyline
-        ng-repeat="path in data.activatedCrowdstartPaths track by $index"
-        path="path"
-        static="true"
-        stroke="map.pathOptions.routePath"
-      ></ui-gmap-polyline>
-      
-      <ui-gmap-polyline
-        ng-repeat="path in data.recentPaths track by $index"
-        path="path"
-        static="true"
-        stroke="map.pathOptions.routePath"
-      ></ui-gmap-polyline>
+  <!-- Scrollable routes list -->
+  <ion-content class="routes-scroll">
 
-      <ui-gmap-polyline
-        ng-repeat="path in data.litePaths track by $index"
-        path="path"
-        static="true"
-        stroke="map.pathOptions.routePath"
-      ></ui-gmap-polyline>
+    <ion-refresher 
+      pulling-text="Pull to refresh..."
+      on-refresh="refreshRoutes(true)"
+    ></ion-refresher>
 
-      <ui-gmap-polyline
-        ng-repeat="path in data.paths track by $index"
-        path="path"
-        static="true"
-        stroke="map.pathOptions.routePath"
-      ></ui-gmap-polyline>
-      
-      <ui-gmap-polyline
-        ng-repeat="path in data.crowdstartPaths track by $index"
-        path="path"
-        static="true"
-        stroke="map.pathOptions.crowdstartPath"
-      ></ui-gmap-polyline>
-
-      <ui-gmap-marker
-        idkey="0"
-        coords="data.searchCoordinates"
-        options="map.boardMarkerOptions"
-      ></ui-gmap-marker>
-
-    </ui-gmap-google-map>
-
-    <!-- Scrollable routes list -->
-    <ion-scroll class="list">
-      <ion-refresher 
-        pulling-text="Pull to refresh..."
-        on-refresh="refreshRoutes(true)"
-      ></ion-refresher>
-
+    <ion-list>
       <!-- Error message if problem getting routes data -->
       <div class="item item-text-wrap" ng-if="error">
         <i class="icon ion-alert-circled"></i>
@@ -227,20 +178,20 @@
         </route-item>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
+    </ion-list>
 
-      <powered-by-beeline></powered-by-beeline>
+    <powered-by-beeline></powered-by-beeline>
 
-      <!-- No results found message -->
-      <p 
-        ng-if="data.routes.length === 0 && 
-              data.liteRoutes.length === 0 && 
-              data.crowdstartRoutes.length === 0 &&
-              data.placeFilterText" 
-        class="not-found-message text-center"
-      >
-        Sorry, we could not find any routes matching "{{data.placeFilterText}}".
-      </p>
-    </ion-scroll>
-
+    <!-- No results found message -->
+    <p 
+      ng-if="data.routes.length === 0 && 
+            data.liteRoutes.length === 0 && 
+            data.crowdstartRoutes.length === 0 &&
+            data.placeFilterText" 
+      class="not-found-message text-center"
+    >
+      Sorry, we could not find any routes matching "{{data.placeFilterText}}".
+    </p>
   </ion-content>
+
 </ion-view>

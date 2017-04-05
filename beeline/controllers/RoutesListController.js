@@ -4,17 +4,14 @@ export default function(
   // Angular Tools
   $scope,
   $q,
-  $interval,
-  $ionicScrollDelegate, 
   // Route Information
   RoutesService,
   KickstarterService,
   LiteRoutesService, 
-  // Meta
+  // Misc
   LiteRouteSubscriptionService, 
   SearchService, 
-  BookingService,
-  MapOptions
+  BookingService
 ) {
 
   // ---------------------------------------------------------------------------
@@ -23,6 +20,7 @@ export default function(
   // Explicitly declare/initialize of scope variables we use
   $scope.data = {
     placeQuery: null, // The place object used to search
+    queryText: "", // The actual text in the box used only for the clear button 
     // Different types of route data
     activatedCrowdstartRoutes: [],
     recentRoutes: [],
@@ -32,15 +30,7 @@ export default function(
     crowdstartRoutes: [],
     // ???
     nextSessionId: null,
-    activatedCrowdstartPaths: [],
-    recentPaths: [],
-    litePaths: [],
-    paths: [], // This should be in an angular filter
-    crowdstartPaths: [],
-    searchCoordinates: null // This should be an angular filter too
   };
-
-  $scope.map = MapOptions.defaultMapOptions()
 
   // ---------------------------------------------------------------------------
   // UI Hooks
@@ -49,18 +39,6 @@ export default function(
   // When setting the place check that it is a proper place with a geometry
   // The input sends a name only "place" object if you dont choose an option
   $scope.setPlaceQuery = (place) => { $scope.data.placeQuery = place; }
-  $scope.$watch("data.placeQuery", (place) => {
-    if (place && place.geometry) {
-      $scope.data.searchCoordinates = {
-        latitude: place.geometry.location.lat(),
-        longitude: place.geometry.location.lng()
-      };
-      // Need to copy so that panning doesnt change the search coordinates
-      $scope.map.center = Object.create($scope.data.searchCoordinates);
-    } else {
-      $scope.data.searchCoordinates = null;
-    }
-  });
 
   // Manually pull the newest data from the server
   // Report any errors that happen
@@ -102,20 +80,6 @@ export default function(
       }
       // Publish
       $scope.data.activatedCrowdstartRoutes = routes;
-      // Draw the paths
-      $q.all($scope.data.activatedCrowdstartRoutes)
-      .then(routes => routes.map(route => route.path))
-      .then(paths => {
-        return Promise.all(
-          paths.map(path => {
-            if (path) return RoutesService.decodeRoutePath(path);
-            else return [];
-          })
-        );
-      })
-      .then(decodedPaths => {
-        $scope.data.activatedCrowdstartPaths = decodedPaths
-      });
     }
   );
 
@@ -152,21 +116,10 @@ export default function(
       // Clean out "junk" routes which may be old/obsolete
       }).filter( (route)=> route && route.id !== undefined);
       $scope.data.recentRoutesById = _.keyBy($scope.data.recentRoutes,'id');
-      // Draw the paths
-      $q.all($scope.data.recentRoutes)
-      .then(routes => routes.map(route => route.path))
-      .then(paths => {
-        return Promise.all(
-          paths.map(path => {
-            if (path) return RoutesService.decodeRoutePath(path);
-            else return [];
-          })
-        );
-      })
-      .then(decodedPaths => $scope.data.recentPaths = decodedPaths);
     }
   );
 
+  // Lite routes
   $scope.$watchGroup(
     [
       () => LiteRoutesService.getLiteRoutes(),
@@ -195,18 +148,6 @@ export default function(
       });
       // Publish
       $scope.data.liteRoutes = liteRoutes;
-      // Draw the paths
-      $q.all($scope.data.liteRoutes)
-      .then(routes => routes.map(route => route.path))
-      .then(paths => {
-        return Promise.all(
-          paths.map(path => {
-            if (path) return RoutesService.decodeRoutePath(path);
-            else return [];
-          })
-        );
-      })
-      .then(decodedPaths => $scope.data.litePaths = decodedPaths);
     }
   )
 
@@ -233,18 +174,6 @@ export default function(
         midnightOfTrip.setHours(0,0,0,0);
         return firstTripStop.time.getTime() - midnightOfTrip.getTime();
       });
-      // Draw the paths
-      $q.all($scope.data.routes)
-      .then(routes => routes.map(route => route.path))
-      .then(paths => {
-        return Promise.all(
-          paths.map(path => {
-            if (path) return RoutesService.decodeRoutePath(path);
-            else return [];
-          })
-        );
-      })
-      .then(decodedPaths => $scope.data.paths = decodedPaths);
     }
   );
 
@@ -261,18 +190,6 @@ export default function(
       }
       // Map to scope once done filtering and sorting
       $scope.data.crowdstartRoutes = _.sortBy(routes, 'label');
-      // Draw the paths
-      $q.all($scope.data.crowdstartRoutes)
-      .then(routes => routes.map(route => route.path))
-      .then(paths => {
-        return Promise.all(
-          paths.map(path => {
-            if (path) return RoutesService.decodeRoutePath(path);
-            else return [];
-          })
-        );
-      })
-      .then(decodedPaths => $scope.data.crowdstartPaths = decodedPaths);
     }
   );
 
