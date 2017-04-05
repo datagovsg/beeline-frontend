@@ -4,15 +4,15 @@
   <label class="search item item-input">
     <input 
       type="text"
-      ng-model="queryText"
+      ng-model="data.queryText"
       placeholder="Search Routes" 
       gmap-autocomplete 
       place-changed="setPlaceQuery($event)"
     />
     <i 
       class="icon ion-android-close" 
-      on-tap="data.placeFilterText = ''"
-      ng-show="data.placeFilterText.length > 0"
+      on-tap="data.queryText = ''"
+      ng-show="data.queryText.length > 0"
     ></i>
   </label>
 
