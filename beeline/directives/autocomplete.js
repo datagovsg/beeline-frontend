@@ -18,6 +18,9 @@ export default function(uiGmapGoogleMapApi) {
           let place = scope.autocomplete.getPlace();
           // Augment the object with the autocomplete string
           place.description = element[0].value;
+          // Also set it as the query text paramter for consistency with the
+          // "free text" scenario
+          place.queryText = place.description;
           // If a proper autocomplete option is selected then just callback
           // Also do so if theres nothing to autocomplete
           if (place.geometry || place.name.length === 0) {
@@ -57,7 +60,8 @@ export default function(uiGmapGoogleMapApi) {
                 place = result;
                 // Augment the object with the prediction string
                 place.description = predictions[0].description;
-                element[0].value = place.description;
+                // Augment the query result with the original query text
+                place.queryText = element[0].value;
                 // Return the found place
                 scope.$apply(() => {
                   scope.$eval(attribute['placeChanged'], { '$event': place });

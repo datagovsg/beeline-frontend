@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default function SearchService() {
   return {
 
@@ -19,7 +21,6 @@ export default function SearchService() {
     },
 
     filterRoutesByPlace: function(routes, place) {
-
       const maxDistance = 1000; // Arbitrary constant for closeness
 
       // Helper to calculate distance in meters between a pair of coordinates
@@ -51,6 +52,12 @@ export default function SearchService() {
       });
 
       return filteredRoutes;
+    },
+
+    filterRoutesByPlaceAndText: function(routes, place, text) {
+      let placeResults = this.filterRoutesByPlace(routes, place);
+      let textResults = this.filterRoutesByText(routes, text);
+      return _.unionBy(placeResults, textResults, 'id');
     },
 
     // Input: a Route and a string

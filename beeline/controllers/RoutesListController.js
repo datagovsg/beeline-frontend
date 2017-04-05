@@ -73,10 +73,14 @@ export default function(
       // Input validation
       if (!routes) routes = [];
       // Filtering
-      if (placeQuery && placeQuery.geometry) {
-        routes = SearchService.filterRoutesByPlace(routes, placeQuery);
-      } else if (placeQuery && placeQuery.name) {
-        routes = SearchService.filterRoutesByText(routes, placeQuery.name);
+      if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+        routes = SearchService.filterRoutesByPlaceAndText(
+          routes, placeQuery, placeQuery.queryText
+        );
+      } else if (placeQuery && placeQuery.queryText) {
+        routes = SearchService.filterRoutesByText(
+          routes, placeQuery.queryText
+        );
       }
       // Publish
       $scope.data.activatedCrowdstartRoutes = routes;
@@ -96,14 +100,14 @@ export default function(
       // This allows it to organically "clear" any state
       if (!recentRoutes) recentRoutes = [];
       if (!allRoutes) allRoutes = [];
-
-      // Filter the routes depending on existence of object or text
-      if (placeQuery && placeQuery.geometry) {
-        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeQuery);
-      } else if (placeQuery && placeQuery.name) {
+      // Filtering
+      if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+        allRoutes = SearchService.filterRoutesByPlaceAndText(
+          allRoutes, placeQuery, placeQuery.queryText
+        );
+      } else if (placeQuery && placeQuery.queryText) {
         allRoutes = SearchService.filterRoutesByText(
-          allRoutes, 
-          placeQuery.name
+          allRoutes, placeQuery.queryText
         );
       }
       // "Fill in" the recent routes with the all routes data
@@ -131,17 +135,15 @@ export default function(
       if (!liteRoutes) liteRoutes = [];
       liteRoutes = Object.values(liteRoutes);
       // Filtering
-      if ($scope.data.placeQuery && $scope.data.placeQuery.geometry) {
-        liteRoutes = SearchService.filterRoutesByPlace(
-          liteRoutes,
-          $scope.data.placeQuery
+      if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+        liteRoutes = SearchService.filterRoutesByPlaceAndText(
+          liteRoutes, placeQuery, placeQuery.queryText
         );
-      } else if ($scope.data.placeQuery && $scope.data.placeQuery.name) {
+      } else if (placeQuery && placeQuery.queryText) {
         liteRoutes = SearchService.filterRoutesByText(
-          liteRoutes,
-          $scope.data.placeQuery.name
+          liteRoutes, placeQuery.queryText
         );
-     }
+      }
      // Add the subscription information
       _.forEach(liteRoutes, (liteRoute) => {
         liteRoute.isSubscribed = !!subscribed.includes(liteRoute.label);
@@ -159,12 +161,14 @@ export default function(
       // Input validation
       if (!allRoutes) allRoutes = [];
       // Filter routes
-      if (placeQuery && placeQuery.geometry) {
-        allRoutes = SearchService.filterRoutesByPlace(allRoutes, placeQuery);
-      } else if (placeQuery && placeQuery.name) {
+      if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+        allRoutes = SearchService.filterRoutesByPlaceAndText(
+          allRoutes, placeQuery, placeQuery.queryText
+        );
+      } else if (placeQuery && placeQuery.queryText) {
         allRoutes = SearchService.filterRoutesByText(
           allRoutes, 
-          placeQuery.name
+          placeQuery.queryText
         );
       }
       // Sort the routes by the time of day
@@ -183,10 +187,14 @@ export default function(
     ([routes, placeQuery]) => {
       if (!routes) routes = [];
       // Filter the routes
-      if (placeQuery && placeQuery.geometry) { 
-        routes = SearchService.filterRoutesByPlace(routes, placeQuery);
+      if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+        routes = SearchService.filterRoutesByPlaceAndText(
+          routes, placeQuery, placeQuery.queryText
+        );
       } else if (placeQuery && placeQuery.name) {
-        routes = SearchService.filterRoutesByText(routes, placeQuery.name);
+        routes = SearchService.filterRoutesByText(
+          routes, placeQuery.queryText
+        );
       }
       // Map to scope once done filtering and sorting
       $scope.data.crowdstartRoutes = _.sortBy(routes, 'label');
