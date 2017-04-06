@@ -40,7 +40,7 @@ export default function TicketService($http, $filter, UserService, p) {
       shouldRefreshTickets = true;
     },
 
-    fetchTickets: (ignoreCache)=>fetchTickets(ignoreCache),
+    fetchTickets: fetchTickets,
 
     getTickets: function(){
       return allTickets

@@ -1,5 +1,6 @@
 import {NetworkError} from '../shared/errors';
-import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm, formatDateMMMdd} from '../shared/format';
+import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
+import monment from 'moment';
 
 export default [
   '$rootScope',
@@ -18,6 +19,7 @@ export default [
   'loadingSpinner',
   '$q',
   'TicketService',
+  '$interval',
   function(
     $rootScope,
     $scope,
@@ -34,7 +36,8 @@ export default [
     MapOptions,
     loadingSpinner,
     $q,
-    TicketService
+    TicketService,
+    $interval
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -58,8 +61,9 @@ export default [
       previouslyBookedDays: null,
       buttonText: 'Book Next Trip',
       nextTripIsAvailable: null, //if availability==0
+      minsBeforeClose: null, //mins left before reaching booking window
       buttonNotes: null, //if availability==0
-      isVerifying: null //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
+      isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
     };
     $scope.disp = {
       popupStop: null,
@@ -191,8 +195,31 @@ export default [
     }
 
 
+    var minsCountdown = null;
+    $scope.$watch('book.minsBeforeClose',(mins)=> {
+      if (mins && mins>0 && mins<=30) {
+        //if no timer running , start to count down
+        if (minsCountdown == null) {
+          minsCountdown = $interval(()=>{
+            $scope.book.minsBeforeClose = $scope.book.minsBeforeClose - 1;
+          }, 60*1000)
+        }
+      }
+      if (mins && mins<=0) {
+        // to stop the timer
+        if (minsCountdown) {
+          $interval.cancel(minsCountdown);
+          minsCountdown = null;
+          mins = null;
+        }
+      }
+    })
+
     //get the next available trip date everytime when this view is active
     loadingSpinner(routePromise.then((route) => {
+      //reset the nextTripDate and minsBeforeClose when re-loaded
+      $scope.book.nextTripDate = null;
+      $scope.book.minsBeforeClose = null;
       var runningTrips = route.trips.filter(tr => tr.isRunning);
       //compare current date with nearest date trip's 1st board stop time
       var sortedTripInDates = _.sortBy(runningTrips,'date');
@@ -207,13 +234,14 @@ export default [
           }
           //FIXME : windowType == "stop"
         }
+        //if no booking window information
         if (boardTime == null) {
           boardTime = sortedTripStopsInTime[0].time.getTime();
         }
         //check seat is available
         if (now < boardTime) {
           $scope.book.nextTripDate = [trip.date.getTime()];
-          $scope.book.buttonText = $scope.book.buttonText.concat(' ('+formatDateMMMdd($scope.book.nextTripDate[0])+' )');
+          $scope.book.minsBeforeClose = moment(boardTime).diff(moment(now), 'minutes');
           if (trip.availability.seatsAvailable > 0) {
             $scope.book.nextTripIsAvailable = true;
             $scope.book.buttonNotes = null;
@@ -235,7 +263,7 @@ export default [
         //if user is logged, disable the button if tickets are not loaded
         $scope.book.isVerifying = true;
         var previouslyBookedDays = null;
-        if (allTickets) {
+        if (allTickets !== null) {
           $scope.book.isVerifying = false;
           var ticketsByRouteId = _.groupBy(allTickets, ticket => ticket.boardStop.trip.routeId);
           if (ticketsByRouteId && ticketsByRouteId[$scope.book.routeId]) {

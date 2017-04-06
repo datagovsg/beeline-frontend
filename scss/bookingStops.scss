@@ -86,6 +86,9 @@
     .continue-button-item {
       @include flex-shrink;
       text-align: center;
+      .notes {
+        margin: 10px 0px;
+      }
     }
 
     .stop-inputs {
