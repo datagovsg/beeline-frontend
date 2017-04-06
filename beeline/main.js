@@ -176,13 +176,14 @@ angular.module('beeline')
     }
   });
 })
-.run(function (RoutesService, KickstarterService, LiteRoutesService) {
+.run(function (RoutesService, KickstarterService, LiteRoutesService, TicketService) {
   // Pre-fetch the routes
   RoutesService.fetchRoutes();
   RoutesService.fetchRecentRoutes();
   KickstarterService.fetchLelong();
   KickstarterService.fetchBids();
   LiteRoutesService.fetchLiteRoutes();
+  TicketService.fetchTickets();
 })
 .run(function ($templateCache) {
   $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))
