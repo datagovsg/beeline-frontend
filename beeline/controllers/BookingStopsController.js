@@ -216,7 +216,7 @@ export default [
     })
 
     //get the next available trip date everytime when this view is active
-    loadingSpinner(routePromise.then((route) => {
+    loadingSpinner(Promise.all([routePromise, ()=>UserService.verifySession()]).then(([route, user]) => {
       //reset the nextTripDate and minsBeforeClose when re-loaded
       $scope.book.nextTripDate = null;
       $scope.book.minsBeforeClose = null;
