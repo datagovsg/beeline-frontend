@@ -532,6 +532,13 @@ export default [
       })
     }
 
+    let sendEmailVerification = function () {
+      return beelineRequest({
+        method: 'POST',
+        url: `/users/sendEmailVerification`,
+      })
+    }
+
     // ////////////////////////////////////////////////////////////////////////////
     // Initialization
     // ////////////////////////////////////////////////////////////////////////////
@@ -558,6 +565,7 @@ export default [
       updatePaymentInfo,
       removePaymentInfo,
       getReferralMsg,
+      sendEmailVerification,
     }
   },
 ]
