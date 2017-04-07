@@ -94,6 +94,7 @@ export default [
     $scope.$on('priceCalculator.done', () => {
       $ionicScrollDelegate.resize();
       $scope.isPreviewCalculating = false;
+      $scope.$broadcast('scroll.refreshComplete');
     })
     $scope.$on('companyTnc.done', () => {
       $ionicScrollDelegate.resize();
@@ -114,6 +115,10 @@ export default [
         Object.keys(previouslyBookedDays).map(s => parseInt(s))
       );
       $scope.book.hasInvalidDate = (selectedAndInvalid.length > 0)
+    }
+
+    $scope.refreshPrices = function () {
+      $scope.$broadcast('priceCalculator.recomputePrices')
     }
 
     $scope.payHandler = async function () {
@@ -235,11 +240,12 @@ export default [
           url: '/transactions/payment_ticket_sale',
           data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips($scope.book),
-            promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
+            promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : { code: '' },
             // don't use route credits if toggle if off
             creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
             applyCredits: $scope.book.applyCredits,
             applyReferralCredits: $scope.book.applyReferralCredits,
+            expectedPrice: $scope.book.price
           }),
         });
 
