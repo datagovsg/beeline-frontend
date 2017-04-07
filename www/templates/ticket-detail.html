@@ -80,9 +80,6 @@
     <ui-gmap-google-map ng-if="info.trip.isRunning" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
       <my-location></my-location>
       <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
-      <ui-gmap-polyline ng-if="map.lines.actualPath.path.length"
-                        path="map.lines.actualPath.path"
-                        stroke="map.pathOptions.actualPath"></ui-gmap-polyline>
       <ui-gmap-marker idkey="'boardstop'"
                       ng-if="map.markers.boardStop.stop"
                       coords="map.markers.boardStop.stop.coordinates"
