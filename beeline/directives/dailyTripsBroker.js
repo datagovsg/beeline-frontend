@@ -40,9 +40,7 @@ export default function(LiteRoutesService, $timeout) {
             var todayTrips = route.trips.filter(trip => trip.isRunning &&
               new Date(trip.date).getTime() == Date.UTC(now.getFullYear(), now.getMonth(),now.getDate()));
 
-            scope.dailyTrips = _.sortBy(todayTrips, (trip)=>{
-              return trip.tripStops[0];
-            });
+            scope.dailyTrips = _.sortBy(todayTrips, (trip)=>new Date(trip.tripStops[0].time));
           })
       }
     },
