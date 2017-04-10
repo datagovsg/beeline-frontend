@@ -73,6 +73,12 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
             $scope.statusMessages[index] = _.get(info, 'statuses[0].message', null)
           })
         }))
+        //to mark no tracking data if no ping or pings are too old
+        if (_.every($scope.allRecentPings,{"isRecent": undefined})) {
+          $scope.hasTrackingData = false;
+        } else {
+          $scope.hasTrackingData = true;
+        }
       }
     },
   };
