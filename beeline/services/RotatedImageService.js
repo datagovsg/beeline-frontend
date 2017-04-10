@@ -26,7 +26,9 @@ angular.module('beeline')
       }
 
       const ctx = canvas.getContext('2d')
-      ctx.resetTransform()
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      //resetTransform not working in safari
+      // ctx.resetTransform()
       ctx.clearRect(0, 0, WIDTH, HEIGHT)
 
       ctx.translate(WIDTH / 2, HEIGHT / 2)
