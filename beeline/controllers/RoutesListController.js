@@ -50,12 +50,14 @@ export default function(
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
     var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache);
     var allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(ignoreCache);
+    var crowdstartRoutesPromise = KickstarterService.fetchLelong(ignoreCache);
     var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
-    $q.all([
+    return $q.all([
       routesPromise,
       recentRoutesPromise,
       allLiteRoutesPromise,
-      liteRouteSubscriptionsPromise
+      liteRouteSubscriptionsPromise,
+      crowdstartRoutesPromise
     ]).then(() => {
       $scope.error = null;
     }).catch(() => {
