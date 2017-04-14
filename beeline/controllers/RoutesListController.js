@@ -63,6 +63,10 @@ export default function(
     });
   };
 
+  $scope.$watch("data.queryText", (queryText) => {
+    if (queryText.length === 0) $scope.data.placeQuery = null;
+  });
+
   // ---------------------------------------------------------------------------
   // Model Hooks
   // ---------------------------------------------------------------------------
