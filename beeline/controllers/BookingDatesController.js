@@ -138,7 +138,7 @@ export default [
     })
 
     function loadTickets() {
-      var ticketsPromise = TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
+      var ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
         .catch((err) => null)
 
       loadingSpinner($q.all([ticketsPromise]).then(([tickets]) => {
