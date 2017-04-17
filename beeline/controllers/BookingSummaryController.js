@@ -114,7 +114,7 @@ export default [
 
     $scope.checkValidDate = async function () {
 
-      var previouslyBookedDays = await TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true);
+      var previouslyBookedDays = await TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true);
       var selectedAndInvalid = _.intersection(
         $scope.book.selectedDates, // list of integers
         Object.keys(previouslyBookedDays).map(s => parseInt(s))

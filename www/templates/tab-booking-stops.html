@@ -137,7 +137,15 @@
       </ion-list>
 
       <div class="item continue-button-item">
+        <div ng-if="book.minsBeforeClose && book.minsBeforeClose >0 && book.minsBeforeClose<=30" class="notes">Booking for the next trip closes in {{book.minsBeforeClose}} mins.</div>
+        <div ng-if="book.minsBeforeClose && book.minsBeforeClose <= 0" class="notes" >Booking for the next trip has ended.</div>
         <button class="button primary-button button-item"
+          ng-click="continue()"
+          ng-disabled="stopsForm.$invalid || !book.nextTripIsAvailable || book.isVerifying || book.minsBeforeClose<=0">
+          {{book.buttonText}}{{ ' '+(book.nextTripDate[0] | date:'dd MMM' : 'Z')+' '}}{{'('+(book.nextTripDate[0] | date:'EEE' : 'Z')+')'}}
+        </button>
+        <div ng-if="book.buttonNotes" class="notes">{{book.buttonNotes}}</div>
+        <div class="button button-clear button-royal"
           ui-sref="tabs.booking-dates({
             routeId: book.routeId,
             boardStop: book.boardStop.id,
@@ -145,8 +153,8 @@
             sessionId: session.sessionId,
           })"
           ng-disabled="stopsForm.$invalid">
-          Continue
-        </button>
+          <u>Advance Booking</u>
+        </div>
       </div>
     </form> <!-- flex-col -->
   </ion-content>

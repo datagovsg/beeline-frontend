@@ -44,7 +44,8 @@ export default function(
   // Report any errors that happen
   // Note that theres no need to update the scope manually
   // since this is done by the service watchers
-  $scope.refreshRoutes = function (ignoreCache) {
+  $scope.refreshRoutes = async function (ignoreCache) {
+    await UserService.verifySession();
     RoutesService.fetchRouteCredits(ignoreCache);
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
