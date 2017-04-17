@@ -62,6 +62,8 @@ export default function(
       $scope.error = null;
     }).catch(() => {
       $scope.error = true;
+    }).finally(() => {
+      $scope.$broadcast('scroll.refreshComplete');
     });
   };
 
