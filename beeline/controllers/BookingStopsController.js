@@ -61,7 +61,7 @@ export default [
       previouslyBookedDays: null,
       buttonText: 'Book Next Trip',
       nextTripIsAvailable: null, //if availability==0
-      windowBeforeClose: null,
+      minsBeforeClose: null,
       buttonNotes: null, //if availability==0
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
     };
@@ -69,7 +69,6 @@ export default [
       popupStop: null,
       popupStopType: null,
       parentScope: $scope,
-      minsBeforeClose: null, //mins left before reaching booking window
     }
 
     // Resolved when the map is initialized
@@ -195,28 +194,13 @@ export default [
       }
     }
 
-    var countdownTimer;
-
-    $scope.$watch('book.windowBeforeClose',(window)=>{
-      $scope.disp.minsBeforeClose = window;
-      //cancel the interval if time reaches
-      if (window && window<=0) {
-        if (countdownTimer) {
-          $interval.cancel(countdownTimer);
-          countdownTimer = null;
-        }
-      }
-    })
-
     //get the next available trip date everytime when this view is active
     loadingSpinner(Promise.all([routePromise, ()=>UserService.verifySession()])
       .then(([route, user]) => {
-        //reset the nextTripDate and minsBeforeClose when re-loaded
+        //reset the nextTripDate and windowBeforeClose when re-loaded
         $scope.book.nextTripDate = null;
-        //variable to show countdown in UI
-        $scope.disp.minsBeforeClose = null;
         $scope.book.windowBeforeClose = null;
-        countdownTimer = null;
+        var countdownTimer = null;
         var runningTrips = route.trips.filter(tr => tr.isRunning);
         //compare current date with nearest date trip's 1st board stop time
         var sortedTripInDates = _.sortBy(runningTrips,'date');
@@ -238,11 +222,19 @@ export default [
           //check seat is available
           if (now < boardTime) {
             $scope.book.nextTripDate = [trip.date.getTime()];
-            $scope.book.windowBeforeClose =  moment(boardTime).diff(moment(now), 'minutes');
+            $scope.book.minsBeforeClose =  moment(boardTime).diff(moment(now), 'minutes');
             // start the countdown timer
             countdownTimer = $interval(()=>{
-              $scope.book.windowBeforeClose =  moment(boardTime).diff(moment(Date.now()), 'minutes');
-            }, 1000*60);
+              $scope.book.minsBeforeClose =  moment(boardTime).diff(moment(Date.now()), 'minutes');
+            }, 1000*30);
+
+            if ($scope.book.minsBeforeClose && $scope.book.minsBeforeClose<=0) {
+              if (countdownTimer) {
+                $interval.cancel(countdownTimer);
+                countdownTimer = null;
+              }
+            }
+
             if (trip.availability.seatsAvailable > 0) {
               $scope.book.nextTripIsAvailable = true;
               $scope.book.buttonNotes = null;
