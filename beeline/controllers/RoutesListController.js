@@ -131,6 +131,39 @@ export default function(
     }
   );
 
+  // Backed kickstarter routes
+  $scope.$watchGroup(
+    [
+      () => KickstarterService.getLelong(), 
+      () => KickstarterService.getBids(),
+      'data.placeQuery'
+    ],
+    ([routes, bids, placeQuery]) => {
+      if (!routes) routes = [];
+      // Filter to the routes the user bidded on
+      let biddedRouteIds = bids.map(bid => bid.routeId);
+      routes = routes.filter(route => {
+        return biddedRouteIds.includes(route.id.toString());
+      });
+      // Filter out the expired routes
+      routes = routes.filter(route => !route.isExpired);
+      // Filter the routes
+      if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+        routes = SearchService.filterRoutesByPlaceAndText(
+          routes, placeQuery, placeQuery.queryText
+        );
+      } else if (placeQuery && placeQuery.name) {
+        routes = SearchService.filterRoutesByText(
+          routes, placeQuery.queryText
+        );
+      }
+      // Map to scope once done filtering and sorting
+      $scope.data.biddedCrowdstartRoutes = _.sortBy(routes, route => {
+        return parseInt(route.label.slice(1));
+      });
+    }
+  );
+
   // Lite routes
   $scope.$watchGroup(
     [
@@ -156,8 +189,10 @@ export default function(
       _.forEach(liteRoutes, (liteRoute) => {
         liteRoute.isSubscribed = !!subscribed.includes(liteRoute.label);
       });
-      // Publish
-      $scope.data.liteRoutes = liteRoutes;
+      // Sort by label and publish
+      $scope.data.liteRoutes = _.sortBy(liteRoutes, route => {
+        return parseInt(route.label.slice(1));
+      });
     }
   )
 
@@ -191,9 +226,19 @@ export default function(
 
   // Unactivated kickstarter routes
   $scope.$watchGroup(
-    [() => KickstarterService.getLelong(), 'data.placeQuery'],
-    ([routes, placeQuery]) => {
+    [
+      () => KickstarterService.getLelong(),
+      () => KickstarterService.getBids(),
+      'data.placeQuery'
+    ],
+    ([routes, bids, placeQuery]) => {
       if (!routes) routes = [];
+      // Filter out the routes the user bidded on
+      // These are already shown elsewhere
+      let biddedRouteIds = bids.map(bid => bid.routeId);
+      routes = routes.filter(route => {
+        return !biddedRouteIds.includes(route.id.toString());
+      });
       // Filter out the expired routes
       routes = routes.filter(route => !route.isExpired);
       // Filter the routes
@@ -207,7 +252,9 @@ export default function(
         );
       }
       // Map to scope once done filtering and sorting
-      $scope.data.crowdstartRoutes = _.sortBy(routes, 'label');
+      $scope.data.crowdstartRoutes = _.sortBy(routes, route => {
+        return parseInt(route.label.slice(1));
+      });
     }
   );
 
