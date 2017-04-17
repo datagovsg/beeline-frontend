@@ -87,7 +87,7 @@
       @include flex-shrink;
       text-align: center;
       .notes {
-        margin: 10px 0px;
+        margin: $padding-large-vertical 0px;
       }
     }
 

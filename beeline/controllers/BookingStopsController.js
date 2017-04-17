@@ -61,7 +61,7 @@ export default [
       previouslyBookedDays: null,
       buttonText: 'Book Next Trip',
       nextTripIsAvailable: null, //if availability==0
-      minsBeforeClose: null, //mins left before reaching booking window
+      windowBeforeClose: null,
       buttonNotes: null, //if availability==0
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
     };
@@ -69,6 +69,7 @@ export default [
       popupStop: null,
       popupStopType: null,
       parentScope: $scope,
+      minsBeforeClose: null, //mins left before reaching booking window
     }
 
     // Resolved when the map is initialized
@@ -194,69 +195,72 @@ export default [
       }
     }
 
+    var countdownTimer;
 
-    var minsCountdown = null;
-    $scope.$watch('book.minsBeforeClose',(mins)=> {
-      if (mins && mins>0 && mins<=30) {
-        //if no timer running , start to count down
-        if (minsCountdown == null) {
-          minsCountdown = $interval(()=>{
-            $scope.book.minsBeforeClose = $scope.book.minsBeforeClose - 1;
-          }, 60*1000)
-        }
-      }
-      if (mins && mins<=0) {
-        // to stop the timer
-        if (minsCountdown) {
-          $interval.cancel(minsCountdown);
-          minsCountdown = null;
-          mins = null;
+    $scope.$watch('book.windowBeforeClose',(window)=>{
+      $scope.disp.minsBeforeClose = window;
+      //cancel the interval if time reaches
+      if (window && window<=0) {
+        if (countdownTimer) {
+          $interval.cancel(countdownTimer);
+          countdownTimer = null;
         }
       }
     })
 
     //get the next available trip date everytime when this view is active
-    loadingSpinner(Promise.all([routePromise, ()=>UserService.verifySession()]).then(([route, user]) => {
-      //reset the nextTripDate and minsBeforeClose when re-loaded
-      $scope.book.nextTripDate = null;
-      $scope.book.minsBeforeClose = null;
-      var runningTrips = route.trips.filter(tr => tr.isRunning);
-      //compare current date with nearest date trip's 1st board stop time
-      var sortedTripInDates = _.sortBy(runningTrips,'date');
-      var now = Date.now();
-      for (let trip of sortedTripInDates) {
-        var sortedTripStopsInTime = _.sortBy(trip.tripStops,'time');
-        var bookingWindow = 0;
-        var boardTime = null;
-        if (trip.bookingInfo.windowSize && trip.bookingInfo.windowType) {
-          if (trip.bookingInfo.windowType === 'firstStop') {
-            boardTime = sortedTripStopsInTime[0].time.getTime() + trip.bookingInfo.windowSize;
+    loadingSpinner(Promise.all([routePromise, ()=>UserService.verifySession()])
+      .then(([route, user]) => {
+        //reset the nextTripDate and minsBeforeClose when re-loaded
+        $scope.book.nextTripDate = null;
+        //variable to show countdown in UI
+        $scope.disp.minsBeforeClose = null;
+        $scope.book.windowBeforeClose = null;
+        countdownTimer = null;
+        var runningTrips = route.trips.filter(tr => tr.isRunning);
+        //compare current date with nearest date trip's 1st board stop time
+        var sortedTripInDates = _.sortBy(runningTrips,'date');
+        var now = Date.now();
+        for (let trip of sortedTripInDates) {
+          var sortedTripStopsInTime = _.sortBy(trip.tripStops,'time');
+          var bookingWindow = 0;
+          var boardTime = null;
+          if (trip.bookingInfo.windowSize && trip.bookingInfo.windowType) {
+            if (trip.bookingInfo.windowType === 'firstStop') {
+              boardTime = sortedTripStopsInTime[0].time.getTime() + trip.bookingInfo.windowSize;
+            }
+            //FIXME : windowType == "stop"
           }
-          //FIXME : windowType == "stop"
-        }
-        //if no booking window information
-        if (boardTime == null) {
-          boardTime = sortedTripStopsInTime[0].time.getTime();
-        }
-        //check seat is available
-        if (now < boardTime) {
-          $scope.book.nextTripDate = [trip.date.getTime()];
-          $scope.book.minsBeforeClose = moment(boardTime).diff(moment(now), 'minutes');
-          if (trip.availability.seatsAvailable > 0) {
-            $scope.book.nextTripIsAvailable = true;
-            $scope.book.buttonNotes = null;
+          //if no booking window information
+          if (boardTime == null) {
+            boardTime = sortedTripStopsInTime[0].time.getTime();
           }
-          else {
-            $scope.book.nextTripIsAvailable = false;
-            $scope.book.buttonNotes = 'Tickets are sold out';
+          //check seat is available
+          if (now < boardTime) {
+            $scope.book.nextTripDate = [trip.date.getTime()];
+            $scope.book.windowBeforeClose =  moment(boardTime).diff(moment(now), 'minutes');
+            // start the countdown timer
+            countdownTimer = $interval(()=>{
+              $scope.book.windowBeforeClose =  moment(boardTime).diff(moment(Date.now()), 'minutes');
+            }, 1000*60);
+            if (trip.availability.seatsAvailable > 0) {
+              $scope.book.nextTripIsAvailable = true;
+              $scope.book.buttonNotes = null;
+            }
+            else {
+              $scope.book.nextTripIsAvailable = false;
+              $scope.book.buttonNotes = 'Tickets are sold out';
+            }
+            break;
           }
-          break;
         }
-      }
-    }));
+      }));
 
     // get user object
-    $scope.$watchGroup([() => UserService.getUser(), 'book.nextTripDate', ()=>TicketService.getTickets()], ([user, nextTripDate, allTickets]) => {
+    $scope.$watchGroup([() => UserService.getUser(),
+                        'book.nextTripDate',
+                        ()=>TicketService.getTickets()],
+                        ([user, nextTripDate, allTickets]) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
@@ -294,10 +298,10 @@ export default [
     $scope.fastCheckout = function(){
       if ($scope.isLoggedIn) {
         $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
-        boardStop: $scope.book.boardStop.id,
-        alightStop: $scope.book.alightStop.id,
-        sessionId: $scope.session.sessionId,
-        selectedDates: $scope.book.nextTripDate,});
+          boardStop: $scope.book.boardStop.id,
+          alightStop: $scope.book.alightStop.id,
+          sessionId: $scope.session.sessionId,
+          selectedDates: $scope.book.nextTripDate,});
       } else {
         UserService.promptLogIn();
       }
