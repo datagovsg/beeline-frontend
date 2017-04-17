@@ -192,6 +192,8 @@ export default function(
     [() => KickstarterService.getLelong(), 'data.placeQuery'],
     ([routes, placeQuery]) => {
       if (!routes) routes = [];
+      // Filter out the expired routes
+      routes = routes.filter(route => !route.isExpired);
       // Filter the routes
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         routes = SearchService.filterRoutesByPlaceAndText(
