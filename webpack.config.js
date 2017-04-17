@@ -1,5 +1,7 @@
-var path = require('path');
-var fs = require('fs');
+const path = require('path');
+const fs = require('fs');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const InlineEnviromentVariablesPlugin = require('inline-environment-variables-webpack-plugin');
 
 if (!process.env.BACKEND_URL) {
   throw new Error(`
@@ -14,50 +16,89 @@ $ export BACKEND_URL=<something>
 `)
 }
 
-var env = {
-    BACKEND_URL: process.env.BACKEND_URL,
-}
-fs.writeFileSync(`${__dirname}/beeline/env.json`, JSON.stringify(env))
+// Set up the backend URL
+module.exports = []
 
-module.exports = {
+module.exports.push({
   devtool: 'source-map',
   module: {
-    loaders: [
-      {
-        test: /\.html$/,
-        loader: 'html',
-        exclude: /node_modules/,
-        include: path.resolve('.'),
-        query: {
-          attrs: false, /* disable img:src loading */
-        }
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-        include: path.resolve('.'),
-      },
-      {
-        test: /\.json$/,
-        loader: 'json',
-      },
-    ],
+    rules: [{
+      test: /\.html$/,
+      loader: 'html-loader',
+      exclude: /node_modules/,
+      options: {
+        attrs: false, /* disable img:src loading */
+      }
+    }, {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      exclude: /node_modules/,
+    }, {
+      test: /\.json$/,
+      loader: 'json-loader',
+    }, {
+      // Fix for libraries that require moment as globals
+      // Multiple Date Picker
+      test: /\.js$/,
+      use: [{
+        loader: 'imports-loader?moment'
+      }],
+      include: [
+        path.resolve('node_modules/multiple-date-picker/dist/multipleDatePicker.js'),
+      ],
+    }]
   },
   entry: [
     'babel-polyfill',
-    path.resolve('beeline/main.js'),
+    path.join(__dirname, 'beeline/main.js')
   ],
   output: {
     path: path.resolve('www/lib/beeline'),
     filename: 'bundle.js',
     pathinfo: true,
   },
-  babel: {
-    presets: ['es2015', 'stage-3'],
-    sourceMaps: true,
-  },
-  externals: {
-    'lodash': '_'
+  plugins: [
+    new InlineEnviromentVariablesPlugin([
+      'BACKEND_URL'
+    ])
+  ]
+});
+
+module.exports.push(compileSCSS('ionic.app.scss'))
+module.exports.push(compileSCSS('operator-grab.scss'))
+
+function compileSCSS(filename) {
+  if (!filename.endsWith('.scss')) {
+    throw new Error(`${filename} must end in .scss`)
   }
-};
+
+  return {
+    entry: path.join(__dirname, `scss/${filename}`),
+    module: {
+      rules: [{
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          use: [
+            {loader: 'css-loader', options: {url: false}},
+            {loader: 'sass-loader'}
+          ],
+        })
+      }]
+    },
+    output: {
+      // This output is entirely superfluous.
+      // We are abusing Webpack so that it will compile the SCSS
+      // What it means is that you can load the style sheet by
+      // both <script src="....XXX.css.js"></script>
+      // and also by <link href="....XXX.css" />
+      path: path.resolve(`www/css`),
+      filename: filename.replace(/\.scss$/, '.css.js'),
+      pathinfo: true,
+    },
+    plugins: [
+      new ExtractTextPlugin({
+        filename: filename.replace(/\.scss$/, '.css'),
+      })
+    ]
+  }
+}
