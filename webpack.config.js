@@ -1,25 +1,18 @@
 const path = require('path');
 const fs = require('fs');
+const assert = require('assert')
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const InlineEnviromentVariablesPlugin = require('inline-environment-variables-webpack-plugin');
 
-if (!process.env.BACKEND_URL) {
-  throw new Error(`
-Please run the following before running webpack:
-
-$ export BACKEND_URL=<something>
-
-<something> is one of:
-1. https://api.beeline.sg (LIVE)
-2. https://beeline-server-dev.herokuapp.com (STAGING)
-3. http://staging.beeline.sg
-`)
-}
-
 // Set up the backend URL
-module.exports = []
+const webpackConfig = []
 
-module.exports.push({
+const prefix = process.env.BUILD_PREFIX || 'www'
+const backendUrl = process.env.BACKEND_URL
+
+assert(backendUrl, "Env BACKEND_URL must be set! e.g. process.env.BACKEND_URL")
+
+webpackConfig.push({
   devtool: 'source-map',
   module: {
     rules: [{
@@ -53,19 +46,19 @@ module.exports.push({
     path.join(__dirname, 'beeline/main.js')
   ],
   output: {
-    path: path.resolve('www/lib/beeline'),
+    path: path.join(__dirname, prefix, '/lib/beeline'),
     filename: 'bundle.js',
     pathinfo: true,
   },
   plugins: [
-    new InlineEnviromentVariablesPlugin([
-      'BACKEND_URL'
-    ])
+    new InlineEnviromentVariablesPlugin({
+      BACKEND_URL: backendUrl,
+    })
   ]
 });
 
-module.exports.push(compileSCSS('ionic.app.scss'))
-module.exports.push(compileSCSS('operator-grab.scss'))
+webpackConfig.push(compileSCSS('ionic.app.scss'))
+webpackConfig.push(compileSCSS('operator-grab.scss'))
 
 function compileSCSS(filename) {
   if (!filename.endsWith('.scss')) {
@@ -73,7 +66,7 @@ function compileSCSS(filename) {
   }
 
   return {
-    entry: path.join(__dirname, `scss/${filename}`),
+    entry: path.join(__dirname, 'scss', filename),
     module: {
       rules: [{
         test: /\.scss$/,
@@ -91,7 +84,7 @@ function compileSCSS(filename) {
       // What it means is that you can load the style sheet by
       // both <script src="....XXX.css.js"></script>
       // and also by <link href="....XXX.css" />
-      path: path.resolve(`www/css`),
+      path: path.join(__dirname, prefix, `css`),
       filename: filename.replace(/\.scss$/, '.css.js'),
       pathinfo: true,
     },
@@ -102,3 +95,5 @@ function compileSCSS(filename) {
     ]
   }
 }
+
+module.exports = webpackConfig
