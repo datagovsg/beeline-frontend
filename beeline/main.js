@@ -16,6 +16,10 @@ import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 import configureRoutes from './router.js';
 
 require('./directives/extA');
+require('./services/RotatedImageService');
+require('./services/GeoUtils');
+require('./directives/mapBusPolyRoute');
+require('./directives/mapBusIcon');
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -96,7 +100,6 @@ angular.module('beeline')
 .directive('moreInfo', require('./directives/moreInfo/moreInfo').default)
 .directive('markdownRenderer', require('./directives/markdownRenderer').default)
 .directive('mapPolyRoute', require('./directives/mapPolyRoute').default)
-.directive('mapBusPolyRoute', require('./directives/mapBusPolyRoute').default)
 .directive('mapBusStops', require('./directives/mapBusStops').default)
 .directive('dynamicSignage', require('./directives/dynamicSignage.js').default)
 .directive('beelineBindHtml', require('./directives/beelineBindHtml.js').default)
