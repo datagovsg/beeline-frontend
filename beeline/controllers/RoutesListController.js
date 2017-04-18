@@ -7,10 +7,10 @@ export default function(
   // Route Information
   RoutesService,
   KickstarterService,
-  LiteRoutesService, 
+  LiteRoutesService,
   // Misc
-  LiteRouteSubscriptionService, 
-  SearchService, 
+  LiteRouteSubscriptionService,
+  SearchService,
   BookingService
 ) {
 
@@ -20,7 +20,7 @@ export default function(
   // Explicitly declare/initialize of scope variables we use
   $scope.data = {
     placeQuery: null, // The place object used to search
-    queryText: "", // The actual text in the box used only for the clear button 
+    queryText: "", // The actual text in the box used only for the clear button
     // Different types of route data
     activatedCrowdstartRoutes: [],
     recentRoutes: [],
@@ -28,7 +28,6 @@ export default function(
     liteRoutes: [],
     routes: [],
     crowdstartRoutes: [],
-    // ???
     nextSessionId: null,
   };
 
@@ -45,7 +44,6 @@ export default function(
   // Note that theres no need to update the scope manually
   // since this is done by the service watchers
   $scope.refreshRoutes = async function (ignoreCache) {
-    await UserService.verifySession();
     RoutesService.fetchRouteCredits(ignoreCache);
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
@@ -61,11 +59,11 @@ export default function(
       crowdstartRoutesPromise
     ]).then(() => {
       $scope.error = null;
+      $scope.$broadcast('scroll.refreshComplete');
     }).catch(() => {
       $scope.error = true;
-    }).finally(() => {
       $scope.$broadcast('scroll.refreshComplete');
-    });
+    })
   };
 
   $scope.$watch("data.queryText", (queryText) => {
@@ -103,7 +101,7 @@ export default function(
       () => RoutesService.getRecentRoutes(),
       () => RoutesService.getRoutesWithRoutePass(),
       'data.placeQuery'
-    ], 
+    ],
     ([recentRoutes, allRoutes, placeQuery]) => {
       // If we cant find route data here then proceed with empty
       // This allows it to organically "clear" any state
@@ -135,7 +133,7 @@ export default function(
   // Backed kickstarter routes
   $scope.$watchGroup(
     [
-      () => KickstarterService.getLelong(), 
+      () => KickstarterService.getLelong(),
       () => KickstarterService.getBids(),
       'data.placeQuery'
     ],
@@ -146,8 +144,11 @@ export default function(
       routes = routes.filter(route => {
         return biddedRouteIds.includes(route.id.toString());
       });
-      // Filter out the expired routes
-      routes = routes.filter(route => !route.isExpired);
+
+      // don't display it in backed list if the pass expires after 1 month of 1st trip
+      //and don't display it if it's 7 days after expired and not actived
+      routes = routes.filter((route)=>(!route.passExpired && route.isActived) || !route.isExpired || !route.is7DaysOld);
+
       // Filter the routes
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         routes = SearchService.filterRoutesByPlaceAndText(
@@ -211,7 +212,7 @@ export default function(
         );
       } else if (placeQuery && placeQuery.queryText) {
         allRoutes = SearchService.filterRoutesByText(
-          allRoutes, 
+          allRoutes,
           placeQuery.queryText
         );
       }

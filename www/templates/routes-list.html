@@ -2,15 +2,15 @@
 
   <!-- Search Filter  -->
   <label class="search item item-input">
-    <input 
+    <input
       type="text"
       ng-model="data.queryText"
-      placeholder="Search Routes" 
-      gmap-autocomplete 
+      placeholder="Search Routes"
+      gmap-autocomplete
       place-changed="setPlaceQuery($event)"
     />
-    <i 
-      class="icon ion-android-close" 
+    <i
+      class="icon ion-android-close"
       on-tap="data.queryText = ''"
       ng-show="data.queryText.length > 0"
     ></i>
@@ -19,7 +19,7 @@
   <!-- Scrollable routes list -->
   <ion-content class="routes-scroll">
 
-    <ion-refresher 
+    <ion-refresher
       pulling-text="Pull to refresh..."
       on-refresh="refreshRoutes(true)"
     ></ion-refresher>
@@ -33,22 +33,20 @@
       </div>
 
       <!-- Recent Routes Section -->
-      <div 
-        class="item item-divider" 
-        ng-if="data.activatedCrowdstartRoutes && 
+      <div
+        class="item item-divider"
+        ng-if="data.activatedCrowdstartRoutes &&
                data.activatedCrowdstartRoutes.length > 0"
       >
         Activated Crowdstart Routes
       </div>
-      <ion-item 
+      <ion-item
         ng-repeat="route in data.activatedCrowdstartRoutes"
         ui-sref="tabs.bookingPickup({
           routeId: route.id,
-          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-          alightStop: data.recentRoutesById[route.id].alightStopStopId,
           sessionId: data.nextSessionId,
         })"
-        ng-if="data.activatedCrowdstartRoutes && 
+        ng-if="data.activatedCrowdstartRoutes &&
                data.activatedCrowdstartRoutes.length > 0"
         class="item-icon-right"
       >
@@ -60,7 +58,7 @@
       <div class="item item-divider" ng-if="data.recentRoutes.length > 0">
         Recently Booked Routes
       </div>
-      <ion-item 
+      <ion-item
         ng-repeat="route in data.recentRoutes"
         ui-sref="tabs.bookingPickup({
           routeId: route.id,
@@ -75,28 +73,28 @@
       </ion-item>
 
       <!-- Backed Crowdstart Routes -->
-      <div 
-        class="item item-divider" 
+      <div
+        class="item item-divider"
         ng-if="data.backedCrowdstartRoutes.length > 0"
       >
         Your Crowdstart Pre-orders
       </div>
-      <ion-item 
-        ng-repeat="route in data.backedCrowdstartRoutes" 
-        class="item-text-wrap item-icon-right" 
+      <ion-item
+        ng-repeat="route in data.backedCrowdstartRoutes"
+        class="item-text-wrap item-icon-right"
         ui-sref="tabs.crowdstart-recap({ routeId: route.id })">
         <kickstart-route route="route"></kickstart-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
       <!-- Available Routes Section -->
-      <div 
+      <div
         class="item item-divider"
         ng-if="data.liteRoutes.length > 0 || data.routes.length > 0"
       >
         Available Routes
       </div>
-      <ion-item 
+      <ion-item
         ng-repeat="route in data.routes"
         ui-sref="tabs.bookingPickup({
           routeId: route.id,
@@ -109,7 +107,7 @@
       </ion-item>
 
       <!-- Available Lite Routes Section -->
-      <ion-item 
+      <ion-item
         ng-repeat="route in data.liteRoutes"
         ui-sref="tabs.lite-summary({ label: route.label })"
         class="item-icon-right"
@@ -119,16 +117,16 @@
       </ion-item>
 
       <!-- Available Crowdstart Routes -->
-      <div 
+      <div
         class="item item-divider"
         ng-if="data.crowdstartRoutes.length &&
                data.crowdstartRoutes.length > 0"
       >
         Crowdstart Routes
       </div>
-      <ion-item 
-        ng-repeat="route in data.crowdstartRoutes" 
-        class="item-text-wrap item-icon-right" 
+      <ion-item
+        ng-repeat="route in data.crowdstartRoutes"
+        class="item-text-wrap item-icon-right"
         ui-sref="tabs.crowdstart-detail({ routeId: route.id })"
       >
         <!-- TODO - refactor this into a directive -->
@@ -198,11 +196,11 @@
     <powered-by-beeline></powered-by-beeline>
 
     <!-- No results found message -->
-    <p 
-      ng-if="data.routes.length === 0 && 
-            data.liteRoutes.length === 0 && 
+    <p
+      ng-if="data.routes.length === 0 &&
+            data.liteRoutes.length === 0 &&
             data.crowdstartRoutes.length === 0 &&
-            data.placeQuery" 
+            data.placeQuery"
       class="not-found-message text-center"
     >
       Sorry, we could not find any routes matching "{{data.placeFilterText}}".
