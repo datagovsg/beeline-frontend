@@ -29,6 +29,15 @@ export default function(
     routes: [],
     crowdstartRoutes: [],
     nextSessionId: null,
+
+    loaded: {
+      routes: [],
+      crowdstartRoutes: [],
+      liteRoutes: []
+    },
+
+    numRoutesToLoad: 10,
+    numRoutesNotLoaded: 1,
   };
 
   // ---------------------------------------------------------------------------
@@ -44,6 +53,7 @@ export default function(
   // Note that theres no need to update the scope manually
   // since this is done by the service watchers
   $scope.refreshRoutes = async function (ignoreCache) {
+    $scope.data.numRoutesToLoad = 10;
     RoutesService.fetchRouteCredits(ignoreCache);
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
@@ -67,6 +77,8 @@ export default function(
   };
 
   $scope.$watch("data.queryText", (queryText) => {
+    //to show the top 10 filtered result for fast rendering
+    $scope.data.numRoutesToLoad = 10;
     if (queryText.length === 0) $scope.data.placeQuery = null;
   });
 
@@ -259,6 +271,37 @@ export default function(
       });
     }
   );
+
+  // ---------------------------------------------------------------------------
+  // Infinite scroll, show routes, liteRoutes and crowdstartRoutes in controlled pace
+  $scope.$watchGroup([
+    'data.numRoutesToLoad',
+    'data.routes',
+    'data.liteRoutes',
+    'data.crowdstartRoutes'
+  ], function ([numRoutesToLoad, routes, liteRoutes, crowdstartRoutes]) {
+    let numRoutesLeft = numRoutesToLoad
+
+    //allocate number of routes in different groups based on availability
+    for (let group of ['routes', 'liteRoutes', 'crowdstartRoutes']) {
+      if (numRoutesLeft > 0) {
+        $scope.data.loaded[group] = $scope.data[group].slice(0, numRoutesLeft)
+        numRoutesLeft -= $scope.data.loaded[group].length
+      } else {
+        //e.g. to clear loaded liteRoutes if routes are available now
+        $scope.data.loaded[group] = []
+      }
+    }
+
+    $scope.data.numRoutesNotLoaded = routes.length + liteRoutes.length + crowdstartRoutes.length - numRoutesToLoad
+
+    $scope.$broadcast('scroll.infiniteScrollComplete')
+  })
+
+  $scope.loadMore = function () {
+    //load another 10 more routes
+    $scope.data.numRoutesToLoad += 10
+  }
 
 
   // ---------------------------------------------------------------------------
