@@ -85,7 +85,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.booking-dates', {
-    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId',
+    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId&selectedDates',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-dates.html',
@@ -289,13 +289,13 @@ export default function($stateProvider, $urlRouterProvider) {
 
   let viewedIntroSlidesVersion = window.localStorage['viewedBeelineSlidesVersion']
   // if none of the above states are matched, use this as the fallback
-  if (viewedIntroSlidesVersion  
+  if (viewedIntroSlidesVersion
     && viewedIntroSlidesVersion >= introSlidesVersion) {
     $urlRouterProvider.otherwise('/tabs/routes');
   } else {
     // $urlRouterProvider.otherwise('/tabs/routes/map');
     window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
-    
+
     $urlRouterProvider.otherwise('/intro');
   }
 
