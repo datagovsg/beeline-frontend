@@ -209,6 +209,7 @@ export default [
           var sortedTripStopsInTime = _.sortBy(trip.tripStops,'time');
           var bookingWindow = 0;
           var boardTime = null;
+          var lastStopTime = null;
           if (trip.bookingInfo.windowSize && trip.bookingInfo.windowType) {
             if (trip.bookingInfo.windowType === 'firstStop') {
               boardTime = sortedTripStopsInTime[0].time.getTime() + trip.bookingInfo.windowSize;
@@ -219,15 +220,24 @@ export default [
           if (boardTime == null) {
             boardTime = sortedTripStopsInTime[0].time.getTime();
           }
+          //the trip end time
+          lastStopTime = sortedTripStopsInTime[sortedTripStopsInTime.length-1].time.getTime();
           //check seat is available
-          if (now < boardTime) {
+          if (now < boardTime || (now >= boardTime && now <= lastStopTime)) {
             $scope.book.nextTripDate = [trip.date.getTime()];
             $scope.book.minsBeforeClose =  moment(boardTime).diff(moment(now), 'minutes');
+
+            //to prevent user buying trip at last minute (within booking window close to trip ends)
+            if (now >= boardTime && now <= lastStopTime) {
+              $scope.book.minsBeforeClose = 0;
+              break;
+            }
+
             // start the countdown timer
             countdownTimer = $interval(()=>{
               $scope.book.minsBeforeClose =  moment(boardTime).diff(moment(Date.now()), 'minutes');
             }, 1000*30);
-
+            // cancel the countdown timer when reaches booking window
             if ($scope.book.minsBeforeClose && $scope.book.minsBeforeClose<=0) {
               if (countdownTimer) {
                 $interval.cancel(countdownTimer);
