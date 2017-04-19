@@ -62,6 +62,7 @@ export default [
       buttonText: 'Book Next Trip',
       nextTripIsAvailable: null, //if availability==0
       minsBeforeClose: null,
+      bookingEnds: null, //booking window close till trip ends
       buttonNotes: null, //if availability==0
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
     };
@@ -200,6 +201,7 @@ export default [
         //reset the nextTripDate and windowBeforeClose when re-loaded
         $scope.book.nextTripDate = null;
         $scope.book.windowBeforeClose = null;
+        $scope.book.bookingEnds = null;
         var countdownTimer = null;
         var runningTrips = route.trips.filter(tr => tr.isRunning);
         //compare current date with nearest date trip's 1st board stop time
@@ -229,16 +231,18 @@ export default [
 
             //to prevent user buying trip at last minute (within booking window close to trip ends)
             if (now >= boardTime && now <= lastStopTime) {
-              $scope.book.minsBeforeClose = 0;
+              $scope.book.bookingEnds = true;
               break;
             }
 
+            $scope.book.bookingEnds = false;
             // start the countdown timer
             countdownTimer = $interval(()=>{
               $scope.book.minsBeforeClose =  moment(boardTime).diff(moment(Date.now()), 'minutes');
             }, 1000*30);
             // cancel the countdown timer when reaches booking window
             if ($scope.book.minsBeforeClose && $scope.book.minsBeforeClose<=0) {
+              $scope.book.bookingEnds = true;
               if (countdownTimer) {
                 $interval.cancel(countdownTimer);
                 countdownTimer = null;
@@ -282,7 +286,7 @@ export default [
           //compare current date with next trip
           if (nextTripDate && _.includes(bookedDays,nextTripDate[0])) {
             $scope.book.hasNextTripTicket = true;
-            $scope.book.buttonText = 'Go to Ticket View';
+            // $scope.book.buttonText = 'Go to Ticket View';
           } else {
             $scope.book.hasNextTripTicket = false;
           }
@@ -309,12 +313,5 @@ export default [
       }
     }
 
-    $scope.continue = function() {
-      if ($scope.book.hasNextTripTicket) {
-        $state.go('tabs.tickets');
-      } else {
-        $scope.fastCheckout();
-      }
-    }
   }
 ];

@@ -43,7 +43,7 @@ export default function(
   // Report any errors that happen
   // Note that theres no need to update the scope manually
   // since this is done by the service watchers
-  $scope.refreshRoutes = async function (ignoreCache) {
+  $scope.refreshRoutes = function (ignoreCache) {
     RoutesService.fetchRouteCredits(ignoreCache);
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
@@ -59,9 +59,9 @@ export default function(
       crowdstartRoutesPromise
     ]).then(() => {
       $scope.error = null;
-      $scope.$broadcast('scroll.refreshComplete');
     }).catch(() => {
       $scope.error = true;
+    }).then(() => {
       $scope.$broadcast('scroll.refreshComplete');
     })
   };
@@ -130,6 +130,19 @@ export default function(
     }
   );
 
+  // blend activatedCrowdstartRoutes and recentRoutes
+  $scope.$watchGroup(
+    ['data.activatedCrowdstartRoutes', 'data.recentRoutesById'],
+    ([activatedCrowdstartRoutes, recentRoutesById]) => {
+      if (activatedCrowdstartRoutes && recentRoutesById) {
+        let activatedCrowdstartRoutesIds = _.map(activatedCrowdstartRoutes, route => route.id);
+        $scope.data.recentRoutes = $scope.data.recentRoutes.filter (
+          (route) => !activatedCrowdstartRoutesIds.includes(route.id)
+        );
+      }
+    }
+  );
+
   // Backed kickstarter routes
   $scope.$watchGroup(
     [
@@ -147,7 +160,8 @@ export default function(
 
       // don't display it in backed list if the pass expires after 1 month of 1st trip
       //and don't display it if it's 7 days after expired and not actived
-      routes = routes.filter((route)=>(!route.passExpired && route.isActived) || !route.isExpired || !route.is7DaysOld);
+      routes = routes.filter((route)=>(!route.passExpired && route.isActived)
+                                        || !route.isExpired || !route.is7DaysOld);
 
       // Filter the routes
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {

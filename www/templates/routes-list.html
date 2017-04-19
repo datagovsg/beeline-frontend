@@ -44,6 +44,8 @@
         ng-repeat="route in data.activatedCrowdstartRoutes"
         ui-sref="tabs.bookingPickup({
           routeId: route.id,
+          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
+          alightStop: data.recentRoutesById[route.id].alightStopStopId,
           sessionId: data.nextSessionId,
         })"
         ng-if="data.activatedCrowdstartRoutes &&
