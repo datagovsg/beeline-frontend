@@ -41,20 +41,14 @@ export default [
       isVerifying: null,
       // if 2 requests sent to verify promo code, only the latter triggered matters
       // always need to have this if using debounce with promise
-      lastestVerifyPromoCodePromise: null
+      lastestVerifyPromoCodePromise: null,
+      selectedDates: ($stateParams.selectedDates || '').split(',').map(s => parseInt(s))
     };
     $scope.disp = {
       zeroDollarPurchase: false
     };
 
     $scope.isPaymentProcessing = false;
-
-    if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
-      $stateParams.selectedDates = [$stateParams.selectedDates]
-    }
-    $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
-        return parseInt(item);
-    });
 
     RoutesService.getRoute(parseInt($scope.book.routeId)).then((route) => {
       $scope.book.route = route;
