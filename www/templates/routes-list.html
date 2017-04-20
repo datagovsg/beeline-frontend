@@ -2,12 +2,12 @@
 
   <!-- Search Filter  -->
   <label class="search item item-input">
+    <i class="icon ion-ios-search-strong"></i>
     <input
+      id="search"
       type="text"
       ng-model="data.queryText"
       placeholder="Search Routes"
-      gmap-autocomplete
-      place-changed="setPlaceQuery($event)"
     />
     <i
       class="icon ion-android-close"
@@ -205,7 +205,7 @@
             data.placeQuery"
       class="not-found-message text-center"
     >
-      Sorry, we could not find any routes matching "{{data.placeFilterText}}".
+      Sorry, we could not find any routes matching "{{data.queryText}}".
     </p>
   </ion-content>
 

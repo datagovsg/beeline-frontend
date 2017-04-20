@@ -11,7 +11,8 @@ export default function(
   // Misc
   LiteRouteSubscriptionService,
   SearchService,
-  BookingService
+  BookingService,
+  uiGmapGoogleMapApi
 ) {
 
   // ---------------------------------------------------------------------------
@@ -31,13 +32,56 @@ export default function(
     nextSessionId: null,
   };
 
+
+  uiGmapGoogleMapApi.then((googleMaps) => {
+    // Initialize it with google autocompleteService and PlacesService
+    let searchBox = document.getElementById('search');
+    $scope.autocompleteService = new googleMaps.places.AutocompleteService();
+    $scope.placesService = new google.maps.places.PlacesService(searchBox);
+  });
+
+  function autoComplete() {
+    if (!$scope.data.queryText || !$scope.autocompleteService) return;
+    // default 'place' object only has 'queryText' but no geometry
+    // if has predicted place assign the 1st prediction to place object
+    let place = {queryText: $scope.data.queryText};
+    const currentAutoComplete = $scope.autocompleteService.getPlacePredictions({
+      componentRestrictions: {country: 'SG'},
+      input: $scope.data.queryText
+    }, (predictions) => {
+      // If no results found then just shortcircuit with the empty place
+      if (!predictions || predictions.length === 0) {
+        $scope.data.placeQuery =  place;
+        $scope.$digest();
+        return;
+      }
+      // Grab the top prediction and get the details
+      // Apply the details as the full result
+      $scope.placesService.getDetails({
+        placeId: predictions[0].place_id
+      }, result => {
+        // If we fail getting the details then shortcircuit
+        if (!result) {
+          $scope.data.placeQuery =  place;
+          $scope.$digest();
+          return;
+        }
+        // Otherwise return the fully formed place
+        place = _.assign(place,result);
+        // Return the found place
+        $scope.data.placeQuery =  place;
+        $scope.$digest();
+      });
+    })
+  }
   // ---------------------------------------------------------------------------
   // UI Hooks
   // ---------------------------------------------------------------------------
 
-  // When setting the place check that it is a proper place with a geometry
-  // The input sends a name only "place" object if you dont choose an option
-  $scope.setPlaceQuery = (place) => { $scope.data.placeQuery = place; }
+  $scope.$watch('data.queryText',
+    _.debounce(autoComplete, 1000, {leading: false, trailing: true})
+  )
+
 
   // Manually pull the newest data from the server
   // Report any errors that happen
