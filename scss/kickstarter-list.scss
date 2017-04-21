@@ -1,56 +1,61 @@
 .kickstarter-list ion-content {
-  display: flex;
-  flex-direction: column;
-
-  .list {
-    flex: 1 1 auto;
-  }
-
-  .not-found-message {
-    padding: $content-padding*4
-  }
-
-  .no-kickstarter.item {
-    @include display-flex;
-    @include flex-direction(column);
-    @include justify-content(center);
-    @include align-items(center);
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-
-    h2 {
-      margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    position: inherit;
+    $search-height: $line-height-computed + $content-padding * 2;
+    .search {
+      height: $search-height;
+      width: 100%;
+      input {
+        // HACK: re-left aligning overriding our previous ionic override
+        text-align: left !important;
+        padding-left: 0;
+      }
+      .icon {
+        // Scaled and moved to taste
+        font-size: 1.5em;
+        padding-right: 1.5 * $content-padding;
+      }
     }
 
-    p {
-      margin-top: 5px;
-      max-width: 18em;
+    .list {
+      margin-top: $search-height;
+      flex: 1 1 auto;
+    }
+
+    .not-found-message {
+      padding: $content-padding*4
+    }
+
+    .no-kickstarter.item {
+      @include display-flex;
+      @include flex-direction(column);
+      @include justify-content(center);
+      @include align-items(center);
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      text-align: center;
+
+      h2 {
+        margin-top: 30px;
+      }
+
+      p {
+        margin-top: 5px;
+        max-width: 18em;
+      }
+    }
+
+    /* simplified progress bar in the kickstarter list */
+    .progress-bar {
+      // margin: $padding-large-vertical*2 auto;
+      width: 95%;
+      margin-left: $start-size/2;
     }
   }
-
-  /* simplified progress bar in the kickstarter list */
-  .progress-bar {
-    margin: $padding-large-vertical*2 auto;
-    width: 95%;
-    margin-left: $start-size/2;
-  }
-
-// FIXME: overflow issue - suggestion link is not shown
-  .expendable-area {
-    // max-height: 100px;
-    // transition: max-height 0.3s linear;
-    &.expended {
-      // max-height: 9999px;
-      // transition: max-height 0.3s linear;
-    }
-  }
-
-}
-
 
 /* Style for the kickstart help modal in kickstart list*/
 
@@ -69,12 +74,11 @@
   }
 }
 
-
-
 .region-filter {
   flex: 0 0 ($line-height-computed + $content-padding * 2);
   display: flex;
   flex-direction: row;
+
 
   & > :nth-child(1) {
     flex: 1 1 50%;

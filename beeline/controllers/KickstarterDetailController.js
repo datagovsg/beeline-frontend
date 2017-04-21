@@ -166,6 +166,13 @@ export default [
       })
     }
 
+    $scope.goBack = function() {
+      if (!$stateParams.backPage) {
+        $state.go('tabs.crowdstart')
+      } else {
+        $state.go($stateParams.backPage)
+      }
+    }
   }
 ];
 //

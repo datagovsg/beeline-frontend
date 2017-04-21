@@ -225,7 +225,7 @@ export default function(
         routes = SearchService.filterRoutesByPlaceAndText(
           routes, placeQuery, placeQuery.queryText
         );
-      } else if (placeQuery && placeQuery.name) {
+      } else if (placeQuery && placeQuery.queryText) {
         routes = SearchService.filterRoutesByText(
           routes, placeQuery.queryText
         );
@@ -319,7 +319,7 @@ export default function(
         routes = SearchService.filterRoutesByPlaceAndText(
           routes, placeQuery, placeQuery.queryText
         );
-      } else if (placeQuery && placeQuery.name) {
+      } else if (placeQuery && placeQuery.queryText) {
         routes = SearchService.filterRoutesByText(
           routes, placeQuery.queryText
         );
