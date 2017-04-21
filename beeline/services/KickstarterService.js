@@ -120,11 +120,9 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
       }).then((response) => {
         // kickstarterSummary = response.data;
         kickstarterSummary = response.data.map((bid)=>{
-          return   {routeId: bid.id,
-                    boardStopId: bid.bid.tickets[0].boardStop.stopId,
-                    alightStopId: bid.bid.tickets[0].alightStop.stopId,
-                    bidPrice: bid.bid.userOptions.price,
-                    ticketStatus: bid.bid.tickets[0].status}
+          return   {routeId: bid.bid.routeId || bid.id,
+                    bidPrice: bid.bid.price || bid.bid.userOptions.price,
+                    status: bid.bid.status || bid.bid.tickets[0].status}
         })
         bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
         return kickstarterSummary;
@@ -240,7 +238,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
       return bidsCache.then(()=>{
         return kickstarterSummary &&
                kickstarterSummary.length>0 &&
-               kickstarterSummary.find(x=>x.ticketStatus === 'bidded');
+               kickstarterSummary.find(x=>x.status === 'bidded');
       })
     },
 
@@ -263,10 +261,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         updateAfterBid(kickstarterRoutesById[route.id], bidPrice);
         kickstarterSummary = kickstarterSummary.concat([{
           routeId: route.id,
-          boardStopId: boardStopId,
-          alightStopId: alightStopId,
           bidPrice: bidPrice,
-          ticketStatus: 'bidded'
+          status: 'bidded'
         }])
         return response.data;
       })
