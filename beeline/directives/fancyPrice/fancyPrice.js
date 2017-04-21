@@ -27,8 +27,7 @@ export default function() {
     },
     template: `
 <span class="currency">{{currency}}</span>
-<span class="integer">{{integer}}</span>
-<span class="fraction">.{{fraction}}</span>
+<span class="fraction">{{integer}}.{{fraction}}</span>
     `,
   };
 
