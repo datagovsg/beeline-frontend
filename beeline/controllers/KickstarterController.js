@@ -26,14 +26,17 @@ export default function($scope, $state, UserService, RoutesService, $q,
   uiGmapGoogleMapApi.then((googleMaps) => {
     // Initialize it with google autocompleteService and PlacesService
     let searchBox = document.getElementById('search-crowdstart');
+    // Blur on enter
+    searchBox.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") this.blur();
+    });
+
     $scope.autocompleteService = new googleMaps.places.AutocompleteService();
     $scope.placesService = new google.maps.places.PlacesService(searchBox);
   });
 
   function autoComplete() {
     let searchBox = document.getElementById('search-crowdstart');
-    // hide the soft keyboard
-    setTimeout(searchBox.blur(), 100);
     if (!$scope.data.queryText || !$scope.autocompleteService) {
       $scope.data.isFiltering = false;
       return;
