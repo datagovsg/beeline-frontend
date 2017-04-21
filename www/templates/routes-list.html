@@ -9,6 +9,7 @@
       ng-model="data.queryText"
       placeholder="Search Routes"
     />
+    <ion-spinner ng-show="data.isFiltering"></ion-spinner>
     <i
       class="icon ion-android-close"
       on-tap="data.queryText = ''"

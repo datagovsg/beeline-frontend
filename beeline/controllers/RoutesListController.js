@@ -30,6 +30,7 @@ export default function(
     routes: [],
     crowdstartRoutes: [],
     nextSessionId: null,
+    isFiltering: null
   };
 
 
@@ -41,7 +42,16 @@ export default function(
   });
 
   function autoComplete() {
-    if (!$scope.data.queryText || !$scope.autocompleteService) return;
+    let searchBox = document.getElementById('search');
+    // hide the soft keyboard
+    setTimeout(searchBox.blur(), 100);
+    if (!$scope.data.queryText || !$scope.autocompleteService) {
+      $scope.data.isFiltering = false;
+      return;
+    };
+    // show the spinner
+    $scope.data.isFiltering = true;
+    $scope.$digest();
     // default 'place' object only has 'queryText' but no geometry
     // if has predicted place assign the 1st prediction to place object
     let place = {queryText: $scope.data.queryText};
@@ -52,6 +62,7 @@ export default function(
       // If no results found then just shortcircuit with the empty place
       if (!predictions || predictions.length === 0) {
         $scope.data.placeQuery =  place;
+        $scope.data.isFiltering = false;
         $scope.$digest();
         return;
       }
@@ -63,6 +74,7 @@ export default function(
         // If we fail getting the details then shortcircuit
         if (!result) {
           $scope.data.placeQuery =  place;
+          $scope.data.isFiltering = false;
           $scope.$digest();
           return;
         }
@@ -70,6 +82,7 @@ export default function(
         place = _.assign(place,result);
         // Return the found place
         $scope.data.placeQuery =  place;
+        $scope.data.isFiltering = false;
         $scope.$digest();
       });
     })
