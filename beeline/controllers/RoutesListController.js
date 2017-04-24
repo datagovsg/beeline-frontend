@@ -212,6 +212,7 @@ export default function(
     ],
     ([routes, bids, placeQuery]) => {
       if (!routes) routes = [];
+      if (!bids) bids = [];
       // Filter to the routes the user bidded on
       let biddedRouteIds = bids.map(bid => bid.routeId);
       routes = routes.filter(route => {
@@ -309,6 +310,7 @@ export default function(
     ],
     ([routes, bids, placeQuery]) => {
       if (!routes) routes = [];
+      if (!bids) bids = [];
       // Filter out the routes the user bidded on
       // These are already shown elsewhere
       let biddedRouteIds = bids.map(bid => bid.routeId);

@@ -2,19 +2,28 @@ import {formatDate, formatDateMMMdd, formatTime, formatTimeArray,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
 
-global.moment = require('moment')
-
 // node imports
 import compareVersions from 'compare-versions';
 import assert from 'assert';
 
 // Angular imports
-import AngularGoogleMap from 'angular-google-maps';
 import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 
 // Configuration Imports
 import configureRoutes from './router.js';
 
+var app = angular.module('beeline', [
+  'ionic',
+  'ngCordova',
+  'uiGmapgoogle-maps',
+  'multipleDatePicker',
+  'ngclipboard',
+])
+
+require('angular-simple-logger');
+require('angular-google-maps');
+require('clipboard');
+require('ngclipboard');
 require('./directives/extA');
 require('./services/RotatedImageService');
 require('./services/GeoUtils');
@@ -24,7 +33,7 @@ require('./directives/mapBusIcon');
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
 // //////////////////////////////////////////////////////////////////////////////
-angular.module('beeline')
+app
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
@@ -132,6 +141,12 @@ angular.module('beeline')
 //        v: ', //defaults to latest 3.X anyhow
     libraries: 'places,geometry'
   });
+})
+.run(function($rootScope, replace, p) {
+  $rootScope.o = {
+    ...p,
+    replace
+  }
 })
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

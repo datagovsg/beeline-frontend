@@ -1,6 +1,6 @@
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
-import monment from 'moment';
+const moment = require('moment');
 
 export default [
   '$rootScope',
