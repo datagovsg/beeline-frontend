@@ -85,7 +85,7 @@
     "live-hcp": "node scripts/hcp.js app.beeline.sg build",
     "build": "cross-env BACKEND_URL=https://api.beeline.sg webpack",
     "dev": "cross-env BACKEND_URL=https://api.beeline.sg webpack -w",
-    "start": "cross-env PORT=5000 http-server -c-1 www"
+    "start": "http-server -c-1 www"
   },
   "author": "",
   "license": "ISC"
