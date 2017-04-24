@@ -121,7 +121,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         // kickstarterSummary = response.data;
         kickstarterSummary = response.data.map((bid)=>{
           return   {routeId: bid.routeId || bid.id,
-                    bidPrice: bid.price || bid.bid.userOptions.price,
+                    bidPrice: bid.priceF || bid.bid.userOptions.price,
                     status: bid.status || bid.bid.tickets[0].status}
         })
         bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
