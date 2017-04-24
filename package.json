@@ -3,7 +3,7 @@
   "version": "1.1.1",
   "description": "beeline2: An Ionic project",
   "engines": {
-    "node": ">=4.0.0"
+    "node": "7.8.x"
   },
   "dependencies": {
     "angular-google-maps": "^2.4.1",
