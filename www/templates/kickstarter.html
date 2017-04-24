@@ -7,31 +7,36 @@
 
   <ion-nav-title>Crowdstart Routes</ion-nav-title>
   <ion-content scroll="false">
-    <div class="item item-text-wrap item-icon-left" ng-if="data.error">
-      <i class="icon ion-alert-circled"></i>
-      There was a problem fetching information from the server. Please try again later.
-    </div>
-    <div class="item item-text-wrap no-kickstarter" ng-if=" data.backedKickstarter &&
-                                                            data.kickstarter &&
-                                                            data.backedKickstarter.length==0 &&
-                                                            data.kickstarter.length==0">
-      <img src="./img/bgnokickstarter.svg">
-      <h2>No new Crowdstart route</h2>
-      <p>There are no new Crowdstart routes at the moment.</p>
-    </div>
-
-    <div class="region-filter">
-      <search-button ui-sref="tabs.search({backPage: 'tabs.crowdstart'})"></search-button>
-      <label class="item item-input item-select" data-tap-disabled="true">
-        <select ng-model="data.selectedRegionId">
-          <option value="" disabled selected>Select Region</option>
-          <option value="">All Regions</option>
-          <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
-        </select>
-      </label>
-    </div>
+    <!-- Search Filter  -->
+    <label class="search item item-input">
+      <i class="icon ion-ios-search-strong"></i>
+      <input
+        id="search-crowdstart"
+        type="text"
+        ng-model="data.queryText"
+        placeholder="Search Crowdstart Routes"
+      />
+      <ion-spinner ng-show="data.isFiltering"></ion-spinner>
+      <i
+        class="icon ion-android-close"
+        on-tap="data.queryText = ''"
+        ng-show="data.queryText.length > 0"
+      ></i>
+    </label>
 
     <ion-content class="list">
+      <div class="item item-text-wrap item-icon-left" ng-if="data.error">
+        <i class="icon ion-alert-circled"></i>
+        There was a problem fetching information from the server. Please try again later.
+      </div>
+      <div class="item item-text-wrap no-kickstarter" ng-if=" data.backedKickstarter &&
+                                                              data.kickstarter &&
+                                                              data.backedKickstarter.length==0 &&
+                                                              data.kickstarter.length==0">
+        <img src="./img/bgnokickstarter.svg">
+        <h2>No new Crowdstart route</h2>
+        <p>There are no new Crowdstart routes at the moment.</p>
+      </div>
       <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshRoutes()">
       </ion-refresher>
       <!-- recently bid Crowdstart -->
@@ -46,92 +51,13 @@
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
-      <!-- nearby Crowdstart -->
-      <div class="item item-divider item-icon-left" ng-if="data.filteredNearbyKickstarter.length > 0"
-        ng-click="disp.showNearbyKickstarter = ! disp.showNearbyKickstarter">
-        <i class="icon icon-small ion-android-arrow-dropright" ng-show="! disp.showNearbyKickstarter"></i>
-        <i class="icon icon-small ion-android-arrow-dropdown" ng-show="disp.showNearbyKickstarter"></i>
-        Nearby Crowdstart Routes ({{data.filteredNearbyKickstarter.length}})
-      </div>
-      <div class="expendable-area" ng-show="disp.showNearbyKickstarter" ng-class="{expended: !!disp.showNearbyKickstarter}">
-        <ion-item ng-repeat="route in data.filteredNearbyKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-detail({
-                                    routeId: route.id
-                                  })">
-          <route-item>
-            <route-item-bus-number>
-              {{ route.label }}
-            </route-item-bus-number>
-            <route-item-description>
-              {{ route.notes.description }}
-            </route-item-description>
-            <route-item-start-time>
-              {{ route | routeStartTime | formatTime:true }}
-            </route-item-start-time>
-            <route-item-start-location>
-              {{ route.from }}
-            </route-item-start-location>
-            <route-item-end-time>
-              {{ route | routeEndTime | formatTime:true }}
-            </route-item-end-time>
-            <route-item-end-location>
-              {{ route.to }}
-            </route-item-end-location>
-            <route-item-additional-info>
-              <company-info-broker company-id="route.transportCompanyId" company="companyInfo">
-              </company-info-broker>
-              <div class="icon-and-schedule">
-                <span class="icon-span company-logo">
-                    <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-                  </span>
-                <span class="mini-info">
-                    {{companyInfo.name}}
-                  </span>
-              </div>
-
-              <div class="icon-and-schedule">
-                <span class="icon-span">
-                    <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
-                  </span>
-                <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
-                    Campaign ends in {{route.daysLeft}} days
-                  </span>
-                <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
-                    Campaign ends in  {{route.daysLeft}} day
-                  </span>
-                <span class="mini-info" ng-if="route.isExpired">
-                    Campaign has expired
-                  </span>
-              </div>
-
-              <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price" pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded">
-              </progress-bar>
-
-              <div class="icon-and-schedule">
-                <span class="icon-span">
-                    <img class="mini-icon" src="img/icon_kickstarter_status.svg">
-                  </span>
-                <span class="mini-info">
-                    {{route.status}}
-                  </span>
-              </div>
-            </route-item-additional-info>
-          </route-item>
-          <i class="icon ion-ios-arrow-right"></i>
-        </ion-item>
-      </div>
-
-
-
 
       <!-- available Crowdstart -->
-      <div class="item item-divider item-icon-left" ng-if="data.filteredKickstarter.length > 0"
-        ng-click="disp.showAvailableKickstarter = ! disp.showAvailableKickstarter">
-        <i class="icon icon-small ion-android-arrow-dropright" ng-show="! disp.showAvailableKickstarter"></i>
-        <i class="icon icon-small ion-android-arrow-dropdown" ng-show="disp.showAvailableKickstarter"></i>
+      <div class="item item-divider" ng-if="data.filteredKickstarter.length > 0">
         Available Crowdstart Routes ({{data.filteredKickstarter.length}})
       </div>
 
-      <div class="expendable-area" ng-show="disp.showAvailableKickstarter" ng-class="{expended: !!disp.showAvailableKickstarter}">
+      <div>
         <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-detail({
                                     routeId: route.id
                                    })">

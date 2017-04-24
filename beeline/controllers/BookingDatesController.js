@@ -30,7 +30,7 @@ export default [
       boardStopId: parseInt($stateParams.boardStop),
       alightStopId: parseInt($stateParams.alightStop),
       priceInfo: {},
-      selectedDates: [],
+      selectedDates: ($stateParams.selectedDates || '').split(',').map(ms => parseInt(ms)),
       invalidStopDates: [],
       applyRouteCredits: false,
       applyReferralCredits: false,
@@ -48,7 +48,7 @@ export default [
       previouslyBookedDays: undefined,
       highlightDays: [],
       daysAllowed: [],
-      selectedDatesMoments: [],
+      selectedDatesMoments: ($stateParams.selectedDates || '').split(',').map(ms => moment(parseInt(ms))),
     };
 
     var routePromise = loadRoutes();
@@ -138,7 +138,7 @@ export default [
     })
 
     function loadTickets() {
-      var ticketsPromise = TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
+      var ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
         .catch((err) => null)
 
       loadingSpinner($q.all([ticketsPromise]).then(([tickets]) => {

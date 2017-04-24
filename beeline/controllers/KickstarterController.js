@@ -8,23 +8,85 @@ import loadingTemplate from '../templates/loading.html';
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
   $ionicScrollDelegate, $ionicPopup, KickstarterService, $ionicLoading,
-  SearchService, $timeout, loadingSpinner) {
+  SearchService, $timeout, loadingSpinner, uiGmapGoogleMapApi) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
     error: null,
     kickstarter: null,
     backedKickstarter: null,
-    regions: [],
     filterText: '',
     stagingFilterText: '',
-    nearbyKickstarterRoutes: null
+    nearbyKickstarterRoutes: null,
+    placeQuery: null, // The place object used to search
+    queryText: "", // The actual text in the box used only for the clear button
   };
 
-  $scope.disp = {
-    showNearbyKickstarter: true,
-    showAvailableKickstarter: true
+ //FIXME: put place search into a directive
+  uiGmapGoogleMapApi.then((googleMaps) => {
+    // Initialize it with google autocompleteService and PlacesService
+    let searchBox = document.getElementById('search-crowdstart');
+    // Blur on enter
+    searchBox.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") this.blur();
+    });
+
+    $scope.autocompleteService = new googleMaps.places.AutocompleteService();
+    $scope.placesService = new google.maps.places.PlacesService(searchBox);
+  });
+
+  function autoComplete() {
+    let searchBox = document.getElementById('search-crowdstart');
+    if (!$scope.data.queryText || !$scope.autocompleteService) {
+      $scope.data.isFiltering = false;
+      return;
+    };
+    // show the spinner
+    $scope.data.isFiltering = true;
+    $scope.$digest();
+    // default 'place' object only has 'queryText' but no geometry
+    // if has predicted place assign the 1st prediction to place object
+    let place = {queryText: $scope.data.queryText};
+    const currentAutoComplete = $scope.autocompleteService.getPlacePredictions({
+      componentRestrictions: {country: 'SG'},
+      input: $scope.data.queryText
+    }, (predictions) => {
+      // If no results found then just shortcircuit with the empty place
+      if (!predictions || predictions.length === 0) {
+        $scope.data.placeQuery =  place;
+        $scope.data.isFiltering = false;
+        $scope.$digest();
+        return;
+      }
+      // Grab the top prediction and get the details
+      // Apply the details as the full result
+      $scope.placesService.getDetails({
+        placeId: predictions[0].place_id
+      }, result => {
+        // If we fail getting the details then shortcircuit
+        if (!result) {
+          $scope.data.placeQuery =  place;
+          $scope.data.isFiltering = false;
+          $scope.$digest();
+          return;
+        }
+        // Otherwise return the fully formed place
+        place = _.assign(place,result);
+        // Return the found place
+        $scope.data.placeQuery =  place;
+        $scope.data.isFiltering = false;
+        $scope.$digest();
+      });
+    })
   }
+
+  $scope.$watch("data.queryText", (queryText) => {
+    if (queryText.length === 0) $scope.data.placeQuery = null;
+  });
+
+  $scope.$watch('data.queryText',
+    _.debounce(autoComplete, 1000, {leading: false, trailing: true})
+  )
 
   $scope.refreshRoutes = function() {
     $q.all([KickstarterService.fetchLelong(true),KickstarterService.fetchBids(true), KickstarterService.fetchNearbyKickstarterIds()])
@@ -62,47 +124,40 @@ export default function($scope, $state, UserService, RoutesService, $q,
 
   $scope.$watchGroup([
     ()=>KickstarterService.getLelong(),
-    ()=>KickstarterService.getNearbyKickstarterIds(),
     ()=>KickstarterService.getBids(),
-    'data.selectedRegionId',
-    'data.filterText',
-  ], ([lelongRoutes, nearByLelongIds, userBids, selectedRegionId, filterText])=>{
+    'data.placeQuery'
+  ], ([lelongRoutes, userBids, placeQuery])=>{
       if (!lelongRoutes) return;
-      //sort by numeric part of label (to fix c100 appears before c99)
-      $scope.data.kickstarter = _.sortBy(lelongRoutes, (x)=>{
-        return parseInt(x.label.slice(1))
-      })
+
       $scope.userBids = userBids;
       $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
-      var recentAndAvailable = _.partition($scope.data.kickstarter, (x)=>{
+      let recentAndAvailable = _.partition(lelongRoutes, (x)=>{
         return _.includes(_.keys($scope.recentBidsById), x.id.toString());
       });
       // don't display it in backed list if the pass expires after 1 month of 1st trip
       //and don't display it if it's 7 days after expired and not actived
-      $scope.data.backedKickstarter = recentAndAvailable[0].filter((route)=>(!route.passExpired && route.isActived) || !route.isExpired || !route.is7DaysOld);
+      let backedKickstarter = recentAndAvailable[0].filter((route)=>(!route.passExpired && route.isActived) || !route.isExpired || !route.is7DaysOld) || [];
       //don't display it in kickstarter if it's expired
-      $scope.data.kickstarter = recentAndAvailable[1].filter((route)=>!route.isExpired);
-      //regions from list of backed and not expired available
-      $scope.data.regions = RoutesService.getUniqueRegionsFromRoutes($scope.data.backedKickstarter.concat($scope.data.kickstarter));
-      //nearby Lelong routes and the rest
-      if (nearByLelongIds) {
-        [$scope.data.nearbyKickstarterRoutes, $scope.data.kickstarter] = _.partition($scope.data.kickstarter, (r)=>nearByLelongIds.indexOf(r.id)!=-1);
-        $scope.data.filteredNearbyKickstarter = SearchService.filterRoutes($scope.data.nearbyKickstarterRoutes, +selectedRegionId, filterText);
+      let kickstarter = recentAndAvailable[1].filter((route)=>!route.isExpired) || [];
+
+      // Filter the routes
+      if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+        // $scope.data.filteredNearbyKickstarterRoutes = SearchService.filterRoutesByPlaceAndText($scope.data.filteredNearbyKickstarterRoutes,  placeQuery, placeQuery.queryText);
+        kickstarter = SearchService.filterRoutesByPlaceAndText(kickstarter,  placeQuery, placeQuery.queryText);
+        backedKickstarter = SearchService.filterRoutesByPlaceAndText(backedKickstarter,  placeQuery, placeQuery.queryText);
+
+      } else if (placeQuery && placeQuery.queryText) {
+        // $scope.data.filteredNearbyKickstarterRoutes = SearchService.filterRoutesByText($scope.data.filteredNearbyKickstarterRoutes,  placeQuery.queryText);
+        kickstarter = SearchService.filterRoutesByText(kickstarter,  placeQuery.queryText);
+        backedKickstarter = SearchService.filterRoutesByText(backedKickstarter,  placeQuery.queryText);
       }
-      $scope.data.filteredKickstarter = SearchService.filterRoutes($scope.data.kickstarter, +selectedRegionId, filterText);
-      $scope.data.filteredbackedKickstarter = SearchService.filterRoutes($scope.data.backedKickstarter, +selectedRegionId, filterText);
+
+
+      //publish
+      $scope.data.filteredKickstarter = _.sortBy(kickstarter, (x)=> {return parseInt(x.label.slice(1))});
+      $scope.data.filteredbackedKickstarter = _.sortBy(backedKickstarter, (x)=> {return parseInt(x.label.slice(1))});
+
   });
-
-
-  // Throttle the actual updating of filter text
-  $scope.updateFilter = _.throttle((value) => {
-    // Some times this function is called synchronously, some times it isn't
-    // Use timeout to ensure that we are always inside a digest cycle.
-    setTimeout(() => {
-      $scope.data.filterText = $scope.data.stagingFilterText;
-      $scope.$digest();
-    }, 0)
-  }, 400, {trailing: true});
 
 
   $scope.showHelpPopup = function(){

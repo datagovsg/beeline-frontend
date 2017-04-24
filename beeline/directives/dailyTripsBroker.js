@@ -32,7 +32,7 @@ export default function(LiteRoutesService, $timeout) {
       });
 
       function grabTrips(label) {
-        return LiteRoutesService.getLiteRoute(label, true)
+        return LiteRoutesService.fetchLiteRoute(label, true)
           .then((response)=>{
             var route = response[scope.tripLabel];
 

@@ -93,8 +93,6 @@ app
 .controller('KickstarterSummaryController', require('./controllers/KickstarterSummaryController.js').default)
 .controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
-.controller('SearchController', require('./controllers/SearchController.js').default)
-.controller('SearchResultsController', require('./controllers/SearchResultsController.js').default)
 .directive('searchButton', require('./directives/searchButton.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
@@ -194,12 +192,14 @@ app
     }
   });
 })
-.run(function (RoutesService, KickstarterService) {
+.run(function (RoutesService, KickstarterService, LiteRoutesService, TicketService) {
   // Pre-fetch the routes
   RoutesService.fetchRoutes();
   RoutesService.fetchRecentRoutes();
   KickstarterService.fetchLelong();
   KickstarterService.fetchBids();
+  LiteRoutesService.fetchLiteRoutes();
+  TicketService.fetchTickets();
 })
 .run(function ($templateCache) {
   $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))

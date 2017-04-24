@@ -1,93 +1,152 @@
-<ion-view class="routes-list" view-title="Routes">
-  <ion-content scroll="false">
-    <div class="item item-text-wrap" ng-if="error">
-      <i class="icon ion-alert-circled"></i>
-      There was a problem fetching the routes from the server.
-      Please try again later.
-    </div>
+<ion-view class="routes-view">
 
-    <!-- Region Filter  -->
-    <div class="region-filter">
-      <search-button ui-sref="tabs.search({backPage: 'tabs.routes'})"></search-button>
-      <label class="item item-input item-select" data-tap-disabled="true">
-        <select ng-model="data.selectedRegionId">
-          <option value="" disabled selected>Select Region</option>
-          <option value="">All Regions</option>
-          <option ng-repeat="region in data.regions" value="{{region.id}}">{{region.name}}</option>
-        </select>
-      </label>
-    </div>
+  <!-- Search Filter  -->
+  <label class="search item item-input">
+    <i class="icon ion-ios-search-strong"></i>
+    <input
+      id="search"
+      type="text"
+      ng-model="data.queryText"
+      placeholder="Search Routes"
+    />
+    <ion-spinner ng-show="data.isFiltering"></ion-spinner>
+    <i
+      class="icon ion-android-close"
+      on-tap="data.queryText = ''"
+      ng-show="data.queryText.length > 0"
+    ></i>
+  </label>
 
-    <ion-content class="list">
-      <ion-refresher pulling-text="Pull to refresh..."
-                     on-refresh="refreshRoutes(true)">
-      </ion-refresher>
+  <!-- Scrollable routes list -->
+  <ion-content class="routes-scroll">
+
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="refreshRoutes(true)"
+    ></ion-refresher>
+
+    <ion-list>
+      <!-- Error message if problem getting routes data -->
+      <div class="item item-text-wrap" ng-if="error">
+        <i class="icon ion-alert-circled"></i>
+        There was a problem fetching the routes from the server.
+        Please try again later and let us know at feedback@beeline.sg if the problem persists.
+      </div>
 
       <!-- Recent Routes Section -->
-      <!-- ng-show doesn't work 100% reliably. angular bug? -->
-      <div class="item item-divider" ng-if="data.filteredActivatedKickstarterRoutes && data.filteredActivatedKickstarterRoutes.length > 0">
-        Your Activated Crowdstart Routes
+      <div
+        class="item item-divider"
+        ng-if="data.activatedCrowdstartRoutes &&
+               data.activatedCrowdstartRoutes.length > 0"
+      >
+        Activated Crowdstart Routes
       </div>
-      <ion-item ng-repeat="route in data.filteredActivatedKickstarterRoutes"
-                ui-sref="tabs.bookingPickup({
-                  routeId: route.id,
-                  boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-                  alightStop: data.recentRoutesById[route.id].alightStopStopId,
-                  sessionId: data.nextSessionId,
-                })"
-                ng-if="data.filteredActivatedKickstarterRoutes && data.filteredActivatedKickstarterRoutes.length > 0"
-                class="item-icon-right">
+      <ion-item
+        ng-repeat="route in data.activatedCrowdstartRoutes"
+        ui-sref="tabs.bookingPickup({
+          routeId: route.id,
+          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
+          alightStop: data.recentRoutesById[route.id].alightStopStopId,
+          sessionId: data.nextSessionId,
+        })"
+        ng-if="data.activatedCrowdstartRoutes &&
+               data.activatedCrowdstartRoutes.length > 0"
+        class="item-icon-right"
+      >
         <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
-      <div class="item item-divider"
-          ng-if="data.filteredRecentRoutes.length > 0">
+
+      <!-- Recently booked routes -->
+      <div class="item item-divider" ng-if="data.recentRoutes.length > 0">
         Recently Booked Routes
       </div>
-      <ion-item ng-repeat="route in data.filteredRecentRoutes"
-                ui-sref="tabs.bookingPickup({
-                  routeId: route.id,
-                  boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-                  alightStop: data.recentRoutesById[route.id].alightStopStopId,
-                  sessionId: data.nextSessionId,
-                })"
-                class="item-text-wrap item-icon-right">
+      <ion-item
+        ng-repeat="route in data.recentRoutes"
+        ui-sref="tabs.bookingPickup({
+          routeId: route.id,
+          boardStop:  data.recentRoutesById[route.id].boardStopStopId,
+          alightStop: data.recentRoutesById[route.id].alightStopStopId,
+          sessionId: data.nextSessionId,
+        })"
+        class="item-text-wrap item-icon-right"
+      >
         <regular-route route="route"></regular-route>
+        <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+
+      <!-- Backed Crowdstart Routes -->
+      <div
+        class="item item-divider"
+        ng-if="data.backedCrowdstartRoutes.length > 0"
+      >
+        Your Crowdstart Pre-orders
+      </div>
+      <ion-item
+        ng-repeat="route in data.backedCrowdstartRoutes"
+        class="item-text-wrap item-icon-right"
+        ui-sref="tabs.crowdstart-recap({ routeId: route.id })">
+        <kickstart-route route="route"></kickstart-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
       <!-- Available Routes Section -->
-      <div class="item item-divider"
-           ng-if="data.filteredLiteRoutes.length > 0 || data.filteredActiveRoutes.length > 0">
+      <div
+        class="item item-divider"
+        ng-if="data.liteRoutes.length > 0 || data.routes.length > 0"
+      >
         Available Routes
       </div>
-
-      <!-- Available regular routes -->
-      <ion-item ng-repeat="route in data.filteredActiveRoutes"
-                ui-sref="tabs.bookingPickup({
-                  routeId: route.id,
-                  sessionId: data.nextSessionId,
-                })"
-                class="item-text-wrap item-icon-right">
+      <ion-item
+        ng-repeat="route in data.routes"
+        ui-sref="tabs.bookingPickup({
+          routeId: route.id,
+          sessionId: data.nextSessionId,
+        })"
+        class="item-text-wrap item-icon-right"
+      >
         <regular-route route="route"></regular-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
       <!-- Available Lite Routes Section -->
-      <ion-item ng-repeat="route in data.filteredLiteRoutes"
-                ui-sref="tabs.lite-summary({
-                  label: route.label,
-                })"
-                class="item-icon-right">
+      <ion-item
+        ng-repeat="route in data.liteRoutes"
+        ui-sref="tabs.lite-summary({ label: route.label })"
+        class="item-icon-right"
+      >
         <lite-route route="route"></lite-route>
         <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
 
-      <powered-by-beeline></powered-by-beeline>
-      <p ng-if="data.filteredActiveRoutes.length === 0 && data.filteredLiteRoutes.length === 0
-        && data.filterText" class="not-found-message text-center">
-          Sorry, we could not find any routes matching "{{data.filterText}}".
-      </p>
-    </ion-content>
+      <!-- Available Crowdstart Routes -->
+      <div
+        class="item item-divider"
+        ng-if="data.crowdstartRoutes.length &&
+               data.crowdstartRoutes.length > 0"
+      >
+        Crowdstart Routes
+      </div>
+      <ion-item
+        ng-repeat="route in data.crowdstartRoutes"
+        class="item-text-wrap item-icon-right"
+        ui-sref="tabs.crowdstart-detail({ routeId: route.id, backPage: 'tabs.routes' })"
+      >
+      <kickstart-route route="route"></kickstart-route>
+    </ion-list>
+
+    <powered-by-beeline></powered-by-beeline>
+
+    <!-- No results found message -->
+    <p
+      ng-if="data.routes.length === 0 &&
+            data.liteRoutes.length === 0 &&
+            data.crowdstartRoutes.length === 0 &&
+            data.placeQuery"
+      class="not-found-message text-center"
+    >
+      Sorry, we could not find any routes matching "{{data.queryText}}".
+    </p>
   </ion-content>
+
 </ion-view>

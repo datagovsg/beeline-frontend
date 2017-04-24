@@ -85,7 +85,7 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.booking-dates', {
-    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId',
+    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId&selectedDates',
     views: {
       'tab-booking': {
         templateUrl: 'templates/tab-booking-dates.html',
@@ -285,46 +285,17 @@ export default function($stateProvider, $urlRouterProvider) {
     data: {
       hideTabs: true,
     }
-  })
-
-
-  .state('tabs.search', {
-    url: '/search',
-    views: {
-      'tab-search': {
-        templateUrl: 'templates/search.html',
-        controller: 'SearchController'
-      }
-    },
-    params: {
-      backPage: null
-    },
-    data: {
-      hideTabs: true,
-    }
-  })
-  .state('tabs.search-results', {
-    url: '/search-results?originLat&originLng&destinationLat&destinationLng',
-    views: {
-      'tab-search': {
-        templateUrl: 'templates/search-results.html',
-        controller: 'SearchResultsController'
-      }
-    },
-    data: {
-      hideTabs: true,
-    }
   });
 
   let viewedIntroSlidesVersion = window.localStorage['viewedBeelineSlidesVersion']
   // if none of the above states are matched, use this as the fallback
-  if (viewedIntroSlidesVersion  
+  if (viewedIntroSlidesVersion
     && viewedIntroSlidesVersion >= introSlidesVersion) {
     $urlRouterProvider.otherwise('/tabs/routes');
   } else {
     // $urlRouterProvider.otherwise('/tabs/routes/map');
     window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
-    
+
     $urlRouterProvider.otherwise('/intro');
   }
 

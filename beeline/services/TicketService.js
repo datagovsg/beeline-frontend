@@ -11,6 +11,25 @@ export default function TicketService($http, $filter, UserService, p) {
   //set to false once getCategorizedTickets is called
   var shouldRefreshTickets = false;
 
+  UserService.userEvents.on('userChanged', () => {
+    fetchTickets(true)
+  })
+
+  function fetchTickets(ignoreCache) {
+    if (ticketsCache && !ignoreCache) return ticketsCache;
+    var url = '/tickets';
+    if (p.transportCompanyId) {
+      url += '?'+querystring.stringify({transportCompanyId: p.transportCompanyId})
+    }
+    return ticketsCache = UserService.beeline({
+      method: 'GET',
+      url: url,
+    }).then((response) => {
+      ticketsByRouteId = _.groupBy(response.data, ticket => ticket.boardStop.trip.routeId);
+      return allTickets = response.data;
+    });
+  }
+
   return {
 
     getShouldRefreshTickets: function() {
@@ -21,20 +40,7 @@ export default function TicketService($http, $filter, UserService, p) {
       shouldRefreshTickets = true;
     },
 
-    fetchTickets: function(ignoreCache) {
-      if (ticketsCache && !ignoreCache) return ticketsCache;
-      var url = '/tickets';
-      if (p.transportCompanyId) {
-        url += '?'+querystring.stringify({transportCompanyId: p.transportCompanyId})
-      }
-      return ticketsCache = UserService.beeline({
-        method: 'GET',
-        url: url,
-      }).then((response) => {
-        ticketsByRouteId = _.groupBy(response.data, ticket => ticket.boardStop.trip.routeId);
-        return allTickets = response.data;
-			});
-    },
+    fetchTickets: fetchTickets,
 
     getTickets: function(){
       return allTickets
@@ -47,11 +53,11 @@ export default function TicketService($http, $filter, UserService, p) {
       });
     },
 
-    getPreviouslyBookedDaysByRouteId(rid, ignoreCache) {
+    fetchPreviouslyBookedDaysByRouteId: function(rid, ignoreCache) {
       return this.getTicketsByRouteId(rid, ignoreCache)
       .then((tickets) => {
-        var dates =  _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime());
-        return dates || {};
+        var dates =  _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime()) || {};
+        return dates;
       })
     },
 
