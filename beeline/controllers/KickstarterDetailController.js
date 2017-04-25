@@ -76,9 +76,9 @@ export default [
       MapOptions.disableMapLinks();
     });
 
-    $scope.$watchGroup(['busStops',()=>_.get($scope.map, 'control.getGMap()')],([stops, gmap])=>{
+    $scope.$watchGroup(['busStops',()=>_.get($scope.map, 'control.getGMap')],([stops, gmap])=>{
       if (stops && gmap) {
-        $scope.panToStops(gmap, stops);
+        $scope.panToStops($scope.map.control.getGMap(), stops);
       }
     })
 
