@@ -1,8 +1,12 @@
 .routes-view {
-
+  .search-div {
+    background: $light-grey;
+  }
   $search-height: $bar-height;
   .search {
     height: $search-height;
+    border: 5px solid $light-grey;
+    border-radius: 12px;
     input {
       // HACK: re-left aligning overriding our previous ionic override
       text-align: left !important;
