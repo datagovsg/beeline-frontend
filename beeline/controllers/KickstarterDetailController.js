@@ -56,28 +56,24 @@ export default [
       $scope.book.bidOptions = route.notes.tier;
       [$scope.book.boardStops, $scope.book.alightStops] = BookingService.computeStops($scope.book.route.trips);
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
-      // $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
     })
 
 
 
     $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(gmapIsReady)
+      loadingSpinner(Promise.all([gmapIsReady,()=>KickstarterService.fetchLelong()]))
       .then(() => {
         var gmap = $scope.map.control.getGMap();
+        //resize need to be in front of pan stops to properlly center the map
         google.maps.event.trigger(gmap, 'resize');
+        assert($scope.busStops);
+        $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
       });
     });
 
     gmapIsReady.then(function() {
       MapOptions.disableMapLinks();
     });
-
-    $scope.$watchGroup(['busStops',()=>_.get($scope.map, 'control.getGMap')],([stops, gmap])=>{
-      if (stops && gmap) {
-        $scope.panToStops($scope.map.control.getGMap(), stops);
-      }
-    })
 
     $scope.$watch('book.route.path', (path) => {
       if (!path) {
