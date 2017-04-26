@@ -48,9 +48,6 @@ export default [
         }
       });
     });
-
-    var routePromise;
-
     $scope.book.routeId = +$stateParams.routeId;
 
     $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
@@ -65,11 +62,11 @@ export default [
 
 
     $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(Promise.all([gmapIsReady])
+      loadingSpinner(gmapIsReady)
       .then(() => {
         var gmap = $scope.map.control.getGMap();
         google.maps.event.trigger(gmap, 'resize');
-      }));
+      });
     });
 
     gmapIsReady.then(function() {
@@ -116,11 +113,12 @@ export default [
     $scope.showStops = function(){
       $scope.modal.show();
 
-      $scope.$watch(()=>_.get($scope.modalMap, 'control.getGMap()'), function(modalMap) {
+      $scope.$watch(()=>_.get($scope.modalMap, 'control.getGMap'), function(modalMap) {
         if (modalMap) {
-          google.maps.event.trigger(modalMap, 'resize');
+          MapOptions.disableMapLinks();
+          google.maps.event.trigger($scope.modalMap.control.getGMap(), 'resize');
           //set modalMap bound
-          $scope.panToStops(modalMap, $scope.busStops);
+          $scope.panToStops($scope.modalMap.control.getGMap(), $scope.busStops);
         }
       });
     };
