@@ -10698,17 +10698,18 @@ dynamic-signage div {
 
 .routes-view .search-div {
   background: #eee; }
-
-.routes-view .search {
-  height: 45px;
-  border: 5px solid #eee;
-  border-radius: 12px; }
-  .routes-view .search input {
-    text-align: left !important;
-    padding-left: 0; }
-  .routes-view .search .icon {
-    font-size: 1.5em;
-    padding-right: 15px; }
+  .routes-view .search-div .search {
+    height: 45px;
+    border: 5px solid #eee;
+    border-radius: 12px; }
+    .routes-view .search-div .search input {
+      text-align: left !important;
+      padding-left: 0; }
+    .routes-view .search-div .search .icon {
+      font-size: 1.5em;
+      padding-right: 15px; }
+  .routes-view .search-div ion-spinner {
+    margin-right: 5px; }
 
 .routes-view .routes-scroll {
   margin-top: 45px; }
