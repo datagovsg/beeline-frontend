@@ -85,7 +85,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "bfaa586922ff052df51c008e06dd5a66"
+    "hash": "8ecdfd078a3e6a25adaa01c58d10471a"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -97,7 +97,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "5437b1e4c15dca3a74521d0a38d1f6d2"
+    "hash": "69d21f93899283623e5b32bbdc20ec30"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -665,11 +665,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "3578ff30da3e96de641c7dd198cd4ae5"
+    "hash": "d3a61b3eee49bba508de3f929565427f"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "775a027684b2a09c672b764b3e829e59"
+    "hash": "46616f7b1e4406e2f94f95e19f427ef8"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -989,7 +989,7 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "e73615c9b717af3b5a2fad84046de226"
+    "hash": "8fce5aa535aa01ff8bb923582d9724a6"
   },
   {
     "file": "templates/settings.html",

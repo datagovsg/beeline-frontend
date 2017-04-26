@@ -10696,8 +10696,13 @@ dynamic-signage div {
   width: 100%;
   z-index: 0; }
 
+.routes-view .search-div {
+  background: #eee; }
+
 .routes-view .search {
-  height: 45px; }
+  height: 45px;
+  border: 5px solid #eee;
+  border-radius: 12px; }
   .routes-view .search input {
     text-align: left !important;
     padding-left: 0; }
