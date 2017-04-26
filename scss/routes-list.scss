@@ -1,21 +1,25 @@
 .routes-view {
+  $search-height: $bar-height;
   .search-div {
     background: $light-grey;
-  }
-  $search-height: $bar-height;
-  .search {
-    height: $search-height;
-    border: 5px solid $light-grey;
-    border-radius: 12px;
-    input {
-      // HACK: re-left aligning overriding our previous ionic override
-      text-align: left !important;
-      padding-left: 0;
+    .search {
+      height: $search-height;
+      border: 5px solid $light-grey;
+      border-radius: 12px;
+      input {
+        // HACK: re-left aligning overriding our previous ionic override
+        text-align: left !important;
+        padding-left: 0;
+      }
+      .icon {
+        // Scaled and moved to taste
+        font-size: 1.5em;
+        padding-right: 1.5 * $content-padding;
+      }
     }
-    .icon {
-      // Scaled and moved to taste
-      font-size: 1.5em;
-      padding-right: 1.5 * $content-padding;
+
+    ion-spinner {
+      margin-right: 5px;
     }
   }
 
