@@ -74,8 +74,6 @@ export default [
     });
 
     $scope.$watchGroup(['busStops','map.control.getGMap'],([stops, gmap])=>{
-      console.log(stops);
-      console.log(gmap);
       if (stops && gmap) {
         $scope.panToStops($scope.map.control.getGMap(), stops);
       }
