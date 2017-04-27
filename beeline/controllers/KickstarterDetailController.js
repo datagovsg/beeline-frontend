@@ -116,7 +116,7 @@ export default [
       $scope.$watch('modalMap.control.getGMap', function(modalMap) {
         if (modalMap) {
           MapOptions.disableMapLinks();
-          MapOptions.resizePreserveCenter($scope.modalMap.control.getGmap());
+          MapOptions.resizePreserveCenter($scope.modalMap.control.getGMap());
           //set modalMap bound
           $scope.panToStops($scope.modalMap.control.getGMap(), $scope.busStops);
         }
