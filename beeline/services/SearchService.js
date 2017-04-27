@@ -44,7 +44,10 @@ export default function SearchService() {
       let filteredRoutes = routes.filter(route => {
         return _.some(route.trips[0].tripStops, (tripStop) => {
           let distance = latlngDistance(
-            tripStop.stop.coordinates.coordinates.reverse(),
+            [
+              tripStop.stop.coordinates.coordinates[1],
+              tripStop.stop.coordinates.coordinates[0]
+            ],
             [place.geometry.location.lat(), place.geometry.location.lng()]
           );
           return distance < maxDistance;

@@ -65,7 +65,7 @@ export default [
       loadingSpinner(gmapIsReady)
       .then(() => {
         var gmap = $scope.map.control.getGMap();
-        google.maps.event.trigger(gmap, 'resize');
+        MapOptions.resizePreserveCenter(gmap)
       });
     });
 
@@ -73,7 +73,9 @@ export default [
       MapOptions.disableMapLinks();
     });
 
-    $scope.$watchGroup(['busStops',()=>_.get($scope.map, 'control.getGMap')],([stops, gmap])=>{
+    $scope.$watchGroup(['busStops','map.control.getGMap'],([stops, gmap])=>{
+      console.log(stops);
+      console.log(gmap);
       if (stops && gmap) {
         $scope.panToStops($scope.map.control.getGMap(), stops);
       }
@@ -113,10 +115,10 @@ export default [
     $scope.showStops = function(){
       $scope.modal.show();
 
-      $scope.$watch(()=>_.get($scope.modalMap, 'control.getGMap'), function(modalMap) {
+      $scope.$watch('modalMap.control.getGMap', function(modalMap) {
         if (modalMap) {
           MapOptions.disableMapLinks();
-          google.maps.event.trigger($scope.modalMap.control.getGMap(), 'resize');
+          MapOptions.resizePreserveCenter($scope.modalMap.control.getGmap());
           //set modalMap bound
           $scope.panToStops($scope.modalMap.control.getGMap(), $scope.busStops);
         }

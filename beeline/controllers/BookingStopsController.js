@@ -115,7 +115,7 @@ export default [
       loadingSpinner(Promise.all([gmapIsReady, routePromise])
       .then(() => {
         var gmap = $scope.map.control.getGMap();
-        google.maps.event.trigger(gmap, 'resize');
+        MapOptions.resizePreserveCenter(gmap)
         panToStops();
       }));
     });
