@@ -70,7 +70,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "npm run build",
+    "heroku-postbuild": "webpack",
     "clean": "ionic platform remove android; ionic platform remove ios; ionic platform remove browser; git checkout package.json",
     "clean-deploy": "shx rm -rf node_modules/gh-pages/.cache",
     "stg-deploy": "npm run stg-cp && npm run stg-build && npm run stg-hcp && npm run stg-gh-pages",
