@@ -104,20 +104,21 @@ export default [
 
     uiGmapGoogleMapApi.then((googleMaps) => {
       $scope.map.busLocation.icon = {
-          url: 'img/busMarker.svg',
-          scaledSize: new googleMaps.Size(68, 86),
-          anchor: new googleMaps.Point(34, 78),
-        };
+        url: `img/busMarker.svg`,
+        scaledSize: new googleMaps.Size(68, 86),
+        anchor: new googleMaps.Point(34, 78),
+      }
     })
 
     // Draw the icon for latest bus location
     $scope.$watch('recentPings', function(recentPings) {
       if (recentPings && recentPings.length > 0) {
         $scope.map.busLocation.coordinates = recentPings[0].coordinates;
-        $scope.map.lines.actualPath.path = recentPings.map(ping => ({
-          latitude: ping.coordinates.coordinates[1],
-          longitude: ping.coordinates.coordinates[0]
+        $scope.map.lines.actualPath.path = recentPings.map(p => ({
+          latitude: p.coordinates.coordinates[1],
+          longitude: p.coordinates.coordinates[0],
         }));
+        $scope.map.lines.actualPath.pings = recentPings;
       }
     });
 

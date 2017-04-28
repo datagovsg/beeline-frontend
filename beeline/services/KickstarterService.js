@@ -8,7 +8,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
   for (let kickstarter of kickstarterRoutes){
     kickstarter.isActived = false;
     if (kickstarter.bids && kickstarter.bids.length > 0) {
-     var bidsByTier = _.groupBy(kickstarter.bids, x=>x.userOptions.price);
+     var bidsByTier = _.groupBy(kickstarter.bids, x=> x.priceF || x.userOptions.price);
       kickstarter.notes.tier.map((tier)=>{
         var countCommitted = bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0;
         _.assign(tier, {count: countCommitted,
@@ -88,7 +88,7 @@ var updateAfterBid = function(route, price) {
   updateStatus(route);
 }
 
-export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService, p) {
+export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService, p, DevicePromise) {
   var kickstarterRoutesCache;
   var bidsCache;
   var kickstarterSummary = null, bidsById = null;
@@ -120,11 +120,9 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
       }).then((response) => {
         // kickstarterSummary = response.data;
         kickstarterSummary = response.data.map((bid)=>{
-          return   {routeId: bid.id,
-                    boardStopId: bid.bid.tickets[0].boardStop.stopId,
-                    alightStopId: bid.bid.tickets[0].alightStop.stopId,
-                    bidPrice: bid.bid.userOptions.price,
-                    ticketStatus: bid.bid.tickets[0].status}
+          return   {routeId: bid.routeId || bid.id,
+                    bidPrice: bid.priceF || bid.bid.userOptions.price,
+                    status: bid.status || bid.bid.tickets[0].status}
         })
         bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
         return kickstarterSummary;
@@ -162,11 +160,14 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
   async function fetchNearbyKickstarterIds() {
     let locationOrNull = null;
     try {
+      await DevicePromise;
       locationOrNull = await getLocationPromise(false);
     } catch (err) {
       // Location not found -- suppress error
       nearbyKickstarterRoutesById = nearbyKickstarterRoutesById  || null;
-      return nearbyKickstarterRoutesById;
+      return new Promise((resolve, reject)=>{
+        resolve(nearbyKickstarterRoutesById);
+      })
     }
 
     let coords = {
@@ -203,8 +204,10 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         )
       )
     })
-    let [np, nvp] = await Promise.all([nearbyPromise, nearbyReversePromise])
-    return nearbyKickstarterRoutesById = _((np.data).concat(nvp.data)).map(r=>r.id).uniq().value();
+    return Promise.all([nearbyPromise, nearbyReversePromise]).then((values) =>{
+      let [np, nvp] = values;
+      return nearbyKickstarterRoutesById = _((np.data).concat(nvp.data)).map(r=>r.id).uniq().value();
+    });
   }
 
   return {
@@ -235,7 +238,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
       return bidsCache.then(()=>{
         return kickstarterSummary &&
                kickstarterSummary.length>0 &&
-               kickstarterSummary.find(x=>x.ticketStatus === 'bidded');
+               kickstarterSummary.find(x=>x.status === 'bidded');
       })
     },
 
@@ -258,10 +261,8 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         updateAfterBid(kickstarterRoutesById[route.id], bidPrice);
         kickstarterSummary = kickstarterSummary.concat([{
           routeId: route.id,
-          boardStopId: boardStopId,
-          alightStopId: alightStopId,
           bidPrice: bidPrice,
-          ticketStatus: 'bidded'
+          status: 'bidded'
         }])
         return response.data;
       })

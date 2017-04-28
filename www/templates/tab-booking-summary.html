@@ -1,12 +1,14 @@
 <ion-view id="pg_summary" view-title="Booking Summary"
   hide-back-button="true">
   <ion-nav-buttons side="left">
+    <!-- FIXME: through 'fastCheckout', date is pre-selected as not vistied before -->
     <button class="button button-clear back-button"
        ui-sref="tabs.booking-dates({
         boardStop: book.boardStopId,
         alightStop: book.alightStopId,
         routeId: book.routeId,
         sessionId: session.sessionId,
+        selectedDates: book.selectedDates.join(',')
       })">
        <i class="icon ion-ios-arrow-back"></i> Dates
     </button>
@@ -59,7 +61,7 @@
       <h3 class="item item-divider">
         Selected Dates
       </h3>
-      <price-calculator id="priceCalc" class="item" booking="book" price="book.price" show-promo-field="true">
+      <price-calculator id="priceCalc" class="item" booking="book" price="book.price">
       </price-calculator>
       <button class="button button-block button-outline button-royal" ng-hide="book.promoCode"
               ng-click="promptPromoCode()">

@@ -48,9 +48,6 @@ export default [
         }
       });
     });
-
-    var routePromise;
-
     $scope.book.routeId = +$stateParams.routeId;
 
     $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
@@ -59,22 +56,28 @@ export default [
       $scope.book.bidOptions = route.notes.tier;
       [$scope.book.boardStops, $scope.book.alightStops] = BookingService.computeStops($scope.book.route.trips);
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
-      if ($scope.map.control.getGMap) {
-        $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
-      }
+      // $scope.panToStops($scope.map.control.getGMap(), $scope.busStops);
     })
 
+
+
     $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(Promise.all([gmapIsReady])
+      loadingSpinner(gmapIsReady)
       .then(() => {
         var gmap = $scope.map.control.getGMap();
-        google.maps.event.trigger(gmap, 'resize');
-      }));
+        MapOptions.resizePreserveCenter(gmap)
+      });
     });
 
     gmapIsReady.then(function() {
       MapOptions.disableMapLinks();
     });
+
+    $scope.$watchGroup(['busStops','map.control.getGMap'],([stops, gmap])=>{
+      if (stops && gmap) {
+        $scope.panToStops($scope.map.control.getGMap(), stops);
+      }
+    })
 
     $scope.$watch('book.route.path', (path) => {
       if (!path) {
@@ -110,11 +113,12 @@ export default [
     $scope.showStops = function(){
       $scope.modal.show();
 
-      $scope.$watch(()=>$scope.modalMap.control.getGMap(), function(modalMap) {
+      $scope.$watch('modalMap.control.getGMap', function(modalMap) {
         if (modalMap) {
-          google.maps.event.trigger(modalMap, 'resize');
+          MapOptions.disableMapLinks();
+          MapOptions.resizePreserveCenter($scope.modalMap.control.getGMap());
           //set modalMap bound
-          $scope.panToStops(modalMap, $scope.busStops);
+          $scope.panToStops($scope.modalMap.control.getGMap(), $scope.busStops);
         }
       });
     };
@@ -159,7 +163,6 @@ export default [
         }
       })
     }
-
   }
 ];
 //

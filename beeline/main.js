@@ -2,26 +2,38 @@ import {formatDate, formatDateMMMdd, formatTime, formatTimeArray,
         formatUTCDate, titleCase} from './shared/format';
 import {companyLogo} from './shared/imageSources';
 
-global.moment = require('moment')
-
 // node imports
 import compareVersions from 'compare-versions';
 import assert from 'assert';
 
 // Angular imports
-import AngularGoogleMap from 'angular-google-maps';
 import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 
 // Configuration Imports
 import configureRoutes from './router.js';
 
+var app = angular.module('beeline', [
+  'ionic',
+  'ngCordova',
+  'uiGmapgoogle-maps',
+  'multipleDatePicker',
+  'ngclipboard',
+])
+
+require('angular-simple-logger');
+require('angular-google-maps');
+require('clipboard');
+require('ngclipboard');
 require('./directives/extA');
-require('./intents');
+require('./services/RotatedImageService');
+require('./services/GeoUtils');
+require('./directives/mapBusPolyRoute');
+require('./directives/mapBusIcon');
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
 // //////////////////////////////////////////////////////////////////////////////
-angular.module('beeline')
+app
 .filter('formatDate', () => formatDate)
 .filter('formatDateMMMdd', () => formatDateMMMdd)
 .filter('formatUTCDate', () => formatUTCDate)
@@ -62,10 +74,7 @@ angular.module('beeline')
 .service('LoginDialog', require('./services/login.js').default)
 .service('KickstarterService', require('./services/KickstarterService.js').default)
 .controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
-.controller('RoutesController', require('./controllers/RoutesController.js').default)
-.controller('RoutesMapController', require('./controllers/RoutesMapController.js').default)
 .controller('RoutesListController', require('./controllers/RoutesListController.js').default)
-.controller('RoutesResultsController', require('./controllers/RoutesResultsController.js').default)
 .controller('BookingStopsController', require('./controllers/BookingStopsController.js').default)
 .controller('BookingDatesController', require('./controllers/BookingDatesController.js').default)
 .controller('BookingSummaryController', require('./controllers/BookingSummaryController.js').default)
@@ -84,8 +93,6 @@ angular.module('beeline')
 .controller('KickstarterSummaryController', require('./controllers/KickstarterSummaryController.js').default)
 .controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
-.controller('SearchController', require('./controllers/SearchController.js').default)
-.controller('SearchResultsController', require('./controllers/SearchResultsController.js').default)
 .directive('searchButton', require('./directives/searchButton.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
@@ -102,7 +109,6 @@ angular.module('beeline')
 .directive('moreInfo', require('./directives/moreInfo/moreInfo').default)
 .directive('markdownRenderer', require('./directives/markdownRenderer').default)
 .directive('mapPolyRoute', require('./directives/mapPolyRoute').default)
-.directive('mapBusPolyRoute', require('./directives/mapBusPolyRoute').default)
 .directive('mapBusStops', require('./directives/mapBusStops').default)
 .directive('dynamicSignage', require('./directives/dynamicSignage.js').default)
 .directive('beelineBindHtml', require('./directives/beelineBindHtml.js').default)
@@ -136,13 +142,19 @@ angular.module('beeline')
     libraries: 'places,geometry'
   });
 })
+.run(function($rootScope, replace, p) {
+  $rootScope.o = {
+    ...p,
+    replace
+  }
+})
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-      cordova.plugins.Keyboard.disableScroll(true);
+      cordova.plugins.Keyboard.disableScroll(false);
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
@@ -180,17 +192,18 @@ angular.module('beeline')
     }
   });
 })
-.run(function (RoutesService, KickstarterService) {
+.run(function (RoutesService, KickstarterService, LiteRoutesService, TicketService) {
   // Pre-fetch the routes
   RoutesService.fetchRoutes();
   RoutesService.fetchRecentRoutes();
   KickstarterService.fetchLelong();
   KickstarterService.fetchBids();
+  LiteRoutesService.fetchLiteRoutes();
+  TicketService.fetchTickets();
 })
 .run(function ($templateCache) {
   $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))
   $templateCache.put('templates/settings.html', require('../www/templates/settings.html'))
-  $templateCache.put('templates/routes-results.html', require('../www/templates/routes-results.html'))
   $templateCache.put('templates/routes-list.html', require('../www/templates/routes-list.html'))
   $templateCache.put('templates/tickets.html', require('../www/templates/tickets.html'))
   $templateCache.put('templates/ticket-detail.html', require('../www/templates/ticket-detail.html'))
@@ -200,12 +213,17 @@ angular.module('beeline')
   $templateCache.put('templates/tab-booking-confirmation.html', require('../www/templates/tab-booking-confirmation.html'))
 })
 
-var devicePromise = window.cordova ?
-  new Promise((resolve) => {
+var devicePromise = new Promise((resolve, reject) => {
+  if (window.cordova) {
     document.addEventListener('deviceready', resolve, false);
-  }) : null;
+  }
+  else {
+    console.log('No cordova detected')
+    resolve();
+  }
+})
 
-app.service('DevicePromise', () => devicePromise)
+app.service('DevicePromise', () => devicePromise);
 
 app.run(['UserService', '$ionicPopup', async function (UserService, $ionicPopup) {
   // Version check, if we're in an app

@@ -1,39 +1,31 @@
-.routes-list ion-content {
-  display: flex;
-  flex-direction: column;
-
-  .list {
-    flex: 1 1 auto;
-  }
-
-  .not-found-message {
-    padding: $content-padding*4;
-  }
-}
-
-// Get the Region filter to be center aligned
-// Use % widths on both components to get them roughly to the center
-// Using this method since it's easily compatible with the ionic structure
-.region-filter {
-  flex: 0 0 ($line-height-computed + $content-padding * 2);
-  display: flex;
-  flex-direction: row;
-
-  & > :nth-child(1) {
-    flex: 1 1 50%;
-  }
-  & > :nth-child(2) {
-    flex: 1 1 50%;
-
-    select {
-      padding: inherit;
-      width: 100%;
-      max-width:none;
-      direction: ltr;
+.routes-view {
+  $search-height: $bar-height;
+  .search-div {
+    background: $light-grey;
+    .search {
+      height: $search-height;
+      border: 5px solid $light-grey;
+      border-radius: 12px;
+      input {
+        // HACK: re-left aligning overriding our previous ionic override
+        text-align: left !important;
+        padding-left: 0;
+      }
+      .icon {
+        // Scaled and moved to taste
+        font-size: 2em;
+        padding-right: 1.5 * $content-padding;
+      }
     }
 
-    &:after {
-      /* display: none;  */
+    ion-spinner {
+      margin-right: 5px;
     }
   }
+
+  .routes-scroll {
+    // Margin-top hack to get the ion content to work nicely with search bar
+    margin-top: $search-height;
+  }
+
 }

@@ -41,9 +41,9 @@ export default [
     $scope.showStops = function(){
       $scope.modal.show();
 
-      $scope.$watch(()=>$scope.modalMap.control.getGMap(), function(modalMap) {
+      $scope.$watch(() => $scope.modalMap.control.getGMap && $scope.modalMap.control.getGMap(), function(modalMap) {
         if (modalMap) {
-          google.maps.event.trigger(modalMap, 'resize');
+          MapOptions.resizePreserveCenter(modalMap)
           //set modalMap bound
           $scope.panToStops(modalMap, $scope.busStops);
         }

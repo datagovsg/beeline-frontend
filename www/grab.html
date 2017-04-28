@@ -41,28 +41,17 @@
   <!-- qrcode generator -->
   <script type="text/javascript" src="js/qrcode.min.js"></script>
   <!-- ionic/angularjs js -->
-  <script src="js/lodash.js"></script>
   <script src="lib/ionic/js/ionic.bundle.js"></script>
-  <script src="js/angular-simple-logger.js"></script>
-  <script src="js/angular-google-maps.js"></script>
   <!-- cordova script (this will be a 404 during development) -->
   <script src="js/ng-cordova.min.js"></script>
   <script src="cordova.js"></script>
   <!-- ionic/angularjs js -->
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
-  <script src="js/clipboard.min.js"></script>
-  <script src="js/ngclipboard.min.js"></script>
+  <script src="lib/beeline/bundle.js"></script>
   <script>
-    var app = angular.module('beeline', [
-      'ionic',
-      'ngCordova',
-      'uiGmapgoogle-maps',
-      'multipleDatePicker',
-      'ngclipboard',
-    ])
-
-    app.factory('replace', function () {
+    angular.module('beeline')
+    .factory('replace', function () {
       var replacements = {
         '/assets/FAQ': '/assets/FAQ-grab'
         // 'img/introTrackOnly.svg': 'img/introSuggest.svg'
@@ -78,12 +67,7 @@
     })
     .factory('p', function () {
       return {
-        transportCompanyId: 15
-      }
-    })
-    .run(function($rootScope, replace) {
-      $rootScope.o = {
-        replace: replace,
+        transportCompanyId: 15,
         APP: {
           NAME: "GrabShuttle",
           PREFIX: "grab-",
@@ -91,13 +75,12 @@
           INDEX: "https://app.beeline.sg/grab.html"
         },
         CONTACTS: {
-          PHONE: "(65) 6570 3925",
+          PHONE: "(65) 6655 0005",
           EMAIL: "support.sg@grab.com"
         }
       }
     })
   </script>
-  <script src="lib/beeline/bundle.js"></script>
 </head>
 
 <body ng-app="beeline">

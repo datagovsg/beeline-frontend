@@ -41,20 +41,14 @@ export default [
       isVerifying: null,
       // if 2 requests sent to verify promo code, only the latter triggered matters
       // always need to have this if using debounce with promise
-      lastestVerifyPromoCodePromise: null
+      lastestVerifyPromoCodePromise: null,
+      selectedDates: ($stateParams.selectedDates || '').split(',').map(s => parseInt(s))
     };
     $scope.disp = {
       zeroDollarPurchase: false
     };
 
     $scope.isPaymentProcessing = false;
-
-    if (!Array.prototype.isPrototypeOf($stateParams.selectedDates)) {
-      $stateParams.selectedDates = [$stateParams.selectedDates]
-    }
-    $scope.book.selectedDates = $stateParams.selectedDates.map(function(item){
-        return parseInt(item);
-    });
 
     RoutesService.getRoute(parseInt($scope.book.routeId)).then((route) => {
       $scope.book.route = route;
@@ -114,7 +108,7 @@ export default [
 
     $scope.checkValidDate = async function () {
 
-      var previouslyBookedDays = await TicketService.getPreviouslyBookedDaysByRouteId($scope.book.routeId, true);
+      var previouslyBookedDays = await TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true);
       var selectedAndInvalid = _.intersection(
         $scope.book.selectedDates, // list of integers
         Object.keys(previouslyBookedDays).map(s => parseInt(s))
@@ -242,7 +236,8 @@ export default [
           data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips($scope.book),
             promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
-            creditTag: $scope.book.creditTag,
+            // don't use route credits if toggle if off
+            creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
             applyCredits: $scope.book.applyCredits,
             applyReferralCredits: $scope.book.applyReferralCredits,
           }),

@@ -45,6 +45,11 @@ export default [
             weight: 3.0,
             opacity: 0.7
           },
+          crowdstartPath: {
+            color: '#AAAAAA',
+            weight: 3.0,
+            opacity: 0.4
+          },
           actualPath: {
             color: '#000000',
             weight: 3.0,
