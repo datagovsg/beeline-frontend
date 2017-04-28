@@ -54,8 +54,8 @@ export default [
     var routePromise = tripPromise.then((trip) => {
       return RoutesService.getRoute(+trip.routeId);
     });
-    var companyPromise = tripPromise.then((trip) => {
-      return CompanyService.getCompany(+trip.transportCompanyId);
+    var companyPromise = routePromise.then((route) => {
+      return CompanyService.getCompany(+route.transportCompanyId);
     });
     ticketPromise.then((ticket) => { $scope.ticket = ticket; });
     tripPromise.then((trip) => { $scope.trip = trip; });
