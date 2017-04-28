@@ -1,0 +1,12 @@
+{
+  "name": "beeline",
+  "s3bucket": "beeline-hcp",
+  "s3prefix": "",
+  "s3region": "ap-southeast-1",
+  "android_identifier": "sg.beeline",
+  "ios_identifier": "id1010615256",
+  "update": "resume",
+  "content_url": "https://app-staging.beeline.sg",
+  "min_native_interface": 1,
+  "release": "2017.04.28-17.22.47"
+}
