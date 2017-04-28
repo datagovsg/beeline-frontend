@@ -85,7 +85,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "31a16f7049ea32db37208df788239a90"
+    "hash": "af8d2889d9165d245136ff8682f1f1c9"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -97,7 +97,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "b03b5ca083877f5d4d481c818f52c52e"
+    "hash": "a802d140283fe88b3e6fb672c7cf0786"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -665,11 +665,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "29c4e4778370ff4cb21c82681369c653"
+    "hash": "4ea11b1be2a0c10c2da0cc974b876887"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "9bb701378c2e0b94aa2632919f57ac19"
+    "hash": "3dddc54c9ed49dd4e44281fd829ca07b"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -989,7 +989,7 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "8fce5aa535aa01ff8bb923582d9724a6"
+    "hash": "d5b9df3c2ce62aa5ed8be4c048449512"
   },
   {
     "file": "templates/settings.html",
@@ -1025,7 +1025,7 @@
   },
   {
     "file": "templates/tabs.html",
-    "hash": "42030de60fc2920bf0f3e560ebe7b0ea"
+    "hash": "ea9ddbc05d1303e92d7bf307b39301d9"
   },
   {
     "file": "templates/ticket-detail.html",
