@@ -119,10 +119,12 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         url: '/custom/lelong/bids',
       }).then((response) => {
         // kickstarterSummary = response.data;
-        kickstarterSummary = response.data.map((bid)=>{
-          return   {routeId: bid.routeId || bid.id,
-                    bidPrice: bid.priceF || bid.bid.userOptions.price,
-                    status: bid.status || bid.bid.tickets[0].status}
+        kickstarterSummary = response.data.map(bid => {
+          return {
+            routeId: bid.routeId,
+            bidPrice: bid.priceF,
+            status: bid.status
+          }
         })
         bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
         return kickstarterSummary;
@@ -245,17 +247,9 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
     createBid: function(route, boardStopId, alightStopId,bidPrice) {
       return UserService.beeline({
         method: 'POST',
-        url: '/custom/lelong/bid',
+        url: `/custom/lelong/routes/${route.id}/bids`,
         data: {
-          trips: route.trips.map(trip => ({
-            tripId: trip.id,
-            boardStopId: boardStopId,
-            alightStopId: alightStopId,
-          })),
-          promoCode: {
-            code: 'LELONG',
-            options: {price: bidPrice}
-          }
+          price: bidPrice
         }
       }).then((response)=>{
         updateAfterBid(kickstarterRoutesById[route.id], bidPrice);
