@@ -55,13 +55,13 @@
     <div class="item-subtitle">Credits and Route Pass</div>
     <ul class="list">
       <ion-toggle ng-model="booking.applyRouteCredits" toggle-class="toggle-royal" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
-        Use my Route Pass ({{ booking.route.ridesRemaining }} trips remaining)
+        <span class="text-wrap">Use my Route Pass ({{ booking.route.ridesRemaining }} trips remaining)</span>
       </ion-toggle>
       <ion-toggle ng-model="booking.applyReferralCredits" toggle-class="toggle-royal" ng-if="referralCredits && referralCredits > 0">
-        Use my Welcome Credits ({{ referralCredits || 0 | currency}} remaining)
+        <span class="text-wrap">Use my Welcome Credits ({{ referralCredits || 0 | currency}} remaining)</span>
       </ion-toggle>
       <ion-toggle ng-model="booking.applyCredits" toggle-class="toggle-royal" ng-if="userCredits && userCredits > 0">
-        Use my General Credits ({{ userCredits || 0 | currency}} remaining)
+        <span class="text-wrap">Use my General Credits ({{ userCredits || 0 | currency}} remaining)</span>
       </ion-toggle>
     </ul>
   </div>
