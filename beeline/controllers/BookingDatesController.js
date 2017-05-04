@@ -190,6 +190,15 @@ export default [
     function showHelpPopup() {
       multipleDatePopup = $ionicPopup.show({
         title: 'Tap to select multiple days',
+        buttons: [
+          {
+            text: 'OK',
+            type: 'button-positive',
+            onTap: function(e) {
+              closePopup();
+            }
+          }
+        ]
       });
     }
 
@@ -197,17 +206,20 @@ export default [
       multipleDatePopup.close()
     }
 
-    showHelpPopup()
+    if (!window.localStorage['showMultipleDate']) {
+      window.localStorage['showMultipleDate'] = true;
+      showHelpPopup();
+    }
 
     //close the popup by click on any space at the background
-    var htmlEl = angular.element(document.querySelector('html'));
-    htmlEl.on('click', function (event) {
-     if (event.target.nodeName === 'HTML') {
-       if (multipleDatePopup) {
-         multipleDatePopup.close();
-       }
-     }
-   });
+  //   var htmlEl = angular.element(document.querySelector('html'));
+  //   htmlEl.on('click', function (event) {
+  //    if (event.target.nodeName === 'HTML') {
+  //      if (multipleDatePopup) {
+  //        multipleDatePopup.close();
+  //      }
+  //    }
+  //  });
 
   },
 ];
