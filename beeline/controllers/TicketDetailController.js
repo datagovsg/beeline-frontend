@@ -58,7 +58,11 @@ export default [
       return CompanyService.getCompany(+route.transportCompanyId);
     });
     ticketPromise.then((ticket) => { $scope.ticket = ticket; });
-    tripPromise.then((trip) => { $scope.trip = trip; });
+    tripPromise.then((trip) => {
+      $scope.trip = trip;
+      //hack to utilize mapBusPolyRoute
+      $scope.tripArray = [trip];
+    });
     routePromise.then((route) => { $scope.route = route; });
     companyPromise.then((company) => { $scope.company = company; });
 

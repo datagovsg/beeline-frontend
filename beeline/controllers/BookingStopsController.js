@@ -65,6 +65,8 @@ export default [
       bookingEnds: null, //booking window close till trip ends
       buttonNotes: null, //if availability==0
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
+      nextTrip: null,
+      nextTripArray: null
     };
     $scope.disp = {
       popupStop: null,
@@ -202,6 +204,8 @@ export default [
         $scope.book.nextTripDate = null;
         $scope.book.windowBeforeClose = null;
         $scope.book.bookingEnds = null;
+        $scope.book.nextTrip = null;
+        $scope.book.nextTripArray = null;
         var countdownTimer = null;
         var runningTrips = route.trips.filter(tr => tr.isRunning);
         //compare current date with nearest date trip's 1st board stop time
@@ -227,6 +231,9 @@ export default [
           //check seat is available
           if (now < boardTime || (now >= boardTime && now <= lastStopTime)) {
             $scope.book.nextTripDate = [trip.date.getTime()];
+            $scope.book.nextTrip = trip;
+            //hack to utilize mapBusPolyRoute
+            $scope.book.nextTripArray = [trip];
             $scope.book.minsBeforeClose =  moment(boardTime).diff(moment(now), 'minutes');
 
             //to prevent user buying trip at last minute (within booking window close to trip ends)
