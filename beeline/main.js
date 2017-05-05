@@ -137,11 +137,17 @@ app
   $httpProvider.useApplyAsync(true);
 })
 .config(function(uiGmapGoogleMapApiProvider) {
-  uiGmapGoogleMapApiProvider.configure({
-    client: 'gme-infocommunications',
-//        v: ', //defaults to latest 3.X anyhow
-    libraries: 'places,geometry'
-  });
+  if (process.env.GOOGLE_API_KEY) {
+    uiGmapGoogleMapApiProvider.configure({
+      key: process.env.GOOGLE_API_KEY,
+      libraries: 'places,geometry'
+    });    
+  } else {
+    uiGmapGoogleMapApiProvider.configure({
+      client: 'gme-infocommunications',
+      libraries: 'places,geometry'
+    });    
+  }
 })
 .run(function($rootScope, replace, p) {
   $rootScope.o = {
