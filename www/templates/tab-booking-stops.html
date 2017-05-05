@@ -121,7 +121,7 @@
         <div ng-if="book.hasNextTripTicket" class="notes" >You have already booked this trip.</div>
         <button class="button primary-button button-item"
           ng-click="fastCheckout()"
-          ng-disabled="stopsForm.$invalid || !book.nextTripIsAvailable || book.isVerifying || book.minsBeforeClose<=0 || book.hasNextTripTicket">
+          ng-disabled="stopsForm.$invalid || !book.nextTripIsAvailable || book.isVerifying || book.minsBeforeClose<=0 || book.hasNextTripTicket || !book.stopAvailable">
           {{book.buttonText}}{{ ' '+(book.nextTripDate[0] | date:'dd MMM' : 'Z')+' '}}{{'('+(book.nextTripDate[0] | date:'EEE' : 'Z')+')'}}
         </button>
         <div ng-if="book.buttonNotes" class="notes">{{book.buttonNotes}}</div>

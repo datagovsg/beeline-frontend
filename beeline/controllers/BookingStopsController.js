@@ -65,6 +65,9 @@ export default [
       bookingEnds: null, //booking window close till trip ends
       buttonNotes: null, //if availability==0
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
+      nextTrip: null, //next upcoming trip
+      stopAvailable: null //set to false if any board or alight stop is not available for express checkout date
+                          //use case; operator add more stops from date x
     };
     $scope.disp = {
       popupStop: null,
@@ -200,6 +203,8 @@ export default [
       .then(([route, user]) => {
         //reset the nextTripDate and windowBeforeClose when re-loaded
         $scope.book.nextTripDate = null;
+        $scope.book.nextTrip = null;
+        $scope.book.stopAvailable = null;
         $scope.book.windowBeforeClose = null;
         $scope.book.bookingEnds = null;
         var countdownTimer = null;
@@ -227,6 +232,7 @@ export default [
           //check seat is available
           if (now < boardTime || (now >= boardTime && now <= lastStopTime)) {
             $scope.book.nextTripDate = [trip.date.getTime()];
+            $scope.book.nextTrip = trip;
             $scope.book.minsBeforeClose =  moment(boardTime).diff(moment(now), 'minutes');
 
             //to prevent user buying trip at last minute (within booking window close to trip ends)
@@ -257,6 +263,7 @@ export default [
               $scope.book.nextTripIsAvailable = false;
               $scope.book.buttonNotes = 'Tickets are sold out';
             }
+
             break;
           }
         }
@@ -312,6 +319,14 @@ export default [
         UserService.promptLogIn();
       }
     }
+
+    // check selected boardstop and alightstop available for the next upcoming trip
+    $scope.$watchGroup(['book.boardStop', 'book.alightStop', 'book.nextTrip'], (values)=>{
+      if (values[0] && values[1] && values[2]) {
+        let stopIds = values[2].tripStops.map(ts => ts.stop.id);
+        $scope.book.stopAvailable = stopIds.includes(values[0].id) && stopIds.includes(values[1].id)
+      }
+    })
 
   }
 ];
