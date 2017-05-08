@@ -1,5 +1,6 @@
 var moment = require('moment');
-import _ from 'lodash'
+import _ from 'lodash';
+import tapToSelectMultipleDaysTemplate from '../templates/tap-to-select-multiple-days.html'
 
 export default [
   '$scope',
@@ -10,10 +11,10 @@ export default [
   'RoutesService',
   '$stateParams',
   'TicketService',
-  'loadingSpinner', '$q', '$ionicScrollDelegate',
+  'loadingSpinner', '$q', '$ionicScrollDelegate','$ionicPopup',
   function($scope, $state, $http, BookingService, UserService,
     RoutesService, $stateParams, TicketService, loadingSpinner, $q,
-  $ionicScrollDelegate) {
+  $ionicScrollDelegate, $ionicPopup) {
     var now = new Date();
 
     // Booking session logic.
@@ -52,6 +53,7 @@ export default [
     };
 
     var routePromise = loadRoutes();
+    var multipleDatePopup = null;
 
     var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
     $q.all([routePromise, ridesRemainingPromise]).then(function(values){
@@ -185,5 +187,41 @@ export default [
         $scope.disp.availabilityDays[trip.date.getTime()] = trip.availability.seatsAvailable;
       }
     }
+
+    function showHelpPopup() {
+      multipleDatePopup = $ionicPopup.show({
+        title: 'Tap to select multiple days',
+        template: tapToSelectMultipleDaysTemplate,
+        buttons: [
+          {
+            text: 'OK',
+            type: 'button-positive',
+            onTap: function(e) {
+              closePopup();
+            }
+          }
+        ]
+      });
+    }
+
+    function closePopup() {
+      multipleDatePopup.close()
+    }
+
+    if (!window.localStorage['showMultipleDays']) {
+      window.localStorage['showMultipleDays'] = true;
+      showHelpPopup();
+    }
+
+    //close the popup by click on any space at the background
+  //   var htmlEl = angular.element(document.querySelector('html'));
+  //   htmlEl.on('click', function (event) {
+  //    if (event.target.nodeName === 'HTML') {
+  //      if (multipleDatePopup) {
+  //        multipleDatePopup.close();
+  //      }
+  //    }
+  //  });
+
   },
 ];
