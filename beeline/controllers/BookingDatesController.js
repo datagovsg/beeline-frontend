@@ -1,5 +1,6 @@
 var moment = require('moment');
 import _ from 'lodash';
+import tapToSelectMultipleDaysTemplate from '../templates/tap-to-select-multiple-days.html'
 
 export default [
   '$scope',
@@ -190,6 +191,7 @@ export default [
     function showHelpPopup() {
       multipleDatePopup = $ionicPopup.show({
         title: 'Tap to select multiple days',
+        template: tapToSelectMultipleDaysTemplate,
         buttons: [
           {
             text: 'OK',
