@@ -10144,6 +10144,7 @@ price-calculator .booking-info {
   price-calculator .booking-info.calculator td {
     text-align: left; }
     price-calculator .booking-info.calculator td.right {
+      width: 20%;
       text-align: right; }
   price-calculator .booking-info td,
   price-calculator .booking-info th {
@@ -10165,6 +10166,9 @@ price-calculator .spinner-block {
 
 price-calculator .item-subtitle {
   margin-top: 20px; }
+
+price-calculator .text-wrap {
+  white-space: normal; }
 
 /* .date-price-calculator{
   table {
@@ -11007,6 +11011,13 @@ dynamic-signage div {
     top: 0;
     right: 0; }
 
+/* Style for the tap multiple days modal in booking dates*/
+.tap-multiple-days {
+  padding: 10px; }
+  .tap-multiple-days img {
+    width: 100%;
+    height: auto; }
+
 .booking-content .item {
   display: -webkit-box;
   display: -webkit-flex;
@@ -11210,17 +11221,21 @@ table.booking-history {
   flex-direction: column;
   position: inherit;
   /* simplified progress bar in the kickstarter list */ }
-  .kickstarter-list ion-content .search {
-    height: 41px;
-    width: 100%; }
-    .kickstarter-list ion-content .search input {
-      text-align: left !important;
-      padding-left: 0; }
-    .kickstarter-list ion-content .search .icon {
-      font-size: 1.5em;
-      padding-right: 15px; }
+  .kickstarter-list ion-content .search-div {
+    background: #eee; }
+    .kickstarter-list ion-content .search-div .search {
+      height: 45px;
+      width: 100%;
+      border: 5px solid #eee;
+      border-radius: 12px; }
+      .kickstarter-list ion-content .search-div .search input {
+        text-align: left !important;
+        padding-left: 0; }
+      .kickstarter-list ion-content .search-div .search .icon {
+        font-size: 2em;
+        padding-right: 15px; }
   .kickstarter-list ion-content .list {
-    margin-top: 41px;
+    margin-top: 45px;
     flex: 1 1 auto; }
   .kickstarter-list ion-content .not-found-message {
     padding: 40px; }
