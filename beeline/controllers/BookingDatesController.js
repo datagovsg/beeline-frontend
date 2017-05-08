@@ -208,8 +208,8 @@ export default [
       multipleDatePopup.close()
     }
 
-    if (!window.localStorage['showMultipleDate']) {
-      window.localStorage['showMultipleDate'] = true;
+    if (!window.localStorage['showMultipleDays']) {
+      window.localStorage['showMultipleDays'] = true;
       showHelpPopup();
     }
 
