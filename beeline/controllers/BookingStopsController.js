@@ -66,7 +66,7 @@ export default [
       buttonNotes: null, //if availability==0
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
       nextTrip: null, //next upcoming trip
-      stopAvailable: null //set to false if any board or alight stop is not available for express checkout date
+      stopNotAvailable: null //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
     };
     $scope.disp = {
@@ -204,7 +204,7 @@ export default [
         //reset the nextTripDate and windowBeforeClose when re-loaded
         $scope.book.nextTripDate = null;
         $scope.book.nextTrip = null;
-        $scope.book.stopAvailable = null;
+        $scope.book.stopNotAvailable = null;
         $scope.book.windowBeforeClose = null;
         $scope.book.bookingEnds = null;
         var countdownTimer = null;
@@ -321,10 +321,10 @@ export default [
     }
 
     // check selected boardstop and alightstop available for the next upcoming trip
-    $scope.$watchGroup(['book.boardStop', 'book.alightStop', 'book.nextTrip'], (values)=>{
-      if (values[0] && values[1] && values[2]) {
-        let stopIds = values[2].tripStops.map(ts => ts.stop.id);
-        $scope.book.stopAvailable = stopIds.includes(values[0].id) && stopIds.includes(values[1].id)
+    $scope.$watchGroup(['book.boardStop', 'book.alightStop', 'book.nextTrip'], ([boardStop, alightStop, nextTrip])=>{
+      if (boardStop && alightStop && nextTrip) {
+        let stopIds = nextTrip.tripStops.map(ts => ts.stop.id);
+        $scope.book.stopNotAvailable = !stopIds.includes(boardStop.id) || !stopIds.includes(alightStop.id)
       }
     })
 
