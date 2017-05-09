@@ -669,11 +669,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "a1bbc5e5ba56c549afdc7cf84f2d1732"
+    "hash": "15e9780288dd48f451d26e40dd6c0178"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "5321308786a8c8ccf6438f935370e1b5"
+    "hash": "7fada456c68c543617d02db9c74d5857"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -1009,7 +1009,7 @@
   },
   {
     "file": "templates/tab-booking-stops.html",
-    "hash": "b14a892c45154ed406677bf6436e6821"
+    "hash": "b4ec73128ca7cecc49422b7b92d0b9d7"
   },
   {
     "file": "templates/tab-booking-summary.html",
