@@ -123,7 +123,7 @@
         <button class="button primary-button button-item"
           ng-click="fastCheckout()"
           ng-disabled="stopsForm.$invalid || !book.nextTripIsAvailable || book.isVerifying || book.minsBeforeClose<=0 || book.hasNextTripTicket || book.stopNotAvailable">
-          {{book.buttonText}}{{ ' '+(book.nextTripDate[0] | date:'dd MMM' : 'Z')+' '}}{{'('+(book.nextTripDate[0] | date:'EEE' : 'Z')+')'}}
+          {{book.buttonText}}{{ ' '+(book.nextTripDate[0] | date:'dd MMM' : 'Z')+' '}}<span ng-show="book.nextTripDate[0]">{{'('+(book.nextTripDate[0] | date:'EEE' : 'Z')+')'}}</span>
         </button>
         <div ng-if="book.buttonNotes" class="notes">{{book.buttonNotes}}</div>
         <div class="button button-clear button-royal"
