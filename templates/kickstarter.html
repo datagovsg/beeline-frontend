@@ -63,66 +63,8 @@
         <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-detail({
                                     routeId: route.id
                                    })">
-          <route-item>
-            <route-item-bus-number>
-              {{ route.label }}
-            </route-item-bus-number>
-            <route-item-description>
-              {{ route.notes.description }}
-            </route-item-description>
-            <route-item-start-time>
-              {{ route | routeStartTime | formatTime:true }}
-            </route-item-start-time>
-            <route-item-start-location>
-              {{ route.from }}
-            </route-item-start-location>
-            <route-item-end-time>
-              {{ route | routeEndTime | formatTime:true }}
-            </route-item-end-time>
-            <route-item-end-location>
-              {{ route.to }}
-            </route-item-end-location>
-            <route-item-additional-info>
-              <company-info-broker company-id="route.transportCompanyId" company="companyInfo">
-              </company-info-broker>
-              <div class="icon-and-schedule">
-                <span class="icon-span company-logo">
-                    <img class="mini-icon" ng-src="{{route.transportCompanyId | companyLogo}}">
-                  </span>
-                <span class="mini-info">
-                    {{companyInfo.name}}
-                  </span>
-              </div>
-
-              <div class="icon-and-schedule">
-                <span class="icon-span">
-                    <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
-                  </span>
-                <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
-                    Campaign ends in {{route.daysLeft}} days
-                  </span>
-                <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
-                    Campaign ends in  {{route.daysLeft}} day
-                  </span>
-                <span class="mini-info" ng-if="route.isExpired">
-                    Campaign has expired
-                  </span>
-              </div>
-
-              <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price" pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded">
-              </progress-bar>
-
-              <div class="icon-and-schedule">
-                <span class="icon-span">
-                    <img class="mini-icon" src="img/icon_kickstarter_status.svg">
-                  </span>
-                <span class="mini-info">
-                    {{route.status}}
-                  </span>
-              </div>
-            </route-item-additional-info>
-          </route-item>
-          <i class="icon ion-ios-arrow-right"></i>
+         <kickstart-route route="route"></kickstart-route>
+         <i class="icon ion-ios-arrow-right"></i>
         </ion-item>
       </div>
 
