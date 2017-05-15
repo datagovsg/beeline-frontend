@@ -9,7 +9,7 @@ const webpackConfig = []
 
 const prefix = process.env.BUILD_PREFIX || 'www'
 const backendUrl = process.env.BACKEND_URL
-
+const googleApiKey = process.env.GOOGLE_API_KEY
 assert(backendUrl, "Env BACKEND_URL must be set! e.g. process.env.BACKEND_URL")
 
 webpackConfig.push({
@@ -53,6 +53,7 @@ webpackConfig.push({
   plugins: [
     new InlineEnviromentVariablesPlugin({
       BACKEND_URL: backendUrl,
+      GOOGLE_API_KEY: googleApiKey
     })
   ]
 });
