@@ -67,8 +67,10 @@ export default [
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
       nextTripArray: null,
       nextTrip: null, //next upcoming trip
-      stopNotAvailable: null //set to true if any board or alight stop is not available for express checkout date
+      stopNotAvailable: null, //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
+      ticketCode: null,
+      showExpressCheckout: null
     };
     $scope.disp = {
       popupStop: null,
@@ -210,6 +212,8 @@ export default [
         $scope.book.bookingEnds = null;
         $scope.book.nextTrip = null;
         $scope.book.nextTripArray = null;
+        $scope.book.ticketCode = '1234';
+        $scope.book.showExpressCheckout = null;
         var countdownTimer = null;
         var runningTrips = route.trips.filter(tr => tr.isRunning);
         //compare current date with nearest date trip's 1st board stop time
@@ -298,18 +302,22 @@ export default [
           //compare current date with next trip
           if (nextTripDate && _.includes(bookedDays,nextTripDate[0])) {
             $scope.book.hasNextTripTicket = true;
+            $scope.book.showExpressCheckout = false;
             // $scope.book.buttonText = 'Go to Ticket View';
           } else {
             $scope.book.hasNextTripTicket = false;
+            $scope.book.showExpressCheckout = true;
           }
         } else {
           $scope.book.previouslyBookedDays = null;
           $scope.book.hasNextTripTicket = false;
+          $scope.book.showExpressCheckout = true;
         }
       } else {
         $scope.book.isVerifying = false;
         $scope.book.previouslyBookedDays = null;
         $scope.book.hasNextTripTicket = false;
+        $scope.book.showExpressCheckout = true;
       }
     })
 

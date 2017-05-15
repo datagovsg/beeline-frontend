@@ -83,7 +83,8 @@
           </ui-gmap-marker>
 
           <map-bus-poly-route route="book.route"
-                              available-trips="book.nextTripArray"></map-bus-poly-route>
+                              available-trips="book.nextTripArray"
+                              tikcet-code="book.ticketCode"></map-bus-poly-route>
 
         </ui-gmap-google-map>
       </div>
@@ -119,16 +120,25 @@
         <div class="notes">
           <fancy-price value="book.route.trips[0].price"></fancy-price> per trip
         </div>
-        <div ng-if="book.minsBeforeClose && book.minsBeforeClose >0 && book.minsBeforeClose<=30 && !book.bookingEnds && !book.hasNextTripTicket" class="notes">Booking for the next trip closes in {{book.minsBeforeClose}} mins.</div>
-        <div ng-if="book.bookingEnds && !book.hasNextTripTicket" class="notes" >Booking for the next trip has ended.</div>
-        <div ng-if="book.hasNextTripTicket" class="notes" >You have already booked this trip.</div>
-        <div ng-if="book.stopNotAvailable" class="notes">The selected stops are not available for the next trip.</div>
-        <button class="button primary-button button-item"
-          ng-click="fastCheckout()"
-          ng-disabled="stopsForm.$invalid || !book.nextTripIsAvailable || book.isVerifying || book.minsBeforeClose<=0 || book.hasNextTripTicket || book.stopNotAvailable">
-          {{book.buttonText}}{{ ' '+(book.nextTripDate[0] | date:'dd MMM' : 'Z')+' '}}<span ng-show="book.nextTripDate[0]">{{'('+(book.nextTripDate[0] | date:'EEE' : 'Z')+')'}}</span>
-        </button>
-        <div ng-if="book.buttonNotes" class="notes">{{book.buttonNotes}}</div>
+        <div ng-if="book.showExpressCheckout && !book.hasNextTripTicket">
+          <div ng-if="book.minsBeforeClose && book.minsBeforeClose >0 && book.minsBeforeClose<=30 && !book.bookingEnds && !book.hasNextTripTicket" class="notes">Booking for the next trip closes in {{book.minsBeforeClose}} mins.</div>
+          <div ng-if="book.bookingEnds && !book.hasNextTripTicket" class="notes" >Booking for the next trip has ended.</div>
+          <div ng-if="book.stopNotAvailable" class="notes">The selected stops are not available for the next trip.</div>
+          <button class="button primary-button button-item"
+            ng-click="fastCheckout()"
+            ng-if="book.showExpressCheckout && !book.hasNextTripTicket"
+            ng-disabled="stopsForm.$invalid || !book.nextTripIsAvailable || book.isVerifying || book.minsBeforeClose<=0 || book.stopNotAvailable || book.hasNextTripTicket">
+            {{book.buttonText}}{{ ' '+(book.nextTripDate[0] | date:'dd MMM' : 'Z')+' '}}<span ng-show="book.nextTripDate[0]">{{'('+(book.nextTripDate[0] | date:'EEE' : 'Z')+')'}}</span>
+          </button>
+          <div ng-if="book.buttonNotes" class="notes">{{book.buttonNotes}}</div>
+        </div>
+        <div ng-if="book.hasNextTripTicket && !book.showExpressCheckout" class="text-center">
+          <h4>You have already booked this trip.</h4>
+          Trip Code:
+          <trip-code code="book.ticketCode" ng-if="book.ticketCode" class="code">
+          </trip-code>
+          <span ng-if="!book.ticketCode">Not available</span>
+        </div>
         <div class="button button-clear button-royal"
           ui-sref="tabs.booking-dates({
             routeId: book.routeId,
