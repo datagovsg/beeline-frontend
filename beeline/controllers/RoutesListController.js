@@ -30,7 +30,8 @@ export default function(
     routes: [],
     crowdstartRoutes: [],
     nextSessionId: null,
-    isFiltering: null
+    isFiltering: null,
+    routesMayLike: []
   };
 
 
@@ -202,6 +203,41 @@ export default function(
       }
     }
   );
+
+  // pull interested routes based on recently booking
+  // assumption on 'AM from' and 'PM to' stop as 'home place / target place'
+  // search based on target with radius of 500m
+  // reset to null if user use search bar
+  $scope.$watchGroup(
+    ['data.recentRoutesById', 'data.routes', 'data.placeQuery'],
+    ([recentRoutesById, routes, placeQuery]) => {
+      if (placeQuery) {
+        return $scope.data.routesMayLike = []
+      }
+      else if (recentRoutesById && routes) {
+        let placeResults = [];
+        let stop = null
+        for (let id in recentRoutesById) {
+          let route = recentRoutesById[id]
+          let latlng = null
+          let tripStopsByKey = _.keyBy(route.trips[0].tripStops, (stop)=>stop.stopId)
+          if (route.schedule && route.schedule.slice(0,2) === 'AM') {
+            latlng = tripStopsByKey[route.boardStopStopId].stop.coordinates.coordinates
+          } else {
+            latlng = tripStopsByKey[route.alightStopStopId].stop.coordinates.coordinates
+          }
+          let results = SearchService.filterRoutesByLatLng($scope.data.routes, latlng);
+          placeResults = _.concat(placeResults, results)
+        }
+        // filter recently booked route ids
+        _.remove(placeResults, (x)=>{
+          return recentRoutesById[x.id]
+        })
+        // publish unique routes
+        $scope.data.routesMayLike = _.uniqBy(placeResults, 'id')
+      }
+    }
+  )
 
   // Backed kickstarter routes
   $scope.$watchGroup(

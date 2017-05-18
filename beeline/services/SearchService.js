@@ -1,6 +1,24 @@
 import _ from 'lodash';
 
 export default function SearchService() {
+
+  // Helper to calculate distance in meters between a pair of coordinates
+  let latlngDistance = (ll1, ll2) => {
+    let lat1 = ll1[0];
+    let lon1 = ll1[1];
+    let lat2 = ll2[0];
+    let lon2 = ll2[1];
+    var R = 6378.137; // Radius of earth in KM
+    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return d * 1000; // meters
+  };
+
   return {
 
     // Returns a new array with routes matching the given regionId
@@ -23,23 +41,6 @@ export default function SearchService() {
     filterRoutesByPlace: function(routes, place) {
       const maxDistance = 1000; // Arbitrary constant for closeness
 
-      // Helper to calculate distance in meters between a pair of coordinates
-      let latlngDistance = (ll1, ll2) => {
-        let lat1 = ll1[0];
-        let lon1 = ll1[1];
-        let lat2 = ll2[0];
-        let lon2 = ll2[1];
-        var R = 6378.137; // Radius of earth in KM
-        var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
-        var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
-        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        var d = R * c;
-        return d * 1000; // meters
-      };
-
       // Check the trips stops of a route to see if any come close
       let filteredRoutes = routes.filter(route => {
         return _.some(route.trips[0].tripStops, (tripStop) => {
@@ -49,6 +50,26 @@ export default function SearchService() {
               tripStop.stop.coordinates.coordinates[0]
             ],
             [place.geometry.location.lat(), place.geometry.location.lng()]
+          );
+          return distance < maxDistance;
+        });
+      });
+
+      return filteredRoutes;
+    },
+
+    filterRoutesByLatLng: function(routes, latlng) {
+      const maxDistance = 500; // Arbitrary constant for closeness
+
+      // Check the trips stops of a route to see if any come close
+      let filteredRoutes = routes.filter(route => {
+        return _.some(route.trips[0].tripStops, (tripStop) => {
+          let distance = latlngDistance(
+            [
+              tripStop.stop.coordinates.coordinates[1],
+              tripStop.stop.coordinates.coordinates[0]
+            ],
+            [latlng[1], latlng[0]]
           );
           return distance < maxDistance;
         });
