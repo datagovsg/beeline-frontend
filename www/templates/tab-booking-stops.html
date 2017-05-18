@@ -134,10 +134,13 @@
         </div>
         <div ng-if="book.hasNextTripTicket && !book.showExpressCheckout" class="text-center">
           <h4>You have already booked this trip.</h4>
-          Trip Code:
-          <trip-code code="book.ticketCode" ng-if="book.ticketCode" class="code">
-          </trip-code>
-          <span ng-if="!book.ticketCode">Not available</span>
+          <div>
+            <div ng-if="book.ticketCode">
+              <trip-code code="book.ticketCode">
+              </trip-code>
+            </div>
+            <span ng-if="!book.ticketCode">Not available</span>
+          </div>
         </div>
         <div class="button button-clear button-royal"
           ui-sref="tabs.booking-dates({
