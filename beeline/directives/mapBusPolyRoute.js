@@ -13,7 +13,7 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
                   idkey="'bus-icon' + $index"
                   ng-if="recentPings.isRecent"
                   pings="recentPings.pings"
-                  overlay="$index + 1"></map-bus-icon>
+                  overlay="availableTrips.length == 1 ? '' : $index + 1"></map-bus-icon>
     `,
     scope: {
       availableTrips: '<',
