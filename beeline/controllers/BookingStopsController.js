@@ -212,7 +212,7 @@ export default [
         $scope.book.bookingEnds = null;
         $scope.book.nextTrip = null;
         $scope.book.nextTripArray = null;
-        $scope.book.ticketCode = '1234';
+        $scope.book.ticketCode = null;
         $scope.book.showExpressCheckout = null;
         var countdownTimer = null;
         var runningTrips = route.trips.filter(tr => tr.isRunning);

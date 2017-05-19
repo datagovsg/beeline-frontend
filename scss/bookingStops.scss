@@ -105,9 +105,18 @@
       }
     }
   }
-
-  .code {
-    display: inline-block;
+  // hack
+  .flex-container {
+    display: flex;
+    flex-direction: row wrap;
+    justify-content: center;
+    .space {
+      flex: 1 1 auto;
+    }
+    .code {
+      flex: 0 1 auto;
+      width: 120px;
+    }
   }
 }
 

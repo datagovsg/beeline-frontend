@@ -2,11 +2,14 @@
 
 export default function() {
   return {
+    replace: true,
     template: `
-<span class="ch c0">{{codeStr[0]}}</span><span
-      class="ch c1">{{codeStr[1]}}</span><span
-      class="ch c2">{{codeStr[2]}}</span><span
-      class="ch c3">{{codeStr[3]}}</span>`,
+    <div class='tripcode'>
+      <span class="ch c0">{{codeStr[0]}}</span><span
+            class="ch c1">{{codeStr[1]}}</span><span
+            class="ch c2">{{codeStr[2]}}</span><span
+            class="ch c3">{{codeStr[3]}}</span>
+    </div>`,
     scope: {
       code: '=',
     },

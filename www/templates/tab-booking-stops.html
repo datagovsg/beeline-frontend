@@ -84,7 +84,7 @@
 
           <map-bus-poly-route route="book.route"
                               available-trips="book.nextTripArray"
-                              tikcet-code="book.ticketCode"></map-bus-poly-route>
+                              ticket-code="book.ticketCode"></map-bus-poly-route>
 
         </ui-gmap-google-map>
       </div>
@@ -134,13 +134,13 @@
         </div>
         <div ng-if="book.hasNextTripTicket && !book.showExpressCheckout" class="text-center">
           <h4>You have already booked this trip.</h4>
-          <div>
-            <div ng-if="book.ticketCode">
-              <trip-code code="book.ticketCode">
+            <div ng-if="book.ticketCode" class="flex-container">
+              <div class="space"></div>
+              <trip-code code="book.ticketCode" class="trip-code code">
               </trip-code>
+              <div class="space"></div>
             </div>
             <span ng-if="!book.ticketCode">Not available</span>
-          </div>
         </div>
         <div class="button button-clear button-royal"
           ui-sref="tabs.booking-dates({
