@@ -84,7 +84,7 @@
 
           <map-bus-poly-route route="book.route"
                               ng-if="book.hasNextTripTicket"
-                              available-trips="book.nextTripArray"
+                              available-trips="[book.nextTrip]"
                               ticket-code="book.ticketCode"></map-bus-poly-route>
 
         </ui-gmap-google-map>

@@ -60,8 +60,6 @@ export default [
     ticketPromise.then((ticket) => { $scope.ticket = ticket; });
     tripPromise.then((trip) => {
       $scope.trip = trip;
-      //hack to utilize mapBusPolyRoute
-      $scope.tripArray = [trip];
     });
     routePromise.then((route) => { $scope.route = route; });
     companyPromise.then((company) => { $scope.company = company; });

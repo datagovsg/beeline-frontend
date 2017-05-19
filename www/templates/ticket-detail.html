@@ -92,7 +92,7 @@
                       idkey="'bus-location'"
                       pings="map.lines.actualPath.pings"></map-bus-icon> -->
       <map-bus-poly-route route="route"
-                          available-trips="tripArray"></map-bus-poly-route>
+                          available-trips="[trip]"></map-bus-poly-route>
       <ui-gmap-markers  ng-if="trip.tripStops"
                         models="trip.tripStops"
                         idkey="'id'"
