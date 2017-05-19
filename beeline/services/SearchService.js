@@ -3,21 +3,34 @@ import _ from 'lodash';
 export default function SearchService() {
 
   // Helper to calculate distance in meters between a pair of coordinates
-  let latlngDistance = (ll1, ll2) => {
-    let lat1 = ll1[0];
-    let lon1 = ll1[1];
-    let lat2 = ll2[0];
-    let lon2 = ll2[1];
-    var R = 6378.137; // Radius of earth in KM
-    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
-    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon/2) * Math.sin(dLon/2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    var d = R * c;
-    return d * 1000; // meters
-  };
+  // faster but less accurate
+  function latlngDistance(ll1, ll2) {
+    var rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
+    var rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
+
+    var dx = (rr1[1] - rr2[1]) * Math.cos(0.5 * (rr1[0] + rr2[0]))
+    var dy = rr1[0] - rr2[0]
+
+    var dist = Math.sqrt(dx * dx + dy * dy) * 6378137
+    return dist
+  }
+
+  // Helper to calculate distance in meters between a pair of coordinates
+  // let latlngDistance = (ll1, ll2) => {
+  //   let lat1 = ll1[0];
+  //   let lon1 = ll1[1];
+  //   let lat2 = ll2[0];
+  //   let lon2 = ll2[1];
+  //   var R = 6378.137; // Radius of earth in KM
+  //   var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+  //   var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+  //   var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+  //   Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+  //   Math.sin(dLon/2) * Math.sin(dLon/2);
+  //   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  //   var d = R * c;
+  //   return d * 1000; // meters
+  // };
 
   return {
 
@@ -58,7 +71,7 @@ export default function SearchService() {
       return filteredRoutes;
     },
 
-    filterRoutesByLatLng: function(routes, latlng) {
+    filterRoutesByLngLat: function(routes, lnglat) {
       const maxDistance = 500; // Arbitrary constant for closeness
 
       // Check the trips stops of a route to see if any come close
@@ -69,7 +82,7 @@ export default function SearchService() {
               tripStop.stop.coordinates.coordinates[1],
               tripStop.stop.coordinates.coordinates[0]
             ],
-            [latlng[1], latlng[0]]
+            [lnglat[1], lnglat[0]]
           );
           return distance < maxDistance;
         });
