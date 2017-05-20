@@ -19,7 +19,8 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
       availableTrips: '<',
       hasTrackingData: '=?',
       routeMessage: '=?',
-      ticketCode: '=?'
+      ticketCode: '=?',
+      tripStatus: '=?'
     },
     controller($scope) {
       $scope.map = {
@@ -64,6 +65,7 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
           return TripService.DriverPings(trip.id)
           .then((info) => {
             $scope.ticketCode = info.code
+            $scope.tripStatus = info.trip.status
             const now = Date.now()
 
             $scope.allRecentPings[index] = {

@@ -33,15 +33,16 @@ export default [
         route: { path: [] },
         actualPath: { path: [] },
       },
-      busLocation: {
-        coordinates: null,
-        icon: null,
-      },
       markers: {
         boardStop: {},
         alightStop: {},
       }
     });
+
+    $scope.data = {
+      code: null,
+      tripStatus: null
+    }
 
     $scope.showTerms = (companyId) => {
       CompanyService.showTerms(companyId);
@@ -64,29 +65,6 @@ export default [
     routePromise.then((route) => { $scope.route = route; });
     companyPromise.then((company) => { $scope.company = company; });
 
-    // Loop to get pings from the server every 15s between responses
-    // Using a recursive timeout instead of an interval to avoid backlog
-    // when the server is slow to respond
-    var pingTimer;
-    function pingLoop() {
-      TripService.DriverPings($scope.trip.id)
-      .then((info) => {
-        $scope.info = info;
-
-        /* Only show pings from the last two hours */
-        var now = Date.now();
-        $scope.recentPings = _.filter(info.pings,
-          ping => now - ping.time.getTime() < 2*60*60*1000)
-      })
-      .then(null, () => {}) // catch all errors
-      .then(() => {
-        //TODO: need to add variable to make sure it's still running
-        pingTimer = $timeout(pingLoop, 15000);
-      });
-    };
-    tripPromise.then(pingLoop);
-    $scope.$on('$destroy', () => { $timeout.cancel(pingTimer); });
-
     // Draw the bus stops on the map
     Promise.all([ticketPromise])
     .then(function(values) {
@@ -104,27 +82,6 @@ export default [
       });
     });
 
-    uiGmapGoogleMapApi.then((googleMaps) => {
-      $scope.map.busLocation.icon = {
-        url: `img/busMarker.svg`,
-        scaledSize: new googleMaps.Size(68, 86),
-        anchor: new googleMaps.Point(34, 78),
-      }
-    })
-
-    // Draw the icon for latest bus location
-    $scope.$watch('recentPings', function(recentPings) {
-      if (recentPings && recentPings.length > 0) {
-        $scope.map.busLocation.coordinates = recentPings[0].coordinates;
-        $scope.map.lines.actualPath.path = recentPings.map(p => ({
-          latitude: p.coordinates.coordinates[1],
-          longitude: p.coordinates.coordinates[0],
-        }));
-        $scope.map.lines.actualPath.pings = recentPings;
-      }
-    });
-
-    //
     $scope.$watch('map.markerOptions.boardMarker.icon', (icon) => {
       if (!icon) return;
       tripPromise.then((trip) => {

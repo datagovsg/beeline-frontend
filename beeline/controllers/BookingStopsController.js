@@ -69,7 +69,8 @@ export default [
       stopNotAvailable: null, //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
       ticketCode: null,
-      showExpressCheckout: null
+      showExpressCheckout: null,
+      tripStatus: null
     };
     $scope.disp = {
       popupStop: null,
