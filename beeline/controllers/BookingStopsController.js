@@ -70,7 +70,8 @@ export default [
                           //use case; operator add more stops from date x
       ticketCode: null,
       showExpressCheckout: null,
-      tripStatus: null
+      bookedTripNotAvailable: null,
+      ticketDate: null
     };
     $scope.disp = {
       popupStop: null,
@@ -296,10 +297,26 @@ export default [
         if (previouslyBookedDays) {
           $scope.book.previouslyBookedDays = previouslyBookedDays;
           var bookedDays = Object.keys(previouslyBookedDays).map(x=>{return parseInt(x)});
+          bookedDays.sort()
           //compare current date with next trip
-          if (nextTripDate && _.includes(bookedDays,nextTripDate[0])) {
+          // show ticket if it's eariler than nextTripDate[0]
+          // e.g. upcoming trip is cancelled, while still need to show to user who booked it
+          if (nextTripDate &&
+              (_.some(bookedDays, (date) => {
+                 return date <= nextTripDate[0]
+               })
+              ))
+          {
             $scope.book.hasNextTripTicket = true;
             $scope.book.showExpressCheckout = false;
+            // if ticket is eariler than nextTripDate[0]
+            // mark trip status as cancelled
+            if (bookedDays[0] < nextTripDate[0]) {
+              $scope.book.bookedTripNotAvailable = true
+              $scope.book.ticketDate = bookedDays[0]
+            } else {
+              $scope.book.bookedTripNotAvailable = false
+            }
             // $scope.book.buttonText = 'Go to Ticket View';
           } else {
             $scope.book.hasNextTripTicket = false;
