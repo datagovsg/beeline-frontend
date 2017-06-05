@@ -41,7 +41,7 @@
             <div class="popUpStopSelect">
               <b>{{disp.popupStop.time | formatTime }}</b><br/>
               {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
-              <a class="button button-block button-outline button-royal"
+              <a class="button button-block button-outline button-royal" ng-if="!book.hasNextTripTicket"
                 ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
                 Set {{disp.popupStopType === 'pickup' ? 'pick-up' : 'drop-off'}} stop
               </a>
@@ -101,6 +101,7 @@
           pin-options="map.markerOptions.startMarker"
           ng-required="true"
           name="boardStop"
+          disabled="book.hasNextTripTicket"
           >
         </bus-stop-selector>
         <bus-stop-selector
@@ -113,15 +114,16 @@
           pin-options="map.markerOptions.endMarker"
           ng-required="true"
           name="alightStop"
+          disabled="book.hasNextTripTicket"
           >
         </bus-stop-selector>
       </ion-list>
 
       <div class="item continue-button-item">
-        <div class="notes">
-          <fancy-price value="book.route.trips[0].price"></fancy-price> per trip
-        </div>
         <div ng-if="book.showExpressCheckout && !book.hasNextTripTicket">
+          <div class="notes">
+            <fancy-price value="book.route.trips[0].price"></fancy-price> per trip
+          </div>
           <div ng-if="book.minsBeforeClose && book.minsBeforeClose >0 && book.minsBeforeClose<=30 && !book.bookingEnds && !book.hasNextTripTicket" class="notes">Booking for the next trip closes in {{book.minsBeforeClose}} mins.</div>
           <div ng-if="book.bookingEnds && !book.hasNextTripTicket" class="notes" >Booking for the next trip has ended.</div>
           <div ng-if="book.stopNotAvailable" class="notes">The selected stops are not available for the next trip.</div>
@@ -136,12 +138,12 @@
         <div ng-if="book.hasNextTripTicket && !book.showExpressCheckout && !book.bookedTripNotAvailable" class="text-center">
           <h4>You have already booked this trip.</h4>
             <div ng-if="book.ticketCode" class="flex-container">
-              <div class="space"></div>
+              <div class="space">Trip Code :</div>
               <trip-code code="book.ticketCode" class="trip-code code">
               </trip-code>
               <div class="space"></div>
             </div>
-            <span ng-if="!book.ticketCode">Not available</span>
+            <span ng-if="!book.ticketCode">Trip Code : Not available</span>
         </div>
         <div class="item item-text-wrap" ng-if="book.bookedTripNotAvailable">
           <div>
@@ -161,7 +163,7 @@
             sessionId: session.sessionId,
           })"
           ng-disabled="stopsForm.$invalid">
-          <u>Advance Booking</u>
+          <u>Advance Booking <span ng-show="book.hasNextTripTicket">($ {{book.route.trips[0].price}} per trip)</span></u>
         </div>
       </div>
     </form> <!-- flex-col -->

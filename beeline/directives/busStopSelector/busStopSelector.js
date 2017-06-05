@@ -22,17 +22,20 @@ export default [
       pinOptions: '=',
       ngRequired: '=',
       name: '=',
+      disabled: '<?'
     },
     link: function (scope, elem, attrs) {
       scope.showList = function () {
-        busStopSelectorDialog.show(
-          _.assign({selectedStop: scope.ngModel},
-                  _.pick(scope, [
-                    'busStops', 'markerOptions', 'title', 'button', 'pinOptions'
-                  ])))
-        .then((selectedStop) => {
-          scope.ngModel = selectedStop;
-        })
+        if (!scope.disabled) {
+          busStopSelectorDialog.show(
+            _.assign({selectedStop: scope.ngModel},
+                    _.pick(scope, [
+                      'busStops', 'markerOptions', 'title', 'button', 'pinOptions'
+                    ])))
+          .then((selectedStop) => {
+            scope.ngModel = selectedStop;
+          })
+        }
       }
 
       scope.formatTime = formatTime;

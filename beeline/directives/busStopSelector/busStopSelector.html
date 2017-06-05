@@ -14,5 +14,5 @@
   <span ng-if="ngModel">
     {{ngModel.time | formatTime}}&nbsp;&nbsp;{{ngModel.description}}
   </span>
-  <i class="icon ion-ios-arrow-down"></i>
+  <i class="icon ion-ios-arrow-down" ng-show="!disabled"></i>
 </div>
