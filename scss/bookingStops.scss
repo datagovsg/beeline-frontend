@@ -141,3 +141,34 @@
     }
   }
 }
+
+ion-modal-view {
+  .buttons {
+    text-align: center;
+    margin-bottom: $content-padding*3;
+  }
+  .radios {
+    margin: $content-padding*2 auto;
+    .item-radio{
+      .radio-icon {
+        color: $royal;
+        font-size: $radio-font-size;
+        left: 0px;
+      }
+      .not-selected{
+        color: $hint-color;
+        font-size: $radio-font-size;
+        left: 0px;
+        padding: 14px; /*follow radio-icon padding*/
+      }
+      .item-content{
+        padding-right: $item-padding * 1;
+        /* extend content space, override ionic default since the checkmark is no longer on the right */
+      }
+    }
+
+    .priceDetails{
+      padding-left: $item_padding_base*4;
+    }
+  }
+}

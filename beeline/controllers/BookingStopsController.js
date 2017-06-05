@@ -1,6 +1,8 @@
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 const moment = require('moment');
+import routePassTemplate from '../templates/route-pass-modal.html';
+import processingPaymentsTemplate from '../templates/processing-payments.html';
 
 export default [
   '$rootScope',
@@ -20,6 +22,8 @@ export default [
   '$q',
   'TicketService',
   '$interval',
+  'StripeService',
+  '$ionicLoading',
   function(
     $rootScope,
     $scope,
@@ -37,7 +41,9 @@ export default [
     loadingSpinner,
     $q,
     TicketService,
-    $interval
+    $interval,
+    StripeService,
+    $ionicLoading
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -66,8 +72,10 @@ export default [
       buttonNotes: null, //if availability==0
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
       nextTrip: null, //next upcoming trip
-      stopNotAvailable: null //set to true if any board or alight stop is not available for express checkout date
+      stopNotAvailable: null, //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
+      choice: 10, // default no. of ticket pass chosen
+      routePassPrice: null
     };
     $scope.disp = {
       popupStop: null,
@@ -308,13 +316,128 @@ export default [
       }
     })
 
-    $scope.fastCheckout = function(){
-      if ($scope.isLoggedIn) {
+    $scope.routePassModal = $ionicModal.fromTemplate(routePassTemplate, {
+      scope: $scope,
+      animation: 'slide-in-up',
+    });
+
+    $scope.closeModal = () => {
+      $scope.routePassModal.hide();
+    }
+
+    $scope.$watch('book.choice', (choice)=>{
+      if (choice === 1) {
+        $scope.book.routePassPrice = 5
+      } else if (choice === 10) {
+        $scope.book.routePassPrice = 35
+      } else if (choice === 5) {
+        $scope.book.routePassPrice = 20
+      }
+    })
+
+    $scope.proceed = function () {
+      $scope.closeModal();
+      if ($scope.book.choice === 1) {
         $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
           boardStop: $scope.book.boardStop.id,
           alightStop: $scope.book.alightStop.id,
           sessionId: $scope.session.sessionId,
           selectedDates: $scope.book.nextTripDate,});
+      } else {
+        $scope.payWithoutSavingCard()
+      }
+    }
+
+    /** After you have settled the payment mode **/
+    async function completePayment(paymentOptions) {
+      try {
+        $ionicLoading.show({
+          template: processingPaymentsTemplate
+        })
+
+        // var result = await UserService.beeline({
+        //   method: 'POST',
+        //   url: '/transactions/payment_ticket_sale',
+        //   data: _.defaults(paymentOptions, {
+        //     trips: BookingService.prepareTrips($scope.book),
+        //     promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
+        //     // don't use route credits if toggle if off
+        //     creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
+        //     applyCredits: $scope.book.applyCredits,
+        //     applyReferralCredits: $scope.book.applyReferralCredits,
+        //   }),
+        // });
+        //
+        // assert(result.status == 200);
+
+        // method to POST route pass purchase
+
+        $ionicLoading.hide();
+        // $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
+        //   boardStop: $scope.book.boardStop.id,
+        //   alightStop: $scope.book.alightStop.id,
+        //   sessionId: $scope.session.sessionId,
+        //   selectedDates: $scope.book.nextTripDate,});
+
+      } catch (err) {
+        $ionicLoading.hide();
+        await $ionicPopup.alert({
+          title: 'Error processing payment',
+          template: err.data.message,
+        })
+      } finally {
+        RoutesService.fetchRoutePassCount()
+      }
+    }
+
+    // Prompts for card and processes payment with one time stripe token.
+    $scope.payWithoutSavingCard = async function() {
+      try {
+        // if user has credit card saved
+        if (_.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0) {
+          await completePayment({
+            customerId: $scope.user.savedPaymentInfo.id,
+            sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+          });
+        } else {
+          var stripeToken = await StripeService.promptForToken(
+            null,
+            isFinite($scope.book.routePassPrice) ? $scope.book.routePassPrice * 100 : '',
+            null);
+
+          if (!stripeToken) {
+            return;
+          }
+
+          await completePayment({
+            stripeToken: stripeToken.id,
+          });
+        }
+
+      } catch (err) {
+        await $ionicPopup.alert({
+          title: 'Error contacting the payment gateway',
+          template: err.data.message,
+        })
+      }
+    };
+
+
+
+    $scope.fastCheckout = async function(){
+      if ($scope.isLoggedIn) {
+        // add purchasing felxi-pass here
+        // if no rides remaining, pop the modal to purchase
+        if (!$scope.book.route.ridesRemaining) {
+          await $scope.routePassModal.show()
+        } else {
+          $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
+            boardStop: $scope.book.boardStop.id,
+            alightStop: $scope.book.alightStop.id,
+            sessionId: $scope.session.sessionId,
+            selectedDates: $scope.book.nextTripDate,});
+        }
+
       } else {
         UserService.promptLogIn();
       }

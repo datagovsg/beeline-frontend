@@ -1,0 +1,39 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-royal bar bar-header">
+    <h1 class="title">Route Pass</h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="closeModal()">
+    </button>
+  </ion-header-bar>
+  <ion-content scroll="false">
+    <div class="item item-text-wrap">
+      <div>
+        <p>
+          Route pass can be used for future bookings of this route.
+        </p>
+        <div class="radios">
+          <ion-list>
+            <ion-radio ng-model="book.choice" ng-value="10" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark">
+              <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== 10"></i>
+              <div class="priceDetails">10-ticket route pass ($3.50 per trip)<div>save 30%</div></div>
+            </ion-radio>
+            <ion-radio ng-model="book.choice" ng-value="5" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark">
+              <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== 5"></i>
+              <div class="priceDetails">5-ticket route pass ($4.00 per trip)<div>save 20%</div></div>
+            </ion-radio>
+            <ion-radio ng-model="book.choice" ng-value="1" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark">
+              <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== 1"></i>
+              <div class="priceDetails">1 ticket ($5.00 per trip)</div>
+            </ion-radio>
+          </ion-list>
+        </div>
+        <div class="buttons">
+          <fancy-price value="book.routePassPrice"></fancy-price>
+          <button class="primary-button button" ng-click="proceed()">
+            Proceed
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>
