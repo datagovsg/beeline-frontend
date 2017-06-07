@@ -12,17 +12,12 @@
         </p>
         <div class="radios">
           <ion-list>
-            <ion-radio ng-model="book.choice" ng-value="10" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark">
-              <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== 10"></i>
-              <div class="priceDetails">10-ticket route pass ($3.50 per trip)<div>save 30%</div></div>
-            </ion-radio>
-            <ion-radio ng-model="book.choice" ng-value="5" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark">
-              <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== 5"></i>
-              <div class="priceDetails">5-ticket route pass ($4.00 per trip)<div>save 20%</div></div>
-            </ion-radio>
-            <ion-radio ng-model="book.choice" ng-value="1" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark">
-              <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== 1"></i>
-              <div class="priceDetails">1 ticket ($5.00 per trip)</div>
+            <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.choice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
+              <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== schedule.quantity"></i>
+              <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price}} per trip)</div>
+              <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}}-ticket route pass (${{schedule.price}} per trip)
+                <div>save {{schedule.discount}}%</div>
+              </div>
             </ion-radio>
           </ion-list>
         </div>
@@ -38,3 +33,6 @@
     </div>
   </ion-content>
 </ion-modal-view>
+
+<!-- [{"quantity":1, "price": 5.6},
+  {"quantity":5, "price": 4.8, "discount": 20%}...] -->

@@ -74,7 +74,7 @@ export default [
       nextTrip: null, //next upcoming trip
       stopNotAvailable: null, //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
-      choice: 10, // default no. of ticket pass chosen
+      choice: null, // default no. of ticket pass chosen
       routePassPrice: null
     };
     $scope.disp = {
@@ -326,13 +326,7 @@ export default [
     }
 
     $scope.$watch('book.choice', (choice)=>{
-      if (choice === 1) {
-        $scope.book.routePassPrice = 5
-      } else if (choice === 10) {
-        $scope.book.routePassPrice = 35
-      } else if (choice === 5) {
-        $scope.book.routePassPrice = 20
-      }
+      $scope.book.routePassPrice = $scope.book.priceSchedules[choice].price * $scope.book.priceSchedules[choice].quantity
     })
 
     $scope.proceed = function () {
@@ -428,7 +422,12 @@ export default [
       if ($scope.isLoggedIn) {
         // add purchasing felxi-pass here
         // if no rides remaining, pop the modal to purchase
+        // for all possible route tags e.g. crowdstart-140 rp-161
         if (!$scope.book.route.ridesRemaining) {
+          // query this when user is logged in
+          $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
+          // default to choose the biggest quantity and trigger price calculation
+          $scope.book.choice = 0;
           await $scope.routePassModal.show()
         } else {
           $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,

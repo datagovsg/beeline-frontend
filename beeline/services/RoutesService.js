@@ -413,20 +413,50 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           return routeToCreditTags
         } else {
           return routeToCreditTags = null
-        } 
+        }
       })
     },
 
-    // Returns the credit tag matched to a route if routeId is given 
+    // Returns the credit tag matched to a route if routeId is given
     // Otherwise, returns a map of all routeId to their corresponding tags
     // based on the routeCredits available to a user
     getRouteCreditTags: function(routeId){
       if(routeId && routeToCreditTags){
         return routeToCreditTags[routeId]
       } else {
-        return routeToCreditTags        
+        return routeToCreditTags
       }
     },
+
+    fetchPriceSchedule: function(routeId){
+      return UserService.beeline({
+        method: 'GET',
+        url: `/routes/${routeId}/price_schedule`,
+      })
+      .then(function(response) {
+        let priceSchedules = []
+        _.forEach(response.data, (value , key) => {
+          let quantity = parseInt(key)
+          let singleSchedule = null
+          if (quantity === 1) {
+            singleSchedule = {"quantity": 1, "price": parseFloat(value.price)}
+          } else {
+            let price = (value.price / quantity).toFixed(2)
+            let originalPrice = value.discount + value.price
+            let computedDiscount = (value.discount / originalPrice).toFixed(2) * 100
+            singleSchedule = {"quantity": quantity, "price": price, "discount": computedDiscount}
+          }
+          priceSchedules.push(singleSchedule)
+        })
+        priceSchedules = _.sortBy(priceSchedules, function(schedule) {
+          return schedule.quantity
+        }).reverse()
+        return priceSchedules
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    }
 
   };
   return instance;
