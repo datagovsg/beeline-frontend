@@ -307,25 +307,23 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
           allRoutes.forEach(function(route){
             let notableTags = _.intersection(route.tags, allRouteCreditTags);
-            if(notableTags.length < 1) return //not a kickstarter route
-            if(notableTags.length > 1) {
-              console.log("Error: Route has more than one kickstarter tag");
-              return // something is wrong..
+            if(notableTags.length < 1) return //no credit for such route
+            if(notableTags.length >= 1) {
+              // support multiple tags e.g. crowdstart-140, rp-161
+              // calculate the rides left in the route pass
+              let price = route.trips[0].priceF
+              if(price <= 0) return
+              notableTags.forEach(function(tag) {
+                let creditsAvailable = parseFloat(allRouteCredits[tag])
+                routeToRidesRemainingMap[route.id] =  routeToRidesRemainingMap[route.id] ?
+                  routeToRidesRemainingMap[route.id]+ Math.floor(creditsAvailable / price) :
+                  Math.floor(creditsAvailable / price)
+              })
             }
-
-            // calculate the rides left in the route pass
-            let creditTag = notableTags[0]
-            let price = route.trips[0].priceF
-            if(price <= 0) return
-            let creditsAvailable = parseFloat(allRouteCredits[creditTag])
-            routeToRidesRemainingMap[route.id] = Math.floor(creditsAvailable / price)
           })
-
           return routeToRidesRemainingMap
         })
-
       }
-
       return routePassCache
 
     },
@@ -400,11 +398,12 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           routes.forEach(route => {
             let routeCreditTags = _.keys(routeCredits);
             let notableTags = _.intersection(route.tags, routeCreditTags)
-
-            if(notableTags.length === 1){
-              routeToCreditTags[route.id] = notableTags[0]
-            } else if(notableTags.length > 1){
-              console.log("Error: Route has incorrect number of tags. Total: ", notableTags.length)
+            if(notableTags.length >= 1){
+              // sort tags in order of credit left with (from high to low)
+              notableTags = _.sortBy(notableTags, function(tag) {
+                return routeCredits[tag]
+              }).reverse()
+              routeToCreditTags[route.id] = notableTags
             } else {
               routeToCreditTags[route.id] = null
             }

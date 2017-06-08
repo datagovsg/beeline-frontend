@@ -67,6 +67,13 @@ export default [
 
     $scope.$watch(() => RoutesService.getRouteCreditTags(), async (routeToCreditTags) => {
       let creditTag = routeToCreditTags ? routeToCreditTags[$scope.book.routeId] : null
+      if (routeToCreditTags && routeToCreditTags[$scope.book.routeId]) {
+        // get the 1st tag to use as server not support multiple tags for now
+        // tags are in order of credit left with (from high to low)
+        creditTag = routeToCreditTags[$scope.book.routeId][0]
+      } else {
+        creditTag = null
+      }
       $scope.book.applyRouteCredits = !!creditTag
       $scope.book.creditTag = creditTag
     })

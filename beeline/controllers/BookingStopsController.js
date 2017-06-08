@@ -3,6 +3,7 @@ import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/
 const moment = require('moment');
 import routePassTemplate from '../templates/route-pass-modal.html';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
+import assert from 'assert';
 
 export default [
   '$rootScope',
@@ -24,6 +25,7 @@ export default [
   '$interval',
   'StripeService',
   '$ionicLoading',
+  '$ionicPopup',
   function(
     $rootScope,
     $scope,
@@ -43,7 +45,8 @@ export default [
     TicketService,
     $interval,
     StripeService,
-    $ionicLoading
+    $ionicLoading,
+    $ionicPopup
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -326,12 +329,14 @@ export default [
     }
 
     $scope.$watch('book.choice', (choice)=>{
-      $scope.book.routePassPrice = $scope.book.priceSchedules[choice].price * $scope.book.priceSchedules[choice].quantity
+      if (choice!==null) {
+        $scope.book.routePassPrice = $scope.book.priceSchedules[choice].price * $scope.book.priceSchedules[choice].quantity
+      }
     })
 
     $scope.proceed = function () {
       $scope.closeModal();
-      if ($scope.book.choice === 1) {
+      if ($scope.book.priceSchedules[$scope.book.choice].quantity === 1) {
         $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
           boardStop: $scope.book.boardStop.id,
           alightStop: $scope.book.alightStop.id,
@@ -348,31 +353,33 @@ export default [
         $ionicLoading.show({
           template: processingPaymentsTemplate
         })
+        let routePassTagList = $scope.book.route.tags.filter((tag) => {
+          return tag.includes('rp-')
+        })
+        assert(routePassTagList.length === 1)
+        let passValue = $scope.book.route.trips[0].price * $scope.book.priceSchedules[$scope.book.choice].quantity
+        var result = await UserService.beeline({
+          method: 'POST',
+          url: '/transactions/paymentRoutePass',
+          data: _.defaults(paymentOptions, {
+            creditTag: routePassTagList[0],
+            promoCode: { code: '' },
+            companyId: $scope.book.route.transportCompanyId,
+            expectedPrice: null,
+            value: passValue
+          }),
+        });
 
-        // var result = await UserService.beeline({
-        //   method: 'POST',
-        //   url: '/transactions/payment_ticket_sale',
-        //   data: _.defaults(paymentOptions, {
-        //     trips: BookingService.prepareTrips($scope.book),
-        //     promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
-        //     // don't use route credits if toggle if off
-        //     creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
-        //     applyCredits: $scope.book.applyCredits,
-        //     applyReferralCredits: $scope.book.applyReferralCredits,
-        //   }),
-        // });
-        //
-        // assert(result.status == 200);
+        assert(result.status == 200);
 
         // method to POST route pass purchase
 
         $ionicLoading.hide();
-        // $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
-        //   boardStop: $scope.book.boardStop.id,
-        //   alightStop: $scope.book.alightStop.id,
-        //   sessionId: $scope.session.sessionId,
-        //   selectedDates: $scope.book.nextTripDate,});
-
+        $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
+          boardStop: $scope.book.boardStop.id,
+          alightStop: $scope.book.alightStop.id,
+          sessionId: $scope.session.sessionId,
+          selectedDates: $scope.book.nextTripDate,});
       } catch (err) {
         $ionicLoading.hide();
         await $ionicPopup.alert({
@@ -380,7 +387,9 @@ export default [
           template: err.data.message,
         })
       } finally {
+        RoutesService.fetchRouteCredits(true)
         RoutesService.fetchRoutePassCount()
+        RoutesService.fetchRoutesWithRoutePass()
       }
     }
 
