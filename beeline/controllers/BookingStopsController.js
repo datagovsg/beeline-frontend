@@ -443,7 +443,11 @@ export default [
         // add purchasing felxi-pass here
         // if no rides remaining, pop the modal to purchase
         // for all possible route tags e.g. crowdstart-140 rp-161
-        if (!$scope.book.route.ridesRemaining) {
+        // check route has tag with 'rp-'
+        let routeSupportRoutePass = _.some($scope.book.route.tags, function (tag) {
+          return tag.includes('rp-') ? true : false
+        })
+        if (!$scope.book.route.ridesRemaining && routeSupportRoutePass) {
           if (_.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0) {
             $scope.book.hasSavedPaymentInfo = true
           } else {
