@@ -145,7 +145,7 @@
 ion-modal-view {
   .buttons {
     text-align: center;
-    margin-bottom: $content-padding*3;
+    margin: $content-padding*3 auto;
   }
   .radios {
     margin: $content-padding*2 auto;

@@ -343,7 +343,7 @@ export default [
           sessionId: $scope.session.sessionId,
           selectedDates: $scope.book.nextTripDate,});
       } else {
-        $scope.payWithoutSavingCard()
+        $scope.payForRoutePass()
       }
     }
 
@@ -394,10 +394,10 @@ export default [
     }
 
     // Prompts for card and processes payment with one time stripe token.
-    $scope.payWithoutSavingCard = async function() {
+    $scope.payForRoutePass = async function() {
       try {
         // if user has credit card saved
-        if (_.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0) {
+        if ($scope.book.hasSavedPaymentInfo) {
           await completePayment({
             customerId: $scope.user.savedPaymentInfo.id,
             sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
@@ -412,9 +412,20 @@ export default [
             return;
           }
 
-          await completePayment({
-            stripeToken: stripeToken.id,
-          });
+          //saves payment info if doesn't exist
+          if ($scope.book.savePaymentChecked) {
+            console.log('save token')
+            await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
+            console.log('success')
+            await completePayment({
+              customerId: $scope.user.savedPaymentInfo.id,
+              sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+            });
+          } else {
+            await completePayment({
+              stripeToken: stripeToken.id,
+            });
+          }
         }
 
       } catch (err) {
@@ -433,6 +444,11 @@ export default [
         // if no rides remaining, pop the modal to purchase
         // for all possible route tags e.g. crowdstart-140 rp-161
         if (!$scope.book.route.ridesRemaining) {
+          if (_.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0) {
+            $scope.book.hasSavedPaymentInfo = true
+          } else {
+            $scope.book.hasSavedPaymentInfo = false
+          }
           // query this when user is logged in
           $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
           // default to choose the biggest quantity and trigger price calculation

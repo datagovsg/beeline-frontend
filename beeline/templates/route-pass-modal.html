@@ -4,23 +4,26 @@
     <button class="button button-clear icon ion-ios-close-outline" ng-click="closeModal()">
     </button>
   </ion-header-bar>
-  <ion-content scroll="false">
+  <ion-content scroll="auto">
     <div class="item item-text-wrap">
       <div>
         <p>
           Route pass can be used for future bookings of this route.
         </p>
         <div class="radios">
-          <ion-list>
-            <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.choice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
-              <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== schedule.quantity"></i>
-              <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price}} per trip)</div>
-              <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}}-ticket route pass (${{schedule.price}} per trip)
-                <div>save {{schedule.discount}}%</div>
-              </div>
-            </ion-radio>
-          </ion-list>
+          <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.choice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
+            <i class="icon ion-ios-circle-outline not-selected" ng-show="data.choice !== schedule.quantity"></i>
+            <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price}} per trip)</div>
+            <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}}-ticket route pass (${{schedule.price}} per trip)
+              <div>save {{schedule.discount}}%</div>
+            </div>
+          </ion-radio>
         </div>
+        <ion-checkbox
+          ng-model="book.savePaymentChecked"
+          ng-if="!book.hasSavedPaymentInfo">
+          Yes, I want to save this payment method for fast checkout in the future.
+        </ion-checkbox>
         <div class="buttons">
           <!-- Total: <fancy-price value="book.routePassPrice"></fancy-price> -->
           Total: $ {{book.routePassPrice}}
@@ -28,7 +31,6 @@
             Proceed
           </button>
         </div>
-
       </div>
     </div>
   </ion-content>
