@@ -447,6 +447,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           }
           priceSchedules.push(singleSchedule)
         })
+        // sort the schedules from biggest quantity to 1 ticket
         priceSchedules = _.sortBy(priceSchedules, function(schedule) {
           return schedule.quantity
         }).reverse()

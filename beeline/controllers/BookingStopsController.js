@@ -347,7 +347,7 @@ export default [
       }
     }
 
-    /** After you have settled the payment mode **/
+    // pay for the route pass
     async function completePayment(paymentOptions) {
       try {
         $ionicLoading.show({
@@ -369,11 +369,7 @@ export default [
             value: passValue
           }),
         });
-
         assert(result.status == 200);
-
-        // method to POST route pass purchase
-
         $ionicLoading.hide();
         $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
           boardStop: $scope.book.boardStop.id,
@@ -438,22 +434,22 @@ export default [
 
     $scope.fastCheckout = async function(){
       if ($scope.isLoggedIn) {
-        // add purchasing felxi-pass here
-        // if no rides remaining, pop the modal to purchase
-        // for all possible route tags e.g. crowdstart-140 rp-161
-        // check route has tag with 'rp-'
         let routeSupportRoutePass = _.some($scope.book.route.tags, function (tag) {
           return tag.includes('rp-') ? true : false
         })
+        // show modal for purchasing route pass
+        // if route has 'rp-' tag
+        // and user has no ridesRemaining
         if (!$scope.book.route.ridesRemaining && routeSupportRoutePass) {
+          // to decide whether to show 'save this credit card'
           if (_.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0) {
             $scope.book.hasSavedPaymentInfo = true
           } else {
             $scope.book.hasSavedPaymentInfo = false
           }
-          // query this when user is logged in
           $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
-          // default to choose the biggest quantity and trigger price calculation
+          // priceSchedules are in order from biggest to 1 ticket
+          // put default option as the biggest quantity e.g. 10-ticket route pass
           $scope.book.routePassChoice = 0;
           await $scope.routePassModal.show()
         } else {
