@@ -365,7 +365,7 @@ export default [
             creditTag: routePassTagList[0],
             promoCode: { code: '' },
             companyId: $scope.book.route.transportCompanyId,
-            expectedPrice: null,
+            expectedPrice: $scope.book.routePassPrice,
             value: passValue
           }),
         });
