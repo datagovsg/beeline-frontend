@@ -414,9 +414,7 @@ export default [
 
           //saves payment info if doesn't exist
           if ($scope.book.savePaymentChecked) {
-            console.log('save token')
             await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
-            console.log('success')
             await completePayment({
               customerId: $scope.user.savedPaymentInfo.id,
               sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,

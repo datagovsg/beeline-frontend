@@ -19,9 +19,10 @@
             </div>
           </ion-radio>
         </div>
+        <!-- only show this if not 1-ticket chosen and no credit card saved -->
         <ion-checkbox
           ng-model="book.savePaymentChecked"
-          ng-if="!book.hasSavedPaymentInfo">
+          ng-if="!book.hasSavedPaymentInfo && (book.choice != book.priceSchedules.length-1)">
           Yes, I want to save this payment method for fast checkout in the future.
         </ion-checkbox>
         <div class="buttons">
