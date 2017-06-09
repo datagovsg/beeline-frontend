@@ -77,7 +77,7 @@ export default [
       nextTrip: null, //next upcoming trip
       stopNotAvailable: null, //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
-      routePassChoice: null, // default no. of ticket pass chosen
+      routePassChoice: null, // index chosen in the route pass modal
       routePassPrice: null
     };
     $scope.disp = {
