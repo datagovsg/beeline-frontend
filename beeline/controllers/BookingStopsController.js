@@ -77,7 +77,7 @@ export default [
       nextTrip: null, //next upcoming trip
       stopNotAvailable: null, //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
-      choice: null, // default no. of ticket pass chosen
+      routePassChoice: null, // default no. of ticket pass chosen
       routePassPrice: null
     };
     $scope.disp = {
@@ -328,15 +328,15 @@ export default [
       $scope.routePassModal.hide();
     }
 
-    $scope.$watch('book.choice', (choice)=>{
-      if (choice!==null) {
-        $scope.book.routePassPrice = $scope.book.priceSchedules[choice].price * $scope.book.priceSchedules[choice].quantity
+    $scope.$watch('book.routePassChoice', (routePassChoice)=>{
+      if (routePassChoice!==null) {
+        $scope.book.routePassPrice = $scope.book.priceSchedules[routePassChoice].price * $scope.book.priceSchedules[routePassChoice].quantity
       }
     })
 
     $scope.proceed = function () {
       $scope.closeModal();
-      if ($scope.book.priceSchedules[$scope.book.choice].quantity === 1) {
+      if ($scope.book.priceSchedules[$scope.book.routePassChoice].quantity === 1) {
         $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
           boardStop: $scope.book.boardStop.id,
           alightStop: $scope.book.alightStop.id,
@@ -357,7 +357,7 @@ export default [
           return tag.includes('rp-')
         })
         assert(routePassTagList.length === 1)
-        let passValue = $scope.book.route.trips[0].price * $scope.book.priceSchedules[$scope.book.choice].quantity
+        let passValue = $scope.book.route.trips[0].price * $scope.book.priceSchedules[$scope.book.routePassChoice].quantity
         var result = await UserService.beeline({
           method: 'POST',
           url: '/transactions/paymentRoutePass',
@@ -454,7 +454,7 @@ export default [
           // query this when user is logged in
           $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
           // default to choose the biggest quantity and trigger price calculation
-          $scope.book.choice = 0;
+          $scope.book.routePassChoice = 0;
           await $scope.routePassModal.show()
         } else {
           $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
