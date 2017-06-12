@@ -308,7 +308,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           allRoutes.forEach(function(route){
             let notableTags = _.intersection(route.tags, allRouteCreditTags);
             if(notableTags.length < 1) return //no credit for such route
-            if(notableTags.length >= 1) {
+            else {
               // support multiple tags e.g. crowdstart-140, rp-161
               // calculate the rides left in the route pass
               let price = route.trips[0].priceF

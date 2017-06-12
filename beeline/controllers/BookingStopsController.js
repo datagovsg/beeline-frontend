@@ -434,19 +434,15 @@ export default [
 
     $scope.fastCheckout = async function(){
       if ($scope.isLoggedIn) {
-        let routeSupportRoutePass = _.some($scope.book.route.tags, function (tag) {
+        let routeSupportsRoutePass = _.some($scope.book.route.tags, function (tag) {
           return tag.includes('rp-') ? true : false
         })
         // show modal for purchasing route pass
         // if route has 'rp-' tag
         // and user has no ridesRemaining
-        if (!$scope.book.route.ridesRemaining && routeSupportRoutePass) {
+        if (!$scope.book.route.ridesRemaining && routeSupportsRoutePass) {
           // to decide whether to show 'save this credit card'
-          if (_.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0) {
-            $scope.book.hasSavedPaymentInfo = true
-          } else {
-            $scope.book.hasSavedPaymentInfo = false
-          }
+          $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
           $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
           // priceSchedules are in order from biggest to 1 ticket
           // put default option as the biggest quantity e.g. 10-ticket route pass
