@@ -78,7 +78,8 @@ export default [
       stopNotAvailable: null, //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
       routePassChoice: null, // index chosen in the route pass modal
-      routePassPrice: null
+      routePassPrice: null,
+      ridesRemaining: null
     };
     $scope.disp = {
       popupStop: null,
@@ -114,16 +115,6 @@ export default [
       computeStops(stopOptions);
     });
 
-    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
-
-    $q.all([routePromise, ridesRemainingPromise]).then(function(values){
-      let ridesRemainingMap = values[1]
-      if(ridesRemainingMap){
-        $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
-      } else {
-        $scope.book.route.ridesRemaining = null;
-      }
-    })
 
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([gmapIsReady, routePromise])
@@ -279,24 +270,26 @@ export default [
           }
         }
       }));
-
     // get user object
     $scope.$watchGroup([() => UserService.getUser(),
                         'book.nextTripDate',
-                        ()=>TicketService.getTickets()],
-                        ([user, nextTripDate, allTickets]) => {
+                        ()=>TicketService.getTickets(),
+                        ()=>RoutesService.getRoutePassCount()],
+                        ([user, nextTripDate, allTickets, routeToRidesRemainingMap]) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
       if ($scope.isLoggedIn) {
         //if user is logged, disable the button if tickets are not loaded
         $scope.book.isVerifying = true;
         var previouslyBookedDays = null;
-        if (allTickets !== null) {
+        if (allTickets !== null && routeToRidesRemainingMap != null) {
           $scope.book.isVerifying = false;
+
           var ticketsByRouteId = _.groupBy(allTickets, ticket => ticket.boardStop.trip.routeId);
           if (ticketsByRouteId && ticketsByRouteId[$scope.book.routeId]) {
             previouslyBookedDays =  _.keyBy(ticketsByRouteId[$scope.book.routeId], t => new Date(t.boardStop.trip.date).getTime());
           }
+          $scope.book.ridesRemaining = routeToRidesRemainingMap[$scope.book.routeId]
         }
         if (previouslyBookedDays) {
           $scope.book.previouslyBookedDays = previouslyBookedDays;
@@ -316,6 +309,7 @@ export default [
         $scope.book.isVerifying = false;
         $scope.book.previouslyBookedDays = null;
         $scope.book.hasNextTripTicket = false;
+        $scope.book.ridesRemaining = null;
       }
     })
 
@@ -440,7 +434,7 @@ export default [
         // show modal for purchasing route pass
         // if route has 'rp-' tag
         // and user has no ridesRemaining
-        if (!$scope.book.route.ridesRemaining && routeSupportsRoutePass) {
+        if (!$scope.book.ridesRemaining && routeSupportsRoutePass) {
           // to decide whether to show 'save this credit card'
           $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
           $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
@@ -455,7 +449,6 @@ export default [
             sessionId: $scope.session.sessionId,
             selectedDates: $scope.book.nextTripDate,});
         }
-
       } else {
         UserService.promptLogIn();
       }
