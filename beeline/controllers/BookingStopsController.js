@@ -393,10 +393,10 @@ export default [
             sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
           });
         } else {
-          var stripeToken = await StripeService.promptForToken(
+          var stripeToken = await loadingSpinner(StripeService.promptForToken(
             null,
             isFinite($scope.book.routePassPrice) ? $scope.book.routePassPrice * 100 : '',
-            null);
+            null));
 
           if (!stripeToken) {
             return;
