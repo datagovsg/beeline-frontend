@@ -8,7 +8,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
   for (let kickstarter of kickstarterRoutes){
     kickstarter.isActived = false;
     if (kickstarter.bids && kickstarter.bids.length > 0) {
-     var bidsByTier = _.groupBy(kickstarter.bids, x=> x.priceF || x.userOptions.price);
+     var bidsByTier = _.groupBy(kickstarter.bids, x => x.priceF);
       kickstarter.notes.tier.map((tier)=>{
         var countCommitted = bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0;
         _.assign(tier, {count: countCommitted,
