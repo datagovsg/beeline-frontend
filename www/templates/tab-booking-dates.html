@@ -29,7 +29,8 @@
                           sunday-first-day="true"
                           highlight-days="disp.highlightDays"
                           disallow-back-past-months="true"
-                          disable-days-before="disp.today">
+                          disable-days-before="disp.today"
+                          month-changed="logMonthChanged">
     </multiple-date-picker>
 
     <div class="datepicker">
@@ -59,6 +60,14 @@
             #
           </td>
           <td class="label">Sold out</td>
+        </tr>
+        <tr>
+          <td class="picker-day examplar">
+            <input type="checkbox" ng-model="book.pickWholeMonth"/>
+          </td>
+          <td class="label">
+            Pick the whole month
+          </td>
         </tr>
       </table>
     </div>

@@ -37,6 +37,7 @@ export default [
       applyReferralCredits: false,
       applyCredits: false,
       creditTag: null,
+      pickWholeMonth: null
     };
     // Display Logic;
     $scope.disp = {
@@ -212,6 +213,38 @@ export default [
       window.localStorage['showMultipleDays'] = true;
       showHelpPopup();
     }
+
+    $scope.$watch('book.pickWholeMonth',(pickWholeMonth)=>{
+      if (pickWholeMonth) {
+        // get the current month shown in the datepicker
+        //let nowInUTC = new moment.utc()
+        let nowInUTC = new moment.utc($scope.disp.month)
+        let midnight = new moment.utc([nowInUTC.year(), nowInUTC.month(), nowInUTC.date()])
+        // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
+        // $scope.disp.selectedDatesMoments = [midnight]
+        let startOfMonth = new moment(midnight).startOf('month')
+        let endOfMonth = new moment(midnight).endOf('month')
+        endOfMonth = new moment.utc([endOfMonth.year(), endOfMonth.month(), endOfMonth.date()])
+        let lastDate = endOfMonth.date()
+        let fullMonthDates = []
+        for (let i=1; i<=lastDate; i++) {
+          let candidate = new moment.utc([endOfMonth.year(), endOfMonth.month(), i])
+          fullMonthDates.push(candidate)
+        }
+        $scope.disp.selectedDatesMoments = _.intersectionBy(
+          fullMonthDates,
+          $scope.disp.daysAllowed,
+          m => m.valueOf()
+        )
+      } else {
+        $scope.disp.selectedDatesMoments = []
+      }
+    })
+
+    $scope.logMonthChanged = function(newMonth, oldMonth){
+        // reset the 'pick the whole month'
+        $scope.book.pickWholeMonth = false;
+    };
 
     //close the popup by click on any space at the background
   //   var htmlEl = angular.element(document.querySelector('html'));
