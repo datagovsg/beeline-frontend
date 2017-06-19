@@ -79,7 +79,8 @@ export default [
                           //use case; operator add more stops from date x
       routePassChoice: null, // index chosen in the route pass modal
       routePassPrice: null,
-      ridesRemaining: null
+      ridesRemaining: null,
+      routeSupportsRoutePass : null
     };
     $scope.disp = {
       popupStop: null,
@@ -112,6 +113,9 @@ export default [
 
     var routePostProcessingPromise = routePromise.then((route) => {
       $scope.book.route = route;
+      $scope.book.routeSupportsRoutePass = _.some($scope.book.route.tags, function (tag) {
+        return tag.includes('rp-') ? true : false
+      })
       computeStops(stopOptions);
     });
 
@@ -428,13 +432,10 @@ export default [
 
     $scope.fastCheckout = async function(){
       if ($scope.isLoggedIn) {
-        let routeSupportsRoutePass = _.some($scope.book.route.tags, function (tag) {
-          return tag.includes('rp-') ? true : false
-        })
         // show modal for purchasing route pass
         // if route has 'rp-' tag
         // and user has no ridesRemaining
-        if (!$scope.book.ridesRemaining && routeSupportsRoutePass) {
+        if (!$scope.book.ridesRemaining && $scope.book.routeSupportsRoutePass) {
           // to decide whether to show 'save this credit card'
           $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
           $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
