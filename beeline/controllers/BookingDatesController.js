@@ -50,7 +50,7 @@ export default [
       previouslyBookedDays: undefined,
       highlightDays: [],
       daysAllowed: [],
-      selectedDatesMoments: ($stateParams.selectedDates || '').split(',').map(ms => moment(parseInt(ms))),
+      selectedDatesMoments: []
     };
 
     var routePromise = loadRoutes();
@@ -215,16 +215,17 @@ export default [
     }
 
     $scope.$watch('book.pickWholeMonth',(pickWholeMonth)=>{
-      if (pickWholeMonth) {
+      if (pickWholeMonth === null) {
+        // default when first loaded
+        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '').split(',').map(ms => moment(parseInt(ms)))
+      }
+      else if (pickWholeMonth===true) {
         // get the current month shown in the datepicker
         //let nowInUTC = new moment.utc()
-        let nowInUTC = new moment.utc($scope.disp.month)
-        let midnight = new moment.utc([nowInUTC.year(), nowInUTC.month(), nowInUTC.date()])
+        // the month + today's date
+        let currentMonthInUTC = new moment.utc($scope.disp.month)
         // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
-        // $scope.disp.selectedDatesMoments = [midnight]
-        let startOfMonth = new moment(midnight).startOf('month')
-        let endOfMonth = new moment(midnight).endOf('month')
-        endOfMonth = new moment.utc([endOfMonth.year(), endOfMonth.month(), endOfMonth.date()])
+        let endOfMonth = new moment(currentMonthInUTC).endOf('month')
         let lastDate = endOfMonth.date()
         let fullMonthDates = []
         for (let i=1; i<=lastDate; i++) {
