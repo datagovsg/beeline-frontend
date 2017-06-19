@@ -216,36 +216,68 @@ export default [
 
     $scope.$watch('book.pickWholeMonth',(pickWholeMonth)=>{
       if (pickWholeMonth === null) {
-        // default when first loaded
         $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '').split(',').map(ms => moment(parseInt(ms)))
       }
-      else if (pickWholeMonth===true) {
-        // get the current month shown in the datepicker
-        //let nowInUTC = new moment.utc()
-        // the month + today's date
-        let currentMonthInUTC = new moment.utc($scope.disp.month)
-        // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
-        let endOfMonth = new moment(currentMonthInUTC).endOf('month')
-        let lastDate = endOfMonth.date()
-        let fullMonthDates = []
-        for (let i=1; i<=lastDate; i++) {
-          let candidate = new moment.utc([endOfMonth.year(), endOfMonth.month(), i])
-          fullMonthDates.push(candidate)
+      else {
+        let wholeMonthDates = getFullMonthDates($scope.disp.month)
+        if (pickWholeMonth === true) {
+          let newlyAddedDates = _.intersectionBy(
+            wholeMonthDates,
+            $scope.disp.daysAllowed,
+            m => m.valueOf()
+          )
+          if ($scope.disp.selectedDatesMoments.length > 0) {
+            $scope.disp.selectedDatesMoments =_.unionBy(
+              $scope.disp.selectedDatesMoments,
+              newlyAddedDates,
+              m => m.valueOf()
+            )
+          }
+          else {
+            $scope.disp.selectedDatesMoments = newlyAddedDates
+          }
+        } else {
+          $scope.disp.selectedDatesMoments =_.differenceBy(
+            $scope.disp.selectedDatesMoments,
+            wholeMonthDates,
+            m => m.valueOf()
+          )
         }
-        $scope.disp.selectedDatesMoments = _.intersectionBy(
-          fullMonthDates,
-          $scope.disp.daysAllowed,
-          m => m.valueOf()
-        )
-      } else {
-        $scope.disp.selectedDatesMoments = []
       }
     })
 
     $scope.logMonthChanged = function(newMonth, oldMonth){
-        // reset the 'pick the whole month'
-        $scope.book.pickWholeMonth = false;
+        // if wholeMonthDates are all in selectedDatesMoments
+        // mark pickWholeMonth = true , otherwise false
+        let wholeMonthDates = getFullMonthDates(newMonth)
+        let candidates = _.intersectionBy(
+          wholeMonthDates,
+          $scope.disp.daysAllowed,
+          m => m.valueOf()
+        )
+        let intersection = _.intersectionBy(
+          $scope.disp.selectedDatesMoments,
+          candidates,
+          m => m.valueOf()
+        )
+        if (candidates.length === intersection.length)
+          $scope.book.pickWholeMonth = true
+        else
+          $scope.book.pickWholeMonth = false
     };
+
+
+    function getFullMonthDates (oneUTCDateInMonth) {
+      // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
+      let endOfMonth = new moment(oneUTCDateInMonth).endOf('month')
+      let lastDate = endOfMonth.date()
+      let fullMonthDates = []
+      for (let i=1; i<=lastDate; i++) {
+        let candidate = new moment.utc([endOfMonth.year(), endOfMonth.month(), i])
+        fullMonthDates.push(candidate)
+      }
+      return fullMonthDates
+    }
 
     //close the popup by click on any space at the background
   //   var htmlEl = angular.element(document.querySelector('html'));
