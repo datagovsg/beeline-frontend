@@ -134,6 +134,12 @@
   .datepicker {
     background-color: $empty-day-background;
     padding: 1em 0;
+
+    .labelDiv {
+      display: flex;
+      align-items: center;
+      justify-content:center;
+    }
   }
 
   .picker-day {
