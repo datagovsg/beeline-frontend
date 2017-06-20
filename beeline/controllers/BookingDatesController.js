@@ -215,33 +215,44 @@ export default [
     }
 
     $scope.$watch('book.pickWholeMonth',(pickWholeMonth)=>{
+      // original value
       if (pickWholeMonth === null) {
         $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '').split(',').map(ms => moment(parseInt(ms)))
       }
       else {
         let wholeMonthDates = getFullMonthDates($scope.disp.month)
+        let allowedInWholeMonth = _.intersectionBy(
+          wholeMonthDates,
+          $scope.disp.daysAllowed,
+          m => m.valueOf()
+        )
         if (pickWholeMonth === true) {
-          let newlyAddedDates = _.intersectionBy(
-            wholeMonthDates,
-            $scope.disp.daysAllowed,
-            m => m.valueOf()
-          )
           if ($scope.disp.selectedDatesMoments.length > 0) {
             $scope.disp.selectedDatesMoments =_.unionBy(
               $scope.disp.selectedDatesMoments,
-              newlyAddedDates,
+              allowedInWholeMonth,
               m => m.valueOf()
             )
           }
           else {
-            $scope.disp.selectedDatesMoments = newlyAddedDates
+            $scope.disp.selectedDatesMoments = allowedInWholeMonth
           }
         } else {
-          $scope.disp.selectedDatesMoments =_.differenceBy(
+          // pickWholeMonth == false
+          // try to test the intersectionBy, if the same length [pickWholeMonth changes from true to false]
+          // do differenceBy otherwise omit
+          let intersection =_.intersectionBy(
             $scope.disp.selectedDatesMoments,
             wholeMonthDates,
             m => m.valueOf()
           )
+          if (allowedInWholeMonth.length === intersection.length) {
+            $scope.disp.selectedDatesMoments =_.differenceBy(
+              $scope.disp.selectedDatesMoments,
+              wholeMonthDates,
+              m => m.valueOf()
+            )
+          } // else do nothing
         }
       }
     })
