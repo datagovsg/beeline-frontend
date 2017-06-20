@@ -399,10 +399,15 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
             let routeCreditTags = _.keys(routeCredits);
             let notableTags = _.intersection(route.tags, routeCreditTags)
             if(notableTags.length >= 1){
-              // sort tags in order of credit left with (from high to low)
+              // sort in alphabetical order followed by
+              // to encourage use of crowdstart credit before rp-
               notableTags = _.sortBy(notableTags, function(tag) {
-                return routeCredits[tag]
-              }).reverse()
+                return tag
+              })
+              // filter out no balance tag
+              notableTags = _.filter(notableTags, (tag)=>{
+                return routeCredits[tag] > 0
+              })
               routeToCreditTags[route.id] = notableTags
             } else {
               routeToCreditTags[route.id] = null
