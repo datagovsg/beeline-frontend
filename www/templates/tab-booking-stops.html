@@ -21,7 +21,7 @@
               <img src="img/icon_kickstarter_activebid.svg">
           </i>
           You have {{ book.ridesRemaining }} trip(s) remaining in your Route Pass. <!-- Use by DD/MM/YY. -->
-          <i ng-if="book.routeSupportsRoutePass" class="icon ion-ios-cart" ng-click='showRoutePassModal()'></i>
+          <i ng-if="book.routeSupportsRoutePass" class="icon ion-ios-cart" ng-click='showRoutePassModal(true)'></i>
           <i ng-if="!book.routeSupportsRoutePass" class="icon"></i>
       </div>
 
