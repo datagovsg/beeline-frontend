@@ -1,5 +1,9 @@
 # Building the App
 
+Install dependenceis
+
+    npm install
+
 Install the necessary command line tools:
 
     npm install -g ionic
