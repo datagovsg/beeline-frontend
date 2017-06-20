@@ -8,7 +8,7 @@ var transformKickstarterData = function (kickstarterRoutes) {
   for (let kickstarter of kickstarterRoutes){
     kickstarter.isActived = false;
     if (kickstarter.bids && kickstarter.bids.length > 0) {
-     var bidsByTier = _.groupBy(kickstarter.bids, x=> x.priceF || x.userOptions.price);
+     var bidsByTier = _.groupBy(kickstarter.bids, x => x.priceF);
       kickstarter.notes.tier.map((tier)=>{
         var countCommitted = bidsByTier[tier.price] ?  bidsByTier[tier.price].length :0;
         _.assign(tier, {count: countCommitted,
@@ -29,8 +29,9 @@ var transformKickstarterData = function (kickstarterRoutes) {
     kickstarter.is7DaysOld = false;
 
     var now = new Date().getTime();
-    if (kickstarter.notes && kickstarter.notes.lelongExpiry) {
-      var expiryTime = new Date(kickstarter.notes.lelongExpiry).getTime();
+    if (kickstarter.notes && (route.notes.crowdstartExpiry || route.notes.lelongExpiry)) {
+      const expiry = route.notes.crowdstartExpiry || route.notes.lelongExpiry;
+      var expiryTime = new Date(expiry).getTime();
       if (now >= expiryTime) {
         kickstarter.isExpired = true;
         if (now - expiryTime >= 7*1000*60*60*24) {
