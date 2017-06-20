@@ -79,7 +79,8 @@ export default [
                           //use case; operator add more stops from date x
       routePassChoice: null, // index chosen in the route pass modal
       routePassPrice: null,
-      ridesRemaining: null
+      ridesRemaining: 0,
+      routeSupportsRoutePass : null
     };
     $scope.disp = {
       popupStop: null,
@@ -112,6 +113,9 @@ export default [
 
     var routePostProcessingPromise = routePromise.then((route) => {
       $scope.book.route = route;
+      $scope.book.routeSupportsRoutePass = _.some($scope.book.route.tags, function (tag) {
+        return tag.includes('rp-') ? true : false
+      })
       computeStops(stopOptions);
     });
 
@@ -276,9 +280,9 @@ export default [
                         ()=>TicketService.getTickets(),
                         ()=>RoutesService.getRoutePassCount()],
                         ([user, nextTripDate, allTickets, routeToRidesRemainingMap]) => {
-      $scope.isLoggedIn = user ? true : false;
+      $scope.book.isLoggedIn = user ? true : false;
       $scope.user = user;
-      if ($scope.isLoggedIn) {
+      if ($scope.book.isLoggedIn) {
         //if user is logged, disable the button if tickets are not loaded
         $scope.book.isVerifying = true;
         var previouslyBookedDays = null;
@@ -350,6 +354,7 @@ export default [
         let routePassTagList = $scope.book.route.tags.filter((tag) => {
           return tag.includes('rp-')
         })
+        // assert there is no more than 1 rp- tag
         assert(routePassTagList.length === 1)
         let passValue = $scope.book.route.trips[0].price * $scope.book.priceSchedules[$scope.book.routePassChoice].quantity
         var result = await UserService.beeline({
@@ -364,12 +369,8 @@ export default [
           }),
         });
         assert(result.status == 200);
+        $scope.$emit('paymentDone');
         $ionicLoading.hide();
-        $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
-          boardStop: $scope.book.boardStop.id,
-          alightStop: $scope.book.alightStop.id,
-          sessionId: $scope.session.sessionId,
-          selectedDates: $scope.book.nextTripDate,});
       } catch (err) {
         $ionicLoading.hide();
         await $ionicPopup.alert({
@@ -424,24 +425,20 @@ export default [
       }
     };
 
-
-
     $scope.fastCheckout = async function(){
-      if ($scope.isLoggedIn) {
-        let routeSupportsRoutePass = _.some($scope.book.route.tags, function (tag) {
-          return tag.includes('rp-') ? true : false
-        })
+      if ($scope.book.isLoggedIn) {
         // show modal for purchasing route pass
         // if route has 'rp-' tag
         // and user has no ridesRemaining
-        if (!$scope.book.ridesRemaining && routeSupportsRoutePass) {
-          // to decide whether to show 'save this credit card'
-          $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
-          $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
-          // priceSchedules are in order from biggest to 1 ticket
-          // put default option as the biggest quantity e.g. 10-ticket route pass
-          $scope.book.routePassChoice = 0;
-          await $scope.routePassModal.show()
+        if (!$scope.book.ridesRemaining && $scope.book.routeSupportsRoutePass) {
+          $scope.showRoutePassModal()
+          $scope.$on('paymentDone', ()=>{
+            $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
+              boardStop: $scope.book.boardStop.id,
+              alightStop: $scope.book.alightStop.id,
+              sessionId: $scope.session.sessionId,
+              selectedDates: $scope.book.nextTripDate,});
+          })
         } else {
           $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
             boardStop: $scope.book.boardStop.id,
@@ -449,6 +446,22 @@ export default [
             sessionId: $scope.session.sessionId,
             selectedDates: $scope.book.nextTripDate,});
         }
+      } else {
+        UserService.promptLogIn();
+      }
+    }
+
+    $scope.showRoutePassModal = async function(hideOneTicket) {
+      if ($scope.book.isLoggedIn) {
+        $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
+        $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
+        // priceSchedules are in order from biggest to 1 ticket
+        // put default option as the biggest quantity e.g. 10-ticket route pass
+        if (hideOneTicket) {
+          $scope.book.priceSchedules =$scope.book.priceSchedules.slice(0, $scope.book.priceSchedules.length-1)
+        }
+        $scope.book.routePassChoice = 0;
+        await $scope.routePassModal.show()
       } else {
         UserService.promptLogIn();
       }
