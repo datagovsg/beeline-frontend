@@ -16,12 +16,13 @@
   <ion-content class="fullscreen-map" scroll="false">
     <form class="stops-form" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
-      <div class="item item-icon-left item-text-wrap item-icon-right" ng-if="book.ridesRemaining && book.ridesRemaining >= 0 && book.routeSupportsRoutePass" >
+      <div class="item item-icon-left item-text-wrap item-icon-right" ng-if="(book.ridesRemaining && book.ridesRemaining > 0) || book.routeSupportsRoutePass" >
           <i class="icon activebid">
               <img src="img/icon_kickstarter_activebid.svg">
           </i>
           You have {{ book.ridesRemaining }} trip(s) remaining in your Route Pass. <!-- Use by DD/MM/YY. -->
-          <i class="icon ion-ios-cart"></i>
+          <i ng-if="book.routeSupportsRoutePass" class="icon ion-ios-cart"></i>
+          <i ng-if="!book.routeSupportsRoutePass" class="icon"></i>
       </div>
 
       <!-- contains the map, the stop selectors
