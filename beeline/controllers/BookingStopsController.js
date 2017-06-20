@@ -354,6 +354,7 @@ export default [
         let routePassTagList = $scope.book.route.tags.filter((tag) => {
           return tag.includes('rp-')
         })
+        // assert there is no more than 1 rp- tag
         assert(routePassTagList.length === 1)
         let passValue = $scope.book.route.trips[0].price * $scope.book.priceSchedules[$scope.book.routePassChoice].quantity
         var result = await UserService.beeline({
@@ -368,12 +369,8 @@ export default [
           }),
         });
         assert(result.status == 200);
+        $scope.$emit('paymentDone');
         $ionicLoading.hide();
-        $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
-          boardStop: $scope.book.boardStop.id,
-          alightStop: $scope.book.alightStop.id,
-          sessionId: $scope.session.sessionId,
-          selectedDates: $scope.book.nextTripDate,});
       } catch (err) {
         $ionicLoading.hide();
         await $ionicPopup.alert({
@@ -435,6 +432,13 @@ export default [
         // and user has no ridesRemaining
         if (!$scope.book.ridesRemaining && $scope.book.routeSupportsRoutePass) {
           $scope.showRoutePassModal()
+          $scope.$on('paymentDone', ()=>{
+            $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
+              boardStop: $scope.book.boardStop.id,
+              alightStop: $scope.book.alightStop.id,
+              sessionId: $scope.session.sessionId,
+              selectedDates: $scope.book.nextTripDate,});
+          })
         } else {
           $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
             boardStop: $scope.book.boardStop.id,
