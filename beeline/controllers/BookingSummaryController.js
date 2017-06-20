@@ -65,14 +65,6 @@ export default [
       $scope.book.features = features;
     })
 
-    $scope.$watch(() => RoutesService.getRouteCreditTags(), async (routeToCreditTags) => {
-      // get the 1st tag to use as server not support multiple tags for now
-      // tags are in order of credit left with (from high to low)
-      let creditTag = _.get(routeToCreditTags, `${$scope.book.routeId}.[0]`, null)
-      $scope.book.applyRouteCredits = !!creditTag
-      $scope.book.creditTag = creditTag
-    })
-
     $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;

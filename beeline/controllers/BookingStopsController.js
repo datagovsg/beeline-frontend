@@ -79,7 +79,7 @@ export default [
                           //use case; operator add more stops from date x
       routePassChoice: null, // index chosen in the route pass modal
       routePassPrice: null,
-      ridesRemaining: null,
+      ridesRemaining: 0,
       routeSupportsRoutePass : null
     };
     $scope.disp = {
@@ -280,9 +280,9 @@ export default [
                         ()=>TicketService.getTickets(),
                         ()=>RoutesService.getRoutePassCount()],
                         ([user, nextTripDate, allTickets, routeToRidesRemainingMap]) => {
-      $scope.isLoggedIn = user ? true : false;
+      $scope.book.isLoggedIn = user ? true : false;
       $scope.user = user;
-      if ($scope.isLoggedIn) {
+      if ($scope.book.isLoggedIn) {
         //if user is logged, disable the button if tickets are not loaded
         $scope.book.isVerifying = true;
         var previouslyBookedDays = null;
@@ -426,7 +426,7 @@ export default [
     };
 
     $scope.fastCheckout = async function(){
-      if ($scope.isLoggedIn) {
+      if ($scope.book.isLoggedIn) {
         // show modal for purchasing route pass
         // if route has 'rp-' tag
         // and user has no ridesRemaining
@@ -452,15 +452,19 @@ export default [
     }
 
     $scope.showRoutePassModal = async function(hideOneTicket) {
-      $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
-      $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
-      // priceSchedules are in order from biggest to 1 ticket
-      // put default option as the biggest quantity e.g. 10-ticket route pass
-      if (hideOneTicket) {
-        $scope.book.priceSchedules =$scope.book.priceSchedules.slice(0, $scope.book.priceSchedules.length-1)
+      if ($scope.book.isLoggedIn) {
+        $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
+        $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
+        // priceSchedules are in order from biggest to 1 ticket
+        // put default option as the biggest quantity e.g. 10-ticket route pass
+        if (hideOneTicket) {
+          $scope.book.priceSchedules =$scope.book.priceSchedules.slice(0, $scope.book.priceSchedules.length-1)
+        }
+        $scope.book.routePassChoice = 0;
+        await $scope.routePassModal.show()
+      } else {
+        UserService.promptLogIn();
       }
-      $scope.book.routePassChoice = 0;
-      await $scope.routePassModal.show()
     }
 
     // check selected boardstop and alightstop available for the next upcoming trip
