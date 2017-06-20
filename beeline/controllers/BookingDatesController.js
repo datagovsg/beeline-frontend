@@ -261,23 +261,23 @@ export default [
         // if wholeMonthDates are all in selectedDatesMoments
         // mark pickWholeMonth = true , otherwise false
         let wholeMonthDates = getFullMonthDates(newMonth)
-        let candidates = _.intersectionBy(
+        let allowedInWholeMonth = _.intersectionBy(
           wholeMonthDates,
           $scope.disp.daysAllowed,
           m => m.valueOf()
         )
         let intersection = _.intersectionBy(
           $scope.disp.selectedDatesMoments,
-          candidates,
+          allowedInWholeMonth,
           m => m.valueOf()
         )
-        if (candidates.length === intersection.length)
+        if (allowedInWholeMonth.length === intersection.length && allowedInWholeMonth.length > 0)
           $scope.book.pickWholeMonth = true
         else
           $scope.book.pickWholeMonth = false
     };
 
-
+    // get whole range of dates in the month
     function getFullMonthDates (oneUTCDateInMonth) {
       // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
       let endOfMonth = new moment(oneUTCDateInMonth).endOf('month')
