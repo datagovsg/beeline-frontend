@@ -451,11 +451,14 @@ export default [
       }
     }
 
-    $scope.showRoutePassModal = async function() {
+    $scope.showRoutePassModal = async function(hideOneTicket) {
       $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
       $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
       // priceSchedules are in order from biggest to 1 ticket
       // put default option as the biggest quantity e.g. 10-ticket route pass
+      if (hideOneTicket) {
+        $scope.book.priceSchedules =$scope.book.priceSchedules.slice(0, $scope.book.priceSchedules.length-1)
+      }
       $scope.book.routePassChoice = 0;
       await $scope.routePassModal.show()
     }
