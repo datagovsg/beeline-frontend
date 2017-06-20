@@ -428,21 +428,13 @@ export default [
       }
     };
 
-
-
     $scope.fastCheckout = async function(){
       if ($scope.isLoggedIn) {
         // show modal for purchasing route pass
         // if route has 'rp-' tag
         // and user has no ridesRemaining
         if (!$scope.book.ridesRemaining && $scope.book.routeSupportsRoutePass) {
-          // to decide whether to show 'save this credit card'
-          $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
-          $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
-          // priceSchedules are in order from biggest to 1 ticket
-          // put default option as the biggest quantity e.g. 10-ticket route pass
-          $scope.book.routePassChoice = 0;
-          await $scope.routePassModal.show()
+          $scope.showRoutePassModal()
         } else {
           $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
             boardStop: $scope.book.boardStop.id,
@@ -453,6 +445,15 @@ export default [
       } else {
         UserService.promptLogIn();
       }
+    }
+
+    $scope.showRoutePassModal = async function() {
+      $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
+      $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
+      // priceSchedules are in order from biggest to 1 ticket
+      // put default option as the biggest quantity e.g. 10-ticket route pass
+      $scope.book.routePassChoice = 0;
+      await $scope.routePassModal.show()
     }
 
     // check selected boardstop and alightstop available for the next upcoming trip
