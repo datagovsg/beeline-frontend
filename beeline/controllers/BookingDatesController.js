@@ -226,7 +226,7 @@ export default [
           $scope.disp.daysAllowed,
           m => m.valueOf()
         )
-        if (pickWholeMonth === true) {
+        if (pickWholeMonth) {
           if ($scope.disp.selectedDatesMoments.length > 0) {
             $scope.disp.selectedDatesMoments =_.unionBy(
               $scope.disp.selectedDatesMoments,
@@ -271,10 +271,7 @@ export default [
           allowedInWholeMonth,
           m => m.valueOf()
         )
-        if (allowedInWholeMonth.length === intersection.length && allowedInWholeMonth.length > 0)
-          $scope.book.pickWholeMonth = true
-        else
-          $scope.book.pickWholeMonth = false
+        $scope.book.pickWholeMonth = (allowedInWholeMonth.length === intersection.length && allowedInWholeMonth.length > 0)
     };
 
     // get whole range of dates in the month
