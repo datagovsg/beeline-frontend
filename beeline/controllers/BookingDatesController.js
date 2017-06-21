@@ -62,13 +62,6 @@ export default [
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
 
-    RoutesService.fetchRouteCreditTags();
-    $scope.$watch(() => RoutesService.getRouteCreditTags(), (routeToCreditTags) => {
-      let creditTag = routeToCreditTags ? routeToCreditTags[$scope.book.routeId] : null
-      $scope.book.applyRouteCredits = !!creditTag
-      $scope.book.creditTag = creditTag
-    })
-
     $scope.$watch(()=>UserService.getUser(), (user)=>{
       loadTickets();
       $scope.book.applyReferralCredits = !!user
