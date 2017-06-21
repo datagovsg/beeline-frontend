@@ -16,14 +16,18 @@
   <ion-content class="fullscreen-map" scroll="false">
     <form class="stops-form" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
-      <div class="item item-icon-left item-text-wrap item-icon-right" ng-if="book.ridesRemaining > 0 || book.routeSupportsRoutePass" >
-          <i class="icon activebid">
+      <div class="rides-remaining" ng-if="book.ridesRemaining > 0 || book.routeSupportsRoutePass" >
+          <i class="icon">
               <img src="img/icon_kickstarter_activebid.svg">
           </i>
-          <span ng-if="book.ridesRemaining > 0 || (book.routeSupportsRoutePass && book.isLoggedIn)">You have {{ book.ridesRemaining }} trip(s) remaining in your Route Pass.</span> <!-- Use by DD/MM/YY. -->
-          <span ng-if="!book.isLoggedIn">Purchase route pass</span>
-          <i ng-if="book.routeSupportsRoutePass" class="icon ion-ios-cart" ng-click='showRoutePassModal(true)'></i>
-          <i ng-if="!book.routeSupportsRoutePass" class="icon"></i>
+          <span class="text" ng-if="book.ridesRemaining > 0 || (book.routeSupportsRoutePass && book.isLoggedIn)">You have {{ book.ridesRemaining }} pass(es) remaining for this route</span> <!-- Use by DD/MM/YY. -->
+          <span class="text" ng-if="!book.isLoggedIn"></span>
+          <span class="buy-more-button"
+            ng-if="book.routeSupportsRoutePass"
+            ng-click="showRoutePassModal(true)">
+            <button class="button button-positive button-small button-outline"><i class="ion-ios-cart"></i>&nbsp;Buy more</button>
+          </span>
+          <span ng-if="!book.routeSupportsRoutePass" class="buy-more-button"></span>
       </div>
 
       <!-- contains the map, the stop selectors
