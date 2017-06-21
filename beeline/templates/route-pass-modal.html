@@ -8,13 +8,13 @@
     <div class="item item-text-wrap">
       <div>
         <p>
-          Route pass can be used for future bookings of this route.
+          Passes can be used for future bookings of this route.
         </p>
         <div class="radios">
           <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.routePassChoice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
             <i class="icon ion-ios-circle-outline not-selected" ng-show="book.routePassChoice !== $index"></i>
             <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price}} per trip)</div>
-            <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}}-passes (${{schedule.price}} per trip)
+            <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}} passes (${{schedule.price}} per trip)
               <div>save {{schedule.discount}}%</div>
             </div>
           </ion-radio>
