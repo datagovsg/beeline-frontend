@@ -105,6 +105,19 @@
       }
     }
   }
+
+  .ridesRemaining {
+    display: flex;
+    padding: 0.5em;
+    align-items: center;
+    i.icon .buyMoreButton{
+      flex: 0 0 auto;
+    }
+    .text {
+      flex: 1 1 auto;
+      margin-left: 10px;
+    }
+  }
 }
 
 // FIXME: big-white-button
