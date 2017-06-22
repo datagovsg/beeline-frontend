@@ -26,7 +26,7 @@ export default [
   'StripeService',
   '$ionicLoading',
   '$ionicPopup',
-  'Legalese',
+  'assetScopeModalService',
   function(
     $rootScope,
     $scope,
@@ -48,7 +48,7 @@ export default [
     StripeService,
     $ionicLoading,
     $ionicPopup,
-    Legalese
+    assetScopeModalService
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -478,7 +478,7 @@ export default [
       }
     })
 
-    $scope.showTermsOfUse = () => Legalese.showTermsOfUse();
+    $scope.showTermsOfUse = () => assetScopeModalService.showRoutePassTCModal();
 
   }
 ];

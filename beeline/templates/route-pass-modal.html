@@ -20,13 +20,12 @@
           </ion-radio>
         </div>
         <!-- only show this if not 1-ticket chosen and no credit card saved -->
-
-        <div class="checkTerms">
-          <ion-checkbox
-            ng-model="book.savePaymentChecked"
-            ng-if="!book.hasSavedPaymentInfo && (book.priceSchedules[book.routePassChoice].quantity != 1)">
-            Yes, I want to save this payment method for fast checkout in the future.
-          </ion-checkbox>
+        <ion-checkbox
+          ng-model="book.savePaymentChecked"
+          ng-if="!book.hasSavedPaymentInfo && (book.priceSchedules[book.routePassChoice].quantity != 1)">
+          Yes, I want to save this payment method for fast checkout in the future.
+        </ion-checkbox>
+        <div class="checkTerms" ng-if="(book.priceSchedules[book.routePassChoice].quantity != 1)">
             Please read <a ng-click="showTermsOfUse()">Terms of Use</a>.
           <ion-checkbox
             ng-model="book.acceptPolicy">
@@ -35,7 +34,7 @@
         </div>
         <div class="buttons">
           Total: $ {{book.routePassPrice | number:2}}
-          <button class="primary-button button" ng-click="proceed()" ng-disabled="!book.acceptPolicy">
+          <button class="primary-button button" ng-click="proceed()" ng-disabled="!book.acceptPolicy && (book.priceSchedules[book.routePassChoice].quantity != 1)">
             Proceed
           </button>
         </div>
