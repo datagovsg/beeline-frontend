@@ -20,7 +20,7 @@
           <i class="icon">
               <img src="img/icon_kickstarter_activebid.svg">
           </i>
-          <span class="text" ng-if="book.ridesRemaining > 0 || (book.routeSupportsRoutePass && book.isLoggedIn)">You have {{ book.ridesRemaining }} pass(es) remaining for this route</span> <!-- Use by DD/MM/YY. -->
+          <span class="text" ng-if="book.ridesRemaining > 0 || (book.routeSupportsRoutePass && book.isLoggedIn)">You have {{ book.ridesRemaining || 0 }} pass(es) remaining for this route</span> <!-- Use by DD/MM/YY. -->
           <span class="text" ng-if="!book.isLoggedIn"></span>
           <span class="buy-more-button"
             ng-if="book.routeSupportsRoutePass"
