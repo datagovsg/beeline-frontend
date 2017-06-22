@@ -26,6 +26,7 @@ export default [
   'StripeService',
   '$ionicLoading',
   '$ionicPopup',
+  'Legalese',
   function(
     $rootScope,
     $scope,
@@ -46,7 +47,8 @@ export default [
     $interval,
     StripeService,
     $ionicLoading,
-    $ionicPopup
+    $ionicPopup,
+    Legalese
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -80,7 +82,8 @@ export default [
       routePassChoice: null, // index chosen in the route pass modal
       routePassPrice: null,
       ridesRemaining: 0,
-      routeSupportsRoutePass : null
+      routeSupportsRoutePass : null,
+      acceptPolicy: null // T&Cs in the modal
     };
     $scope.disp = {
       popupStop: null,
@@ -474,6 +477,8 @@ export default [
         $scope.book.stopNotAvailable = !stopIds.includes(boardStop.id) || !stopIds.includes(alightStop.id)
       }
     })
+
+    $scope.showTermsOfUse = () => Legalese.showTermsOfUse();
 
   }
 ];
