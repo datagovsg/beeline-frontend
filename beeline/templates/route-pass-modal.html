@@ -26,9 +26,15 @@
           Yes, I want to save this payment method for fast checkout in the future.
         </ion-checkbox>
         <div class="buttons">
-          Total: $ {{book.routePassPrice | number:2}}
-          <button class="primary-button button" ng-click="proceed()">
+          Total: $ {{book.routePassPrice | number:2}}</br></br>
+          <p class="text-center" ng-if="book.hasSavedPaymentInfo">
+            This payment will be charged to your <br /><b>{{book.brand}}</b> ending in <b> {{book.last4Digtis}}</b>.
+          </p>
+          <button class="primary-button button" ng-click="proceed()" ng-if="!book.hasSavedPaymentInfo">
             Proceed
+          </button>
+          <button class="primary-button button" ng-click="proceed()" ng-if="book.hasSavedPaymentInfo">
+            Confirm and Pay
           </button>
         </div>
       </div>
