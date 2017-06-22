@@ -73,9 +73,9 @@
         <td>Total Amount</td>
         <td class="right">{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
-      <tr ng-if="priceInfo.routeCredits && priceInfo.routeCredits.length > 0" ng-repeat="routeCredit in priceInfo.routeCredits">
+      <tr ng-if="priceInfo.routeCredits && priceInfo.routeCredits.length > 0">
         <td>Route pass - Using {{ ridesUsed }} of {{ booking.route.ridesRemaining}} trips remaining</td>
-        <td class="right">{{(-routeCredit.debit || 0) | currency}}</td>
+        <td class="right">{{totalRouteCreditsUsed | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
         <td>

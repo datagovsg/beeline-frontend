@@ -71,6 +71,7 @@ export default [
             // This allows the page to resize earlier, so that when
             // users scroll down the bounce works ok.
             $scope.priceInfo = $scope.priceInfo || {};
+
             $scope.priceInfo.pricesPerTrip = BookingService.summarizePrices($scope.booking);
 
             $scope.isCalculating++;
@@ -85,6 +86,7 @@ export default [
               $scope.ridesUsed = $scope.booking.applyRouteCredits
                 ? Math.min($scope.booking.route.ridesRemaining, priceInfo.tripCount)
                 : 0
+              $scope.totalRouteCreditsUsed = _.sumBy($scope.priceInfo.routeCredits, x => - parseFloat(x.debit))
               $scope.errorMessage = null;
             })
             .catch((error) => {
