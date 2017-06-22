@@ -42,14 +42,14 @@ export default [
                 $scope.booking.route = route;
                 if (routePassCountMap) {
                   $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
-                  $scope.booking.applyRouteCredits = $scope.booking.route.ridesRemaining > 0 ? true : false
+                  $scope.booking.applyRouteCredits = ($scope.booking.route.ridesRemaining > 0)
                 }
               })
             }
             else {
               if (routePassCountMap) {
                 $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
-                $scope.booking.applyRouteCredits = $scope.booking.route.ridesRemaining > 0 ? true : false
+                $scope.booking.applyRouteCredits = ($scope.booking.route.ridesRemaining > 0)
               }
             }
           });

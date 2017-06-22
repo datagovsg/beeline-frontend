@@ -72,10 +72,7 @@ export default [
       $scope.book.applyReferralCredits = !!user;
       $scope.book.applyCredits = !!user;
       if ($scope.isLoggedIn) {
-        loadingSpinner(Promise.all([
-          $scope.checkValidDate()
-          // RoutesService.fetchRouteCreditTags(),
-        ]))
+        loadingSpinner($scope.checkValidDate())
       }
     })
 

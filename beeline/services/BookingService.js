@@ -49,7 +49,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
           } : null,
           applyCredits: booking.applyCredits,
           applyReferralCredits: booking.applyReferralCredits,
-          applyRouteCredits: booking.applyRouteCredits ? true : false
+          applyRouteCredits: !!booking.applyRouteCredits
         },
       })
       .then((resp) => {
