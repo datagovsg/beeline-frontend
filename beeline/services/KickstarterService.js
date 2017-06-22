@@ -29,8 +29,8 @@ var transformKickstarterData = function (kickstarterRoutes) {
     kickstarter.is7DaysOld = false;
 
     var now = new Date().getTime();
-    if (kickstarter.notes && (route.notes.crowdstartExpiry || route.notes.lelongExpiry)) {
-      const expiry = route.notes.crowdstartExpiry || route.notes.lelongExpiry;
+    if (kickstarter.notes && (kickstarter.notes.crowdstartExpiry || kickstarter.notes.lelongExpiry)) {
+      const expiry = kickstarter.notes.crowdstartExpiry || kickstarter.notes.lelongExpiry;
       var expiryTime = new Date(expiry).getTime();
       if (now >= expiryTime) {
         kickstarter.isExpired = true;
