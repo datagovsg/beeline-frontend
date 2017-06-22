@@ -46,7 +46,9 @@ export default function(UserService, CompanyService, RoutesService, $http) {
           dryRun: true,
           promoCode: booking.promoCode ? {
             code: booking.promoCode
-          } : null,
+          } : {
+            code: '' // Allow default promo codes to be used
+          },
           applyCredits: booking.applyCredits,
           applyReferralCredits: booking.applyReferralCredits,
           applyRouteCredits: !!booking.applyRouteCredits

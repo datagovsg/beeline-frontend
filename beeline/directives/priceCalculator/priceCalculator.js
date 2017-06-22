@@ -56,48 +56,53 @@ export default [
 
         })
 
+        async function recomputePrices() {
+          assert($scope.booking.routeId);
+          if (!$scope.booking.route) {
+            $scope.booking.route = await RoutesService.getRoute($scope.booking.routeId)
+            let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
+            $scope.booking.route.ridesRemaining = routeToRidesRemainingMap[$scope.booking.routeId]
+          }
+
+          // Provide a price summary first (don't count total due)
+          // This allows the page to resize earlier, so that when
+          // users scroll down the bounce works ok.
+          $scope.priceInfo = $scope.priceInfo || {};
+          $scope.priceInfo.pricesPerTrip = BookingService.summarizePrices($scope.booking);
+
+          $scope.isCalculating++;
+          var promise = BookingService.computePriceInfo($scope.booking)
+          .then((priceInfo) => {
+            // Check to ensure that the order of
+            // replies don't affect the result
+            if (promise != latestRequest)
+              return;
+            $scope.priceInfo = priceInfo;
+            $scope.price = priceInfo.totalDue;
+            $scope.ridesUsed = $scope.booking.applyRouteCredits
+              ? Math.min($scope.booking.route.ridesRemaining, priceInfo.tripCount)
+              : 0
+            $scope.totalRouteCreditsUsed = _.sumBy($scope.priceInfo.routeCredits, x => - parseFloat(x.debit))
+            $scope.errorMessage = null;
+          })
+          .catch((error) => {
+            $scope.priceInfo = {};
+            $scope.price = undefined;
+            $scope.errorMessage = error.data.message;
+          })
+          .then(stopCalculating)
+
+          latestRequest = promise;
+        }
+
         var latestRequest = null;
         $scope.$watch(
           () => _.pick($scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode' /* , qty */]),
-          async function () {
-            assert($scope.booking.routeId);
-            if (!$scope.booking.route) {
-              $scope.booking.route = await RoutesService.getRoute($scope.booking.routeId)
-              let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
-              $scope.booking.route.ridesRemaining = routeToRidesRemainingMap[$scope.booking.routeId]
-            }
+          recomputePrices, true);
 
-            // Provide a price summary first (don't count total due)
-            // This allows the page to resize earlier, so that when
-            // users scroll down the bounce works ok.
-            $scope.priceInfo = $scope.priceInfo || {};
-
-            $scope.priceInfo.pricesPerTrip = BookingService.summarizePrices($scope.booking);
-
-            $scope.isCalculating++;
-            var promise = BookingService.computePriceInfo($scope.booking)
-            .then((priceInfo) => {
-              // Check to ensure that the order of
-              // replies don't affect the result
-              if (promise != latestRequest)
-                return;
-              $scope.priceInfo = priceInfo;
-              $scope.price = priceInfo.totalDue;
-              $scope.ridesUsed = $scope.booking.applyRouteCredits
-                ? Math.min($scope.booking.route.ridesRemaining, priceInfo.tripCount)
-                : 0
-              $scope.totalRouteCreditsUsed = _.sumBy($scope.priceInfo.routeCredits, x => - parseFloat(x.debit))
-              $scope.errorMessage = null;
-            })
-            .catch((error) => {
-              $scope.priceInfo = {};
-              $scope.price = undefined;
-              $scope.errorMessage = error.data.message;
-            })
-            .then(stopCalculating);
-
-            latestRequest = promise;
-          }, true);
+        $scope.$on(
+          'priceCalculator.recomputePrices',
+          recomputePrices);
 
         $scope.removePromoCode = function(){
           $scope.booking.promoCode = null;

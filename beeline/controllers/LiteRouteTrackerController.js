@@ -38,6 +38,9 @@ export default [
       RoutesService.getRouteFeatures($scope.liteRoute.id).then((data)=>{
         $scope.disp.features = data;
       });
+      $scope.liteRoute.trips = _.sortBy($scope.liteRoute.trips, (trip)=>{
+        return trip.date
+      })
       $scope.data.nextTrips = $scope.liteRoute.trips.filter(
         trip=>trip.date === $scope.liteRoute.trips[0].date);
     })

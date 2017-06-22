@@ -20,7 +20,10 @@
     </button>
   </ion-nav-buttons>
   <ion-content>
-    <!-- <booking-breadcrumbs step="2"></booking-breadcrumbs> -->
+    <ion-refresher pulling-text="Pull to refresh..."
+                   on-refresh="refreshPrices()"
+                   ng-if="user">
+    </ion-refresher>
     <!-- <div class="item item-text-wrap">
       Please review the route and bus stop selections you have made for this booking.<br />
       To change any of the selections, please click its corresponding <b>Edit</b> button.
