@@ -79,7 +79,8 @@
       </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
         <td>
-          {{discount.discount.description}}: {{discount.discount.code}}  <i class="icon ion-close-circled" ng-click="removePromoCode()"></i>
+          {{discount.discount.description}}<span ng-if="booking.promoCode">: {{discount.discount.code}}
+          <i class="icon ion-close-circled" ng-click="removePromoCode()"></i></span>
         </td>
         <td class="right">
           {{(-discount.debit || 0) | currency}}
