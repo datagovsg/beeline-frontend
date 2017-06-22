@@ -57,7 +57,6 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     instance.fetchRouteCredits(true)
     instance.fetchRoutesWithRoutePass()
     instance.fetchRecentRoutes(true)
-    instance.fetchRouteCreditTags(true)
   })
 
   var instance = {

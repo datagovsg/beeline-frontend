@@ -72,10 +72,7 @@ export default [
       $scope.book.applyReferralCredits = !!user;
       $scope.book.applyCredits = !!user;
       if ($scope.isLoggedIn) {
-        loadingSpinner(Promise.all([
-          $scope.checkValidDate(),
-          RoutesService.fetchRouteCreditTags(),
-        ]))
+        loadingSpinner($scope.checkValidDate())
       }
     })
 
@@ -231,7 +228,8 @@ export default [
             trips: BookingService.prepareTrips($scope.book),
             promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : null,
             // don't use route credits if toggle if off
-            creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
+            // creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
+            applyRouteCredits: $scope.book.applyRouteCredits ? true : false,
             applyCredits: $scope.book.applyCredits,
             applyReferralCredits: $scope.book.applyReferralCredits,
           }),
