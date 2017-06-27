@@ -42,38 +42,17 @@ export default [
                 $scope.booking.route = route;
                 if (routePassCountMap) {
                   $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
+                  $scope.booking.applyRouteCredits = ($scope.booking.route.ridesRemaining > 0)
                 }
               })
             }
             else {
               if (routePassCountMap) {
                 $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
+                $scope.booking.applyRouteCredits = ($scope.booking.route.ridesRemaining > 0)
               }
             }
           });
-
-          // udpate route credit tags when user logged in
-          // FIXME: wait for server changes to insert boolean instead of tag
-          RoutesService.fetchRouteCreditTags(true).then((routeToCreditTags)=>{
-            if (!$scope.booking.route) {
-              RoutesService.getRoute($scope.booking.routeId).then((route)=>{
-                $scope.booking.route = route;
-                if (routeToCreditTags) {
-                  let creditTag = _.get(routeToCreditTags, `${route}.[0]`, null)
-                  $scope.booking.applyRouteCredits = !!creditTag
-                  $scope.booking.creditTag = creditTag
-                }
-              })
-            }
-            else {
-              if (routeToCreditTags) {
-                // get the 1st tag to use as server not support multiple tags for now
-                let creditTag = _.get(routeToCreditTags, `${$scope.booking.routeId}.[0]`, null)
-                $scope.booking.applyRouteCredits = !!creditTag
-                $scope.booking.creditTag = creditTag
-              }
-            }
-          })
 
         })
 
@@ -103,6 +82,7 @@ export default [
             $scope.ridesUsed = $scope.booking.applyRouteCredits
               ? Math.min($scope.booking.route.ridesRemaining, priceInfo.tripCount)
               : 0
+            $scope.totalRouteCreditsUsed = _.sumBy($scope.priceInfo.routeCredits, x => - parseFloat(x.debit))
             $scope.errorMessage = null;
           })
           .catch((error) => {

@@ -83,7 +83,7 @@ export default [
       routePassPrice: null,
       ridesRemaining: 0,
       routeSupportsRoutePass : null,
-      acceptPolicy: null // T&Cs in the modal
+      acceptPolicy: null, // T&Cs in the modal
     };
     $scope.disp = {
       popupStop: null,
@@ -457,6 +457,11 @@ export default [
     $scope.showRoutePassModal = async function(hideOneTicket) {
       if ($scope.book.isLoggedIn) {
         $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
+        if ($scope.book.hasSavedPaymentInfo) {
+          let paymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data[0]')
+          $scope.book.brand = paymentInfo.brand;
+          $scope.book.last4Digtis = paymentInfo.last4;
+        }
         $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
         // priceSchedules are in order from biggest to 1 ticket
         // put default option as the biggest quantity e.g. 10-ticket route pass

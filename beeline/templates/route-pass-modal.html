@@ -34,8 +34,14 @@
         </div>
         <div class="buttons">
           Total: $ {{book.routePassPrice | number:2}}
+          <p class="text-center" ng-if="book.hasSavedPaymentInfo">
+            This payment will be charged to your <br /><b>{{book.brand}}</b> ending in <b> {{book.last4Digtis}}</b>.
+          </p>
           <button class="primary-button button" ng-click="proceed()" ng-disabled="!book.acceptPolicy && (book.priceSchedules[book.routePassChoice].quantity != 1)">
             Proceed
+          </button>
+          <button class="primary-button button" ng-click="proceed()" ng-if="book.hasSavedPaymentInfo">
+            Confirm and Pay
           </button>
         </div>
       </div>
