@@ -10884,6 +10884,18 @@ dynamic-signage div {
     background: url("../img/RoutePairBigEnd.svg") 0 50% no-repeat transparent;
     background-size: 24px 24px; }
 
+#pg_booking .rides-remaining {
+  display: flex;
+  padding: 0.5em;
+  align-items: center; }
+  #pg_booking .rides-remaining i.icon .buy-more-button {
+    flex: 0 0 auto; }
+  #pg_booking .rides-remaining .text {
+    flex: 1 1 auto;
+    margin-left: 10px; }
+  #pg_booking .rides-remaining button {
+    line-height: 1.0; }
+
 .booking-stops-infowindow button {
   border: solid 2px #4b3863;
   color: #4b3863;
@@ -10904,6 +10916,28 @@ dynamic-signage div {
   .changes-message table tr td:nth-child(3) {
     width: 60%;
     text-align: left; }
+
+ion-modal-view .buttons {
+  text-align: center;
+  margin: 30px auto; }
+
+ion-modal-view .radios {
+  margin: 20px auto; }
+  ion-modal-view .radios .item-radio .radio-icon {
+    color: #4b3863;
+    font-size: 30px;
+    left: 0px; }
+  ion-modal-view .radios .item-radio .not-selected {
+    color: #888;
+    font-size: 30px;
+    left: 0px;
+    padding: 14px;
+    /*follow radio-icon padding*/ }
+  ion-modal-view .radios .item-radio .item-content {
+    padding-right: 16px;
+    /* extend content space, override ionic default since the checkmark is no longer on the right */ }
+  ion-modal-view .radios .priceDetails {
+    padding-left: 40px; }
 
 .item.datepickerIntro {
   text-align: center;
@@ -10999,6 +11033,10 @@ dynamic-signage div {
 #pg_bookdate .datepicker {
   background-color: #eee;
   padding: 1em 0; }
+  #pg_bookdate .datepicker .labelDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center; }
 
 #pg_bookdate .picker-day {
   position: relative; }

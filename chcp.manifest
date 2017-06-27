@@ -85,7 +85,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "c13a9916d4b2072aa16eb79635fc2e1d"
+    "hash": "83a6276d68b7160c941c1ec0b0435780"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -93,11 +93,19 @@
   },
   {
     "file": "css/ionic.app.min.css",
-    "hash": "6fee2055c98733a81a771cb6b264d131"
+    "hash": "dae93275cf544312daf6f903e61fc965"
+  },
+  {
+    "file": "css/main.516937485f90f0784fda04bebd0f92b9.css",
+    "hash": "516937485f90f0784fda04bebd0f92b9"
+  },
+  {
+    "file": "css/main.af5533f1922b0897bb192119953e58f7.css",
+    "hash": "af5533f1922b0897bb192119953e58f7"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "f55e3645f114db5b3aa97816b8bdc573"
+    "hash": "33238245a1fe219df95120228bfc08b1"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -105,7 +113,7 @@
   },
   {
     "file": "css/operator-grab.min.css",
-    "hash": "3fb05dedc4509b146f0962cefe94aa6d"
+    "hash": "771c7b20f2169272882a59f0c87d6859"
   },
   {
     "file": "favicon-16x16.png",
@@ -608,10 +616,6 @@
     "hash": "bae792ee50886793958a08f17dfbac95"
   },
   {
-    "file": "img/TapToSelectMultipleDays.svg",
-    "hash": "a9fb1f6ce5ee819124c536d1770052d7"
-  },
-  {
     "file": "img/TicketCancelledTrip.svg",
     "hash": "73f15a5ec4c4fb0007a1bd56fa16953c"
   },
@@ -637,7 +641,7 @@
   },
   {
     "file": "js/angular-google-maps.js",
-    "hash": "2037d98a4bda0277250f7b432b4a0337"
+    "hash": "06038ce66f99673cefbc782ea218a2ab"
   },
   {
     "file": "js/angular-simple-logger.js",
@@ -645,11 +649,15 @@
   },
   {
     "file": "js/clipboard.min.js",
-    "hash": "1f91008d9fb39b45db0978805499ad9c"
+    "hash": "d3d323fd9a370c90e83427d50f383a63"
   },
   {
     "file": "js/lodash.js",
-    "hash": "7baebecc8d47b9bc5ba33025176653a8"
+    "hash": "f8107451e16ffb8da7a2f679f13e186e"
+  },
+  {
+    "file": "js/lodash.min.js",
+    "hash": "7271c09c2dbd9a7be40f34ff40a93e6e"
   },
   {
     "file": "js/ng-cordova.min.js",
@@ -660,20 +668,32 @@
     "hash": "9459cbc70b529454029535a130876a2e"
   },
   {
-    "file": "js/operator-customizations.js",
-    "hash": "74dc047aa43065f038deb3d17717d545"
-  },
-  {
     "file": "js/qrcode.min.js",
     "hash": "517b55d3688ce9ef1085a3d9632bcb97"
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "07804abb305418ee3013db9b9fe7b719"
+    "hash": "02642728bea17519058e5a287ac6d669"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "a0ecd08b4ea02798a5ff8a66524c1655"
+    "hash": "8240372da4d37189d40953c95b625b34"
+  },
+  {
+    "file": "lib/beeline/main.af5533f1922b0897bb192119953e58f7.css",
+    "hash": "ac8ecc4122685578b0fbd3998711b28a"
+  },
+  {
+    "file": "lib/beeline/main.af5533f1922b0897bb192119953e58f7.css.map",
+    "hash": "d1c5cf0daff062367ab4b73fb143ffbd"
+  },
+  {
+    "file": "lib/beeline/wrs.js",
+    "hash": "f6a2980b394966f09d4116a4293a53db"
+  },
+  {
+    "file": "lib/beeline/wrs.js.map",
+    "hash": "ee27938c9458a7b58fe36d5f7b4497d8"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -924,10 +944,6 @@
     "hash": "37204d759a9eb7bfc074034fd1bf95fb"
   },
   {
-    "file": "lib/ionic/scss/tsconfig.json",
-    "hash": "eb3bd36ec35e05eb37dae41e3617420f"
-  },
-  {
     "file": "lib/ionic/version.json",
     "hash": "ed5c1b8e334024f12a529b2054a02f8a"
   },
@@ -993,7 +1009,7 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "957d51e89fb1d7ac9d9f36075af23802"
+    "hash": "83c89488ebce10218c1ff8113d482190"
   },
   {
     "file": "templates/settings.html",
@@ -1005,15 +1021,15 @@
   },
   {
     "file": "templates/tab-booking-dates.html",
-    "hash": "69f1cd7ae47284f6d9ab34c42abea4bc"
+    "hash": "610c492d11b1b0015bf0556dd862b42b"
   },
   {
     "file": "templates/tab-booking-stops.html",
-    "hash": "b4ec73128ca7cecc49422b7b92d0b9d7"
+    "hash": "a24afc1ee517ad01d6005ba9d4948a3f"
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "45791caf3bff9e7b6f3f943b95a4b518"
+    "hash": "35d647e0862a2a325886a8574ead8adc"
   },
   {
     "file": "templates/tab-lite-more-info.html",
