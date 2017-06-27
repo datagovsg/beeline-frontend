@@ -462,7 +462,7 @@ export default [
           $scope.book.brand = paymentInfo.brand;
           $scope.book.last4Digtis = paymentInfo.last4;
         }
-        $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
+        $scope.book.priceSchedules = await loadingSpinner(RoutesService.fetchPriceSchedule($scope.book.routeId))
         // priceSchedules are in order from biggest to 1 ticket
         // put default option as the biggest quantity e.g. 10-ticket route pass
         if (hideOneTicket) {
