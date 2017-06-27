@@ -37,6 +37,7 @@ export default [
       applyReferralCredits: false,
       applyCredits: false,
       creditTag: null,
+      pickWholeMonth: null
     };
     // Display Logic;
     $scope.disp = {
@@ -49,7 +50,7 @@ export default [
       previouslyBookedDays: undefined,
       highlightDays: [],
       daysAllowed: [],
-      selectedDatesMoments: ($stateParams.selectedDates || '').split(',').map(ms => moment(parseInt(ms))),
+      selectedDatesMoments: []
     };
 
     var routePromise = loadRoutes();
@@ -211,6 +212,79 @@ export default [
     if (!window.localStorage['showMultipleDays']) {
       window.localStorage['showMultipleDays'] = true;
       showHelpPopup();
+    }
+
+    $scope.$watch('book.pickWholeMonth',(pickWholeMonth)=>{
+      // original value
+      if (pickWholeMonth === null) {
+        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '').split(',').map(ms => moment(parseInt(ms)))
+      }
+      else {
+        let wholeMonthDates = getFullMonthDates($scope.disp.month)
+        let allowedInWholeMonth = _.intersectionBy(
+          wholeMonthDates,
+          $scope.disp.daysAllowed,
+          m => m.valueOf()
+        )
+        if (pickWholeMonth) {
+          if ($scope.disp.selectedDatesMoments.length > 0) {
+            $scope.disp.selectedDatesMoments =_.unionBy(
+              $scope.disp.selectedDatesMoments,
+              allowedInWholeMonth,
+              m => m.valueOf()
+            )
+          }
+          else {
+            $scope.disp.selectedDatesMoments = allowedInWholeMonth
+          }
+        } else {
+          // pickWholeMonth == false
+          // try to test the intersectionBy, if the same length [pickWholeMonth changes from true to false]
+          // do differenceBy otherwise omit
+          let intersection =_.intersectionBy(
+            $scope.disp.selectedDatesMoments,
+            wholeMonthDates,
+            m => m.valueOf()
+          )
+          if (allowedInWholeMonth.length === intersection.length) {
+            $scope.disp.selectedDatesMoments =_.differenceBy(
+              $scope.disp.selectedDatesMoments,
+              wholeMonthDates,
+              m => m.valueOf()
+            )
+          } // else do nothing
+        }
+      }
+    })
+
+    $scope.logMonthChanged = function(newMonth, oldMonth){
+        // if wholeMonthDates are all in selectedDatesMoments
+        // mark pickWholeMonth = true , otherwise false
+        let wholeMonthDates = getFullMonthDates(newMonth)
+        let allowedInWholeMonth = _.intersectionBy(
+          wholeMonthDates,
+          $scope.disp.daysAllowed,
+          m => m.valueOf()
+        )
+        let intersection = _.intersectionBy(
+          $scope.disp.selectedDatesMoments,
+          allowedInWholeMonth,
+          m => m.valueOf()
+        )
+        $scope.book.pickWholeMonth = (allowedInWholeMonth.length === intersection.length && allowedInWholeMonth.length > 0)
+    };
+
+    // get whole range of dates in the month
+    function getFullMonthDates (oneUTCDateInMonth) {
+      // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
+      let endOfMonth = new moment(oneUTCDateInMonth).endOf('month')
+      let lastDate = endOfMonth.date()
+      let fullMonthDates = []
+      for (let i=1; i<=lastDate; i++) {
+        let candidate = new moment.utc([endOfMonth.year(), endOfMonth.month(), i])
+        fullMonthDates.push(candidate)
+      }
+      return fullMonthDates
     }
 
     //close the popup by click on any space at the background

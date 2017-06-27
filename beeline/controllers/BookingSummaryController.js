@@ -65,12 +65,6 @@ export default [
       $scope.book.features = features;
     })
 
-    $scope.$watch(() => RoutesService.getRouteCreditTags(), async (routeToCreditTags) => {
-      let creditTag = routeToCreditTags ? routeToCreditTags[$scope.book.routeId] : null
-      $scope.book.applyRouteCredits = !!creditTag
-      $scope.book.creditTag = creditTag
-    })
-
     $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;

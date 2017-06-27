@@ -1,0 +1,47 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-royal bar bar-header">
+    <h1 class="title">Route Pass</h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="closeModal()">
+    </button>
+  </ion-header-bar>
+  <ion-content scroll="auto">
+    <div class="item item-text-wrap">
+      <div>
+        <p>
+          Passes can be used for future bookings of this route.
+        </p>
+        <div class="radios">
+          <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.routePassChoice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
+            <i class="icon ion-ios-circle-outline not-selected" ng-show="book.routePassChoice !== $index"></i>
+            <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price}} per trip)</div>
+            <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}} passes (${{schedule.price}} per trip)
+              <div>save {{schedule.discount}}%</div>
+            </div>
+          </ion-radio>
+        </div>
+        <!-- only show this if not 1-ticket chosen and no credit card saved -->
+        <ion-checkbox
+          ng-model="book.savePaymentChecked"
+          ng-if="!book.hasSavedPaymentInfo && (book.priceSchedules[book.routePassChoice].quantity != 1)">
+          Yes, I want to save this payment method for fast checkout in the future.
+        </ion-checkbox>
+        <div class="checkTerms" ng-if="(book.priceSchedules[book.routePassChoice].quantity != 1)">
+            Please read the <a ng-click="showTermsOfUse()">Route Pass Terms and Conditions</a>.
+          <ion-checkbox
+            ng-model="book.acceptPolicy">
+            I read and agree to the above terms and would like to proceed.
+          </ion-checkbox>
+        </div>
+        <div class="buttons">
+          Total: $ {{book.routePassPrice | number:2}}
+          <button class="primary-button button" ng-click="proceed()" ng-disabled="!book.acceptPolicy && (book.priceSchedules[book.routePassChoice].quantity != 1)">
+            Proceed
+          </button>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>
+
+<!-- [{"quantity":1, "price": 5.6},
+  {"quantity":5, "price": 4.8, "discount": 20%}...] -->

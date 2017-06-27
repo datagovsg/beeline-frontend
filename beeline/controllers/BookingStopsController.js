@@ -1,6 +1,9 @@
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 const moment = require('moment');
+import routePassTemplate from '../templates/route-pass-modal.html';
+import processingPaymentsTemplate from '../templates/processing-payments.html';
+import assert from 'assert';
 
 export default [
   '$rootScope',
@@ -20,6 +23,10 @@ export default [
   '$q',
   'TicketService',
   '$interval',
+  'StripeService',
+  '$ionicLoading',
+  '$ionicPopup',
+  'assetScopeModalService',
   function(
     $rootScope,
     $scope,
@@ -37,7 +44,11 @@ export default [
     loadingSpinner,
     $q,
     TicketService,
-    $interval
+    $interval,
+    StripeService,
+    $ionicLoading,
+    $ionicPopup,
+    assetScopeModalService
   ) {
     // Gmap default settings
     $scope.map = MapOptions.defaultMapOptions();
@@ -66,8 +77,13 @@ export default [
       buttonNotes: null, //if availability==0
       isVerifying: null, //if set to true 'express checkout' button is disabled, waiting tickets to be loaded
       nextTrip: null, //next upcoming trip
-      stopNotAvailable: null //set to true if any board or alight stop is not available for express checkout date
+      stopNotAvailable: null, //set to true if any board or alight stop is not available for express checkout date
                           //use case; operator add more stops from date x
+      routePassChoice: null, // index chosen in the route pass modal
+      routePassPrice: null,
+      ridesRemaining: 0,
+      routeSupportsRoutePass : null,
+      acceptPolicy: null // T&Cs in the modal
     };
     $scope.disp = {
       popupStop: null,
@@ -100,19 +116,12 @@ export default [
 
     var routePostProcessingPromise = routePromise.then((route) => {
       $scope.book.route = route;
+      $scope.book.routeSupportsRoutePass = _.some($scope.book.route.tags, function (tag) {
+        return tag.includes('rp-') ? true : false
+      })
       computeStops(stopOptions);
     });
 
-    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
-
-    $q.all([routePromise, ridesRemainingPromise]).then(function(values){
-      let ridesRemainingMap = values[1]
-      if(ridesRemainingMap){
-        $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
-      } else {
-        $scope.book.route.ridesRemaining = null;
-      }
-    })
 
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([gmapIsReady, routePromise])
@@ -268,24 +277,26 @@ export default [
           }
         }
       }));
-
     // get user object
     $scope.$watchGroup([() => UserService.getUser(),
                         'book.nextTripDate',
-                        ()=>TicketService.getTickets()],
-                        ([user, nextTripDate, allTickets]) => {
-      $scope.isLoggedIn = user ? true : false;
+                        ()=>TicketService.getTickets(),
+                        ()=>RoutesService.getRoutePassCount()],
+                        ([user, nextTripDate, allTickets, routeToRidesRemainingMap]) => {
+      $scope.book.isLoggedIn = user ? true : false;
       $scope.user = user;
-      if ($scope.isLoggedIn) {
+      if ($scope.book.isLoggedIn) {
         //if user is logged, disable the button if tickets are not loaded
         $scope.book.isVerifying = true;
         var previouslyBookedDays = null;
-        if (allTickets !== null) {
+        if (allTickets !== null && routeToRidesRemainingMap != null) {
           $scope.book.isVerifying = false;
+
           var ticketsByRouteId = _.groupBy(allTickets, ticket => ticket.boardStop.trip.routeId);
           if (ticketsByRouteId && ticketsByRouteId[$scope.book.routeId]) {
             previouslyBookedDays =  _.keyBy(ticketsByRouteId[$scope.book.routeId], t => new Date(t.boardStop.trip.date).getTime());
           }
+          $scope.book.ridesRemaining = routeToRidesRemainingMap[$scope.book.routeId]
         }
         if (previouslyBookedDays) {
           $scope.book.previouslyBookedDays = previouslyBookedDays;
@@ -305,16 +316,155 @@ export default [
         $scope.book.isVerifying = false;
         $scope.book.previouslyBookedDays = null;
         $scope.book.hasNextTripTicket = false;
+        $scope.book.ridesRemaining = null;
       }
     })
 
-    $scope.fastCheckout = function(){
-      if ($scope.isLoggedIn) {
+    $scope.routePassModal = $ionicModal.fromTemplate(routePassTemplate, {
+      scope: $scope,
+      animation: 'slide-in-up',
+    });
+
+    $scope.closeModal = () => {
+      $scope.routePassModal.hide();
+    }
+
+    $scope.$watch('book.routePassChoice', (routePassChoice)=>{
+      if (routePassChoice!==null) {
+        $scope.book.routePassPrice = $scope.book.priceSchedules[routePassChoice].price * $scope.book.priceSchedules[routePassChoice].quantity
+      }
+    })
+
+    $scope.proceed = function () {
+      $scope.closeModal();
+      if ($scope.book.priceSchedules[$scope.book.routePassChoice].quantity === 1) {
         $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
           boardStop: $scope.book.boardStop.id,
           alightStop: $scope.book.alightStop.id,
           sessionId: $scope.session.sessionId,
           selectedDates: $scope.book.nextTripDate,});
+      } else {
+        $scope.payForRoutePass()
+      }
+    }
+
+    // pay for the route pass
+    async function completePayment(paymentOptions) {
+      try {
+        $ionicLoading.show({
+          template: processingPaymentsTemplate
+        })
+        let routePassTagList = $scope.book.route.tags.filter((tag) => {
+          return tag.includes('rp-')
+        })
+        // assert there is no more than 1 rp- tag
+        assert(routePassTagList.length === 1)
+        let passValue = $scope.book.route.trips[0].price * $scope.book.priceSchedules[$scope.book.routePassChoice].quantity
+        var result = await UserService.beeline({
+          method: 'POST',
+          url: '/transactions/paymentRoutePass',
+          data: _.defaults(paymentOptions, {
+            creditTag: routePassTagList[0],
+            promoCode: { code: '' },
+            companyId: $scope.book.route.transportCompanyId,
+            expectedPrice: $scope.book.routePassPrice,
+            value: passValue
+          }),
+        });
+        assert(result.status == 200);
+        $scope.$emit('paymentDone');
+        $ionicLoading.hide();
+      } catch (err) {
+        $ionicLoading.hide();
+        await $ionicPopup.alert({
+          title: 'Error processing payment',
+          template: err.data.message,
+        })
+      } finally {
+        RoutesService.fetchRouteCredits(true)
+        RoutesService.fetchRoutePassCount()
+        RoutesService.fetchRoutesWithRoutePass()
+      }
+    }
+
+    // Prompts for card and processes payment with one time stripe token.
+    $scope.payForRoutePass = async function() {
+      try {
+        // if user has credit card saved
+        if ($scope.book.hasSavedPaymentInfo) {
+          await completePayment({
+            customerId: $scope.user.savedPaymentInfo.id,
+            sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+          });
+        } else {
+          var stripeToken = await loadingSpinner(StripeService.promptForToken(
+            null,
+            isFinite($scope.book.routePassPrice) ? $scope.book.routePassPrice * 100 : '',
+            null));
+
+          if (!stripeToken) {
+            return;
+          }
+
+          //saves payment info if doesn't exist
+          if ($scope.book.savePaymentChecked) {
+            await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
+            await completePayment({
+              customerId: $scope.user.savedPaymentInfo.id,
+              sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+            });
+          } else {
+            await completePayment({
+              stripeToken: stripeToken.id,
+            });
+          }
+        }
+
+      } catch (err) {
+        await $ionicPopup.alert({
+          title: 'Error contacting the payment gateway',
+          template: err.data.message,
+        })
+      }
+    };
+
+    $scope.fastCheckout = async function(){
+      if ($scope.book.isLoggedIn) {
+        // show modal for purchasing route pass
+        // if route has 'rp-' tag
+        // and user has no ridesRemaining
+        if (!$scope.book.ridesRemaining && $scope.book.routeSupportsRoutePass) {
+          $scope.showRoutePassModal()
+          $scope.$on('paymentDone', ()=>{
+            $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
+              boardStop: $scope.book.boardStop.id,
+              alightStop: $scope.book.alightStop.id,
+              sessionId: $scope.session.sessionId,
+              selectedDates: $scope.book.nextTripDate,});
+          })
+        } else {
+          $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
+            boardStop: $scope.book.boardStop.id,
+            alightStop: $scope.book.alightStop.id,
+            sessionId: $scope.session.sessionId,
+            selectedDates: $scope.book.nextTripDate,});
+        }
+      } else {
+        UserService.promptLogIn();
+      }
+    }
+
+    $scope.showRoutePassModal = async function(hideOneTicket) {
+      if ($scope.book.isLoggedIn) {
+        $scope.book.hasSavedPaymentInfo =  _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
+        $scope.book.priceSchedules = await RoutesService.fetchPriceSchedule($scope.book.routeId)
+        // priceSchedules are in order from biggest to 1 ticket
+        // put default option as the biggest quantity e.g. 10-ticket route pass
+        if (hideOneTicket) {
+          $scope.book.priceSchedules =$scope.book.priceSchedules.slice(0, $scope.book.priceSchedules.length-1)
+        }
+        $scope.book.routePassChoice = 0;
+        await $scope.routePassModal.show()
       } else {
         UserService.promptLogIn();
       }
@@ -327,6 +477,8 @@ export default [
         $scope.book.stopNotAvailable = !stopIds.includes(boardStop.id) || !stopIds.includes(alightStop.id)
       }
     })
+
+    $scope.showTermsOfUse = () => assetScopeModalService.showRoutePassTCModal();
 
   }
 ];
