@@ -65,12 +65,6 @@ export default [
       $scope.book.features = features;
     })
 
-    $scope.$watch(() => RoutesService.getRouteCreditTags(), async (routeToCreditTags) => {
-      let creditTag = routeToCreditTags ? routeToCreditTags[$scope.book.routeId] : null
-      $scope.book.applyRouteCredits = !!creditTag
-      $scope.book.creditTag = creditTag
-    })
-
     $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.isLoggedIn = user ? true : false;
       $scope.user = user;
@@ -78,10 +72,7 @@ export default [
       $scope.book.applyReferralCredits = !!user;
       $scope.book.applyCredits = !!user;
       if ($scope.isLoggedIn) {
-        loadingSpinner(Promise.all([
-          $scope.checkValidDate(),
-          RoutesService.fetchRouteCreditTags(),
-        ]))
+        loadingSpinner($scope.checkValidDate())
       }
     })
 
@@ -242,7 +233,8 @@ export default [
             trips: BookingService.prepareTrips($scope.book),
             promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : { code: '' },
             // don't use route credits if toggle if off
-            creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
+            // creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
+            applyRouteCredits: $scope.book.applyRouteCredits ? true : false,
             applyCredits: $scope.book.applyCredits,
             applyReferralCredits: $scope.book.applyReferralCredits,
             expectedPrice: $scope.book.price

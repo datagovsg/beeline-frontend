@@ -105,6 +105,23 @@
       }
     }
   }
+
+  .rides-remaining {
+    display: flex;
+    padding: 0.5em;
+    align-items: center;
+    i.icon .buy-more-button{
+      flex: 0 0 auto;
+
+    }
+    .text {
+      flex: 1 1 auto;
+      margin-left: 10px;
+    }
+    button {
+      line-height: 1.0;
+    }
+  }
 }
 
 // FIXME: big-white-button
@@ -138,6 +155,37 @@
         width: 60%;
         text-align: left;
       }
+    }
+  }
+}
+
+ion-modal-view {
+  .buttons {
+    text-align: center;
+    margin: $content-padding*3 auto;
+  }
+  .radios {
+    margin: $content-padding*2 auto;
+    .item-radio{
+      .radio-icon {
+        color: $royal;
+        font-size: $radio-font-size;
+        left: 0px;
+      }
+      .not-selected{
+        color: $hint-color;
+        font-size: $radio-font-size;
+        left: 0px;
+        padding: 14px; /*follow radio-icon padding*/
+      }
+      .item-content{
+        padding-right: $item-padding * 1;
+        /* extend content space, override ionic default since the checkmark is no longer on the right */
+      }
+    }
+
+    .priceDetails{
+      padding-left: $item_padding_base*4;
     }
   }
 }

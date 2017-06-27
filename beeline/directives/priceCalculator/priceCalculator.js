@@ -42,12 +42,14 @@ export default [
                 $scope.booking.route = route;
                 if (routePassCountMap) {
                   $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
+                  $scope.booking.applyRouteCredits = ($scope.booking.route.ridesRemaining > 0)
                 }
               })
             }
             else {
               if (routePassCountMap) {
                 $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
+                $scope.booking.applyRouteCredits = ($scope.booking.route.ridesRemaining > 0)
               }
             }
           });
@@ -80,6 +82,7 @@ export default [
             $scope.ridesUsed = $scope.booking.applyRouteCredits
               ? Math.min($scope.booking.route.ridesRemaining, priceInfo.tripCount)
               : 0
+            $scope.totalRouteCreditsUsed = _.sumBy($scope.priceInfo.routeCredits, x => - parseFloat(x.debit))
             $scope.errorMessage = null;
           })
           .catch((error) => {

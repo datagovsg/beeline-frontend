@@ -1,0 +1,20 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-royal bar bar-header">
+    <h1 class="title">Route Pass Terms and Conditions</h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="assetModal.hide()">
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="item item-text-wrap text-center" ng-if="!error && !html">
+      <p class="padding-bottom">
+        Loading...
+      </p>
+      <ion-spinner icon="ios"></ion-spinner>
+    </div>
+    <div class="item item-text-wrap" ng-if="error">
+      <i class="icon ion-alert-circled"></i> There was a problem loading the terms and conditions. Please check your Internet connection.
+    </div>
+    <div class="faq legal" ng-bind-html="html">
+    </div>
+  </ion-content>
+</ion-modal-view>
