@@ -5,16 +5,16 @@
     </button>
   </ion-header-bar>
   <ion-content>
-      <div class="item item-text-wrap text-center" ng-if="!error && !html">
-        <p class="padding-bottom">
-          Loading...
-        </p>
-        <ion-spinner icon="ios"></ion-spinner>
-      </div>
+    <div class="item item-text-wrap text-center" ng-if="!error && !html">
+      <p class="padding-bottom">
+        Loading...
+      </p>
+      <ion-spinner icon="ios"></ion-spinner>
+    </div>
     <div class="item item-text-wrap" ng-if="error">
       <i class="icon ion-alert-circled"></i> There was a problem loading the terms and conditions. Please check your Internet connection.
     </div>
-    <div class="faq" ng-bind-html="html">
+    <div class="faq legal" ng-bind-html="html">
     </div>
   </ion-content>
 </ion-modal-view>

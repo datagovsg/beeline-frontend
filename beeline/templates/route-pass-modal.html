@@ -13,8 +13,8 @@
         <div class="radios">
           <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.routePassChoice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
             <i class="icon ion-ios-circle-outline not-selected" ng-show="book.routePassChoice !== $index"></i>
-            <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price}} per trip)</div>
-            <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}} passes (${{schedule.price}} per trip)
+            <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price | number:2}} per trip)</div>
+            <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}} passes (${{schedule.price | number:2}} per trip)
               <div>save {{schedule.discount}}%</div>
             </div>
           </ion-radio>
@@ -25,24 +25,43 @@
           ng-if="!book.hasSavedPaymentInfo && (book.priceSchedules[book.routePassChoice].quantity != 1)">
           Yes, I want to save this payment method for fast checkout in the future.
         </ion-checkbox>
-        <div class="checkTerms" ng-if="(book.priceSchedules[book.routePassChoice].quantity != 1)">
-            Please read the <a ng-click="showTermsOfUse()">Route Pass Terms and Conditions</a>.
-          <ion-checkbox
-            ng-model="book.acceptPolicy">
-            I read and agree to the above terms and would like to proceed.
-          </ion-checkbox>
+        <!-- If quantity is 1, then we are jumping to summary page -->
+        <div ng-if="(book.priceSchedules[book.routePassChoice].quantity == 1)">
+          <div class="buttons">
+            <button class="primary-button button" ng-click="proceed()">
+              Proceed
+            </button>
+          </div>
         </div>
-        <div class="buttons">
-          Total: $ {{book.routePassPrice | number:2}}
-          <p class="text-center" ng-if="book.hasSavedPaymentInfo">
-            This payment will be charged to your <br /><b>{{book.brand}}</b> ending in <b> {{book.last4Digtis}}</b>.
-          </p>
-          <button class="primary-button button" ng-click="proceed()" ng-disabled="!book.acceptPolicy && (book.priceSchedules[book.routePassChoice].quantity != 1)">
-            Proceed
-          </button>
-          <button class="primary-button button" ng-click="proceed()" ng-if="book.hasSavedPaymentInfo">
-            Confirm and Pay
-          </button>
+        <!-- End if quantity == 1 -->
+
+        <!-- If quantity is > 1, then user must accept route pass terms -->
+        <div ng-if="(book.priceSchedules[book.routePassChoice].quantity != 1)">
+          <div class="checkTerms">
+              Please read the <a ng-click="showTermsOfUse()">Route Pass Terms and Conditions</a>.
+            <ion-checkbox
+              ng-model="book.acceptPolicy">
+              I read and agree to the above terms and would like to proceed.
+            </ion-checkbox>
+          </div>
+
+          <div class="buttons">
+            Total: $ {{book.routePassPrice | number:2}}
+            <p class="text-center" ng-if="book.hasSavedPaymentInfo">
+              This payment will be charged to your <br /><b>{{book.brand}}</b> ending in <b> {{book.last4Digtis}}</b>.
+            </p>
+            <button class="primary-button button" ng-click="proceed()"
+                ng-if="!book.hasSavedPaymentInfo"
+                ng-disabled="!book.acceptPolicy">
+              Proceed
+            </button>
+            <button class="primary-button button" ng-click="proceed()"
+                ng-if="book.hasSavedPaymentInfo"
+                ng-disabled="!book.acceptPolicy">
+              Confirm and Pay
+            </button>
+          </div>
+          <!-- End if quantity != 1 -->
         </div>
       </div>
     </div>
