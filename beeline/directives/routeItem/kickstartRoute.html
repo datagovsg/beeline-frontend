@@ -19,6 +19,18 @@
   </route-item-end-location>
   <route-item-additional-info>
 
+    <company-info-broker company-id="route.transportCompanyId"
+                          company="companyInfo">
+    </company-info-broker>
+    <div class="icon-and-schedule">
+      <span class="icon-span company-logo">
+        <img class="mini-icon" ng-src="{{route.transportCompanyId | miniCompanyLogo}}">
+      </span>
+      <span class="mini-info">
+        {{companyInfo.name}}
+      </span>
+    </div>
+
     <div class="icon-and-schedule">
       <span class="icon-span">
           <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">

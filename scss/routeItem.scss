@@ -124,6 +124,7 @@ route-item {
 }
 
   .icon-and-schedule {
+    height: 20px;
     margin-top: 0.5em;
 
     & + .icon-and-schedule {
@@ -148,7 +149,7 @@ route-item {
 
   .mini-icon {
     max-width: 20px;
-    max-height: 100%;
+    max-height: 20px;
   }
 
   .mini-info {
