@@ -68,7 +68,7 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/* unknown exports provided */
+/* no static exports found */
 /* all exports used */
 /*!*****************************!*\
   !*** ./scss/ionic.app.scss ***!

@@ -85,35 +85,19 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "83a6276d68b7160c941c1ec0b0435780"
+    "hash": "3ab51df24288d682563be39113cba97a"
   },
   {
     "file": "css/ionic.app.css.js",
-    "hash": "4bd43963426a3dde0b3906d037188a77"
-  },
-  {
-    "file": "css/ionic.app.min.css",
-    "hash": "dae93275cf544312daf6f903e61fc965"
-  },
-  {
-    "file": "css/main.516937485f90f0784fda04bebd0f92b9.css",
-    "hash": "516937485f90f0784fda04bebd0f92b9"
-  },
-  {
-    "file": "css/main.af5533f1922b0897bb192119953e58f7.css",
-    "hash": "af5533f1922b0897bb192119953e58f7"
+    "hash": "87dd4b7c502f68bf463d1f1c0e0530cf"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "33238245a1fe219df95120228bfc08b1"
+    "hash": "8f40a7973250c92a1be6129da92a0bf6"
   },
   {
     "file": "css/operator-grab.css.js",
-    "hash": "584b74e7849cbf98d68f0ee6c95dca6f"
-  },
-  {
-    "file": "css/operator-grab.min.css",
-    "hash": "771c7b20f2169272882a59f0c87d6859"
+    "hash": "64be863b1818f747534027b23e4f932b"
   },
   {
     "file": "favicon-16x16.png",
@@ -640,32 +624,8 @@
     "hash": "cb86d6d810b8f3eec6b792c827a8a720"
   },
   {
-    "file": "js/angular-google-maps.js",
-    "hash": "06038ce66f99673cefbc782ea218a2ab"
-  },
-  {
-    "file": "js/angular-simple-logger.js",
-    "hash": "e73a726caa05c767d6c0ac66bb3386f0"
-  },
-  {
-    "file": "js/clipboard.min.js",
-    "hash": "d3d323fd9a370c90e83427d50f383a63"
-  },
-  {
-    "file": "js/lodash.js",
-    "hash": "f8107451e16ffb8da7a2f679f13e186e"
-  },
-  {
-    "file": "js/lodash.min.js",
-    "hash": "7271c09c2dbd9a7be40f34ff40a93e6e"
-  },
-  {
     "file": "js/ng-cordova.min.js",
     "hash": "f8990514da9399da893b60f6dbd570c9"
-  },
-  {
-    "file": "js/ngclipboard.min.js",
-    "hash": "9459cbc70b529454029535a130876a2e"
   },
   {
     "file": "js/qrcode.min.js",
@@ -673,27 +633,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "361382cdcd9034df8e51e1b0bb924a1e"
+    "hash": "bfd2fb51b52e0b7337448d5e585fb50f"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "103d0b1f03e4cd99841691bdea01766c"
-  },
-  {
-    "file": "lib/beeline/main.af5533f1922b0897bb192119953e58f7.css",
-    "hash": "ac8ecc4122685578b0fbd3998711b28a"
-  },
-  {
-    "file": "lib/beeline/main.af5533f1922b0897bb192119953e58f7.css.map",
-    "hash": "d1c5cf0daff062367ab4b73fb143ffbd"
-  },
-  {
-    "file": "lib/beeline/wrs.js",
-    "hash": "f6a2980b394966f09d4116a4293a53db"
-  },
-  {
-    "file": "lib/beeline/wrs.js.map",
-    "hash": "ee27938c9458a7b58fe36d5f7b4497d8"
+    "hash": "961550b6efa773d5c939cd34cf25833c"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -985,7 +929,7 @@
   },
   {
     "file": "templates/kickstarter-commit.html",
-    "hash": "9b1af2375e342066777d839a6a20525d"
+    "hash": "013508b220de843eb72484c697d7da1e"
   },
   {
     "file": "templates/kickstarter-detail.html",
@@ -1053,7 +997,7 @@
   },
   {
     "file": "templates/tickets.html",
-    "hash": "8050610316765ae245a28e60ece5f01f"
+    "hash": "2633b8ea87aab991524f3510d9e38276"
   },
   {
     "file": "templates/welcome.html",
