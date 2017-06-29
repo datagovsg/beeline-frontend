@@ -1,6 +1,6 @@
 import {formatDate, formatDateMMMdd, formatTime, formatTimeArray,
         formatUTCDate, titleCase} from './shared/format';
-import {companyLogo} from './shared/imageSources';
+import {companyLogo, miniCompanyLogo} from './shared/imageSources';
 
 // node imports
 import compareVersions from 'compare-versions';
@@ -48,6 +48,7 @@ app
 .filter('routeStartRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[0].stop.road : '')
 .filter('routeEndRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length - 1].stop.road : '')
 .filter('companyLogo', () => companyLogo)
+.filter('miniCompanyLogo', () => miniCompanyLogo)
 .filter('monthNames', function() {
   return function(i) {
     monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
