@@ -85,6 +85,9 @@ export default [
       RoutesService.getRouteFeatures($scope.book.route.id).then((data)=>{
         $scope.disp.features = data;
       });
+      $scope.book.route.trips = _.sortBy($scope.book.route.trips, (trip)=>{
+        return trip.date
+      })
       $scope.data.nextTrips = $scope.book.route.trips.filter(
         trip=>trip.date === $scope.book.route.trips[0].date)
     });

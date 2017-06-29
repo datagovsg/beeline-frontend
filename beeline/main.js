@@ -30,6 +30,7 @@ require('./services/GeoUtils');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
 require('./intents');
+require('./services/assetScopeModalService');
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -141,12 +142,12 @@ app
     uiGmapGoogleMapApiProvider.configure({
       key: process.env.GOOGLE_API_KEY,
       libraries: 'places,geometry'
-    });    
+    });
   } else {
     uiGmapGoogleMapApiProvider.configure({
       client: 'gme-infocommunications',
       libraries: 'places,geometry'
-    });    
+    });
   }
 })
 .run(function($rootScope, replace, p) {

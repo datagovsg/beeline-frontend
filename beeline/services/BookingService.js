@@ -41,14 +41,17 @@ export default function(UserService, CompanyService, RoutesService, $http) {
         method: 'POST',
         url: '/transactions/ticket_sale',
         data: {
-          creditTag: booking.applyRouteCredits ? booking.creditTag : null,
+          // creditTag: booking.applyRouteCredits ? booking.creditTag : null,
           trips: trips,
-          dryRun: true, 
+          dryRun: true,
           promoCode: booking.promoCode ? {
             code: booking.promoCode
-          } : null,
+          } : {
+            code: '' // Allow default promo codes to be used
+          },
           applyCredits: booking.applyCredits,
-          applyReferralCredits: booking.applyReferralCredits
+          applyReferralCredits: booking.applyReferralCredits,
+          applyRouteCredits: !!booking.applyRouteCredits
         },
       })
       .then((resp) => {
