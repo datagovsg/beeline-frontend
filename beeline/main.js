@@ -150,6 +150,19 @@ app
     });
   }
 })
+.run(function($ionicPlatform, $state) {
+ $ionicPlatform.ready(function() {
+  if (typeof IonicDeeplink !== 'undefined') {
+    IonicDeeplink.route(
+      {}, // No predetermined matches
+      function(match) {},
+      function(nomatch) {
+        window.location.href = "#" + nomatch.$link.fragment;
+      }
+    );
+  }
+ });
+})
 .run(function($rootScope, replace, p) {
   $rootScope.o = {
     ...p,
