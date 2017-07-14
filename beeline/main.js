@@ -29,7 +29,6 @@ require('./services/RotatedImageService');
 require('./services/GeoUtils');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
-require('./intents');
 require('./services/assetScopeModalService');
 
 // //////////////////////////////////////////////////////////////////////////////
