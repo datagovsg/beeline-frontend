@@ -446,7 +446,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           } else {
             // in case no discount is found
             let discount = value.discount || 0
-            let price = (value.price / quantity).toFixed(2)
+            let price = (value.price / quantity)
             let originalPrice = discount + value.price
             let computedDiscount = (discount / originalPrice).toFixed(2) * 100
             singleSchedule = {"quantity": quantity, "price": price, "discount": computedDiscount}
