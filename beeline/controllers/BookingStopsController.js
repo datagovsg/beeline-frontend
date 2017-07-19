@@ -331,7 +331,7 @@ export default [
 
     $scope.$watch('book.routePassChoice', (routePassChoice)=>{
       if (routePassChoice!==null) {
-        $scope.book.routePassPrice = $scope.book.priceSchedules[routePassChoice].price * $scope.book.priceSchedules[routePassChoice].quantity
+        $scope.book.routePassPrice = $scope.book.priceSchedules[routePassChoice].totalPrice
       }
     })
 

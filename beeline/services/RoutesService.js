@@ -442,14 +442,14 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           let quantity = parseInt(key)
           let singleSchedule = null
           if (quantity === 1) {
-            singleSchedule = {"quantity": 1, "price": parseFloat(value.price)}
+            singleSchedule = {"quantity": 1, "price": parseFloat(value.price), "totalPrice": parseFloat(value.price)}
           } else {
             // in case no discount is found
             let discount = value.discount || 0
             let price = (value.price / quantity)
             let originalPrice = discount + value.price
             let computedDiscount = (discount / originalPrice).toFixed(2) * 100
-            singleSchedule = {"quantity": quantity, "price": price, "discount": computedDiscount}
+            singleSchedule = {"quantity": quantity, "price": price, "discount": computedDiscount, "totalPrice": parseFloat(value.price)}
           }
           priceSchedules.push(singleSchedule)
         })
