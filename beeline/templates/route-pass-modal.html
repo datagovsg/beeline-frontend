@@ -46,7 +46,7 @@
           </div>
 
           <div class="buttons">
-            Total: $ {{book.routePassPrice | number:2}}
+            Total: <fancy-price value="book.routePassPrice"></fancy-price>
             <p class="text-center" ng-if="book.hasSavedPaymentInfo">
               This payment will be charged to your <br /><b>{{book.brand}}</b> ending in <b> {{book.last4Digtis}}</b>.
             </p>
