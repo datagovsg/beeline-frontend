@@ -55,6 +55,15 @@ app
     return monthNames[i];
   };
 })
+// round up a float number with optional precision
+.filter('floatRoundUp', function() {
+  return function(number, precision) {
+    if (!precision) precision = 2
+    var temp = number * Math.pow(10, precision)
+    temp = Math.ceil(temp);
+    return temp / Math.pow(10,precision)
+  }
+})
 .factory('TicketService', require('./services/TicketService.js').default)
 .factory('LiteRouteSubscriptionService', require('./services/LiteRouteSubscriptionService.js').default)
 .factory('UserService', require('./services/UserService.js').default)
