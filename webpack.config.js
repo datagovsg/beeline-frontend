@@ -8,49 +8,15 @@ const InlineEnviromentVariablesPlugin = require(
 
 const prefix = process.env.BUILD_PREFIX || 'www'
 
-assert(process.env.BACKEND_URL, "process.env.BACKEND_URL must be set")
 const INLINED_ENVIRONMENT_VARIABLES = [
   "BACKEND_URL",
   "GOOGLE_API_KEY"  
 ];
-
-function compileSCSS(filename) {
-  if (!filename.endsWith('.scss')) {
-    throw new Error(`${filename} must end in .scss`)
-  }
-
-  return {
-    entry: path.join(__dirname, 'scss', filename),
-    module: {
-      rules: [{
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {loader: 'css-loader', options: {url: false}},
-            {loader: 'sass-loader'}
-          ],
-        })
-      }]
-    },
-    output: {
-      // This output is entirely superfluous.
-      // We are abusing Webpack so that it will compile the SCSS
-      // What it means is that you can load the style sheet by
-      // both <script src="....XXX.css.js"></script>
-      // and also by <link href="....XXX.css" />
-      path: path.join(__dirname, prefix, `css`),
-      filename: filename.replace(/\.scss$/, '.css.js'),
-      pathinfo: true,
-    },
-    plugins: [
-      new ExtractTextPlugin({
-        filename: filename.replace(/\.scss$/, '.css'),
-      })
-    ]
-  }
-};
+assert(process.env.BACKEND_URL, "process.env.BACKEND_URL must be set")
 
 module.exports = [
+
+  // Javascript Config
   {
     devtool: 'source-map',
     module: {
@@ -79,12 +45,9 @@ module.exports = [
         }
       ]
     },
-    entry: [
-      'babel-polyfill',
-      path.join(__dirname, 'beeline/main.js')
-    ],
+    entry: ['babel-polyfill', path.resolve('beeline/main.js')],
     output: {
-      path: path.join(__dirname, prefix, '/lib/beeline'),
+      path: path.resolve(prefix, 'lib/beeline'),
       filename: 'bundle.js',
       pathinfo: true,
     },
@@ -92,6 +55,38 @@ module.exports = [
       new InlineEnviromentVariablesPlugin(INLINED_ENVIRONMENT_VARIABLES)
     ]
   },
-  compileSCSS('ionic.app.scss'),
-  compileSCSS('operator-grab.scss')
+
+  // CSS Config
+  {
+    entry: {
+      'ionic.app': './scss/ionic.app.scss',
+      'operator-grab': './scss/operator-grab.scss'
+    },
+    module: {
+      rules: [{
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          use: [
+            { loader: 'css-loader', options: { url: false } },
+            { loader: 'sass-loader' }
+          ],
+        })
+      }]
+    },
+    // This output is entirely superfluous.
+    // We are abusing Webpack so that it will compile the SCSS
+    // What it means is that you can load the style sheet by
+    // both <script src="....XXX.css.js"></script>
+    // and also by <link href="....XXX.css" />
+    output: {
+      path: path.resolve(prefix, `css`),
+      filename: '[name].css.js',
+      pathinfo: true,
+    },
+    // The actual css output we care about
+    plugins: [
+      new ExtractTextPlugin('[name].css')
+    ]
+  }
+
 ];
