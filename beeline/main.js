@@ -150,7 +150,7 @@ app
     });
   }
 })
-.run(function($ionicPlatform, $state) {
+.run(function($ionicPlatform) {
  $ionicPlatform.ready(function() {
   if (typeof IonicDeeplink !== 'undefined') {
     IonicDeeplink.route(
