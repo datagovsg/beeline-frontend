@@ -29,7 +29,6 @@ require('./services/RotatedImageService');
 require('./services/GeoUtils');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
-require('./intents');
 require('./services/assetScopeModalService');
 
 // //////////////////////////////////////////////////////////////////////////////
@@ -159,6 +158,19 @@ app
       libraries: 'places,geometry'
     });
   }
+})
+.run(function($ionicPlatform) {
+ $ionicPlatform.ready(function() {
+  if (typeof IonicDeeplink !== 'undefined') {
+    IonicDeeplink.route(
+      {}, // No predetermined matches
+      function(match) {},
+      function(nomatch) {
+        window.location.href = "#" + nomatch.$link.fragment;
+      }
+    );
+  }
+ });
 })
 .run(function($rootScope, replace, p) {
   $rootScope.o = {
