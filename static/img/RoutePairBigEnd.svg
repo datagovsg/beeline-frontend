@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>RoutePairBigEnd</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="1MainTabMap" transform="translate(-26.000000, -194.000000)" stroke="#493762">
+            <g id="SearchMap" transform="translate(13.000000, 131.000000)">
+                <g id="Icon_RoutePair" transform="translate(14.000000, 13.000000)">
+                    <g id="Location-+-Journey-Line-+-Location">
+                        <g id="RoutePairBigEnd" transform="translate(0.000000, 51.000000)">
+                            <path d="M22,11 C22,17.0748696 17.0758261,22 11,22 C4.92417391,22 0,17.0748696 0,11 C0,4.92417391 4.92417391,0 11,0 C17.0758261,0 22,4.92417391 22,11 L22,11 Z" id="Stroke-365"></path>
+                            <path d="M11,14.3478261 C9.15104348,14.3478261 7.65217391,12.8489565 7.65217391,11 C7.65217391,9.15104348 9.15104348,7.65217391 11,7.65217391 C12.849913,7.65217391 14.3478261,9.15104348 14.3478261,11 C14.3478261,12.8489565 12.849913,14.3478261 11,14.3478261 Z" id="Stroke-972" stroke-linecap="round" fill="#FF6F6F"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

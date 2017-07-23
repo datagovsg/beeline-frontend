@@ -1,0 +1,114 @@
+<ion-view title="Payment History" class="booking-history">
+  <ion-content>
+    <ion-list>
+      <div class="item text-center" ng-if="transactions.length === 0">
+        You have no bookings in our records.
+      </div>
+      <div class="card" ng-repeat="transaction in transactions track by transaction.id">
+        <div class="item item-divider">
+          Transaction # {{transaction.id}}
+          <span ng-if="transaction.committed" class="item-note balanced">Success</span>
+          <span ng-if="!transaction.committed" class="item-note assertive">Failed</span>
+        </div>
+        <!--<div class="item item-divider" ng-if="transaction.itemsByType.payment">Payment</div> -->
+        <div class="item">
+          <table class="booking-history">
+            <tr>
+              <th>
+                Date
+              </th>
+              <td>
+                {{transaction.createdAt | date:'yyyy-MM-dd HH:mm:ss' : '+0800'}}
+              </td>
+            </tr>
+            <tr ng-repeat-start="payment in transaction.itemsByType.payment track by payment.id">
+              <th>
+                Amount
+              </th>
+              <td>
+                ${{payment.debit | number:'2'}}
+              </td>
+            </tr>
+            <tr ng-if="payment.payment.data.source.funding === 'credit'" ng-repeat-end>
+              <th>
+                Card No.
+              </th>
+              <td>
+                XXXX XXXX XXXX {{payment.payment.data.source.last4}}
+              </td>
+            </tr>
+            <tr ng-if="transaction.itemsByType.refundPayment">
+              <th>
+                Refund Amount
+              </th>
+              <td>
+                ${{transaction.itemsByType.refundPayment[0].credit | number:'2'}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+              Type
+              </th>
+              <td ng-if="transaction.itemsByType.ticketSale">
+                Normal Booking
+              </td>
+              <td ng-if="transaction.type === 'conversion'">
+                Crowdstart
+              </td>
+              <td ng-if="transaction.itemsByType.ticketRefund">
+                Refund
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Route
+              </th>
+              <td ng-if="transaction.itemsByType.ticketSale" class="item-text-wrap">
+                {{transaction.itemsByType.ticketSale[0].route.label}}: {{transaction.itemsByType.ticketSale[0].route.from}} &mdash; {{transaction.itemsByType.ticketSale[0].route.to}}
+              </td>
+              <td ng-if="transaction.itemsByType.routeCredits" class="item-text-wrap">
+                {{transaction.itemsByType.routeCredits[0].route.label}}: {{transaction.itemsByType.routeCredits[0].route.from}} &mdash; {{transaction.itemsByType.routeCredits[0].route.to}}
+              </td>
+              <td ng-if="transaction.itemsByType.ticketRefund" class="item-text-wrap">
+                {{transaction.itemsByType.ticketRefund[0].route.label}}: {{transaction.itemsByType.ticketRefund[0].route.from}} &mdash; {{transaction.itemsByType.ticketRefund[0].route.to}}
+              </td>
+            </tr>
+            <tr ng-if="transaction.itemsByType.ticketSale">
+                <th>
+                  Trip Date
+                </th>
+              <td>
+                  <b>{{transaction.itemsByType.ticketSale.length}} trip(s) in total</b>
+                  <br />
+                  <ul>
+                    <li ng-repeat="ticket in transaction.itemsByType.ticketSale">
+                      {{ticket.ticketSale.boardStop.trip.date | date:'dd MMM yyyy' : 'Z'}}
+                    </li>
+                  </ul>
+              </td>
+            </tr>
+            <tr ng-if="transaction.itemsByType.ticketRefund">
+                <th>
+                  Trip Date
+                </th>
+              <td>
+                  <b>{{transaction.itemsByType.ticketRefund.length}} trip(s) in total</b>
+                  <br />
+                  <ul>
+                    <li ng-repeat="ticket in transaction.itemsByType.ticketRefund">
+                      {{ticket.ticketRefund.boardStop.trip.date | date:'dd MMM yyyy' : 'Z'}}
+                    </li>
+                  </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- FIXME: show the other transaction types - refunds, free tickets -->
+      </div>
+    </ion-list>
+
+    <ion-infinite-scroll on-infinite="loadMore()" ng-if="hasMoreData">
+    </ion-infinite-scroll>
+
+  </ion-content>
+</ion-view>

@@ -1,0 +1,59 @@
+<ion-view class="settings" view-title="Settings">
+  <ion-content>
+    <div class="account-section item item-word-wrap">
+
+      <p ng-hide="user">Log in to make and view your bookings.</p>
+      <button ng-hide="user"
+              class="button button-block button-outline button-royal"
+              ng-click="logIn()">Log In</button>
+
+
+      <p ng-show="user">You are currently logged in as {{ user.name }}.</p>
+
+      <button ng-show="user"
+              class="button button-block button-outline button-royal"
+              ng-click="logOut()">Log Out</button>
+
+    </div>
+    <div class="list">
+
+      <div ng-show="user" class="item item-divider">Account</div>
+      <div ng-show="user" class="item" on-tap="updateUserInfo('name')">
+        Name <span class="item-note">{{ user.name }}</span>
+      </div>
+      <div ng-show="user" class="item" on-tap="updateUserInfo('email')">
+        Email <span class="item-note">{{ user.email }}</span>
+      </div>
+      <div ng-show="user" class="item" on-tap="updateTelephone()">
+        Phone Number <span class="item-note">{{ user.telephone.slice(3)}}</span>
+      </div>
+      <!-- TODO: click to prompt to change or remove card -->
+      <div ng-show="user && hasPaymentInfo()" class="item" on-tap="promptChangeOrRemoveCard()">
+        Payment Method  <span class="item-note">{{user.savedPaymentInfo.sources.data[0].brand}} ending in {{user.savedPaymentInfo.sources.data[0].last4}}</span>
+      </div>
+        <!-- TODO: click to prompt to add card -->
+      <div ng-show="user && !hasPaymentInfo()" class="item" on-tap="addCard()">
+        Payment Method <span class="item-note">Add Payment Method</span>
+      </div>
+      <div ng-show="user"
+           class="item item-icon-right"
+           ui-sref="tabs.booking-history">
+          Payment History <i class="icon ion-ios-arrow-right"></i>
+      </div>
+<!--       <div ng-show="user" class="item" on-tap="shareReferralModal.show()">
+        Invite Friends
+      </div> -->
+      <div class="item item-divider">About {{o.APP.NAME}}</div>
+      <ion-item ui-sref='intro'>Quick Tour</ion-item>
+      <ion-item on-tap="faqModal.show()">FAQ</ion-item>
+      <ion-item on-tap="showPrivacyPolicy()">Privacy Policy</ion-item>
+      <ion-item on-tap="showTermsOfUse()">Terms of Use</ion-item>
+      <ion-item on-tap="contactUsModal.show()">Contact Us</ion-item>
+      <div class="item" ng-show="hasCordova">
+        Current Version <span class="item-note">{{data.currentVersion}}</span>
+      </div>
+      <powered-by-beeline suggest-hide="true" power-hide="false"></powered-by-beeline>
+    </div>
+
+  </ion-content>
+</ion-view>

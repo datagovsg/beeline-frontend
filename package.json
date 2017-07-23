@@ -63,6 +63,7 @@
     "@ionic/cli-plugin-ionic1": "2.0.1",
     "cordova-hot-code-push-cli": "^1.1.1",
     "inline-environment-variables-webpack-plugin": "^1.2.0",
+    "inquirer": "^3.2.0",
     "ionic": "^3.5.0"
   },
   "cordovaPlugins": [
@@ -88,22 +89,9 @@
     "android"
   ],
   "scripts": {
-    "heroku-postbuild": "webpack",
-    "clean": "ionic platform remove android; ionic platform remove ios; ionic platform remove browser; git checkout package.json",
-    "clean-deploy": "shx rm -rf node_modules/gh-pages/.cache",
-    "stg-deploy": "npm run stg-cp && npm run stg-build && npm run stg-hcp && npm run stg-gh-pages",
-    "stg-gh-pages": "npm run clean-deploy && gh-pages -d build-stg",
-    "stg-build": " cross-env BACKEND_URL=https\\://api.beeline.sg BUILD_PREFIX=build-stg webpack",
-    "stg-cp": "shx mkdir build-stg && shx cp -r 'www/*' build-stg",
-    "stg-hcp": "node scripts/hcp.js app-staging.beeline.sg build-stg",
-    "deploy": "node scripts/warn.js && npm run live-cp && npm run live-build && npm run live-hcp && npm run live-gh-pages",
-    "live-gh-pages": "npm run clean-deploy &&  gh-pages -r https://github.com/datagovsg/beeline-frontend-deploy.git -d build",
-    "live-build": " cross-env BACKEND_URL=https\\://api.beeline.sg BUILD_PREFIX=build webpack",
-    "live-cp": "shx mkdir build && shx cp -r 'www/*' build",
-    "live-hcp": "node scripts/hcp.js app.beeline.sg build",
-    "build": "cross-env BACKEND_URL=https\\://api.beeline.sg webpack",
-    "dev": "cross-env BACKEND_URL=https\\://api.beeline.sg webpack -w",
-    "start": "http-server -p 5000 -c-1 www"
+    "build": "node scripts/build.js",
+    "deploy": "node scripts/deploy.js",
+    "start": "http-server -c-1 www/"
   },
   "author": "",
   "license": "ISC",

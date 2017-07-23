@@ -1,0 +1,52 @@
+<ion-view class="intro-slides" cache-view="false" can-swipe-back="false">
+  <ion-content scroll="false">
+    <ion-slides options="options" slider="data.slider">
+      <ion-slide-page ng-if="data.showHome">
+        <h2>Add to home screen</h2>
+        <img ng-src="img/{{o.APP.PREFIX}}introHomeScreen.svg">
+        <p>
+          Tap <i class="icon ion-ios-upload-outline"></i> or go to your browser settings and select <strong>"Add to Home Screen"</strong> to quickly access {{o.APP.NAME}} on your home screen.
+        </p>
+      </ion-slide-page>
+
+      <ion-slide-page ng-if="data.showHome">
+        <h2>Best viewed on mobile</h2>
+        <img src="img/introSuggest.svg">
+        <p>
+          This web application is designed for mobile experience. We regret that desktop experience may be less optimal.
+        </p>
+      </ion-slide-page>
+
+      <ion-slide-page>
+        <h2>Book a ride</h2>
+        <img src="img/introActivate.svg">
+        <p>
+          Browse for your routes and book a guaranteed seat on a
+          direct bus to your destination.
+        </p>
+      </ion-slide-page>
+
+      <ion-slide-page>
+        <h2>Tracking-only routes</h2>
+        <img ng-src="img/introTrackOnly.svg">
+        <p>
+          Tracking-only routes are indicated by a "map pin" icon. You can track the bus and do not have to book seats via the app to ride the bus. Payment details for the ride can be found in the route information.
+        </p>
+      </ion-slide-page>
+
+      <ion-slide-page>
+        <h2>Crowdstart new routes</h2>
+        <img src="img/introKickstart.svg">
+        <p>
+          Crowdstart routes are routes that are not in operation yet. Activate these routes by pre-ordering route passes. If enough people do so, the route will be activated.
+        </p>
+      </ion-slide-page>
+
+
+
+    </ion-slides>
+
+    <button class="button button-large button-clear button-royal"
+            ui-sref='tabs.routes'>{{data.buttonLabel}}</button>
+  </ion-content>
+</ion-view>

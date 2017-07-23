@@ -1,0 +1,63 @@
+const shell = require("shelljs");
+const inquirer = require("inquirer");
+
+const PROD_TARGET = "https://github.com/datagovsg/beeline-frontend-deploy.git";
+const DEPLOYMENT_QUESTION = "Choose a deployment target";
+const WARNING_MESSAGE = `
+== WARNING == WARNING == WARNING == WARNING == WARNING ==
+
+Deploying a build requires explicit QA approval by Beeline app partners.
+
+Please confirm that you have this approval and you want to proceed.
+
+== WARNING == WARNING == WARNING == WARNING == WARNING ==
+`;
+const STAGING_COMPLETE_MESSAGE = `
+Completed deployment to staging server
+`;
+const PRODUCTION_COMPLETE_MESSAGE = `
+Completed deployment to production environment
+`;
+
+inquirer.prompt([
+  // Choose deployment target
+  {
+    name: "target",
+    type: "list",
+    message: DEPLOYMENT_QUESTION,
+    choices: ["Staging", "Production", "Abort Deployment"],
+    default: "Abort Deployment"
+  },
+  // Confirm deployment authorization
+  {
+    when: function(answers) { 
+      return answers.target === "Staging" || answers.target === "Production"
+    },
+    name: "confirm", 
+    type: "confirm",
+    message: WARNING_MESSAGE,
+    default: false,
+  }
+]).then(function(answers) {
+  if (answers.target === "Abort Deployment") return;
+  if (answers.confirm === false) return;
+  if (answers.confirm === true) {
+    shell.exec("npm run build -- --production");
+    shell.rm("-rf", "node_modules/gh-pages/.cache"); //Is this needed?
+  }
+  if (answers.target === "Staging" && answers.confirm === true) {
+    // Replace the production hot code push files with the staging url
+    shell.sed(
+      "-i", 
+      "app.beeline.sg",
+      "staging.beeline.sg",
+      ["www/CNAME", "www/chcp.json "]
+    );
+    shell.exec("gh-pages -d www/");
+    console.log(STAGING_COMPLETE_MESSAGE);
+  }
+  if (answers.target === "Production" && answers.confirm === true) {
+    shell.exec(`gh-pages -r ${PROD_TARGET} -d www/`); 
+    console.log(PRODUCTION_COMPLETE_MESSAGE);
+  }
+});
