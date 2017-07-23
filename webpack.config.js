@@ -85,7 +85,7 @@ module.exports = function(env) {
       output: {
         path: path.resolve(prefix, `css`),
         filename: '[name].css.js',
-        pathinfo: true,
+        pathinfo: env.production ? false : true,
       },
       // The actual css output we care about
       plugins: [
