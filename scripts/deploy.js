@@ -38,13 +38,16 @@ inquirer.prompt([
     message: WARNING_MESSAGE,
     default: false,
   }
-]).then(function(answers) {
+])
+// Proceed with chosen deployment target after authoritcation
+.then(function(answers) {
   if (answers.target === "Abort Deployment") return;
   if (answers.confirm === false) return;
   if (answers.confirm === true) {
     shell.exec("npm run build -- --production");
     shell.rm("-rf", "node_modules/gh-pages/.cache"); //Is this needed?
   }
+  // Staging deployment process
   if (answers.target === "Staging" && answers.confirm === true) {
     // Replace the production hot code push files with the staging url
     shell.sed(
@@ -56,6 +59,7 @@ inquirer.prompt([
     shell.exec("gh-pages -d www/");
     console.log(STAGING_COMPLETE_MESSAGE);
   }
+  // Production deployment process
   if (answers.target === "Production" && answers.confirm === true) {
     shell.exec(`gh-pages -r ${PROD_TARGET} -d www/`); 
     console.log(PRODUCTION_COMPLETE_MESSAGE);
