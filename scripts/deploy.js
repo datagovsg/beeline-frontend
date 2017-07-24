@@ -45,7 +45,8 @@ inquirer.prompt([
   if (answers.confirm === false) return;
   if (answers.confirm === true) {
     shell.exec("npm run build -- --production");
-    shell.rm("-rf", "node_modules/gh-pages/.cache"); //Is this needed?
+    // Clear the gh-pages cache to get it working with multiple remotes
+    shell.rm("-rf", "node_modules/gh-pages/.cache");
   }
   // Staging deployment process
   if (answers.target === "Staging" && answers.confirm === true) {
@@ -53,7 +54,7 @@ inquirer.prompt([
     shell.sed(
       "-i", 
       "app.beeline.sg",
-      "staging.beeline.sg",
+      "app-staging.beeline.sg",
       ["www/CNAME", "www/chcp.json "]
     );
     shell.exec("gh-pages -d www/");
