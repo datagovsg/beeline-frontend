@@ -27,6 +27,11 @@ console.log(BUILD_STARTED_MESSAGE);
 // Clear away the old output and start fresh from template
 shell.rm("-rf", "www/");
 shell.cp("-r", "static/", "www/");
+// Do a copy watch
+if (watch) shell.exec(
+  "cpx 'static/**/*' www/ --watch --no-initial", 
+  { async: true }
+);
 // Build switching based on production or non production 
 if (production) {
   console.log(PRODUCTION_BUILD_MESSAGE);
