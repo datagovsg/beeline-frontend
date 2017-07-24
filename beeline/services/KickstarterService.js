@@ -183,7 +183,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         _.assign(
           { maxDistance: 2000,
             startTime: Date.now(),
-            tags: JSON.stringify(['lelong']),
+            tags: JSON.stringify(['crowdstart']),
             startLat: coords.latitude,
             startLng: coords.longitude
           },
@@ -198,7 +198,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         _.assign(
           { maxDistance: 2000,
             startTime: Date.now(),
-            tags: JSON.stringify(['lelong']),
+            tags: JSON.stringify(['crowdstart']),
             endLat: coords.latitude,
             endLng: coords.longitude
           },
