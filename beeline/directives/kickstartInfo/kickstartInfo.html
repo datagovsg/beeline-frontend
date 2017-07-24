@@ -53,7 +53,7 @@
   <div class="kickstart-info-content" ng-hide="contentHide">
     <p>
      This route will activate when <strong>{{route.notes.tier[0].pax}} people</strong>
-     pre-order this Route Pass by <strong>{{(route.notes.crowdstartExpiry || route.notes.lelongExpiry) | date:'dd MMM yy' : '+0800'}}</strong>.
+     pre-order this Route Pass by <strong>{{route.notes.crowdstartExpiry | date:'dd MMM yy' : '+0800'}}</strong>.
    </p>
    <p ng-if="!route.daysLeft">This campaign has ended.</p>
    <p>
