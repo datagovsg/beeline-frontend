@@ -1,0 +1,25 @@
+#tabs {
+  @include desktop {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  ion-tabs {
+    @include desktop { 
+      display: block;
+      position: relative; 
+      height: 100%;
+      width: 100%;
+      max-width: 500px;
+    }
+  }
+  ui-gmap-google-map,
+  .angular-google-map,
+  .angular-google-map-container {
+    display: block;
+    position: absolute;
+    @include desktop { position: relative; }
+    height: 100%;
+    width: 100%;
+  }
+}
