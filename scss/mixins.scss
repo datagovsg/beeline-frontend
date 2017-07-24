@@ -5,11 +5,7 @@
 }
 
 @mixin desktop() {
-  // Disabling for now until everyting's ready
-  // Switch to this media query to activate
-  // Remember to disable the width limit in beeline.scss as well
-  // @media (min-width: 1024px) {
-  @media (max-width: 0px) { 
+  @media (min-width: 1024px) {
     @content;
   }
 }

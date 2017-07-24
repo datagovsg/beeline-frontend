@@ -1,23 +1,5 @@
 // Styling for elements that exist across the app
 
-// Limit width of super large devices
-@media (min-width: 992px) {
-  body > ion-nav-view,
-  body ion-modal-view.modal,
-  body ion-modal-view.modal.stop-selector,
-  body .popup-container > .popup
-   {
-    max-width: 750px;
-    width: 750px;
-    left: calc(50% - 375px);
-    right: calc(50% - 375px);
-  }
-
-  body > ion-nav-view {
-    box-shadow: 0 0 40px rgba(0,0,0,0.6)
-  }
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // Ionic style overrides
 // Try to change using variables first before adding new styles here

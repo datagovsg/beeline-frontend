@@ -51,6 +51,7 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/tabs',
     abstract: true,
     templateUrl: 'templates/tabs.html',
+    controller: 'TabsController'
   })
 
   // ////////////////////////////////////////////////////////////////////////////
