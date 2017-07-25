@@ -1,0 +1,103 @@
+<ion-view id="pg_suggestions">
+  <ion-nav-title>
+      My Suggestions
+      <i class="icon ion-plus icon-accessory"
+            style="float: right"
+            ng-click="promptNewSuggestion()"></i>
+  </ion-nav-title>
+  <ion-content class="padding">
+    <ion-item ng-if="!user"
+          ng-click="logIn()"
+          class="warning">
+      <i class="ion-android-warning"></i>
+      You are not logged in. Logging in helps us to keep track of the number
+      of actual users, so your suggestions will receive stronger consideration.
+      You will also be kept up to date when routes matching your suggestion
+      are created.
+    </ion-item>
+
+    <div ng-if="suggestions.length == 0" class="no-suggestions-message">
+      <p class="spacing"></p>
+      <p><img src="img/bgSuggest.svg" class="bus-icon" alt=""></p>
+
+      <p>
+        <b>No routes suitable for you?</b>
+      </p>
+
+      <p>Suggest a new route.</p>
+
+      <p>Bus companies will be motivated to run new routes if
+        enough people want it</p>
+
+      <p><button class="primary-button"
+        ng-click="promptNewSuggestion()">
+        Suggest a New Route
+      </button></p>
+      <p class="spacing"></p>
+    </div>
+
+    <div ng-if="suggestions.length > 0">
+      <div class="ion-list-header">Your Suggestions</div>
+  		<ion-list id="suggself" ng-if="suggestions.length > 0">
+          <ion-item class="item-icon-right"
+                    ng-repeat="item in suggestions track by item.id"
+                    ng-click="selectItem(item)"
+                    >
+
+              <div class="start-end">
+                <div class="start">
+                  <stop-img>
+                    <img src="img/RoutePairSmallStart.png">
+                  </stop-img>
+
+                  <stop-stop>
+                    <rev-geocode x="item.board.coordinates[0]"
+                           y="item.board.coordinates[1]"
+                           description-1="item.board.description1"
+                           description-2="item.board.description2"></rev-geocode>
+                  </stop-stop>
+               </div>
+               <div class="end">
+                 <stop-img>
+                   <img src="img/RoutePairSmallEnd.png">
+                 </stop-img>
+
+                 <stop-stop>
+                   <rev-geocode x="item.alight.coordinates[0]"
+                           y="item.alight.coordinates[1]"
+                           description-1="item.alight.description1"
+                           description-2="item.alight.description2"></rev-geocode>
+                  </stop-stop>
+               </div>
+               <div class="flex-row shrink">
+                <i class="ion-ios-alarm-outline shrink time-logo"></i>
+                <span class="arrive-time grow">
+                  Arrive by {{item.time * 1000 - 8*60*60*1000| formatTime }}
+                </span>
+              </div>
+            </div> <!-- start-end -->
+
+            <i class="icon ion-ios-arrow-right"></i>
+            <div>Sent to operators for consideration</div>
+            <div>{{item.numSimilar}} similar suggestion(s)</div>
+    			</ion-item>
+  		</ion-list>
+
+      <div class="ion-list-header">Suggestions Near You</div>
+  		<ion-list id="suggnear">
+              <ion-item class="item-icon-right"
+                  ng-repeat="item in similarSuggestions track by item.id"
+                  ng-click="toggleSelected(item)"
+                  >
+                  <rev-geocode x="item.board.coordinates[0]"
+                               y="item.board.coordinates[1]"></rev-geocode>
+                  <rev-geocode x="item.alight.coordinates[0]"
+                              y="item.alight.coordinates[1]"></rev-geocode>
+                  Arrive by {{item.time * 1000 - 8*60*60*1000| formatTime }}
+                  <br>Sent to operators for consideration
+  			</ion-item>
+  		</ion-list>
+    </div>
+
+  </ion-content>
+</ion-view>

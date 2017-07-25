@@ -21,3 +21,5 @@ beeline/env.json
 build
 .tmp-commit-message
 .chcplogin
+
+\.chcpenv

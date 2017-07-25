@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg width="30px" height="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#00B140;stroke:#00B140;stroke-width:1.026;stroke-linecap:round;stroke-linejoin:round;}
+	.st1{fill:#EAEFF2;}
+</style>
+<title>MenuTicketsActive</title>
+<desc>Created with Sketch.</desc>
+<g id="Add-Payment-Method">
+	<g id="Main_Settings_Payment-Method-Added" transform="translate(-125.000000, -926.000000)">
+		<g id="Menu-Bar" transform="translate(0.000000, 914.000000)">
+			<g id="Icons" transform="translate(27.000000, 12.500000)">
+
+					<g id="MenuTickets" transform="translate(113.540585, 14.500000) rotate(-45.000000) translate(-113.540585, -14.500000) translate(101.040585, 6.500000)">
+					<g id="MenuTicketsActive" transform="translate(0.117749, 0.117749)">
+						<g transform="translate(0.000000, -0.000000)">
+							<path id="Combined-Shape" class="st0" d="M20.9,7.5c0-1.7,1.4-3,3.1-3V0H0v4.5c1.7,0,3.1,1.3,3.1,3c0,1.7-1.4,3-3.1,3V15h24
+								v-4.5C22.3,10.5,20.9,9.2,20.9,7.5z"/>
+							<g id="Group-2" transform="translate(8.000000, 1.000000)">
+								<path id="Combined-Shape_1_" class="st1" d="M1.9,11.5h-1v1h1V11.5z M1.9,9.5h-1v1h1V9.5z M1.9,7.5h-1v1h1V7.5z M1.9,4.5h-1
+									v1h1V4.5z M1.9,2.5h-1v1h1V2.5z M1.9,0.5h-1v1h1V0.5z"/>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
