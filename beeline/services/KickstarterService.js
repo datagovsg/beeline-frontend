@@ -116,7 +116,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
       if (bidsCache && !ignoreCache) return bidsCache;
       return bidsCache = UserService.beeline({
         method: 'GET',
-        url: '/custom/lelong/bids',
+        url: '/crowdstart/bids',
       }).then((response) => {
         // kickstarterSummary = response.data;
         kickstarterSummary = response.data.map(bid => {
@@ -138,7 +138,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
 
   function fetchKickstarterRoutes(ignoreCache) {
     if (kickstarterRoutesCache && !ignoreCache) return kickstarterRoutesCache;
-    var url = '/custom/lelong/status';
+    var url = '/crowdstart/status';
     if (p.transportCompanyId) {
       url += '?'+querystring.stringify({transportCompanyId: p.transportCompanyId})
     }
@@ -247,7 +247,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
     createBid: function(route, boardStopId, alightStopId,bidPrice) {
       return UserService.beeline({
         method: 'POST',
-        url: `/custom/lelong/routes/${route.id}/bids`,
+        url: `/crowdstart/routes/${route.id}/bids`,
         data: {
           price: bidPrice
         }
