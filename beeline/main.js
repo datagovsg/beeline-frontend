@@ -86,7 +86,6 @@ app
 .service('KickstarterService', require('./services/KickstarterService.js').default)
 .controller('IntroSlidesController', require('./controllers/IntroSlidesController.js').default)
 .controller('RoutesListController', require('./controllers/RoutesListController.js').default)
-.controller('BookingStopsController', require('./controllers/BookingStopsController.js').default)
 .controller('RouteDetailController', require('./controllers/RouteDetailController.js').default)
 .controller('RouteStopsController', require('./controllers/RouteStopsController.js').default)
 .controller('BookingSpsController', require('./controllers/BookingStopsController.js').default)
@@ -161,6 +160,9 @@ app
       libraries: 'places,geometry'
     });
   }
+})
+.config(function($ionicConfigProvider) {
+  $ionicConfigProvider.views.transition('none');
 })
 .run(function($ionicPlatform) {
  $ionicPlatform.ready(function() {
