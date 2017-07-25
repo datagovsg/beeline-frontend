@@ -23,7 +23,7 @@ export default [
     $scope.book.routeId = +$stateParams.routeId;
     $scope.showCopy = !window.cordova || false;
 
-    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
+    $scope.$watchGroup([()=>KickstarterService.getCrowdstartById($scope.book.routeId), ()=>KickstarterService.getBidInfo($scope.book.routeId)],([route, bid])=>{
       if (!route) return;
       $scope.book.route = route;
       if (!bid) return;
