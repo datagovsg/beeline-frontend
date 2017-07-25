@@ -66,6 +66,25 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
+  .state('tabs.route-detail', {
+    url: '/route/:routeId?pickupStop&dropoffStop',
+    views: {
+      'tab-routes': {
+        templateUrl: 'templates/route-detail.html',
+        controller: 'RouteDetailController'
+      }
+    }
+  })
+  .state('tabs.route-stops', {
+    url: '/route/:routeId/stops?type&stop',
+    views: {
+      'tab-routes': {
+        templateUrl: 'templates/route-stops.html',
+        controller: 'RouteStopsController'
+      }
+    },
+    params: { callback: null }
+  })
 
   .state('tabs.booking', {
     url: '/booking',
