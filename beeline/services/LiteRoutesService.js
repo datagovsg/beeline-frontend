@@ -84,25 +84,21 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     var boardStops = _.groupBy(allTripStops, function(tripStop){
       return tripStop.stop.id
     });
+
     var newStops = [];
     for (let stopId in boardStops){
-      var tripStopsArray = _(boardStops[stopId])
-        .sortBy('time')
-
-      console.log(tripStopsArray
-          .map(x => _.get(tripArrivalPredictions, `${x.tripId}.${stopId}`))
-          .value(), tripStopsArray.value(), tripArrivalPredictions, '')
+      var tripStopsArray = _.sortBy(boardStops[stopId], 'time')
 
       newStops.push({
-        time: tripStopsArray.map(x => x.time).value(),
+        time: tripStopsArray.map(x => x.time),
         predictedTime: tripStopsArray
-          .map(x => _.get(tripArrivalPredictions, `${x.tripId}.${stopId}`))
-          .value(),
+          .map(x => _.get(tripArrivalPredictions, `${x.tripId}.${stopId}`)),
         canBoard: boardStops[stopId][0].canBoard,
 
         ...boardStops[stopId][0].stop
       })
     }
+
     return newStops;
   }
 

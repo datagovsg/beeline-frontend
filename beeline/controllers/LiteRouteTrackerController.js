@@ -64,11 +64,12 @@ export default [
         const promise = Promise.all(
           tripIds.map(async (tripId) => {
             const response = await $http.get(`https://beeline-eta.herokuapp.com/api/v1.0/${tripId}`)
+
             const timeFormatRE = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}/
 
             $scope.data.tripArrivalPredictions = {
               ...$scope.data.tripArrivalPredictions,
-              [tripId]: _.mapValues(response.data, v => timeFormatRE.test(v) ? v : null)
+              [tripId]: _.mapValues(response.data, v => v.valid && timeFormatRE.test(v.timeToArrival) ? v : null)
             }
           })
         )
