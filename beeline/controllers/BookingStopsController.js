@@ -1,4 +1,5 @@
 import {NetworkError} from '../shared/errors';
+import {SafeInterval} from '../SafeInterval';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 const moment = require('moment');
 import routePassTemplate from '../templates/route-pass-modal.html';
@@ -208,7 +209,7 @@ export default [
     }
 
     //get the next available trip date everytime when this view is active
-    loadingSpinner(Promise.all([routePromise, ()=>UserService.verifySession()])
+    loadingSpinner(Promise.all([routePromise, () => UserService.verifySession()])
       .then(([route, user]) => {
         //reset the nextTripDate and windowBeforeClose when re-loaded
         $scope.book.nextTripDate = null;
@@ -480,6 +481,49 @@ export default [
       if (boardStop && alightStop && nextTrip) {
         let stopIds = nextTrip.tripStops.map(ts => ts.stop.id);
         $scope.book.stopNotAvailable = !stopIds.includes(boardStop.id) || !stopIds.includes(alightStop.id)
+      }
+    })
+
+    // For the purposes of arrival time prediction,
+    // we show (1) the predicted time and (2) the current position of the bus
+    const arrivalTimePrediction = new SafeInterval(
+      async () => {
+        const route = await routePromise
+        const tripId = _.get(route, 'trips.0.id', null)
+
+        if (!tripId) return Promise.resolve()
+
+        const response = await $http.get(`https://beeline-eta.herokuapp.com/api/v1.0/${tripId}`)
+
+        $scope.tripArrivalPredictions = _.mapValues(
+          response.data,
+          v => v.valid ? v : null)
+      },
+      5e3,
+      5e3
+    )
+    const busLocationQuery = new SafeInterval(
+      async () => {
+        const route = await routePromise
+        const tripId = _.get(route, 'trips.0.id', null)
+
+        if (!tripId) return Promise.resolve()
+
+        const response = await UserService.beeline({
+          url: `/trips/${tripId}/latestInfo`,
+        })
+
+        const {data: {pings}} = response
+
+        $scope.busPings = pings
+      },
+      10e3,
+      10e3
+    )
+    $scope.$watch('book.nextTrip', (trip) => {
+      if (trip) {
+        arrivalTimePrediction.force(true)
+        busLocationQuery.force(true)
       }
     })
 

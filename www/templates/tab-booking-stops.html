@@ -46,7 +46,13 @@
                           show="disp.popupStop"
                           closeClick="closeWindow">
             <div class="popUpStopSelect">
-              <b>{{disp.popupStop.time | formatTime }}</b><br/>
+              <b>{{disp.popupStop.time | formatTime }}</b>
+              <br/>
+              <span v-if="tripArrivalPredictions[disp.popupStop.id]">
+                {{tripArrivalPredictions[disp.popupStop.id].eta | formatTime }}
+                ({{ (tripArrivalPredictions[disp.popupStop.id].timeToArrival / 60000).toFixed(1) }} mins)
+              </span>
+              <br/>
               {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
               <a class="button button-block button-outline button-royal"
                 ng-click="$parent.$parent.setStop($parent.$parent.disp.popupStop, $parent.$parent.disp.popupStopType)">
@@ -88,6 +94,8 @@
             coords="book.alightStop.coordinates"
             options="map.markerOptions.endMarker">
           </ui-gmap-marker>
+
+          <map-bus-icon pings="busPings" idkey="buspings-id"></map-bus-icon>
 
         </ui-gmap-google-map>
       </div>
