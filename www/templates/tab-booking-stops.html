@@ -48,7 +48,7 @@
             <div class="popUpStopSelect">
               <b>{{disp.popupStop.time | formatTime }}</b>
               <br/>
-              <span v-if="tripArrivalPredictions[disp.popupStop.id]">
+              <span ng-if="tripArrivalPredictions[disp.popupStop.id] && tripArrivalPredictions[disp.popupStop.id].valid">
                 {{tripArrivalPredictions[disp.popupStop.id].eta | formatTime }}
                 ({{ (tripArrivalPredictions[disp.popupStop.id].timeToArrival / 60000).toFixed(1) }} mins)
               </span>
