@@ -4,6 +4,15 @@
     flex-direction: row;
     align-items: stretch;
   }
+
+  ion-tabs,
+  ion-tabs > .tab-content,
+  ion-nav-view[name="tab-routes"] {
+    background-color: transparent !important;
+    pointer-events: none !important;
+  }
+
+
   ion-tabs {
     @include desktop { 
       display: block;

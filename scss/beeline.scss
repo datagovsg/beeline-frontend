@@ -45,6 +45,13 @@
 // New global styles
 // Check to see if there's an applicable ionic style first before adding here
 ////////////////////////////////////////////////////////////////////////////////
+
+// Setting a default point event style so we can make
+// parents transparent without affecting all their children
+* {
+  pointer-events: auto;
+}
+
 // Remove Google logo and Map marker from Autocomplete dropdown
 // Add some padding back to compensate for removed elements
 .pac-logo::after { display: none !important; }
