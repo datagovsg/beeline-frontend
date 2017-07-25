@@ -77,7 +77,7 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
 
   //consolidate tripstops for lite route
   //aggregate stop time for stops
-  function computeLiteStops(trips) {
+  function computeLiteStops(trips, tripArrivalPredictions = undefined) {
     var tripStops = _.map(trips, (trip)=>{return trip.tripStops});
     var allTripStops = _.flatten(tripStops);
 
@@ -86,13 +86,22 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     });
     var newStops = [];
     for (let stopId in boardStops){
-      var stop = boardStops[stopId][0].stop;
-      stop.canBoard = boardStops[stopId][0].canBoard;
-      var timeArray = _.map(boardStops[stopId], (stop)=>{
-        return stop.time
+      var tripStopsArray = _(boardStops[stopId])
+        .sortBy('time')
+
+      console.log(tripStopsArray
+          .map(x => _.get(tripArrivalPredictions, `${x.tripId}.${stopId}`))
+          .value(), tripStopsArray.value(), tripArrivalPredictions, '')
+
+      newStops.push({
+        time: tripStopsArray.map(x => x.time).value(),
+        predictedTime: tripStopsArray
+          .map(x => _.get(tripArrivalPredictions, `${x.tripId}.${stopId}`))
+          .value(),
+        canBoard: boardStops[stopId][0].canBoard,
+
+        ...boardStops[stopId][0].stop
       })
-      var sortedTime = _(timeArray).uniq().sort().value();
-      newStops.push(_.extend({"time": sortedTime}, stop));
     }
     return newStops;
   }

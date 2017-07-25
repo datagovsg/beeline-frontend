@@ -10,18 +10,25 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
       options="stop.canBoard ? boardMarker : alightMarker"
       click="applyTapBoard(stop)"
     ></ui-gmap-marker>
-    <ui-gmap-window ng-if="disp.popupStop"
-                    coords="disp.popupStop.coordinates"
-                    show="disp.popupStop"
+    <ui-gmap-window ng-if="disp.popupStopId"
+                    coords="tripStopsById[disp.popupStopId].coordinates"
+                    show="disp.popupStopId"
                     closeClick="closeWindow">
       <div class="popUpStopSelect">
-        <b ng-if="!isLiteFrequent">{{disp.popupStop.time | formatTimeArray }}<br/></b>
-        {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
+        <b ng-if="!isLiteFrequent">
+          {{tripStopsById[disp.popupStopId].time | formatTimeArray }}<br/>
+        </b>
+        <span ng-if="!isLiteFrequent">
+          {{tripStopsById[disp.popupStopId].predictedTime | formatTimeArray }}<br/>
+        </span>
+        {{tripStopsById[disp.popupStopId].description}}<br/>
+        {{tripStopsById[disp.popupStop].road}}<br/>
       </div>
     </ui-gmap-window>
     `,
     scope: {
       'availableTrips': '<',
+      'tripArrivalPredictions': '<',
       'isLiteFrequent': '<?',
     },
     link: function(scope, element, attributes, ctrl) {
@@ -50,18 +57,23 @@ export default function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle)
         }
       })
 
-      scope.$watch('availableTrips', (availableTrips) => {
-        if (!availableTrips || availableTrips.length==0) return;
-        scope.tripStops = LiteRoutesService.computeLiteStops(availableTrips);
-        uiGmapCtrlHandle.mapPromise(scope, ctrl).then(panToStops);
-      })
+      scope.$watchGroup(
+        ['availableTrips', 'tripArrivalPredictions'],
+        ([availableTrips, tripArrivalPredictions]) => {
+          if (!availableTrips || availableTrips.length==0) return;
+          scope.tripStops = LiteRoutesService.computeLiteStops(availableTrips, tripArrivalPredictions);
+          scope.tripStopsById = _.keyBy(scope.tripStops, 'id')
+
+          uiGmapCtrlHandle.mapPromise(scope, ctrl).then(panToStops);
+        }
+      )
 
       scope.applyTapBoard = function (stop) {
-        scope.disp.popupStop = stop;
+        scope.disp.popupStopId = stop.id;
       }
 
       scope.closeWindow = function () {
-        scope.disp.popupStop = null;
+        scope.disp.popupStopId = null;
       }
 
       function panToStops(map) {

@@ -1,13 +1,16 @@
 import _ from 'lodash';
+import {SafeInterval} from '../SafeInterval';
 
 export default [
   '$scope', '$rootScope', '$state', '$stateParams', 'uiGmapGoogleMapApi',
   'CompanyService', 'TripService', 'UserService', 'MapOptions', 'RoutesService',
   'LiteRoutesService', '$ionicPopup', '$ionicLoading', 'loadingSpinner',
+  '$http',
   function(
     $scope,  $rootScope, $state, $stateParams,  uiGmapGoogleMapApi,
     CompanyService, TripService,  UserService, MapOptions, RoutesService,
-    LiteRoutesService,  $ionicPopup, $ionicLoading, loadingSpinner
+    LiteRoutesService,  $ionicPopup, $ionicLoading, loadingSpinner,
+    $http
   ) {
     // Initialize the necessary basic data data
     $scope.user = UserService.getUser();
@@ -26,6 +29,7 @@ export default [
       hasTrackingData: true,
       inServiceWindow: false,
       nextTrips: null,
+      tripArrivalPredictions: {},
     }
 
     $scope.liteRouteLabel = $stateParams.liteRouteLabel;
@@ -50,6 +54,31 @@ export default [
       if (!trips) return;
       $scope.hasTrips = trips.length > 0
     });
+
+    const arrivalTimePrediction = new SafeInterval(
+      () => {
+        const tripIds = $scope.data.todayTrips && $scope.data.todayTrips.map(trip => trip.id)
+
+        if (!tripIds) return Promise.resolve()
+
+        const promise = Promise.all(
+          tripIds.map(async (tripId) => {
+            const response = await $http.get(`https://beeline-eta.herokuapp.com/api/v1.0/${tripId}`)
+            const timeFormatRE = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}/
+
+            $scope.data.tripArrivalPredictions = {
+              ...$scope.data.tripArrivalPredictions,
+              [tripId]: _.mapValues(response.data, v => timeFormatRE.test(v) ? v : null)
+            }
+          })
+        )
+
+        return promise
+      },
+      5e3,
+      5e3
+    )
+    arrivalTimePrediction.start()
 
 
 
