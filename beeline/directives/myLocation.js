@@ -2,12 +2,12 @@
 export default function(uiGmapGoogleMapApi) {
 
   return {
-    template: `
-<ui-gmap-circle ng-if="coords" idkey="idkey1" center="coords" radius="radius"
-  stroke="accuracyOptions.stroke" fill="accuracyOptions.fill"
-  options="accuracyOptions.options"></ui-gmap-circle>
-<ui-gmap-marker ng-if="coords" idkey="idkey2" coords="coords" options="markerOptions"></ui-gmap-marker>
-    `,
+//     template: `
+// <ui-gmap-circle ng-if="coords" idkey="idkey1" center="coords" radius="radius"
+//   stroke="accuracyOptions.stroke" fill="accuracyOptions.fill"
+//   options="accuracyOptions.options"></ui-gmap-circle>
+// <ui-gmap-marker ng-if="coords" idkey="idkey2" coords="coords" options="markerOptions"></ui-gmap-marker>
+//     `,
 
     scope: true,
     link(scope, elem, attr) {

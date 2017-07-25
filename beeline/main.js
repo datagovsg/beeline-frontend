@@ -12,16 +12,17 @@ import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
 // Configuration Imports
 import configureRoutes from './router.js';
 
-var app = angular.module('beeline', [
+const app = angular.module('beeline', [
   'ionic',
   'ngCordova',
-  'uiGmapgoogle-maps',
   'multipleDatePicker',
   'ngclipboard',
+  'ui-leaflet'
 ])
 
+require('leaflet')
 require('angular-simple-logger');
-require('angular-google-maps');
+require('ui-leaflet');
 require('clipboard');
 require('ngclipboard');
 require('./directives/extA');
@@ -29,6 +30,7 @@ require('./services/RotatedImageService');
 require('./services/GeoUtils');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
+require('./maps/OnemapBookingStops');
 require('./intents');
 
 // //////////////////////////////////////////////////////////////////////////////
@@ -80,7 +82,6 @@ app
 .controller('BookingDatesController', require('./controllers/BookingDatesController.js').default)
 .controller('BookingSummaryController', require('./controllers/BookingSummaryController.js').default)
 .controller('BookingConfirmationController', require('./controllers/BookingConfirmationController.js').default)
-.controller('SuggestController', require('./controllers/SuggestController.js').default)
 .controller('SettingsController', require('./controllers/SettingsController.js').default)
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
@@ -95,8 +96,6 @@ app
 .controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
 .directive('searchButton', require('./directives/searchButton.js').default)
-.directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
-.directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
 .directive('busStopSelector', require('./directives/busStopSelector/busStopSelector').default)
 .directive('priceCalculator', require('./directives/priceCalculator/priceCalculator').default)
 .directive('revGeocode', require('./directives/revGeocode/revGeocode').default)
@@ -135,19 +134,6 @@ app
 })
 .config(function ($httpProvider) {
   $httpProvider.useApplyAsync(true);
-})
-.config(function(uiGmapGoogleMapApiProvider) {
-  if (process.env.GOOGLE_API_KEY) {
-    uiGmapGoogleMapApiProvider.configure({
-      key: process.env.GOOGLE_API_KEY,
-      libraries: 'places,geometry'
-    });    
-  } else {
-    uiGmapGoogleMapApiProvider.configure({
-      client: 'gme-infocommunications',
-      libraries: 'places,geometry'
-    });    
-  }
 })
 .run(function($rootScope, replace, p) {
   $rootScope.o = {

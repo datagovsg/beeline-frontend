@@ -2,9 +2,9 @@ import busStopSelectorTemplate from './busStopSelector.html'
 import {formatTime} from '../../shared/format'
 
 export default [
-    '$state', '$ionicModal', '$http', 'uiGmapGoogleMapApi', 'MapOptions',
+    '$state', '$ionicModal', '$http', 'MapOptions',
     'busStopSelectorDialog',
-    function ($state, $ionicModal, $http, uiGmapGoogleMapApi, MapOptions,
+    function ($state, $ionicModal, $http, MapOptions,
       busStopSelectorDialog) {
 
   return {

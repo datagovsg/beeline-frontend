@@ -1,71 +1,71 @@
 var googleMaps;
 
 export default [
-  'uiGmapGoogleMapApi', '$cordovaGeolocation',
-  function(uiGmapGoogleMapApi, $cordovaGeolocation) {
-    var markerOptionsPromise = uiGmapGoogleMapApi.then((googleMaps) => {
-      return {
-        markerOptions: {
-          boardMarker: {
-            icon: {
-              url: 'img/map/MapRoutePickupStop@2x.png',
-              scaledSize: new googleMaps.Size(26, 25),
-              anchor: new googleMaps.Point(13, 13),
-            },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
-          },
-          alightMarker: {
-            icon: {
-              url: 'img/map/MapRouteDropoffStop@2x.png',
-              scaledSize: new googleMaps.Size(26, 25),
-              anchor: new googleMaps.Point(13, 13),
-            },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
-          },
-          startMarker: {
-            icon: {
-              url: 'img/map/SelectedPinStart@2x.png',
-              scaledSize: new googleMaps.Size(34, 46),
-              anchor: new googleMaps.Point(17, 41),
-            },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 2,
-          },
-          endMarker: {
-            icon: {
-              url: 'img/map/SelectedPinStop@2x.png',
-              scaledSize: new googleMaps.Size(34, 46),
-              anchor: new googleMaps.Point(17, 41),
-            },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 2,
-          },
-        },
-        pathOptions: {
-          routePath: {
-            color: '#4b3863',
-            weight: 3.0,
-            opacity: 0.7
-          },
-          crowdstartPath: {
-            color: '#AAAAAA',
-            weight: 3.0,
-            opacity: 0.4
-          },
-          actualPath: {
-            color: '#000000',
-            weight: 3.0,
-            opacity: 1.0
-          }
-        },
-        bounds: {
-          Singapore: {
-  	        north: 1.516329,
-  	        east: 104.08,
-  	        south: 1.1954,
-  	        west: 103.5814
-  	      }
-        }
-      };
-    });
+  '$cordovaGeolocation',
+  function($cordovaGeolocation) {
+    // var markerOptionsPromise = uiGmapGoogleMapApi.then((googleMaps) => {
+    //   return {
+    //     markerOptions: {
+    //       boardMarker: {
+    //         icon: {
+    //           url: 'img/map/MapRoutePickupStop@2x.png',
+    //           scaledSize: new googleMaps.Size(26, 25),
+    //           anchor: new googleMaps.Point(13, 13),
+    //         },
+    //         zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+    //       },
+    //       alightMarker: {
+    //         icon: {
+    //           url: 'img/map/MapRouteDropoffStop@2x.png',
+    //           scaledSize: new googleMaps.Size(26, 25),
+    //           anchor: new googleMaps.Point(13, 13),
+    //         },
+    //         zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+    //       },
+    //       startMarker: {
+    //         icon: {
+    //           url: 'img/map/SelectedPinStart@2x.png',
+    //           scaledSize: new googleMaps.Size(34, 46),
+    //           anchor: new googleMaps.Point(17, 41),
+    //         },
+    //         zIndex: google.maps.Marker.MAX_ZINDEX + 2,
+    //       },
+    //       endMarker: {
+    //         icon: {
+    //           url: 'img/map/SelectedPinStop@2x.png',
+    //           scaledSize: new googleMaps.Size(34, 46),
+    //           anchor: new googleMaps.Point(17, 41),
+    //         },
+    //         zIndex: google.maps.Marker.MAX_ZINDEX + 2,
+    //       },
+    //     },
+    //     pathOptions: {
+    //       routePath: {
+    //         color: '#4b3863',
+    //         weight: 3.0,
+    //         opacity: 0.7
+    //       },
+    //       crowdstartPath: {
+    //         color: '#AAAAAA',
+    //         weight: 3.0,
+    //         opacity: 0.4
+    //       },
+    //       actualPath: {
+    //         color: '#000000',
+    //         weight: 3.0,
+    //         opacity: 1.0
+    //       }
+    //     },
+    //     bounds: {
+    //       Singapore: {
+  	//         north: 1.516329,
+  	//         east: 104.08,
+  	//         south: 1.1954,
+  	//         west: 103.5814
+  	//       }
+    //     }
+    //   };
+    // });
 
     this.defaultMapOptions = function(options) {
       var mapOptions = _.assign({
@@ -104,9 +104,9 @@ export default [
         lines: [],
       }, options || {});
 
-      markerOptionsPromise.then((options) => {
-        _.assign(mapOptions, options);
-      })
+      // markerOptionsPromise.then((options) => {
+      //   _.assign(mapOptions, options);
+      // })
 
       return mapOptions;
     };

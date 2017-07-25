@@ -1,6 +1,7 @@
 import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
+import polyline from '@mapbox/polyline'
 
 // Adapter function to convert what we get from the server into what we want
 // Ideally shouldn't need this if the server stays up to date
@@ -30,7 +31,7 @@ function transformRouteData(data) {
   return data;
 }
 
-export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q, p) {
+export default function RoutesService($http, UserService, $q, p) {
   // For all routes
   var routesCache;
   var activeRoutes;
@@ -208,10 +209,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 // TODO: make a directive, otherwise literoute need to inject this routeservice
     decodeRoutePath: function (path) {
       assert.strictEqual(typeof path, 'string');
-      return uiGmapGoogleMapApi.then((googleMaps) => {
-        // Array of LatLng objects
-        return googleMaps.geometry.encoding.decodePath(path);
-      })
+      return Promise.resolve(polyline.decode(path));
     },
 
     getRouteFeatures: function (routeId) {
@@ -413,18 +411,18 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
           return routeToCreditTags
         } else {
           return routeToCreditTags = null
-        } 
+        }
       })
     },
 
-    // Returns the credit tag matched to a route if routeId is given 
+    // Returns the credit tag matched to a route if routeId is given
     // Otherwise, returns a map of all routeId to their corresponding tags
     // based on the routeCredits available to a user
     getRouteCreditTags: function(routeId){
       if(routeId && routeToCreditTags){
         return routeToCreditTags[routeId]
       } else {
-        return routeToCreditTags        
+        return routeToCreditTags
       }
     },
 

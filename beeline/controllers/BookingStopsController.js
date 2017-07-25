@@ -14,7 +14,6 @@ export default [
   'BookingService',
   'RoutesService',
   'UserService',
-  'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
   '$q',
@@ -32,7 +31,6 @@ export default [
     BookingService,
     RoutesService,
     UserService,
-    uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner,
     $q,
@@ -75,19 +73,6 @@ export default [
       parentScope: $scope,
     }
 
-    // Resolved when the map is initialized
-    var gmapIsReady = new Promise((resolve, reject) => {
-      var resolved = false;
-      $scope.$watch('map.control.getGMap', function() {
-        if ($scope.map.control.getGMap) {
-          if (!resolved) {
-            resolved = true;
-            resolve();
-          }
-        }
-      });
-    });
-
     $scope.session.sessionId = +$stateParams.sessionId;
     $scope.book.routeId = +$stateParams.routeId;
 
@@ -114,19 +99,6 @@ export default [
       }
     })
 
-    $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(Promise.all([gmapIsReady, routePromise])
-      .then(() => {
-        var gmap = $scope.map.control.getGMap();
-        MapOptions.resizePreserveCenter(gmap)
-        panToStops();
-      }));
-    });
-
-    gmapIsReady.then(function() {
-      MapOptions.disableMapLinks();
-    });
-
     $scope.$watch('book.route.path', (path) => {
       if (!path) {
         $scope.routePath = [];
@@ -139,23 +111,12 @@ export default [
     })
 
     $scope.applyTapBoard = function (stop) {
-      $scope.disp.popupStopType = "pickup";
-      $scope.disp.popupStop = stop;
+      $scope.book.boardStop = stop
       $scope.$digest();
     }
     $scope.applyTapAlight = function (stop) {
-      $scope.disp.popupStopType = "dropoff";
-      $scope.disp.popupStop = stop;
+      $scope.book.alightStop = stop
       $scope.$digest();
-    }
-    $scope.setStop = function (stop, type) {
-      if (type === 'pickup') {
-        $scope.book.boardStop = stop;
-      }
-      else {
-        $scope.book.alightStop = stop;
-      }
-      $scope.disp.popupStop = null;
     }
     $scope.closeWindow = function () {
       $scope.disp.popupStop = null;

@@ -3,7 +3,7 @@ import {formatTime} from '../shared/format'
 import _ from 'lodash';
 
 export default function ($rootScope, $ionicModal, MapOptions,
-  uiGmapGoogleMapApi, $ionicScrollDelegate) {
+  $ionicScrollDelegate) {
   var scope = $rootScope.$new();
 
   initializeScope(scope);
@@ -47,7 +47,7 @@ export default function ($rootScope, $ionicModal, MapOptions,
     scope.map = MapOptions.defaultMapOptions();
 
     scope.fitMap = async () =>  {
-      await uiGmapGoogleMapApi;
+      // await uiGmapGoogleMapApi;
       MapOptions.disableMapLinks();
 
       if (!scope.map.control || !scope.busStops ||

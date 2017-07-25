@@ -26,7 +26,21 @@
       <!-- contains the map, the stop selectors
         and the locate me button -->
       <div class="map-area">
-        <ui-gmap-google-map
+        <onemap-booking-stops
+            map-center="map.center"
+            zoom="map.zoom"
+
+            board-selected="applyTapBoard($event)"
+            alight-selected="applyTapAlight($event)"
+
+            board-stops="book.boardStops"
+            alight-stops="book.alightStops"
+            selected-board="book.boardStop"
+            selected-alight="book.alightStop"
+
+            route-path="routePath"
+        ></onemap-booking-stops>
+        <!-- <ui-gmap-google-map
             center="map.center"
             zoom="map.zoom"
             bounds="map.bounds"
@@ -82,7 +96,7 @@
             options="map.markerOptions.endMarker">
           </ui-gmap-marker>
 
-        </ui-gmap-google-map>
+        </ui-gmap-google-map> -->
       </div>
 
       <ion-list class="stop-inputs">
