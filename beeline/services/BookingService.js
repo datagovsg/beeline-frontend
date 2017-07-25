@@ -39,7 +39,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
 
       var rv = UserService.beeline({
         method: 'POST',
-        url: '/transactions/ticket_sale',
+        url: '/transactions/tickets/quote',
         data: {
           // creditTag: booking.applyRouteCredits ? booking.creditTag : null,
           trips: trips,

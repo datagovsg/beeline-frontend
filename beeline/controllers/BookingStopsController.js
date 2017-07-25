@@ -362,7 +362,7 @@ export default [
         let passValue = $scope.book.route.trips[0].price * $scope.book.priceSchedules[$scope.book.routePassChoice].quantity
         var result = await UserService.beeline({
           method: 'POST',
-          url: '/transactions/paymentRoutePass',
+          url: '/transactions/route_passes/payment',
           data: _.defaults(paymentOptions, {
             creditTag: routePassTagList[0],
             promoCode: { code: '' },

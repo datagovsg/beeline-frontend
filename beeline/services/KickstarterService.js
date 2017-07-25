@@ -29,9 +29,8 @@ var transformKickstarterData = function (kickstarterRoutes) {
     kickstarter.is7DaysOld = false;
 
     var now = new Date().getTime();
-    if (kickstarter.notes && (kickstarter.notes.crowdstartExpiry || kickstarter.notes.lelongExpiry)) {
-      const expiry = kickstarter.notes.crowdstartExpiry || kickstarter.notes.lelongExpiry;
-      var expiryTime = new Date(expiry).getTime();
+    if (kickstarter.notes && kickstarter.notes.crowdstartExpiry) {
+      var expiryTime = new Date(kickstarter.notes.crowdstartExpiry).getTime();
       if (now >= expiryTime) {
         kickstarter.isExpired = true;
         if (now - expiryTime >= 7*1000*60*60*24) {
@@ -117,7 +116,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
       if (bidsCache && !ignoreCache) return bidsCache;
       return bidsCache = UserService.beeline({
         method: 'GET',
-        url: '/custom/lelong/bids',
+        url: '/crowdstart/bids',
       }).then((response) => {
         // kickstarterSummary = response.data;
         kickstarterSummary = response.data.map(bid => {
@@ -139,7 +138,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
 
   function fetchKickstarterRoutes(ignoreCache) {
     if (kickstarterRoutesCache && !ignoreCache) return kickstarterRoutesCache;
-    var url = '/custom/lelong/status';
+    var url = '/crowdstart/status';
     if (p.transportCompanyId) {
       url += '?'+querystring.stringify({transportCompanyId: p.transportCompanyId})
     }
@@ -184,7 +183,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         _.assign(
           { maxDistance: 2000,
             startTime: Date.now(),
-            tags: JSON.stringify(['lelong']),
+            tags: JSON.stringify(['crowdstart']),
             startLat: coords.latitude,
             startLng: coords.longitude
           },
@@ -199,7 +198,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
         _.assign(
           { maxDistance: 2000,
             startTime: Date.now(),
-            tags: JSON.stringify(['lelong']),
+            tags: JSON.stringify(['crowdstart']),
             endLat: coords.latitude,
             endLng: coords.longitude
           },
@@ -248,7 +247,7 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
     createBid: function(route, boardStopId, alightStopId,bidPrice) {
       return UserService.beeline({
         method: 'POST',
-        url: `/custom/lelong/routes/${route.id}/bids`,
+        url: `/crowdstart/routes/${route.id}/bids`,
         data: {
           price: bidPrice
         }

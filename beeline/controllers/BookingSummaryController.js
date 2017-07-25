@@ -228,7 +228,7 @@ export default [
 
         var result = await UserService.beeline({
           method: 'POST',
-          url: '/transactions/payment_ticket_sale',
+          url: '/transactions/tickets/payment',
           data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips($scope.book),
             promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : { code: '' },
