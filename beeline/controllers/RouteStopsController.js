@@ -31,20 +31,19 @@ export default [
     // ------------------------------------------------------------------------
     $scope.data = {
       stops: null, // array of stop objects
-      selectedStopId: null // int
+      selectedStop: null // stop object
     };
     // ------------------------------------------------------------------------ 
     // Hooks 
     // ------------------------------------------------------------------------
-    $scope.selectStop = (stopId) => { $scope.data.selectedStopId = stopId; };
+    $scope.selectStop = (stop) => { $scope.data.selectedStop = stop; };
     $scope.done = () => { 
-      if (typeof callback === "function") callback($scope.data.selectedStopId);
+      if (typeof callback === "function") callback($scope.data.selectedStop);
       $ionicHistory.goBack();
     };
     // ------------------------------------------------------------------------
     // Initialization
     // ------------------------------------------------------------------------
-    $scope.data.selectedStopId = stopId;
     $ionicLoading.show({
       template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading stop information</small>`,
       hideOnStateChange: true
@@ -54,6 +53,9 @@ export default [
       let [pickups, dropoffs] = BookingService.computeStops(route.trips);
       if (type === "pickup") $scope.data.stops = pickups;
       if (type === "dropoff") $scope.data.stops = dropoffs;
+      if (stopId) $scope.data.selectedStop = $scope.data.stops.find(
+        stop => stop.id === stopId
+      ); 
       // Scroll to the selected stop if we have one
       $ionicScrollDelegate.resize();
       $ionicLoading.hide();
