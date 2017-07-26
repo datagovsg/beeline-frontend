@@ -67,7 +67,7 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
   .state('tabs.route-detail', {
-    url: '/route/:routeId?pickupStop&dropoffStop',
+    url: '/route/:routeId?pickupStopId&dropoffStopId',
     views: {
       'tab-routes': {
         templateUrl: 'templates/route-detail.html',
@@ -76,7 +76,7 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
   .state('tabs.route-stops', {
-    url: '/route/:routeId/stops?type&stop',
+    url: '/route/:routeId/stops?type&stopId',
     views: {
       'tab-routes': {
         templateUrl: 'templates/route-stops.html',
