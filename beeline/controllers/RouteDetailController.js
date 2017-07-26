@@ -3,11 +3,26 @@ export default [
   "$state",
   "$stateParams",
   function($scope, $state, $stateParams) {
+    // ------------------------------------------------------------------------
+    // Input
+    // ------------------------------------------------------------------------
+    let routeId = $stateParams.routeId ? +$stateParams.routeId : null;
+    let pickupStopId = $stateParams.pickupStopId 
+                         ? +$stateParams.pickupStopId 
+                         : null;
+    let dropoffStopId = $stateParams.dropoffStopId 
+                          ? +$stateParams.dropoffStopId 
+                          : null;
+    // ------------------------------------------------------------------------
+    // Model
+    // ------------------------------------------------------------------------
     $scope.data = {
       pickupStop: null,
       dropoffStop: null
     }
-    let routeId = $stateParams.routeId;
+    // ------------------------------------------------------------------------ 
+    // Hooks 
+    // ------------------------------------------------------------------------
     $scope.choosePickup = () => {
       $state.go("tabs.route-stops", {
         routeId: routeId,
@@ -28,5 +43,8 @@ export default [
         }
       });
     };
+    // ------------------------------------------------------------------------
+    // Initialization
+    // ------------------------------------------------------------------------
   }
 ];
