@@ -10,6 +10,7 @@
     @include desktop { height: auto; }
 
     .stop-list {
+      flex: 1;
       // Strip the extra margin from the list class
       margin-bottom: 0; 
       // Add an edge to the scrolling list

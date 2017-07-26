@@ -17,8 +17,13 @@
         <div class="road" ng-bind="stop.road"></div>
       </div>
     </ion-content>
-    <button class="button primary-button" on-tap="done()" ng-if="data.stops">
-      Choose this thing {{ data.selectedStopId }}
+    <button 
+      class="button primary-button" 
+      on-tap="done()" 
+      ng-if="data.stops"
+      ng-disabled="!data.selectedStopId"
+    >
+      Select this stop
     </button>
   </ion-content>
 </ion-view>
