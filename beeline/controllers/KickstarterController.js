@@ -89,7 +89,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   )
 
   $scope.refreshRoutes = function() {
-    $q.all([KickstarterService.fetchLelong(true),KickstarterService.fetchBids(true), KickstarterService.fetchNearbyKickstarterIds()])
+    $q.all([KickstarterService.fetchCrowdstart(true),KickstarterService.fetchBids(true), KickstarterService.fetchNearbyKickstarterIds()])
     .then(()=>{
       $scope.data.error = null;
     })
@@ -108,7 +108,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   }
 
   //show loading spinner for the 1st time
-  loadingSpinner(timeoutProise(KickstarterService.fetchLelong(), 10*6000)
+  loadingSpinner(timeoutProise(KickstarterService.fetchCrowdstart(), 10*6000)
                   .then(()=>{
                     $scope.data.error = null;
                   })
@@ -123,15 +123,15 @@ export default function($scope, $state, UserService, RoutesService, $q,
                   }));
 
   $scope.$watchGroup([
-    ()=>KickstarterService.getLelong(),
+    ()=>KickstarterService.getCrowdstart(),
     ()=>KickstarterService.getBids(),
     'data.placeQuery'
-  ], ([lelongRoutes, userBids, placeQuery])=>{
-      if (!lelongRoutes) return;
+  ], ([crowdstartRoutes, userBids, placeQuery])=>{
+      if (!crowdstartRoutes) return;
 
       $scope.userBids = userBids;
       $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
-      let recentAndAvailable = _.partition(lelongRoutes, (x)=>{
+      let recentAndAvailable = _.partition(crowdstartRoutes, (x)=>{
         return _.includes(_.keys($scope.recentBidsById), x.id.toString());
       });
       // don't display it in backed list if the pass expires after 1 month of 1st trip

@@ -226,7 +226,7 @@ app
   // Pre-fetch the routes
   RoutesService.fetchRoutes();
   RoutesService.fetchRecentRoutes();
-  KickstarterService.fetchLelong();
+  KickstarterService.fetchCrowdstart();
   KickstarterService.fetchBids();
   LiteRoutesService.fetchLiteRoutes();
   TicketService.fetchTickets();
