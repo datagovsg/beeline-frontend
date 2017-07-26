@@ -24,7 +24,7 @@ export default [
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? +$stateParams.routeId : null;
     let type = $stateParams.type;
-    let stop = $stateParams.stop ? +$stateParams.stop : null;
+    let stopId = $stateParams.stopId ? +$stateParams.stopId : null;
     let callback = $stateParams.callback;
     // ------------------------------------------------------------------------
     // Model
@@ -44,7 +44,7 @@ export default [
     // ------------------------------------------------------------------------
     // Initialization
     // ------------------------------------------------------------------------
-    $scope.data.selectedStopId = stop;
+    $scope.data.selectedStopId = stopId;
     $ionicLoading.show({
       template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading stop information</small>`,
       hideOnStateChange: true
