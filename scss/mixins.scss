@@ -10,6 +10,11 @@
   }
 }
 
+@mixin transparent() {
+  background-color: transparent !important;
+  pointer-events: none !important;
+}
+
 // Gives the appearance of floating "height"
 // Based on the material design guidelines 
 // But with less vertical offset and more blur 
