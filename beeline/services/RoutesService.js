@@ -288,6 +288,19 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       return routeToRidesRemainingMap
     },
 
+    // New more abstracted method which differentiates between 0 and null 
+    // 0 means user is logged in a no credits found
+    // null means not logged in so we don't know
+    getPassCountForRoute: function(routeId) {
+      if (UserService.getUser()) {
+        if (!routeToRidesRemainingMap) return null;
+        let ridesRemaining = routeToRidesRemainingMap[routeId];
+        return ridesRemaining ? ridesRemaining : 0;
+      } else {
+        return null;
+      }
+    },
+
     // Retrieve the amount of rides remaining for a specific route
     // input:
     // - ignoreCache - boolean to determine if cache should be ignored
