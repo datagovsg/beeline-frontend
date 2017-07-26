@@ -3,13 +3,13 @@
     <div class="item item-icon-left item-icon-right" on-tap="choosePickup()">
       <i class="icon pickup-stop"></i>
       <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
-      <span ng-bind="data.pickupStop"></span>
+      <span ng-bind="data.pickupStop.description"></span>
       <i class="icon ion-ios-arrow-right"></i>
     </div>
     <div class="item item-icon-left item-icon-right" on-tap="chooseDropoff()">
       <i class="icon dropoff-stop"></i>
       <span class="placeholder" ng-hide="data.dropoffStop">Select dropoff stop</span>
-      <span ng-bind="data.dropoffStop"></span>
+      <span ng-bind="data.dropoffStop.description"></span>
       <i class="icon ion-ios-arrow-right"></i>
     </div>
     <div class="booking-info">
@@ -20,12 +20,14 @@
         You have 1 credit remaining
       </span>
       <span ng-if="data.passCount >= 1">
-        You have {{ data.passCount }} credits remaining
+        You have <span ng-bind="data.passCount"></span> credits remaining
       </span>
       <button class="button primary-button" on-tap="bookNext()">
         Book next trip
       </button>
-      As low as $4.30 per trip
+      <span ng-if="data.price">
+        As low as $<span ng-bind="data.price"></span> per trip
+      </span>
     </div>
   </ion-content>
 </ion-view>
