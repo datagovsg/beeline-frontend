@@ -45,11 +45,26 @@
 // New global styles
 // Check to see if there's an applicable ionic style first before adding here
 ////////////////////////////////////////////////////////////////////////////////
-
 // Setting a default point event style so we can make
 // parents transparent without affecting all their children
 * {
   pointer-events: auto;
+}
+
+.icon.pickup-stop {
+  background: url('../img/RoutePairBigStart.svg') center no-repeat transparent;
+  background-size: contain;
+  &:before { content: " "; }
+}
+
+.icon.dropoff-stop {
+  background: url('../img/RoutePairBigEnd.svg') center no-repeat transparent;
+  background-size: contain;
+  &:before { content: " "; }
+}
+
+span.placeholder {
+  color: $hint-color;
 }
 
 // Remove Google logo and Map marker from Autocomplete dropdown
@@ -87,7 +102,6 @@
   z-index: 3;
   text-transform: uppercase;
 
-  &:active, &:hover {
   &:active {
     border-bottom: 1px solid $primary-button-shadow;
     box-shadow: 1px 1px 1px rgba(0,0,0,0.6);

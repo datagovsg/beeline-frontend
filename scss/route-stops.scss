@@ -1,0 +1,28 @@
+.route-stops {
+  @include transparent();
+  > ion-content {
+    display: flex;
+    flex-direction: column;
+    // Setup the "partial" window mobile view
+    top: auto;
+    @include desktop { &.has-tabs { top: $bar-height; } }
+    height: 240px;
+    @include desktop { height: auto; }
+
+    .stop-list {
+      // Strip the extra margin from the list class
+      margin-bottom: 0; 
+      // Add an edge to the scrolling list
+      border-bottom-width: $item-border-width;
+      border-bottom-color: $item-default-border;
+      border-bottom-style: solid;
+      .stop-option {
+        cursor: pointer;
+        // Setup togglable elements for selected items
+        &.selected { .show-unselected { display: none; } }
+        &:not(.selected) { .show-selected { display: none; } }
+      }
+    }
+
+  }
+}
