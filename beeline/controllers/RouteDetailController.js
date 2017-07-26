@@ -2,7 +2,9 @@ export default [
   "$scope",
   "$state",
   "$stateParams",
-  function($scope, $state, $stateParams) {
+  "UserService",
+  "RoutesService",
+  function($scope, $state, $stateParams, UserService, RoutesService) {
     // ------------------------------------------------------------------------
     // Input
     // ------------------------------------------------------------------------
@@ -13,13 +15,16 @@ export default [
     let dropoffStopId = $stateParams.dropoffStopId 
                           ? +$stateParams.dropoffStopId 
                           : null;
+
     // ------------------------------------------------------------------------
     // Model
     // ------------------------------------------------------------------------
     $scope.data = {
+      passCount: null,
       pickupStop: null,
       dropoffStop: null
     }
+
     // ------------------------------------------------------------------------ 
     // Hooks 
     // ------------------------------------------------------------------------
@@ -33,6 +38,7 @@ export default [
         }
       });
     };
+
     $scope.chooseDropoff = () => {
       $state.go("tabs.route-stops", {
         routeId: routeId,
@@ -43,8 +49,22 @@ export default [
         }
       });
     };
+
+    $scope.bookNext = () => {
+      UserService.loginIfNeeded().then((output) => {
+        console.log("finished loginIfNeeded", output);
+      }).catch(error => {
+        console.log("error loginIfNeeded", error);
+      });
+    };
+
     // ------------------------------------------------------------------------
     // Initialization
     // ------------------------------------------------------------------------
+    $scope.$watch(
+      () => RoutesService.getPassCountForRoute(routeId),
+      (passCount) => { $scope.data.passCount = passCount; } 
+    )
+
   }
 ];

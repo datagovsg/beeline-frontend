@@ -267,6 +267,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
 
       // Is the user name null?
       checkNewUser(user);
+      return user;
     }
     // If an error occurs at any point stop and alert the user
     catch(error) {
@@ -283,6 +284,15 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
       }
       throw error; // Allow the calling function to catch the error
     };
+  };
+
+  let loginIfNeeded = async function() {
+    if (user) return user;
+    else {
+      let user = await promptLogIn();
+      if (user) return user;
+      else throw new Error("Log in aborted");
+    }
   };
 
   // Registration Sequence used for Welcome page (via Referral Link)
@@ -531,6 +541,7 @@ export default function UserService($http, $ionicPopup, $ionicLoading, $rootScop
     getUser: function() { return (user); },
     beeline: beelineRequest,
     promptLogIn,
+    loginIfNeeded,
     promptUpdatePhone,
     promptUpdateUserInfo,
     promptLogOut,

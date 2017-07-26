@@ -13,8 +13,18 @@
       <i class="icon ion-ios-arrow-right"></i>
     </div>
     <div class="booking-info">
-      You have 7 credits remaining
-      <button class="button primary-button">Book next trip</button>
+      <span ng-if="data.passCount === 0">
+        You don't have any credits remaining
+      </span>
+      <span ng-if="data.passCount === 1">
+        You have 1 credit remaining
+      </span>
+      <span ng-if="data.passCount >= 1">
+        You have {{ data.passCount }} credits remaining
+      </span>
+      <button class="button primary-button" on-tap="bookNext()">
+        Book next trip
+      </button>
       As low as $4.30 per trip
     </div>
   </ion-content>
