@@ -1,7 +1,21 @@
 <ion-view class="route-detail">
   <ion-content scroll="false">
-    <h1>Route details for {{ routeId }}</h1>
-    <div>Pickup stop: {{ pickupStop }}</div>
-    <button on-tap="chooseStop()">Choose stop</button>
+    <div class="item item-icon-left item-icon-right" on-tap="choosePickup()">
+      <i class="icon pickup-stop"></i>
+      <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
+      <span ng-bind="data.pickupStop"></span>
+      <i class="icon ion-ios-arrow-right"></i>
+    </div>
+    <div class="item item-icon-left item-icon-right" on-tap="chooseDropoff()">
+      <i class="icon dropoff-stop"></i>
+      <span class="placeholder" ng-hide="data.dropoffStop">Select dropoff stop</span>
+      <span ng-bind="data.dropoffStop"></span>
+      <i class="icon ion-ios-arrow-right"></i>
+    </div>
+    <div class="booking-info">
+      You have 7 credits remaining
+      <button class="button primary-button">Book next trip</button>
+      As low as $4.30 per trip
+    </div>
   </ion-content>
 </ion-view>
