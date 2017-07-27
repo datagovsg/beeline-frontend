@@ -84,6 +84,22 @@
     "hash": "2eeb34bba2571f5ada86ebc3ad601af3"
   },
   {
+    "file": "css/ionic.app.css",
+    "hash": "fc8706a19db9e3097d907093e34dfe91"
+  },
+  {
+    "file": "css/ionic.app.css.js",
+    "hash": "184c51bdf1667b0da183f555a193a61c"
+  },
+  {
+    "file": "css/operator-grab.css",
+    "hash": "9b30500d7fba70e24a128a8e6deac8e7"
+  },
+  {
+    "file": "css/operator-grab.css.js",
+    "hash": "0d8558c46dd215685b9a8141dd0607c7"
+  },
+  {
     "file": "favicon-16x16.png",
     "hash": "a732ddc1e605d4204cd4e39a98ba4d6a"
   },
@@ -614,6 +630,14 @@
   {
     "file": "js/qrcode.min.js",
     "hash": "517b55d3688ce9ef1085a3d9632bcb97"
+  },
+  {
+    "file": "lib/beeline/bundle.js",
+    "hash": "61b5e51f60b3e30913a39c2c30e58324"
+  },
+  {
+    "file": "lib/beeline/bundle.js.map",
+    "hash": "5aa288fdbd9781cc2f82eb6702137c7a"
   },
   {
     "file": "lib/ionic/css/ionic.css",
