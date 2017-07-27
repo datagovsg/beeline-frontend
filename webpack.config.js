@@ -7,10 +7,11 @@ const InlineEnviromentVariablesPlugin = require(
 );
 
 const prefix = process.env.BUILD_PREFIX || 'www'
+// const prefix = 'www'
+
 
 const INLINED_ENVIRONMENT_VARIABLES = [
-  "BACKEND_URL",
-  "GOOGLE_API_KEY"  
+  "BACKEND_URL"
 ];
 INLINED_ENVIRONMENT_VARIABLES.forEach(function(key) {
   assert(process.env[key], "process.env." + key + " must be set");
