@@ -5,7 +5,6 @@ export default function () {
     scope: {
       companyId: '<',
       features: '<',
-      signageText: '<',
     },
     link: function(scope, elem, attr) {
     }
