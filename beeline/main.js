@@ -30,6 +30,7 @@ require('./services/GeoUtils');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
 require('./services/assetScopeModalService');
+require('./services/fastCheckoutService');
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
