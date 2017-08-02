@@ -5,7 +5,7 @@ import assert from 'assert';
 angular.module('beeline')
 .service('purchaseRoutePassModalService', modalService)
 
-function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService) {
+function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService) {
   this.show = (routeId, hasSavedPaymentInfo, savedPaymentInfo) => {
     var scope = $rootScope.$new();
     var routePassModal = $ionicModal.fromTemplate(
@@ -29,6 +29,8 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
         scope.book.routePassPrice = scope.book.priceSchedules[choice].totalPrice
       }
     })
+
+    scope.showTermsOfUse = () => assetScopeModalService.showRoutePassTCModal();
 
     // pay for the route pass
     scope.completePayment = async function(paymentOptions) {
