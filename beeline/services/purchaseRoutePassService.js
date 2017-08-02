@@ -6,7 +6,7 @@ angular.module('beeline')
 .service('purchaseRoutePassModalService', modalService)
 
 function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService) {
-  this.show = (routeId, hasSavedPaymentInfo, savedPaymentInfo) => {
+  this.show = (route, routeId, hasSavedPaymentInfo, savedPaymentInfo) => {
     var scope = $rootScope.$new();
     var routePassModal = $ionicModal.fromTemplate(
       routePassTemplate, {
@@ -18,8 +18,6 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
 
     scope.book = {
       priceSchedules: null,
-      hasSavedPaymentInfo: null,
-      savedPaymentInfo: null,
       routePassPrice: null,
       routePassChoice: null
     }
@@ -68,9 +66,8 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
       try {
         var quantity = scope.book.priceSchedules[scope.book.routePassChoice].quantity
         var expectedPrice = scope.book.priceSchedules[scope.book.routePassChoice].totalPrice
-        var savedPaymentInfo = scope.book.savedPaymentInfo
         // if user has credit card saved
-        if (scope.book.hasSavedPaymentInfo) {
+        if (hasSavedPaymentInfo) {
           return scope.completePayment({
             customerId: savedPaymentInfo.id,
             sourceId: _.head(savedPaymentInfo.sources.data).id,
@@ -111,8 +108,6 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
     var purchaseRoutePassPromise = RoutesService.fetchPriceSchedule(routeId).then((response) => {
       return new Promise((resolve, reject) => {
         scope.book.priceSchedules = response
-        scope.book.hasSavedPaymentInfo = hasSavedPaymentInfo
-        scope.book.savedPaymentInfo = savedPaymentInfo
         scope.book.routePassChoice = 0
         routePassModal.show()
         scope.$on('routePassPurchaseDone', () => {
