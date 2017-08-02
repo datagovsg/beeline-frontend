@@ -69,7 +69,7 @@ angular.module('beeline')
               // if route has rp- tag
               if (route && routeQualifiedForRoutePass(route)) {
                 // show the modal to purchase route pass
-                await purchaseRoutePass(routeId, hasSavedPaymentInfo, paymentInfo)
+                await purchaseRoutePass(route, routeId, hasSavedPaymentInfo, paymentInfo)
               } else {
                 // no route pass option , ask to confirm T&Cs
 
