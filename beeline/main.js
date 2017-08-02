@@ -31,6 +31,7 @@ require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
 require('./services/assetScopeModalService');
 require('./services/fastCheckoutService');
+require('./services/purchaseRoutePassService');
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
