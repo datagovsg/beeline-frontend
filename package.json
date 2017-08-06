@@ -49,7 +49,7 @@
     "moment": "^2.15.1",
     "multiple-date-picker": "git+https://github.com/datagovsg/MultipleDatePicker.git#annotations",
     "ngclipboard": "^1.1.1",
-    "node-sass": "^4.5.2",
+    "node-sass": "^4.5.3",
     "q": "^1.4.1",
     "sass-loader": "^6.0.3",
     "shelljs": "^0.7.4",
