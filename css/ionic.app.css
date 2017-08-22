@@ -10308,20 +10308,6 @@ trip-code {
     left: 90px;
     width: 30px; }
 
-more-info .signage-info {
-  margin-top: 1em; }
-
-dynamic-signage div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin: 2em;
-  padding: 1em;
-  height: 120px;
-  width: 200px;
-  border: 1px solid #888; }
-
 /* variables */
 /* progress bar container */
 .progress-bar {
@@ -11120,11 +11106,6 @@ table.booking-history {
 
 #pg_summary .route-info .start-end {
   margin-top: 5px; }
-
-#pg_summary .signage img {
-  margin: 15px 0;
-  padding: 1px;
-  border: 1px solid #e6e6e6; }
 
 .nav-text {
   color: #fff;

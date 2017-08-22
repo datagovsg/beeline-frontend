@@ -85,7 +85,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "fc8706a19db9e3097d907093e34dfe91"
+    "hash": "e79f149277520044b856d9762d1bac59"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -93,7 +93,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "9b30500d7fba70e24a128a8e6deac8e7"
+    "hash": "c7d13712e8cc93abfddeaf55ba5db62f"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -637,11 +637,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "61b5e51f60b3e30913a39c2c30e58324"
+    "hash": "88957d73a080c2c0fe16613fadd8c6c8"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "5aa288fdbd9781cc2f82eb6702137c7a"
+    "hash": "1919e90241f07ee831bb470b6fdc0e61"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -953,7 +953,7 @@
   },
   {
     "file": "templates/lite-route-tracker.html",
-    "hash": "d52fd4268fdc9af9777f25db9ca8c859"
+    "hash": "0d6aba281a590761abb3c3b4fac5b900"
   },
   {
     "file": "templates/routes-list.html",
@@ -977,11 +977,11 @@
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "35d647e0862a2a325886a8574ead8adc"
+    "hash": "575c3641b3c8f2a9495912dbd377f3f8"
   },
   {
     "file": "templates/tab-lite-more-info.html",
-    "hash": "8129c3e75f3ec02dd8e2f5be7812a362"
+    "hash": "16ce35774a945f7c200858cccb9445ee"
   },
   {
     "file": "templates/tab-lite-summary.html",
