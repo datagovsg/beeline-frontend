@@ -10,7 +10,6 @@ export default function companyTnc(CompanyService, $q) {
     scope: {
       companyId: '=',
       features: '=',
-      signageText: '<?',
     },
     link: function(scope, elem, attr) {
       scope.company = {};

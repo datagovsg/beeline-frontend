@@ -121,7 +121,6 @@ app
 .directive('markdownRenderer', require('./directives/markdownRenderer').default)
 .directive('mapPolyRoute', require('./directives/mapPolyRoute').default)
 .directive('mapBusStops', require('./directives/mapBusStops').default)
-.directive('dynamicSignage', require('./directives/dynamicSignage.js').default)
 .directive('beelineBindHtml', require('./directives/beelineBindHtml.js').default)
 .directive('kickstartInfo', require('./directives/kickstartInfo/kickstartInfo.js').default)
 .directive('progressBar', require('./directives/progressBar/progressBar.js').default)
