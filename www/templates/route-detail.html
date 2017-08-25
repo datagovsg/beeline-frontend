@@ -1,17 +1,19 @@
 <ion-view class="route-detail">
   <ion-content scroll="false">
-    <div class="item item-icon-left item-icon-right" on-tap="choosePickup()">
-      <i class="icon pickup-stop"></i>
-      <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
-      <span ng-bind="data.pickupStop.description"></span>
-      <i class="icon ion-ios-arrow-right"></i>
-    </div>
-    <div class="item item-icon-left item-icon-right" on-tap="chooseDropoff()">
-      <i class="icon dropoff-stop"></i>
-      <span class="placeholder" ng-hide="data.dropoffStop">Select dropoff stop</span>
-      <span ng-bind="data.dropoffStop.description"></span>
-      <i class="icon ion-ios-arrow-right"></i>
-    </div>
+    <form name="stopsForm">
+      <div class="item item-icon-left item-icon-right" on-tap="choosePickup()">
+        <i class="icon pickup-stop"></i>
+        <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
+        <span ng-model="data.pickupStop" ng-bind="data.pickupStop.description" ng-required="true"></span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-icon-left item-icon-right" on-tap="chooseDropoff()">
+        <i class="icon dropoff-stop"></i>
+        <span class="placeholder" ng-hide="data.dropoffStop">Select dropoff stop</span>
+        <span ng-model="data.dropoffStop" ng-bind="data.dropoffStop.description" ng-required="true"></span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+    </form>
     <div class="booking-info">
       <span ng-if="data.passCount === 0">
         You don't have any credits remaining
@@ -22,8 +24,11 @@
       <span ng-if="data.passCount >= 1">
         You have <span ng-bind="data.passCount"></span> credits remaining
       </span>
-      <button class="button primary-button" on-tap="bookNext()">
-        Book next trip
+      <countdown board-time="data.nextTrip && data.nextTrip.date.getTime()"></countdown>
+      <button class="button primary-button" on-tap="bookNext()"
+        ng-disabled="stopsForm.$invalid || !data.seatsAvailable">
+        <span ng-if="data.nextTrip.availability && data.seatsAvailable">Book Next Trip{{ ' '+(data.nextTrip.date.getTime() | date:'dd MMM' : 'Z')+' '}}<span ng-show="data.nextTrip.date">{{'('+(data.nextTrip.date.getTime() | date:'EEE' : 'Z')+')'}}</span></span>
+        <span ng-if="!data.seatsAvailable">Tickets are sold out</span>
       </button>
       <span ng-if="data.price">
         As low as $<span ng-bind="data.price"></span> per trip
