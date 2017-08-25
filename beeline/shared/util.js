@@ -60,3 +60,32 @@ export function defaultMapOptions(options) {
     lines: [],
   }, options || {});
 }
+
+export function retriveNextTrip(route) {
+  //compare current date with nearest date trip's 1st board stop time
+  var sortedRunningTripInDates = _.sortBy(route.trips.filter(tr => tr.isRunning),'date');
+  var now = Date.now();
+  var nextTrip = null;
+  for (let trip of sortedRunningTripInDates) {
+    var sortedTripStopsInTime = _.sortBy(trip.tripStops,'time');
+    var boardTime = null, lastStopTime = null;
+    if (trip.bookingInfo.windowSize && trip.bookingInfo.windowType) {
+      if (trip.bookingInfo.windowType === 'firstStop') {
+        boardTime = sortedTripStopsInTime[0].time.getTime() + trip.bookingInfo.windowSize;
+      }
+      //FIXME : windowType == "stop"
+    }
+    //if no booking window information
+    if (boardTime == null) {
+      boardTime = sortedTripStopsInTime[0].time.getTime();
+    }
+    //the trip end time
+    lastStopTime = sortedTripStopsInTime[sortedTripStopsInTime.length-1].time.getTime();
+    //check seat is available
+    if (now < boardTime || (now >= boardTime && now <= lastStopTime)) {
+      nextTrip = trip;
+      break;
+    }
+  }
+  return nextTrip;
+}
