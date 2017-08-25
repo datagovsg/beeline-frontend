@@ -73,6 +73,9 @@ export default function($scope, UserService, RoutesService) {
           for (let routeCreditItem of t.itemsByType.routeCredits || []) {
             routeCreditItem.route = $scope.routesById[routeCreditItem.routeCredits.tag.substring(routeCreditItem.routeCredits.tag.indexOf("-") + 1)]
           }
+          for (let routePassItem of t.itemsByType.routePass || []) {
+            routePassItem.route = $scope.routesById[routePassItem.routePass.tag.substring(routePassItem.routePass.tag.indexOf("-") + 1)]
+          }
         }
       })
 

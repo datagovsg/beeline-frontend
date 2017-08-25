@@ -382,7 +382,7 @@ export default [
           template: err.data.message,
         })
       } finally {
-        RoutesService.fetchRouteCredits(true)
+        RoutesService.fetchRoutePasses(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass()
       }

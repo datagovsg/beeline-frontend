@@ -105,7 +105,7 @@ export default function(
   // Note that theres no need to update the scope manually
   // since this is done by the service watchers
   $scope.refreshRoutes = function (ignoreCache) {
-    RoutesService.fetchRouteCredits(ignoreCache);
+    RoutesService.fetchRoutePasses(ignoreCache);
     RoutesService.fetchRoutes(ignoreCache);
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
     var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache);
