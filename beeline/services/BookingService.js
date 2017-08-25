@@ -41,7 +41,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
         method: 'POST',
         url: '/transactions/tickets/quote',
         data: {
-          // creditTag: booking.applyRouteCredits ? booking.creditTag : null,
+          // creditTag: booking.applyRoutePass ? booking.creditTag : null,
           trips: trips,
           dryRun: true,
           promoCode: booking.promoCode ? {
@@ -51,7 +51,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
           },
           applyCredits: booking.applyCredits,
           applyReferralCredits: booking.applyReferralCredits,
-          applyRouteCredits: !!booking.applyRouteCredits
+          applyRoutePass: !!booking.applyRoutePass
         },
       })
       .then((resp) => {
@@ -66,7 +66,7 @@ export default function(UserService, CompanyService, RoutesService, $http) {
           totalDue: txItems.payment[0].debit,
           tripCount: trips.length,
           pricesPerTrip: this.summarizePrices(booking),
-          routeCredits: txItems['routeCredits'],
+          routePass: txItems['routePass'],
           referralCredits: txItems['referralCredits'],
           credits: txItems['userCredit'],
           discounts: txItems.discount,

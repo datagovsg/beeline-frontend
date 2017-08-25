@@ -33,7 +33,7 @@ export default [
       priceInfo: {},
       selectedDates: ($stateParams.selectedDates || '').split(',').map(ms => parseInt(ms)),
       invalidStopDates: [],
-      applyRouteCredits: false,
+      applyRoutePass: false,
       applyReferralCredits: false,
       applyCredits: false,
       creditTag: null,

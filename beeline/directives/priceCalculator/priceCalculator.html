@@ -54,7 +54,7 @@
     )">
     <div class="item-subtitle">Credits and Route Pass</div>
     <ul class="list">
-      <ion-toggle ng-model="booking.applyRouteCredits" toggle-class="toggle-royal" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
+      <ion-toggle ng-model="booking.applyRoutePass" toggle-class="toggle-royal" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
         <span class="text-wrap">Use my Route Pass ({{ booking.route.ridesRemaining }} trips remaining)</span>
       </ion-toggle>
       <ion-toggle ng-model="booking.applyReferralCredits" toggle-class="toggle-royal" ng-if="referralCredits && referralCredits > 0">
@@ -73,9 +73,9 @@
         <td>Total Amount</td>
         <td class="right">{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
-      <tr ng-if="priceInfo.routeCredits && priceInfo.routeCredits.length > 0">
+      <tr ng-if="priceInfo.routePass && priceInfo.routePass.length > 0">
         <td>Route pass - Using {{ ridesUsed }} of {{ booking.route.ridesRemaining}} trips remaining</td>
-        <td class="right">{{totalRouteCreditsUsed | currency}}</td>
+        <td class="right">{{totalRoutePassesUsed | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
         <td>
