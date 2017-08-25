@@ -86,6 +86,13 @@ export default function TicketService($http, $filter, UserService, p) {
         });
         return categorizedTickets;
       });
-		}
+		},
+
+    hasNextTripTicket: function(routeId, nextTripDateInMills) {
+      return this.fetchPreviouslyBookedDaysByRouteId(routeId)
+        .then((dates) => {
+          return dates && _.includes(dates, nextTripDateInMills)
+        })
+    }
   };
 }

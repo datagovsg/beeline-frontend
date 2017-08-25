@@ -9,14 +9,14 @@ export default [
   "RoutesService",
   "BookingService",
   function(
-    $scope, 
-    $state, 
-    $stateParams, 
-    $ionicHistory, 
+    $scope,
+    $state,
+    $stateParams,
+    $ionicHistory,
     $ionicLoading,
     $ionicPopup,
     $ionicScrollDelegate,
-    RoutesService, 
+    RoutesService,
     BookingService
   ) {
     // ------------------------------------------------------------------------
@@ -33,11 +33,11 @@ export default [
       stops: null, // array of stop objects
       selectedStop: null // stop object
     };
-    // ------------------------------------------------------------------------ 
-    // Hooks 
+    // ------------------------------------------------------------------------
+    // Hooks
     // ------------------------------------------------------------------------
     $scope.selectStop = (stop) => { $scope.data.selectedStop = stop; };
-    $scope.done = () => { 
+    $scope.done = () => {
       if (typeof callback === "function") callback($scope.data.selectedStop);
       $ionicHistory.goBack();
     };
@@ -55,14 +55,14 @@ export default [
       if (type === "dropoff") $scope.data.stops = dropoffs;
       if (stopId) $scope.data.selectedStop = $scope.data.stops.find(
         stop => stop.id === stopId
-      ); 
+      );
       // Scroll to the selected stop if we have one
       $ionicScrollDelegate.resize();
       $ionicLoading.hide();
     }).catch(error => {
-      // On error close out 
+      // On error close out
       $ionicLoading.hide();
-      $ionicPopup.alert({ 
+      $ionicPopup.alert({
         title: "Sorry there's been a problem loading the stop information",
         subTitle: error
       });

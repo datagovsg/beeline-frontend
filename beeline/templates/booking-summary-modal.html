@@ -1,0 +1,34 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-royal bar bar-header">
+    <h1 class="title">Summary</h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="closeModal()">
+    </button>
+  </ion-header-bar>
+  <ion-content scroll="auto">
+    <section class="card">
+      <h3 class="item item-divider">
+        Selected Dates
+      </h3>
+      <price-calculator id="priceCalc" class="item" booking="data" price="data.price">
+      </price-calculator>
+    </section>
+
+    <section class="card">
+      <h3 class="item item-divider">
+        Terms and Conditions of Service
+      </h3>
+      <company-tnc company-id="data.route.transportCompanyId"
+                   features="data.features"
+                   signage-text="data.route.notes.signage ? data.route.notes.signage : 'To ' + data.route.to"></company-tnc>
+      <ion-checkbox class="item item-text-wrap" ng-model="disp.termsChecked">
+        Yes, I have read and agree to the Terms and Conditions of Service.
+      </ion-checkbox>
+      <ion-checkbox
+        class="item item-text-wrap"
+        ng-model="disp.savePaymentChecked"
+        ng-if="!hasSavedPaymentInfo && !disp.zeroDollarPurchase">
+        Yes, I want to save this payment method for fast checkout in the future.
+      </ion-checkbox>
+    </section>
+  </ion-content>
+</ion-modal-view>
