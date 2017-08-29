@@ -2,7 +2,8 @@
 const app = angular.module('beeline')
 
 const OneSignalPromise = new Promise((resolve, reject) => {
-  app.run(function ($ionicPlatform) {
+  app.run(['$ionicPlatform', 'UserService',
+  function ($ionicPlatform, UserService) {
     $ionicPlatform.ready(function() {
       // Enable to debug issues.
       // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
@@ -17,15 +18,41 @@ const OneSignalPromise = new Promise((resolve, reject) => {
           .handleNotificationOpened(notificationOpenedCallback)
           .endInit();
 
-        // Resolve the plugin
-        resolve(window.plugins.OneSignal)
+        // Whenever the user changes, inform our server that the user
+        // has logged in with this particular device
+        function synchronizeUserId() {
+          return UserService.beeline({
+            method: 'POST',
+            url: '/user/push_notification_tag',
+          })
+          .then((result) => {
+            OneSignal.sendTag('user_tag', result.data.tag)
+          })
+          .catch((err) => {
+            if (err.status === 403 || err.status === 401) {
+              OneSignal.sendTag('user_tag', '')
+            }
+          })
+        }
+
+        synchronizeUserId()
+        UserService.on('userChanged', synchronizeUserId)
       }
       // Call syncHashedEmail anywhere in your app if you have the user's email.
       // This improves the effectiveness of OneSignal's "best-time" notification scheduling feature.
       // window.plugins.OneSignal.syncHashedEmail(userEmail);
     })
-  })
+  }])
   .factory('OneSignalPromise', function () {
     return OneSignalPromise
+  })
+  .factory('OneSignal', function (OneSignalPromise) {
+    return {
+      unsubscribe () {
+        return OneSignalPromise.then((OneSignal) => {
+          OneSignal.setSubscription(false)
+        })
+      }
+    }
   })
 })
