@@ -27,6 +27,7 @@ require('ngclipboard');
 require('./directives/extA');
 require('./services/RotatedImageService');
 require('./services/GeoUtils');
+require('./services/PushNotifications');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
 require('./directives/routeItem/animatedRoute');
