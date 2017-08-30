@@ -66,11 +66,15 @@ angular.module('beeline')
 
       // called once user is logged in
       // TODO: where to get the route Object?
+
+      // return Promise
       // tell whether user is eligible to buy next trip ticket
       // if YES, return nextTrip Object
       // if NO, return error Object
-      validate: function(route) {
+      verify: function(route) {
         var nextTrip = retriveNextTrip(route)
+        // move the availability check here
+
         var hasNextTripTicket = null, previouslyBookedDays = null
         // user has the next trip ticket
         if (user) {
@@ -120,6 +124,7 @@ angular.module('beeline')
             } else {
               // ask to confirm T&Cs
               // show in modal to confirm next trip date & deduct 1 pass from user
+              // NOTES: no promotion code filed needed
               // switch to 'Ticket' view
             }
             return resolve('success')
