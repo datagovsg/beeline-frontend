@@ -57,12 +57,12 @@ inquirer.prompt([
       "app-staging.beeline.sg",
       ["www/CNAME", "www/chcp.json "]
     );
-    shell.exec("gh-pages -d www/");
+    shell.exec("gh-pages -t -d www/");
     console.log(STAGING_COMPLETE_MESSAGE);
   }
   // Production deployment process
   if (answers.target === "Production" && answers.confirm === true) {
-    shell.exec(`gh-pages -r ${PROD_TARGET} -d www/`);
+    shell.exec(`gh-pages -t -r ${PROD_TARGET} -d www/`);
     console.log(PRODUCTION_COMPLETE_MESSAGE);
   }
 });
