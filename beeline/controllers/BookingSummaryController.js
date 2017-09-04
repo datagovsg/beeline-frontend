@@ -30,7 +30,7 @@ export default [
       price: undefined,
       hasInvalidDate: false,
       features: null,
-      applyRouteCredits: false,
+      applyRoutePass: false,
       applyReferralCredits: false,
       applyCredits: false,
       creditTag: null,
@@ -233,8 +233,8 @@ export default [
             trips: BookingService.prepareTrips($scope.book),
             promoCode: $scope.book.promoCode ? { code: $scope.book.promoCode } : { code: '' },
             // don't use route credits if toggle if off
-            // creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
-            applyRouteCredits: $scope.book.applyRouteCredits ? true : false,
+            // creditTag: $scope.book.applyRoutePass ? $scope.book.creditTag : null,
+            applyRoutePass: $scope.book.applyRoutePass ? true : false,
             applyCredits: $scope.book.applyCredits,
             applyReferralCredits: $scope.book.applyReferralCredits,
             expectedPrice: $scope.book.price
@@ -255,7 +255,7 @@ export default [
           template: err.data.message,
         })
       } finally {
-        RoutesService.fetchRouteCredits(true)
+        RoutesService.fetchRoutePasses(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass()
 

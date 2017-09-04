@@ -42,14 +42,14 @@ export default [
                 $scope.booking.route = route;
                 if (routePassCountMap) {
                   $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
-                  $scope.booking.applyRouteCredits = ($scope.booking.route.ridesRemaining > 0)
+                  $scope.booking.applyRoutePass = ($scope.booking.route.ridesRemaining > 0)
                 }
               })
             }
             else {
               if (routePassCountMap) {
                 $scope.booking.route.ridesRemaining = routePassCountMap[$scope.booking.routeId]
-                $scope.booking.applyRouteCredits = ($scope.booking.route.ridesRemaining > 0)
+                $scope.booking.applyRoutePass = ($scope.booking.route.ridesRemaining > 0)
               }
             }
           });
@@ -79,10 +79,10 @@ export default [
               return;
             $scope.priceInfo = priceInfo;
             $scope.price = priceInfo.totalDue;
-            $scope.ridesUsed = $scope.booking.applyRouteCredits
+            $scope.ridesUsed = $scope.booking.applyRoutePass
               ? Math.min($scope.booking.route.ridesRemaining, priceInfo.tripCount)
               : 0
-            $scope.totalRouteCreditsUsed = _.sumBy($scope.priceInfo.routeCredits, x => - parseFloat(x.debit))
+            $scope.totalRoutePassesUsed = _.sumBy($scope.priceInfo.routePass, x => - parseFloat(x.debit))
             $scope.errorMessage = null;
           })
           .catch((error) => {
@@ -97,7 +97,7 @@ export default [
 
         var latestRequest = null;
         $scope.$watch(
-          () => _.pick($scope.booking, ['selectedDates', 'applyRouteCredits', 'applyCredits', 'applyReferralCredits', 'promoCode' /* , qty */]),
+          () => _.pick($scope.booking, ['selectedDates', 'applyRoutePass', 'applyCredits', 'applyReferralCredits', 'promoCode' /* , qty */]),
           recomputePrices, true);
 
         $scope.$on(

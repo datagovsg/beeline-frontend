@@ -59,8 +59,8 @@ export default [
 
     $scope.$watchGroup([()=>KickstarterService.getCrowdstartById($scope.book.routeId),
       ()=>KickstarterService.getBidInfo($scope.book.routeId),
-      ()=>RoutesService.getRouteCredits($scope.book.creditTag)],
-      ([route, bid, credit])=>{
+      ()=>RoutesService.getRoutePasses($scope.book.creditTag)],
+      ([route, bid, passes])=>{
         if (!route) return;
         $scope.book.route = route;
         /** Summarizes the stops from trips by comparing their stop location and time */
@@ -77,8 +77,7 @@ export default [
         $scope.book.alightStop =route.trips[0]
               .tripStops
               .find(ts => $scope.book.alightStopId == ts.stop.id);
-        if(!credit) return;
-        $scope.book.passAvailable = credit / $scope.book.bidPrice;
+        $scope.book.passAvailable = (passes || []).length;
     })
 
 

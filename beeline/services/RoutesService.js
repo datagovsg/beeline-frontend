@@ -42,19 +42,19 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
   var lastPromise = null;
 
   // For Route Credits
-  var routeCreditsCache;
-  var tagToCreditsMap;
+  var routePassesCache;
+  var tagToPassesMap;
   var routePassCache;
   var routeToRidesRemainingMap;
   var routesWithRoutePassPromise;
   var routesWithRoutePass;
   var activatedKickstarterRoutes;
-  var routeToCreditTagsPromise = null;
-  var routeToCreditTags = null;
+  var routeToRoutePassTagsPromise = null;
+  var routeToRoutePassTags = null;
 
   UserService.userEvents.on('userChanged', () => {
     instance.fetchRecentRoutes(true)
-    instance.fetchRouteCredits(true)
+    instance.fetchRoutePasses(true)
     instance.fetchRoutesWithRoutePass()
     instance.fetchRecentRoutes(true)
   })
@@ -235,15 +235,15 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       .value();
     },
 
-    // get all routeCredits associated with the user
+    // get all route passes associated with the user
     // performs db query where necessary or specified
     // input:
     // - ignoreCache - boolean
     // output:
-    // - Promise containing all routeCredits associated with user
-    fetchRouteCredits: function(ignoreCache){
-      if(!ignoreCache && routeCreditsCache){
-        return routeCreditsCache
+    // - Promise containing all route passes associated with user
+    fetchRoutePasses: function(ignoreCache){
+      if(!ignoreCache && routePassesCache){
+        return routePassesCache
       }
       // Destroy the cache for dependent calls
       // This is a hack
@@ -252,29 +252,29 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 
       let user = UserService.getUser();
       if(!user){
-        return routeCreditsCache = Promise.resolve(tagToCreditsMap = null);
+        return routePassesCache = Promise.resolve(tagToPassesMap = null);
       }
       else {
-        return routeCreditsCache = UserService.beeline({
+        return routePassesCache = UserService.beeline({
           method: 'GET',
-          url: '/routeCredits'
+          url: '/route_passes'
         }).then((response) => {
-          return tagToCreditsMap = response.data
+          return tagToPassesMap = response.data
         })
       }
     },
 
-    // Retrieve routeCredits information from cache
+    // Retrieve route passes information from cache
     // input:
     // - tag - String: tag associated with route. optional
     // output:
-    // - Object containing all routeCredits associated with user
+    // - Object containing all route passes associated with user
     // - [tag provided] amount of credits specific to the tag
-    getRouteCredits: function(tag){
-      if(tag && tagToCreditsMap){
-        return tagToCreditsMap[tag]
+    getRoutePasses: function(tag){
+      if(tag && tagToPassesMap){
+        return tagToPassesMap[tag]
       } else {
-        return tagToCreditsMap
+        return tagToPassesMap
       }
     },
 
@@ -309,27 +309,24 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     fetchRoutePassCount: function(ignoreCache){
       if(ignoreCache || !routePassCache){
         let allRoutesPromise = this.fetchRoutes(ignoreCache)
-        let allRouteCreditsPromise = this.fetchRouteCredits(ignoreCache)
+        let allRoutePassesPromise = this.fetchRoutePasses(ignoreCache)
 
-        routePassCache = $q.all([allRoutesPromise, allRouteCreditsPromise]).then(function(values){
+        routePassCache = $q.all([allRoutesPromise, allRoutePassesPromise]).then(function(values){
           let allRoutes = values[0]
-          let allRouteCredits = values[1];
-          let allRouteCreditTags = _.keys(allRouteCredits);
+          let allRoutePasses = values[1];
+          let allRoutePassTags = _.keys(allRoutePasses);
           routeToRidesRemainingMap = {}
 
           allRoutes.forEach(function(route){
-            let notableTags = _.intersection(route.tags, allRouteCreditTags);
+            let notableTags = _.intersection(route.tags, allRoutePassTags);
             if(notableTags.length < 1) return //no credit for such route
             else {
               // support multiple tags e.g. crowdstart-140, rp-161
               // calculate the rides left in the route pass
-              let price = route.trips[0].priceF
-              if(price <= 0) return
               notableTags.forEach(function(tag) {
-                let creditsAvailable = parseFloat(allRouteCredits[tag])
-                routeToRidesRemainingMap[route.id] =  routeToRidesRemainingMap[route.id] ?
-                  routeToRidesRemainingMap[route.id]+ Math.floor(creditsAvailable / price) :
-                  Math.floor(creditsAvailable / price)
+                let passesAvailable = allRoutePasses[tag];
+                routeToRidesRemainingMap[route.id] =
+                  (routeToRidesRemainingMap[route.id] || 0) + passesAvailable;
               })
             }
           })
@@ -394,22 +391,22 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
     },
 
     // Returns promise containing a map of all routeId to their corresponding tags
-    // based on the routeCredits available to a user
-    fetchRouteCreditTags: function(ignoreCache){
-      if (!ignoreCache && routeToCreditTagsPromise) {
-        return routeToCreditTagsPromise;
+    // based on the route passes available to a user
+    fetchRoutePassTags: function(ignoreCache){
+      if (!ignoreCache && routeToRoutePassTagsPromise) {
+        return routeToRoutePassTagsPromise;
       }
 
       let routesPromise = this.fetchRoutesWithRoutePass()
-      let routeCreditsPromise = this.fetchRouteCredits()
+      let routePassesPromise = this.fetchRoutePasses()
 
-      return routeToCreditTagsPromise = $q.all([routesPromise, routeCreditsPromise])
-      .then(([routes, routeCredits])=>{
-        if(routeCredits){
-          routeToCreditTags = {}
+      return routeToRoutePassTagsPromise = $q.all([routesPromise, routePassesPromise])
+      .then(([routes, routePasses])=>{
+        if(routePasses){
+          routeToRoutePassTags = {}
           routes.forEach(route => {
-            let routeCreditTags = _.keys(routeCredits);
-            let notableTags = _.intersection(route.tags, routeCreditTags)
+            let routePassTags = _.keys(routePasses);
+            let notableTags = _.intersection(route.tags, routePassTags)
             if(notableTags.length >= 1){
               // sort in alphabetical order followed by
               // to encourage use of crowdstart credit before rp-
@@ -418,29 +415,29 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
               })
               // filter out no balance tag
               notableTags = _.filter(notableTags, (tag)=>{
-                return routeCredits[tag] > 0
+                return routePasses[tag] > 0
               })
-              routeToCreditTags[route.id] = notableTags
+              routeToRoutePassTags[route.id] = notableTags
             } else {
-              routeToCreditTags[route.id] = null
+              routeToRoutePassTags[route.id] = null
             }
           })
 
-          return routeToCreditTags
+          return routeToRoutePassTags
         } else {
-          return routeToCreditTags = null
+          return routeToRoutePassTags = null
         }
       })
     },
 
-    // Returns the credit tag matched to a route if routeId is given
+    // Returns the route pass tag matched to a route if routeId is given
     // Otherwise, returns a map of all routeId to their corresponding tags
-    // based on the routeCredits available to a user
-    getRouteCreditTags: function(routeId){
-      if(routeId && routeToCreditTags){
-        return routeToCreditTags[routeId]
+    // based on the route passes available to a user
+    getRoutePassTags: function(routeId){
+      if(routeId && routeToRoutePassTags){
+        return routeToRoutePassTags[routeId]
       } else {
-        return routeToCreditTags
+        return routeToRoutePassTags
       }
     },
 

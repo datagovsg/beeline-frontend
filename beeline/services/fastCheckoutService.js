@@ -133,7 +133,7 @@ angular.module('beeline')
                 routeId: routeId,
                 price: route.trips[0].price,
                 route: route,
-                applyCredits: true,
+                applyRoutePass: true,
                 selectedDates: selectedDates,
                 boardStopId: boardStopId,
                 alightStopId: alightStopId,

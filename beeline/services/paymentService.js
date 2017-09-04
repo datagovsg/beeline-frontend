@@ -20,8 +20,8 @@ angular.module('beeline')
           trips: BookingService.prepareTrips(book),
           promoCode: book.promoCode ? { code: book.promoCode } : { code: '' },
           // don't use route credits if toggle if off
-          // creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
-          applyRouteCredits: book.applyRouteCredits ? true : false,
+          // creditTag: $scope.book.applyRoutePass ? $scope.book.creditTag : null,
+          applyRoutePass: book.applyRoutePass ? true : false,
           applyCredits: book.applyCredits ? true : false,
           applyReferralCredits: book.applyReferralCredits ? true : false,
           expectedPrice: book.price
@@ -43,7 +43,7 @@ angular.module('beeline')
         template: err.data.message,
       })
     } finally {
-      RoutesService.fetchRouteCredits(true)
+      RoutesService.fetchRoutePasses(true)
       RoutesService.fetchRoutePassCount()
       RoutesService.fetchRoutesWithRoutePass()
 
@@ -170,7 +170,7 @@ angular.module('beeline')
         return new Promise((resolve, reject) => {return resolve('routePassError')})
 
       } finally {
-        RoutesService.fetchRouteCredits(true)
+        RoutesService.fetchRoutePasses(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass()
       }
