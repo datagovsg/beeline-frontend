@@ -84,6 +84,8 @@ export function retriveNextTrip(route) {
     //check seat is available
     if (now < boardTime || (now >= boardTime && now <= lastStopTime)) {
       nextTrip = trip;
+      // assign the boardTime to the Object
+      nextTrip.boardTime = boardTime
       break;
     }
   }

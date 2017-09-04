@@ -3,7 +3,7 @@ import {retriveNextTrip} from '../shared/util'
 
 angular.module('beeline')
 .factory('FastCheckoutService', function fastCheckoutService(RoutesService, UserService,
-    purchaseRoutePassModalService, TicketService) {
+    purchaseRoutePassModalService, TicketService, $stateParams, BookingSummaryModalService) {
 
     var user;
     var hasSavedPaymentInfo;
@@ -13,7 +13,7 @@ angular.module('beeline')
     var routeId;
 
     UserService.userEvents.on('userChanged', () => {
-      instance.reValidate(route)
+      instance.verify(routeId)
     })
 
     // login
@@ -46,8 +46,8 @@ angular.module('beeline')
     }
 
     //  modal for purchase route pass
-    function purchaseRoutePass(routeId, hasSavedPaymentInfo, savedPaymentInfo) {
-      return purchaseRoutePassModalService.show(routeId, hasSavedPaymentInfo, savedPaymentInfo)
+    function purchaseRoutePass(route, routeId, hasSavedPaymentInfo, savedPaymentInfo) {
+      return purchaseRoutePassModalService.show(route, routeId, hasSavedPaymentInfo, savedPaymentInfo)
     }
 
 
@@ -71,13 +71,14 @@ angular.module('beeline')
       // tell whether user is eligible to buy next trip ticket
       // if YES, return nextTrip Object
       // if NO, return error Object
-      verify: function(route) {
+      verify: async function(routeId) {
+        route = await RoutesService.getRoute(routeId)
         var nextTrip = retriveNextTrip(route)
         // move the availability check here
 
         var hasNextTripTicket = null, previouslyBookedDays = null
         // user has the next trip ticket
-        if (user) {
+        if (UserService.getUser()) {
           var allTickets = TicketService.getTickets();
           if (allTickets != null) {
             var ticketsByRouteId = _.groupBy(allTickets, ticket => ticket.boardStop.trip.routeId);
@@ -97,15 +98,16 @@ angular.module('beeline')
             hasNextTripTicket = false;
           }
         }
+
         return hasNextTripTicket
       },
 
-      fastCheckout: function (routeId) {
+      fastCheckout: function (routeId, boardStopId, alightStopId, selectedDates) {
         return new Promise(async (resolve, reject) => {
           try {
             user = await userLoginPromise()
             hasSavedPaymentInfo = _.get(user, 'savedPaymentInfo.sources.data.length', 0) > 0
-            paymentInfo = hasSavedPaymentInfo ? _.get(user, 'savedPaymentInfo.sources.data[0]') : null
+            paymentInfo = hasSavedPaymentInfo ? _.get(user, 'savedPaymentInfo') : null
             route = await RoutesService.getRoute(routeId)
             ridesRemaining = await ridesRemainingPromise(routeId)
             if (!ridesRemaining) {
@@ -126,6 +128,18 @@ angular.module('beeline')
               // show in modal to confirm next trip date & deduct 1 pass from user
               // NOTES: no promotion code filed needed
               // switch to 'Ticket' view
+              // booking Object
+              await BookingSummaryModalService.show({
+                routeId: routeId,
+                price: route.trips[0].price,
+                route: route,
+                applyCredits: true,
+                selectedDates: selectedDates,
+                boardStopId: boardStopId,
+                alightStopId: alightStopId,
+                hasSavedPaymentInfo: hasSavedPaymentInfo
+              })
+
             }
             return resolve('success')
           }

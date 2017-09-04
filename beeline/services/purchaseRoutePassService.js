@@ -5,8 +5,9 @@ import assert from 'assert';
 angular.module('beeline')
 .service('purchaseRoutePassModalService', modalService)
 
-function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService) {
-  this.show = (route, routeId, hasSavedPaymentInfo, savedPaymentInfo) => {
+function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService, PaymentService, UserService) {
+  var self = this
+  self.show = (route, routeId, hasSavedPaymentInfo, savedPaymentInfo) => {
     var scope = $rootScope.$new();
     var routePassModal = $ionicModal.fromTemplate(
       routePassTemplate, {
@@ -19,7 +20,10 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
     scope.book = {
       priceSchedules: null,
       routePassPrice: null,
-      routePassChoice: null
+      routePassChoice: null,
+      hasSavedPaymentInfo: hasSavedPaymentInfo,
+      brand: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].brand : null,
+      last4Digtis: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].last4 : null
     }
 
     scope.$watch('book.routePassChoice', (choice) => {
@@ -30,45 +34,16 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
 
     scope.showTermsOfUse = () => assetScopeModalService.showRoutePassTCModal();
 
-    // pay for the route pass
-    scope.completePayment = async function(paymentOptions) {
-      try {
-        let routePassTagList = route.tags.filter((tag) => {
-          return tag.includes('rp-')
-        })
-        // assert there is no more than 1 rp- tag
-        assert(routePassTagList.length === 1)
-        let passValue = route.trips[0].price * scope.book.priceSchedules[scope.book.routePassChoice].quantity
-        var result = await UserService.beeline({
-          method: 'POST',
-          url: '/transactions/route_passes/payment',
-          data: _.defaults(paymentOptions, {
-            creditTag: routePassTagList[0],
-            promoCode: { code: '' },
-            companyId: route.transportCompanyId,
-            expectedPrice: scope.book.priceSchedules[scope.book.routePassChoice].totalPrice,
-            value: passValue
-          }),
-        });
-        assert(result.status == 200);
-        scope.emit('routePassPurchaseDone')
-      } catch (err) {
-        return scope.$emit('routePassError')
-      } finally {
-        RoutesService.fetchRouteCredits(true)
-        RoutesService.fetchRoutePassCount()
-        RoutesService.fetchRoutesWithRoutePass()
-      }
-    }
-
     // Prompts for card and processes payment with one time stripe token.
     scope.payForRoutePass = async function() {
       try {
+        var paymentPromise
         var quantity = scope.book.priceSchedules[scope.book.routePassChoice].quantity
         var expectedPrice = scope.book.priceSchedules[scope.book.routePassChoice].totalPrice
+        var passValue = route.trips[0].price * scope.book.priceSchedules[scope.book.routePassChoice].quantity
         // if user has credit card saved
         if (hasSavedPaymentInfo) {
-          return scope.completePayment({
+          paymentPromise = PaymentService.payForRoutePass(route, expectedPrice, passValue, {
             customerId: savedPaymentInfo.id,
             sourceId: _.head(savedPaymentInfo.sources.data).id,
           });
@@ -79,29 +54,37 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
               null));
 
             if (!stripeToken) {
-              return scope.$emit('routePassError')
+              paymentPromise =  new Promise((resolve, reject) => {
+                return reject('no Stripe Token')
+              })
             }
 
             //saves payment info if doesn't exist
             if (scope.book.savePaymentChecked) {
               await UserService.savePaymentInfo(stripeToken.id)
-              return scope.completePayment({
-                customerId: savedPaymentInfo.id,
-                sourceId: _.head(savedPaymentInfo.sources.data).id,
+              let user = await UserService.getUser()
+              paymentPromise =  PaymentService.payForRoutePass(route, expectedPrice, passValue, {
+                customerId: user.savedPaymentInfo.id,
+                sourceId:_.head(user.savedPaymentInfo.sources.data).id,
               });
             } else {
-              return scope.completePayment({
+              paymentPromise = PaymentService.payForRoutePass(route, expectedPrice, passValue, {
                 stripeToken: stripeToken.id,
               });
             }
+
+            return paymentPromise
           }
         } catch (err) {
           console.log(err)
-          return scope.$emit('routePassError')
+          return new Promise((resolve, reject) => {
+            return reject('routePassError')
+          })
         }
       }
 
     function cleanup() {
+      console.log('cleanup')
       routePassModal.remove();
     }
 
@@ -110,18 +93,22 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
         scope.book.priceSchedules = response
         scope.book.routePassChoice = 0
         routePassModal.show()
-        scope.$on('routePassPurchaseDone', () => {
-          return resolve('Payment Done')
-        })
-        scope.$on('routePassError', () => {
-          return reject('Payment Failed')
-        })
+        // scope.$on('routePassPurchaseDone', () => {
+        //   return resolve('Payment Done')
+        // })
+        // scope.$on('routePassError', () => {
+        //   return reject('Payment Failed')
+        // })
         scope.proceed = async function() {
           routePassModal.hide()
           if (scope.book.priceSchedules[scope.book.routePassChoice].quantity === 1) {
             // ask to confirm T&Cs
           } else {
-            return scope.payForRoutePass()
+            return scope.payForRoutePass().then(() => {
+              return resolve('Payment Done')
+            },() => {
+              return reject('Payment Failed')
+            })
           }
         }
 
