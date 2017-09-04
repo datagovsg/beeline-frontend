@@ -9,7 +9,7 @@
       <h3 class="item item-divider">
         Selected Dates
       </h3>
-      <price-calculator id="priceCalc" class="item" booking="data" price="data.price">
+      <price-calculator id="priceCalc" class="item" booking="book" price="book.price">
       </price-calculator>
     </section>
 
@@ -17,18 +17,25 @@
       <h3 class="item item-divider">
         Terms and Conditions of Service
       </h3>
-      <company-tnc company-id="data.route.transportCompanyId"
-                   features="data.features"
-                   signage-text="data.route.notes.signage ? data.route.notes.signage : 'To ' + data.route.to"></company-tnc>
+      <company-tnc company-id="book.route.transportCompanyId"
+                   features="book.features"
+                   signage-text="book.route.notes.signage ? book.route.notes.signage : 'To ' + book.route.to"></company-tnc>
       <ion-checkbox class="item item-text-wrap" ng-model="disp.termsChecked">
         Yes, I have read and agree to the Terms and Conditions of Service.
       </ion-checkbox>
       <ion-checkbox
         class="item item-text-wrap"
         ng-model="disp.savePaymentChecked"
-        ng-if="!hasSavedPaymentInfo && !disp.zeroDollarPurchase">
+        ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase">
         Yes, I want to save this payment method for fast checkout in the future.
       </ion-checkbox>
+    </section>
+    <section>
+      <button class="button primary-button"
+              ng-click="payHandler()"
+              ng-disabled="disp.hasError || !disp.termsChecked">
+        Confirm and Pay
+      </button>
     </section>
   </ion-content>
 </ion-modal-view>
