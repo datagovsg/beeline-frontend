@@ -3,10 +3,10 @@ import bookingSummaryTemplate from '../templates/booking-summary-modal.html';
 import assert from 'assert';
 
 angular.module('beeline')
-.service('bookingSummaryModalService', modalService)
+.service('BookingSummaryModalService', modalService)
 
-function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService) {
-  this.show = (route, routeId, hasSavedPaymentInfo, savedPaymentInfo) => {
+function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService, PaymentService) {
+  this.show = (booking) => {
     var scope = $rootScope.$new();
     var bookingSummaryModal = $ionicModal.fromTemplate(
       bookingSummaryTemplate, {
@@ -16,12 +16,24 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
 
     scope.modal = bookingSummaryModal;
 
-    scope.data = {
-      price: null,
-      route: null,
-      features: null
-    }
+    // scope.book = {
+    //   price: null,
+    //   route: route,
+    //   features: null,
+    //   applyCredits: false,
+    //   selectedDates: [],
+    //   boardStopId: parseInt($stateParams.boardStop),
+    //   alightStopId: parseInt($stateParams.alightStop),
+    //   hasSavedPaymentInfo: null,
+    // }
 
+    scope.book = booking
+    scope.hasError = false
+    scope.disp = {
+      termsChecked: false,
+      hasError: false,
+      zeroDollarPurchase: scope.book.price === 0
+    }
 
     function cleanup() {
       bookingSummaryModal.remove();
@@ -31,9 +43,36 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
       bookingSummaryModal.hide()
     }
 
+    // errorMessage passed back from priceCalculator
+    scope.$watch('errorMessage', (err)=>{
+      console.log(err)
+      scope.disp.hasError = true
+    })
 
-    purchaseRoutePassPromise.then(cleanup, cleanup);
+    var bookingSummaryPromise = RoutesService.getRouteFeatures(parseInt(scope.book.routeId))
+      .then((features)=>{
+        scope.book.features = features;
+        return new Promise((resolve, reject) => {
+          bookingSummaryModal.show()
+          scope.payHandler = function () {
+            try {
+              bookingSummaryModal.hide()
+              PaymentService.payHandler(scope.book, scope.book.savedPaymentInfo)
+              scope.disp.hasError = false
+              return resolve('ticket purchased successfully')
+            }
+            catch(err) {
+              console.log(err)
+              scope.disp.hasError = true
+              return reject('ticket purhchased failed')
+            }
+          }
+        })
+      })
 
-    return purchaseRoutePassPromise;
+
+    bookingSummaryPromise.then(cleanup, cleanup);
+
+    return bookingSummaryPromise;
   }
 }

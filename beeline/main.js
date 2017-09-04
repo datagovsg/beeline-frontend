@@ -32,6 +32,8 @@ require('./directives/mapBusIcon');
 require('./services/assetScopeModalService');
 require('./services/fastCheckoutService');
 require('./services/purchaseRoutePassService');
+require('./services/paymentService');
+require('./services/bookingSummaryModalService')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration

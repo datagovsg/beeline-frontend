@@ -41,6 +41,7 @@ export default [
       nextTrip: null,
       minsBeforeClose: null,
       seatsAvailable: null,
+      hasNextTripTicket: null,
     }
 
     // ------------------------------------------------------------------------
@@ -76,8 +77,18 @@ export default [
       // }).catch(error => {
       //   console.log("error loginIfNeeded", error);
       // });
-      FastCheckoutService.fastCheckout(routeId)
+      FastCheckoutService.fastCheckout(routeId,
+        $scope.data.pickupStop.id, $scope.data.dropoffStop.id, [$scope.data.nextTrip.date.getTime()])
     };
+
+
+    $scope.$watch(() => UserService.getUser(), (user) => {
+      if (user) {
+         FastCheckoutService.verify(routeId).then((response) => {
+           $scope.data.hasNextTripTicket = response
+        })
+      }
+    })
 
     // ------------------------------------------------------------------------
     // Initialization
