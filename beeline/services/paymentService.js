@@ -3,7 +3,8 @@ import processingPaymentsTemplate from '../templates/processing-payments.html';
 
 angular.module('beeline')
 .factory('PaymentService', function paymentService(UserService, RoutesService,
-  $ionicPopup, $ionicLoading, BookingService, CreditsService, StripeService, loadingSpinner) {
+  $ionicPopup, $ionicLoading, BookingService, CreditsService, StripeService,
+  loadingSpinner, TicketService) {
   var isPaymentProcessing = false
   /** After you have settled the payment mode **/
   // book is booking Object
