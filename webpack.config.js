@@ -7,10 +7,21 @@ const InlineEnviromentVariablesPlugin = require(
 );
 
 const prefix = process.env.BUILD_PREFIX || 'www'
+// const prefix = 'www'
+
+const DEFAULT_BACKEND_URL = "https://api.beeline.sg";
+const BACKEND_URL_NOT_SET_MESSAGE = `
+BACKEND_URL environment variable not set. Defaulting to ${DEFAULT_BACKEND_URL}
+`
+if (typeof process.env.BACKEND_URL === 'undefined') {
+  console.log(BACKEND_URL_NOT_SET_MESSAGE);
+  process.env.BACKEND_URL = DEFAULT_BACKEND_URL;
+}
 
 const INLINED_ENVIRONMENT_VARIABLES = [
   "BACKEND_URL"
 ];
+
 INLINED_ENVIRONMENT_VARIABLES.forEach(function(key) {
   assert(process.env[key], "process.env." + key + " must be set");
 });

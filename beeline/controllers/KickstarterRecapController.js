@@ -57,7 +57,7 @@ export default [
       $scope.modal.remove();
     });
 
-    $scope.$watchGroup([()=>KickstarterService.getLelongById($scope.book.routeId),
+    $scope.$watchGroup([()=>KickstarterService.getCrowdstartById($scope.book.routeId),
       ()=>KickstarterService.getBidInfo($scope.book.routeId),
       ()=>RoutesService.getRouteCredits($scope.book.creditTag)],
       ([route, bid, credit])=>{

@@ -213,11 +213,11 @@ export default function KickstarterService($http, UserService,$q, $rootScope, Ro
   }
 
   return {
-    //all lelong routes
-    getLelong: () => kickstarterRoutesList,
-    fetchLelong: (ignoreCache)=>fetchKickstarterRoutes(ignoreCache),
+    //all crowdstart routes
+    getCrowdstart: () => kickstarterRoutesList,
+    fetchCrowdstart: (ignoreCache)=>fetchKickstarterRoutes(ignoreCache),
 
-    getLelongById: function(routeId) {
+    getCrowdstartById: function(routeId) {
       return  kickstarterRoutesById ?  kickstarterRoutesById[routeId] : null;
     },
 

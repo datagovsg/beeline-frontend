@@ -1,7 +1,7 @@
 const shell = require("shelljs");
 const inquirer = require("inquirer");
 
-const PROD_TARGET = "https://github.com/datagovsg/beeline-frontend-deploy.git";
+const PROD_TARGET = "git@github.com:datagovsg/beeline-frontend-deploy.git";
 const DEPLOYMENT_QUESTION = "Choose a deployment target";
 const WARNING_MESSAGE = `
 == WARNING == WARNING == WARNING == WARNING == WARNING ==
@@ -30,10 +30,10 @@ inquirer.prompt([
   },
   // Confirm deployment authorization
   {
-    when: function(answers) { 
+    when: function(answers) {
       return answers.target === "Staging" || answers.target === "Production"
     },
-    name: "confirm", 
+    name: "confirm",
     type: "confirm",
     message: WARNING_MESSAGE,
     default: false,
@@ -52,17 +52,17 @@ inquirer.prompt([
   if (answers.target === "Staging" && answers.confirm === true) {
     // Replace the production hot code push files with the staging url
     shell.sed(
-      "-i", 
+      "-i",
       "app.beeline.sg",
       "app-staging.beeline.sg",
       ["www/CNAME", "www/chcp.json "]
     );
-    shell.exec("gh-pages -d www/");
+    shell.exec("gh-pages -t -d www/");
     console.log(STAGING_COMPLETE_MESSAGE);
   }
   // Production deployment process
   if (answers.target === "Production" && answers.confirm === true) {
-    shell.exec(`gh-pages -r ${PROD_TARGET} -d www/`); 
+    shell.exec(`gh-pages -t -r ${PROD_TARGET} -d www/`);
     console.log(PRODUCTION_COMPLETE_MESSAGE);
   }
 });

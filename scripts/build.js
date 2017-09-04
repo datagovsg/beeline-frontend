@@ -29,14 +29,15 @@ shell.rm("-rf", "www/");
 shell.cp("-r", "static/", "www/");
 // Do a copy watch
 if (watch) shell.exec(
-  "cpx 'static/**/*' www/ --watch --no-initial", 
+  "cpx 'static/**/*' www/ --watch --no-initial",
   { async: true }
 );
-// Build switching based on production or non production 
+// Build switching based on production or non production
 if (production) {
   console.log(PRODUCTION_BUILD_MESSAGE);
   shell.exec("webpack --env.production");
   shell.exec("cordova-hcp build www/");
+  shell.exec("touch www/.nojekyll");
 } else {
   console.log(NON_PRODUCTION_BUILD_MESSAGE);
   // Configure default environment variables for non production builds

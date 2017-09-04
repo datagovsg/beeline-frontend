@@ -110,7 +110,7 @@ export default function(
     var routesPromise = RoutesService.fetchRoutesWithRoutePass();
     var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache);
     var allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(ignoreCache);
-    var crowdstartRoutesPromise = KickstarterService.fetchLelong(ignoreCache);
+    var crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(ignoreCache);
     var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache);
     return $q.all([
       routesPromise,
@@ -239,7 +239,7 @@ export default function(
   // Backed kickstarter routes
   $scope.$watchGroup(
     [
-      () => KickstarterService.getLelong(),
+      () => KickstarterService.getCrowdstart(),
       () => KickstarterService.getBids(),
       'data.placeQuery'
     ],
@@ -337,7 +337,7 @@ export default function(
   // Unactivated kickstarter routes
   $scope.$watchGroup(
     [
-      () => KickstarterService.getLelong(),
+      () => KickstarterService.getCrowdstart(),
       () => KickstarterService.getBids(),
       'data.placeQuery'
     ],

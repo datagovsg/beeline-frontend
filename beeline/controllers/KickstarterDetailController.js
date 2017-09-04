@@ -50,7 +50,7 @@ export default [
     });
     $scope.book.routeId = +$stateParams.routeId;
 
-    $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
+    $scope.$watch(()=>KickstarterService.getCrowdstartById($scope.book.routeId), (route)=>{
       if (!route) return;
       $scope.book.route = route;
       $scope.book.bidOptions = route.notes.tier;

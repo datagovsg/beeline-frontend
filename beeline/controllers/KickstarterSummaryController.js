@@ -35,7 +35,7 @@ export default [
     $scope.priceInfo.bidPrice = +$stateParams.bidPrice;
 
 
-    $scope.$watch(()=>KickstarterService.getLelongById($scope.book.routeId), (route)=>{
+    $scope.$watch(()=>KickstarterService.getCrowdstartById($scope.book.routeId), (route)=>{
       if (!route) return;
       $scope.book.route = route;
       //give 1st and last stop as board and alight stop for fake ticket
