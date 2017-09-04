@@ -45,8 +45,10 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
 
     // errorMessage passed back from priceCalculator
     scope.$watch('errorMessage', (err)=>{
-      console.log(err)
-      scope.disp.hasError = true
+      if (err) {
+        console.log(err)
+        scope.disp.hasError = true
+      }
     })
 
     var bookingSummaryPromise = RoutesService.getRouteFeatures(parseInt(scope.book.routeId))
