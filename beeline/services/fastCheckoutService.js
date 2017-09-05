@@ -54,7 +54,7 @@ angular.module('beeline')
     function routeQualifiedForRoutePass(route) {
       if (route && route.tags) {
         var rpList = route.tags.filter((tag) => tag.includes('rp-'))
-        return rpList && rpList.length === 1 && route.notes && route.notes.passSizes
+        return rpList && rpList.length === 1 && route.notes && route.notes.passSizes && route.notes.passSizes.length > 0
       }
     }
 
