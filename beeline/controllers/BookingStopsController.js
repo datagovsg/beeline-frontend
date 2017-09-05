@@ -117,8 +117,8 @@ export default [
     var routePostProcessingPromise = routePromise.then((route) => {
       $scope.book.route = route;
       $scope.book.routeSupportsRoutePass = _.some($scope.book.route.tags, function (tag) {
-        // to stop selling route pass, route.notes.passSizes is undefined
-        return tag.includes('rp-')  && $scope.book.route.notes && $scope.book.route.notes.passSizes
+        // to stop selling route pass, route.notes.passSizes is undefined or empty array
+        return tag.includes('rp-')  && $scope.book.route.notes && $scope.book.route.notes.passSizes && $scope.book.route.notes.passSizes.length > 0
       })
       computeStops(stopOptions);
     });
