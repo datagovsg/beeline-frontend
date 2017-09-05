@@ -600,7 +600,7 @@
     "hash": "bae792ee50886793958a08f17dfbac95"
   },
   {
-    "file": "img/TapToSelectMultipleDays.svg",
+    "file": "img/TapToSelectMultipleDay.svg",
     "hash": "a9fb1f6ce5ee819124c536d1770052d7"
   },
   {
@@ -637,11 +637,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "d5b28c8da7e493d171a663da79f53320"
+    "hash": "bdd21a77f1265f8bbbbedfcbb3a89610"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "b414fb03944d185d94c5a770dca5fb29"
+    "hash": "635f4e13e1f97b42d464a87127257dd3"
   },
   {
     "file": "lib/ionic/css/ionic.css",
