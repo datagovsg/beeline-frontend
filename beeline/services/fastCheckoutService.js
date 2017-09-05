@@ -62,6 +62,19 @@ angular.module('beeline')
 
     }
 
+    async function purchaseTicketUsingRoutePass() {
+      return await BookingSummaryModalService.show({
+        routeId: routeId,
+        price: route.trips[0].price,
+        route: route,
+        applyRoutePass: true,
+        selectedDates: selectedDates,
+        boardStopId: boardStopId,
+        alightStopId: alightStopId,
+        hasSavedPaymentInfo: hasSavedPaymentInfo
+      })
+    }
+
     var instance = {
 
       // called once user is logged in
@@ -115,6 +128,7 @@ angular.module('beeline')
               if (route && routeQualifiedForRoutePass(route)) {
                 // show the modal to purchase route pass
                 await purchaseRoutePass(route, routeId, hasSavedPaymentInfo, paymentInfo)
+                purchaseTicketUsingRoutePass()
               } else {
                 // no route pass option , ask to confirm T&Cs
 
@@ -129,16 +143,7 @@ angular.module('beeline')
               // NOTES: no promotion code filed needed
               // switch to 'Ticket' view
               // booking Object
-              await BookingSummaryModalService.show({
-                routeId: routeId,
-                price: route.trips[0].price,
-                route: route,
-                applyCredits: true,
-                selectedDates: selectedDates,
-                boardStopId: boardStopId,
-                alightStopId: alightStopId,
-                hasSavedPaymentInfo: hasSavedPaymentInfo
-              })
+              purchaseTicketUsingRoutePass()
 
             }
             return resolve('success')
