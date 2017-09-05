@@ -2,7 +2,7 @@
   "name": "beeline",
   "ios_identifier": "id1010615256",
   "android_identifier": "sg.beeline",
-  "update": "resume",
+  "update": "now",
   "content_url": "https://app.beeline.sg",
   "min_native_interface": 1
 }
