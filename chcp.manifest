@@ -637,11 +637,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "fc61db3dc63ccbeab944fa672a1d8e94"
+    "hash": "d5b28c8da7e493d171a663da79f53320"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "6f005580764dda9c31f91be549807a11"
+    "hash": "b414fb03944d185d94c5a770dca5fb29"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -957,7 +957,7 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "83c89488ebce10218c1ff8113d482190"
+    "hash": "e0d9677d01c6de130719426311d4fe55"
   },
   {
     "file": "templates/settings.html",
