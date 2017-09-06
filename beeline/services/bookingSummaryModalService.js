@@ -15,41 +15,15 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
       });
 
     scope.modal = bookingSummaryModal;
-
-    // scope.book = {
-    //   price: null,
-    //   route: route,
-    //   features: null,
-    //   applyCredits: false,
-    //   selectedDates: [],
-    //   boardStopId: parseInt($stateParams.boardStop),
-    //   alightStopId: parseInt($stateParams.alightStop),
-    //   hasSavedPaymentInfo: null,
-    // }
-
     scope.book = booking
-    scope.hasError = false
     scope.disp = {
       termsChecked: false,
-      hasError: false,
-      zeroDollarPurchase: scope.book.price === 0
+      zeroDollarPurchase: scope.book.price === 0,
     }
 
     function cleanup() {
       bookingSummaryModal.remove();
     }
-
-    scope.closeModal = function () {
-      bookingSummaryModal.hide()
-    }
-
-    // errorMessage passed back from priceCalculator
-    scope.$watch('errorMessage', (err)=>{
-      if (err) {
-        console.log(err)
-        scope.disp.hasError = true
-      }
-    })
 
     var bookingSummaryPromise = RoutesService.getRouteFeatures(parseInt(scope.book.routeId))
       .then((features)=>{
@@ -68,6 +42,11 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
               scope.disp.hasError = true
               return reject('ticket purhchased failed')
             }
+          }
+
+          scope.closeModal = function () {
+            bookingSummaryModal.hide()
+            return reject('payment is cancelled')
           }
         })
       })
