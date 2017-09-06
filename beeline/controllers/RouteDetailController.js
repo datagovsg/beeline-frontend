@@ -44,6 +44,10 @@ export default [
       hasNextTripTicket: null,
     }
 
+    $scope.disp = {
+      isBooking : false
+    }
+
     // ------------------------------------------------------------------------
     // Hooks
     // ------------------------------------------------------------------------
@@ -71,24 +75,16 @@ export default [
       });
     };
 
-    $scope.bookNext = () => {
-      // UserService.loginIfNeeded().then((output) => {
-      //   console.log("finished loginIfNeeded", output);
-      // }).catch(error => {
-      //   console.log("error loginIfNeeded", error);
-      // });
+    function reactivateButton () {
+      $scope.disp.isBooking = false
+    }
+
+    $scope.bookNext = async () => {
+      $scope.disp.isBooking = true
       FastCheckoutService.fastCheckout(routeId,
         $scope.data.pickupStop.id, $scope.data.dropoffStop.id, [$scope.data.nextTrip.date.getTime()])
+        .then( reactivateButton , reactivateButton)
     };
-
-
-    $scope.$watch(() => UserService.getUser(), (user) => {
-      if (user) {
-         FastCheckoutService.verify(routeId).then((response) => {
-           $scope.data.hasNextTripTicket = response
-        })
-      }
-    })
 
     // ------------------------------------------------------------------------
     // Initialization
@@ -100,7 +96,10 @@ export default [
       template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
       hideOnStateChange: true
     });
-    RoutesService.getRoute(routeId).then(route => {
+    var promises = Promise.all([FastCheckoutService.verify(routeId), RoutesService.getRoute(routeId)])
+    promises.then((response) => {
+      $scope.data.nextTrip = response[0]
+      var route = response[1]
       $ionicLoading.hide();
       // Grab the price data
       $scope.data.price = route.trips[0].price;
@@ -110,10 +109,6 @@ export default [
       dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]));
       if (pickupStopId) $scope.data.pickupStop = pickups.get(pickupStopId);
       if (dropoffStopId) $scope.data.dropoffStop = dropoffs.get(dropoffStopId);
-      // Grab the nextTrip
-      $scope.data.nextTrip = FastCheckoutService.grabNextTrip(route)
-      // Grab the seat availability for the nextTrip
-      $scope.data.seatsAvailable = $scope.data.nextTrip && $scope.data.nextTrip.availability && $scope.data.nextTrip.availability.seatsAvailable >= 0
     }).catch(error => {
       $ionicLoading.hide();
       $ionicPopup.alert({
@@ -129,6 +124,12 @@ export default [
       (passCount) => { $scope.data.passCount = passCount; }
     )
 
-
+    // re-verify the fastCheckout once user is logged in
+    UserService.userEvents.on('userChanged', () => {
+      FastCheckoutService.verify(routeId).then((response) => {
+        $scope.data.nextTrip = response
+      })
+    })
+    
   }
 ];
