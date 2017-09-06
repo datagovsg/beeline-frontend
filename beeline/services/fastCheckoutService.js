@@ -136,8 +136,16 @@ angular.module('beeline')
                 // no route pass option , ask to confirm T&Cs
 
                 // ask for stripe payment for single ticket
-
-
+                await BookingSummaryModalService.show({
+                    routeId: routeId,
+                    price: route.trips[0].price,
+                    route: route,
+                    applyRoutePass: false,
+                    selectedDates: selectedDates,
+                    boardStopId: boardStopId,
+                    alightStopId: alightStopId,
+                    hasSavedPaymentInfo: hasSavedPaymentInfo
+                  })
               }
 
             } else {

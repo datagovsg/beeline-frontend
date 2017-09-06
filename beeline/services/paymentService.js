@@ -99,15 +99,15 @@ angular.module('beeline')
 
   // Processes payment with customer object. If customer object does not exist,
   // prompts for card, creates customer object, and proceeds as usual.
-  async function payWithSavedInfo(book, hasSavedPaymentInfo) {
+  async function payWithSavedInfo(book) {
     try {
       // disable the button
       isPaymentProcessing = true;
 
-      if (!hasSavedPaymentInfo) {
+      if (!book.hasSavedPaymentInfo) {
         var stripeToken = await StripeService.promptForToken(
           null,
-          isFinite($scope.book.price) ? $scope.book.price * 100 : '',
+          isFinite(book.price) ? book.price * 100 : '',
           null);
 
         if (!stripeToken) {
@@ -119,7 +119,7 @@ angular.module('beeline')
       }
 
       //saves payment info if doesn't exist
-      if (!$scope.hasSavedPaymentInfo) {
+      if (!book.hasSavedPaymentInfo) {
         await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
       }
       var user = await UserService.getUser()
@@ -194,11 +194,11 @@ angular.module('beeline')
       if (book.price === 0) {
         payZeroDollar(book);
       }
-      else if (savePaymentChecked) {
-        payWithSavedInfo();
+      else if (book.hasSavedPaymentInfo || savePaymentChecked) {
+        payWithSavedInfo(book);
       }
       else {
-        payWithoutSavingCard();
+        payWithoutSavingCard(book);
       }
     }
 
