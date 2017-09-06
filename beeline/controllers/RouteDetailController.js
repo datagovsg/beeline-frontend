@@ -86,34 +86,38 @@ export default [
         .then( reactivateButton , reactivateButton)
     };
 
+
     // ------------------------------------------------------------------------
     // Initialization
     // ------------------------------------------------------------------------
 
     // Load the route information
     // Show a loading overlay while we wait
-    $ionicLoading.show({
-      template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-      hideOnStateChange: true
-    });
-    var promises = Promise.all([FastCheckoutService.verify(routeId), RoutesService.getRoute(routeId)])
-    promises.then((response) => {
-      $scope.data.nextTrip = response[0]
-      var route = response[1]
-      $ionicLoading.hide();
-      // Grab the price data
-      $scope.data.price = route.trips[0].price;
-      // Grab the stop data
-      let [pickups, dropoffs] = BookingService.computeStops(route.trips);
-      pickups = new Map(pickups.map(stop => [stop.id, stop]));
-      dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]));
-      if (pickupStopId) $scope.data.pickupStop = pickups.get(pickupStopId);
-      if (dropoffStopId) $scope.data.dropoffStop = dropoffs.get(dropoffStopId);
-    }).catch(error => {
-      $ionicLoading.hide();
-      $ionicPopup.alert({
-        title: "Sorry there's been a problem loading the route information",
-        subTitle: error
+    // force reload when revisit the same route
+    $scope.$on('$ionicView.afterEnter', () => {
+      $ionicLoading.show({
+        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
+        hideOnStateChange: true
+      });
+      var promises = Promise.all([FastCheckoutService.verify(routeId), RoutesService.getRoute(routeId)])
+      promises.then((response) => {
+        $scope.data.nextTrip = response[0]
+        var route = response[1]
+        $ionicLoading.hide();
+        // Grab the price data
+        $scope.data.price = route.trips[0].price;
+        // Grab the stop data
+        let [pickups, dropoffs] = BookingService.computeStops(route.trips);
+        pickups = new Map(pickups.map(stop => [stop.id, stop]));
+        dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]));
+        if (pickupStopId) $scope.data.pickupStop = pickups.get(pickupStopId);
+        if (dropoffStopId) $scope.data.dropoffStop = dropoffs.get(dropoffStopId);
+      }).catch(error => {
+        $ionicLoading.hide();
+        $ionicPopup.alert({
+          title: "Sorry there's been a problem loading the route information",
+          subTitle: error
+        });
       });
     });
 
@@ -130,6 +134,6 @@ export default [
         $scope.data.nextTrip = response
       })
     })
-    
+
   }
 ];

@@ -19,6 +19,7 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
     scope.disp = {
       termsChecked: false,
       zeroDollarPurchase: scope.book.price === 0,
+      savePaymentChecked: false,
     }
 
     function cleanup() {
@@ -33,7 +34,7 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
           scope.payHandler = function () {
             try {
               bookingSummaryModal.hide()
-              PaymentService.payHandler(scope.book, scope.book.savedPaymentInfo)
+              PaymentService.payHandler(scope.book, scope.disp.savePaymentChecked)
               scope.disp.hasError = false
               return resolve('ticket purchased successfully')
             }
