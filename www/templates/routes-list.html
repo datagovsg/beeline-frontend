@@ -46,11 +46,10 @@
         </div>
         <ion-item
           ng-repeat="route in data.activatedCrowdstartRoutes"
-          ui-sref="tabs.bookingPickup({
+          ui-sref="tabs.route-detail({
             routeId: route.id,
-            boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-            alightStop: data.recentRoutesById[route.id].alightStopStopId,
-            sessionId: data.nextSessionId,
+            pickupStopId:  data.recentRoutesById[route.id].boardStopStopId,
+            dropoffStopId: data.recentRoutesById[route.id].alightStopStopId,
           })"
           ng-if="data.activatedCrowdstartRoutes &&
                  data.activatedCrowdstartRoutes.length > 0"
