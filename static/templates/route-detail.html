@@ -24,14 +24,14 @@
       <span ng-if="data.passCount > 1">
         You have <span ng-bind="data.passCount"></span> credits remaining
       </span>
-      <span ng-if="data.hasNextTripTicket">
+      <span ng-if="data.nextTrip.hasNextTripTicket">
         You have already booked this trip.
       </span>
       <countdown board-time="data.nextTrip && data.nextTrip.boardTime"></countdown>
       <button class="button primary-button" on-tap="bookNext()"
-        ng-disabled="stopsForm.$invalid || !data.seatsAvailable || data.hasNextTripTicket">
-        <span ng-if="data.nextTrip.availability && data.seatsAvailable">Book Next Trip{{ ' '+(data.nextTrip.date.getTime() | date:'dd MMM' : 'Z')+' '}}<span ng-show="data.nextTrip.date">{{'('+(data.nextTrip.date.getTime() | date:'EEE' : 'Z')+')'}}</span></span>
-        <span ng-if="!data.seatsAvailable">Tickets are sold out</span>
+        ng-disabled="stopsForm.$invalid || !data.nextTrip.seatsAvailable || data.nextTrip.hasNextTripTicket || disp.isBooking">
+        <span ng-if="data.nextTrip.seatsAvailable">Book Next Trip{{ ' '+(data.nextTrip.date.getTime() | date:'dd MMM' : 'Z')+' '}}<span ng-show="data.nextTrip.date">{{'('+(data.nextTrip.date.getTime() | date:'EEE' : 'Z')+')'}}</span></span>
+        <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
       </button>
       <span ng-if="data.price">
         As low as $<span ng-bind="data.price"></span> per trip

@@ -3,7 +3,7 @@ import routePassTemplate from '../templates/route-pass-modal.html';
 import assert from 'assert';
 
 angular.module('beeline')
-.service('purchaseRoutePassModalService', modalService)
+.service('purchaseRoutePassService', modalService)
 
 function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService, PaymentService, UserService) {
   var self = this

@@ -31,9 +31,10 @@
       </ion-checkbox>
     </section>
     <section>
+      <!-- isCalculating, errorMessage is from priceCalculator -->
       <button class="button primary-button"
               ng-click="payHandler()"
-              ng-disabled="disp.hasError || !disp.termsChecked">
+              ng-disabled="!disp.termsChecked || isCalculating || errorMessage">
         Confirm and Pay
       </button>
     </section>
