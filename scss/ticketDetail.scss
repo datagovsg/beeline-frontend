@@ -116,3 +116,14 @@
     vertical-align: sub;
   }
 }
+
+.ticket-detail2 {
+  @include transparent();
+  ion-content {
+    display: flex;
+    flex-direction: column;
+    @include desktop { &.has-tabs { top: $bar-height; } }
+    height: 200px;
+    @include desktop { height: auto; }
+  }
+}

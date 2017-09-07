@@ -204,6 +204,19 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tabs.ticket-detail2', {
+    url: '/tickets/:ticketId',
+    views: {
+      'tab-tickets': {
+        templateUrl: 'templates/ticket-detail2.html',
+        controller: 'TicketDetailController2'
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
   .state('tabs.lite-route-tracker', {
     url: '/tickets/liteRoute/:liteRouteLabel',
     views: {
