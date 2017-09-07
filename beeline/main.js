@@ -34,6 +34,7 @@ require('./services/fastCheckoutService');
 require('./services/purchaseRoutePassService');
 require('./services/paymentService');
 require('./services/bookingSummaryModalService')
+require('./services/SharedVariableService')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration

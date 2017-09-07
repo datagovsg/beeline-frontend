@@ -77,13 +77,27 @@ navigation history that also transitions its views in and out.
     </ion-tab>
   </ion-tabs>
 
-  <ui-gmap-google-map 
+  <ui-gmap-google-map
     center="map.center"
     zoom="map.zoom"
     bounds="map.bounds"
     control="map.control"
     options="map.options"
     data-tap-disabled="true"
+  >
+  <map-poly-route route-path="mapObject.routePath"></map-poly-route>
+  <ui-gmap-marker
+    ng-repeat="stop in mapObject.boardStops"
+    idKey="stop.id"
+    coords="stop.coordinates"
+    options="map.markerOptions.boardMarker"
   ></ui-gmap-marker>
+  <ui-gmap-marker
+    ng-repeat="stop in mapObject.alightStops"
+    idKey="stop.id"
+    coords="stop.coordinates"
+    options="map.markerOptions.alightMarker"
+  ></ui-gmap-marker>
+  </ui-gmap-marker>
 
 </ion-view>
