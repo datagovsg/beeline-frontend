@@ -100,6 +100,7 @@ app
 .controller('SettingsController', require('./controllers/SettingsController.js').default)
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
+.controller('TicketDetailController2', require('./controllers/TicketDetailController2.js').default)
 .controller('LiteRouteTrackerController', require('./controllers/LiteRouteTrackerController.js').default)
 .controller('BookingHistoryController', require('./controllers/BookingHistoryController.js').default)
 .controller('LiteSummaryController', require('./controllers/LiteSummaryController.js').default)
