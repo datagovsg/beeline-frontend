@@ -133,8 +133,6 @@ angular.module('beeline')
                 await purchaseRoutePass(route, routeId, hasSavedPaymentInfo, paymentInfo)
                 await purchaseTicketUsingRoutePass(routeId, selectedDates, boardStopId, alightStopId)
               } else {
-                // no route pass option , ask to confirm T&Cs
-
                 // ask for stripe payment for single ticket
                 await BookingSummaryModalService.show({
                     routeId: routeId,
@@ -147,15 +145,8 @@ angular.module('beeline')
                     hasSavedPaymentInfo: hasSavedPaymentInfo
                   })
               }
-
             } else {
-              // ask to confirm T&Cs
-              // show in modal to confirm next trip date & deduct 1 pass from user
-              // NOTES: no promotion code filed needed
-              // switch to 'Ticket' view
-              // booking Object
               await purchaseTicketUsingRoutePass(routeId, selectedDates, boardStopId, alightStopId)
-
             }
             return resolve('success')
           }
