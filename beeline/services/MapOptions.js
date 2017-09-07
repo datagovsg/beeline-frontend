@@ -156,5 +156,19 @@ export default [
       map.setCenter(oldCenter);
     };
 
+    this.formBounds = function(stops) {
+      if (stops.length == 0) {
+        return;
+      }
+      var bounds = new google.maps.LatLngBounds();
+      for (let s of stops) {
+        bounds.extend(new google.maps.LatLng(
+          s.coordinates.coordinates[1],
+          s.coordinates.coordinates[0]
+        ));
+      }
+      return bounds
+    }
+
   }
 ];

@@ -8,6 +8,7 @@ export default [
   "RoutesService",
   "BookingService",
   "FastCheckoutService",
+  "SharedVariableService",
   function(
     $scope,
     $state,
@@ -17,7 +18,8 @@ export default [
     UserService,
     RoutesService,
     BookingService,
-    FastCheckoutService
+    FastCheckoutService,
+    SharedVariableService
   ) {
     // ------------------------------------------------------------------------
     // Input
@@ -108,6 +110,15 @@ export default [
         $scope.data.price = route.trips[0].price;
         // Grab the stop data
         let [pickups, dropoffs] = BookingService.computeStops(route.trips);
+        // to fit the bounds on the map
+        SharedVariableService.setStops(pickups.concat(dropoffs));
+        SharedVariableService.setBoardStops(pickups);
+        SharedVariableService.setAlightStops(dropoffs);
+        if (route.path) {
+          RoutesService.decodeRoutePath(route.path)
+            .then((decodedPath) => SharedVariableService.setRoutePath(decodedPath))
+            .catch(() => SharedVariableService.setRoutePath([]))
+        }
         pickups = new Map(pickups.map(stop => [stop.id, stop]));
         dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]));
         if (pickupStopId) $scope.data.pickupStop = pickups.get(pickupStopId);
