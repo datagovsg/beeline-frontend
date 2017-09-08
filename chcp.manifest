@@ -637,11 +637,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "bdd21a77f1265f8bbbbedfcbb3a89610"
+    "hash": "f0667dd66079fcec90715a1535ca34b6"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "635f4e13e1f97b42d464a87127257dd3"
+    "hash": "72a98c94a9995e5bba7c6da45f0479c2"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -925,7 +925,7 @@
   },
   {
     "file": "templates/booking-history.html",
-    "hash": "07638edc924aac7e188219a2ea1ef67d"
+    "hash": "ca2d73abc342b91e378fd8eb03cc7b15"
   },
   {
     "file": "templates/intro-slides.html",
