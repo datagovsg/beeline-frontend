@@ -79,25 +79,39 @@ navigation history that also transitions its views in and out.
 
   <ui-gmap-google-map
     center="map.center"
+    pan="true"
     zoom="map.zoom"
     bounds="map.bounds"
+    dragging="map.dragging"
     control="map.control"
     options="map.options"
     data-tap-disabled="true"
   >
-  <map-poly-route route-path="mapObject.routePath"></map-poly-route>
-  <ui-gmap-marker
-    ng-repeat="stop in mapObject.boardStops"
-    idKey="stop.id"
-    coords="stop.coordinates"
-    options="map.markerOptions.boardMarker"
-  ></ui-gmap-marker>
-  <ui-gmap-marker
-    ng-repeat="stop in mapObject.alightStops"
-    idKey="stop.id"
-    coords="stop.coordinates"
-    options="map.markerOptions.alightMarker"
-  ></ui-gmap-marker>
-  </ui-gmap-marker>
+    <my-location></my-location>
+    <map-poly-route route-path="mapObject.routePath"></map-poly-route>
+    <ui-gmap-marker
+      ng-repeat="stop in mapObject.boardStops"
+      idKey="stop.id"
+      coords="stop.coordinates"
+      options="map.markerOptions.boardMarker"
+    ></ui-gmap-marker>
+    <ui-gmap-marker
+      ng-repeat="stop in mapObject.alightStops"
+      idKey="stop.id"
+      coords="stop.coordinates"
+      options="map.markerOptions.alightMarker"
+    ></ui-gmap-marker>
+    <ui-gmap-marker idkey="'boardstop'"
+                    ng-if="mapObject.boardStop.stop"
+                    coords="mapObject.boardStop.stop.coordinates"
+                    options="map.markerOptions.startMarker"></ui-gmap-marker>
+    <ui-gmap-marker idkey="'alightstop'"
+                    ng-if="mapObject.alightStop.stop"
+                    coords="mapObject.alightStop.stop.coordinates"
+                    options="map.markerOptions.endMarker"></ui-gmap-marker>
+    <map-bus-icon ng-if="map.lines.actualPath.path.length"
+                    idkey="'bus-location'"
+                    pings="map.lines.actualPath.pings"></map-bus-icon>
+  </ui-gmap-google-map>
 
 </ion-view>

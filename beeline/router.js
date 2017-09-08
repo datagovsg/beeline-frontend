@@ -83,7 +83,10 @@ export default function($stateProvider, $urlRouterProvider) {
         controller: 'RouteStopsController'
       }
     },
-    params: { callback: null }
+    params: { callback: null },
+    data: {
+      keepMapObject: true
+    }
   })
 
   .state('tabs.booking', {
