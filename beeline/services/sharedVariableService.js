@@ -7,11 +7,18 @@ angular.module('beeline')
     boardStops: [],
     alightStops: [],
     routePath: [],
+    actualPath: [],
+    boardStop: null,
+    alightStop: null,
   };
 
   var instance = {
     get: function() {
       return sharedData
+    },
+
+    set: function(mapObject) {
+      sharedData = _.assign(sharedData, mapObject)
     },
 
     setStops: function(stops) {
@@ -28,7 +35,15 @@ angular.module('beeline')
 
     setRoutePath: function(routePath) {
       sharedData.routePath = routePath
-    }
+    },
+
+    setBoardStop: function(boardStop) {
+      sharedData.boardStop = boardStop
+    },
+
+    setAlightStop: function(alightStop) {
+      sharedData.alightStop = alightStop
+    },
 
   }
 
