@@ -8,6 +8,7 @@ export default [
   "$ionicScrollDelegate",
   "RoutesService",
   "BookingService",
+  "SharedVariableService",
   function(
     $scope,
     $state,
@@ -17,12 +18,14 @@ export default [
     $ionicPopup,
     $ionicScrollDelegate,
     RoutesService,
-    BookingService
+    BookingService,
+    SharedVariableService
   ) {
     // ------------------------------------------------------------------------
     // Input
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? +$stateParams.routeId : null;
+    // let routeId = $scope.$parent.routeId
     let type = $stateParams.type;
     let stopId = $stateParams.stopId ? +$stateParams.stopId : null;
     let callback = $stateParams.callback;
@@ -67,5 +70,11 @@ export default [
         subTitle: error
       });
     });
+
+    $scope.$on('$ionicView.afterEnter', () => {
+      if ($scope.$parent.mapObject) {
+        SharedVariableService.set($scope.$parent.mapObject)
+      }
+    })
   }
 ];
