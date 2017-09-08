@@ -58,6 +58,15 @@
               <td ng-if="transaction.itemsByType.ticketRefund">
                 Refund
               </td>
+              <td ng-if="transaction.type === 'routeCreditPurchase'">
+                Route Credit Purchase
+              </td>
+              <td ng-if="transaction.type === 'routePassPurchase'">
+                Route Pass Purchase
+              </td>
+              <td ng-if="transaction.type === 'refundPayment'">
+                Refund Payment
+              </td>
             </tr>
             <tr>
               <th>
@@ -68,6 +77,9 @@
               </td>
               <td ng-if="transaction.itemsByType.routeCredits" class="item-text-wrap">
                 {{transaction.itemsByType.routeCredits[0].route.label}}: {{transaction.itemsByType.routeCredits[0].route.from}} &mdash; {{transaction.itemsByType.routeCredits[0].route.to}}
+              </td>
+              <td ng-if="transaction.itemsByType.routePass" class="item-text-wrap">
+                {{transaction.itemsByType.routePass[0].route.label}}: {{transaction.itemsByType.routePass[0].route.from}} &mdash; {{transaction.itemsByType.routePass[0].route.to}}
               </td>
               <td ng-if="transaction.itemsByType.ticketRefund" class="item-text-wrap">
                 {{transaction.itemsByType.ticketRefund[0].route.label}}: {{transaction.itemsByType.ticketRefund[0].route.from}} &mdash; {{transaction.itemsByType.ticketRefund[0].route.to}}
