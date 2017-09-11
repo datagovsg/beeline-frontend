@@ -12,14 +12,15 @@
 
 @mixin transparent() {
   background-color: transparent !important;
+  // FIXME: this makes map not moveable in non-desktop version
   pointer-events: none !important;
 }
 
 // Gives the appearance of floating "height"
-// Based on the material design guidelines 
-// But with less vertical offset and more blur 
+// Based on the material design guidelines
+// But with less vertical offset and more blur
 // To makes shadows visible at the tops of elements as well
-// This allows the floating effect for elements at the bottom of the screen 
+// This allows the floating effect for elements at the bottom of the screen
 // Accepts integer values between 0-5
 @mixin elevation($level) {
   @if $level == 0 {
