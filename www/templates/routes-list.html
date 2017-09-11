@@ -65,11 +65,10 @@
         </div>
         <ion-item
           ng-repeat="route in data.recentRoutes"
-          ui-sref="tabs.bookingPickup({
+          ui-sref="tabs.route-detail({
             routeId: route.id,
-            boardStop:  data.recentRoutesById[route.id].boardStopStopId,
-            alightStop: data.recentRoutesById[route.id].alightStopStopId,
-            sessionId: data.nextSessionId,
+            pickupStopId:  data.recentRoutesById[route.id].boardStopStopId,
+            dropoffStopId: data.recentRoutesById[route.id].alightStopStopId,
           })"
           class="item-text-wrap item-icon-right"
         >
@@ -86,9 +85,8 @@
         <ion-item
           ng-repeat="route in data.routesYouMayLike"
           ng-if="!data.queryText"
-          ui-sref="tabs.bookingPickup({
-            routeId: route.id,
-            sessionId: data.nextSessionId,
+          ui-sref="tabs.route-detail({
+            routeId: route.id
           })"
           class="item-text-wrap item-icon-right"
         >
