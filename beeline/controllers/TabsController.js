@@ -36,10 +36,13 @@ export default [
 
     gmapIsReady.then(() => {
       $scope.$watch( () => $scope.map.control.getGMap().getZoom(), (zoomLevel) => {
-        if (zoomLevel > 13) {
-          $scope.map.control.getGMap().setZoom(13)
+        if (zoomLevel > 12) {
+          // TODO: fix if user zoom in
+          $scope.map.control.getGMap().setZoom(12)
+          MapOptions.resizePreserveCenter($scope.map.control.getGMap());
         }
       })
+      MapOptions.disableMapLinks();
     })
 
     uiGmapGoogleMapApi.then((googleMaps) => {
@@ -53,10 +56,12 @@ export default [
     $scope.$watch('mapObject.stops', (stops) => {
       if (stops && stops.length > 0) {
         var bounds = MapOptions.formBounds(stops);
+        var newCenter = bounds.getCenter()
+        $scope.map.control.getGMap().setCenter(bounds.getCenter());
         $scope.map.control.getGMap().fitBounds(bounds)
         // $scope.map.control.getGMap().setZoom(13);
         // google.maps.event.trigger($scope.map.control.getGMap(), 'resize');
-        MapOptions.resizePreserveCenter($scope.map.control.getGMap());
+        //MapOptions.resizePreserveCenter($scope.map.control.getGMap());
       }
     })
 
@@ -75,7 +80,6 @@ export default [
     // TODO: all map drawing need to be synced up , or once center is shifted, map is messed up
     $scope.$watch(() => SharedVariableService.get(), (data) => {
       $scope.mapObject = _.assign($scope.mapObject, data)
-      MapOptions.disableMapLinks()
     }, true)
 
     // to reset the map
@@ -88,6 +92,10 @@ export default [
       $scope.stops = $scope.routePath = $scope.boardStops = $scope.alightStops = []
       $scope.mapObject = _.assign({}, originalMapObject)
       // TODO: re-fitBounds to center of Singapore
+       $scope.map.control.getGMap().setCenter({
+         lat: 1.38,
+         lng: 103.8,
+       });
     })
   }
 ];
