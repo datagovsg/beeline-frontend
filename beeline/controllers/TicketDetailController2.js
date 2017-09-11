@@ -58,9 +58,6 @@ export default [
       var [boardStops, alightStops] = _.partition(trip.tripStops, (ts) => {
         return ts.canBoard
       })
-      SharedVariableService.setStops(trip.tripStops.map((ts) => ts.stop));
-      SharedVariableService.setBoardStops(boardStops.map((bs) => bs.stop));
-      SharedVariableService.setAlightStops(alightStops.map((as) => as.stop));
       $scope.mapObject = {
         stops: trip.tripStops.map((ts) => ts.stop),
         boardStops: boardStops.map((bs) => bs.stop),
@@ -68,6 +65,7 @@ export default [
         boardStop: $scope.ticket.boardStop,
         alightStop: $scope.ticket.alightStop
       }
+      SharedVariableService.set($scope.mapObject)
     });
     routePromise.then((route) => {
       $scope.route = route;
