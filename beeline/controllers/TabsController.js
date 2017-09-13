@@ -22,7 +22,6 @@ export default [
 
     $scope.closeWindow = function () {
       $scope.disp.popupStop = null;
-      $scope.$digest()
     }
 
     $scope.applyTapBoard = function (stop) {
