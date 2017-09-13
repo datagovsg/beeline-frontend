@@ -52,11 +52,11 @@ export default [
 
     $scope.mapObject = {
       stops: [],
-      boardStops: [],
-      alightStops: [],
       routePath: [],
-      boardStop: null,
       alightStop: null,
+      boardStop: null,
+      pingTrips: [],
+      allRecentPings: [],
     }
 
     // ------------------------------------------------------------------------
@@ -121,10 +121,8 @@ export default [
         $scope.data.price = route.trips[0].price;
         // Grab the stop data
         let [pickups, dropoffs] = BookingService.computeStops(route.trips);
-        $scope.mapObject.stops = dropoffs;
-        $scope.mapObject.boardStops = pickups;
-        $scope.mapObject.alightStops = dropoffs;
-        // to fit the bounds on the map
+        $scope.mapObject.stops = pickups.concat(dropoffs);
+        SharedVariableService.setStops($scope.mapObject.stops)
         if (route.path) {
           RoutesService.decodeRoutePath(route.path)
             .then((decodedPath) => {
@@ -141,8 +139,6 @@ export default [
         // if pickupStop is updated from 'tabs.route-stops' state
         if (!$scope.data.pickupStop && pickupStopId) $scope.data.pickupStop = pickups.get(pickupStopId);
         if (!$scope.data.dropoffStop && dropoffStopId) $scope.data.dropoffStop = dropoffs.get(dropoffStopId);
-        // plot the map at the end
-        SharedVariableService.set($scope.mapObject)
       }).catch(error => {
         $ionicLoading.hide();
         $ionicPopup.alert({
