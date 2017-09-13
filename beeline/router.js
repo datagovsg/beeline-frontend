@@ -275,8 +275,8 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/crowdstart/:routeId/detail',
     views: {
       'tab-crowdstart': {
-        templateUrl: 'templates/kickstarter-detail.html',
-        controller: 'KickstarterDetailController'
+        templateUrl: 'templates/kickstarter-detail2.html',
+        controller: 'KickstarterDetailController2'
       }
     },
     data: {

@@ -114,6 +114,7 @@ app
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
 .controller('TabsController', require('./controllers/TabsController.js').default)
 .controller('LiteDetailController', require('./controllers/LiteDetailController.js').default)
+.controller('KickstarterDetailController2', require('./controllers/KickstarterDetailController2.js').default)
 .directive('searchButton', require('./directives/searchButton.js').default)
 .directive('suggestionViewer', require('./directives/suggestionViewer/suggestionViewer').default)
 .directive('startEndPicker', require('./directives/startEndPicker/startEndPicker').default)
