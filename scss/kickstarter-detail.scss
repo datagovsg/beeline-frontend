@@ -71,3 +71,25 @@
     margin-bottom: $content-padding*4;
   }
 }
+
+.kickstarter-detail2 {
+  @include transparent();
+  ion-content {
+    top: auto;
+    max-height: 700px;
+    @include desktop { &.has-tabs { top: $bar-height; } }
+    @include desktop {
+      // TODO: replace with variables
+      top: 100px;
+      max-height: none !important;
+   }
+    .booking-info {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+  }
+}
