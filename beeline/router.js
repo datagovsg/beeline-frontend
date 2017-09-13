@@ -155,6 +155,18 @@ export default function($stateProvider, $urlRouterProvider) {
       hideTabs: true,
     }
   })
+  .state('tabs.lite-detail', {
+    url: '/lite/detail/:label',
+    views: {
+      'tab-lite': {
+        templateUrl: 'templates/tab-lite-detail.html',
+        controller: 'LiteDetailController',
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
   .state('tabs.lite-more-info', {
     url: '/lite/more-info/:label/:companyId/',
     views: {

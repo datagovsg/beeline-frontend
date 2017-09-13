@@ -24,11 +24,11 @@ export default [
 
     $scope.mapObject = {
       stops: [],
-      boardStops: [],
-      alightStops: [],
       routePath: [],
-      boardStop: null,
       alightStop: null,
+      boardStop: null,
+      pingTrips: [],
+      allRecentPings: [],
     }
 
     // Initialize the necessary basic data data
@@ -55,18 +55,18 @@ export default [
     });
     tripPromise.then((trip) => {
       $scope.trip = trip;
-      var [boardStops, alightStops] = _.partition(trip.tripStops, (ts) => {
-        return ts.canBoard
+      let stops = trip.tripStops.map((ts) => {
+        return _.assign(ts.stop, {canBoard: ts.canBoard})
       })
       $scope.mapObject = {
-        stops: trip.tripStops.map((ts) => ts.stop),
-        boardStops: boardStops.map((bs) => bs.stop),
-        alightStops: alightStops.map((as) => as.stop),
+        stops: stops,
         boardStop: $scope.ticket.boardStop,
-        alightStop: $scope.ticket.alightStop
+        alightStop: $scope.ticket.alightStop,
+        pingTrips: [trip]
       }
       SharedVariableService.set($scope.mapObject)
     });
+
     routePromise.then((route) => {
       $scope.route = route;
       if (route.path) {
@@ -86,7 +86,12 @@ export default [
     $scope.$on('$ionicView.afterEnter', () => {
       // to plot the map
       SharedVariableService.set($scope.mapObject)
+      $scope.$broadcast('startPingLoop');
     })
+    
+    $scope.$on('$ionicView.beforeLeave', () => {
+      $scope.$broadcast('killPingLoop');
+    });
 
 
   }
