@@ -284,6 +284,20 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tabs.crowdstart-stops', {
+    url: '/crowdstart/:routeId/stops',
+    views: {
+      'tab-crowdstart': {
+        templateUrl: 'templates/kickstarter-stops.html',
+        controller: 'KickstarterStopsController'
+      }
+    },
+    data: {
+      hideTabs: true,
+      keepMapObject: true
+    }
+  })
+
   .state('tabs.crowdstart-summary', {
     url: '/crowdstart/:routeId/summary?bidPrice',
     views: {

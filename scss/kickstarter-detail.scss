@@ -83,13 +83,37 @@
       top: 100px;
       max-height: none !important;
    }
-    .booking-info {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+  }
+}
 
+.kickstarter-stops {
+  @include transparent();
+  > ion-content {
+    display: flex;
+    flex-direction: column;
+    top: auto;
+    max-height: 700px;
+    @include desktop { &.has-tabs { top: $bar-height; } }
+    @include desktop {
+      // TODO: replace with variables
+      top: 44px;
+      max-height: none !important;
+   }
+
+   .stop-list {
+     flex: 1;
+     // Strip the extra margin from the list class
+     margin-bottom: 0;
+     // Add an edge to the scrolling list
+     border-bottom-width: $item-border-width;
+     border-bottom-color: $item-default-border;
+     border-bottom-style: solid;
+     .stop-option {
+       cursor: pointer;
+       // Setup togglable elements for selected items
+       &.selected { .show-unselected { display: none; } }
+       &:not(.selected) { .show-selected { display: none; } }
+     }
+   }
   }
 }

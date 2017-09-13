@@ -57,6 +57,7 @@ export default [
       boardStop: null,
       pingTrips: [],
       allRecentPings: [],
+      chosenStop: null,
     }
 
     // ------------------------------------------------------------------------
