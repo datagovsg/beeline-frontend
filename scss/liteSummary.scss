@@ -116,3 +116,33 @@
     }
   }
 }
+
+.lite-detail {
+  @include transparent();
+  ion-content {
+    display: flex;
+    flex-direction: column;
+    @include desktop { &.has-tabs { top: $bar-height; } }
+    height: 320px;
+    @include desktop { height: auto; }
+
+// TODO: leave the lite-form at the bottom or float on the map in mobile version
+    .route-info {
+
+    }
+
+    .lite-form {
+
+    }
+
+
+    // .booking-info {
+    //   display: flex;
+    //   flex: 1;
+    //   flex-direction: column;
+    //   align-items: center;
+    //   justify-content: center;
+    // }
+
+  }
+}

@@ -89,18 +89,23 @@ navigation history that also transitions its views in and out.
   >
     <my-location></my-location>
     <map-poly-route route-path="mapObject.routePath"></map-poly-route>
+    <!-- for lite route -->
     <ui-gmap-marker
-      ng-repeat="stop in mapObject.boardStops"
+      ng-repeat="stop in mapObject.stops"
       idKey="stop.id"
       coords="stop.coordinates"
-      options="map.markerOptions.boardMarker"
+      options="stop.canBoard ? map.markerOptions.boardMarker : map.markerOptions.alightMarker"
+      click="applyTapBoard(stop)"
     ></ui-gmap-marker>
-    <ui-gmap-marker
-      ng-repeat="stop in mapObject.alightStops"
-      idKey="stop.id"
-      coords="stop.coordinates"
-      options="map.markerOptions.alightMarker"
-    ></ui-gmap-marker>
+    <ui-gmap-window ng-if="disp.popupStop"
+                    coords="disp.popupStop.coordinates"
+                    show="disp.popupStop"
+                    closeClick="closeWindow">
+      <div class="popUpStopSelect">
+        <b ng-if="disp.popupStop.time && Array.isArray(disp.popupStop.time)">{{disp.popupStop.time | formatTimeArray }}<br/></b>
+        {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
+      </div>
+    </ui-gmap-window>
     <ui-gmap-marker idkey="'boardstop'"
                     ng-if="mapObject.boardStop.stop"
                     coords="mapObject.boardStop.stop.coordinates"
@@ -109,9 +114,18 @@ navigation history that also transitions its views in and out.
                     ng-if="mapObject.alightStop.stop"
                     coords="mapObject.alightStop.stop.coordinates"
                     options="map.markerOptions.endMarker"></ui-gmap-marker>
-    <map-bus-icon ng-if="map.lines.actualPath.path.length"
-                    idkey="'bus-location'"
-                    pings="map.lines.actualPath.pings"></map-bus-icon>
+    <map-bus-icon ng-repeat="recentPings in allRecentPings track by $index"
+                  idkey="'bus-icon' + $index"
+                  ng-if="recentPings.isRecent"
+                  pings="recentPings.pings"
+                  overlay="$index + 1"></map-bus-icon>
+    <!-- TODO: we cannot do this as whole map is stucked once return -->
+    <!-- <map-bus-poly-route route="mapObject.route"
+                        available-trips="mapObject.todayTrips">
+    </map-bus-poly-route> -->
+    <!-- <map-bus-stops available-trips="mapObject.nextTrips"
+                   is-lite-frequent="mapObject.route['tags'].includes('lite-frequent')">
+    </map-bus-stops> -->
   </ui-gmap-google-map>
 
 </ion-view>
