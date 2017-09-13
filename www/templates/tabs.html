@@ -102,6 +102,7 @@ navigation history that also transitions its views in and out.
                     show="disp.popupStop"
                     closeClick="closeWindow">
       <div class="popUpStopSelect">
+        <b ng-if="disp.popupStop.time && !Array.isArray(disp.popupStop.time)">{{disp.popupStop.time | formatTime }}</b><br/>
         <b ng-if="disp.popupStop.time && Array.isArray(disp.popupStop.time)">{{disp.popupStop.time | formatTimeArray }}<br/></b>
         {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
       </div>
@@ -114,6 +115,11 @@ navigation history that also transitions its views in and out.
                     ng-if="mapObject.alightStop.stop"
                     coords="mapObject.alightStop.stop.coordinates"
                     options="map.markerOptions.endMarker"></ui-gmap-marker>
+    <ui-gmap-marker ng-if="mapObject.chosenStop"
+                    idkey="'selectedStopPin'"
+                    coords="mapObject.chosenStop.coordinates"
+                    options="mapObject.chosenStop.canBoard ? map.markerOptions.startMarker : map.markerOptions.endMarker">
+    </ui-gmap-marker>
     <map-bus-icon ng-repeat="recentPings in allRecentPings track by $index"
                   idkey="'bus-icon' + $index"
                   ng-if="recentPings.isRecent"

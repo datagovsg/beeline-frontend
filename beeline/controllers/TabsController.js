@@ -46,11 +46,12 @@ export default [
 
     gmapIsReady.then(() => {
       $scope.$watch( () => $scope.map.control.getGMap().getZoom(), (zoomLevel) => {
-        if (zoomLevel > 12) {
-          // TODO: fix if user zoom in
-          $scope.map.control.getGMap().setZoom(12)
-          MapOptions.resizePreserveCenter($scope.map.control.getGMap());
-        }
+        // if (zoomLevel > 12) {
+        //   // TODO: fix if user zoom in
+        //   $scope.map.control.getGMap().setZoom(12)
+        //   MapOptions.resizePreserveCenter($scope.map.control.getGMap());
+        // }
+        console.log('zoom level is '+zoomLevel)
       })
       MapOptions.disableMapLinks();
     })
@@ -84,6 +85,7 @@ export default [
       boardStop: null,
       pingTrips: [],
       allRecentPings: [],
+      chosenStop: null,
     }
 
     $scope.mapObject = _.assign({}, originalMapObject)
@@ -92,6 +94,19 @@ export default [
     $scope.$watch(() => SharedVariableService.get(), (data) => {
       $scope.mapObject = _.assign($scope.mapObject, data)
     }, true)
+
+    $scope.$watch('mapObject.chosenStop', (stop) => {
+      if (stop) {
+        gmapIsReady.then(() => {
+          var gmap = $scope.map.control.getGMap()
+          gmap.panTo({
+            lat: stop.coordinates.coordinates[1],
+            lng: stop.coordinates.coordinates[0],
+          })
+          gmap.setZoom(17);
+        })
+      }
+    })
 
     // to reset the map
     $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
