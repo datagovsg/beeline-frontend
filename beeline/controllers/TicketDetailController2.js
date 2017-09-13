@@ -29,6 +29,7 @@ export default [
       boardStop: null,
       pingTrips: [],
       allRecentPings: [],
+      chosenStop: null,
     }
 
     // Initialize the necessary basic data data
@@ -88,7 +89,7 @@ export default [
       SharedVariableService.set($scope.mapObject)
       $scope.$broadcast('startPingLoop');
     })
-    
+
     $scope.$on('$ionicView.beforeLeave', () => {
       $scope.$broadcast('killPingLoop');
     });

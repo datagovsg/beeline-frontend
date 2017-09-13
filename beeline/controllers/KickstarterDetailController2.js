@@ -40,6 +40,7 @@ export default [
       boardStop: null,
       pingTrips: [],
       allRecentPings: [],
+      chosenStop: null,
     }
 
 
@@ -87,22 +88,11 @@ export default [
       $scope.disp.popupStop = null;
     }
 
-    $scope.modal = $ionicModal.fromTemplate(busStopListTemplate, {
-      scope: $scope,
-      animation: 'slide-in-up',
-    })
-
     $scope.showStops = function(){
-      $scope.modal.show();
-
+      $state.go("tabs.crowdstart-stops", {
+        routeId: $scope.book.routeId
+      });
     };
-    $scope.close = function() {
-      $scope.modal.hide();
-    };
-    // Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
 
     $scope.updateSelection = function(position, tiers, price) {
       _.forEach(tiers, function(tier, index){

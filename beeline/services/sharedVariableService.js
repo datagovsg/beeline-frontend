@@ -12,6 +12,7 @@ angular.module('beeline')
     alightStop: null,
     liteTripStops: [],
     pingTrips: [],
+    chosenStop: null,
   };
 
   var instance = {
@@ -53,6 +54,10 @@ angular.module('beeline')
 
     setPingTrips: function(pingTrips) {
       sharedData.pingTrips = pingTrips
+    },
+
+    setChosenStop: function(chosenStop) {
+      sharedData.chosenStop = chosenStop
     }
 
   }
