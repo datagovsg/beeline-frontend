@@ -34,21 +34,12 @@ export default function SearchService() {
 
   return {
 
-    // Returns a new array with routes matching the given regionId
-    // If regionId is undefined then returns a new array with all the same routes
-    filterRoutesByRegionId: function(routes, regionId) {
-      return _.filter(routes, function(route) {
-        if (regionId) return _.some(route.regions, {'id': regionId});
-        else return true;
-      });
-    },
-
     filterRoutesByText: function(routes, string) {
       return routes.filter(route => this.routeContainsString(route, string));
     },
 
     filterRoutes: function(routes, regionId, string) {
-      return this.filterRoutesByText(this.filterRoutesByRegionId(routes, regionId), string)
+      return this.filterRoutesByText(routes, string)
     },
 
     filterRoutesByPlace: function(routes, place) {
@@ -116,8 +107,7 @@ export default function SearchService() {
         (route.trips[0] && (
           route.trips[0].tripStops.some(ts => containsIgnoreCase(ts.stop.description, string)) ||
           route.trips[0].tripStops.some(ts => containsIgnoreCase(ts.stop.road, string))
-        )) ||
-        route.regions.some(region => containsIgnoreCase(region.name, string));
+        ));
     }
 
   };
