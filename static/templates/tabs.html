@@ -120,7 +120,7 @@ navigation history that also transitions its views in and out.
                     coords="mapObject.chosenStop.coordinates"
                     options="mapObject.chosenStop.canBoard ? map.markerOptions.startMarker : map.markerOptions.endMarker">
     </ui-gmap-marker>
-    <map-bus-icon ng-repeat="recentPings in allRecentPings track by $index"
+    <map-bus-icon ng-repeat="recentPings in mapObject.allRecentPings track by $index"
                   idkey="'bus-icon' + $index"
                   ng-if="recentPings.isRecent"
                   pings="recentPings.pings"

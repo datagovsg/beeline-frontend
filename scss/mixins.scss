@@ -13,6 +13,7 @@
 @mixin transparent() {
   background-color: transparent !important;
   // FIXME: this makes map not moveable in non-desktop version
+  // FIXME: pointer-events: auto;
   pointer-events: none !important;
 }
 
