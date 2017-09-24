@@ -123,7 +123,7 @@
     display: flex;
     flex-direction: column;
     @include desktop { &.has-tabs { top: $bar-height; } }
-    height: 320px;
+    height: 300px;
     @include desktop { height: auto; }
 
 // TODO: leave the lite-form at the bottom or float on the map in mobile version
@@ -133,6 +133,14 @@
 
     .lite-form {
 
+    }
+
+    .untrack-link{
+      text-align: center;
+      margin: 1em;
+      a{
+        text-decoration: underline;
+      }
     }
 
 

@@ -64,6 +64,8 @@ export default [
     })
 
     $scope.$watch('mapObject.stops', (stops) => {
+      console.log('stops in tabs controller')
+      console.log(stops)
       if (stops && stops.length > 0) {
         var bounds = MapOptions.formBounds(stops);
         // var newCenter = bounds.getCenter()
@@ -85,6 +87,7 @@ export default [
       pingTrips: [],
       allRecentPings: [],
       chosenStop: null,
+      statusMessages: [],
     }
 
     $scope.mapObject = _.assign({}, originalMapObject)
@@ -115,11 +118,13 @@ export default [
         return;
       }
       $scope.mapObject = _.assign({}, originalMapObject)
+      console.log($scope.mapObject)
       // TODO: re-fitBounds to center of Singapore
        $scope.map.control.getGMap().setCenter({
          lat: 1.38,
          lng: 103.8,
        });
+       $scope.map.control.getGMap().setZoom(11);
     })
 
     //fetch driver pings every 4s
@@ -135,6 +140,7 @@ export default [
 
     //load icons and path earlier by restart timeout on watching trips
     $scope.$watchCollection('mapObject.pingTrips', () => {
+      console.log($scope.mapObject.pingTrips)
       $scope.timeout.stop();
       $scope.timeout.start();
     });
@@ -150,6 +156,8 @@ export default [
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
         .then((info) => {
+          console.log('info')
+          console.log(info)
           const now = Date.now()
 
           $scope.mapObject.allRecentPings[index] = {
