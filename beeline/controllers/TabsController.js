@@ -1,4 +1,5 @@
 import {SafeInterval} from '../SafeInterval';
+import {formatTime, formatTimeArray} from '../shared/format';
 export default [
   '$scope',
   'MapOptions',
@@ -18,6 +19,7 @@ export default [
 
     $scope.disp = {
       popupStop: null,
+      routeMessage: null,
     }
 
     $scope.closeWindow = function () {
@@ -27,6 +29,16 @@ export default [
     $scope.applyTapBoard = function (stop) {
       $scope.disp.popupStop = stop;
       $scope.$digest()
+    }
+
+    $scope.formatStopTime = function (input) {
+      if(Array.isArray(input)) {
+        console.log(formatTimeArray(input))
+        return formatTimeArray(input)
+      } else {
+        console.log(formatTime(input))
+        return formatTime(input)
+      }
     }
 
     // Resolved when the map is initialized
@@ -119,6 +131,8 @@ export default [
       }
       $scope.mapObject = _.assign({}, originalMapObject)
       console.log($scope.mapObject)
+      $scope.disp.popupStop = null;
+      $scope.disp.routeMessage = null;
       // TODO: re-fitBounds to center of Singapore
        $scope.map.control.getGMap().setCenter({
          lat: 1.38,
@@ -145,6 +159,10 @@ export default [
       $scope.timeout.start();
     });
 
+    $scope.$watchCollection('mapObject.statusMessages', () => {
+      $scope.disp.routeMessage = $scope.mapObject.statusMessages.join(' ').concat('HELLO');
+    })
+
     async function pingLoop() {
       if (!$scope.mapObject.pingTrips) return;
 
@@ -156,6 +174,7 @@ export default [
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
         .then((info) => {
+          console.log(index)
           console.log('info')
           console.log(info)
           const now = Date.now()
