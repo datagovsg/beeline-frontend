@@ -37,8 +37,8 @@
 
         <!-- If quantity is > 1, then user must accept route pass terms -->
         <div ng-if="(book.priceSchedules[book.routePassChoice].quantity != 1)">
-          <div class="checkTerms">
-            Please read the <a ng-click="showTermsOfUse()">Route Pass Terms and Conditions</a>.
+          <div class="check-terms">
+            <h4 class="item item-divider">Terms and Conditions</h4>
             <div class="item item-text-wrap text-center" ng-if="!routePassTerms.error && !routePassTerms.html">
               <p class="padding-bottom">
                 Loading...
@@ -48,7 +48,7 @@
             <div class="item item-text-wrap" ng-if="routePassTerms.error">
               <i class="icon ion-alert-circled"></i> There was a problem loading the terms and conditions. Please check your Internet connection.
             </div>
-            <div class="faq" ng-bind-html="routePassTerms.html"/>
+            <div class="item item-text-wrap features tnc" ng-bind-html="routePassTerms.html"/>
             <ion-checkbox
               ng-model="book.acceptPolicy">
               I read and agree to the above terms and would like to proceed.
