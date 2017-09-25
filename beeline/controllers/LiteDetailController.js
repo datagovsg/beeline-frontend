@@ -68,6 +68,7 @@ export default [
       pingTrips: [],
       allRecentPings: [],
       chosenStop: null,
+      statusMessages: [],
     }
 
     var routePromise, subscriptionPromise;
@@ -86,8 +87,8 @@ export default [
       if (route[$scope.book.label].path) {
         RoutesService.decodeRoutePath(route[$scope.book.label].path)
           .then((decodedPath) => {
-            $scope.mapObject.routePath = decodedPath
-            SharedVariableService.setRoutePath(decodedPath)
+            // $scope.mapObject.routePath = decodedPath
+            // SharedVariableService.setRoutePath(decodedPath)
           })
           .catch(() => {
             $scope.mapObject.routePath = []
@@ -101,22 +102,29 @@ export default [
       $scope.book.route.trips = _.sortBy($scope.book.route.trips, (trip)=>{
         return trip.date
       })
+      let nextTrips = $scope.book.route.trips.filter(
+        trip=>trip.date === $scope.book.route.trips[0].date)
+      var liteTripStops = LiteRoutesService.computeLiteStops(nextTrips)
+      $scope.mapObject.stops = liteTripStops;
+      SharedVariableService.setStops(liteTripStops)
     });
 
     $scope.$watch('book.todayTrips', (todayTrips) => {
+      console.log('today trips')
       if (todayTrips && todayTrips.length > 0) {
-        var liteTripStops = LiteRoutesService.computeLiteStops(todayTrips)
-        console.log(liteTripStops)
-        $scope.mapObject.stops = liteTripStops;
-        SharedVariableService.setStops(liteTripStops)
+        $scope.mapObject.pingTrips = todayTrips;
+        SharedVariableService.setPingTrips(todayTrips);
       }
     })
 
     $scope.$on('$ionicView.afterEnter', () => {
-      console.log($scope.mapObject)
-      // to plot the map
-      SharedVariableService.set($scope.mapObject)
-      $scope.$broadcast('startPingLoop');
+      loadingSpinner(Promise.all([routePromise, subscriptionPromise])
+      .then(() => {
+        console.log($scope.mapObject)
+        // to plot the map
+        SharedVariableService.set($scope.mapObject)
+        $scope.$broadcast('startPingLoop');
+      }));
     });
 
     $scope.$on('$ionicView.beforeLeave', () => {
