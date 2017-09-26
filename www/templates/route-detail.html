@@ -36,6 +36,15 @@
       <span ng-if="data.price">
         As low as $<span ng-bind="data.price"></span> per trip
       </span>
+      <div class="button button-clear button-royal"
+        ui-sref="tabs.route-dates({
+          routeId: data.routeId,
+          boardStop: data.pickupStop.id,
+          alightStop: data.dropoffStop.id,
+        })"
+        ng-disabled="stopsForm.$invalid">
+        <u>Advance Booking</u>
+      </div>
     </div>
   </ion-content>
 </ion-view>

@@ -2,11 +2,10 @@
   hide-back-button="true">
   <ion-nav-buttons side="left">
     <a class="button button-clear back-button"
-       ui-sref="tabs.bookingPickup({
-        boardStop: book.boardStopId,
-        alightStop: book.alightStopId,
+       ui-sref="tabs.route-detail({
+        pickupStopId: book.boardStopId,
+        dropoffStopId: book.alightStopId,
         routeId: book.routeId,
-        sessionId: session.sessionId,
       })" nav-direction="back">
        <i class="icon ion-ios-arrow-back"></i> Stops
     </a>
@@ -19,10 +18,6 @@
   </ion-nav-buttons>
 
   <ion-content>
-    <!-- <booking-breadcrumbs step="1"></booking-breadcrumbs> -->
-    <!-- <div class="item datepickerIntro">
-        Tap to select multiple days
-    </div> -->
     <multiple-date-picker ng-model="disp.selectedDatesMoments"
                           days-allowed="disp.daysAllowed"
                           month="disp.month"
@@ -74,12 +69,11 @@
     <div class="item"><b>{{book.selectedDates.length}} day(s)</b> were selected.</div>
 
     <div class="item">
-      <button class="button primary-button button-item" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.booking-summary({
+      <button class="button primary-button button-item" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.route-summary({
                 routeId: book.routeId,
                 boardStop: book.boardStopId,
                 alightStop: book.alightStopId,
                 selectedDates: book.selectedDates.join(','),
-                sessionId: session.sessionId,
                 promoCode: book.promoCode,
               })">
         Review Booking
