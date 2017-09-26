@@ -4,19 +4,23 @@
     flex-direction: row;
     align-items: stretch;
   }
-
+  
+// TODO: why?
   ion-tabs,
   ion-tabs > .tab-content,
-  ion-nav-view[name="tab-routes"] {
+  ion-nav-view[name="tab-routes"],
+  ion-nav-view[name="tab-lite"],
+  ion-nav-view[name="tab-tickets"],
+  ion-nav-view[name="tab-crowdstart"] {
     background-color: transparent !important;
     pointer-events: none !important;
   }
 
 
   ion-tabs {
-    @include desktop { 
+    @include desktop {
       display: block;
-      position: relative; 
+      position: relative;
       height: 100%;
       width: 100%;
       max-width: 500px;
@@ -31,4 +35,37 @@
     height: 100%;
     width: 100%;
   }
+
+  // Position the locate me button near the bottom right
+  .message-locate-div {
+    flex: 0 0 0;
+    overflow: visible;
+    position: relative;
+
+    .announcement {
+      /* flex: 0 0 50px; */
+      position: absolute;
+      background: #000;
+      opacity: 0.7;
+      width: 90%;
+      bottom: 2*$content-padding;
+      right: 5%;
+      left: 5%;
+      height: 20px;
+      box-shadow: 1px 1px 1px #aaa;
+      color: $light;
+      vertical-align: baseline;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      padding: $content-padding*2;
+      /*       margin: 0 auto; */
+      .icon {
+        font-size: 32px;
+        margin-right: $content-padding;
+      }
+    }
+  }
+
 }
