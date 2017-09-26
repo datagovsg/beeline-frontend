@@ -77,7 +77,7 @@ angular.module('beeline')
 
       var stripeToken = await StripeService.promptForToken(
         null,
-        isFinite($scope.book.price) ? $scope.book.price * 100 : '',
+        isFinite(book.price) ? book.price * 100 : '',
         null);
 
       if (!stripeToken) {
@@ -90,7 +90,7 @@ angular.module('beeline')
     } catch (err) {
       await $ionicPopup.alert({
         title: 'Error contacting the payment gateway',
-        template: err.data.message,
+        template: err.data && err.data.message || err,
       })
     } finally {
       isPaymentProcessing = false;
