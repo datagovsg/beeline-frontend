@@ -451,6 +451,7 @@ export default [
         // if route has 'rp-' tag
         // and user has no ridesRemaining
         if (!$scope.book.ridesRemaining && $scope.book.routeSupportsRoutePass) {
+          $scope.showRoutePassModal()
           $scope.$on('paymentDone', ()=>{
             $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
               boardStop: $scope.book.boardStop.id,
