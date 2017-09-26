@@ -195,6 +195,7 @@ export default function($stateProvider, $urlRouterProvider) {
     },
     data: {
       hideTabs: true,
+      keepMapObject: true
     }
   })
 
