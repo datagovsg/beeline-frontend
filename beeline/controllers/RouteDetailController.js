@@ -44,6 +44,7 @@ export default [
       minsBeforeClose: null,
       seatsAvailable: null,
       hasNextTripTicket: null,
+      routeId: routeId,
     }
 
     $scope.disp = {

@@ -88,6 +88,24 @@ export default function($stateProvider, $urlRouterProvider) {
       keepMapObject: true
     }
   })
+  .state('tabs.route-dates', {
+    url: '/route/:routeId/dates?boardStop&alightStop&selectedDates',
+    views: {
+      'tab-routes': {
+        templateUrl: 'templates/tab-booking-dates.html',
+        controller: 'BookingDatesController',
+      }
+    }
+  })
+  .state('tabs.route-summary', {
+    url: '/route/:routeId/summary?boardStop&alightStop&selectedDates&promoCode',
+    views: {
+      'tab-routes': {
+        templateUrl: 'templates/tab-booking-summary.html',
+        controller: 'BookingSummaryController',
+      }
+    }
+  })
 
   .state('tabs.booking', {
     url: '/booking',
