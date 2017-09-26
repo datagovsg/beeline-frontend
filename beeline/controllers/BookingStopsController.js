@@ -1,9 +1,10 @@
+import commonmark from 'commonmark';
+import assert from 'assert';
 import {NetworkError} from '../shared/errors';
 import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
 const moment = require('moment');
 import routePassTemplate from '../templates/route-pass-modal.html';
 import processingPaymentsTemplate from '../templates/processing-payments.html';
-import assert from 'assert';
 
 export default [
   '$rootScope',
@@ -90,6 +91,7 @@ export default [
       popupStopType: null,
       parentScope: $scope,
     }
+    $scope.routePassTerms = {}
 
     // Resolved when the map is initialized
     var gmapIsReady = new Promise((resolve, reject) => {
@@ -123,6 +125,20 @@ export default [
       computeStops(stopOptions);
     });
 
+    const reader = new commonmark.Parser({safe: true})
+    const writer = new commonmark.HtmlRenderer({safe: true})
+    UserService.beeline({
+      method: 'GET',
+      url: '/assets/routepass-tc'
+    })
+    .then((response) => {
+      $scope.routePassTerms.html = writer.render(reader.parse(response.data.data))
+      $scope.routePassTerms.error = undefined
+    })
+    .catch((error) => {
+      $scope.routePassTerms.error = error
+      console.log(error)
+    })
 
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([gmapIsReady, routePromise])

@@ -1,7 +1,7 @@
 {
-  "name": "beeline2",
+  "name": "beeline-frontend",
   "version": "1.1.1",
-  "description": "beeline2: An Ionic project",
+  "description": "The mobile application for Beeline",
   "engines": {
     "node": "7.8.x"
   },
@@ -99,8 +99,8 @@
     "dev-android": "node scripts/dev-android.js",
     "start": "http-server -c-1 www/"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Government Technology Agency of Singapore (https://www.tech.gov.sg)",
+  "license": "Apache-2.0",
   "cordova": {
     "plugins": {
       "cordova-plugin-app-version": {},

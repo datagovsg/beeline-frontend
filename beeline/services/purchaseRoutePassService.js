@@ -1,6 +1,6 @@
-
 import routePassTemplate from '../templates/route-pass-modal.html';
 import assert from 'assert';
+import commonmark from 'commonmark';
 
 angular.module('beeline')
 .service('purchaseRoutePassService', modalService)
@@ -32,7 +32,23 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
       }
     })
 
-    scope.showTermsOfUse = () => assetScopeModalService.showRoutePassTCModal();
+    // scope.showTermsOfUse = () => assetScopeModalService.showRoutePassTCModal();
+    scope.routePassTerms = {}
+
+    const reader = new commonmark.Parser({safe: true})
+    const writer = new commonmark.HtmlRenderer({safe: true})
+    UserService.beeline({
+      method: 'GET',
+      url: '/assets/routepass-tc'
+    })
+    .then((response) => {
+      scope.routePassTerms.html = writer.render(reader.parse(response.data.data))
+      scope.routePassTerms.error = undefined
+    })
+    .catch((error) => {
+      scope.routePassTerms.error = error
+      console.log(error)
+    })
 
     // Prompts for card and processes payment with one time stripe token.
     scope.payForRoutePass = async function() {

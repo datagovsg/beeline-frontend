@@ -14,9 +14,13 @@ Run `npm run install-ios`
 # Building 
 
 `npm run build` for a single development build
+
 `npm run build -- --production` for a production build
+
 `npm run dev` to set up a build watch and local test server
+
 `npm run dev-android` to set up a build watch, hot code push server, and test on emulator/device
+
 `npm run deploy` to deploy the app to staging/production environments
 
 # Pushing 

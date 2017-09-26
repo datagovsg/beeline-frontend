@@ -21,3 +21,14 @@
     }
   }
 }
+
+
+// Style for the T&C section of route pass modals
+.check-terms {
+  .tnc {
+    ol {
+      list-style-type: disc;
+      padding-left: $padding-large-horizontal;
+    }
+  }
+}
