@@ -33,10 +33,8 @@ export default [
 
     $scope.formatStopTime = function (input) {
       if(Array.isArray(input)) {
-        console.log(formatTimeArray(input))
         return formatTimeArray(input)
       } else {
-        console.log(formatTime(input))
         return formatTime(input)
       }
     }
@@ -57,11 +55,6 @@ export default [
 
     gmapIsReady.then(() => {
       $scope.$watch( () => $scope.map.control.getGMap().getZoom(), (zoomLevel) => {
-        // if (zoomLevel > 12) {
-        //   // TODO: fix if user zoom in
-        //   $scope.map.control.getGMap().setZoom(12)
-        //   MapOptions.resizePreserveCenter($scope.map.control.getGMap());
-        // }
         console.log('zoom level is '+zoomLevel)
       })
       MapOptions.disableMapLinks();
@@ -76,18 +69,21 @@ export default [
     })
 
     $scope.$watch('mapObject.stops', (stops) => {
-      console.log('stops in tabs controller')
-      console.log(stops)
       if (stops && stops.length > 0) {
         var bounds = MapOptions.formBounds(stops);
         // var newCenter = bounds.getCenter()
         // TODO: center the map properly
         // $scope.map.control.getGMap().setCenter(newCenter);
-        gmapIsReady.then(() => {
+        // gmapIsReady.then(() => {
+        //   var gmap = $scope.map.control.getGMap()
+        //   google.maps.event.trigger(gmap, 'resize')
+        //   gmap.fitBounds(bounds)
+        // })
+        if ($scope.map.control.getGMap) {
           var gmap = $scope.map.control.getGMap()
           google.maps.event.trigger(gmap, 'resize')
           gmap.fitBounds(bounds)
-        })
+        }
       }
     })
 
@@ -109,16 +105,34 @@ export default [
       $scope.mapObject = _.assign($scope.mapObject, data)
     }, true)
 
+    function panToStop(stop, setZoom) {
+      if ($scope.map.control.getGMap) {
+        var gmap = $scope.map.control.getGMap()
+        gmap.panTo({
+          lat: stop.coordinates.coordinates[1],
+          lng: stop.coordinates.coordinates[0],
+        })
+        if (setZoom) {
+          gmap.setZoom(17)
+        }
+      }
+    }
+
     $scope.$watch('mapObject.chosenStop', (stop) => {
       if (stop) {
-        gmapIsReady.then(() => {
-          var gmap = $scope.map.control.getGMap()
-          gmap.panTo({
-            lat: stop.coordinates.coordinates[1],
-            lng: stop.coordinates.coordinates[0],
-          })
-          gmap.setZoom(17);
-        })
+        panToStop(stop, true)
+      }
+    })
+
+    $scope.$watch('mapObject.boardStop', (stop) => {
+      if (stop) {
+        panToStop(stop.stop)
+      }
+    })
+
+    $scope.$watch('mapObject.alightStop', (stop) => {
+      if (stop) {
+        panToStop(stop.stop)
       }
     })
 
@@ -130,7 +144,6 @@ export default [
         return;
       }
       $scope.mapObject = _.assign({}, originalMapObject)
-      console.log($scope.mapObject)
       $scope.disp.popupStop = null;
       $scope.disp.routeMessage = null;
       // TODO: re-fitBounds to center of Singapore
@@ -154,7 +167,6 @@ export default [
 
     //load icons and path earlier by restart timeout on watching trips
     $scope.$watchCollection('mapObject.pingTrips', () => {
-      console.log($scope.mapObject.pingTrips)
       $scope.timeout.stop();
       $scope.timeout.start();
     });
@@ -174,9 +186,6 @@ export default [
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
         .then((info) => {
-          console.log(index)
-          console.log('info')
-          console.log(info)
           const now = Date.now()
 
           $scope.mapObject.allRecentPings[index] = {
