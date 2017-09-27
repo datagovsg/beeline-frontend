@@ -2,7 +2,7 @@ export default function() {
   return {
     replace: false,
     template: `
-    <ui-gmap-polyline path="routePath" stroke="strokeOptions"></ui-gmap-polyline>
+    <ui-gmap-polyline path="routePath" stroke="strokeOptions" static="true"></ui-gmap-polyline>
     `,
     scope: {
       'routePath': '<',
