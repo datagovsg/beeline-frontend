@@ -1,6 +1,9 @@
-{ 
-  "name": "Beeline", 
-  "app_id": "", 
-  "type": "ionic1", 
-  "watchPatterns": [] 
-} 
+{
+  "name": "Beeline",
+  "app_id": "",
+  "type": "ionic1",
+  "watchPatterns": [],
+  "integrations": {
+    "cordova": {}
+  }
+}

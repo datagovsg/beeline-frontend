@@ -26,17 +26,17 @@ const OneSignalPromise = new Promise((resolve, reject) => {
             url: '/user/push_notification_tag',
           })
           .then((result) => {
-            OneSignal.sendTag('user_tag', result.data.tag)
+            window.plugins.OneSignal.sendTag('user_tag', result.data.tag)
           })
           .catch((err) => {
             if (err.status === 403 || err.status === 401) {
-              OneSignal.sendTag('user_tag', '')
+              window.plugins.OneSignal.sendTag('user_tag', '')
             }
           })
         }
 
         synchronizeUserId()
-        UserService.on('userChanged', synchronizeUserId)
+        UserService.userEvents.on('userChanged', synchronizeUserId)
       }
       // Call syncHashedEmail anywhere in your app if you have the user's email.
       // This improves the effectiveness of OneSignal's "best-time" notification scheduling feature.
