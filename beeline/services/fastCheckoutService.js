@@ -42,8 +42,8 @@ angular.module('beeline')
     }
 
     //  modal for purchase route pass
-    function purchaseRoutePass(route, routeId, hasSavedPaymentInfo, savedPaymentInfo) {
-      return purchaseRoutePassService.show(route, routeId, hasSavedPaymentInfo, savedPaymentInfo)
+    function purchaseRoutePass(route, routeId, hasSavedPaymentInfo, savedPaymentInfo, selectedDates, boardStopId, alightStopId) {
+      return purchaseRoutePassService.show(route, routeId, hasSavedPaymentInfo, savedPaymentInfo, selectedDates, boardStopId, alightStopId)
     }
 
 
@@ -130,8 +130,8 @@ angular.module('beeline')
               // if route has rp- tag
               if (route && routeQualifiedForRoutePass(route)) {
                 // show the modal to purchase route pass
-                await purchaseRoutePass(route, routeId, hasSavedPaymentInfo, paymentInfo)
-                await purchaseTicketUsingRoutePass(routeId, selectedDates, boardStopId, alightStopId)
+                await purchaseRoutePass(route, routeId, hasSavedPaymentInfo, paymentInfo, selectedDates, boardStopId, alightStopId)
+                // await purchaseTicketUsingRoutePass(routeId, selectedDates, boardStopId, alightStopId)
               } else {
                 // ask for stripe payment for single ticket
                 await BookingSummaryModalService.show({
