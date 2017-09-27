@@ -4,6 +4,7 @@ export default function($interval) {
   return {
     scope: {
       boardTime: '<',
+      bookingEnds: '='
     },
     template: `
     <div>
@@ -22,6 +23,7 @@ export default function($interval) {
 
       scope.$watch('boardTime', (bt) => {
         if (bt && !stopTime) {
+          scope.bookingEnds = false;
           stopTime = $interval(updateTime, 100*30);
         }
       })
