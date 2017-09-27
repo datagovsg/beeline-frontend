@@ -26,7 +26,7 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
       bookingSummaryModal.remove();
     }
 
-    var bookingSummaryPromise = RoutesService.getRouteFeatures(parseInt(scope.book.routeId))
+    var bookingSummaryPromise = loadingSpinner(RoutesService.getRouteFeatures(parseInt(scope.book.routeId)))
       .then((features)=>{
         scope.book.features = features;
         return new Promise((resolve, reject) => {
