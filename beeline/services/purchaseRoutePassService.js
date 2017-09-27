@@ -5,9 +5,10 @@ import commonmark from 'commonmark';
 angular.module('beeline')
 .service('purchaseRoutePassService', modalService)
 
-function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService, PaymentService, UserService) {
+function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
+  StripeService, assetScopeModalService, PaymentService, UserService, BookingSummaryModalService) {
   var self = this
-  self.show = (route, routeId, hasSavedPaymentInfo, savedPaymentInfo) => {
+  self.show = (route, routeId, hasSavedPaymentInfo, savedPaymentInfo, selectedDates, boardStopId, alightStopId) => {
     var scope = $rootScope.$new();
     var routePassModal = $ionicModal.fromTemplate(
       routePassTemplate, {
@@ -23,7 +24,7 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
       routePassChoice: null,
       hasSavedPaymentInfo: hasSavedPaymentInfo,
       brand: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].brand : null,
-      last4Digtis: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].last4 : null
+      last4Digtis: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].last4 : null,
     }
 
     scope.$watch('book.routePassChoice', (choice) => {
@@ -104,7 +105,7 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
       routePassModal.remove();
     }
 
-    var purchaseRoutePassPromise = RoutesService.fetchPriceSchedule(routeId).then((response) => {
+    var purchaseRoutePassPromise = loadingSpinner(RoutesService.fetchPriceSchedule(routeId)).then((response) => {
       return new Promise((resolve, reject) => {
         scope.book.priceSchedules = response
         scope.book.routePassChoice = 0
@@ -119,8 +120,36 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
           routePassModal.hide()
           if (scope.book.priceSchedules[scope.book.routePassChoice].quantity === 1) {
             // ask to confirm T&Cs
+            // ask for stripe payment for single ticket
+            try {
+              await BookingSummaryModalService.show({
+                  routeId: routeId,
+                  price: route.trips[0].price,
+                  route: route,
+                  applyRoutePass: false,
+                  selectedDates: selectedDates,
+                  boardStopId: boardStopId,
+                  alightStopId: alightStopId,
+                  hasSavedPaymentInfo: hasSavedPaymentInfo
+                })
+              return resolve('Payment Done')
+            } catch (err) {
+              console.log(err)
+              return reject('Payment Failed')
+            }
+
           } else {
-            return scope.payForRoutePass().then(() => {
+            return scope.payForRoutePass().then( async function() {
+              await BookingSummaryModalService.show({
+                  routeId: routeId,
+                  price: route.trips[0].price,
+                  route: route,
+                  applyRoutePass: false,
+                  selectedDates: selectedDates,
+                  boardStopId: boardStopId,
+                  alightStopId: alightStopId,
+                  hasSavedPaymentInfo: hasSavedPaymentInfo
+                })
               return resolve('Payment Done')
             },() => {
               return reject('Payment Failed')
@@ -130,7 +159,8 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
 
         scope.closeModal = function () {
           routePassModal.hide()
-          scope.$emit('routePassError')
+          //TODO
+          return reject('routePassError')
         }
       })
     })

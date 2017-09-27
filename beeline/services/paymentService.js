@@ -75,10 +75,10 @@ angular.module('beeline')
       // disable the button
       isPaymentProcessing = true;
 
-      var stripeToken = await StripeService.promptForToken(
+      var stripeToken = await loadingSpinner(StripeService.promptForToken(
         null,
         isFinite(book.price) ? book.price * 100 : '',
-        null);
+        null));
 
       if (!stripeToken) {
         return;
