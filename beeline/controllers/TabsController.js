@@ -100,7 +100,6 @@ export default [
 
     $scope.mapObject = _.assign({}, originalMapObject)
 
-    // TODO: all map drawing need to be synced up , or once center is shifted, map is messed up
     $scope.$watch(() => SharedVariableService.get(), (data) => {
       $scope.mapObject = _.assign($scope.mapObject, data)
     }, true)
@@ -140,18 +139,23 @@ export default [
     $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
       // when transit from route-detail to route-stops, we don't want to reset the map
       // similarly when transit from route-stops to route-detail, we retain the map
+
       if (toState && toState.data && toState.data.keepMapObject || fromState && fromState.data && fromState.data.keepMapObject) {
         return;
       }
+      // reset SharedVariableService so re-visit the same view , Object is changed and watched
+      SharedVariableService.set(originalMapObject)
       $scope.mapObject = _.assign({}, originalMapObject)
       $scope.disp.popupStop = null;
       $scope.disp.routeMessage = null;
       // TODO: re-fitBounds to center of Singapore
-       $scope.map.control.getGMap().setCenter({
-         lat: 1.38,
-         lng: 103.8,
-       });
-       $scope.map.control.getGMap().setZoom(11);
+      // if ($scope.map.control.getGMap) {
+      //   $scope.map.control.getGMap().setCenter({
+      //     lat: 1.38,
+      //     lng: 103.8,
+      //   });
+      //   $scope.map.control.getGMap().setZoom(11);
+      // }
     })
 
     //fetch driver pings every 4s
@@ -204,7 +208,5 @@ export default [
         $scope.hasTrackingData = true;
       }
     }
-
-    // TODO: need to watch on GMap size e.g. switch from desktop to mobile
   }
 ];
