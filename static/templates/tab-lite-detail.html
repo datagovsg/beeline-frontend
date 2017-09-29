@@ -11,9 +11,25 @@
     </daily-trips-broker>
     <form class="stops-form" name="stopsForm">
       <!-- <booking-breadcrumbs step="0" class="flex-shrink"></booking-breadcrumbs> -->
-
-      <div class="route-info item">
-        <route-item class="lite"  ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="!disp.showTooltip">
+      <in-service-window available-trips="book.todayTrips"
+                         in-service-window="book.inServiceWindow">
+      </in-service-window>
+      <div class="route-info">
+        <div class="item item-icon-left item-text-wrap" ng-if="!book.hasTrips">
+          <span class="icon ion-android-alert"></span>
+          There is no bus service scheduled for today.
+        </div>
+        <div class="item item-icon-left item-text-wrap" ng-if="book.hasTrips && book.inServiceWindow===false">
+          <span class="icon ion-android-alert"></span>
+          The bus service will only be available from {{ book.route.startTime | formatTime}} to {{ book.route.endTime | formatTime}}.
+        </div>
+        <!-- TODO:
+        <div class="item item-icon-left item-text-wrap" ng-if="book.hasTrips && book.inServiceWindow && book.hasTrackingData === false">
+          <span class="icon ion-android-alert"></span>
+          The bus location tracking is not available at the moment.
+        </div> -->
+        <fake-progress-bar max="100" interval="100"></fake-progress-bar>
+        <route-item class="lite item lite-tracked"  ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="!disp.showTooltip">
           <route-item-bus-number>
             {{ book.route.label }}
           </route-item-bus-number>
