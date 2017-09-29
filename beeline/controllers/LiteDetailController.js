@@ -57,7 +57,7 @@ export default [
       alightStops: [], // all alight stops for this route
       waitingForSubscriptionResult: false,
       isSubscribed: false,
-      todayTrips: [],
+      todayTrips: null,
       inServiceWindow: false,
       hasTrips: true,
     };
