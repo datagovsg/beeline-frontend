@@ -8,7 +8,7 @@ import loadingTemplate from '../templates/loading.html';
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
   $ionicScrollDelegate, $ionicPopup, KickstarterService, $ionicLoading,
-  SearchService, $timeout, loadingSpinner, uiGmapGoogleMapApi) {
+  SearchService, $timeout, loadingSpinner, cdGmapApi) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -22,8 +22,10 @@ export default function($scope, $state, UserService, RoutesService, $q,
     queryText: "", // The actual text in the box used only for the clear button
   };
 
- //FIXME: put place search into a directive
-  uiGmapGoogleMapApi.then((googleMaps) => {
+  //FIXME: put place search into a directive
+  cdGmapApi.then(() => {
+    let googleMaps = google.maps
+
     // Initialize it with google autocompleteService and PlacesService
     let searchBox = document.getElementById('search-crowdstart');
     // Blur on enter

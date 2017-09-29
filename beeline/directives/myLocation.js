@@ -1,12 +1,10 @@
 
-export default function(uiGmapGoogleMapApi) {
+export default function(cdGmapApi) {
 
   return {
     template: `
-<ui-gmap-circle ng-if="coords" idkey="idkey1" center="coords" radius="radius"
-  stroke="accuracyOptions.stroke" fill="accuracyOptions.fill"
-  options="accuracyOptions.options"></ui-gmap-circle>
-<ui-gmap-marker ng-if="coords" idkey="idkey2" coords="coords" options="markerOptions"></ui-gmap-marker>
+<cd-gmap-circle ng-if="coords" center="coords" radius="radius" style="accuracyOptions"></cd-gmap-circle>
+<cd-gmap-marker ng-if="coords" lat-lng="coords" icon="markerOptions.icon"></cd-gmap-marker>
     `,
 
     scope: true,
@@ -16,32 +14,27 @@ export default function(uiGmapGoogleMapApi) {
         zIndex: 2
       };
       scope.accuracyOptions = {
-        stroke: {
-          color: '#3E82F7',
-          opacity: 0.4,
-          weight: 1
-        },
-        fill: {
-          color: '#3E82F7',
-          opacity: 0.2,
-        },
-        options: {}
+        color: '#3E82F7',
+        opacity: 0.4,
+        weight: 3,
+        fillColor: '#3E82F7',
+        fillOpacity: 0.2,
       };
       scope.radius = 1;
       scope.idkey1 = `my-location-${Date.now()}-circle`
       scope.idkey2 = `my-location-${Date.now()}-marker`
 
-      uiGmapGoogleMapApi.then((googleMaps) => {
+      cdGmapApi.then((compat) => {
         scope.markerOptions.icon = {
-          url: 'img/userLocation.svg',
-          anchor: new googleMaps.Point(6,6),
+          iconUrl: 'img/userLocation.svg',
+          iconAnchor: [6, 6],
         }
 
         var watch = navigator.geolocation.watchPosition(
           (success) => {
             scope.coords = {
-              latitude: success.coords.latitude,
-              longitude: success.coords.longitude,
+              lat: success.coords.latitude,
+              lng: success.coords.longitude,
             };
             scope.radius = success.coords.accuracy;
             scope.$digest()

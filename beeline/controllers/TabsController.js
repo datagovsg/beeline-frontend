@@ -4,9 +4,7 @@ export default [
   'MapOptions',
   'SharedVariableService',
   '$rootScope',
-  'uiGmapGoogleMapApi',
-  function($scope, MapOptions, SharedVariableService, $rootScope,
-    uiGmapGoogleMapApi) {
+  function($scope, MapOptions, SharedVariableService, $rootScope) {
     $scope.map = MapOptions.defaultMapOptions({
       busLocation: {
         coordinates: null,
@@ -33,25 +31,25 @@ export default [
       });
     });
 
-
     gmapIsReady.then(() => {
       MapOptions.disableMapLinks();
     })
 
-    uiGmapGoogleMapApi.then((googleMaps) => {
-      $scope.map.busLocation.icon = {
-        url: `img/busMarker.svg`,
-        scaledSize: new googleMaps.Size(68, 86),
-        anchor: new googleMaps.Point(34, 78),
-      }
-    })
+    $scope.map.busLocation.icon = {
+      url: `img/busMarker.svg`,
+      size: {
+        width: 68,
+        height: 86
+      },
+      anchor: [34, 78],
+    }
 
     $scope.$watch('mapObject.stops', (stops) => {
       if (stops && stops.length > 0) {
         var bounds = MapOptions.formBounds(stops);
         if ($scope.map.control.getGMap) {
           var gmap = $scope.map.control.getGMap()
-          google.maps.event.trigger(gmap, 'resize')
+          // google.maps.event.trigger(gmap, 'resize')
           gmap.fitBounds(bounds)
         }
       }

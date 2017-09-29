@@ -91,14 +91,7 @@ export default [
       if (stops.length == 0) {
         return;
       }
-      var bounds = new google.maps.LatLngBounds();
-      for (let s of stops) {
-        bounds.extend(new google.maps.LatLng(
-          s.coordinates.coordinates[1],
-          s.coordinates.coordinates[0]
-        ));
-      }
-      gmap.fitBounds(bounds);
+      gmap.fitBounds(bounds.map(b => ([s.coordinates.coordinates[1], s.coordinates.coordinates[0]])));
     };
 
     // pans to single stop

@@ -2,16 +2,16 @@ export default function() {
   return {
     replace: false,
     template: `
-    <ui-gmap-polyline path="routePath" stroke="strokeOptions" static="true"></ui-gmap-polyline>
+    <cd-gmap-polyline path="routePath" options="options" static="true"></cd-gmap-polyline>
     `,
     scope: {
       'routePath': '<',
     },
-    link: function(scope, element, attributes) {
-      scope.strokeOptions = {
-        color: '#4b3863',
-        weight: 3.0,
-        opacity: 0.7
+    controller: function($scope) {
+      $scope.options = {
+        strokeColor: '#4b3863',
+        strokeWeight: 3.0,
+        strokeOpacity: 0.7
       };
     },
   };

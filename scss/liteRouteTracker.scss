@@ -23,17 +23,17 @@
     }
   }
   // Have the map fill the container
-  ui-gmap-google-map {
+  cd-gmap-google-map {
     flex: 1 1 auto;
     display: block;
     position: relative;
 
-    .angular-google-map {
+    .cd-google-map {
       height: 100%;
       width: 100%;
       position: absolute;
 
-      .angular-google-map-container {
+      .cd-google-map-container {
         left: 0;
         height: 100%;
         width: 100%;

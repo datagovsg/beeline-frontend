@@ -1,42 +1,45 @@
-var googleMaps;
 
 export default [
-  'uiGmapGoogleMapApi', '$cordovaGeolocation',
-  function(uiGmapGoogleMapApi, $cordovaGeolocation) {
-    var markerOptionsPromise = uiGmapGoogleMapApi.then((googleMaps) => {
+  'cdGmapApi', '$cordovaGeolocation',
+  function(cdGmapApi, $cordovaGeolocation) {
+    var markerOptionsPromise = cdGmapApi.then((compat) => {
+      const MAX_ZINDEX = window.google
+        ? window.google.maps.Marker.MAX_ZINDEX
+        : 0
+
       return {
         markerOptions: {
           boardMarker: {
             icon: {
-              url: 'img/map/MapRoutePickupStop@2x.png',
-              scaledSize: new googleMaps.Size(26, 25),
-              anchor: new googleMaps.Point(13, 13),
+              iconUrl: 'img/map/MapRoutePickupStop@2x.png',
+              iconSize: [26, 25],
+              iconAnchor: [13, 13],
             },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+            zIndex: MAX_ZINDEX + 1,
           },
           alightMarker: {
             icon: {
-              url: 'img/map/MapRouteDropoffStop@2x.png',
-              scaledSize: new googleMaps.Size(26, 25),
-              anchor: new googleMaps.Point(13, 13),
+              iconUrl: 'img/map/MapRouteDropoffStop@2x.png',
+              iconSize: [26, 25],
+              iconAnchor: [13, 13],
             },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+            zIndex: MAX_ZINDEX + 1,
           },
           startMarker: {
             icon: {
-              url: 'img/map/SelectedPinStart@2x.png',
-              scaledSize: new googleMaps.Size(34, 46),
-              anchor: new googleMaps.Point(17, 41),
+              iconUrl: 'img/map/SelectedPinStart@2x.png',
+              iconSize: [34, 46],
+              iconAnchor: [17, 41],
             },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 2,
+            zIndex: MAX_ZINDEX + 2,
           },
           endMarker: {
             icon: {
-              url: 'img/map/SelectedPinStop@2x.png',
-              scaledSize: new googleMaps.Size(34, 46),
-              anchor: new googleMaps.Point(17, 41),
+              iconUrl: 'img/map/SelectedPinStop@2x.png',
+              iconSize: [34, 46],
+              iconAnchor: [17, 41],
             },
-            zIndex: google.maps.Marker.MAX_ZINDEX + 2,
+            zIndex: MAX_ZINDEX + 2,
           },
         },
         pathOptions: {
@@ -69,16 +72,16 @@ export default [
 
     this.defaultMapOptions = function(options) {
       var mapOptions = _.assign({
-        center: {latitude: 1.370244, longitude: 103.823315},
+        center: {lat: 1.370244, lng: 103.823315},
         zoom: 11,
         bounds: { // so that autocomplete will mainly search within Singapore
           northeast: {
-              latitude: 1.485152,
-              longitude: 104.091837
+              lat: 1.485152,
+              lng: 104.091837
             },
           southwest: {
-              latitude: 1.205764,
-              longitude: 103.589899
+              lat: 1.205764,
+              lng: 103.589899
             }
         },
         control: {},
@@ -138,7 +141,7 @@ export default [
 
     this.disableMapLinks = function () {
       setTimeout(function() {
-        var anchorElems = document.querySelectorAll('ui-gmap-google-map a[href]')
+        var anchorElems = document.querySelectorAll('ui-gmap-google-map a[href], cd-gmap-google-map a[href]')
 
         for (let i=0; i<anchorElems.length; i++) {
           let anchorElem = anchorElems[i];
@@ -157,17 +160,10 @@ export default [
     };
 
     this.formBounds = function(stops) {
-      if (stops.length == 0) {
-        return;
-      }
-      var bounds = new google.maps.LatLngBounds();
-      for (let s of stops) {
-        bounds.extend(new google.maps.LatLng(
-          s.coordinates.coordinates[1],
-          s.coordinates.coordinates[0]
-        ));
-      }
-      return bounds
+      return stops.map(s => [
+        s.coordinates.coordinates[1],
+        s.coordinates.coordinates[0]
+      ])
     }
 
   }

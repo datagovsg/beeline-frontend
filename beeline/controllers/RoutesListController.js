@@ -12,7 +12,7 @@ export default function(
   LiteRouteSubscriptionService,
   SearchService,
   BookingService,
-  uiGmapGoogleMapApi
+  cdGmapApi
 ) {
 
   // ---------------------------------------------------------------------------
@@ -35,7 +35,9 @@ export default function(
   };
 
 
-  uiGmapGoogleMapApi.then((googleMaps) => {
+  cdGmapApi.then(() => {
+    const googleMaps = google.maps
+    
     // Initialize it with google autocompleteService and PlacesService
     let searchBox = document.getElementById('search');
     // Blur on enter

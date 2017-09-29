@@ -36,16 +36,16 @@
       display: flex;
       flex-direction: column;
 
-      ui-gmap-google-map {
+      cd-gmap-google-map {
         flex: 1 1 auto;
         position: relative;
 
-        div.angular-google-map {
+        div.cd-google-map {
           width: 100%;
           height: 100%;
           position: absolute;
         }
-        .angular-google-map-container {
+        .cd-google-map-container {
           height: 100%;
           width: 100%;
         }

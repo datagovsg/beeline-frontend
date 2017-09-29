@@ -76,17 +76,14 @@ navigation history that also transitions its views in and out.
       <ion-nav-view name="tab-search"></ion-nav-view>
     </ion-tab>
   </ion-tabs>
-  <ui-gmap-google-map
+  <cd-gmap-google-map
     center="map.center"
     pan="true"
     zoom="map.zoom"
-    bounds="map.bounds"
-    dragging="map.dragging"
     control="map.control"
-    options="map.options"
     data-tap-disabled="true"
   >
-      <my-location></my-location>
-      <ui-view name="map-area"></ui-view>
-  </ui-gmap-google-map>
+    <my-location></my-location>
+    <ui-view name="map-area"></ui-view>
+  </cd-gmap-google-map>
 </ion-view>

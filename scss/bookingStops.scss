@@ -42,7 +42,7 @@
       flex: 1 1 auto;
       position: relative;
 
-      ui-gmap-google-map {
+      cd-gmap-google-map {
         display: block;
         top: 0;
         bottom: 0;
@@ -61,7 +61,7 @@
           }
         }
 
-        .angular-google-map, .angular-google-map-container {
+        .cd-google-map, .cd-google-map-container {
           width: 100%;
           height: 100%;
           display: block;

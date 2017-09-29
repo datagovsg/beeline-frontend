@@ -1,6 +1,7 @@
 import querystring from 'querystring';
 import _ from 'lodash';
 import assert from 'assert';
+import polyline from 'polyline'
 
 // Adapter function to convert what we get from the server into what we want
 // Ideally shouldn't need this if the server stays up to date
@@ -30,7 +31,7 @@ function transformRouteData(data) {
   return data;
 }
 
-export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q, p) {
+export default function RoutesService($http, UserService, $q, p) {
   // For all routes
   var routesCache;
   var activeRoutes;
@@ -207,10 +208,11 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
 // TODO: make a directive, otherwise literoute need to inject this routeservice
     decodeRoutePath: function (path) {
       assert.strictEqual(typeof path, 'string');
-      return uiGmapGoogleMapApi.then((googleMaps) => {
-        // Array of LatLng objects
-        return googleMaps.geometry.encoding.decodePath(path);
-      })
+      // Array of LatLng objects
+      return Promise.resolve(
+        polyline.decode(path)
+        .map(([lat, lng]) => ({lat, lng}))
+      )
     },
 
     getRouteFeatures: function (routeId) {
@@ -288,7 +290,7 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       return routeToRidesRemainingMap
     },
 
-    // New more abstracted method which differentiates between 0 and null 
+    // New more abstracted method which differentiates between 0 and null
     // 0 means user is logged in a no credits found
     // null means not logged in so we don't know
     getPassCountForRoute: function(routeId) {

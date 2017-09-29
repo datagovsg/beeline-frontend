@@ -3,18 +3,16 @@ const leftPad = require('left-pad');
 
 angular.module('beeline')
 .directive('mapBusIcon',
-function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance,
-         BearingFromLngLats) {
+function(TripService, $timeout, RotatedImage, LngLatDistance, BearingFromLngLats) {
   const busIconImage = new RotatedImage('./img/busTop-small.png')
 
   return {
     replace: false,
     restrict: 'E',
     template: `
-    <ui-gmap-marker ng-if="icon"
-                    coords="coordinates"
-                    idkey="idkey"
-                    icon="icon"></ui-gmap-marker>
+    <cd-gmap-marker ng-if="icon && coordinates"
+                    lat-lng="coordinates | geojsonToLatLng"
+                    icon="icon"></cd-gmap-marker>
     `,
     scope: {
       pings: '<',
@@ -56,9 +54,9 @@ function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance
 
         $scope.busIcon = busIcon
         $scope.icon = {
-          url: busIcon,
-          scaledSize: new google.maps.Size(80, 80),
-          anchor: new google.maps.Point(40, 40),
+          iconUrl: busIcon,
+          iconSize: [80, 80],
+          iconAnchor: [40, 40],
         }
 
         $scope.coordinates = (pings.length > 0) ? pings[0].coordinates : null
