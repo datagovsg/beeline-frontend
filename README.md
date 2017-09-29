@@ -41,3 +41,6 @@ $ git push
 - scss: Main stylesheets to be compiled by webpack
 - static: Base assets and folder structure used for the build
 - www: Output folder that is wiped and recopied from static for each build
+
+# Contributing
+We welcome contributions to code open sourced by the Government Technology Agency of Singapore. All contributors will be asked to sign a Contributor License Agreement (CLA) in order to ensure that everybody is free to use their contributions.
