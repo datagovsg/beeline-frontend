@@ -58,7 +58,14 @@ export default [
       waitingForSubscriptionResult: false,
       isSubscribed: false,
       todayTrips: [],
+      inServiceWindow: false,
+      hasTrips: true,
     };
+
+    $scope.$watch('book.todayTrips',(trips)=>{
+      if (!trips) return;
+      $scope.book.hasTrips = trips.length > 0
+    });
 
     $scope.mapObject = {
       stops: [],
