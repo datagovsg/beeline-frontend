@@ -122,9 +122,9 @@
   ion-content {
     display: flex;
     flex-direction: column;
-    @include desktop { &.has-tabs { top: $bar-height; } }
-    height: 300px;
-    @include desktop { height: auto; }
+    top: auto;
+    @include desktop { top: $bar-height; }
+    max-height: 350px;
 
 // TODO: leave the lite-form at the bottom or float on the map in mobile version
     .route-info {
