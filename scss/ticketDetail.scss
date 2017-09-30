@@ -122,9 +122,9 @@
   ion-content {
     display: flex;
     flex-direction: column;
-    @include desktop { &.has-tabs { top: $bar-height; } }
+    @include desktop { &.has-tabs-top { top: $bar-height + $tabs-height; } }
+    top: auto;
     height: 200px;
-    @include desktop { height: auto; }
   }
   .item.trip-info {
     flex: 0 0 auto;
