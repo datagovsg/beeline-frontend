@@ -1,5 +1,6 @@
 import moment from 'moment';
 import {retriveNextTrip} from '../shared/util'
+import assert from 'assert'
 
 angular.module('beeline')
 .factory('FastCheckoutService', function fastCheckoutService(RoutesService, UserService,
@@ -112,6 +113,29 @@ angular.module('beeline')
 
       verify: function (routeId) {
         return verifyPromise(routeId)
+      },
+
+      buyMore: function (routeId) {
+        return new Promise(async (resolve, reject) => {
+          try {
+            user = await userLoginPromise()
+            let verifyNextTrip = await verifyPromise(routeId)
+            if (verifyNextTrip.errorMessage) {
+              return reject(verifyNextTrip.errorMessage)
+            }
+            hasSavedPaymentInfo = _.get(user, 'savedPaymentInfo.sources.data.length', 0) > 0
+            paymentInfo = hasSavedPaymentInfo ? _.get(user, 'savedPaymentInfo') : null
+            route = await RoutesService.getRoute(routeId)
+            ridesRemaining = await ridesRemainingPromise(routeId)
+            assert(!ridesRemaining)
+            await purchaseRoutePass(true, route, routeId, hasSavedPaymentInfo, paymentInfo, [], null, null)
+            return resolve('success')
+          }
+          catch (err) {
+            console.log(err)
+            return reject('failed')
+          }
+        })
       },
 
       fastCheckout: function (routeId, boardStopId, alightStopId, selectedDates) {

@@ -13,5 +13,22 @@
       justify-content: center;
     }
 
+    .rides-remaining {
+      display: flex;
+      padding: 0.5em;
+      align-items: center;
+      i.icon .buy-more-button{
+        flex: 0 0 auto;
+
+      }
+      .text {
+        flex: 1 1 auto;
+        margin-left: 10px;
+      }
+      button {
+        line-height: 1.0;
+      }
+    }
+
   }
 }
