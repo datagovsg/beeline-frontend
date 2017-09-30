@@ -44,7 +44,7 @@ angular.module('beeline')
         template: err.data.message,
       })
     } finally {
-      RoutesService.fetchRouteCredits(true)
+      RoutesService.fetchRoutePasses(true)
       RoutesService.fetchRoutePassCount()
       RoutesService.fetchRoutesWithRoutePass()
 
@@ -171,7 +171,7 @@ angular.module('beeline')
         return new Promise((resolve, reject) => {return resolve('routePassError')})
 
       } finally {
-        RoutesService.fetchRouteCredits(true)
+        RoutesService.fetchRoutePasses(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass()
       }
