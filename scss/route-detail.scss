@@ -5,9 +5,6 @@
     flex-direction: column;
     top: auto;
     @include desktop { &.has-tabs { top: $bar-height; } }
-    height: 260px;
-    @include desktop { height: auto; }
-
     .booking-info {
       display: flex;
       flex: 1;
