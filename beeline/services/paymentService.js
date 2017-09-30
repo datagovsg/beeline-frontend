@@ -142,6 +142,7 @@ angular.module('beeline')
 
   var instance = {
     payForRoutePass: async function(route, expectedPrice, passValue, paymentOptions) {
+      var paymentPromise
       try {
         console.log('From payment Service')
         let routePassTagList = route.tags.filter((tag) => {
@@ -149,7 +150,7 @@ angular.module('beeline')
         })
         // assert there is no more than 1 rp- tag
         assert(routePassTagList.length === 1)
-        UserService.beeline({
+        await loadingSpinner(UserService.beeline({
           method: 'POST',
           url: '/transactions/route_passes/payment',
           data: _.defaults(paymentOptions, {
@@ -159,37 +160,20 @@ angular.module('beeline')
             expectedPrice: expectedPrice,
             value: passValue
           }),
-        }).then((response) => {
-          if (response.status === 200) {
-            return new Promise((resolve, reject) => {return resolve('routePassPurchaseDone')})
-          } else {
-            return new Promise((resolve, reject) => {return resolve('routePassError')})
-          }
-        })
+        }))
+        paymentPromise = new Promise((resolve, reject) => {return resolve('routePassPurchaseDone')})
       } catch (err) {
         console.log(err)
-        return new Promise((resolve, reject) => {return resolve('routePassError')})
-
+        paymentPromise = new Promise((resolve, reject) => {return resolve('routePassError')})
       } finally {
+        console.log('finally')
         RoutesService.fetchRoutePasses(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass()
+        return paymentPromise
       }
     },
 
-    // book.price: amount to pay
-    // savePaymentChecked: user choose whether to save card infor
-
-    //  book : {
-    //    route: null,
-    //    selectedDates: [],
-    //    boardStopId: parseInt($stateParams.boardStop),
-    //    alightStopId: parseInt($stateParams.alightStop),
-    //    price: undefined,
-    //    features: null,
-    //    creditTag: null,
-    //    selectedDates: ($stateParams.selectedDates || '').split(',').map(s => parseInt(s))
-    //  }
     payHandler : function (book, savePaymentChecked) {
       if (book.price === 0) {
         payZeroDollar(book);
