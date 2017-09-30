@@ -13,7 +13,7 @@
         <div class="radios">
           <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.routePassChoice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
             <i class="icon ion-ios-circle-outline not-selected" ng-show="book.routePassChoice !== $index"></i>
-            <div class="priceDetails" ng-if="schedule.quantity === 1" ng-hide="book.hideOneTicket">{{schedule.quantity}} ticket (${{schedule.price | floatRoundUp | number:2}} per trip)</div>
+            <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price | floatRoundUp | number:2}} per trip)</div>
             <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}} passes (approx. ${{schedule.price | floatRoundUp | number:2}} per trip)
               <div>save {{schedule.discount}}%</div>
             </div>

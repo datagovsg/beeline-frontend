@@ -47,6 +47,7 @@ export default [
       routeId: routeId,
       bookingEnds: null,
       routeSupportsRoutePass: null,
+      isLoggedIn: null,
     }
 
     $scope.disp = {
@@ -100,6 +101,10 @@ export default [
         $scope.data.pickupStop.id, $scope.data.dropoffStop.id, [$scope.data.nextTrip.date.getTime()])
         .then( reactivateButton , reactivateButton)
     };
+
+    $scope.buyMore =  () => {
+      FastCheckoutService.buyMore(routeId)
+    }
 
     // ------------------------------------------------------------------------
     // Initialization
@@ -165,6 +170,10 @@ export default [
       FastCheckoutService.verify(routeId).then((response) => {
         $scope.data.nextTrip = response
       })
+    })
+
+    $scope.$watch(() => UserService.getUser(), (user) => {
+      $scope.data.isLoggedIn = user ? true : false
     })
 
     $scope.$watch('data.pickupStop', (ps) => {

@@ -25,7 +25,6 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
       hasSavedPaymentInfo: hasSavedPaymentInfo,
       brand: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].brand : null,
       last4Digtis: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].last4 : null,
-      hideOneTicket: hideOneTicket,
     }
 
     scope.$watch('book.routePassChoice', (choice) => {
@@ -94,6 +93,9 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
       return new Promise((resolve, reject) => {
         scope.book.priceSchedules = response
         scope.book.routePassChoice = 0
+        if (hideOneTicket) {
+          scope.book.priceSchedules =scope.book.priceSchedules.slice(0, scope.book.priceSchedules.length-1)
+        }
         routePassModal.show()
         // scope.$on('routePassPurchaseDone', () => {
         //   return resolve('Payment Done')

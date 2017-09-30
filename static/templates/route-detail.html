@@ -1,6 +1,20 @@
 <ion-view class="route-detail">
   <ion-content scroll="false">
     <form name="stopsForm">
+      <div class="rides-remaining" ng-if="data.passCount > 0 || data.routeSupportsRoutePass" >
+          <i class="icon">
+              <img src="img/icon_kickstarter_activebid.svg">
+          </i>
+          <span class="text" ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)">You have {{ data.passCount || 0 }} pass(es) remaining for this route</span> <!-- Use by DD/MM/YY. -->
+          <span class="text" ng-if="!book.isLoggedIn"></span>
+          <span class="buy-more-button"
+            ng-if="data.routeSupportsRoutePass"
+            ng-click="buyMore()">
+            <button class="button button-positive button-small button-outline"><i class="ion-ios-cart"></i>&nbsp;Buy more</button>
+          </span>
+          <span ng-if="!data.routeSupportsRoutePass" class="buy-more-button"></span>
+      </div>
+
       <div class="item item-icon-left item-icon-right" on-tap="choosePickup()">
         <i class="icon pickup-stop"></i>
         <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
@@ -15,15 +29,6 @@
       </div>
     </form>
     <div class="booking-info">
-      <span ng-if="data.routeSupportsRoutePass && data.passCount === 0">
-        You don't have any credits remaining
-      </span>
-      <span ng-if="data.routeSupportsRoutePass && data.passCount === 1">
-        You have 1 credit remaining
-      </span>
-      <span ng-if="data.routeSupportsRoutePass && data.passCount > 1">
-        You have <span ng-bind="data.passCount"></span> credits remaining
-      </span>
       <span ng-if="data.nextTrip.hasNextTripTicket">
         You have already booked this trip.
       </span>
