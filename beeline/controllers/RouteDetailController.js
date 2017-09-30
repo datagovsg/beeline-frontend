@@ -46,6 +46,7 @@ export default [
       hasNextTripTicket: null,
       routeId: routeId,
       bookingEnds: null,
+      routeSupportsRoutePass: null,
     }
 
     $scope.disp = {
@@ -100,7 +101,6 @@ export default [
         .then( reactivateButton , reactivateButton)
     };
 
-
     // ------------------------------------------------------------------------
     // Initialization
     // ------------------------------------------------------------------------
@@ -122,6 +122,8 @@ export default [
         $ionicLoading.hide();
         // Grab the price data
         $scope.data.price = route.trips[0].price;
+        // routeSupportsRoutePass
+        $scope.data.routeSupportsRoutePass = FastCheckoutService.routeQualifiedForRoutePass(route)
         // Grab the stop data
         let [pickups, dropoffs] = BookingService.computeStops(route.trips);
         $scope.mapObject.stops = pickups.concat(dropoffs);
