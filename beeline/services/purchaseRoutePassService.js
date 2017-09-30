@@ -8,7 +8,7 @@ angular.module('beeline')
 function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
   StripeService, assetScopeModalService, PaymentService, UserService, BookingSummaryModalService) {
   var self = this
-  self.show = (route, routeId, hasSavedPaymentInfo, savedPaymentInfo, selectedDates, boardStopId, alightStopId) => {
+  self.show = (hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, selectedDates, boardStopId, alightStopId) => {
     var scope = $rootScope.$new();
     var routePassModal = $ionicModal.fromTemplate(
       routePassTemplate, {
@@ -25,6 +25,7 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
       hasSavedPaymentInfo: hasSavedPaymentInfo,
       brand: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].brand : null,
       last4Digtis: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].last4 : null,
+      hideOneTicket: hideOneTicket,
     }
 
     scope.$watch('book.routePassChoice', (choice) => {

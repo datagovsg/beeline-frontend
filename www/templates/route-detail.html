@@ -15,13 +15,13 @@
       </div>
     </form>
     <div class="booking-info">
-      <span ng-if="data.passCount === 0">
+      <span ng-if="data.routeSupportsRoutePass && data.passCount === 0">
         You don't have any credits remaining
       </span>
-      <span ng-if="data.passCount === 1">
+      <span ng-if="data.routeSupportsRoutePass && data.passCount === 1">
         You have 1 credit remaining
       </span>
-      <span ng-if="data.passCount > 1">
+      <span ng-if="data.routeSupportsRoutePass && data.passCount > 1">
         You have <span ng-bind="data.passCount"></span> credits remaining
       </span>
       <span ng-if="data.nextTrip.hasNextTripTicket">
