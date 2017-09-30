@@ -106,39 +106,12 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
         scope.proceed = async function() {
           routePassModal.hide()
           if (scope.book.priceSchedules[scope.book.routePassChoice].quantity === 1) {
-            // ask to confirm T&Cs
-            // ask for stripe payment for single ticket
-            try {
-              await BookingSummaryModalService.show({
-                  routeId: routeId,
-                  price: route.trips[0].price,
-                  route: route,
-                  applyRoutePass: false,
-                  selectedDates: selectedDates,
-                  boardStopId: boardStopId,
-                  alightStopId: alightStopId,
-                  hasSavedPaymentInfo: hasSavedPaymentInfo
-                })
-              return resolve('Payment Done')
-            } catch (err) {
-              console.log(err)
-              return reject('Payment Failed')
-            }
-
+            // skip the payment for route pass
+            return resolve('Payment Done')
           } else {
-            return scope.payForRoutePass().then( async function() {
-              await BookingSummaryModalService.show({
-                  routeId: routeId,
-                  price: route.trips[0].price,
-                  route: route,
-                  applyRoutePass: false,
-                  selectedDates: selectedDates,
-                  boardStopId: boardStopId,
-                  alightStopId: alightStopId,
-                  hasSavedPaymentInfo: hasSavedPaymentInfo
-                })
+            loadingSpinner(scope.payForRoutePass()).then(() => {
               return resolve('Payment Done')
-            },() => {
+            }, () => {
               return reject('Payment Failed')
             })
           }
