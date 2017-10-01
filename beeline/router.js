@@ -252,17 +252,31 @@ export default function($stateProvider, $urlRouterProvider) {
   })
 
   .state('tabs.lite-route-tracker', {
-    url: '/tickets/liteRoute/:liteRouteLabel',
+    url: '/tickets/liteRoute/:label',
     views: {
       'tab-tickets': {
-        templateUrl: 'templates/lite-route-tracker.html',
-        controller: 'LiteRouteTrackerController'
+        templateUrl: 'templates/tab-lite-tracker2.html',
+        controller: 'LiteDetailController',
       }
     },
     data: {
       hideTabs: true,
     }
   })
+
+  .state('tabs.lite-tracker-more-info', {
+    url: '/tickets/liteRoute/:label',
+    views: {
+      'tab-tickets': {
+        templateUrl: 'templates/lite-tracker-more-info.html',
+        controller: 'LiteMoreInfoController',
+      }
+    },
+    data: {
+      hideTabs: true,
+    }
+  })
+
 
   // ////////////////////////////////////////////////////////////////////////////
   // Main interface, Kickstarter Tab

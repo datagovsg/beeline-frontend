@@ -69,7 +69,7 @@
       <a ng-if="liteRouteSubscriptions.length > 0"
          class="item item-icon-right"
          ng-repeat="subscription in liteRouteSubscriptions"
-         ui-sref="tabs.lite-route-tracker({ liteRouteLabel: subscription.label })">
+         ui-sref="tabs.lite-route-tracker({ label: subscription.label })">
         <route-item class="lite lite-tracked">
           <route-item-bus-number>
             {{ subscription.label }}
