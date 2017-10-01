@@ -106,68 +106,13 @@ export default function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-
-  .state('tabs.booking', {
-    url: '/booking',
-    abstract: true
-  })
-
-  .state('tabs.bookingPickup', {
-    url: '/booking/:routeId/stops?boardStop&alightStop&sessionId',
+  .state('tabs.route-confirmation', {
+    url: '/route/confirmation',
     views: {
-      'tab-booking': {
-        templateUrl: 'templates/tab-booking-stops.html',
-        controller: 'BookingStopsController',
-      }
-    },
-    data: {
-      hideTabs: true,
-    }
-  })
-
-  .state('tabs.booking-dates', {
-    url: '/booking/:routeId/dates?boardStop&alightStop&sessionId&selectedDates',
-    views: {
-      'tab-booking': {
-        templateUrl: 'templates/tab-booking-dates.html',
-        controller: 'BookingDatesController',
-      },
-    },
-    data: {
-      hideTabs: true,
-    }
-  })
-  .state('tabs.booking-summary', {
-    url: '/booking/:routeId/summary?boardStop&alightStop&selectedDates&sessionId&promoCode',
-    views: {
-      'tab-booking': {
-        templateUrl: 'templates/tab-booking-summary.html',
-        controller: 'BookingSummaryController',
-      },
-    },
-    data: {
-      hideTabs: true,
-    }
-  })
-  .state('tabs.booking-confirmation', {
-    url: '/booking/confirmation',
-    views: {
-      'tab-booking': {
+      'tab-routes': {
         templateUrl: 'templates/tab-booking-confirmation.html',
         controller: 'BookingConfirmationController',
       },
-    },
-    data: {
-      hideTabs: true,
-    }
-  })
-  .state('tabs.lite-summary', {
-    url: '/lite/summary/:label',
-    views: {
-      'tab-lite': {
-        templateUrl: 'templates/tab-lite-summary.html',
-        controller: 'LiteSummaryController',
-      }
     },
     data: {
       hideTabs: true,
@@ -238,24 +183,11 @@ export default function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('tabs.ticket-detail2', {
-    url: '/tickets/:ticketId',
-    views: {
-      'tab-tickets': {
-        templateUrl: 'templates/ticket-detail2.html',
-        controller: 'TicketDetailController2'
-      }
-    },
-    data: {
-      hideTabs: true,
-    }
-  })
-
   .state('tabs.lite-route-tracker', {
     url: '/tickets/liteRoute/:label',
     views: {
       'tab-tickets': {
-        templateUrl: 'templates/tab-lite-tracker2.html',
+        templateUrl: 'templates/tab-lite-tracker.html',
         controller: 'LiteDetailController',
       }
     },
@@ -308,8 +240,8 @@ export default function($stateProvider, $urlRouterProvider) {
     url: '/crowdstart/:routeId/detail',
     views: {
       'tab-crowdstart': {
-        templateUrl: 'templates/kickstarter-detail2.html',
-        controller: 'KickstarterDetailController2'
+        templateUrl: 'templates/kickstarter-detail.html',
+        controller: 'KickstarterDetailController'
       }
     },
     data: {
