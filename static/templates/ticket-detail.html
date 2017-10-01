@@ -1,4 +1,4 @@
-<ion-view class="ticket-detail" ng-init="activeTab=0"
+<ion-view class="ticket-detail2" ng-init="activeTab=0"
   hide-back-button="true" can-swipe-back="false">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
@@ -6,7 +6,6 @@
        <i class="icon ion-ios-arrow-back"></i> Tickets
     </button>
   </ion-nav-buttons>
-
   <ion-nav-title>Ticket for {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}</ion-nav-title>
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
     <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
@@ -76,28 +75,6 @@
         </div>
       </div>
     </div>
-
-    <ui-gmap-google-map ng-if="info.trip.isRunning" center="map.center" pan="true" zoom="map.zoom" options="map.options" events="map.events" bounds="map.bounds" dragging="map.dragging" control="map.control" data-tap-disabled="true">
-      <my-location></my-location>
-      <ui-gmap-polyline path="map.lines.route.path" stroke="map.pathOptions.routePath"></ui-gmap-polyline>
-      <ui-gmap-marker idkey="'boardstop'"
-                      ng-if="map.markers.boardStop.stop"
-                      coords="map.markers.boardStop.stop.coordinates"
-                      options="map.markerOptions.startMarker"></ui-gmap-marker>
-      <ui-gmap-marker idkey="'alightstop'"
-                      ng-if="map.markers.alightStop.stop"
-                      coords="map.markers.alightStop.stop.coordinates"
-                      options="map.markerOptions.endMarker"></ui-gmap-marker>
-      <map-bus-icon ng-if="map.lines.actualPath.path.length"
-                      idkey="'bus-location'"
-                      pings="map.lines.actualPath.pings"></map-bus-icon>
-      <ui-gmap-markers  ng-if="trip.tripStops"
-                        models="trip.tripStops"
-                        idkey="'id'"
-                        options="'_markerOptions'"
-                        coords="'stop.coordinates'"
-                        ></ui-gmap-markers>
-    </ui-gmap-google-map>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
     <ion-scroll class="service-cancellation" ng-if="info.trip.status == 'cancelled'">

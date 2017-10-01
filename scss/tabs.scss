@@ -27,7 +27,7 @@
     }
   }
   ui-gmap-google-map {
-    height: 70%;
+    height: 80%;
     width: 100%;
     display: block;
     position: absolute;
@@ -40,7 +40,6 @@
       width: 100%;
     }
   }
-
   // Position the locate me button near the bottom right
   .message-locate-div {
     flex: 0 0 0;
@@ -72,5 +71,4 @@
       }
     }
   }
-
 }

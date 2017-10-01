@@ -34,7 +34,7 @@ angular.module('beeline')
       $ionicLoading.hide();
 
       TicketService.setShouldRefreshTickets();
-      $state.go('tabs.booking-confirmation');
+      $state.go('tabs.route-confirmation');
 
     } catch (err) {
       console.log(err)

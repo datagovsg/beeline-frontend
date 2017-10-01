@@ -246,7 +246,7 @@ export default [
         $ionicLoading.hide();
 
         TicketService.setShouldRefreshTickets();
-        $state.go('tabs.booking-confirmation');
+        $state.go('tabs.route-confirmation');
 
       } catch (err) {
         $ionicLoading.hide();
