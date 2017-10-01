@@ -71,10 +71,5 @@ export default [
       });
     });
 
-    $scope.$on('$ionicView.afterEnter', () => {
-      if ($scope.$parent.mapObject) {
-        SharedVariableService.set($scope.$parent.mapObject)
-      }
-    })
   }
 ];
