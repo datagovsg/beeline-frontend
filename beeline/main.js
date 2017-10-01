@@ -35,6 +35,7 @@ require('./services/purchaseRoutePassService');
 require('./services/paymentService');
 require('./services/bookingSummaryModalService')
 require('./services/SharedVariableService')
+require('./services/MapService')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -109,6 +110,8 @@ app
 .controller('KickstarterCommitController', require('./controllers/KickstarterCommitController.js').default)
 .controller('KickstarterRecapController', require('./controllers/KickstarterRecapController.js').default)
 .controller('TabsController', require('./controllers/TabsController.js').default)
+.controller('MapViewController', require('./controllers/MapViewController.js').default)
+.controller('LiteMapViewController', require('./controllers/LiteMapViewController.js').default)
 .controller('LiteDetailController', require('./controllers/LiteDetailController.js').default)
 .controller('KickstarterStopsController', require('./controllers/KickstarterStopsController.js').default)
 .directive('searchButton', require('./directives/searchButton.js').default)

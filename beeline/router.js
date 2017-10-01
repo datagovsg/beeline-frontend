@@ -72,6 +72,11 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-routes': {
         templateUrl: 'templates/route-detail.html',
         controller: 'RouteDetailController'
+      },
+
+      'map-area': {
+        templateUrl: 'templates/map-view.html',
+        controller: 'MapViewController'
       }
     }
   })
@@ -81,12 +86,14 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-routes': {
         templateUrl: 'templates/route-stops.html',
         controller: 'RouteStopsController'
+      },
+
+      'map-area': {
+        templateUrl: 'templates/map-view.html',
+        controller: 'MapViewController'
       }
     },
-    params: { callback: null },
-    data: {
-      keepMapObject: true
-    }
+    params: { callback: null }
   })
   .state('tabs.route-dates', {
     url: '/route/:routeId/dates?boardStop&alightStop&selectedDates',
@@ -124,6 +131,11 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-lite': {
         templateUrl: 'templates/tab-lite-detail.html',
         controller: 'LiteDetailController',
+      },
+
+      'map-area': {
+        templateUrl: 'templates/map-view.html',
+        controller: 'LiteMapViewController'
       }
     },
     data: {
@@ -189,6 +201,11 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-tickets': {
         templateUrl: 'templates/tab-lite-tracker.html',
         controller: 'LiteDetailController',
+      },
+
+      'map-area': {
+        templateUrl: 'templates/map-view.html',
+        controller: 'LiteMapViewController'
       }
     },
     data: {
@@ -242,6 +259,11 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-crowdstart': {
         templateUrl: 'templates/kickstarter-detail.html',
         controller: 'KickstarterDetailController'
+      },
+
+      'map-area': {
+        templateUrl: 'templates/map-view.html',
+        controller: 'MapViewController'
       }
     },
     data: {
@@ -255,6 +277,11 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-crowdstart': {
         templateUrl: 'templates/kickstarter-stops.html',
         controller: 'KickstarterStopsController'
+      },
+
+      'map-area': {
+        templateUrl: 'templates/map-view.html',
+        controller: 'MapViewController'
       }
     },
     data: {

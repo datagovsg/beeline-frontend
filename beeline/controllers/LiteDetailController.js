@@ -9,8 +9,6 @@ export default [
   '$state',
   '$stateParams',
   '$ionicModal',
-  '$http',
-  '$cordovaGeolocation',
   '$ionicPopup',
   '$ionicLoading',
   'RoutesService',
@@ -21,7 +19,7 @@ export default [
   'uiGmapGoogleMapApi',
   'MapOptions',
   'loadingSpinner',
-  'SharedVariableService',
+  'MapService',
   function(
     $rootScope,
     $scope,
@@ -29,8 +27,6 @@ export default [
     $state,
     $stateParams,
     $ionicModal,
-    $http,
-    $cordovaGeolocation,
     $ionicPopup,
     $ionicLoading,
     RoutesService,
@@ -41,7 +37,7 @@ export default [
     uiGmapGoogleMapApi,
     MapOptions,
     loadingSpinner,
-    SharedVariableService
+    MapService
   ) {
 
     $scope.disp = {
@@ -91,17 +87,6 @@ export default [
 
     var availableTripsPromise = routePromise.then((route)=>{
       $scope.book.route = route[$scope.book.label];
-      if (route[$scope.book.label].path) {
-        RoutesService.decodeRoutePath(route[$scope.book.label].path)
-          .then((decodedPath) => {
-            // $scope.mapObject.routePath = decodedPath
-            // SharedVariableService.setRoutePath(decodedPath)
-          })
-          .catch(() => {
-            $scope.mapObject.routePath = []
-            SharedVariableService.setRoutePath([])
-          })
-      }
       //get route features
       RoutesService.getRouteFeatures($scope.book.route.id).then((data)=>{
         $scope.disp.features = data;
@@ -109,27 +94,18 @@ export default [
       $scope.book.route.trips = _.sortBy($scope.book.route.trips, (trip)=>{
         return trip.date
       })
-      let nextTrips = $scope.book.route.trips.filter(
-        trip=>trip.date === $scope.book.route.trips[0].date)
-      var liteTripStops = LiteRoutesService.computeLiteStops(nextTrips)
-      $scope.mapObject.stops = liteTripStops;
-      SharedVariableService.setStops(liteTripStops)
     });
 
     $scope.$watch('book.todayTrips', (todayTrips) => {
       console.log('today trips')
       if (todayTrips && todayTrips.length > 0) {
-        $scope.mapObject.pingTrips = todayTrips;
-        SharedVariableService.setPingTrips(todayTrips);
+        MapService.emit('ping-trips', todayTrips)
       }
     })
 
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([routePromise, subscriptionPromise])
       .then(() => {
-        console.log($scope.mapObject)
-        // to plot the map
-        SharedVariableService.set($scope.mapObject)
         $scope.$broadcast('startPingLoop');
       }));
     });

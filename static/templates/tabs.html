@@ -76,7 +76,6 @@ navigation history that also transitions its views in and out.
       <ion-nav-view name="tab-search"></ion-nav-view>
     </ion-tab>
   </ion-tabs>
-
   <ui-gmap-google-map
     center="map.center"
     pan="true"
@@ -87,43 +86,16 @@ navigation history that also transitions its views in and out.
     options="map.options"
     data-tap-disabled="true"
   >
-    <my-location></my-location>
-    <map-poly-route route-path="mapObject.routePath"></map-poly-route>
-    <!-- for lite route -->
-    <ui-gmap-marker
-      ng-repeat="stop in mapObject.stops"
-      idKey="stop.id"
-      coords="stop.coordinates"
-      options="stop.canBoard ? map.markerOptions.boardMarker : map.markerOptions.alightMarker"
-      click="applyTapBoard(stop)"
-    ></ui-gmap-marker>
-    <ui-gmap-window ng-if="disp.popupStop"
-                    coords="disp.popupStop.coordinates"
-                    show="disp.popupStop"
-                    closeClick="closeWindow">
-      <div class="popUpStopSelect">
-        <b>{{formatStopTime(disp.popupStop.time)}}<br/></b>
-        {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
-      </div>
-    </ui-gmap-window>
-    <ui-gmap-marker idkey="'boardstop'"
-                    ng-if="mapObject.boardStop.stop"
-                    coords="mapObject.boardStop.stop.coordinates"
-                    options="map.markerOptions.startMarker"></ui-gmap-marker>
-    <ui-gmap-marker idkey="'alightstop'"
-                    ng-if="mapObject.alightStop.stop"
-                    coords="mapObject.alightStop.stop.coordinates"
-                    options="map.markerOptions.endMarker"></ui-gmap-marker>
-    <ui-gmap-marker ng-if="mapObject.chosenStop"
-                    idkey="'selectedStopPin'"
-                    coords="mapObject.chosenStop.coordinates"
-                    options="mapObject.chosenStop.canBoard ? map.markerOptions.startMarker : map.markerOptions.endMarker">
-    </ui-gmap-marker>
-    <map-bus-icon ng-repeat="recentPings in mapObject.allRecentPings track by $index"
-                  idkey="'bus-icon' + $index"
-                  ng-if="recentPings.isRecent"
-                  pings="recentPings.pings"
-                  overlay="$index + 1"></map-bus-icon>
+      <my-location></my-location>
+      <ui-view name="map-area"></ui-view>
   </ui-gmap-google-map>
+  <div class="message-locate-div" ng-show="true || disp.routeMessage.trim()">
+    <div class="announcement">
+      <span class="icon ion-chatbox-working"></span>
+        <div class="message">
+          {{disp.routeMessage.trim()}}
+        </div>
+    </div>
+  </div>
 
 </ion-view>
