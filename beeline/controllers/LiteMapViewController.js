@@ -81,18 +81,21 @@ export default [
       //fetch driver pings every 4s
       $scope.timeout = new SafeInterval(pingLoop, 4000, 1000);
 
-      $scope.$on("killPingLoop", () => {
+
+      MapService.on("killPingLoop", () => {
         $scope.timeout.stop();
       });
 
-      $scope.$on("startPingLoop", () => {
+      MapService.on("startPingLoop", () => {
         $scope.timeout.start();
       });
 
       //load icons and path earlier by restart timeout on watching trips
-      $scope.$watchCollection('mapObject.pingTrips', () => {
-        $scope.timeout.stop();
-        $scope.timeout.start();
+      $scope.$watchCollection('mapObject.pingTrips', (pt) => {
+        if (pt) {
+          $scope.timeout.stop();
+          $scope.timeout.start();
+        }
       });
 
       $scope.$watchCollection('mapObject.statusMessages', () => {
