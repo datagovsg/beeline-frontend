@@ -130,6 +130,7 @@ export default [
         } else {
           $scope.hasTrackingData = true;
         }
+        MapService.emit('hasTrackingData', $scope.hasTrackingData)
       }
 
   }

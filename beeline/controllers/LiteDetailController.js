@@ -43,6 +43,7 @@ export default [
     $scope.disp = {
       companyInfo: {},
       showTooltip: true,
+      hasTrackingData: null,
     };
 
     // Default settings for various info used in the page
@@ -269,5 +270,9 @@ export default [
         $scope.disp.showTooltip = false;
       }
     }
+
+    MapService.on('hasTrackingData', (hasTrackingData) => {
+      $scope.disp.hasTrackingData = hasTrackingData
+    })
   }
 ];
