@@ -51,6 +51,7 @@ export default [
     });
     tripPromise.then((trip) => {
       $scope.trip = trip;
+      MapService.emit('ping-trips', [trip])
     });
 
     routePromise.then((route) => {

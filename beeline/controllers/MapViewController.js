@@ -100,8 +100,8 @@ export default [
         return RoutesService.getRoute(+trip.routeId);
       });
       ticketPromise.then((ticket) => {
-        $scope.mapObject.setBoardStop(ticket.boardStop)
-        $scope.mapObject.setAlightStop(ticket.alightStop)
+        $scope.mapObject.boardStop = ticket.boardStop
+        $scope.mapObject.alightStop = ticket.alightStop
         SharedVariableService.setBoardStop(ticket.boardStop)
         SharedVariableService.setAlightStop(ticket.alightStop)
       });
@@ -109,7 +109,7 @@ export default [
         let stops = trip.tripStops.map((ts) => {
           return _.assign(ts.stop, {canBoard: ts.canBoard})
         })
-        $scope.mapObject.setStops(stops)
+        $scope.mapObject.stops = stops
         SharedVariableService.setStops(stops)
       })
       routePromise.then((route) => {
@@ -124,6 +124,10 @@ export default [
         }
       })
     }
+
+    MapService.on('ping-trips', (trips) => {
+      $scope.mapObject.pingTrips = trips
+    })
 
     //fetch driver pings every 4s
     $scope.timeout = new SafeInterval(pingLoop, 4000, 1000);
