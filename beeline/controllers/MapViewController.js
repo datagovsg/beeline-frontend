@@ -159,6 +159,13 @@ export default [
         await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
           return TripService.DriverPings(trip.id)
           .then((info) => {
+            var tripInfo = {
+              'tripCode': info && info.code,
+              'vehicle': info && info.trip && info.trip.vehicle && info.trip.vehicle.vehicleNumber,
+              'driver': info && info.trip && info.trip.tripDriver && info.trip.tripDriver.name,
+              'tripStatus': info && info.trip && info.trip.status
+            }
+            MapService.emit('tripInfo', tripInfo)
             const now = Date.now()
 
             $scope.mapObject.allRecentPings[index] = {

@@ -22,6 +22,13 @@ export default [
     MapService
   ) {
 
+    $scope.disp = {
+      code: null,
+      vehicle: null,
+      driver: null,
+      tripStatus: null,
+    }
+
     // Initialize the necessary basic data data
     $scope.user = UserService.getUser();
 
@@ -59,6 +66,9 @@ export default [
       MapService.emit('killPingLoop')
     });
 
+    MapService.on('tripInfo', (info) => {
+      $scope.disp = {...info}
+    })
 
   }
 ];
