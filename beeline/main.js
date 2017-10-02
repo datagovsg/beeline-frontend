@@ -15,15 +15,14 @@ import configureRoutes from './router.js';
 var app = angular.module('beeline', [
   'ionic',
   'ngCordova',
-  'uiGmapgoogle-maps',
+  'cdGmap',
   'multipleDatePicker',
   'ngclipboard',
 ])
 
-require('angular-simple-logger');
-require('angular-google-maps');
 require('clipboard');
 require('ngclipboard');
+require('./leaflet/CdGmap');
 require('./directives/extA');
 require('./services/RotatedImageService');
 require('./services/GeoUtils');
@@ -156,19 +155,16 @@ app
 .config(function ($httpProvider) {
   $httpProvider.useApplyAsync(true);
 })
-.config(function(uiGmapGoogleMapApiProvider) {
-  if (process.env.GOOGLE_API_KEY) {
-    uiGmapGoogleMapApiProvider.configure({
-      key: process.env.GOOGLE_API_KEY,
-      libraries: 'places,geometry'
-    });
-  } else {
-    uiGmapGoogleMapApiProvider.configure({
-      client: 'gme-infocommunications',
-      libraries: 'places,geometry'
-    });
-  }
-})
+.config(['cdGmapSettingsProvider', function (cdGmapSettingsProvider) {
+  // Discovered that native maps plugin sucks
+  // battery. So now we use Leaflet
+  cdGmapSettingsProvider.useNativeMaps(false)
+  cdGmapSettingsProvider.jsMapSettings({
+    // client: 'gme-infocommunications',
+    key: 'AIzaSyDC38zMc2TIj1-fvtLUdzNsgOQmTBb3N5M',
+    libraries: 'places,geometry'
+  })
+}])
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.views.transition('none');
 })
