@@ -188,6 +188,11 @@ export default function($stateProvider, $urlRouterProvider) {
       'tab-tickets': {
         templateUrl: 'templates/ticket-detail.html',
         controller: 'TicketDetailController'
+      },
+
+      'map-area': {
+        templateUrl: 'templates/map-view.html',
+        controller: 'MapViewController'
       }
     },
     data: {
