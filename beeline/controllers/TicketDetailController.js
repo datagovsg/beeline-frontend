@@ -9,7 +9,6 @@ export default [
   'TripService',
   'UserService',
   'RoutesService',
-  'SharedVariableService',
   'MapService',
   function(
     $scope,
@@ -20,19 +19,8 @@ export default [
     TripService,
     UserService,
     RoutesService,
-    SharedVariableService,
     MapService
   ) {
-
-    $scope.mapObject = {
-      stops: [],
-      routePath: [],
-      alightStop: null,
-      boardStop: null,
-      pingTrips: [],
-      allRecentPings: [],
-      chosenStop: null,
-    }
 
     // Initialize the necessary basic data data
     $scope.user = UserService.getUser();
@@ -53,42 +41,17 @@ export default [
     });
     ticketPromise.then((ticket) => {
       $scope.ticket = ticket;
-      SharedVariableService.setBoardStop(ticket.boardStop)
-      SharedVariableService.setAlightStop(ticket.alightStop)
     });
     tripPromise.then((trip) => {
       $scope.trip = trip;
-      let stops = trip.tripStops.map((ts) => {
-        return _.assign(ts.stop, {canBoard: ts.canBoard})
-      })
-      $scope.mapObject = {
-        stops: stops,
-        boardStop: $scope.ticket.boardStop,
-        alightStop: $scope.ticket.alightStop,
-        pingTrips: [trip]
-      }
-      SharedVariableService.set($scope.mapObject)
     });
 
     routePromise.then((route) => {
       $scope.route = route;
-      if (route.path) {
-        RoutesService.decodeRoutePath(route.path)
-          .then((decodedPath) =>  {
-            SharedVariableService.setRoutePath(decodedPath)
-            $scope.mapObject.routePath = decodedPath
-          })
-          .catch(() => {
-            SharedVariableService.setRoutePath([])
-            $scope.mapObject.routePath = []
-          })
-      }
     });
     companyPromise.then((company) => { $scope.company = company; });
 
     $scope.$on('$ionicView.afterEnter', () => {
-      // to plot the map
-      SharedVariableService.set($scope.mapObject)
       MapService.emit('startPingLoop')
     })
 

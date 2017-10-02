@@ -9,8 +9,9 @@ export default [
   'MapService',
   '$timeout',
   'TripService',
+  'TicketService',
   function($scope, SharedVariableService, $stateParams, BookingService,
-    RoutesService, MapService, $timeout, TripService) {
+    RoutesService, MapService, $timeout, TripService, TicketService) {
       let routeId = $stateParams.routeId ? +$stateParams.routeId : null;
       let pickupStopId = $stateParams.pickupStopId
                            ? +$stateParams.pickupStopId
@@ -18,6 +19,7 @@ export default [
       let dropoffStopId = $stateParams.dropoffStopId
                             ? +$stateParams.dropoffStopId
                             : null;
+      let ticketId = $stateParams.ticketId ? +$stateParams.ticketId : null;
 
     var originalMapObject = {
       stops: [],
@@ -69,25 +71,59 @@ export default [
       SharedVariableService.setChosenStop(stop)
     })
 
+    if (routeId) {
+      RoutesService.getRoute(routeId).then((response) => {
+        var route = response
+        // Grab the stop data
+        let [pickups, dropoffs] = BookingService.computeStops(route.trips);
+        var stops = pickups.concat(dropoffs);
+        SharedVariableService.setStops(stops)
+        $scope.mapObject.stops = stops
+        if (route.path) {
+          RoutesService.decodeRoutePath(route.path)
+            .then((decodedPath) => {
+              $scope.mapObject.routePath = decodedPath
+            })
+            .catch(() => {
+              $scope.mapObject.routePath = []
+            })
+        }
+      })
+    }
 
-    RoutesService.getRoute(routeId).then((response) => {
-      var route = response
-      // Grab the stop data
-      let [pickups, dropoffs] = BookingService.computeStops(route.trips);
-      var stops = pickups.concat(dropoffs);
-      SharedVariableService.setStops(stops)
-      $scope.mapObject.stops = stops
-      if (route.path) {
-        RoutesService.decodeRoutePath(route.path)
-          .then((decodedPath) => {
-            $scope.mapObject.routePath = decodedPath
-          })
-          .catch(() => {
-            $scope.mapObject.routePath = []
-          })
-      }
-    })
-
+    if (ticketId) {
+      var ticketPromise = TicketService.getTicketById(ticketId);
+      var tripPromise = ticketPromise.then((ticket) => {
+        return TripService.getTripData(+ticket.alightStop.tripId);
+      });
+      var routePromise = tripPromise.then((trip) => {
+        return RoutesService.getRoute(+trip.routeId);
+      });
+      ticketPromise.then((ticket) => {
+        $scope.mapObject.setBoardStop(ticket.boardStop)
+        $scope.mapObject.setAlightStop(ticket.alightStop)
+        SharedVariableService.setBoardStop(ticket.boardStop)
+        SharedVariableService.setAlightStop(ticket.alightStop)
+      });
+      tripPromise.then((trip) => {
+        let stops = trip.tripStops.map((ts) => {
+          return _.assign(ts.stop, {canBoard: ts.canBoard})
+        })
+        $scope.mapObject.setStops(stops)
+        SharedVariableService.setStops(stops)
+      })
+      routePromise.then((route) => {
+        if (route.path) {
+          RoutesService.decodeRoutePath(route.path)
+            .then((decodedPath) => {
+              $scope.mapObject.routePath = decodedPath
+            })
+            .catch(() => {
+              $scope.mapObject.routePath = []
+            })
+        }
+      })
+    }
 
       //fetch driver pings every 4s
       $scope.timeout = new SafeInterval(pingLoop, 4000, 1000);
