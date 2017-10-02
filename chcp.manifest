@@ -85,7 +85,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "e79f149277520044b856d9762d1bac59"
+    "hash": "c3d1bf4f2d8bed7adb51000a290d3893"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -93,7 +93,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "c7d13712e8cc93abfddeaf55ba5db62f"
+    "hash": "b147fc72409cfbd5d29da98aac502348"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -310,6 +310,10 @@
   {
     "file": "img/busTop-small.png",
     "hash": "5fe15bb5138601e64edd3b128b599efe"
+  },
+  {
+    "file": "img/govtech_logo.png",
+    "hash": "3529b9518407050cfc54fc83a29da19c"
   },
   {
     "file": "img/grab-booking-breadcrumbs/ProgressBar01_ChooseStops.svg",
@@ -637,11 +641,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "f0667dd66079fcec90715a1535ca34b6"
+    "hash": "c4da4845dbc19b3a0aa00b60149c4d5c"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "72a98c94a9995e5bba7c6da45f0479c2"
+    "hash": "c433f0e02d8fe4d2e09b9ff114696648"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -961,7 +965,7 @@
   },
   {
     "file": "templates/settings.html",
-    "hash": "c27007b3c9d7e18cebe66af2685d5445"
+    "hash": "4e578690143407ecc9b9cd3ccba9ada9"
   },
   {
     "file": "templates/tab-booking-confirmation.html",
