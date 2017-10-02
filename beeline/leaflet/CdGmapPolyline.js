@@ -2,25 +2,9 @@ import {
   propsToAngularProps, optionsFromProps, setUpWatchers, setUpEvents
 } from './util.js'
 import * as L from 'leaflet'
-import * as LeafletCompat from './leaflet-compat'
 
 const props = {
-  options: {
-    jsSet (obj, v) {
-      if (v === undefined) return
-
-      obj.setStyle(
-        LeafletCompat.translateOptions([
-          ['strokeColor', 'color'],
-          ['strokeOpacity', 'opacity'],
-          ['strokeWeight', 'weight'],
-          ['fillOpacity', 'fillOpacity'],
-          ['fillWeight', 'fillWeight'],
-          ['fillColor', 'fillColor'],
-        ])(v)
-      )
-    }
-  },
+  style: {},
   path: {
     jsSet (obj, v) { obj.setLatLngs(v) }
   },

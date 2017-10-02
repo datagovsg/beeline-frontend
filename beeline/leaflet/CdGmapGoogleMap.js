@@ -2,7 +2,6 @@ import {
   propsToAngularProps, optionsFromProps, setUpWatchers, setUpEvents
 } from './util.js'
 import * as L from 'leaflet'
-import * as LeafletCompat from './leaflet-compat'
 
 const props = {
   'center': {
@@ -10,15 +9,7 @@ const props = {
       obj.panTo(value)
     }
   },
-  'zoom': {
-    jsSet(obj, value) {
-      obj.setZoom(value)
-    }
-  },
-  'heading': {},
-  'mapTypeId': {},
-  'tilt': {},
-  'options': {},
+  'zoom': {},
 }
 
 const events = [
@@ -90,7 +81,7 @@ function (cdGmapSettings, cdGmapApi) {
               }).addTo($scope.$mapObject);
               // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo($scope.$mapObject);
 
-              setUpWatchers(props, $scope, $scope.$mapObject, 'js', false, LeafletCompat.defaultSetter)
+              setUpWatchers(props, $scope, $scope.$mapObject)
               setUpEvents(events, $scope, $scope.$mapObject)
 
               // For use next time

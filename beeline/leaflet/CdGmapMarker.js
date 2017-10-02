@@ -2,7 +2,6 @@ import {
   propsToAngularProps, optionsFromProps, setUpWatchers, setUpEvents
 } from './util.js'
 import * as L from 'leaflet'
-import * as LeafletCompat from './leaflet-compat'
 
 const props = {
   'icon': {

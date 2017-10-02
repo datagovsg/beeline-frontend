@@ -1,11 +1,10 @@
 import {
   propsToAngularProps, optionsFromProps, setUpWatchers, setUpEvents
 } from './util.js'
+import * as L from 'leaflet'
 
 const props = {
-  options: {},
-  position: {},
-  zIndex: {},
+  latLng: {},
 }
 
 const events = [
@@ -38,26 +37,25 @@ function (cdGmapSettings, cdGmapApi) {
         throw new Error("Native maps not implemented")
       } else {
         ctrl.map.$mapPromise.then((gmap) => {
-          scope.$infoWindowObject = new google.maps.InfoWindow({
-            map: gmap,
-            content: elem[0].querySelector('.flyaway'),
-            ...optionsFromProps(props, scope, []),
-          })
+          const options = optionsFromProps(props, scope, [])
+          scope.$infoWindowObject = L.popup()
+            .setContent(elem[0].querySelector('.flyaway'))
+            .setLatLng(options.latLng)
 
           // Bind `show` attribute
-          google.maps.event.addListener(scope.$infoWindowObject, 'closeclick', () => {
+          scope.$infoWindowObject.on('remove', () => {
             scope.show = false
           })
 
           scope.$on('$destroy', () => {
-            scope.$infoWindowObject.setMap(null)
+            scope.$infoWindowObject.remove()
           })
 
           scope.$watch('show', (s) => {
             if (s) {
-              scope.$infoWindowObject.open(gmap)
+              scope.$infoWindowObject.openOn(gmap)
             } else {
-              scope.$infoWindowObject.close()
+              scope.$infoWindowObject.remove()
             }
           })
 

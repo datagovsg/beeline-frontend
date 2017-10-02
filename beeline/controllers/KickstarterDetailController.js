@@ -7,12 +7,12 @@ import busStopListTemplate from '../templates/bus-stop-list.html';
 
 export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
-  '$http','$cordovaGeolocation','BookingService','RoutesService','uiGmapGoogleMapApi',
+  '$http','$cordovaGeolocation','BookingService','RoutesService',
   'MapOptions','loadingSpinner','UserService','StripeService','$ionicLoading','$ionicPopup',
   'KickstarterService',
   function(
     $rootScope,$scope,$interpolate,$state,$stateParams,$ionicModal,$http,
-    $cordovaGeolocation,BookingService,RoutesService,uiGmapGoogleMapApi,
+    $cordovaGeolocation,BookingService,RoutesService,
     MapOptions,loadingSpinner,UserService,StripeService,$ionicLoading,$ionicPopup,
     KickstarterService
   ) {
@@ -28,7 +28,7 @@ export default [
       calculatedAmount: '',
       bidPrice: null,
     };
-    
+
     $scope.book.routeId = +$stateParams.routeId;
 
     $scope.$watch(()=>KickstarterService.getCrowdstartById($scope.book.routeId), (route)=>{

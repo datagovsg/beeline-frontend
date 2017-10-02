@@ -78,10 +78,11 @@ navigation history that also transitions its views in and out.
   </ion-tabs>
   <cd-gmap-google-map
     center="map.center"
-    pan="true"
     zoom="map.zoom"
     control="map.control"
     data-tap-disabled="true"
+
+    map-promise="mapPromise"
   >
     <my-location></my-location>
     <ui-view name="map-area"></ui-view>

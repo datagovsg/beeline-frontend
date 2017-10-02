@@ -105,11 +105,7 @@ export function setUpEvents (eventList, scope, mapObject) {
 
     /* Note: I don't expect event handlers to change much, so no watch */
     if (scope[eventHandler]) {
-      google.maps.event.addListener(
-        mapObject,
-        event,
-        ($event) => scope[eventHandler]({$event})
-      )
+      mapObject.on(event, ($event) => scope[eventHandler]({$event}))
     }
   }
 }

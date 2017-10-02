@@ -6,7 +6,7 @@
   icon="stop.canBoard ? map.markerOptions.boardMarker.icon : map.markerOptions.alightMarker.icon"
   click="applyTapBoard(stop)"
 ></cd-gmap-marker>
-<cd-gmap-window ng-if="disp.popupStop"
+<cd-gmap-info-window ng-if="disp.popupStop"
                 lat-lng="disp.popupStop.coordinates | geojsonToLatLng"
                 show="disp.popupStop"
                 closeClick="closeWindow">
@@ -14,7 +14,7 @@
     <b>{{formatStopTime(disp.popupStop.time)}}<br/></b>
     {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
   </div>
-</cd-gmap-window>
+</cd-gmap-info-window>
 <cd-gmap-marker ng-if="mapObject.boardStop.stop"
                 lat-lng="mapObject.boardStop.stop.coordinates | geojsonToLatLng"
                 icon="map.markerOptions.startMarker.icon"></cd-gmap-marker>
