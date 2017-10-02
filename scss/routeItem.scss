@@ -27,7 +27,7 @@ route-item {
       top: 0;
       right: 0;
       content: "";
-      background: url('../img/icon_tracking_route.svg') 80% 20% no-repeat;
+      background: url('../static/img/icon_tracking_route.svg') 80% 20% no-repeat;
       background-size: 18px 18px;
     }
 
@@ -65,7 +65,7 @@ route-item {
       flex: 0 0 auto;
     }
     .start .stop-icon {
-      background: url('../img/RoutePairSmallStart.svg') left ($font-size-base / 2) no-repeat;
+      background: url('../static/img/RoutePairSmallStart.svg') left ($font-size-base / 2) no-repeat;
       position: relative;
 
       /*
@@ -81,7 +81,7 @@ route-item {
       .line {
         width: 2px;
         height: 100%;
-        background: url('../img/RoutePairSmallLine.svg') center center;
+        background: url('../static/img/RoutePairSmallLine.svg') center center;
         top: $line-height-computed / 2;
         left: 4px;
         position: absolute;
@@ -89,7 +89,7 @@ route-item {
       }
     }
     .end .stop-icon {
-      background: url('../img/RoutePairSmallEnd.svg') left ($font-size-base / 2) no-repeat;
+      background: url('../static/img/RoutePairSmallEnd.svg') left ($font-size-base / 2) no-repeat;
     }
 
     .start, .end {

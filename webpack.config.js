@@ -77,15 +77,34 @@ module.exports = function(env) {
         'operator-grab': './scss/operator-grab.scss'
       },
       module: {
-        rules: [{
-          test: /\.scss$/,
-          use: ExtractTextPlugin.extract({
-            use: [
-              { loader: 'css-loader', options: { url: false } },
-              { loader: 'sass-loader' }
-            ],
-          })
-        }]
+        rules: [
+          {
+            test: /\.scss$/,
+            use: ExtractTextPlugin.extract({
+              use: [
+                // { loader: 'css-loader', options: { url: false } },
+                { loader: 'css-loader' },
+                { loader: 'sass-loader' }
+              ],
+            })
+          },
+          {
+            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+            loader: 'file-loader',
+            query: {
+              // limit: 10000,
+              name: 'img/[name].[hash:7].[ext]'
+            }
+          },
+          {
+            test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+            loader: 'file-loader',
+            query: {
+              // limit: 10000,
+              name: 'fonts/[name].[hash:7].[ext]'
+            }
+          }
+        ]
       },
       // This output is entirely superfluous.
       // We are abusing Webpack so that it will compile the SCSS

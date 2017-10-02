@@ -9,11 +9,11 @@ start-end-picker {
       box-sizing: border-box;
   }
   label.pickup {
-    background: #FFF url('../img/RoutePairBigStart.svg') no-repeat 5px center;
+    background: #FFF url('../static/img/RoutePairBigStart.svg') no-repeat 5px center;
     background-size: 24px 24px;
   }
   label.dropoff {
-    background: #FFF url('../img/RoutePairBigEnd.svg') no-repeat 5px center;
+    background: #FFF url('../static/img/RoutePairBigEnd.svg') no-repeat 5px center;
     background-size: 24px 24px;
   }
 
@@ -39,7 +39,7 @@ start-end-picker {
 	.centmark {
 		width: 37.5px;
 		height: 40px;
-		background: url('../img/icon-marker-big.png') center center no-repeat;
+		background: url('../static/img/icon-marker-big.png') center center no-repeat;
 		background-size: 75% auto;
 		position: absolute;
 		left: 50%;

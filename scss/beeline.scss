@@ -52,13 +52,13 @@
 }
 
 .icon.pickup-stop {
-  background: url('../img/RoutePairBigStart.svg') center no-repeat transparent;
+  background: url('../static/img/RoutePairBigStart.svg') center no-repeat transparent;
   background-size: contain;
   &:before { content: " "; }
 }
 
 .icon.dropoff-stop {
-  background: url('../img/RoutePairBigEnd.svg') center no-repeat transparent;
+  background: url('../static/img/RoutePairBigEnd.svg') center no-repeat transparent;
   background-size: contain;
   &:before { content: " "; }
 }
@@ -172,7 +172,7 @@ table.booking-info {
 .locate-button {
   width: 60px;
   height: 59px;
-  background: transparent url('../img/MapButtonLocateMe.svg') center center no-repeat;
+  background: transparent url('../static/img/MapButtonLocateMe.svg') center center no-repeat;
   background-size: 60px 59px;
   border-radius: 30px;
   cursor: pointer;
