@@ -124,7 +124,7 @@
     flex-direction: column;
     @include desktop { &.has-tabs-top { top: $bar-height + $tabs-height; } }
     top: auto;
-    height: 200px;
+    min-height: 200px;
   }
   .item.trip-info {
     flex: 0 0 auto;

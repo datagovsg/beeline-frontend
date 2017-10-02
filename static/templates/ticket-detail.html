@@ -19,6 +19,25 @@
 
     <!-- Ticket Tab -->
     <div class="trip-info item item-text-wrap" ng-show="activeTab===0">
+      <div class="service-cancellation" ng-if="disp.tripStatus == 'cancelled'">
+        <div class="item item-text-wrap">
+          <div class="cancellation-content">
+            <h2>Service is Cancelled</h2>
+            <img src="img/TicketCancelledTrip.svg" />
+            <!-- <i class="icon ion-alert-circled"></i> -->
+            <p>Today's trip has been cancelled. Sorry for the inconvenience caused. </p>
+            <p>
+              Please make alternative transport arrangements.
+              <strong>{{company.name}}</strong> will contact you and refund today's fare.
+            </p>
+            <p>
+              For enquiries, please contact
+              <strong>{{company.email}}</strong>
+              <strong ng-if="company.contactNo">(Tel: {{company.contactNo}})</strong>
+            </p>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col col-20">
           <span class="bus-number" ng-show="route.label">{{route.label}}</span>
@@ -55,6 +74,25 @@
 
     <!-- Driver Tab -->
     <div class="trip-info item item-text-wrap" ng-show="activeTab===1">
+      <div class="service-cancellation" ng-if="disp.tripStatus == 'cancelled'">
+        <div class="item item-text-wrap">
+          <div class="cancellation-content">
+            <h2>Service is Cancelled</h2>
+            <img src="img/TicketCancelledTrip.svg" />
+            <!-- <i class="icon ion-alert-circled"></i> -->
+            <p>Today's trip has been cancelled. Sorry for the inconvenience caused. </p>
+            <p>
+              Please make alternative transport arrangements.
+              <strong>{{company.name}}</strong> will contact you and refund today's fare.
+            </p>
+            <p>
+              For enquiries, please contact
+              <strong>{{company.email}}</strong>
+              <strong ng-if="company.contactNo">(Tel: {{company.contactNo}})</strong>
+            </p>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col">
           <h4>Operated By</h4>
@@ -73,27 +111,5 @@
         </div>
       </div>
     </div>
-
-    <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
-    <ion-scroll class="service-cancellation" ng-if="disp.tripStatus == 'cancelled'">
-      <div class="item item-text-wrap">
-        <div class="cancellation-content">
-          <h2>Service is Cancelled</h2>
-          <img src="img/TicketCancelledTrip.svg" />
-          <!-- <i class="icon ion-alert-circled"></i> -->
-          <p>Today's trip has been cancelled. Sorry for the inconvenience caused. </p>
-          <p>
-            Please make alternative transport arrangements.
-            <strong>{{company.name}}</strong> will contact you and refund today's fare.
-          </p>
-          <p>
-            For enquiries, please contact
-            <strong>{{company.email}}</strong>
-            <strong ng-if="company.contactNo">(Tel: {{company.contactNo}})</strong>
-          </p>
-        </div>
-      </div>
-    </ion-scroll>
-    <!-- Service cancellation section ends -->
   </ion-content>
 </ion-view>
