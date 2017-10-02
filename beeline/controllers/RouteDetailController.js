@@ -8,7 +8,6 @@ export default [
   "RoutesService",
   "BookingService",
   "FastCheckoutService",
-  "SharedVariableService",
   "MapService",
   function(
     $scope,
@@ -20,7 +19,6 @@ export default [
     RoutesService,
     BookingService,
     FastCheckoutService,
-    SharedVariableService,
     MapService
   ) {
     // ------------------------------------------------------------------------
