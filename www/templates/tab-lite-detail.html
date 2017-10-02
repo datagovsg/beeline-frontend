@@ -27,6 +27,10 @@
           <span class="icon ion-android-alert"></span>
           The bus location tracking is not available at the moment.
         </div>
+        <div class="item item-icon-left item-text-wrap" ng-if="disp.statusMessages.trim()">
+          <span class="icon ion-android-alert"></span>
+          {{disp.statusMessages.trim()}}
+        </div>
         <fake-progress-bar max="100" interval="100"></fake-progress-bar>
         <route-item class="lite item"  ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="!disp.showTooltip">
           <route-item-bus-number>
