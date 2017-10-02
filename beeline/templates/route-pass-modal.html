@@ -62,12 +62,12 @@
             </p>
             <button class="primary-button button" ng-click="proceed()"
                 ng-if="!book.hasSavedPaymentInfo"
-                ng-disabled="!book.acceptPolicy">
+                ng-disabled="!book.acceptPolicy || book.isProcessing">
               Proceed
             </button>
             <button class="primary-button button" ng-click="proceed()"
                 ng-if="book.hasSavedPaymentInfo"
-                ng-disabled="!book.acceptPolicy">
+                ng-disabled="!book.acceptPolicy || book.isProcessing">
               Confirm and Pay
             </button>
           </div>
