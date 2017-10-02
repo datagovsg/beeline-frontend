@@ -85,6 +85,7 @@ export default [
       ridesRemaining: 0,
       routeSupportsRoutePass : null,
       acceptPolicy: null, // T&Cs in the modal
+      isProcessing: null,
     };
     $scope.disp = {
       popupStop: null,
@@ -233,6 +234,7 @@ export default [
         $scope.book.stopNotAvailable = null;
         $scope.book.windowBeforeClose = null;
         $scope.book.bookingEnds = null;
+        $scope.book.isProcessing = null;
         var countdownTimer = null;
         var runningTrips = route.trips.filter(tr => tr.isRunning);
         //compare current date with nearest date trip's 1st board stop time
@@ -354,14 +356,17 @@ export default [
 
     $scope.proceed = function () {
       $scope.closeModal();
+      $scope.book.isProcessing = true
       if ($scope.book.priceSchedules[$scope.book.routePassChoice].quantity === 1) {
         $state.go('tabs.booking-summary', {routeId: $scope.book.routeId,
           boardStop: $scope.book.boardStop.id,
           alightStop: $scope.book.alightStop.id,
           sessionId: $scope.session.sessionId,
           selectedDates: $scope.book.nextTripDate,});
+        $scope.book.isProcessing = false
       } else {
         $scope.payForRoutePass()
+        $scope.book.isProcessing = false
       }
     }
 
