@@ -44,6 +44,7 @@ export default [
       companyInfo: {},
       showTooltip: true,
       hasTrackingData: null,
+      statusMessages: null,
     };
 
     // Default settings for various info used in the page
@@ -271,8 +272,9 @@ export default [
       }
     }
 
-    MapService.on('hasTrackingData', (hasTrackingData) => {
-      $scope.disp.hasTrackingData = hasTrackingData
+    MapService.on('tripInfo', (tripInfo) => {
+      $scope.disp.hasTrackingData = tripInfo.hasTrackingData
+      $scope.disp.statusMessages = tripInfo.statusMessages
     })
   }
 ];

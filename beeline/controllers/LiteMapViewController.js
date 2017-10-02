@@ -98,9 +98,6 @@ export default [
         }
       });
 
-      $scope.$watchCollection('mapObject.statusMessages', () => {
-        $scope.disp.routeMessage = $scope.mapObject.statusMessages.join(' ').concat('HELLO');
-      })
 
       async function pingLoop() {
         if (!$scope.mapObject.pingTrips) return;
@@ -130,7 +127,11 @@ export default [
         } else {
           $scope.hasTrackingData = true;
         }
-        MapService.emit('hasTrackingData', $scope.hasTrackingData)
+        let tripInfo = {
+          'hasTrackingData': $scope.hasTrackingData,
+          'statusMessages': $scope.mapObject.statusMessages.join(' ')
+        }
+        MapService.emit('tripInfo', tripInfo)
       }
 
   }
