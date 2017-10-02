@@ -8,7 +8,7 @@ export default [
   "$ionicScrollDelegate",
   "RoutesService",
   "BookingService",
-  "SharedVariableService",
+  "MapService",
   function(
     $scope,
     $state,
@@ -19,7 +19,7 @@ export default [
     $ionicScrollDelegate,
     RoutesService,
     BookingService,
-    SharedVariableService
+    MapService
   ) {
     // ------------------------------------------------------------------------
     // Input
@@ -71,10 +71,12 @@ export default [
       });
     });
 
-    $scope.$on('$ionicView.afterEnter', () => {
-      if ($scope.$parent.mapObject) {
-        SharedVariableService.set($scope.$parent.mapObject)
+    $scope.$watch('data.selectedStop', (stop) => {
+      if (stop) {
+        if (type === "pickup") MapService.emit('board-stop-selected', {stop: stop})
+        if (type === "dropoff") MapService.emit('alight-stop-selected', {stop: stop})
       }
     })
+
   }
 ];

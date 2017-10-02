@@ -25,17 +25,17 @@
         </div>
         <div class="col">
           <h4>Trip Code </h4>
-          <trip-code class="trip-code" code="info.code" ng-if="info.code">
+          <trip-code class="trip-code" code="disp.code" ng-if="disp.code">
           </trip-code>
-          <span ng-if="!info.code">Not available</span>
+          <span ng-if="!disp.code">Not available</span>
           <!-- <div class="trip-code"
             ng-bind="info.trip.id"></div> -->
         </div>
         <div class="col">
           <h4>Vehicle No.</h4>
-          <div ng-if="info.trip.vehicle.vehicleNumber" class="vehicleNo" ng-bind="info.trip.vehicle.vehicleNumber">
+          <div ng-if="disp.vehicle" class="vehicleNo" ng-bind="disp.vehicle">
           </div>
-          <div ng-if="!info.trip.vehicle.vehicleNumber">
+          <div ng-if="!disp.vehicle">
             Not provided
           </div>
         </div>
@@ -67,7 +67,7 @@
       <div class="row">
         <div class="col">
           <h4>Driver</h4>
-          <div ng-bind="info.trip.tripDriver.name  || 'Not provided'"></div>
+          <div ng-bind="disp.driver  || 'Not provided'"></div>
         </div>
         <div class="col">
           <h4>Passenger</h4>
@@ -77,7 +77,7 @@
     </div>
 
     <!-- Service cancellation when driver or ops press trip cancellation button, show the following -->
-    <ion-scroll class="service-cancellation" ng-if="info.trip.status == 'cancelled'">
+    <ion-scroll class="service-cancellation" ng-if="disp.tripStatus == 'cancelled'">
       <div class="item item-text-wrap">
         <div class="cancellation-content">
           <h2>Service is Cancelled</h2>

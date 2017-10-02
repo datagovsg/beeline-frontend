@@ -8,7 +8,7 @@ export default [
   "$ionicScrollDelegate",
   "RoutesService",
   "BookingService",
-  "SharedVariableService",
+  "MapService",
   function(
     $scope,
     $state,
@@ -19,7 +19,7 @@ export default [
     $ionicScrollDelegate,
     RoutesService,
     BookingService,
-    SharedVariableService
+    MapService
   ) {
     // ------------------------------------------------------------------------
     // Input
@@ -47,8 +47,7 @@ export default [
     // ------------------------------------------------------------------------
     $scope.selectStop = (stop) => {
       $scope.data.selectedStop = stop;
-      $scope.mapObject.chosenStop = stop;
-      SharedVariableService.setChosenStop(stop);
+      MapService.emit('stop-selected', stop)
     };
     $scope.done = () => {
       $state.go("tabs.crowdstart-detail", {
@@ -82,10 +81,5 @@ export default [
       });
     });
 
-    $scope.$on('$ionicView.afterEnter', () => {
-      if ($scope.$parent.mapObject) {
-        SharedVariableService.set($scope.$parent.mapObject)
-      }
-    })
   }
 ];

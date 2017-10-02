@@ -9,12 +9,12 @@ export default [
   '$rootScope','$scope','$interpolate','$state','$stateParams','$ionicModal',
   '$http','$cordovaGeolocation','BookingService','RoutesService','uiGmapGoogleMapApi',
   'MapOptions','loadingSpinner','UserService','StripeService','$ionicLoading','$ionicPopup',
-  'KickstarterService','SharedVariableService',
+  'KickstarterService',
   function(
     $rootScope,$scope,$interpolate,$state,$stateParams,$ionicModal,$http,
     $cordovaGeolocation,BookingService,RoutesService,uiGmapGoogleMapApi,
     MapOptions,loadingSpinner,UserService,StripeService,$ionicLoading,$ionicPopup,
-    KickstarterService, SharedVariableService
+    KickstarterService
   ) {
 
 
@@ -28,22 +28,7 @@ export default [
       calculatedAmount: '',
       bidPrice: null,
     };
-    $scope.disp = {
-      popupStop: null,
-      popupStopType: null,
-      parentScope: $scope,
-    }
-    $scope.mapObject = {
-      stops: [],
-      routePath: [],
-      alightStop: null,
-      boardStop: null,
-      pingTrips: [],
-      allRecentPings: [],
-      chosenStop: null,
-    }
-
-
+    
     $scope.book.routeId = +$stateParams.routeId;
 
     $scope.$watch(()=>KickstarterService.getCrowdstartById($scope.book.routeId), (route)=>{
@@ -52,41 +37,8 @@ export default [
       $scope.book.bidOptions = route.notes.tier;
       [$scope.book.boardStops, $scope.book.alightStops] = BookingService.computeStops($scope.book.route.trips);
       $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops);
-      $scope.mapObject.stops = $scope.busStops;
-      if (route.path) {
-        RoutesService.decodeRoutePath(route.path)
-          .then((decodedPath) => {
-            $scope.mapObject.routePath = decodedPath
-            SharedVariableService.setRoutePath(decodedPath)
-          })
-          .catch(() => {
-            $scope.mapObject.routePath = []
-            SharedVariableService.setRoutePath([])
-          })
-      }
-      SharedVariableService.set($scope.mapObject)
     })
 
-
-
-    $scope.$on('$ionicView.afterEnter', () => {
-      SharedVariableService.set($scope.mapObject)
-    });
-
-    $scope.applyTapBoard = function (stop) {
-      $scope.disp.popupStopType = "pickup";
-      $scope.disp.popupStop = stop;
-      $scope.$digest();
-    }
-    $scope.applyTapAlight = function (stop) {
-      $scope.disp.popupStopType = "dropoff";
-      $scope.disp.popupStop = stop;
-      $scope.$digest();
-    }
-
-    $scope.closeWindow = function () {
-      $scope.disp.popupStop = null;
-    }
 
     $scope.showStops = function(){
       $state.go("tabs.crowdstart-stops", {

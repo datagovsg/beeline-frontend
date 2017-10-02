@@ -8,7 +8,7 @@ export default [
   "RoutesService",
   "BookingService",
   "FastCheckoutService",
-  "SharedVariableService",
+  "MapService",
   function(
     $scope,
     $state,
@@ -19,7 +19,7 @@ export default [
     RoutesService,
     BookingService,
     FastCheckoutService,
-    SharedVariableService
+    MapService
   ) {
     // ------------------------------------------------------------------------
     // Input
@@ -114,8 +114,6 @@ export default [
     // Show a loading overlay while we wait
     // force reload when revisit the same route
     $scope.$on('$ionicView.afterEnter', () => {
-      // to plot the map
-      SharedVariableService.set($scope.mapObject)
       $ionicLoading.show({
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
         hideOnStateChange: true
@@ -131,19 +129,6 @@ export default [
         $scope.data.routeSupportsRoutePass = FastCheckoutService.routeQualifiedForRoutePass(route)
         // Grab the stop data
         let [pickups, dropoffs] = BookingService.computeStops(route.trips);
-        $scope.mapObject.stops = pickups.concat(dropoffs);
-        SharedVariableService.setStops($scope.mapObject.stops)
-        if (route.path) {
-          RoutesService.decodeRoutePath(route.path)
-            .then((decodedPath) => {
-              $scope.mapObject.routePath = decodedPath
-              SharedVariableService.setRoutePath(decodedPath)
-            })
-            .catch(() => {
-              $scope.mapObject.routePath = []
-              SharedVariableService.setRoutePath([])
-            })
-        }
         pickups = new Map(pickups.map(stop => [stop.id, stop]));
         dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]));
         // if pickupStop is updated from 'tabs.route-stops' state
@@ -178,15 +163,13 @@ export default [
 
     $scope.$watch('data.pickupStop', (ps) => {
       if (ps) {
-        SharedVariableService.setBoardStop({stop: ps});
-        $scope.mapObject.boardStop = {stop: ps}
+        MapService.emit('board-stop-selected', {stop: ps})
       }
     })
 
     $scope.$watch('data.dropoffStop', (ds) => {
       if (ds) {
-        SharedVariableService.setAlightStop({stop: ds});
-        $scope.mapObject.alightStop = {stop: ds}
+        MapService.emit('alight-stop-selected', {stop: ds})
       }
     })
 
