@@ -97,7 +97,6 @@ export default [
     });
 
     $scope.$watch('book.todayTrips', (todayTrips) => {
-      console.log('today trips')
       if (todayTrips && todayTrips.length > 0) {
         MapService.emit('ping-trips', todayTrips)
       }
@@ -106,12 +105,12 @@ export default [
     $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(Promise.all([routePromise, subscriptionPromise])
       .then(() => {
-        $scope.$broadcast('startPingLoop');
+        MapService.emit('startPingLoop')
       }));
     });
 
     $scope.$on('$ionicView.beforeLeave', () => {
-      $scope.$broadcast('killPingLoop');
+      MapService.emit('killPingLoop')
     });
 
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {

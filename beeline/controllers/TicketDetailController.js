@@ -10,6 +10,7 @@ export default [
   'UserService',
   'RoutesService',
   'SharedVariableService',
+  'MapService',
   function(
     $scope,
     $rootScope,
@@ -19,7 +20,8 @@ export default [
     TripService,
     UserService,
     RoutesService,
-    SharedVariableService
+    SharedVariableService,
+    MapService
   ) {
 
     $scope.mapObject = {
@@ -87,11 +89,11 @@ export default [
     $scope.$on('$ionicView.afterEnter', () => {
       // to plot the map
       SharedVariableService.set($scope.mapObject)
-      $scope.$broadcast('startPingLoop');
+      MapService.emit('startPingLoop')
     })
 
     $scope.$on('$ionicView.beforeLeave', () => {
-      $scope.$broadcast('killPingLoop');
+      MapService.emit('killPingLoop')
     });
 
 
