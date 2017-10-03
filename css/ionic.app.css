@@ -9826,18 +9826,6 @@ a.button, a.primary-button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-@media (min-width: 992px) {
-  body > ion-nav-view,
-  body ion-modal-view.modal,
-  body ion-modal-view.modal.stop-selector,
-  body .popup-container > .popup {
-    max-width: 750px;
-    width: 750px;
-    left: calc(50% - 375px);
-    right: calc(50% - 375px); }
-  body > ion-nav-view {
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6); } }
-
 .item-divider {
   text-transform: uppercase;
   font-size: 13px;
@@ -9865,6 +9853,24 @@ a.button, a.primary-button {
 
 .item p {
   font-size: 15px; }
+
+* {
+  pointer-events: auto; }
+
+.icon.pickup-stop {
+  background: url("../img/RoutePairBigStart.svg") center no-repeat transparent;
+  background-size: contain; }
+  .icon.pickup-stop:before {
+    content: " "; }
+
+.icon.dropoff-stop {
+  background: url("../img/RoutePairBigEnd.svg") center no-repeat transparent;
+  background-size: contain; }
+  .icon.dropoff-stop:before {
+    content: " "; }
+
+span.placeholder {
+  color: #888; }
 
 .pac-logo::after {
   display: none !important; }
@@ -9897,7 +9903,7 @@ a.button, a.primary-button {
   color: #333;
   z-index: 3;
   text-transform: uppercase; }
-  .primary-button:active, .primary-button:hover {
+  .primary-button:active {
     border-bottom: 1px solid #f7c639;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
     color: #333; }
@@ -10608,6 +10614,44 @@ trip-code {
   align-items: center;
   justify-content: center; }
 
+@media (min-width: 1024px) {
+  #tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch; } }
+
+#tabs ion-tabs,
+#tabs ion-tabs > .tab-content,
+#tabs ion-nav-view[name="tab-routes"],
+#tabs ion-nav-view[name="tab-lite"],
+#tabs ion-nav-view[name="tab-tickets"],
+#tabs ion-nav-view[name="tab-crowdstart"] {
+  background-color: transparent !important;
+  pointer-events: none !important; }
+
+@media (min-width: 1024px) {
+  #tabs ion-tabs {
+    display: block;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    max-width: 500px; } }
+
+#tabs ui-gmap-google-map {
+  height: 80%;
+  width: 100%;
+  display: block;
+  position: absolute; }
+  @media (min-width: 1024px) {
+    #tabs ui-gmap-google-map {
+      height: 100%;
+      position: relative; } }
+  #tabs ui-gmap-google-map .angular-google-map,
+  #tabs ui-gmap-google-map .angular-google-map-container {
+    position: absolute;
+    height: 100%;
+    width: 100%; }
+
 .intro-slides {
   background-color: #fff;
   color: #444; }
@@ -10717,6 +10761,61 @@ trip-code {
 
 .routes-view .routes-scroll {
   margin-top: 45px; }
+
+.route-detail {
+  background-color: transparent !important;
+  pointer-events: none !important; }
+  .route-detail ion-content {
+    display: flex;
+    flex-direction: column;
+    top: auto; }
+    @media (min-width: 1024px) {
+      .route-detail ion-content.has-tabs {
+        top: 45px; } }
+    .route-detail ion-content .booking-info {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; }
+    .route-detail ion-content .rides-remaining {
+      display: flex;
+      padding: 0.5em;
+      align-items: center; }
+      .route-detail ion-content .rides-remaining i.icon .buy-more-button {
+        flex: 0 0 auto; }
+      .route-detail ion-content .rides-remaining .text {
+        flex: 1 1 auto;
+        margin-left: 10px; }
+      .route-detail ion-content .rides-remaining button {
+        line-height: 1.0; }
+
+.route-stops {
+  background-color: transparent !important;
+  pointer-events: none !important; }
+  .route-stops > ion-content {
+    display: flex;
+    flex-direction: column;
+    top: auto;
+    height: 240px; }
+    @media (min-width: 1024px) {
+      .route-stops > ion-content.has-tabs {
+        top: 45px; } }
+    @media (min-width: 1024px) {
+      .route-stops > ion-content {
+        height: auto; } }
+    .route-stops > ion-content .stop-list {
+      flex: 1;
+      margin-bottom: 0;
+      border-bottom-width: 1px;
+      border-bottom-color: #ddd;
+      border-bottom-style: solid; }
+      .route-stops > ion-content .stop-list .stop-option {
+        cursor: pointer; }
+        .route-stops > ion-content .stop-list .stop-option.selected .show-unselected {
+          display: none; }
+        .route-stops > ion-content .stop-list .stop-option:not(.selected) .show-selected {
+          display: none; }
 
 .tickets .scroll {
   height: 100%; }
@@ -11253,6 +11352,58 @@ table.booking-history {
   #pg_lite .untrack-link a {
     text-decoration: underline; }
 
+.lite-detail {
+  background-color: transparent !important;
+  pointer-events: none !important; }
+  .lite-detail ion-content {
+    display: flex;
+    flex-direction: column;
+    top: auto;
+    max-height: 350px; }
+    @media (min-width: 1024px) {
+      .lite-detail ion-content {
+        top: 45px; } }
+    .lite-detail ion-content .untrack-link {
+      text-align: center;
+      margin: 1em; }
+      .lite-detail ion-content .untrack-link a {
+        text-decoration: underline; }
+    .lite-detail ion-content .corner-triangle {
+      text-align: right;
+      overflow: visible;
+      display: block;
+      right: 0;
+      top: 0;
+      position: absolute;
+      width: 100%;
+      z-index: 10; }
+      .lite-detail ion-content .corner-triangle a {
+        width: 2.5em;
+        height: 2.5em;
+        display: inline-block;
+        position: relative; }
+        .lite-detail ion-content .corner-triangle a .tooltiptext {
+          width: 150px;
+          background-color: black;
+          color: #fff;
+          text-align: center;
+          box-shadow: 0px 2px 2px #ccc;
+          padding: 5px;
+          opacity: 0.8;
+          position: absolute;
+          z-index: 1;
+          top: 8px;
+          right: 100%; }
+        .lite-detail ion-content .corner-triangle a .tooltiptext::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 100%;
+          margin-top: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: transparent transparent transparent black; }
+
 .kickstarter-list ion-content {
   display: flex;
   flex-direction: column;
@@ -11393,6 +11544,48 @@ table.booking-history {
 #pg_kickstarter_detail .progress-bar {
   margin-top: 40px;
   margin-bottom: 40px; }
+
+.kickstarter-detail2 {
+  background-color: transparent !important;
+  pointer-events: none !important; }
+  .kickstarter-detail2 ion-content {
+    top: auto;
+    max-height: 300px; }
+    @media (min-width: 1024px) {
+      .kickstarter-detail2 ion-content.has-tabs {
+        top: 45px; } }
+    @media (min-width: 1024px) {
+      .kickstarter-detail2 ion-content {
+        top: 100px;
+        max-height: none !important; } }
+
+.kickstarter-stops {
+  background-color: transparent !important;
+  pointer-events: none !important; }
+  .kickstarter-stops > ion-content {
+    display: flex;
+    flex-direction: column;
+    top: auto;
+    height: 300px; }
+    @media (min-width: 1024px) {
+      .kickstarter-stops > ion-content.has-tabs {
+        top: 45px; } }
+    @media (min-width: 1024px) {
+      .kickstarter-stops > ion-content {
+        top: 44px;
+        height: auto; } }
+    .kickstarter-stops > ion-content .stop-list {
+      flex: 1;
+      margin-bottom: 0;
+      border-bottom-width: 1px;
+      border-bottom-color: #ddd;
+      border-bottom-style: solid; }
+      .kickstarter-stops > ion-content .stop-list .stop-option {
+        cursor: pointer; }
+        .kickstarter-stops > ion-content .stop-list .stop-option.selected .show-unselected {
+          display: none; }
+        .kickstarter-stops > ion-content .stop-list .stop-option:not(.selected) .show-selected {
+          display: none; }
 
 #pg_kickstarter_summary table {
   width: 100%; }
@@ -11916,6 +12109,90 @@ route-item {
   height: 20px;
   margin-right: 5px;
   vertical-align: sub; }
+
+.ticket-detail2 {
+  background-color: transparent !important;
+  pointer-events: none !important; }
+  .ticket-detail2 ion-content {
+    display: flex;
+    flex-direction: column;
+    top: auto;
+    min-height: 200px; }
+    @media (min-width: 1024px) {
+      .ticket-detail2 ion-content.has-tabs-top {
+        top: 97px; } }
+  .ticket-detail2 .item.trip-info {
+    flex: 0 0 auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px; }
+    .ticket-detail2 .item.trip-info h4 {
+      color: #666; }
+    .ticket-detail2 .item.trip-info .tnc {
+      padding: 0 10px; }
+    .ticket-detail2 .item.trip-info .ion-information-circled {
+      color: #4b3863;
+      font-size: 1.5em; }
+    .ticket-detail2 .item.trip-info .route-info {
+      margin: 5px 0;
+      display: flex;
+      flex-direction: column; }
+      .ticket-detail2 .item.trip-info .route-info .start, .ticket-detail2 .item.trip-info .route-info .end {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 5px; }
+        .ticket-detail2 .item.trip-info .route-info .start .routeDetailDesc, .ticket-detail2 .item.trip-info .route-info .end .routeDetailDesc {
+          flex: 1 1 auto; }
+        .ticket-detail2 .item.trip-info .route-info .start .time, .ticket-detail2 .item.trip-info .route-info .end .time {
+          white-space: nowrap;
+          flex: 0 0 4em;
+          margin-right: 10px; }
+        .ticket-detail2 .item.trip-info .route-info .start .route-icon, .ticket-detail2 .item.trip-info .route-info .end .route-icon {
+          position: relative;
+          flex: none;
+          vertical-align: top;
+          margin-left: 0;
+          margin-right: 5px;
+          top: 5px; }
+    .ticket-detail2 .item.trip-info .bus-number {
+      margin-right: 5px; }
+    .ticket-detail2 .item.trip-info .vehicleNo {
+      text-transform: uppercase; }
+  .ticket-detail2 .service-cancellation {
+    flex: 1 1 auto; }
+    .ticket-detail2 .service-cancellation .cancellation-content {
+      margin: 10px 0;
+      text-align: center; }
+      .ticket-detail2 .service-cancellation .cancellation-content h2 {
+        color: #666;
+        text-align: center;
+        font-weight: bold;
+        padding: 10px 0; }
+      .ticket-detail2 .service-cancellation .cancellation-content img {
+        padding: 21px 0; }
+      .ticket-detail2 .service-cancellation .cancellation-content p {
+        text-align: left;
+        padding: 6px 12px; }
+  .ticket-detail2 .tab-item.active .ticket-nav-ticket,
+  .ticket-detail2 .tab-item.active .ticket-nav-moreInfo {
+    opacity: 1; }
+  .ticket-detail2 .tab-item:not(.active) .ticket-nav-ticket,
+  .ticket-detail2 .tab-item:not(.active) .ticket-nav-moreInfo {
+    opacity: 0.3; }
+  .ticket-detail2 .ticket-nav-ticket {
+    background-image: url("../img/ticketdetail_ticket_normal.svg");
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: sub; }
+  .ticket-detail2 .ticket-nav-moreInfo {
+    background-image: url("../img/ticketdetail_moreinfo_normal.svg");
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: sub; }
 
 /* ---------- tracker PAGE ---------- */
 #lite_route_tracker ion-content.lite-route-tracker-content {

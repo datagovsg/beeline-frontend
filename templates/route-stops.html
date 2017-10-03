@@ -1,0 +1,29 @@
+<ion-view class="route-stops">
+  <ion-content scroll="false">
+    <div class="item item-divider" ng-if="data.stops">
+      <span ng-bind="data.stops.length"></span> stops available
+    </div>
+    <ion-content class="list stop-list">
+      <div 
+        ng-repeat="stop in data.stops"
+        class="stop-option item item-icon-left"        
+        ng-class="{ selected: stop.id === data.selectedStop.id }"
+        on-tap="selectStop(stop)"
+      >
+        <i class="icon ion-ios-circle-outline show-unselected"></i>
+        <i class="icon ion-ios-checkmark show-selected"></i>
+        <div class="time" ng-bind="(stop.time|formatTime)"></div>
+        <div class="description" ng-bind="stop.description"></div>
+        <div class="road" ng-bind="stop.road"></div>
+      </div>
+    </ion-content>
+    <button 
+      class="button primary-button" 
+      on-tap="done()" 
+      ng-if="data.stops"
+      ng-disabled="!data.selectedStop"
+    >
+      Select this stop
+    </button>
+  </ion-content>
+</ion-view>
