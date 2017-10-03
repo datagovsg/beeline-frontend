@@ -1,6 +1,7 @@
 
 import routePassTemplate from '../templates/route-pass-modal.html';
 import assert from 'assert';
+import commonmark from 'commonmark';
 
 angular.module('beeline')
 .service('purchaseRoutePassService', modalService)
@@ -25,6 +26,7 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
       hasSavedPaymentInfo: hasSavedPaymentInfo,
       brand: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].brand : null,
       last4Digtis: hasSavedPaymentInfo ? savedPaymentInfo.sources.data[0].last4 : null,
+      isProcessing: null,
     }
 
     scope.$watch('book.routePassChoice', (choice) => {
@@ -32,8 +34,6 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
         scope.book.routePassPrice = scope.book.priceSchedules[choice].totalPrice
       }
     })
-
-    scope.showTermsOfUse = () => assetScopeModalService.showRoutePassTCModal();
 
     // Prompts for card and processes payment with one time stripe token.
     scope.payForRoutePass = async function() {
@@ -93,25 +93,24 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
       return new Promise((resolve, reject) => {
         scope.book.priceSchedules = response
         scope.book.routePassChoice = 0
+        scope.book.isProcessing = false
         if (hideOneTicket) {
           scope.book.priceSchedules =scope.book.priceSchedules.slice(0, scope.book.priceSchedules.length-1)
         }
         routePassModal.show()
-        // scope.$on('routePassPurchaseDone', () => {
-        //   return resolve('Payment Done')
-        // })
-        // scope.$on('routePassError', () => {
-        //   return reject('Payment Failed')
-        // })
         scope.proceed = async function() {
           routePassModal.hide()
+          scope.book.isProcessing = true
           if (scope.book.priceSchedules[scope.book.routePassChoice].quantity === 1) {
             // skip the payment for route pass
+            scope.book.isProcessing = false
             return resolve('Payment Done')
           } else {
             loadingSpinner(scope.payForRoutePass()).then(() => {
+              scope.book.isProcessing = false
               return resolve('Payment Done')
             }, () => {
+              scope.book.isProcessing = false
               return reject('Payment Failed')
             })
           }
@@ -124,6 +123,23 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
         }
       })
     })
+
+    scope.routePassTerms = {}
+    const reader = new commonmark.Parser({safe: true})
+    const writer = new commonmark.HtmlRenderer({safe: true})
+    UserService.beeline({
+      method: 'GET',
+      url: '/assets/routepass-tc'
+    })
+    .then((response) => {
+      scope.routePassTerms.html = writer.render(reader.parse(response.data.data))
+      scope.routePassTerms.error = undefined
+    })
+    .catch((error) => {
+      scope.routePassTerms.error = error
+      console.log(error)
+    })
+
 
     purchaseRoutePassPromise.then(cleanup, cleanup);
 
