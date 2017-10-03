@@ -115,10 +115,6 @@ angular.module('beeline')
         await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
       }
 
-      //saves payment info if doesn't exist
-      if (!book.hasSavedPaymentInfo) {
-        await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
-      }
       var user = await UserService.getUser()
 
       await completePayment({
