@@ -1,4 +1,10 @@
-<ion-view class="route-detail">
+<ion-view class="route-detail" hide-back-button="true" view-title="Route Details">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+       ui-sref="tabs.routes">
+       <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content scroll="false">
     <form name="stopsForm">
       <div class="rides-remaining" ng-if="data.passCount > 0 || data.routeSupportsRoutePass" >
