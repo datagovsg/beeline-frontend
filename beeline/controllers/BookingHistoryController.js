@@ -38,7 +38,7 @@ export default function($scope, UserService, RoutesService) {
     inFlight = true;
     UserService.beeline({
       method: 'GET',
-      url: '/transactions/userHistory?' + qs.stringify({
+      url: '/transactions/user_history?' + qs.stringify({
         page: $scope.page,
         perPage: $scope.perPage,
       }),
