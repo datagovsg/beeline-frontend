@@ -55,7 +55,7 @@ angular.module('beeline')
       }
     }
 
-    function purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId) {
+    function purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId, hasSavedPaymentInfo) {
       return BookingSummaryModalService.show({
         routeId: routeId,
         price: route.trips[0].price,
@@ -63,7 +63,8 @@ angular.module('beeline')
         applyRoutePass: true,
         selectedDates: selectedDates,
         boardStopId: boardStopId,
-        alightStopId: alightStopId
+        alightStopId: alightStopId,
+        hasSavedPaymentInfo: hasSavedPaymentInfo,
       })
     }
 
@@ -144,11 +145,8 @@ angular.module('beeline')
             route = await RoutesService.getRoute(routeId)
             ridesRemaining = await ridesRemainingPromise(routeId)
             if (!ridesRemaining) {
-              // if route has rp- tag
               if (route && routeQualifiedForRoutePass(route)) {
-                // show the modal to purchase route pass
                 await purchaseRoutePass(false, route, routeId, hasSavedPaymentInfo, paymentInfo)
-                await purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId)
               } else {
                 // ask for stripe payment for single ticket
                 await BookingSummaryModalService.show({
@@ -163,7 +161,7 @@ angular.module('beeline')
                   })
               }
             } else {
-              await purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId)
+              await purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId, hasSavedPaymentInfo)
             }
             return resolve('success')
           }
