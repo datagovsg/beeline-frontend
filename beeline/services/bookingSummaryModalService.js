@@ -16,9 +16,15 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, St
 
     scope.modal = bookingSummaryModal;
     scope.book = booking
+
+    scope.$watch('book.price', (price) => {
+      if (price == 0) {
+        scope.disp.zeroDollarPurchase = true
+      }
+    })
     scope.disp = {
       termsChecked: false,
-      zeroDollarPurchase: scope.book.price === 0,
+      zeroDollarPurchase: false,
       savePaymentChecked: false,
     }
 

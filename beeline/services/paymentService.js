@@ -13,16 +13,13 @@ angular.module('beeline')
       $ionicLoading.show({
         template: processingPaymentsTemplate
       })
-
       var result = await UserService.beeline({
         method: 'POST',
         url: '/transactions/tickets/payment',
         data: _.defaults(paymentOptions, {
           trips: BookingService.prepareTrips(book),
           promoCode: book.promoCode ? { code: book.promoCode } : { code: '' },
-          // don't use route credits if toggle if off
-          // creditTag: $scope.book.applyRouteCredits ? $scope.book.creditTag : null,
-          applyRouteCredits: book.applyRouteCredits ? true : false,
+          applyRoutePass: book.applyRoutePass ? true : false,
           applyCredits: book.applyCredits ? true : false,
           applyReferralCredits: book.applyReferralCredits ? true : false,
           expectedPrice: book.price
