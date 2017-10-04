@@ -79,6 +79,9 @@ span.placeholder {
   @extend .button-block;
   @extend .button-energized;
   @include box-shadow($card-box-shadow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip ellipsis;
 }
 
 // Hide the google maps boilerplate annotations
@@ -378,5 +381,9 @@ textarea{
     width: 120px;
     height: auto;
     filter: brightness(0.6);
+  }
+  .developer-list {
+    width: 80%;
+    margin: auto;
   }
 }
