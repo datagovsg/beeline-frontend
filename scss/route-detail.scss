@@ -1,5 +1,7 @@
 .route-detail {
   @include transparent();
+
+
   ion-content {
     display: flex;
     flex-direction: column;
@@ -31,4 +33,15 @@
     }
 
   }
+}
+
+
+/** Ionic uses a very specific selector with iOS/Cordova **/
+// .page-with-map ion-content,
+// .platform-ios.platform-cordova:not(.fullscreen) .page-with-map ion-content.has-header {
+//   top: auto;
+// }
+
+.platform-ios.platform-cordova:not(.fullscreen) .page-with-map ion-content.has-header {
+  top: auto;
 }

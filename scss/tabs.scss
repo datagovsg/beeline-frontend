@@ -12,7 +12,8 @@
   ion-nav-view[name="tab-lite"],
   ion-nav-view[name="tab-tickets"],
   ion-nav-view[name="tab-crowdstart"] {
-    background-color: transparent !important;
+    // to avoid map glitch (make map alone on map somehow)
+    background-color: rgba(0,0,0,0.01) !important;
     pointer-events: none !important;
   }
 
