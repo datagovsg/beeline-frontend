@@ -9883,7 +9883,10 @@ span.placeholder {
 
 .primary-button {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip ellipsis; }
 
 .gmnoprint,
 .gm-style-cc,
@@ -10117,6 +10120,9 @@ textarea {
     width: 120px;
     height: auto;
     filter: brightness(0.6); }
+  .built-by .developer-list {
+    width: 80%;
+    margin: auto; }
 
 .has-error {
   padding: 10px;
