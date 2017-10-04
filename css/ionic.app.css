@@ -10632,7 +10632,7 @@ trip-code {
 #tabs ion-nav-view[name="tab-lite"],
 #tabs ion-nav-view[name="tab-tickets"],
 #tabs ion-nav-view[name="tab-crowdstart"] {
-  background-color: transparent !important;
+  background-color: rgba(0, 0, 0, 0.01) !important;
   pointer-events: none !important; }
 
 @media (min-width: 1024px) {
@@ -10795,6 +10795,10 @@ trip-code {
         margin-left: 10px; }
       .route-detail ion-content .rides-remaining button {
         line-height: 1.0; }
+
+/** Ionic uses a very specific selector with iOS/Cordova **/
+.platform-ios.platform-cordova:not(.fullscreen) .page-with-map ion-content.has-header {
+  top: auto; }
 
 .route-stops {
   background-color: transparent !important;

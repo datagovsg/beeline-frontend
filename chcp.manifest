@@ -85,7 +85,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "2cc80d073103fdd93a9179fa8771beaa"
+    "hash": "adb5471efad9255238d68340e9137c16"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -93,7 +93,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "320bad9d30a16d9fab1a48633dd1e459"
+    "hash": "6043c07574e643d42908020e6e333a97"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -641,11 +641,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "fdd4a75a87c5be000d9e41efbf628fb2"
+    "hash": "9d70a1f0507de45d02a9103e6e380964"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "6b4ce05ce720544e2d13c3a7280a5124"
+    "hash": "5bd36c88ba4af81fb748d49c038bea95"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -941,7 +941,7 @@
   },
   {
     "file": "templates/kickstarter-detail.html",
-    "hash": "fa4392fc69282b273da9c7d24b5e9672"
+    "hash": "8e9231538c344389a04bce8aef2a7d02"
   },
   {
     "file": "templates/kickstarter-recap.html",
@@ -949,7 +949,7 @@
   },
   {
     "file": "templates/kickstarter-stops.html",
-    "hash": "434fc62f3cbfcc44cf660c3d8c5e643c"
+    "hash": "cfc0ed00c9e1be3d6a7ab93d55632332"
   },
   {
     "file": "templates/kickstarter-summary.html",
@@ -969,11 +969,11 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "0314fa218bd3541f4b6b3f5d6d2ba7e0"
+    "hash": "88e96201d08520ccb8716c2c91a3cafe"
   },
   {
     "file": "templates/route-stops.html",
-    "hash": "6ccfe01f3994e47ec86b9580aad49437"
+    "hash": "b110f2cbddaade45f29deab5317a0a0a"
   },
   {
     "file": "templates/routes-list.html",
@@ -1001,7 +1001,7 @@
   },
   {
     "file": "templates/tab-lite-detail.html",
-    "hash": "ff02027171bca4045aa4212e69465ec2"
+    "hash": "e00a55a9e293e588bc19fd30561bcd6d"
   },
   {
     "file": "templates/tab-lite-more-info.html",
@@ -1009,7 +1009,7 @@
   },
   {
     "file": "templates/tab-lite-tracker.html",
-    "hash": "6230b101e45081bc305fbaa6e730bd83"
+    "hash": "bde3ab9b40f7ac3a00b77fbf8fef7d61"
   },
   {
     "file": "templates/tab-suggest.html",
@@ -1021,7 +1021,7 @@
   },
   {
     "file": "templates/ticket-detail.html",
-    "hash": "f4facdbf46fdc5c202331ccd4635972a"
+    "hash": "6773aa45b8149c389a8ac018440b95b1"
   },
   {
     "file": "templates/tickets.html",
