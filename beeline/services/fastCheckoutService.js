@@ -4,7 +4,7 @@ import assert from 'assert'
 
 angular.module('beeline')
 .factory('FastCheckoutService', function fastCheckoutService(RoutesService, UserService,
-    purchaseRoutePassService, TicketService, $stateParams, BookingSummaryModalService) {
+    purchaseRoutePassService, TicketService, $stateParams, BookingSummaryModalService, $ionicLoading) {
 
     var user;
     var hasSavedPaymentInfo;
@@ -136,6 +136,10 @@ angular.module('beeline')
         return new Promise(async (resolve, reject) => {
           try {
             user = await userLoginPromise()
+            $ionicLoading.show({
+              template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading</small>`,
+              hideOnStateChange: true
+            });
             let verifyNextTrip = await verifyPromise(routeId)
             if (verifyNextTrip.errorMessage) {
               return reject(verifyNextTrip.errorMessage)
@@ -144,6 +148,7 @@ angular.module('beeline')
             paymentInfo = hasSavedPaymentInfo ? _.get(user, 'savedPaymentInfo') : null
             route = await RoutesService.getRoute(routeId)
             ridesRemaining = await ridesRemainingPromise(routeId)
+            $ionicLoading.hide();
             if (!ridesRemaining) {
               if (route && routeQualifiedForRoutePass(route)) {
                 await purchaseRoutePass(false, route, routeId, hasSavedPaymentInfo, paymentInfo, boardStopId, alightStopId, selectedDates)
@@ -166,6 +171,7 @@ angular.module('beeline')
             return resolve('success')
           }
           catch (err) {
+            $ionicLoading.hide()
             console.log(err)
             return reject('failed')
           }
