@@ -49,9 +49,17 @@ export default [
     ticketPromise.then((ticket) => {
       $scope.ticket = ticket;
     });
+
+    function sentTripToMapView() {
+      const trip = $scope.trip
+      if (trip) {
+        MapService.emit('ping-single-trip', [trip])
+      }
+    }
+
     tripPromise.then((trip) => {
       $scope.trip = trip;
-      MapService.emit('ping-trips', [trip])
+      sentTripToMapView()
     });
 
     routePromise.then((route) => {
@@ -59,17 +67,21 @@ export default [
     });
     companyPromise.then((company) => { $scope.company = company; });
 
+    const listener = (info) => {
+      $scope.disp = {...info}
+    }
+
     $scope.$on('$ionicView.afterEnter', () => {
-      MapService.emit('startPingLoop')
+      sentTripToMapView()
+      MapService.emit('startTicketPingLoop')
+      MapService.on('ticketInfo', listener)
     })
 
     $scope.$on('$ionicView.beforeLeave', () => {
-      MapService.emit('killPingLoop')
+      MapService.emit('killTicketPingLoop')
+      MapService.removeListener('ticketInfo', listener)
     });
 
-    MapService.on('tripInfo', (info) => {
-      $scope.disp = {...info}
-    })
 
   }
 ];

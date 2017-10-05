@@ -1,7 +1,5 @@
 import {SafeInterval} from '../SafeInterval';
 import {formatTime, formatTimeArray} from '../shared/format';
-
-
 export default [
   '$scope',
   'SharedVariableService',
@@ -11,22 +9,23 @@ export default [
   'MapService',
   '$timeout',
   'TripService',
-  'LiteRoutesService',
+  'TicketService',
   function($scope, SharedVariableService, $stateParams, BookingService,
-    RoutesService, MapService, $timeout, TripService, LiteRoutesService) {
+    RoutesService, MapService, $timeout, TripService, TicketService) {
+    let ticketId = $stateParams.ticketId ? +$stateParams.ticketId : null;
 
-    let routeLabel = $stateParams.label ? $stateParams.label : null;
-
-    $scope.mapObject = {
+    var originalMapObject = {
       stops: [],
       routePath: [],
       alightStop: null,
       boardStop: null,
-      pingTrips: null,
+      pingTrips: [],
       allRecentPings: [],
       chosenStop: null,
       statusMessages: [],
     }
+
+    $scope.mapObject = _.assign({}, originalMapObject)
 
     $scope.disp = {
       popupStop: null,
@@ -50,53 +49,63 @@ export default [
       }
     }
 
-    LiteRoutesService.fetchLiteRoute(routeLabel).then((response) => {
-      var route = response[routeLabel]
-      if (route.path) {
-        RoutesService.decodeRoutePath(route.path)
-          .then((decodedPath) => {
-            $scope.mapObject.routePath = decodedPath
-          })
-          .catch(() => {
-            $scope.mapObject.routePath = []
-          })
-      }
-      var trips = _.sortBy(route.trips, (trip)=>{
-        return trip.date
+
+    if (ticketId) {
+      var ticketPromise = TicketService.getTicketById(ticketId);
+      var tripPromise = ticketPromise.then((ticket) => {
+        return TripService.getTripData(+ticket.alightStop.tripId);
+      });
+      var routePromise = tripPromise.then((trip) => {
+        return RoutesService.getRoute(+trip.routeId);
+      });
+      ticketPromise.then((ticket) => {
+        $scope.mapObject.boardStop = ticket.boardStop
+        $scope.mapObject.alightStop = ticket.alightStop
+        SharedVariableService.setBoardStop(ticket.boardStop)
+        SharedVariableService.setAlightStop(ticket.alightStop)
+      });
+      tripPromise.then((trip) => {
+        let stops = trip.tripStops.map((ts) => {
+          return _.assign(ts.stop, {canBoard: ts.canBoard})
+        })
+        $scope.mapObject.stops = stops
+        SharedVariableService.setStops(stops)
       })
-      let nextTrips = trips.filter(
-        trip=>trip.date === route.trips[0].date)
-      var liteTripStops = LiteRoutesService.computeLiteStops(nextTrips)
-      $scope.mapObject.stops = liteTripStops;
-      SharedVariableService.setStops(liteTripStops)
-    })
+      routePromise.then((route) => {
+        if (route.path) {
+          RoutesService.decodeRoutePath(route.path)
+            .then((decodedPath) => {
+              $scope.mapObject.routePath = decodedPath
+            })
+            .catch(() => {
+              $scope.mapObject.routePath = []
+            })
+        }
+      })
+    }
 
-
-    MapService.on('ping-trips', (trips) => {
+    MapService.once('ping-single-trip', (trips) => {
       $scope.mapObject.pingTrips = trips
     })
 
     //fetch driver pings every 4s
     $scope.timeout = new SafeInterval(pingLoop, 4000, 1000);
 
-
-    MapService.on("killPingLoop", () => {
+    MapService.once("killTicketPingLoop", () => {
       $scope.timeout.stop();
     });
 
-    MapService.on("startPingLoop", () => {
+    MapService.once("startTicketPingLoop", () => {
       $scope.timeout.start();
     });
 
     //load icons and path earlier by restart timeout on watching trips
     $scope.$watchCollection('mapObject.pingTrips', (pt) => {
-      $scope.timeout.stop();
-
       if (pt) {
+        $scope.timeout.stop();
         $scope.timeout.start();
       }
     });
-
 
     async function pingLoop() {
       if (!$scope.mapObject.pingTrips) return;
@@ -109,6 +118,13 @@ export default [
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
         .then((info) => {
+          var ticketInfo = {
+            'tripCode': info && info.code,
+            'vehicle': info && info.trip && info.trip.vehicle && info.trip.vehicle.vehicleNumber,
+            'driver': info && info.trip && info.trip.tripDriver && info.trip.tripDriver.name,
+            'tripStatus': info && info.trip && info.trip.status
+          }
+          MapService.emit('ticketInfo', ticketInfo)
           const now = Date.now()
 
           $scope.mapObject.allRecentPings[index] = {
@@ -126,11 +142,6 @@ export default [
       } else {
         $scope.hasTrackingData = true;
       }
-      let tripInfo = {
-        'hasTrackingData': $scope.hasTrackingData,
-        'statusMessages': $scope.mapObject.statusMessages.join(' ')
-      }
-      MapService.emit('tripInfo', tripInfo)
     }
 
   }

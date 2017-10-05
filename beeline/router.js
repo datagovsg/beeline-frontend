@@ -192,7 +192,7 @@ export default function($stateProvider, $urlRouterProvider) {
 
       'map-area': {
         templateUrl: 'templates/map-view.html',
-        controller: 'MapViewController'
+        controller: 'TicketMapViewController'
       }
     },
     data: {

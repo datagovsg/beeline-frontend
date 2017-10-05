@@ -57,24 +57,13 @@ export default [
       isSubscribed: false,
       todayTrips: null,
       inServiceWindow: false,
-      hasTrips: true,
+      hasTrips: true
     };
 
     $scope.$watch('book.todayTrips',(trips)=>{
       if (!trips) return;
       $scope.book.hasTrips = trips.length > 0
     });
-
-    $scope.mapObject = {
-      stops: [],
-      routePath: [],
-      alightStop: null,
-      boardStop: null,
-      pingTrips: [],
-      allRecentPings: [],
-      chosenStop: null,
-      statusMessages: [],
-    }
 
     var routePromise, subscriptionPromise;
 
@@ -98,21 +87,42 @@ export default [
       })
     });
 
-    $scope.$watch('book.todayTrips', (todayTrips) => {
+
+    function sendTripsToMapView () {
+      const todayTrips = $scope.book.todayTrips
       if (todayTrips && todayTrips.length > 0) {
         MapService.emit('ping-trips', todayTrips)
       }
-    })
+    }
+
+    $scope.$watch('book.todayTrips', sendTripsToMapView)
 
     $scope.$on('$ionicView.afterEnter', () => {
-      loadingSpinner(Promise.all([routePromise, subscriptionPromise])
+      // Must define leavePromise here because if we define
+      // the handler for $ionicView.beforeLeave in .then(() => {})
+      // the user might have already navigated away from the page, and
+      // the event will not be fired
+      const leavePromise = new Promise((resolve) => {
+        $scope.$on('$ionicView.beforeLeave', resolve)
+      })
+
+      sendTripsToMapView()
+
+      const dataPromise = loadingSpinner(Promise.all([routePromise, subscriptionPromise])
       .then(() => {
         MapService.emit('startPingLoop')
-      }));
-    });
 
-    $scope.$on('$ionicView.beforeLeave', () => {
-      MapService.emit('killPingLoop')
+        const listener = (tripInfo) => {
+          updateTripInfo(tripInfo)
+        }
+        MapService.on('tripInfo', listener)
+        leavePromise.then(() => MapService.removeListener('tripInfo', listener))
+      }));
+
+      Promise.all([dataPromise, leavePromise])
+      .then(() => {
+        MapService.emit('killPingLoop')
+      });
     });
 
     $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
@@ -272,9 +282,11 @@ export default [
       }
     }
 
-    MapService.on('tripInfo', (tripInfo) => {
+    function updateTripInfo(tripInfo) {
       $scope.disp.hasTrackingData = tripInfo.hasTrackingData
       $scope.disp.statusMessages = tripInfo.statusMessages
-    })
+      $scope.$digest();
+    }
+
   }
 ];
