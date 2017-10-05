@@ -29,19 +29,11 @@ export default [
     // Model
     // ------------------------------------------------------------------------
     $scope.data = {
-      stops: null, // array of stop objects
-      selectedStop: null // stop object
+      selectedStop: null, // stop object
+      boardStops: null,
+      alightStops: null,
     };
 
-    $scope.mapObject = {
-      stops: [],
-      routePath: [],
-      alightStop: null,
-      boardStop: null,
-      pingTrips: [],
-      allRecentPings: [],
-      chosenStop: null,
-    }
     // ------------------------------------------------------------------------
     // Hooks
     // ------------------------------------------------------------------------
@@ -65,10 +57,9 @@ export default [
     RoutesService.getRoute(routeId).then(route => {
       // Load the stops data into the view
       let [pickups, dropoffs] = BookingService.computeStops(route.trips);
-      $scope.data.stops = pickups.concat(dropoffs)
-      if ($scope.data.selectedStop) {
-        $scope.data.selectedStop = $scope.data.stops[0]
-      }
+      // $scope.data.stops = pickups.concat(dropoffs)
+      $scope.data.boardStops = pickups
+      $scope.data.alightStops = dropoffs
       // Scroll to the selected stop if we have one
       $ionicScrollDelegate.resize();
       $ionicLoading.hide();

@@ -114,6 +114,53 @@
        &.selected { .show-unselected { display: none; } }
        &:not(.selected) { .show-selected { display: none; } }
      }
+
+     .item-radio{
+        .radio-icon {
+          color: $royal;
+          font-size: $radio-font-size;
+          left: 0px;
+        }
+        .not-selected{
+          color: $hint-color;
+          font-size: $radio-font-size;
+          left: 0px;
+          padding: 14px; /*follow radio-icon padding*/
+        }
+        .item-content{
+          padding-right: $item-padding * 1;
+          /* extend content space, override ionic default since the checkmark is no longer on the right */
+        }
+      }
+
+    .fullStopDetails{
+      padding-left: $item_padding_base*4;
+      .time{
+        font-weight: bold;
+      }
+      .details {
+        .road {
+          color: $hint-color;
+        }
+      }
+    }
+
+    i.stop-icon{
+      left: $padding-small-horizontal*3;
+      background-size: auto 20px;
+      width: 24px;
+      /* height: 24px; */
+      display: inline-block;
+      vertical-align: bottom;
+      margin: 0 5px 0 0px;
+
+      &.board{
+        background: url('../img/RoutePairBigStart.svg') 0 50% no-repeat transparent;
+      }
+      &.alight{
+        background: url('../img/RoutePairBigEnd.svg') 0 50% no-repeat transparent;
+      }
+    }
    }
   }
 }
