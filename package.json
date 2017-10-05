@@ -19,7 +19,6 @@
     "commonmark": "^0.26.0",
     "compare-versions": "^3.0.0",
     "cordova-android": "^6.2.3",
-    "cordova-hot-code-push-local-dev-addon": "^0.4.2",
     "cordova-ios": "^4.4.0",
     "cordova-plugin-app-version": "~0.1.9",
     "cordova-plugin-console": "~1.0.6",
