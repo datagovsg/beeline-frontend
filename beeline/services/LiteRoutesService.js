@@ -112,10 +112,10 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     startDate.setHours(3,0,0,0,0)
 
     var finalOptions = _.assign({
-      start_date: startDate.getTime(),
-      include_path: true,
-      include_trips: true,
-      limit_trips: 5,
+      startDate: startDate.getTime(),
+      includePath: true,
+      includeTrips: true,
+      limitTrips: 5,
       tags: JSON.stringify(['lite']),
     }, options,
     p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {})
@@ -152,11 +152,11 @@ export default function LiteRoutesService($http, UserService, $q, LiteRouteSubsc
     startDate.setHours(3,0,0,0,0)
 
     var finalOptions = _.assign({
-      start_date: startDate.getTime(),
-      include_trips: true,
+      startDate: startDate.getTime(),
+      includeTrips: true,
       tags: JSON.stringify(['lite']),
       label: liteRouteLabel,
-      include_path: true,
+      includePath: true,
     }, options,
     p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {})
 

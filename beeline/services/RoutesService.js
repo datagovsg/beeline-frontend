@@ -75,9 +75,8 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       startDate.setHours(3,0,0,0,0)
 
       var finalOptions = _.assign({
-        start_date: startDate.getTime(),
-        include_trips: true,
-        include_availability: true,
+        startDate: startDate.getTime(),
+        includeTrips: true,
       }, options)
 
       lastRouteId = routeId;
@@ -115,10 +114,10 @@ export default function RoutesService($http, UserService, uiGmapGoogleMapApi, $q
       startDate.setHours(3,0,0,0,0)
 
       var finalOptions = _.assign({
-        start_date: startDate.getTime(),
-        include_trips: true,
-        limit_trips: 5,
-        include_path: false,
+        startDate: startDate.getTime(),
+        includeTrips: true,
+        limitTrips: 5,
+        includePath: false,
         tags: JSON.stringify(['public']),
       }, options,
       p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {})
