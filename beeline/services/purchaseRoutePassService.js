@@ -7,9 +7,9 @@ angular.module('beeline')
 .service('purchaseRoutePassService', modalService)
 
 function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
-  StripeService, assetScopeModalService, PaymentService, UserService, BookingSummaryModalService) {
+  StripeService, assetScopeModalService, PaymentService, UserService, BookingSummaryModalService, $state) {
   var self = this
-  self.show = (hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, selectedDates, boardStopId, alightStopId) => {
+  self.show = (hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, boardStopId, alightStopId, selectedDates) => {
     var scope = $rootScope.$new();
     var routePassModal = $ionicModal.fromTemplate(
       routePassTemplate, {
@@ -103,8 +103,13 @@ function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
           scope.book.isProcessing = true
           if (scope.book.priceSchedules[scope.book.routePassChoice].quantity === 1) {
             // skip the payment for route pass
-            scope.book.isProcessing = false
-            return resolve('Payment Done')
+            // scope.book.isProcessing = false
+            // return resolve('Payment Done')
+            $state.go('tabs.route-summary', {routeId: routeId,
+              boardStop: boardStopId,
+              alightStop: alightStopId,
+              selectedDates: selectedDates});
+
           } else {
             loadingSpinner(scope.payForRoutePass()).then(() => {
               scope.book.isProcessing = false

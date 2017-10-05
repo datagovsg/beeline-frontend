@@ -43,8 +43,8 @@ angular.module('beeline')
     }
 
     //  modal for purchase route pass
-    function purchaseRoutePass(hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo) {
-      return purchaseRoutePassService.show(hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo)
+    function purchaseRoutePass(hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, boardStopId, alightStopId, selectedDates) {
+      return purchaseRoutePassService.show(hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, boardStopId, alightStopId, selectedDates)
     }
 
 
@@ -146,7 +146,7 @@ angular.module('beeline')
             ridesRemaining = await ridesRemainingPromise(routeId)
             if (!ridesRemaining) {
               if (route && routeQualifiedForRoutePass(route)) {
-                await purchaseRoutePass(false, route, routeId, hasSavedPaymentInfo, paymentInfo)
+                await purchaseRoutePass(false, route, routeId, hasSavedPaymentInfo, paymentInfo, boardStopId, alightStopId, selectedDates)
               } else {
                 // ask for stripe payment for single ticket
                 await BookingSummaryModalService.show({
