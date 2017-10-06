@@ -45,7 +45,7 @@
         <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
       </button>
       <span ng-if="data.price">
-        As low as $<span ng-bind="data.price"></span> per trip
+        $<span ng-bind="data.price"></span> per trip
       </span>
       <div class="button button-clear button-royal"
         ui-sref="tabs.route-dates({

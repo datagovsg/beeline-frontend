@@ -11596,6 +11596,37 @@ table.booking-history {
           display: none; }
         .kickstarter-stops > ion-content .stop-list .stop-option:not(.selected) .show-selected {
           display: none; }
+      .kickstarter-stops > ion-content .stop-list .item-radio .radio-icon {
+        color: #00B140;
+        font-size: 30px;
+        left: 0px; }
+      .kickstarter-stops > ion-content .stop-list .item-radio .not-selected {
+        color: #888;
+        font-size: 30px;
+        left: 0px;
+        padding: 14px;
+        /*follow radio-icon padding*/ }
+      .kickstarter-stops > ion-content .stop-list .item-radio .item-content {
+        padding-right: 16px;
+        /* extend content space, override ionic default since the checkmark is no longer on the right */ }
+      .kickstarter-stops > ion-content .stop-list .fullStopDetails {
+        padding-left: 40px; }
+        .kickstarter-stops > ion-content .stop-list .fullStopDetails .time {
+          font-weight: bold; }
+        .kickstarter-stops > ion-content .stop-list .fullStopDetails .details .road {
+          color: #888; }
+      .kickstarter-stops > ion-content .stop-list i.stop-icon {
+        left: 30px;
+        background-size: auto 20px;
+        width: 24px;
+        /* height: 24px; */
+        display: inline-block;
+        vertical-align: bottom;
+        margin: 0 5px 0 0px; }
+        .kickstarter-stops > ion-content .stop-list i.stop-icon.board {
+          background: url("../img/RoutePairBigStart.svg") 0 50% no-repeat transparent; }
+        .kickstarter-stops > ion-content .stop-list i.stop-icon.alight {
+          background: url("../img/RoutePairBigEnd.svg") 0 50% no-repeat transparent; }
 
 #pg_kickstarter_summary table {
   width: 100%; }

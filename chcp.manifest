@@ -85,7 +85,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "adb5471efad9255238d68340e9137c16"
+    "hash": "cf13e74ade717446704129da9d4d7705"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -93,7 +93,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "6043c07574e643d42908020e6e333a97"
+    "hash": "82d50a8c333a0929e92bb537925634be"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -641,11 +641,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "9d70a1f0507de45d02a9103e6e380964"
+    "hash": "22a6662298e4a9d78d687a625c963f9c"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "5bd36c88ba4af81fb748d49c038bea95"
+    "hash": "fe1552caad86efb9a0e03fe33698e189"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -949,11 +949,11 @@
   },
   {
     "file": "templates/kickstarter-stops.html",
-    "hash": "cfc0ed00c9e1be3d6a7ab93d55632332"
+    "hash": "cbcbc22a77350391ee05b5a16ea6a421"
   },
   {
     "file": "templates/kickstarter-summary.html",
-    "hash": "d7e383f139ec86f31b61892643eb8555"
+    "hash": "d0e1e837ee86b7617d948b2df9b701d4"
   },
   {
     "file": "templates/kickstarter.html",
@@ -969,7 +969,7 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "88e96201d08520ccb8716c2c91a3cafe"
+    "hash": "82ab50281a98e6d60d91d5e3536655b2"
   },
   {
     "file": "templates/route-stops.html",
