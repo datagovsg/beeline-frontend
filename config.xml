@@ -85,7 +85,6 @@
         <native-interface version="2" />
     </chcp>
     <engine name="android" spec="^6.2.3" />
-    <plugin name="cordova-hot-code-push-local-dev-addon" spec="^0.4.2" />
     <plugin name="cordova-hot-code-push-plugin" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
     <plugin name="cordova-plugin-console" spec="~1.0.6" />
