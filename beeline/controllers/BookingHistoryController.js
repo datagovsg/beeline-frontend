@@ -19,8 +19,8 @@ export default function($scope, UserService, RoutesService) {
     })
 
     routesPromise = RoutesService.fetchRoutes(true, {
-      end_date: Date.now() +  14*24*60*60*1000,
-      start_date: Date.now() - 365*24*60*60*1000,
+      endDate: Date.now() +  14*24*60*60*1000,
+      startDate: Date.now() - 365*24*60*60*1000,
       tags: '[]',
     })
     .then((routes) => {
@@ -38,7 +38,7 @@ export default function($scope, UserService, RoutesService) {
     inFlight = true;
     UserService.beeline({
       method: 'GET',
-      url: '/transactions/userHistory?' + qs.stringify({
+      url: '/transactions/user_history?' + qs.stringify({
         page: $scope.page,
         perPage: $scope.perPage,
       }),
