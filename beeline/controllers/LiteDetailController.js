@@ -51,8 +51,6 @@ export default [
     $scope.book = {
       label: null,
       route: null,
-      boardStops: [], // all board stops for this route
-      alightStops: [], // all alight stops for this route
       waitingForSubscriptionResult: false,
       isSubscribed: false,
       todayTrips: null,

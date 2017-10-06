@@ -34,7 +34,6 @@ angular.module('beeline')
       $state.go('tabs.route-confirmation');
 
     } catch (err) {
-      console.log(err)
       $ionicLoading.hide();
       await $ionicPopup.alert({
         title: 'Error processing payment',
@@ -137,7 +136,6 @@ angular.module('beeline')
     payForRoutePass: async function(route, expectedPrice, passValue, paymentOptions) {
       var paymentPromise
       try {
-        console.log('From payment Service')
         let routePassTagList = route.tags.filter((tag) => {
           return tag.includes('rp-')
         })
@@ -156,10 +154,8 @@ angular.module('beeline')
         }))
         paymentPromise = new Promise((resolve, reject) => {return resolve('routePassPurchaseDone')})
       } catch (err) {
-        console.log(err)
         paymentPromise = new Promise((resolve, reject) => {return resolve('routePassError')})
       } finally {
-        console.log('finally')
         RoutesService.fetchRoutePasses(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass()
