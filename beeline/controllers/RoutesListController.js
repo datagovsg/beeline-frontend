@@ -48,6 +48,7 @@ export default function(
   });
 
   function autoComplete() {
+    if ($scope.data.queryText.trim().length === 0) return;
     let searchBox = document.getElementById('search');
     if (!$scope.data.queryText || !$scope.autocompleteService) {
       $scope.data.isFiltering = false;

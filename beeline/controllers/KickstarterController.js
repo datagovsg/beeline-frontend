@@ -36,6 +36,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   });
 
   function autoComplete() {
+    if ($scope.data.queryText.trim().length === 0) return;
     let searchBox = document.getElementById('search-crowdstart');
     if (!$scope.data.queryText || !$scope.autocompleteService) {
       $scope.data.isFiltering = false;
