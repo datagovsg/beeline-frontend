@@ -78,6 +78,9 @@ export default function($stateProvider, $urlRouterProvider) {
         templateUrl: 'templates/map-view.html',
         controller: 'MapViewController'
       }
+    },
+    data: {
+      hideTabs: true,
     }
   })
   .state('tabs.route-stops', {
@@ -93,7 +96,10 @@ export default function($stateProvider, $urlRouterProvider) {
         controller: 'MapViewController'
       }
     },
-    params: { callback: null }
+    params: { callback: null },
+    data: {
+      hideTabs: true,
+    }
   })
   .state('tabs.route-dates', {
     url: '/route/:routeId/dates?boardStop&alightStop&selectedDates',
@@ -102,6 +108,9 @@ export default function($stateProvider, $urlRouterProvider) {
         templateUrl: 'templates/tab-booking-dates.html',
         controller: 'BookingDatesController',
       }
+    },
+    data: {
+      hideTabs: true,
     }
   })
   .state('tabs.route-summary', {
@@ -111,6 +120,9 @@ export default function($stateProvider, $urlRouterProvider) {
         templateUrl: 'templates/tab-booking-summary.html',
         controller: 'BookingSummaryController',
       }
+    },
+    data: {
+      hideTabs: true,
     }
   })
   .state('tabs.route-confirmation', {
