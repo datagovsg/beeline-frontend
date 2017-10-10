@@ -6,7 +6,8 @@
     display: flex;
     flex-direction: column;
     top: auto;
-    @include desktop { &.has-tabs { top: $bar-height; } }
+    // @include desktop { &.has-tabs { top: $bar-height; } }
+    @include desktop { top: $bar-height;  }
     .booking-info {
       display: flex;
       flex: 1;
