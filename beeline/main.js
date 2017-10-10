@@ -36,6 +36,7 @@ require('./services/paymentService');
 require('./services/bookingSummaryModalService')
 require('./services/SharedVariableService')
 require('./services/MapService')
+require('./services/LazyLoadService')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration

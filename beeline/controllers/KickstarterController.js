@@ -8,7 +8,7 @@ import loadingTemplate from '../templates/loading.html';
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
   $ionicScrollDelegate, $ionicPopup, KickstarterService, $ionicLoading,
-  SearchService, $timeout, loadingSpinner, uiGmapGoogleMapApi) {
+  SearchService, $timeout, loadingSpinner, uiGmapGoogleMapApi, LazyLoadService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -31,8 +31,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
       if (event.key === "Enter") this.blur();
     });
 
-    $scope.autocompleteService = new googleMaps.places.AutocompleteService();
-    $scope.placesService = new google.maps.places.PlacesService(searchBox);
+    $scope.autocompleteService = LazyLoadService(() => new googleMaps.places.AutocompleteService());
+    $scope.placesService = LazyLoadService(() => new google.maps.places.PlacesService(searchBox));
   });
 
   function autoComplete() {
@@ -48,7 +48,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     // default 'place' object only has 'queryText' but no geometry
     // if has predicted place assign the 1st prediction to place object
     let place = {queryText: $scope.data.queryText};
-    const currentAutoComplete = $scope.autocompleteService.getPlacePredictions({
+    const currentAutoComplete = $scope.autocompleteService().getPlacePredictions({
       componentRestrictions: {country: 'SG'},
       input: $scope.data.queryText
     }, (predictions) => {
@@ -61,7 +61,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       }
       // Grab the top prediction and get the details
       // Apply the details as the full result
-      $scope.placesService.getDetails({
+      $scope.placesService().getDetails({
         placeId: predictions[0].place_id
       }, result => {
         // If we fail getting the details then shortcircuit

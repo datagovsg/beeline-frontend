@@ -12,7 +12,8 @@ export default function(
   LiteRouteSubscriptionService,
   SearchService,
   BookingService,
-  uiGmapGoogleMapApi
+  uiGmapGoogleMapApi,
+  LazyLoadService
 ) {
 
   // ---------------------------------------------------------------------------
@@ -43,12 +44,11 @@ export default function(
       if (event.key === "Enter") this.blur();
     });
 
-    $scope.autocompleteService = new googleMaps.places.AutocompleteService();
-    $scope.placesService = new google.maps.places.PlacesService(searchBox);
+    $scope.autocompleteService = LazyLoadService(() => new googleMaps.places.AutocompleteService());
+    $scope.placesService = LazyLoadService(() => new google.maps.places.PlacesService(searchBox))
   });
 
   function autoComplete() {
-    if ($scope.data.queryText.trim().length === 0) return;
     let searchBox = document.getElementById('search');
     if (!$scope.data.queryText || !$scope.autocompleteService) {
       $scope.data.isFiltering = false;
@@ -60,7 +60,7 @@ export default function(
     // default 'place' object only has 'queryText' but no geometry
     // if has predicted place assign the 1st prediction to place object
     let place = {queryText: $scope.data.queryText};
-    const currentAutoComplete = $scope.autocompleteService.getPlacePredictions({
+    const currentAutoComplete = $scope.autocompleteService().getPlacePredictions({
       componentRestrictions: {country: 'SG'},
       input: $scope.data.queryText
     }, (predictions) => {
@@ -73,7 +73,7 @@ export default function(
       }
       // Grab the top prediction and get the details
       // Apply the details as the full result
-      $scope.placesService.getDetails({
+      $scope.placesService().getDetails({
         placeId: predictions[0].place_id
       }, result => {
         // If we fail getting the details then shortcircuit
