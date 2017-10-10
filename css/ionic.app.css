@@ -10776,7 +10776,7 @@ trip-code {
     flex-direction: column;
     top: auto; }
     @media (min-width: 1024px) {
-      .route-detail ion-content.has-tabs {
+      .route-detail ion-content {
         top: 45px; } }
     .route-detail ion-content .booking-info {
       display: flex;
@@ -10809,7 +10809,7 @@ trip-code {
     top: auto;
     height: 240px; }
     @media (min-width: 1024px) {
-      .route-stops > ion-content.has-tabs {
+      .route-stops > ion-content {
         top: 45px; } }
     @media (min-width: 1024px) {
       .route-stops > ion-content {
