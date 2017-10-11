@@ -53,8 +53,8 @@ inquirer.prompt([
     // Replace the production hot code push files with the staging url
     shell.sed(
       "-i",
-      "app.beeline.sg",
-      "app-staging.beeline.sg",
+      "app-pages.beeline.sg",
+      "app-staging-pages.beeline.sg",
       ["www/CNAME", "www/chcp.json "]
     );
     shell.exec("gh-pages -t -d www/");
