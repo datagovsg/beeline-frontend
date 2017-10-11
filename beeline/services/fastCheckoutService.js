@@ -76,7 +76,7 @@ angular.module('beeline')
           return reject('There is no next trip')
         }
         var seatsAvailable = false
-        if (nextTrip && nextTrip.availability && nextTrip.availability.seatsAvailable >= 0) {
+        if (nextTrip && nextTrip.availability && nextTrip.availability.seatsAvailable > 0) {
           seatsAvailable = true
         }
         var hasNextTripTicket = null, previouslyBookedDays = null
