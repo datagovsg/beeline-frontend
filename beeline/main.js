@@ -149,6 +149,12 @@ app
 .directive('liteRoute', require('./directives/routeItem/liteRoute.js').default)
 .directive('countdown', require('./directives/countdown.js').default)
 .config(configureRoutes)
+.config(['$locationProvider', function ($locationProvider) {
+  // Turn on html5Mode only if we are sure we are not a cordova app
+  if (!window.cordova) {
+    $locationProvider.html5Mode({enabled: true})
+  }
+}])
 .config(['$ionicConfigProvider', function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.tabs.style('standard');
