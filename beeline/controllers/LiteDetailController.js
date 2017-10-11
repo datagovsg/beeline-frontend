@@ -241,6 +241,12 @@ export default [
           $scope.book.isSubscribed = false;
         }
 
+        // manage the next state to go
+        var nextState = null
+        if ($state.current && $state.current.name === 'tabs.lite-route-tracker') {
+          nextState = 'tabs.tickets'
+        }
+
         if (!$scope.book.isSubscribed) {
           await $ionicLoading.show({
             template: `
@@ -248,7 +254,7 @@ export default [
             `,
             duration: 1000,
           })
-          $state.transitionTo("tabs.routes");
+          nextState ? $state.transitionTo(nextState) : $state.transitionTo("tabs.routes");
         }
       }
       catch(err) {
