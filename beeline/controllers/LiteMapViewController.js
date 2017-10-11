@@ -65,7 +65,7 @@ export default [
         return trip.date
       })
       let nextTrips = trips.filter(
-        trip=>trip.date === route.trips[0].date)
+        trip=>trip.date === trips[0].date)
       var liteTripStops = LiteRoutesService.computeLiteStops(nextTrips)
       $scope.mapObject.stops = liteTripStops;
       SharedVariableService.setStops(liteTripStops)
