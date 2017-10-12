@@ -3,7 +3,7 @@
   "ios_identifier": "id1010615256",
   "android_identifier": "sg.beeline",
   "update": "now",
-  "content_url": "https://app-staging.beeline.sg",
+  "content_url": "https://app.beeline.sg",
   "min_native_interface": 1,
-  "release": "2017.10.12-10.22.31"
+  "release": "2017.10.12-10.27.31"
 }
