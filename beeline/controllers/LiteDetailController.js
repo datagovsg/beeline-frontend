@@ -144,38 +144,13 @@ export default [
       UserService.promptLogIn()
     }
 
-    $scope.showConfirmationPopup = function() {
-      return $scope.confirmationPopup = $ionicPopup.show({
-        scope: $scope,
-        template: `
-        <div class="item item-text-wrap">
-          <div>
-              Please read {{disp.companyInfo.name}}'s <a ng-click="disp.showTerms()">Terms and Conditions of Service</a>.
-          </div>
-          <ion-checkbox ng-model="disp.termsChecked">
-            Yes, I have read and agree to the above Terms and Conditions and would like to proceed.
-          </ion-checkbox>
-        </div>
-        `,
-        cssClass: "popup-no-head",
-        buttons: [{
-          text: "Cancel",
-          type: "button-default",
-          onTap: () => {return false;},
-        },
-        {
-          text: "OK",
-          type: "button-positive",
-          onTap: (e) => {
-            if (!$scope.disp.termsChecked) {
-              e.preventDefault();
-            }
-            else {
-              $scope.followRoute();
-            }
-          },
-        }]
+    $scope.showConfirmationPopup = async function() {
+      var response = await $ionicPopup.confirm({
+        title: 'Are you sure you want to bookmark this route?',
       })
+
+      if (!response) return;
+      $scope.followRoute()
     }
 
     $scope.followRoute = async function() {
@@ -269,16 +244,6 @@ export default [
         $scope.book.waitingForSubscriptionResult = false;
       }
     };
-
-    $scope.disp.showTerms = async () => {
-      if (!$scope.book.route.transportCompanyId) return;
-
-      $scope.confirmationPopup.close();
-
-      await CompanyService.showTerms($scope.book.route.transportCompanyId)
-
-      $scope.showConfirmationPopup();
-    }
 
     $scope.hideTooltip = () => {
       if ($scope.disp.showTooltip) {
