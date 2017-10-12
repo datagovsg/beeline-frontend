@@ -629,7 +629,7 @@
   },
   {
     "file": "index.html",
-    "hash": "cb86d6d810b8f3eec6b792c827a8a720"
+    "hash": "e0a240bc5dcdebf88c7a6235647a3ccc"
   },
   {
     "file": "js/ng-cordova.min.js",
@@ -641,11 +641,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "c1eaad0b8106fb2e20d147ab35899012"
+    "hash": "e4cd8a240757afeee4962f18d6e09aaf"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "0bc0350ef816737259a4c18928be534e"
+    "hash": "70faa14303b386e1ee92ea5e60f40ad9"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -969,7 +969,7 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "82ab50281a98e6d60d91d5e3536655b2"
+    "hash": "cf1ab9f678981089475b1f53d0da9272"
   },
   {
     "file": "templates/route-stops.html",
