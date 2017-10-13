@@ -50,7 +50,6 @@ export default function(
   });
 
   function autoComplete() {
-    let searchBox = document.getElementById('search');
     if (!$scope.data.queryText || !$scope.autocompleteService) {
       $scope.data.isFiltering = false;
       return;
@@ -75,7 +74,7 @@ export default function(
       }
       // Grab the top prediction and get the details
       // Apply the details as the full result
-      SearchEventService.emit('search-item', predictions[0].desc)
+      SearchEventService.emit('search-item', predictions[0].description)
       $scope.placesService().getDetails({
         placeId: predictions[0].place_id
       }, result => {
