@@ -13,7 +13,8 @@ export default function(
   SearchService,
   BookingService,
   uiGmapGoogleMapApi,
-  LazyLoadService
+  LazyLoadService,
+  SearchEventService
 ) {
 
   // ---------------------------------------------------------------------------
@@ -60,6 +61,7 @@ export default function(
     // default 'place' object only has 'queryText' but no geometry
     // if has predicted place assign the 1st prediction to place object
     let place = {queryText: $scope.data.queryText};
+    SearchEventService.emit('search-item', $scope.data.queryText)
     const currentAutoComplete = $scope.autocompleteService().getPlacePredictions({
       componentRestrictions: {country: 'SG'},
       input: $scope.data.queryText
@@ -73,6 +75,7 @@ export default function(
       }
       // Grab the top prediction and get the details
       // Apply the details as the full result
+      SearchEventService.emit('search-item', predictions[0].desc)
       $scope.placesService().getDetails({
         placeId: predictions[0].place_id
       }, result => {
