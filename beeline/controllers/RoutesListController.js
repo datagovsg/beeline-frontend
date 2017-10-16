@@ -398,7 +398,6 @@ export default function(
 
         // Grab the top prediction and get the details
         // Apply the details as the full result
-        SearchEventService.emit('search-item', predictions[0].description)
         $scope.placesService().getDetails({
           placeId: predictions[0].place_id
         }, result => {
