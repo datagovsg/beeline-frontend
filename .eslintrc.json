@@ -6,6 +6,7 @@
   "rules": {
     "padded-blocks": "off",
     "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
-    "no-unused-vars": ["warn"]
+    "no-unused-vars": ["warn"],
+    "semi": [2, "never"]
   }
 }
