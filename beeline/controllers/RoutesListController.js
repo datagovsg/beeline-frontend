@@ -33,8 +33,7 @@ export default function(
     crowdstartRoutes: [],
     nextSessionId: null,
     isFiltering: null,
-    routesYouMayLike: [],
-    madePlaceQuery: false
+    routesYouMayLike: []
   };
 
 
@@ -61,11 +60,29 @@ export default function(
     // default 'place' object only has 'queryText' but no geometry
     let place = {queryText: $scope.data.queryText};
     SearchEventService.emit('search-item', $scope.data.queryText)
-    $scope.data.madePlaceQuery = false;
+
+    // Reset routes and crowdstartRoutes here because they are used to
+    // determine whether we do a place query (see watchGroup with both)
+    // If we don't reset, we could end up with the case where the criteria
+    // is applied to the wrong version of them
+    // E.g.
+    // 1. User makes one search. App completely finishes all filtering.
+    // 2. User makes another search.
+    // 3. First time we enter watchgroup for routes + crowdstartRoutes, only
+    //    only one of them has changed. WLOG assume it is routes.
+    // 4. Then routes is filtered from the new search, while crowdstartRoutes
+    //    is filtered from the old search.
+    // 5. Then the check (routes.length + crowdstartRoutes.length > 1) is using
+    //    the wrong version of crowdstartRoutes and could result in us doing
+    //    unnecessary place queries.
+    //
+    // Resetting to null also has the benefit that the check whether we do
+    // place queries is only done once.
+    $scope.data.routes = null;
+    $scope.data.crowdstartRoutes = null;
     $scope.data.placeQuery = place;
     $scope.data.isFiltering = false;
     $scope.$digest();
-    return;
   }
   // ---------------------------------------------------------------------------
   // UI Hooks
@@ -115,7 +132,7 @@ export default function(
     [() => RoutesService.getActivatedKickstarterRoutes(), 'data.placeQuery'],
     ([routes, placeQuery]) => {
       // Input validation
-      if (!routes) routes = [];
+      if (!routes) return;
       // Filtering
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         routes = SearchService.filterRoutesByPlaceAndText(
@@ -142,8 +159,8 @@ export default function(
     ([recentRoutes, allRoutes, placeQuery]) => {
       // If we cant find route data here then proceed with empty
       // This allows it to organically "clear" any state
-      if (!recentRoutes) recentRoutes = [];
-      if (!allRoutes) allRoutes = [];
+      if (!recentRoutes || !allRoutes) return;
+
       // Filtering
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         allRoutes = SearchService.filterRoutesByPlaceAndText(
@@ -220,8 +237,8 @@ export default function(
       'data.placeQuery'
     ],
     ([routes, bids, placeQuery]) => {
-      if (!routes) routes = [];
-      if (!bids) bids = [];
+      if (!routes || !bids) return;
+
       // Filter to the routes the user bidded on
       let biddedRouteIds = bids.map(bid => bid.routeId);
       routes = routes.filter(route => {
@@ -259,7 +276,7 @@ export default function(
     ],
     ([liteRoutes, subscribed, placeQuery]) =>{
       // Input validation
-      if (!liteRoutes) liteRoutes = [];
+      if (!liteRoutes || !subscribed) return;
       liteRoutes = Object.values(liteRoutes);
       // Filtering
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
@@ -288,7 +305,7 @@ export default function(
     [() => RoutesService.getRoutesWithRoutePass(), "data.placeQuery"],
     ([allRoutes, placeQuery]) => {
       // Input validation
-      if (!allRoutes) allRoutes = [];
+      if (!allRoutes) return;
       // Filter routes
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         allRoutes = SearchService.filterRoutesByPlaceAndText(
@@ -318,8 +335,8 @@ export default function(
       'data.placeQuery'
     ],
     ([routes, bids, placeQuery]) => {
-      if (!routes) routes = [];
-      if (!bids) bids = [];
+      if (!routes || !bids) return;
+
       // Filter out the routes the user bidded on
       // These are already shown elsewhere
       let biddedRouteIds = bids.map(bid => bid.routeId);
@@ -352,6 +369,7 @@ export default function(
       'data.crowdstartRoutes'
     ],
     ([routes, crowdstartRoutes]) => {
+      // Important comments in the autoComplete function
       if (!routes || !crowdstartRoutes) return;
 
       // Criteria for making a place query
@@ -359,14 +377,9 @@ export default function(
 
       let placeQuery = $scope.data.placeQuery
       if (!placeQuery) return;
-      if (!placeQuery.queryText) return;
 
       // If placeQuery.geometry exists, then we've already made a place query
       if (placeQuery.geometry) return;
-
-      // If we are already making a place query, don't make another one
-      if ($scope.data.madePlaceQuery) return;
-      $scope.data.madePlaceQuery = true;
 
       if (!$scope.autocompleteService) return;
 
