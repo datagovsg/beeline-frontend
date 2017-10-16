@@ -53,7 +53,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.data.routes = null;
     $scope.data.filteredKickstarter = null;
     $scope.data.placeQuery = place;
-    $scope.data.isFiltering = false;
     $scope.$digest();
   }
 
@@ -142,7 +141,14 @@ export default function($scope, $state, UserService, RoutesService, $q,
       if (!newRoutes) return;
 
       // Criteria for making a place query
-      if (newRoutes.length > 1) return;
+      if (newRoutes.length > 1) {
+        // Set a small delay to make the spinner appear for slightly longer
+        setTimeout(() => {
+          $scope.data.isFiltering = false;
+          $scope.$digest();
+        }, 500);
+        return;
+      }
 
       let placeQuery = $scope.data.placeQuery
       if (!placeQuery) return;
@@ -172,8 +178,13 @@ export default function($scope, $state, UserService, RoutesService, $q,
           place = _.assign(place,result);
           // Return the found place
           $scope.data.placeQuery =  place;
-          $scope.data.isFiltering = false;
           $scope.$digest();
+
+          // Set a small delay to make the spinner appear for slightly longer
+          setTimeout(() => {
+            $scope.data.isFiltering = false;
+            $scope.$digest();
+          }, 500);
         });
       })
     }

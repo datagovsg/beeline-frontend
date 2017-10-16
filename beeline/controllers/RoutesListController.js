@@ -81,7 +81,6 @@ export default function(
     $scope.data.routes = null;
     $scope.data.crowdstartRoutes = null;
     $scope.data.placeQuery = place;
-    $scope.data.isFiltering = false;
     $scope.$digest();
   }
   // ---------------------------------------------------------------------------
@@ -373,7 +372,14 @@ export default function(
       if (!routes || !crowdstartRoutes) return;
 
       // Criteria for making a place query
-      if (routes.length + crowdstartRoutes.length > 1) return;
+      if (routes.length + crowdstartRoutes.length > 1) {
+        // Set a small delay to make the spinner appear for slightly longer
+        setTimeout(() => {
+          $scope.data.isFiltering = false;
+          $scope.$digest();
+        }, 500);
+        return;
+      }
 
       let placeQuery = $scope.data.placeQuery
       if (!placeQuery) return;
@@ -403,8 +409,13 @@ export default function(
           place = _.assign(place,result);
           // Return the found place
           $scope.data.placeQuery =  place;
-          $scope.data.isFiltering = false;
           $scope.$digest();
+
+          // Set a small delay to make the spinner appear for slightly longer
+          setTimeout(() => {
+            $scope.data.isFiltering = false;
+            $scope.$digest();
+          }, 500);
         });
       })
     }
