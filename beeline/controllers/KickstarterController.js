@@ -36,7 +36,6 @@ export default function($scope, $state, UserService, RoutesService, $q,
   });
 
   function autoComplete() {
-    let searchBox = document.getElementById('search-crowdstart');
     if (!$scope.data.queryText || !$scope.autocompleteService) {
       $scope.data.isFiltering = false;
       return;
@@ -48,38 +47,14 @@ export default function($scope, $state, UserService, RoutesService, $q,
     // if has predicted place assign the 1st prediction to place object
     let place = {queryText: $scope.data.queryText};
     SearchEventService.emit('search-item', $scope.data.queryText)
-    const currentAutoComplete = $scope.autocompleteService().getPlacePredictions({
-      componentRestrictions: {country: 'SG'},
-      input: $scope.data.queryText
-    }, (predictions) => {
-      // If no results found then just shortcircuit with the empty place
-      if (!predictions || predictions.length === 0) {
-        $scope.data.placeQuery =  place;
-        $scope.data.isFiltering = false;
-        $scope.$digest();
-        return;
-      }
-      // Grab the top prediction and get the details
-      // Apply the details as the full result
-      SearchEventService.emit('search-item', predictions[0].description)
-      $scope.placesService().getDetails({
-        placeId: predictions[0].place_id
-      }, result => {
-        // If we fail getting the details then shortcircuit
-        if (!result) {
-          $scope.data.placeQuery =  place;
-          $scope.data.isFiltering = false;
-          $scope.$digest();
-          return;
-        }
-        // Otherwise return the fully formed place
-        place = _.assign(place,result);
-        // Return the found place
-        $scope.data.placeQuery =  place;
-        $scope.data.isFiltering = false;
-        $scope.$digest();
-      });
-    })
+
+    // Reset filteredKickstarter here because they are used to
+    // determine whether we do a place query (see watchGroup with both)
+    $scope.data.routes = null;
+    $scope.data.filteredKickstarter = null;
+    $scope.data.placeQuery = place;
+    $scope.data.isFiltering = false;
+    $scope.$digest();
   }
 
   $scope.$watch("data.queryText", (queryText) => {
@@ -129,7 +104,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     ()=>KickstarterService.getBids(),
     'data.placeQuery'
   ], ([crowdstartRoutes, userBids, placeQuery])=>{
-      if (!crowdstartRoutes) return;
+      if (!crowdstartRoutes || !userBids) return;
 
       $scope.userBids = userBids;
       $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
@@ -160,6 +135,49 @@ export default function($scope, $state, UserService, RoutesService, $q,
       $scope.data.filteredbackedKickstarter = _.sortBy(backedKickstarter, (x)=> {return parseInt(x.label.slice(1))});
 
   });
+
+  // Deciding whether to do a place query
+  $scope.$watchCollection('data.filteredKickstarter',
+    (newRoutes, oldRoutes) => {
+      if (!newRoutes) return;
+
+      // Criteria for making a place query
+      if (newRoutes.length > 1) return;
+
+      let placeQuery = $scope.data.placeQuery
+      if (!placeQuery) return;
+
+      // If placeQuery.geometry exists, then we've already made a place query
+      if (placeQuery.geometry) return;
+
+      if (!$scope.autocompleteService) return;
+
+      $scope.autocompleteService().getPlacePredictions({
+        componentRestrictions: {country: 'SG'},
+        input: $scope.data.queryText
+      }, (predictions) => {
+        // If no results found then nothing more to do
+        if (!predictions || predictions.length === 0) return;
+
+        // Grab the top prediction and get the details
+        // Apply the details as the full result
+        SearchEventService.emit('search-item', predictions[0].description)
+        $scope.placesService().getDetails({
+          placeId: predictions[0].place_id
+        }, result => {
+          // If we fail getting the details then shortcircuit
+          if (!result) return;
+          // Otherwise return the fully formed place
+          let place = {queryText: $scope.data.queryText};
+          place = _.assign(place,result);
+          // Return the found place
+          $scope.data.placeQuery =  place;
+          $scope.data.isFiltering = false;
+          $scope.$digest();
+        });
+      })
+    }
+  )
 
 
   $scope.showHelpPopup = function(){
