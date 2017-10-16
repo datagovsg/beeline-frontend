@@ -55,13 +55,7 @@ inquirer.prompt([
       "-i",
       "app-pages.beeline.sg",
       "app-staging-pages.beeline.sg",
-      ["www/CNAME"]
-    );
-    shell.sed(
-      "-i",
-      "app.beeline.sg",
-      "app-staging.beeline.sg",
-      ["www/chcp.json "]
+      ["www/CNAME", "www/chcp.json "]
     );
     shell.exec("gh-pages -t -d www/");
     console.log(STAGING_COMPLETE_MESSAGE);
