@@ -21,8 +21,7 @@ const introSlidesVersion = '2017-02-20'
 
 **/
 
-export default function($stateProvider, $urlRouterProvider, $locationProvider) {
-
+export default function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
   // ////////////////////////////////////////////////////////////////////////////
@@ -358,8 +357,6 @@ export default function($stateProvider, $urlRouterProvider, $locationProvider) {
       hideTabs: true,
     }
   });
-
-  $locationProvider.html5Mode(true)
 
   let viewedIntroSlidesVersion = window.localStorage['viewedBeelineSlidesVersion']
   // if none of the above states are matched, use this as the fallback
