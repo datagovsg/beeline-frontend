@@ -25,7 +25,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
  //FIXME: put place search into a directive
   uiGmapGoogleMapApi.then((googleMaps) => {
     // Initialize it with google autocompleteService and PlacesService
-    let searchBox = document.getElementById('search-crowdstart');
+    let searchBox = document.getElementById('search');
     // Blur on enter
     searchBox.addEventListener("keypress", function(event) {
       if (event.key === "Enter") this.blur();
