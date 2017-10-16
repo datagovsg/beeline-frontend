@@ -58,41 +58,30 @@ export default function(
     $scope.data.isFiltering = true;
     $scope.$digest();
     // default 'place' object only has 'queryText' but no geometry
-    // if has predicted place assign the 1st prediction to place object
     let place = {queryText: $scope.data.queryText};
     SearchEventService.emit('search-item', $scope.data.queryText)
-    const currentAutoComplete = $scope.autocompleteService().getPlacePredictions({
-      componentRestrictions: {country: 'SG'},
-      input: $scope.data.queryText
-    }, (predictions) => {
-      // If no results found then just shortcircuit with the empty place
-      if (!predictions || predictions.length === 0) {
-        $scope.data.placeQuery =  place;
-        $scope.data.isFiltering = false;
-        $scope.$digest();
-        return;
-      }
-      // Grab the top prediction and get the details
-      // Apply the details as the full result
-      SearchEventService.emit('search-item', predictions[0].description)
-      $scope.placesService().getDetails({
-        placeId: predictions[0].place_id
-      }, result => {
-        // If we fail getting the details then shortcircuit
-        if (!result) {
-          $scope.data.placeQuery =  place;
-          $scope.data.isFiltering = false;
-          $scope.$digest();
-          return;
-        }
-        // Otherwise return the fully formed place
-        place = _.assign(place,result);
-        // Return the found place
-        $scope.data.placeQuery =  place;
-        $scope.data.isFiltering = false;
-        $scope.$digest();
-      });
-    })
+
+    // Reset routes and crowdstartRoutes here because they are used to
+    // determine whether we do a place query (see watchGroup with both)
+    // If we don't reset, we could end up with the case where the criteria
+    // is applied to the wrong version of them
+    // E.g.
+    // 1. User makes one search. App completely finishes all filtering.
+    // 2. User makes another search.
+    // 3. First time we enter watchgroup for routes + crowdstartRoutes, only
+    //    only one of them has changed. WLOG assume it is routes.
+    // 4. Then routes is filtered from the new search, while crowdstartRoutes
+    //    is filtered from the old search.
+    // 5. Then the check (routes.length + crowdstartRoutes.length > 1) is using
+    //    the wrong version of crowdstartRoutes and could result in us doing
+    //    unnecessary place queries.
+    //
+    // Resetting to null also has the benefit that the check whether we do
+    // place queries is only done once.
+    $scope.data.routes = null;
+    $scope.data.crowdstartRoutes = null;
+    $scope.data.placeQuery = place;
+    $scope.$digest();
   }
   // ---------------------------------------------------------------------------
   // UI Hooks
@@ -142,7 +131,7 @@ export default function(
     [() => RoutesService.getActivatedKickstarterRoutes(), 'data.placeQuery'],
     ([routes, placeQuery]) => {
       // Input validation
-      if (!routes) routes = [];
+      if (!routes) return;
       // Filtering
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         routes = SearchService.filterRoutesByPlaceAndText(
@@ -169,8 +158,8 @@ export default function(
     ([recentRoutes, allRoutes, placeQuery]) => {
       // If we cant find route data here then proceed with empty
       // This allows it to organically "clear" any state
-      if (!recentRoutes) recentRoutes = [];
-      if (!allRoutes) allRoutes = [];
+      if (!recentRoutes || !allRoutes) return;
+
       // Filtering
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         allRoutes = SearchService.filterRoutesByPlaceAndText(
@@ -247,8 +236,8 @@ export default function(
       'data.placeQuery'
     ],
     ([routes, bids, placeQuery]) => {
-      if (!routes) routes = [];
-      if (!bids) bids = [];
+      if (!routes || !bids) return;
+
       // Filter to the routes the user bidded on
       let biddedRouteIds = bids.map(bid => bid.routeId);
       routes = routes.filter(route => {
@@ -286,7 +275,7 @@ export default function(
     ],
     ([liteRoutes, subscribed, placeQuery]) =>{
       // Input validation
-      if (!liteRoutes) liteRoutes = [];
+      if (!liteRoutes || !subscribed) return;
       liteRoutes = Object.values(liteRoutes);
       // Filtering
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
@@ -315,7 +304,7 @@ export default function(
     [() => RoutesService.getRoutesWithRoutePass(), "data.placeQuery"],
     ([allRoutes, placeQuery]) => {
       // Input validation
-      if (!allRoutes) allRoutes = [];
+      if (!allRoutes) return;
       // Filter routes
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         allRoutes = SearchService.filterRoutesByPlaceAndText(
@@ -345,8 +334,8 @@ export default function(
       'data.placeQuery'
     ],
     ([routes, bids, placeQuery]) => {
-      if (!routes) routes = [];
-      if (!bids) bids = [];
+      if (!routes || !bids) return;
+
       // Filter out the routes the user bidded on
       // These are already shown elsewhere
       let biddedRouteIds = bids.map(bid => bid.routeId);
@@ -371,6 +360,65 @@ export default function(
       });
     }
   );
+
+  // Deciding whether to do a place query
+  $scope.$watchGroup(
+    [
+      'data.routes',
+      'data.crowdstartRoutes'
+    ],
+    ([routes, crowdstartRoutes]) => {
+      // Important comments in the autoComplete function
+      if (!routes || !crowdstartRoutes) return;
+
+      // Criteria for making a place query
+      if (routes.length + crowdstartRoutes.length > 1) {
+        // Set a small delay to make the spinner appear for slightly longer
+        setTimeout(() => {
+          $scope.data.isFiltering = false;
+          $scope.$digest();
+        }, 500);
+        return;
+      }
+
+      let placeQuery = $scope.data.placeQuery
+      if (!placeQuery) return;
+
+      // If placeQuery.geometry exists, then we've already made a place query
+      if (placeQuery.geometry) return;
+
+      if (!$scope.autocompleteService) return;
+
+      $scope.autocompleteService().getPlacePredictions({
+        componentRestrictions: {country: 'SG'},
+        input: $scope.data.queryText
+      }, (predictions) => {
+        // If no results found then nothing more to do
+        if (!predictions || predictions.length === 0) return;
+
+        // Grab the top prediction and get the details
+        // Apply the details as the full result
+        $scope.placesService().getDetails({
+          placeId: predictions[0].place_id
+        }, result => {
+          // If we fail getting the details then shortcircuit
+          if (!result) return;
+          // Otherwise return the fully formed place
+          let place = {queryText: $scope.data.queryText};
+          place = _.assign(place,result);
+          // Return the found place
+          $scope.data.placeQuery =  place;
+          $scope.$digest();
+
+          // Set a small delay to make the spinner appear for slightly longer
+          setTimeout(() => {
+            $scope.data.isFiltering = false;
+            $scope.$digest();
+          }, 500);
+        });
+      })
+    }
+  )
 
 
   // ---------------------------------------------------------------------------
