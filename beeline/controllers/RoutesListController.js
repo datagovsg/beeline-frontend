@@ -33,7 +33,8 @@ export default function(
     crowdstartRoutes: [],
     nextSessionId: null,
     isFiltering: null,
-    routesYouMayLike: []
+    routesYouMayLike: [],
+    madePlaceQuery: false
   };
 
 
@@ -58,41 +59,13 @@ export default function(
     $scope.data.isFiltering = true;
     $scope.$digest();
     // default 'place' object only has 'queryText' but no geometry
-    // if has predicted place assign the 1st prediction to place object
     let place = {queryText: $scope.data.queryText};
     SearchEventService.emit('search-item', $scope.data.queryText)
-    const currentAutoComplete = $scope.autocompleteService().getPlacePredictions({
-      componentRestrictions: {country: 'SG'},
-      input: $scope.data.queryText
-    }, (predictions) => {
-      // If no results found then just shortcircuit with the empty place
-      if (!predictions || predictions.length === 0) {
-        $scope.data.placeQuery =  place;
-        $scope.data.isFiltering = false;
-        $scope.$digest();
-        return;
-      }
-      // Grab the top prediction and get the details
-      // Apply the details as the full result
-      SearchEventService.emit('search-item', predictions[0].description)
-      $scope.placesService().getDetails({
-        placeId: predictions[0].place_id
-      }, result => {
-        // If we fail getting the details then shortcircuit
-        if (!result) {
-          $scope.data.placeQuery =  place;
-          $scope.data.isFiltering = false;
-          $scope.$digest();
-          return;
-        }
-        // Otherwise return the fully formed place
-        place = _.assign(place,result);
-        // Return the found place
-        $scope.data.placeQuery =  place;
-        $scope.data.isFiltering = false;
-        $scope.$digest();
-      });
-    })
+    $scope.data.madePlaceQuery = false;
+    $scope.data.placeQuery = place;
+    $scope.data.isFiltering = false;
+    $scope.$digest();
+    return;
   }
   // ---------------------------------------------------------------------------
   // UI Hooks
@@ -371,6 +344,58 @@ export default function(
       });
     }
   );
+
+  // Deciding whether to do a place query
+  $scope.$watchGroup(
+    [
+      'data.routes',
+      'data.crowdstartRoutes'
+    ],
+    ([routes, crowdstartRoutes]) => {
+      if (!routes || !crowdstartRoutes) return;
+
+      // Criteria for making a place query
+      if (routes.length + crowdstartRoutes.length > 1) return;
+
+      let placeQuery = $scope.data.placeQuery
+      if (!placeQuery) return;
+      if (!placeQuery.queryText) return;
+
+      // If placeQuery.geometry exists, then we've already made a place query
+      if (placeQuery.geometry) return;
+
+      // If we are already making a place query, don't make another one
+      if ($scope.data.madePlaceQuery) return;
+      $scope.data.madePlaceQuery = true;
+
+      if (!$scope.autocompleteService) return;
+
+      $scope.autocompleteService().getPlacePredictions({
+        componentRestrictions: {country: 'SG'},
+        input: $scope.data.queryText
+      }, (predictions) => {
+        // If no results found then nothing more to do
+        if (!predictions || predictions.length === 0) return;
+
+        // Grab the top prediction and get the details
+        // Apply the details as the full result
+        SearchEventService.emit('search-item', predictions[0].description)
+        $scope.placesService().getDetails({
+          placeId: predictions[0].place_id
+        }, result => {
+          // If we fail getting the details then shortcircuit
+          if (!result) return;
+          // Otherwise return the fully formed place
+          let place = {queryText: $scope.data.queryText};
+          place = _.assign(place,result);
+          // Return the found place
+          $scope.data.placeQuery =  place;
+          $scope.data.isFiltering = false;
+          $scope.$digest();
+        });
+      })
+    }
+  )
 
 
   // ---------------------------------------------------------------------------
