@@ -401,7 +401,6 @@ export default function(
               place = _.assign(place,result);
               resolve(place);
             })
-
           })
         }
 
