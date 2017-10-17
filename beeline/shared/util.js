@@ -91,3 +91,7 @@ export function retriveNextTrip(route) {
   }
   return nextTrip;
 }
+
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

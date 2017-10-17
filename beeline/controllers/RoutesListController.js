@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {sleep} from '../shared/util';
 
 export default function(
   // Angular Tools
@@ -365,54 +366,63 @@ export default function(
       'data.liteRoutes'
     ],
     ([routes, crowdstartRoutes, liteRoutes]) => {
-      // Important comments in the autoComplete function
-      if (!routes || !crowdstartRoutes || !liteRoutes) return;
-      // Criteria for making a place query
-      if (routes.length + crowdstartRoutes.length + liteRoutes.length> 0) {
-        // Set a small delay to make the spinner appear for slightly longer
-        setTimeout(() => {
-          $scope.data.isFiltering = false;
-          $scope.$digest();
-        }, 500);
-        return;
+
+      async function handlePlaceQuery () {
+        // Important comments in the autoComplete function
+        if (!routes || !crowdstartRoutes || !liteRoutes) return;
+        // Criteria for making a place query
+        if (routes.length + crowdstartRoutes.length + liteRoutes.length> 0) return;
+
+        let placeQuery = $scope.data.placeQuery
+        if (!placeQuery) return;
+
+        // If placeQuery.geometry exists, then we've already made a place query
+        if (placeQuery.geometry) return;
+
+        if (!$scope.autocompleteService) return;
+
+        function getPlacePredictions (options) {
+          return new Promise(function (resolve, reject) {
+            $scope.autocompleteService().getPlacePredictions(options, 
+              (predictions) => resolve(predictions))
+          })
+        }
+
+        function getDetails (predictions) {
+          return new Promise(function (resolve, reject) {
+            // If no results found then nothing more to do
+            if (!predictions || predictions.length === 0) reject();
+
+            $scope.placesService().getDetails({
+              placeId: predictions[0].place_id
+            }, (result) => {
+              if (!result) reject();
+              let place = {queryText: $scope.data.queryText};
+              place = _.assign(place,result);
+              resolve(place);
+            })
+
+          })
+        }
+
+        let predictions = await getPlacePredictions({
+          componentRestrictions: {country: 'SG'},
+          input: $scope.data.queryText
+        });
+
+        let place = await getDetails(predictions);
+
+        $scope.data.placeQuery = place;
+        $scope.$digest();
       }
 
-      let placeQuery = $scope.data.placeQuery
-      if (!placeQuery) return;
+      async function stopFilteringAfterDelay () {
+        await sleep(500)
+        $scope.data.isFiltering = false;
+        $scope.$digest();
+      }
 
-      // If placeQuery.geometry exists, then we've already made a place query
-      if (placeQuery.geometry) return;
-
-      if (!$scope.autocompleteService) return;
-
-      $scope.autocompleteService().getPlacePredictions({
-        componentRestrictions: {country: 'SG'},
-        input: $scope.data.queryText
-      }, (predictions) => {
-        // If no results found then nothing more to do
-        if (!predictions || predictions.length === 0) return;
-
-        // Grab the top prediction and get the details
-        // Apply the details as the full result
-        $scope.placesService().getDetails({
-          placeId: predictions[0].place_id
-        }, result => {
-          // If we fail getting the details then shortcircuit
-          if (!result) return;
-          // Otherwise return the fully formed place
-          let place = {queryText: $scope.data.queryText};
-          place = _.assign(place,result);
-          // Return the found place
-          $scope.data.placeQuery =  place;
-          $scope.$digest();
-
-          // Set a small delay to make the spinner appear for slightly longer
-          setTimeout(() => {
-            $scope.data.isFiltering = false;
-            $scope.$digest();
-          }, 500);
-        });
-      })
+      handlePlaceQuery().then(stopFilteringAfterDelay, stopFilteringAfterDelay)
     }
   )
 
