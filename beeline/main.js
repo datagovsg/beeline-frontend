@@ -37,6 +37,7 @@ require('./services/bookingSummaryModalService')
 require('./services/SharedVariableService')
 require('./services/MapService')
 require('./services/LazyLoadService')
+require('./directives/searchInput')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration

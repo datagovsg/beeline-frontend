@@ -8,23 +8,7 @@
   <ion-nav-title>Crowdstart Routes</ion-nav-title>
   <ion-content scroll="false">
     <!-- Search Filter  -->
-    <div class="search-div">
-      <label class="search item item-input">
-        <i class="icon ion-ios-search-strong"></i>
-        <input
-          id="search-crowdstart"
-          type="text"
-          ng-model="data.queryText"
-          placeholder="Search Crowdstart Routes"
-        />
-        <ion-spinner ng-show="data.isFiltering"></ion-spinner>
-        <i
-          class="icon ion-android-close"
-          on-tap="data.queryText = ''"
-          ng-show="data.queryText.length > 0"
-        ></i>
-      </label>
-    </div>
+    <search-input query-text="data.queryText" is-filtering="data.isFiltering" ph="Search Crowdstart Routes"></search-input>
 
     <ion-content class="list">
       <div class="item item-text-wrap item-icon-left" ng-if="data.error">
