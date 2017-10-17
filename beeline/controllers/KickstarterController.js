@@ -141,7 +141,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
       if (!newRoutes) return;
 
       // Criteria for making a place query
-      if (newRoutes.length > 1) {
+      if (newRoutes.length > 0) {
         // Set a small delay to make the spinner appear for slightly longer
         setTimeout(() => {
           $scope.data.isFiltering = false;
