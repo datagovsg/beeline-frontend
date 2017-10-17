@@ -61,8 +61,8 @@ export default function(
     let place = {queryText: $scope.data.queryText};
     SearchEventService.emit('search-item', $scope.data.queryText)
 
-    // Reset routes and crowdstartRoutes here because they are used to
-    // determine whether we do a place query (see watchGroup with both)
+    // Reset routes, crowdstartRoutes and liteRoutes here because they are used to
+    // determine whether we do a place query (see watchGroup with all 3)
     // If we don't reset, we could end up with the case where the criteria
     // is applied to the wrong version of them
     // E.g.
@@ -72,14 +72,15 @@ export default function(
     //    only one of them has changed. WLOG assume it is routes.
     // 4. Then routes is filtered from the new search, while crowdstartRoutes
     //    is filtered from the old search.
-    // 5. Then the check (routes.length + crowdstartRoutes.length > 1) is using
-    //    the wrong version of crowdstartRoutes and could result in us doing
+    // 5. Then the check (routes.length + crowdstartRoutes.length + liteRoutes.length> 0)
+    //    is using the wrong version of crowdstartRoutes and could result in us doing
     //    unnecessary place queries.
     //
     // Resetting to null also has the benefit that the check whether we do
     // place queries is only done once.
     $scope.data.routes = null;
     $scope.data.crowdstartRoutes = null;
+    $scope.data.liteRoutes = null;
     $scope.data.placeQuery = place;
     $scope.$digest();
   }
@@ -365,14 +366,14 @@ export default function(
   $scope.$watchGroup(
     [
       'data.routes',
-      'data.crowdstartRoutes'
+      'data.crowdstartRoutes',
+      'data.liteRoutes'
     ],
-    ([routes, crowdstartRoutes]) => {
+    ([routes, crowdstartRoutes, liteRoutes]) => {
       // Important comments in the autoComplete function
-      if (!routes || !crowdstartRoutes) return;
-
+      if (!routes || !crowdstartRoutes || !liteRoutes) return;
       // Criteria for making a place query
-      if (routes.length + crowdstartRoutes.length > 1) {
+      if (routes.length + crowdstartRoutes.length + liteRoutes.length> 0) {
         // Set a small delay to make the spinner appear for slightly longer
         setTimeout(() => {
           $scope.data.isFiltering = false;
