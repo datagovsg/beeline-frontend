@@ -11,10 +11,10 @@ angular.module('beeline').directive('searchInput', function () {
         <label class="search item item-input">
           <i class="icon ion-ios-search-strong"></i>
           <input
-            id="search"
             type="text"
             ng-model="searchText"
             placeholder="{{ph}}"
+            ng-keypress="keypress($event)"
           />
           <ion-spinner ng-show="isFiltering"></ion-spinner>
           <i
@@ -33,6 +33,11 @@ angular.module('beeline').directive('searchInput', function () {
           scope.queryText = qt.trim()
         }
       })
+      scope.keypress = function (e) {
+        if (e.key === "Enter") {
+          e.target.blur()
+        }
+      }
     }
   }
 })

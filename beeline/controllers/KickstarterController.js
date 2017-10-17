@@ -25,14 +25,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
  //FIXME: put place search into a directive
   uiGmapGoogleMapApi.then((googleMaps) => {
     // Initialize it with google autocompleteService and PlacesService
-    let searchBox = document.getElementById('search');
-    // Blur on enter
-    searchBox.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") this.blur();
-    });
-
     $scope.autocompleteService = LazyLoadService(() => new googleMaps.places.AutocompleteService());
-    $scope.placesService = LazyLoadService(() => new google.maps.places.PlacesService(searchBox));
+    //  https://stackoverflow.com/questions/28869575/google-places-api-library-use-without-map-javascript
+    $scope.placesService = LazyLoadService(() => new google.maps.places.PlacesService(document.createElement('div')));
   });
 
   function autoComplete() {
