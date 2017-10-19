@@ -9,7 +9,8 @@ import {sleep} from '../shared/util';
 // Split the routes into those the user has recently booked and the rest
 export default function($scope, $state, UserService, RoutesService, $q,
   $ionicScrollDelegate, $ionicPopup, KickstarterService, $ionicLoading,
-  SearchService, $timeout, loadingSpinner, uiGmapGoogleMapApi, LazyLoadService, SearchEventService) {
+  SearchService, $timeout, loadingSpinner, uiGmapGoogleMapApi, LazyLoadService,
+  SearchEventService, PlaceService) {
 
   // https://github.com/angular/angular.js/wiki/Understanding-Scopes
   $scope.data = {
@@ -23,16 +24,9 @@ export default function($scope, $state, UserService, RoutesService, $q,
     queryText: "", // The actual text in the box used only for the clear button
   };
 
- //FIXME: put place search into a directive
-  uiGmapGoogleMapApi.then((googleMaps) => {
-    // Initialize it with google autocompleteService and PlacesService
-    $scope.autocompleteService = LazyLoadService(() => new googleMaps.places.AutocompleteService());
-    //  https://stackoverflow.com/questions/28869575/google-places-api-library-use-without-map-javascript
-    $scope.placesService = LazyLoadService(() => new google.maps.places.PlacesService(document.createElement('div')));
-  });
 
   function autoComplete() {
-    if (!$scope.data.queryText || !$scope.autocompleteService) {
+    if (!$scope.data.queryText) {
       $scope.data.isFiltering = false;
       return;
     };
@@ -147,37 +141,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
         // If placeQuery.geometry exists, then we've already made a place query
         if (placeQuery.geometry) return;
 
-        if (!$scope.autocompleteService) return;
-
-        function getPlacePredictions (options) {
-          return new Promise(function (resolve, reject) {
-            $scope.autocompleteService().getPlacePredictions(options, 
-              (predictions) => resolve(predictions))
-          })
-        }
-
-        function getDetails (predictions) {
-          return new Promise(function (resolve, reject) {
-            // If no results found then nothing more to do
-            if (!predictions || predictions.length === 0) reject();
-
-            $scope.placesService().getDetails({
-              placeId: predictions[0].place_id
-            }, (result) => {
-              if (!result) reject();
-              let place = {queryText: $scope.data.queryText};
-              place = _.assign(place,result);
-              resolve(place);
-            })
-          })
-        }
-
-        let predictions = await getPlacePredictions({
-          componentRestrictions: {country: 'SG'},
-          input: $scope.data.queryText
-        });
-
-        let place = await getDetails(predictions);
+        let place = await PlaceService.handleQuery($scope.data.queryText)
 
         $scope.data.placeQuery = place;
         $scope.$digest();

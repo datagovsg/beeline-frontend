@@ -13,9 +13,9 @@ export default function(
   LiteRouteSubscriptionService,
   SearchService,
   BookingService,
-  uiGmapGoogleMapApi,
   LazyLoadService,
-  SearchEventService
+  SearchEventService,
+  PlaceService
 ) {
 
   // ---------------------------------------------------------------------------
@@ -37,16 +37,8 @@ export default function(
     routesYouMayLike: []
   };
 
-
-  uiGmapGoogleMapApi.then((googleMaps) => {
-    // Initialize it with google autocompleteService and PlacesService
-    $scope.autocompleteService = LazyLoadService(() => new googleMaps.places.AutocompleteService());
-    //  https://stackoverflow.com/questions/28869575/google-places-api-library-use-without-map-javascript
-    $scope.placesService = LazyLoadService(() => new google.maps.places.PlacesService(document.createElement('div')))
-  });
-
   function autoComplete() {
-    if (!$scope.data.queryText || !$scope.autocompleteService) {
+    if (!$scope.data.queryText) {
       $scope.data.isFiltering = false;
       return;
     };
@@ -379,37 +371,8 @@ export default function(
         // If placeQuery.geometry exists, then we've already made a place query
         if (placeQuery.geometry) return;
 
-        if (!$scope.autocompleteService) return;
 
-        function getPlacePredictions (options) {
-          return new Promise(function (resolve, reject) {
-            $scope.autocompleteService().getPlacePredictions(options, 
-              (predictions) => resolve(predictions))
-          })
-        }
-
-        function getDetails (predictions) {
-          return new Promise(function (resolve, reject) {
-            // If no results found then nothing more to do
-            if (!predictions || predictions.length === 0) reject();
-
-            $scope.placesService().getDetails({
-              placeId: predictions[0].place_id
-            }, (result) => {
-              if (!result) reject();
-              let place = {queryText: $scope.data.queryText};
-              place = _.assign(place,result);
-              resolve(place);
-            })
-          })
-        }
-
-        let predictions = await getPlacePredictions({
-          componentRestrictions: {country: 'SG'},
-          input: $scope.data.queryText
-        });
-
-        let place = await getDetails(predictions);
+        let place = await PlaceService.handleQuery($scope.data.queryText)
 
         $scope.data.placeQuery = place;
         $scope.$digest();

@@ -38,6 +38,7 @@ require('./services/SharedVariableService')
 require('./services/MapService')
 require('./services/LazyLoadService')
 require('./directives/searchInput')
+require('./services/PlaceService')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
