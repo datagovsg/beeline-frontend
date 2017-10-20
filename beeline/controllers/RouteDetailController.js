@@ -49,8 +49,8 @@ export default [
       bookingEnds: null,
       routeSupportsRoutePass: null,
       isLoggedIn: null,
-      boardStopIsInvalid: null,
-      alightStopIsInvalid: null,
+      boardStopInvalid: null,
+      alightStopInvalid: null,
     }
 
     $scope.disp = {
@@ -169,9 +169,9 @@ export default [
       if (ps) {
         MapService.emit('board-stop-selected', {stop: ps})
         if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ps.id) === -1) {
-          $scope.data.boardStopIsInvalid = true;
+          $scope.data.boardStopInvalid = true;
         } else {
-          $scope.data.boardStopIsInvalid = false;
+          $scope.data.boardStopInvalid = false;
         }
       }
     })
@@ -180,9 +180,9 @@ export default [
       if (ds) {
         MapService.emit('alight-stop-selected', {stop: ds})
         if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ds.id) === -1) {
-          $scope.data.alightStopIsInvalid = true;
+          $scope.data.alightStopInvalid = true;
         } else {
-          $scope.data.alightStopIsInvalid = false;
+          $scope.data.alightStopInvalid = false;
         }
       }
     })
