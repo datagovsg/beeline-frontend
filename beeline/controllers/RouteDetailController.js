@@ -41,6 +41,7 @@ export default [
       passCount: null,
       price: null,
       nextTrip: null,
+      nextTripStopIds: null,
       minsBeforeClose: null,
       seatsAvailable: null,
       hasNextTripTicket: null,
@@ -48,6 +49,8 @@ export default [
       bookingEnds: null,
       routeSupportsRoutePass: null,
       isLoggedIn: null,
+      boardStopIsInvalid: null,
+      alightStopIsInvalid: null,
     }
 
     $scope.disp = {
@@ -95,7 +98,7 @@ export default [
       $scope.disp.isBooking = false
     }
 
-    $scope.bookNext = async () => {
+    $scope.bookNext = () => {
       $scope.disp.isBooking = true
       FastCheckoutService.fastCheckout(routeId,
         $scope.data.pickupStop.id, $scope.data.dropoffStop.id, [$scope.data.nextTrip.date.getTime()])
@@ -121,6 +124,7 @@ export default [
       var promises = Promise.all([FastCheckoutService.verify(routeId), RoutesService.getRoute(routeId)])
       promises.then((response) => {
         $scope.data.nextTrip = response[0]
+        $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map(ts => ts.stop.id)
         var route = response[1]
         $ionicLoading.hide();
         // Grab the price data
@@ -164,12 +168,22 @@ export default [
     $scope.$watch('data.pickupStop', (ps) => {
       if (ps) {
         MapService.emit('board-stop-selected', {stop: ps})
+        if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ps.id) === -1) {
+          $scope.data.boardStopIsInvalid = true;
+        } else {
+          $scope.data.boardStopIsInvalid = false;
+        }
       }
     })
 
     $scope.$watch('data.dropoffStop', (ds) => {
       if (ds) {
         MapService.emit('alight-stop-selected', {stop: ds})
+        if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ds.id) === -1) {
+          $scope.data.alightStopIsInvalid = true;
+        } else {
+          $scope.data.alightStopIsInvalid = false;
+        }
       }
     })
 
