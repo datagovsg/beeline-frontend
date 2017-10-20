@@ -25,20 +25,9 @@
         </tr>
       </table>
     </div>
-    <div class="item item-text-wrap">
-      <div class="item-subtitle">
-      When will payment be deducted?
-      </div>
-      <kickstart-info route="book.route"
-       pass-hide="true"
-       preorder-hide="true"
-       ></kickstart-info>
-    </div>
-
+    
     <company-info-broker company-id="book.route.transportCompanyId" company="book.companyInfo">
     </company-info-broker>
-
-
     <div class="item">
       <div class="item-subtitle">Operated by</div>
       <div class="row">
@@ -50,6 +39,16 @@
           <p class="email">{{book.companyInfo.email}}</p>
         </div>
       </div>
+    </div>
+
+    <div class="item item-text-wrap">
+      <div class="item-subtitle">
+      When will payment be deducted?
+      </div>
+      <kickstart-info route="book.route"
+       pass-hide="true"
+       preorder-hide="true"
+       ></kickstart-info>
     </div>
 
     <div class="item item-text-wrap" ng-if="!isLoggedIn || !book.isBid">
