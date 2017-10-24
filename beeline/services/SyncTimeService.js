@@ -11,7 +11,7 @@ angular.module('beeline')
   function SyncTime() {
     var startTime = new Date();
     // https://www.codeproject.com/Articles/790220/Accurate-time-in-JavaScript
-    $http({
+    return $http({
       url: 'http://www.googleapis.com',
       method: 'GET'
     }).then((response) => {
