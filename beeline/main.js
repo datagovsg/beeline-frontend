@@ -40,6 +40,8 @@ require('./services/MapService')
 require('./services/LazyLoadService')
 require('./directives/searchInput')
 require('./services/PlaceService')
+require('./services/SyncTimeService')
+require('./services/AccurateDateService')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
