@@ -127,7 +127,7 @@ export default [
       if (_.every($scope.mapObject.allRecentPings, 'isRecent')) {
         $scope.hasTrackingData = true;
       } else {
-        // isRecent is undefined or false
+        // isRecent could be undefined(no pings) or false (pings are out-dated)
         $scope.hasTrackingData = false;
       }
       let tripInfo = {
