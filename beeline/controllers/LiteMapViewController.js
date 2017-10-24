@@ -18,7 +18,7 @@ export default [
 
     let routeLabel = $stateParams.label ? $stateParams.label : null;
     // Date calculated as Date.now() + Local-Server-TimeDiff
-    var accurateDate = new AccurateDate()
+    let accurateDate = new AccurateDate()
 
     $scope.mapObject = {
       stops: [],
@@ -113,7 +113,7 @@ export default [
         return TripService.DriverPings(trip.id)
         .then((info) => {
           // const now = Date.now()
-          var now = accurateDate.getAccurateDate()
+          const now = accurateDate.getAccurateDate()
           $scope.mapObject.allRecentPings[index] = {
             ...info,
             isRecent: info.pings[0] &&
