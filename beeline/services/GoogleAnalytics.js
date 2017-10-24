@@ -65,4 +65,9 @@ angular.module('beeline')
     ga('set', 'appVersion', window.location.origin)
     ga('set', 'appName', 'Beeline Web')
   }
+  // send app launch event to track number of google map instance launch
+  ga('send', 'event', {
+    eventCategory: 'app launch',
+    eventAction: 'launch',
+  })
 }])
