@@ -94,8 +94,15 @@ export default function SearchService() {
       if (!string) return true;
 
       function containsIgnoreCase(s, t) {
-        if (typeof s == 'string') {
-          return s.toUpperCase().includes(t.toUpperCase())
+        if (typeof s === 'string') {
+          // If the search phrase (t) is more than one word, just find t in s
+          // Otherwise, split s and see if any words in s start with t
+          if (t.split(" ").length > 1) {
+            return s.toUpperCase().includes(t.toUpperCase())
+          } else {
+            let words = s.toUpperCase().split(" ")
+            return words.some(word => word.startsWith(t.toUpperCase()))
+          }
         } else {
           return false;
         }
