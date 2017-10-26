@@ -126,11 +126,11 @@ export default [
           }
           MapService.emit('ticketInfo', ticketInfo)
           const now = Date.now()
-
+          // mark ticket ping as recent if it was not more than 2 hours from now
           $scope.mapObject.allRecentPings[index] = {
             ...info,
             isRecent: info.pings[0] &&
-              (now - info.pings[0].time.getTime()) < 5 * 60000,
+              (now - info.pings[0].time.getTime()) < 2 * 60 * 60000,
           }
 
           $scope.mapObject.statusMessages[index] = _.get(info, 'statuses[0].message', null)
