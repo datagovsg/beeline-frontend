@@ -100,7 +100,8 @@ export default function SearchService() {
           if (t.split(" ").length > 1) {
             return s.toUpperCase().includes(t.toUpperCase())
           } else {
-            let words = s.toUpperCase().split(" ")
+            // Split on non-alphanumeric chars
+            let words = s.toUpperCase().split(/[^A-Za-z0-9]/)
             return words.some(word => word.startsWith(t.toUpperCase()))
           }
         } else {
