@@ -53,15 +53,15 @@
       <span ng-if="data.price">
         $<span ng-bind="data.price"></span> per trip
       </span>
-      <div class="button button-clear button-royal"
-        ui-sref="tabs.route-dates({
+      <button class="button button-clear button-royal"
+        ui-sref = "tabs.route-dates({
           routeId: data.routeId,
           boardStop: data.pickupStop.id,
           alightStop: data.dropoffStop.id,
         })"
         ng-disabled="stopsForm.$invalid">
         <u>Advance Booking</u>
-      </div>
+      </button>
     </div>
   </ion-content>
 </ion-view>
