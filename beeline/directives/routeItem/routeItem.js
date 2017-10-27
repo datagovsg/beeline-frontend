@@ -1,6 +1,7 @@
 import routeItemTemplate from './routeItem.html';
 
-export default function($state, BookingService) {
+export default ['$state', 'BookingService',
+function($state, BookingService) {
   return {
     replace: false,
     template: routeItemTemplate,
@@ -22,4 +23,4 @@ export default function($state, BookingService) {
     link: function(scope, element, attributes) {
     },
   };
-}
+}]

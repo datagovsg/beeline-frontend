@@ -1,7 +1,7 @@
 import commonmark from 'commonmark';
 
 angular.module('beeline')
-.service('assetScopeModalService', modalService)
+.service('assetScopeModalService', ['$rootScope', '$ionicModal', 'UserService', 'replace', modalService])
 
 function modalService($rootScope, $ionicModal, UserService, replace) {
   var reader = new commonmark.Parser({safe: true});

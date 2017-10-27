@@ -81,7 +81,7 @@ module.exports = function(env) {
           test: /\.scss$/,
           use: ExtractTextPlugin.extract({
             use: [
-              { loader: 'css-loader', options: { url: false } },
+              { loader: 'css-loader', options: { url: false, minimize: true } },
               { loader: 'sass-loader' }
             ],
           })

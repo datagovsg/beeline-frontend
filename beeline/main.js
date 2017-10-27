@@ -149,18 +149,18 @@ app
 .directive('liteRoute', require('./directives/routeItem/liteRoute.js').default)
 .directive('countdown', require('./directives/countdown.js').default)
 .config(configureRoutes)
-.config(function($ionicConfigProvider) {
+.config(['$ionicConfigProvider', function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.tabs.style('standard');
   $ionicConfigProvider.navBar.alignTitle('center');
   $ionicConfigProvider.scrolling.jsScrolling(false);
   //kickstart-summary use default history stack
   $ionicConfigProvider.backButton.previousTitleText(false).text(' ');
-})
-.config(function ($httpProvider) {
+}])
+.config(['$httpProvider', function ($httpProvider) {
   $httpProvider.useApplyAsync(true);
-})
-.config(function(uiGmapGoogleMapApiProvider) {
+}])
+.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
   if (process.env.GOOGLE_API_KEY) {
     uiGmapGoogleMapApiProvider.configure({
       key: process.env.GOOGLE_API_KEY,
@@ -172,11 +172,11 @@ app
       libraries: 'places,geometry'
     });
   }
-})
-.config(function($ionicConfigProvider) {
+}])
+.config(['$ionicConfigProvider', function($ionicConfigProvider) {
   $ionicConfigProvider.views.transition('none');
-})
-.run(function($ionicPlatform) {
+}])
+.run(['$ionicPlatform', function($ionicPlatform) {
  $ionicPlatform.ready(function() {
   if (typeof IonicDeeplink !== 'undefined') {
     IonicDeeplink.route(
@@ -188,14 +188,14 @@ app
     );
   }
  });
-})
-.run(function($rootScope, replace, p) {
+}])
+.run(['$rootScope', 'replace', 'p', function($rootScope, replace, p) {
   $rootScope.o = {
     ...p,
     replace
   }
-})
-.run(function($ionicPlatform) {
+}])
+.run(['$ionicPlatform', function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -208,8 +208,8 @@ app
       StatusBar.styleLightContent();
     }
   });
-})
-.run(function($ionicPopup) {
+}])
+.run(['$ionicPopup', function($ionicPopup) {
   // Check that external dependencies have loaded
   if (typeof StripeCheckout === 'undefined'
     || typeof Stripe === 'undefined') {
@@ -227,8 +227,8 @@ app
         window.location.reload(true);
       })
   }
-})
-.run(function($rootScope, $ionicTabsDelegate) {
+}])
+.run(['$rootScope', '$ionicTabsDelegate', function($rootScope, $ionicTabsDelegate) {
   // hide/show tabs bar depending on how the route is configured
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.hideTabs) {
@@ -238,17 +238,18 @@ app
       $ionicTabsDelegate.showBar(true);
     }
   });
-})
-.run(function (RoutesService, KickstarterService, LiteRoutesService, TicketService) {
-  // Pre-fetch the routes
-  RoutesService.fetchRoutes();
-  RoutesService.fetchRecentRoutes();
-  KickstarterService.fetchCrowdstart();
-  KickstarterService.fetchBids();
-  LiteRoutesService.fetchLiteRoutes();
-  TicketService.fetchTickets();
-})
-.run(function ($templateCache) {
+}])
+.run(['RoutesService', 'KickstarterService', 'LiteRoutesService', 'TicketService',
+  function (RoutesService, KickstarterService, LiteRoutesService, TicketService) {
+    // Pre-fetch the routes
+    RoutesService.fetchRoutes();
+    RoutesService.fetchRecentRoutes();
+    KickstarterService.fetchCrowdstart();
+    KickstarterService.fetchBids();
+    LiteRoutesService.fetchLiteRoutes();
+    TicketService.fetchTickets();
+}])
+.run(['$templateCache', function ($templateCache) {
   $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))
   $templateCache.put('templates/settings.html', require('../www/templates/settings.html'))
   $templateCache.put('templates/routes-list.html', require('../www/templates/routes-list.html'))
@@ -258,7 +259,7 @@ app
   $templateCache.put('templates/tab-booking-dates.html', require('../www/templates/tab-booking-dates.html'))
   $templateCache.put('templates/tab-booking-summary.html', require('../www/templates/tab-booking-summary.html'))
   $templateCache.put('templates/tab-booking-confirmation.html', require('../www/templates/tab-booking-confirmation.html'))
-})
+}])
 
 var devicePromise = new Promise((resolve, reject) => {
   if (window.cordova) {

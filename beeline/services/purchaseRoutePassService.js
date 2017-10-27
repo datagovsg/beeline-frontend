@@ -4,7 +4,9 @@ import assert from 'assert';
 import commonmark from 'commonmark';
 
 angular.module('beeline')
-.service('purchaseRoutePassService', modalService)
+.service('purchaseRoutePassService', ['$rootScope', '$ionicModal', 'RoutesService',
+  'loadingSpinner', 'StripeService', 'assetScopeModalService', 'PaymentService', 'UserService',
+  'BookingSummaryModalService', '$state', modalService])
 
 function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner,
   StripeService, assetScopeModalService, PaymentService, UserService, BookingSummaryModalService, $state) {

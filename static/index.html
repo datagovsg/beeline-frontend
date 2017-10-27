@@ -36,13 +36,10 @@
   <meta name="msapplication-TileColor" content="#493762">
   <meta name="msapplication-TileImage" content="mstile-144x144.png">
   <meta name="theme-color" content="#493762">
-  <!-- qrcode generator -->
-  <script type="text/javascript" src="js/qrcode.min.js"></script>
   <!-- ionic/angularjs js -->
-  <script src="lib/ionic/js/ionic.bundle.js"></script>
+  <script src="lib/ionic/js/ionic.bundle.min.js"></script>
   <script src="js/ng-cordova.min.js"></script>
   <script src="cordova.js"></script>
-  <!-- ionic/angularjs js -->
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
   <script src="lib/beeline/bundle.js"></script>
@@ -65,8 +62,9 @@
     })
   </script>
 </head>
-
-<body ng-app="beeline">
+<!-- https://docs.angularjs.org/error/$injector/unpr -->
+<!-- https://docs.angularjs.org/api/ng/directive/ngApp -->
+<body ng-app="beeline" ng-strict-di="true">
   <ion-nav-view></ion-nav-view>
 </body>
 

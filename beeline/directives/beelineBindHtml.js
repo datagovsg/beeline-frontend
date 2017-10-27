@@ -1,6 +1,6 @@
 
 
-export default function ($compile) {
+export default ['$compile', function ($compile) {
   return {
     restrict: 'A',
     scope: false,
@@ -27,4 +27,4 @@ export default function ($compile) {
       })
     }
   }
-}
+}]

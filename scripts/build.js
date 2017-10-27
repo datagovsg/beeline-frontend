@@ -35,7 +35,7 @@ if (watch) shell.exec(
 // Build switching based on production or non production
 if (production) {
   console.log(PRODUCTION_BUILD_MESSAGE);
-  shell.exec("webpack --env.production");
+  shell.exec("webpack -p");
   shell.exec("cordova-hcp build www/");
   shell.exec("touch www/.nojekyll");
 } else {
