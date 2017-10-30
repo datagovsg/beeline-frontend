@@ -1,8 +1,12 @@
-# Installation
+# Getting started
+Beeline is built using the Ionic Framework, so install ionic CLI tools:
+
+    `npm install -g ionic`
+
 Install dependencies 
  
-    npm install 
- 
+    `npm install`
+
 ## Android development
 Install [Android Studio](https://developer.android.com/studio/index.html)  
 Run `npm run install-android`
