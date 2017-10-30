@@ -183,7 +183,7 @@ app
       {}, // No predetermined matches
       function(match) {},
       function(nomatch) {
-        window.location.href = "#" + nomatch.$link.fragment;
+        window.location.href = "#" + (nomatch.$link.fragment || nomatch.$link.path)
       }
     );
   }
