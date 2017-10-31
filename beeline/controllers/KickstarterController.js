@@ -22,6 +22,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     nearbyKickstarterRoutes: null,
     placeQuery: null, // The place object used to search
     queryText: "", // The actual text in the box used only for the clear button
+    showAnimatedRoute: true,
   };
 
 
@@ -73,20 +74,20 @@ export default function($scope, $state, UserService, RoutesService, $q,
     })])
   }
 
-  //show loading spinner for the 1st time
-  loadingSpinner(timeoutProise(KickstarterService.fetchCrowdstart(), 10*6000)
-                  .then(()=>{
-                    $scope.data.error = null;
-                  })
-                  .catch(()=>{
-                    $scope.data.error = true;
-                  })
-                  .then(()=>{
-                    if (!window.localStorage['showCrowdstart']) {
-                      window.localStorage['showCrowdstart'] = true;
-                      $scope.showHelpPopup();
-                    }
-                  }));
+  // replace loading spinner by animated-route
+  timeoutProise(KickstarterService.fetchCrowdstart(), 10*6000)
+    .then(()=>{
+      $scope.data.error = null;
+    })
+    .catch(()=>{
+      $scope.data.error = true;
+    })
+    .then(()=>{
+      if (!window.localStorage['showCrowdstart']) {
+        window.localStorage['showCrowdstart'] = true;
+        $scope.showHelpPopup();
+      }
+    })
 
   $scope.$watchGroup([
     ()=>KickstarterService.getCrowdstart(),
@@ -94,7 +95,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
     'data.placeQuery'
   ], ([crowdstartRoutes, userBids, placeQuery])=>{
       if (!crowdstartRoutes || !userBids) return;
-
+      // hide the animated-route
+      $scope.data.showAnimatedRoute = false;
       $scope.userBids = userBids;
       $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
       let recentAndAvailable = _.partition(crowdstartRoutes, (x)=>{

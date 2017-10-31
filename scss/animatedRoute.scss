@@ -1,0 +1,88 @@
+
+@keyframes animatedPlaceHolderShimmer{
+    0%{
+        background-position: -200px 0
+    }
+    100%{
+        background-position: 100% 0
+    }
+}
+
+.animated {
+    margin-right: 5px;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: animatedPlaceHolderShimmer;
+    animation-timing-function: linear;
+    background: #f6f7f8;
+    height: 72px;
+    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+    position: relative;
+}
+
+
+/* ----- General styling for route information listings ----- */
+animated-placeholder {
+  display: block;
+
+  .background-masker {
+    background: #fff;
+    position: absolute;
+  }
+
+  .background-masker.header-top {
+    top: 8px;
+    left: 24px;
+    right: 0;
+    height: 16px;
+  }
+
+  .background-masker.subheader-bottom-left,
+   .background-masker.subheader-bottom-right {
+    top: 0px;
+    height: 8px;
+  }
+
+  .background-masker.subheader-bottom-left {
+    left: 24px;
+    width: 8px;
+  }
+
+  .background-masker.subheader-bottom-right {
+    width: 100px;
+    right: 0;
+  }
+
+  .background-masker.content-top,
+  .background-masker.content-first-line,
+  .background-masker.content-second-line {
+    left: 0;
+    right: 0;
+  }
+
+  .background-masker.content-top {
+    top: 24px;
+    height: 8px;
+  }
+
+  .background-masker.content-first-line  {
+    top: 40px;
+    height: 8px;
+  }
+
+
+  .background-masker.content-second-line {
+    top: 56px;
+    height: 8px;
+  }
+
+
+  .background-masker.content-second-end{
+    width: 100px;
+    right: 0;
+    top: 64px;
+    height: 8px;
+  }
+
+}

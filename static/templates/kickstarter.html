@@ -25,6 +25,10 @@
       </div>
       <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshRoutes()">
       </ion-refresher>
+      <!-- repeat 5 times -->
+      <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="data.showAnimatedRoute">
+        <animated-route></animated-route>
+      </ion-item>
       <!-- recently bid Crowdstart -->
       <div class="item item-divider" ng-if="data.filteredbackedKickstarter.length > 0">
         Your Crowdstart pre-orders
