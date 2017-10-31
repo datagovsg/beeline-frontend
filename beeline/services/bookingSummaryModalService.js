@@ -3,7 +3,8 @@ import bookingSummaryTemplate from '../templates/booking-summary-modal.html';
 import assert from 'assert';
 
 angular.module('beeline')
-.service('BookingSummaryModalService', modalService)
+.service('BookingSummaryModalService', ['$rootScope', '$ionicModal', 'RoutesService', 'loadingSpinner', 'StripeService',
+'assetScopeModalService', 'PaymentService', modalService])
 
 function modalService($rootScope, $ionicModal, RoutesService, loadingSpinner, StripeService, assetScopeModalService, PaymentService) {
   this.show = (booking) => {

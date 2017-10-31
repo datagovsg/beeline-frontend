@@ -4,7 +4,8 @@ import commonmark from 'commonmark';
 var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
 
-export default function CompanyService(UserService, $ionicModal, $rootScope, $q) {
+export default ['UserService', '$ionicModal', '$rootScope', '$q',
+function CompanyService(UserService, $ionicModal, $rootScope, $q) {
   var companyCache = {};
   var termsScope;
 
@@ -46,4 +47,4 @@ export default function CompanyService(UserService, $ionicModal, $rootScope, $q)
       })
     },
   };
-}
+}]

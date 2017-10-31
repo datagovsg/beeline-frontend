@@ -19,31 +19,32 @@ try {
 }
 
 **/
-export default function($ionicLoading) {
-  /* Number of promises being watched by loading spinner */
-  var count = 0;
+export default ['$ionicLoading',
+  function($ionicLoading) {
+    /* Number of promises being watched by loading spinner */
+    var count = 0;
 
-  function hide() {
-    count = Math.max(0, count - 1);
-    if (count === 0) {
-      $ionicLoading.hide();
+    function hide() {
+      count = Math.max(0, count - 1);
+      if (count === 0) {
+        $ionicLoading.hide();
+      }
     }
-  }
-  function show() {
-    if (count === 0) {
-      $ionicLoading.show({template: loadingTemplate});
+    function show() {
+      if (count === 0) {
+        $ionicLoading.show({template: loadingTemplate});
+      }
+      count = count + 1;
     }
-    count = count + 1;
-  }
 
-  return function (p) {
-    assert.strictEqual(typeof p.then, 'function');
-    show();
+    return function (p) {
+      assert.strictEqual(typeof p.then, 'function');
+      show();
 
-    p.then(hide, (err) => {
-      hide();
-      throw err;
-    })
-    return p;
-  }
-}
+      p.then(hide, (err) => {
+        hide();
+        throw err;
+      })
+      return p;
+    }
+}]

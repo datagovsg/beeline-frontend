@@ -3,7 +3,8 @@ import commonmark from 'commonmark';
 var reader = new commonmark.Parser({safe: true});
 var writer = new commonmark.HtmlRenderer({safe: true});
 
-export default function companyTnc(CompanyService, $q) {
+export default ['CompanyService', '$q',
+function companyTnc(CompanyService, $q) {
   return {
     template: require('./companyTnc.html'),
     replace: false,
@@ -35,4 +36,4 @@ export default function companyTnc(CompanyService, $q) {
       }
     }
   };
-}
+}]

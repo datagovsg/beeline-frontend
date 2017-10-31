@@ -3,7 +3,9 @@ import {retriveNextTrip} from '../shared/util'
 import assert from 'assert'
 
 angular.module('beeline')
-.factory('FastCheckoutService', function fastCheckoutService(RoutesService, UserService,
+.factory('FastCheckoutService', ['RoutesService', 'UserService',
+  'purchaseRoutePassService', 'TicketService', '$stateParams', 'BookingSummaryModalService', '$ionicLoading',
+  function fastCheckoutService(RoutesService, UserService,
     purchaseRoutePassService, TicketService, $stateParams, BookingSummaryModalService, $ionicLoading) {
 
     var user;
@@ -182,4 +184,5 @@ angular.module('beeline')
     }
     return instance;
 
-})
+  }]
+)

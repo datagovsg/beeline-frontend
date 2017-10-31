@@ -88,184 +88,186 @@ var updateAfterBid = function(route, price) {
   updateStatus(route);
 }
 
-export default function KickstarterService($http, UserService,$q, $rootScope, RoutesService, p, DevicePromise) {
-  var kickstarterRoutesCache;
-  var bidsCache;
-  var kickstarterSummary = null, bidsById = null;
-  var kickstarterRoutesList = null, kickstarterRoutesById = null;
-  var nearbyKickstarterRoutesById = null;
+export default ['$http', 'UserService', '$q',
+  '$rootScope', 'RoutesService', 'p', 'DevicePromise',
+  function KickstarterService($http, UserService,$q, $rootScope, RoutesService, p, DevicePromise) {
+    var kickstarterRoutesCache;
+    var bidsCache;
+    var kickstarterSummary = null, bidsById = null;
+    var kickstarterRoutesList = null, kickstarterRoutesById = null;
+    var nearbyKickstarterRoutesById = null;
 
-  UserService.userEvents.on('userChanged', () => {
-    fetchBids(true);
-    //to load route credits
-    RoutesService.fetchRoutePassCount(true);
-  })
+    UserService.userEvents.on('userChanged', () => {
+      fetchBids(true);
+      //to load route credits
+      RoutesService.fetchRoutePassCount(true);
+    })
 
-  //first load
-  // every 1 hour should reload kickstarter information
-  var timeout = new SafeInterval(refresh, 1000*60*60, 1000*60);
+    //first load
+    // every 1 hour should reload kickstarter information
+    var timeout = new SafeInterval(refresh, 1000*60*60, 1000*60);
 
-  function refresh() {
-    return Promise.all([fetchKickstarterRoutes(true),fetchBids(true), fetchNearbyKickstarterIds()]);
-  }
+    function refresh() {
+      return Promise.all([fetchKickstarterRoutes(true),fetchBids(true), fetchNearbyKickstarterIds()]);
+    }
 
-  timeout.start();
+    timeout.start();
 
-  function fetchBids(ignoreCache) {
-    if (UserService.getUser()) {
-      if (bidsCache && !ignoreCache) return bidsCache;
-      return bidsCache = UserService.beeline({
+    function fetchBids(ignoreCache) {
+      if (UserService.getUser()) {
+        if (bidsCache && !ignoreCache) return bidsCache;
+        return bidsCache = UserService.beeline({
+          method: 'GET',
+          url: '/crowdstart/bids',
+        }).then((response) => {
+          // kickstarterSummary = response.data;
+          kickstarterSummary = response.data.map(bid => {
+            return {
+              routeId: bid.routeId,
+              bidPrice: bid.priceF,
+              status: bid.status
+            }
+          })
+          bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
+          return kickstarterSummary;
+  			});
+      }
+      else {
+        kickstarterSummary = [];
+        return $q.resolve(kickstarterSummary);
+      }
+    }
+
+    function fetchKickstarterRoutes(ignoreCache) {
+      if (kickstarterRoutesCache && !ignoreCache) return kickstarterRoutesCache;
+      var url = '/crowdstart/status';
+      if (p.transportCompanyId) {
+        url += '?'+querystring.stringify({transportCompanyId: p.transportCompanyId})
+      }
+      return kickstarterRoutesCache = UserService.beeline({
         method: 'GET',
-        url: '/crowdstart/bids',
-      }).then((response) => {
-        // kickstarterSummary = response.data;
-        kickstarterSummary = response.data.map(bid => {
-          return {
-            routeId: bid.routeId,
-            bidPrice: bid.priceF,
-            status: bid.status
-          }
-        })
-        bidsById = _.keyBy(kickstarterSummary, r=>r.routeId);
-        return kickstarterSummary;
-			});
-    }
-    else {
-      kickstarterSummary = [];
-      return $q.resolve(kickstarterSummary);
-    }
-  }
-
-  function fetchKickstarterRoutes(ignoreCache) {
-    if (kickstarterRoutesCache && !ignoreCache) return kickstarterRoutesCache;
-    var url = '/crowdstart/status';
-    if (p.transportCompanyId) {
-      url += '?'+querystring.stringify({transportCompanyId: p.transportCompanyId})
-    }
-    return kickstarterRoutesCache = UserService.beeline({
-      method: 'GET',
-      url: url,
-    }).then((response)=>{
-      //return expired kickstarter too
-      kickstarterRoutesList = transformKickstarterData(response.data);
-      kickstarterRoutesById = _.keyBy(kickstarterRoutesList, 'id')
-      return kickstarterRoutesList
-    })
-  }
-
-  function getLocationPromise(enableHighAccuracy = false) {
-    return new Promise((resolve, reject)=>{
-      navigator.geolocation.getCurrentPosition((success)=>resolve(success), (error)=>reject(error), {enableHighAccuracy})
-    });
-  }
-
-  async function fetchNearbyKickstarterIds() {
-    let locationOrNull = null;
-    try {
-      await DevicePromise;
-      locationOrNull = await getLocationPromise(false);
-    } catch (err) {
-      // Location not found -- suppress error
-      nearbyKickstarterRoutesById = nearbyKickstarterRoutesById  || null;
-      return new Promise((resolve, reject)=>{
-        resolve(nearbyKickstarterRoutesById);
-      })
-    }
-
-    let coords = {
-      latitude: locationOrNull.coords.latitude,
-      longitude: locationOrNull.coords.longitude,
-    };
-
-    let nearbyPromise = UserService.beeline({
-      method: 'GET',
-      url: '/routes/search_by_latlon?' + querystring.stringify(
-        _.assign(
-          { maxDistance: 2000,
-            startTime: Date.now(),
-            tags: JSON.stringify(['crowdstart']),
-            startLat: coords.latitude,
-            startLng: coords.longitude
-          },
-          p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}
-        )
-      )
-    })
-
-    let nearbyReversePromise = UserService.beeline({
-      method: 'GET',
-      url: '/routes/search_by_latlon?' + querystring.stringify(
-        _.assign(
-          { maxDistance: 2000,
-            startTime: Date.now(),
-            tags: JSON.stringify(['crowdstart']),
-            endLat: coords.latitude,
-            endLng: coords.longitude
-          },
-          p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}
-        )
-      )
-    })
-    return Promise.all([nearbyPromise, nearbyReversePromise]).then((values) =>{
-      let [np, nvp] = values;
-      return nearbyKickstarterRoutesById = _((np.data).concat(nvp.data)).map(r=>r.id).uniq().value();
-    });
-  }
-
-  return {
-    //all crowdstart routes
-    getCrowdstart: () => kickstarterRoutesList,
-    fetchCrowdstart: (ignoreCache)=>fetchKickstarterRoutes(ignoreCache),
-
-    getCrowdstartById: function(routeId) {
-      return  kickstarterRoutesById ?  kickstarterRoutesById[routeId] : null;
-    },
-
-    //user personal bid information
-    getBids: function() {
-      return kickstarterSummary
-    },
-    fetchBids: (ignoreCache)=>fetchBids(ignoreCache),
-
-    isBid: function(routeId) {
-      return  bidsById && bidsById[routeId] ? true : false
-    },
-
-    getBidInfo: function(routeId) {
-      return kickstarterSummary ?  kickstarterSummary.find(x=>x.routeId == routeId) : null;
-    },
-
-    //need to return a promise
-    hasBids: function() {
-      return bidsCache.then(()=>{
-        return kickstarterSummary &&
-               kickstarterSummary.length>0 &&
-               kickstarterSummary.find(x=>x.status === 'bidded');
-      })
-    },
-
-    createBid: function(route, boardStopId, alightStopId,bidPrice) {
-      return UserService.beeline({
-        method: 'POST',
-        url: `/crowdstart/routes/${route.id}/bids`,
-        data: {
-          price: bidPrice
-        }
+        url: url,
       }).then((response)=>{
-        updateAfterBid(kickstarterRoutesById[route.id], bidPrice);
-        kickstarterSummary = kickstarterSummary.concat([{
-          routeId: route.id,
-          bidPrice: bidPrice,
-          status: 'bidded'
-        }])
-        return response.data;
+        //return expired kickstarter too
+        kickstarterRoutesList = transformKickstarterData(response.data);
+        kickstarterRoutesById = _.keyBy(kickstarterRoutesList, 'id')
+        return kickstarterRoutesList
       })
-    },
+    }
 
-    getNearbyKickstarterIds: ()=> {
-      return nearbyKickstarterRoutesById;
-    },
+    function getLocationPromise(enableHighAccuracy = false) {
+      return new Promise((resolve, reject)=>{
+        navigator.geolocation.getCurrentPosition((success)=>resolve(success), (error)=>reject(error), {enableHighAccuracy})
+      });
+    }
 
-    fetchNearbyKickstarterIds: fetchNearbyKickstarterIds,
-  }
-}
+    async function fetchNearbyKickstarterIds() {
+      let locationOrNull = null;
+      try {
+        await DevicePromise;
+        locationOrNull = await getLocationPromise(false);
+      } catch (err) {
+        // Location not found -- suppress error
+        nearbyKickstarterRoutesById = nearbyKickstarterRoutesById  || null;
+        return new Promise((resolve, reject)=>{
+          resolve(nearbyKickstarterRoutesById);
+        })
+      }
+
+      let coords = {
+        latitude: locationOrNull.coords.latitude,
+        longitude: locationOrNull.coords.longitude,
+      };
+
+      let nearbyPromise = UserService.beeline({
+        method: 'GET',
+        url: '/routes/search_by_latlon?' + querystring.stringify(
+          _.assign(
+            { maxDistance: 2000,
+              startTime: Date.now(),
+              tags: JSON.stringify(['crowdstart']),
+              startLat: coords.latitude,
+              startLng: coords.longitude
+            },
+            p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}
+          )
+        )
+      })
+
+      let nearbyReversePromise = UserService.beeline({
+        method: 'GET',
+        url: '/routes/search_by_latlon?' + querystring.stringify(
+          _.assign(
+            { maxDistance: 2000,
+              startTime: Date.now(),
+              tags: JSON.stringify(['crowdstart']),
+              endLat: coords.latitude,
+              endLng: coords.longitude
+            },
+            p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {}
+          )
+        )
+      })
+      return Promise.all([nearbyPromise, nearbyReversePromise]).then((values) =>{
+        let [np, nvp] = values;
+        return nearbyKickstarterRoutesById = _((np.data).concat(nvp.data)).map(r=>r.id).uniq().value();
+      });
+    }
+
+    return {
+      //all crowdstart routes
+      getCrowdstart: () => kickstarterRoutesList,
+      fetchCrowdstart: (ignoreCache)=>fetchKickstarterRoutes(ignoreCache),
+
+      getCrowdstartById: function(routeId) {
+        return  kickstarterRoutesById ?  kickstarterRoutesById[routeId] : null;
+      },
+
+      //user personal bid information
+      getBids: function() {
+        return kickstarterSummary
+      },
+      fetchBids: (ignoreCache)=>fetchBids(ignoreCache),
+
+      isBid: function(routeId) {
+        return  bidsById && bidsById[routeId] ? true : false
+      },
+
+      getBidInfo: function(routeId) {
+        return kickstarterSummary ?  kickstarterSummary.find(x=>x.routeId == routeId) : null;
+      },
+
+      //need to return a promise
+      hasBids: function() {
+        return bidsCache.then(()=>{
+          return kickstarterSummary &&
+                 kickstarterSummary.length>0 &&
+                 kickstarterSummary.find(x=>x.status === 'bidded');
+        })
+      },
+
+      createBid: function(route, boardStopId, alightStopId,bidPrice) {
+        return UserService.beeline({
+          method: 'POST',
+          url: `/crowdstart/routes/${route.id}/bids`,
+          data: {
+            price: bidPrice
+          }
+        }).then((response)=>{
+          updateAfterBid(kickstarterRoutesById[route.id], bidPrice);
+          kickstarterSummary = kickstarterSummary.concat([{
+            routeId: route.id,
+            bidPrice: bidPrice,
+            status: 'bidded'
+          }])
+          return response.data;
+        })
+      },
+
+      getNearbyKickstarterIds: ()=> {
+        return nearbyKickstarterRoutesById;
+      },
+
+      fetchNearbyKickstarterIds: fetchNearbyKickstarterIds,
+    }
+  }]

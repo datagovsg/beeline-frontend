@@ -12,7 +12,7 @@ export default [
         'booking': '=',
         'price': '=?',
       },
-      controller($scope) {
+      controller: ['$scope', function($scope) {
         $scope.isCalculating = 0;
 
         function stopCalculating() {
@@ -107,6 +107,6 @@ export default [
         $scope.removePromoCode = function(){
           $scope.booking.promoCode = null;
         }
-      }
+      }]
     };
   }];

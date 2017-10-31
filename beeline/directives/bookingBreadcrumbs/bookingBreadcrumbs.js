@@ -1,6 +1,7 @@
 
 
-export default function breadcrumbs($rootScope) {
+export default ['$rootScope',
+function breadcrumbs($rootScope) {
   return {
     template:
     `<div class="item"><img ng-src="{{breadcrumbs_dir}}{{imgNames[step]}}"></div>`,
@@ -18,4 +19,4 @@ export default function breadcrumbs($rootScope) {
 
     }
   };
-}
+}]
