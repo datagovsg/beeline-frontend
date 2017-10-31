@@ -29,6 +29,7 @@ require('./services/RotatedImageService');
 require('./services/GeoUtils');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
+require('./directives/routeItem/animatedRoute');
 require('./services/assetScopeModalService');
 require('./services/fastCheckoutService');
 require('./services/purchaseRoutePassService');
@@ -147,7 +148,6 @@ app
 .directive('regularRoute', require('./directives/routeItem/regularRoute.js').default)
 .directive('kickstartRoute', require('./directives/routeItem/kickstartRoute.js').default)
 .directive('liteRoute', require('./directives/routeItem/liteRoute.js').default)
-.directive('animatedRoute', require('./directives/routeItem/animatedRoute.js').default)
 .directive('countdown', require('./directives/countdown.js').default)
 .config(configureRoutes)
 .config(function($ionicConfigProvider) {
