@@ -17,6 +17,10 @@
           There was a problem fetching the routes from the server.
           Please try again later and let us know at <!--email_off-->feedback@beeline.sg<!--/email_off--> if the problem persists.
         </div>
+        <!-- repeat 5 times -->
+        <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="data.showAnimatedRoute">
+          <animated-route></animated-route>
+        </ion-item>
 
         <!-- Recent Routes Section -->
         <div

@@ -147,6 +147,7 @@ app
 .directive('regularRoute', require('./directives/routeItem/regularRoute.js').default)
 .directive('kickstartRoute', require('./directives/routeItem/kickstartRoute.js').default)
 .directive('liteRoute', require('./directives/routeItem/liteRoute.js').default)
+.directive('animatedRoute', require('./directives/routeItem/animatedRoute.js').default)
 .directive('countdown', require('./directives/countdown.js').default)
 .config(configureRoutes)
 .config(['$ionicConfigProvider', function($ionicConfigProvider) {
