@@ -12,13 +12,13 @@ export default [
   '$timeout',
   'TripService',
   'LiteRoutesService',
-  'AccurateDate',
+  'ServerTime',
   function($scope, SharedVariableService, $stateParams, BookingService,
-    RoutesService, MapService, $timeout, TripService, LiteRoutesService, AccurateDate) {
+    RoutesService, MapService, $timeout, TripService, LiteRoutesService, ServerTime) {
 
     let routeLabel = $stateParams.label ? $stateParams.label : null;
     // Date calculated as Date.now() + Local-Server-TimeDiff
-    let accurateDate = new AccurateDate()
+    let serverTime = new ServerTime()
 
     $scope.mapObject = {
       stops: [],
@@ -103,17 +103,14 @@ export default [
 
     async function pingLoop() {
       if (!$scope.mapObject.pingTrips) return;
-
       $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
       $scope.mapObject.allRecentPings = $scope.mapObject.allRecentPings || []
 
       $scope.mapObject.statusMessages.length = $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
-      await accurateDate.syncTimePromise
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
-        .then((info) => {
-          // const now = Date.now()
-          const now = accurateDate.getAccurateDate()
+        .then(async (info) => {
+          const now = await serverTime.getTimeAsync()
           $scope.mapObject.allRecentPings[index] = {
             ...info,
             isRecent: info.pings[0] &&

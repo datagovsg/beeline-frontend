@@ -39,8 +39,7 @@ require('./services/MapService')
 require('./services/LazyLoadService')
 require('./directives/searchInput')
 require('./services/PlaceService')
-require('./services/SyncTimeService')
-require('./services/AccurateDateService')
+require('./services/ServerTimeService')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -240,9 +239,6 @@ app
       $ionicTabsDelegate.showBar(true);
     }
   });
-})
-.run(function(SyncTimeService) {
-  SyncTimeService.SyncTime()
 })
 .run(function (RoutesService, KickstarterService, LiteRoutesService, TicketService) {
   // Pre-fetch the routes

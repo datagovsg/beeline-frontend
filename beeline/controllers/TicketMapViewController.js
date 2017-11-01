@@ -10,12 +10,12 @@ export default [
   '$timeout',
   'TripService',
   'TicketService',
-  'AccurateDate',
+  'ServerTime',
   function($scope, SharedVariableService, $stateParams, BookingService,
-    RoutesService, MapService, $timeout, TripService, TicketService, AccurateDate) {
+    RoutesService, MapService, $timeout, TripService, TicketService, ServerTime) {
     let ticketId = $stateParams.ticketId ? +$stateParams.ticketId : null;
     // Date calculated as Date.now() + Local-Server-TimeDiff
-    let accurateDate = new AccurateDate()
+    let serverTime = new ServerTime()
 
     var originalMapObject = {
       stops: [],
@@ -118,10 +118,9 @@ export default [
 
       $scope.mapObject.statusMessages.length = $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
 
-      await accurateDate.syncTimePromise
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
-        .then((info) => {
+        .then(async (info) => {
           var ticketInfo = {
             'tripCode': info && info.code,
             'vehicle': info && info.trip && info.trip.vehicle && info.trip.vehicle.vehicleNumber,
@@ -129,7 +128,7 @@ export default [
             'tripStatus': info && info.trip && info.trip.status
           }
           MapService.emit('ticketInfo', ticketInfo)
-          const now = accurateDate.getAccurateDate()
+          const now = await serverTime.getTimeAsync()
 
           $scope.mapObject.allRecentPings[index] = {
             ...info,
