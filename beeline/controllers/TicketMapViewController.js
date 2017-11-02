@@ -15,7 +15,6 @@ export default [
     RoutesService, MapService, $timeout, TripService, TicketService, ServerTime) {
     let ticketId = $stateParams.ticketId ? +$stateParams.ticketId : null;
     // Date calculated as Date.now() + Local-Server-TimeDiff
-    let serverTime = new ServerTime()
 
     var originalMapObject = {
       stops: [],
@@ -120,7 +119,7 @@ export default [
 
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
-        .then(async (info) => {
+        .then((info) => {
           var ticketInfo = {
             'tripCode': info && info.code,
             'vehicle': info && info.trip && info.trip.vehicle && info.trip.vehicle.vehicleNumber,
@@ -128,7 +127,7 @@ export default [
             'tripStatus': info && info.trip && info.trip.status
           }
           MapService.emit('ticketInfo', ticketInfo)
-          const now = await serverTime.getTimeAsync()
+          const now =  ServerTime.getTime()
 
           $scope.mapObject.allRecentPings[index] = {
             ...info,

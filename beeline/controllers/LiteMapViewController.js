@@ -18,8 +18,6 @@ export default [
 
     let routeLabel = $stateParams.label ? $stateParams.label : null;
     // Date calculated as Date.now() + Local-Server-TimeDiff
-    let serverTime = new ServerTime()
-
     $scope.mapObject = {
       stops: [],
       routePath: [],
@@ -110,7 +108,7 @@ export default [
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
         .then(async (info) => {
-          const now = await serverTime.getTimeAsync()
+          const now =  ServerTime.getTime()
           $scope.mapObject.allRecentPings[index] = {
             ...info,
             isRecent: info.pings[0] &&
