@@ -68,14 +68,8 @@ export default function($scope, $state, UserService, RoutesService, $q,
     })
   }
 
-  var timeoutProise = function(promise, ms) {
-    return Promise.race([promise, new Promise((resolve,reject)=>{
-      $timeout(()=>reject(), ms);
-    })])
-  }
-
   // replace loading spinner by animated-route
-  timeoutProise(KickstarterService.fetchCrowdstart(), 10*6000)
+  KickstarterService.fetchCrowdstart()
     .then(()=>{
       $scope.data.error = null;
     })
@@ -88,6 +82,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
         $scope.showHelpPopup();
       }
     })
+
 
   $scope.$watchGroup([
     ()=>KickstarterService.getCrowdstart(),
