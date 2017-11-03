@@ -35,7 +35,7 @@ export default function(
     nextSessionId: null,
     isFiltering: null,
     routesYouMayLike: [],
-    showAnimatedRoute: true,
+    routesAvailable: false,
   };
 
   function autoComplete() {
@@ -296,7 +296,7 @@ export default function(
       // Input validation
       if (!allRoutes) return;
       // hide the animated-route
-      $scope.data.showAnimatedRoute = false
+      $scope.data.routesAvailable = true
       // Filter routes
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
         allRoutes = SearchService.filterRoutesByPlaceAndText(
