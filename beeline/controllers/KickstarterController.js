@@ -22,7 +22,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
     nearbyKickstarterRoutes: null,
     placeQuery: null, // The place object used to search
     queryText: "", // The actual text in the box used only for the clear button
-    showAnimatedRoute: true,
+    routesAvailable: false,
   };
 
 
@@ -96,7 +96,7 @@ export default function($scope, $state, UserService, RoutesService, $q,
   ], ([crowdstartRoutes, userBids, placeQuery])=>{
       if (!crowdstartRoutes || !userBids) return;
       // hide the animated-route
-      $scope.data.showAnimatedRoute = false;
+      $scope.data.routesAvailable = true;
       $scope.userBids = userBids;
       $scope.recentBidsById = _.keyBy($scope.userBids, r=>r.routeId);
       let recentAndAvailable = _.partition(crowdstartRoutes, (x)=>{

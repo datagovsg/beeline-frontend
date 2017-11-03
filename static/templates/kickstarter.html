@@ -26,7 +26,7 @@
       <ion-refresher pulling-text="Pull to refresh..." on-refresh="refreshRoutes()">
       </ion-refresher>
       <!-- repeat 5 times -->
-      <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="data.showAnimatedRoute">
+      <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="!data.routesAvailable">
         <animated-route></animated-route>
       </ion-item>
       <!-- recently bid Crowdstart -->
