@@ -7,7 +7,11 @@ import {sleep} from '../shared/util';
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
-export default function($scope, $state, UserService, RoutesService, $q,
+export default ['$scope', '$state', 'UserService', 'RoutesService', '$q',
+'$ionicScrollDelegate', '$ionicPopup', 'KickstarterService', '$ionicLoading',
+'SearchService', '$timeout', 'loadingSpinner', 'uiGmapGoogleMapApi', 'LazyLoadService',
+'SearchEventService', 'PlaceService',
+function($scope, $state, UserService, RoutesService, $q,
   $ionicScrollDelegate, $ionicPopup, KickstarterService, $ionicLoading,
   SearchService, $timeout, loadingSpinner, uiGmapGoogleMapApi, LazyLoadService,
   SearchEventService, PlaceService) {
@@ -175,4 +179,4 @@ export default function($scope, $state, UserService, RoutesService, $q,
     $scope.kickstartHelpPopup.close();
   }
 
-}
+}]

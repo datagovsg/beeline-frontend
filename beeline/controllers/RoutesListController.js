@@ -1,7 +1,11 @@
 import _ from 'lodash';
 import {sleep} from '../shared/util';
 
-export default function(
+export default ['$scope', '$q', 'RoutesService',
+'KickstarterService', 'LiteRoutesService', 'LiteRouteSubscriptionService',
+'SearchService', 'BookingService', 'LazyLoadService', 'SearchEventService',
+'PlaceService',
+function(
   // Angular Tools
   $scope,
   $q,
@@ -405,4 +409,4 @@ export default function(
     $scope.data.nextSessionId = BookingService.newSession();
   })
 
-}
+}]
