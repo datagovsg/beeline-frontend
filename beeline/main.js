@@ -151,6 +151,22 @@ app
 .directive('liteRoute', require('./directives/routeItem/liteRoute.js').default)
 .directive('countdown', require('./directives/countdown.js').default)
 .config(configureRoutes)
+.config(['$locationProvider', function ($locationProvider) {
+  // XXX: Here be dragons
+  // Turn on html5Mode only if we are sure we are not a cordova app
+  // Further, Ionic breaks if the root document has a base tag, and we
+  // cannot use html5Mode({enabled:true, requireBase: false}) as that
+  // breaks all the routes in the app
+  // Instead, _dynamically inject_ a base tag into the root document when
+  // we realise that we are not cordova, to keep both sides happy
+  if (!window.cordova) {
+    const base = window.document.createElement('base')
+    base.setAttribute('href', '/')
+    const [head] = window.document.getElementsByTagName('head')
+    head.appendChild(base)
+    $locationProvider.html5Mode({enabled: true})
+  }
+}])
 .config(['$ionicConfigProvider', function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.tabs.style('standard');
