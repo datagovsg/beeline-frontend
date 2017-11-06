@@ -1,8 +1,10 @@
 #tabs {
-  @include desktop {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+  ion-side-menu-content {
+    @include desktop {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+    }
   }
 
 // TODO: why?
@@ -16,17 +18,17 @@
     background-color: rgba(0,0,0,0.01) !important;
     pointer-events: none !important;
   }
-
-
-  ion-tabs {
+  
+  .left-pane {
     @include desktop {
       display: block;
       position: relative;
+      max-width: 500px;
       height: 100%;
       width: 100%;
-      max-width: 500px;
     }
   }
+
   ui-gmap-google-map {
     height: 80%;
     width: 100%;
