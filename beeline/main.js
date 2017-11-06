@@ -29,6 +29,7 @@ require('./services/RotatedImageService');
 require('./services/GeoUtils');
 require('./directives/mapBusPolyRoute');
 require('./directives/mapBusIcon');
+require('./directives/routeItem/animatedRoute');
 require('./services/assetScopeModalService');
 require('./services/fastCheckoutService');
 require('./services/purchaseRoutePassService');
