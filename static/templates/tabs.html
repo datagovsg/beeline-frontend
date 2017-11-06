@@ -16,54 +16,7 @@ navigation history that also transitions its views in and out.
           </ion-nav-buttons>
         </ion-nav-bar>
 
-        <ion-tabs class="tabs-icon-top tabs-calm">
-
-
-          <ion-tab title="Routes"
-                   class="nav-text nav-routes"
-                   href="#/tabs/routes">
-            <ion-nav-view name="tab-routes"></ion-nav-view>
-          </ion-tab>
-
-          <ion-tab title="Trips"
-                  class="nav-text nav-tickets"
-                   href="#/tabs/tickets">
-            <ion-nav-view name="tab-tickets"></ion-nav-view>
-          </ion-tab>
-
-          <!-- this tab is hidden too -->
-          <ion-tab title="Crowdstart"
-                  class="nav-text nav-kickstarter"
-                   href="#/tabs/crowdstart"
-                   hidden="false">
-            <ion-nav-view name="tab-crowdstart"></ion-nav-view>
-          </ion-tab>
-
-          <ion-tab title="Settings"
-                   class="nav-text nav-settings"
-                   href="#/tabs/settings">
-            <ion-nav-view name="tab-settings"></ion-nav-view>
-          </ion-tab>
-
-          <!-- This tab is hidden -->
-          <ion-tab title="Booking"
-                   href="#/tabs/booking"
-                   hidden="true">
-            <ion-nav-view name="tab-booking"></ion-nav-view>
-          </ion-tab>
-
-          <ion-tab title="Lite"
-                   href="#/tabs/lite"
-                   hidden="true">
-            <ion-nav-view name="tab-lite"></ion-nav-view>
-          </ion-tab>
-
-          <ion-tab title="Search"
-                   href="#/tabs/search"
-                   hidden="true">
-            <ion-nav-view name="tab-search"></ion-nav-view>
-          </ion-tab>
-        </ion-tabs>
+        <ion-nav-view name="menuContent"></ion-nav-view>
       </div>
 
       <ui-gmap-google-map

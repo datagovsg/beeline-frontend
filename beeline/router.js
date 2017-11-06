@@ -61,7 +61,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.routes', {
       url: '/routes',
       views: {
-        'tab-routes': {
+        'menuContent': {
           templateUrl: 'templates/routes-list.html',
           controller: 'RoutesListController'
         }
@@ -70,7 +70,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.route-detail', {
       url: '/route/:routeId?pickupStopId&dropoffStopId',
       views: {
-        'tab-routes': {
+        'menuContent': {
           templateUrl: 'templates/route-detail.html',
           controller: 'RouteDetailController'
         },
@@ -87,7 +87,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.route-stops', {
       url: '/route/:routeId/stops?type&stopId',
       views: {
-        'tab-routes': {
+        'menuContent': {
           templateUrl: 'templates/route-stops.html',
           controller: 'RouteStopsController'
         },
@@ -105,7 +105,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.route-dates', {
       url: '/route/:routeId/dates?boardStop&alightStop&selectedDates',
       views: {
-        'tab-routes': {
+        'menuContent': {
           templateUrl: 'templates/tab-booking-dates.html',
           controller: 'BookingDatesController',
         }
@@ -117,7 +117,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.route-summary', {
       url: '/route/:routeId/summary?boardStop&alightStop&selectedDates&promoCode',
       views: {
-        'tab-routes': {
+        'menuContent': {
           templateUrl: 'templates/tab-booking-summary.html',
           controller: 'BookingSummaryController',
         }
@@ -129,7 +129,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.route-confirmation', {
       url: '/route/confirmation',
       views: {
-        'tab-routes': {
+        'menuContent': {
           templateUrl: 'templates/tab-booking-confirmation.html',
           controller: 'BookingConfirmationController',
         },
@@ -141,7 +141,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.lite-detail', {
       url: '/lite/detail/:label',
       views: {
-        'tab-lite': {
+        'menuContent': {
           templateUrl: 'templates/tab-lite-detail.html',
           controller: 'LiteDetailController',
         },
@@ -158,7 +158,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.lite-more-info', {
       url: '/lite/more-info/:label/:companyId/',
       views: {
-        'tab-lite': {
+        'menuContent': {
           templateUrl: 'templates/tab-lite-more-info.html',
           controller: 'LiteMoreInfoController',
         }
@@ -175,7 +175,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.suggest', {
       url: '/suggest/:action',
       views: {
-        'tab-suggest': {
+        'menuContent': {
           templateUrl: 'templates/tab-suggest.html',
           controller: 'SuggestController'
         }
@@ -188,7 +188,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.tickets', {
       url: '/tickets',
       views: {
-        'tab-tickets': {
+        'menuContent': {
           templateUrl: 'templates/tickets.html',
           controller: 'TicketsController'
         }
@@ -198,7 +198,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.ticket-detail', {
       url: '/tickets/:ticketId',
       views: {
-        'tab-tickets': {
+        'menuContent': {
           templateUrl: 'templates/ticket-detail.html',
           controller: 'TicketDetailController'
         },
@@ -216,7 +216,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.lite-route-tracker', {
       url: '/tickets/liteRoute/:label',
       views: {
-        'tab-tickets': {
+        'menuContent': {
           templateUrl: 'templates/tab-lite-tracker.html',
           controller: 'LiteDetailController',
         },
@@ -234,7 +234,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.lite-tracker-more-info', {
       url: '/tickets/liteRoute/:label/:companyId/',
       views: {
-        'tab-tickets': {
+        'menuContent': {
           templateUrl: 'templates/lite-tracker-more-info.html',
           controller: 'LiteMoreInfoController',
         }
@@ -251,7 +251,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.crowdstart', {
       url: '/crowdstart',
       views: {
-        'tab-crowdstart': {
+        'menuContent': {
           templateUrl: 'templates/kickstarter.html',
           controller: 'KickstarterController'
         }
@@ -261,7 +261,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.crowdstart-recap', {
       url: '/crowdstart/:routeId/recap',
       views: {
-        'tab-crowdstart': {
+        'menuContent': {
           templateUrl: 'templates/kickstarter-recap.html',
           controller: 'KickstarterRecapController'
         }
@@ -274,7 +274,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.crowdstart-detail', {
       url: '/crowdstart/:routeId/detail',
       views: {
-        'tab-crowdstart': {
+        'menuContent': {
           templateUrl: 'templates/kickstarter-detail.html',
           controller: 'KickstarterDetailController'
         },
@@ -292,7 +292,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.crowdstart-stops', {
       url: '/crowdstart/:routeId/stops',
       views: {
-        'tab-crowdstart': {
+        'menuContent': {
           templateUrl: 'templates/kickstarter-stops.html',
           controller: 'KickstarterStopsController'
         },
@@ -311,7 +311,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.crowdstart-summary', {
       url: '/crowdstart/:routeId/summary?bidPrice',
       views: {
-        'tab-crowdstart': {
+        'menuContent': {
           templateUrl: 'templates/kickstarter-summary.html',
           controller: 'KickstarterSummaryController'
         }
@@ -324,7 +324,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.crowdstart-commit', {
       url: '/crowdstart/:routeId/commit',
       views: {
-        'tab-crowdstart': {
+        'menuContent': {
           templateUrl: 'templates/kickstarter-commit.html',
           controller: 'KickstarterCommitController'
         }
@@ -340,7 +340,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.settings', {
       url: '/settings',
       views: {
-        'tab-settings': {
+        'menuContent': {
           templateUrl: 'templates/settings.html',
           controller: 'SettingsController'
         }
@@ -349,7 +349,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('tabs.booking-history', {
       url: '/settings/booking-history',
       views: {
-        'tab-settings': {
+        'menuContent': {
           templateUrl: 'templates/booking-history.html',
           controller: 'BookingHistoryController'
         }
