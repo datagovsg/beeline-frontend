@@ -6,9 +6,6 @@ navigation history that also transitions its views in and out.
 -->
 <ion-view id="tabs">
   <ion-side-menus>
-    <!-- Left menu -->
-    <ion-side-menu side="left">
-    </ion-side-menu>
 
     <!-- Main content, usually <ion-nav-view> -->
     <ion-side-menu-content>
@@ -83,6 +80,32 @@ navigation history that also transitions its views in and out.
           <ui-view name="map-area"></ui-view>
       </ui-gmap-google-map>
     </ion-side-menu-content>
+
+    <!-- Left menu -->
+    <ion-side-menu side="left">
+      <header class="bar bar-header bar-stable">
+      </header>
+      <ion-content class="has-header">
+        <ion-list>
+          <ion-item menu-close ui-sref="tabs.routes">
+            Search Routes
+          </ion-item>
+          <ion-item menu-close ui-sref="tabs.routes">
+            All Routes
+          </ion-item>
+          <ion-item menu-close ui-sref="tabs.crowdstart">
+            Crowdstart Routes
+          </ion-item>
+          <!--My routes section  -->
+          <ion-item menu-close ui-sref="tabs.tickets">
+            Tickets
+          </ion-item>
+          <ion-item menu-close ui-sref="tabs.settings">
+            Settings
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-side-menu>
 
   </ion-side-menus>
 </ion-view>
