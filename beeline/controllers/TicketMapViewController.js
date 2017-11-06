@@ -10,9 +10,11 @@ export default [
   '$timeout',
   'TripService',
   'TicketService',
+  'ServerTime',
   function($scope, SharedVariableService, $stateParams, BookingService,
-    RoutesService, MapService, $timeout, TripService, TicketService) {
+    RoutesService, MapService, $timeout, TripService, TicketService, ServerTime) {
     let ticketId = $stateParams.ticketId ? +$stateParams.ticketId : null;
+    // Date calculated as Date.now() + Local-Server-TimeDiff
 
     var originalMapObject = {
       stops: [],
@@ -125,8 +127,8 @@ export default [
             'tripStatus': info && info.trip && info.trip.status
           }
           MapService.emit('ticketInfo', ticketInfo)
-          const now = Date.now()
-          // mark ticket ping as recent if it was not more than 2 hours from now
+          const now =  ServerTime.getTime()
+
           $scope.mapObject.allRecentPings[index] = {
             ...info,
             isRecent: info.pings[0] &&
@@ -136,12 +138,7 @@ export default [
           $scope.mapObject.statusMessages[index] = _.get(info, 'statuses[0].message', null)
         })
       }))
-      //to mark no tracking data if no ping or pings are too old
-      if (_.every($scope.mapObject.allRecentPings,{"isRecent": undefined})) {
-        $scope.hasTrackingData = false;
-      } else {
-        $scope.hasTrackingData = true;
-      }
+
     }
 
   }

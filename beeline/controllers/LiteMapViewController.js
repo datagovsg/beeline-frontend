@@ -12,11 +12,12 @@ export default [
   '$timeout',
   'TripService',
   'LiteRoutesService',
+  'ServerTime',
   function($scope, SharedVariableService, $stateParams, BookingService,
-    RoutesService, MapService, $timeout, TripService, LiteRoutesService) {
+    RoutesService, MapService, $timeout, TripService, LiteRoutesService, ServerTime) {
 
     let routeLabel = $stateParams.label ? $stateParams.label : null;
-
+    // Date calculated as Date.now() + Local-Server-TimeDiff
     $scope.mapObject = {
       stops: [],
       routePath: [],
@@ -100,17 +101,14 @@ export default [
 
     async function pingLoop() {
       if (!$scope.mapObject.pingTrips) return;
-
       $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
       $scope.mapObject.allRecentPings = $scope.mapObject.allRecentPings || []
 
       $scope.mapObject.statusMessages.length = $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
-
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.DriverPings(trip.id)
-        .then((info) => {
-          const now = Date.now()
-
+        .then(async (info) => {
+          const now =  ServerTime.getTime()
           $scope.mapObject.allRecentPings[index] = {
             ...info,
             isRecent: info.pings[0] &&
@@ -121,10 +119,11 @@ export default [
         })
       }))
       //to mark no tracking data if no ping or pings are too old
-      if (_.every($scope.mapObject.allRecentPings,{"isRecent": undefined})) {
-        $scope.hasTrackingData = false;
-      } else {
+      if (_.every($scope.mapObject.allRecentPings, 'isRecent')) {
         $scope.hasTrackingData = true;
+      } else {
+        // isRecent could be undefined(no pings) or false (pings are out-dated)
+        $scope.hasTrackingData = false;
       }
       let tripInfo = {
         'hasTrackingData': $scope.hasTrackingData,
