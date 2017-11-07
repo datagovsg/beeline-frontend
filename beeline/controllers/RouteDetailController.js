@@ -51,6 +51,8 @@ export default [
       isLoggedIn: null,
       boardStopInvalid: null,
       alightStopInvalid: null,
+      // defined in state tabs.my-booking-routes but not in tabs.route-detail
+      showSideMenu: $state.current.data && $state.current.data.showSideMenu,
     }
 
     $scope.disp = {

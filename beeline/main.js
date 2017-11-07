@@ -228,17 +228,6 @@ app
       })
   }
 }])
-.run(['$rootScope', '$ionicTabsDelegate', function($rootScope, $ionicTabsDelegate) {
-  // hide/show tabs bar depending on how the route is configured
-  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-    if (toState.data && toState.data.hideTabs) {
-      $ionicTabsDelegate.showBar(false);
-    }
-    else {
-      $ionicTabsDelegate.showBar(true);
-    }
-  });
-}])
 .run(['RoutesService', 'KickstarterService', 'LiteRoutesService', 'TicketService',
   function (RoutesService, KickstarterService, LiteRoutesService, TicketService) {
     // Pre-fetch the routes
