@@ -47,6 +47,21 @@ navigation history that also transitions its views in and out.
             Crowdstart Routes
           </ion-item>
           <!--My routes section  -->
+          <h2 class="item item-divider" ng-if="data.myBookingRoutes.length > 0 || data.myLiteRoutes.length > 0">My Routes</h2>
+          <ion-item  class="sub-list" ng-repeat="item in data.myBookingRoutes" menu-close  ng-if="data.myBookingRoutes.length > 0"
+            ui-sref="tabs.my-booking-routes({
+              routeId: item.id,
+              pickupStopId:  item.boardStopStopId,
+              dropoffStopId: item.alightStopStopId,
+            })">
+            {{item.label}}
+          </ion-item>
+          <ion-item  class="sub-list" ng-repeat="item in data.myLiteRoutes" menu-close  ng-if="data.myLiteRoutes.length > 0"
+            ui-sref="tabs.my-lite-routes({
+              label: item.label
+            })">
+            {{item.label}}
+          </ion-item>
           <ion-item menu-close ui-sref="tabs.tickets">
             Tickets
           </ion-item>

@@ -58,6 +58,40 @@ function($stateProvider, $urlRouterProvider) {
     // ////////////////////////////////////////////////////////////////////////////
     // Main interface, Routes Tab
     // ////////////////////////////////////////////////////////////////////////////
+    .state('tabs.my-booking-routes', {
+      url: '/route/:routeId?pickupStopId&dropoffStopId',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/route-detail.html',
+          controller: 'RouteDetailController'
+        },
+
+        'map-area': {
+          templateUrl: 'templates/map-view.html',
+          controller: 'MapViewController'
+        }
+      },
+      data: {
+        showSideMenu: true
+      }
+    })
+    .state('tabs.my-lite-routes', {
+      url: '/lite/detail/:label',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/tab-lite-detail.html',
+          controller: 'LiteDetailController',
+        },
+
+        'map-area': {
+          templateUrl: 'templates/map-view.html',
+          controller: 'LiteMapViewController'
+        }
+      },
+      data: {
+        showSideMenu: true
+      }
+    })
     .state('tabs.routes', {
       url: '/routes',
       views: {
@@ -79,9 +113,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/map-view.html',
           controller: 'MapViewController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
     .state('tabs.route-stops', {
@@ -97,10 +128,7 @@ function($stateProvider, $urlRouterProvider) {
           controller: 'MapViewController'
         }
       },
-      params: { callback: null },
-      data: {
-        hideTabs: true,
-      }
+      params: { callback: null }
     })
     .state('tabs.route-dates', {
       url: '/route/:routeId/dates?boardStop&alightStop&selectedDates',
@@ -109,9 +137,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/tab-booking-dates.html',
           controller: 'BookingDatesController',
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
     .state('tabs.route-summary', {
@@ -121,9 +146,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/tab-booking-summary.html',
           controller: 'BookingSummaryController',
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
     .state('tabs.route-confirmation', {
@@ -133,9 +155,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/tab-booking-confirmation.html',
           controller: 'BookingConfirmationController',
         },
-      },
-      data: {
-        hideTabs: true,
       }
     })
     .state('tabs.lite-detail', {
@@ -150,9 +169,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/map-view.html',
           controller: 'LiteMapViewController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
     .state('tabs.lite-more-info', {
@@ -162,10 +178,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/tab-lite-more-info.html',
           controller: 'LiteMoreInfoController',
         }
-      },
-      data: {
-        hideTabs: true,
-        keepMapObject: true
       }
     })
 
@@ -207,9 +219,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/map-view.html',
           controller: 'TicketMapViewController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
 
@@ -225,9 +234,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/map-view.html',
           controller: 'LiteMapViewController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
 
@@ -238,9 +244,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/lite-tracker-more-info.html',
           controller: 'LiteMoreInfoController',
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
 
@@ -265,9 +268,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/kickstarter-recap.html',
           controller: 'KickstarterRecapController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
 
@@ -283,9 +283,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/map-view.html',
           controller: 'MapViewController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
 
@@ -301,10 +298,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/map-view.html',
           controller: 'MapViewController'
         }
-      },
-      data: {
-        hideTabs: true,
-        keepMapObject: true
       }
     })
 
@@ -315,9 +308,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/kickstarter-summary.html',
           controller: 'KickstarterSummaryController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
 
@@ -328,9 +318,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/kickstarter-commit.html',
           controller: 'KickstarterCommitController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     })
 
@@ -353,9 +340,6 @@ function($stateProvider, $urlRouterProvider) {
           templateUrl: 'templates/booking-history.html',
           controller: 'BookingHistoryController'
         }
-      },
-      data: {
-        hideTabs: true,
       }
     });
 

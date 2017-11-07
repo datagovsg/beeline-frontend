@@ -1,4 +1,13 @@
 #tabs {
+  ion-side-menu {
+    ion-item {
+      color: $royal;
+    }
+    .sub-list {
+      padding-left: $item-padding * 1.5
+    }
+  }
+
   ion-side-menu-content {
     @include desktop {
       display: flex;

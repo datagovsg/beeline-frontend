@@ -39,7 +39,6 @@ export default [
     loadingSpinner,
     MapService
   ) {
-
     $scope.disp = {
       companyInfo: {},
       showTooltip: true,
@@ -55,7 +54,9 @@ export default [
       isSubscribed: false,
       todayTrips: null,
       inServiceWindow: false,
-      hasTrips: true
+      hasTrips: true,
+      // defined in state tabs.my-lite-routes but not in tabs.lite-detail
+      showSideMenu: $state.current.data && $state.current.data.showSideMenu,
     };
 
     $scope.$watch('book.todayTrips',(trips)=>{
