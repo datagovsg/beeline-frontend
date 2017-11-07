@@ -28,10 +28,6 @@
     "hash": "c7d6acbbccf5c8c99e086ae23b29c5cb"
   },
   {
-    "file": "apple-app-site-association",
-    "hash": "607ad86720b7c317edafad91368e07c2"
-  },
-  {
     "file": "apple-touch-icon-114x114.png",
     "hash": "2059c01a19b591a04325e81770b3c9e7"
   },
@@ -80,24 +76,20 @@
     "hash": "ff4f0022f7e98b960651033d211a282e"
   },
   {
-    "file": "CNAME",
-    "hash": "bc0111f6e15c0ecefe0b877677a679d6"
-  },
-  {
     "file": "css/ionic.app.css",
-    "hash": "83a6bdd221204aa621b390d3ba61ecf2"
+    "hash": "58e01587753476c03d09e34c5a98e7fa"
   },
   {
     "file": "css/ionic.app.css.js",
-    "hash": "184c51bdf1667b0da183f555a193a61c"
+    "hash": "56bcc73b41dd74b625a9379f65991500"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "60598e5d76e9ee0e6b50ece28a7f664a"
+    "hash": "f52e143339c295e4ff421f6f782b21fc"
   },
   {
     "file": "css/operator-grab.css.js",
-    "hash": "0d8558c46dd215685b9a8141dd0607c7"
+    "hash": "8828876bf47d0a525ff108848af0f610"
   },
   {
     "file": "favicon-16x16.png",
@@ -117,7 +109,7 @@
   },
   {
     "file": "grab.html",
-    "hash": "d0f4040d4741c3f0e1cd6b39cef1c556"
+    "hash": "029fd329f06818ea0a2f11feeb01b836"
   },
   {
     "file": "grab/android-chrome-144x144.png",
@@ -629,23 +621,19 @@
   },
   {
     "file": "index.html",
-    "hash": "e0a240bc5dcdebf88c7a6235647a3ccc"
+    "hash": "8f6774837e7ad882cc3f3ed411721de0"
   },
   {
     "file": "js/ng-cordova.min.js",
     "hash": "f8990514da9399da893b60f6dbd570c9"
   },
   {
-    "file": "js/qrcode.min.js",
-    "hash": "517b55d3688ce9ef1085a3d9632bcb97"
-  },
-  {
     "file": "lib/beeline/bundle.js",
-    "hash": "e4cd8a240757afeee4962f18d6e09aaf"
+    "hash": "c2d3fde675ad61017bc8e3c39a0176d1"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "70faa14303b386e1ee92ea5e60f40ad9"
+    "hash": "ab279cf36f2f69a35f6f98f3549764a2"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -953,11 +941,11 @@
   },
   {
     "file": "templates/kickstarter-summary.html",
-    "hash": "d0e1e837ee86b7617d948b2df9b701d4"
+    "hash": "08ba08c288185bd698a1c886fa570e00"
   },
   {
     "file": "templates/kickstarter.html",
-    "hash": "4c5961bb8f3be6d8b3d12f36d54e0797"
+    "hash": "570b3962f1c2817a02628061957b6251"
   },
   {
     "file": "templates/lite-tracker-more-info.html",
@@ -969,7 +957,7 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "cf1ab9f678981089475b1f53d0da9272"
+    "hash": "7752333df8638479ff360048c46a6deb"
   },
   {
     "file": "templates/route-stops.html",
@@ -977,7 +965,7 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "c741e70e5420aa16d8aba976d139b1eb"
+    "hash": "10ea363aacedc768b52714b4a7b9ca8b"
   },
   {
     "file": "templates/settings.html",
@@ -997,7 +985,7 @@
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "e6e1120925b5cc3ff50a643b2e1fed29"
+    "hash": "8d91d0e935796ae46b4b827ffbddb26a"
   },
   {
     "file": "templates/tab-lite-detail.html",
