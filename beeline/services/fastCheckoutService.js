@@ -81,7 +81,7 @@ angular.module('beeline')
         if (nextTrip && nextTrip.availability && nextTrip.availability.seatsAvailable > 0) {
           seatsAvailable = true
         }
-        var hasNextTripTicket = null, previouslyBookedDays = null
+        var hasNextTripTicket = null, previouslyBookedDays = null, nextTripTicketId = null
         // user has the next trip ticket
         if (UserService.getUser()) {
           var allTickets = TicketService.getTickets();
@@ -96,6 +96,7 @@ angular.module('beeline')
             //compare current date with next trip
             if (nextTrip && _.includes(bookedDays,nextTrip.date.getTime())) {
               hasNextTripTicket = true;
+              nextTripTicketId = previouslyBookedDays[nextTrip.date.getTime()].id
             } else {
               hasNextTripTicket = false;
             }
@@ -103,7 +104,7 @@ angular.module('beeline')
             hasNextTripTicket = false;
           }
         }
-        _.assign(nextTrip, {hasNextTripTicket, seatsAvailable})
+        _.assign(nextTrip, {hasNextTripTicket, seatsAvailable, nextTripTicketId})
         if (hasNextTripTicket === true || seatsAvailable === false) {
           nextTrip.errorMessage = "Next Trip is not available or user already purchased"
         }
