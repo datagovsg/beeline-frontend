@@ -56,6 +56,12 @@ navigation history that also transitions its views in and out.
             })">
             <i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
           </ion-item>
+          <ion-item  class="sub-list" ng-repeat="item in data.myActivatedCrowdstartRoutes" menu-close  ng-if="data.myActivatedCrowdstartRoutes.length > 0"
+            ui-sref="tabs.my-booking-routes({
+              routeId: item.id
+            })">
+            <i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
+          </ion-item>
           <ion-item  class="sub-list" ng-repeat="item in data.myLiteRoutes" menu-close  ng-if="data.myLiteRoutes.length > 0"
             ui-sref="tabs.my-lite-routes({
               label: item.label
