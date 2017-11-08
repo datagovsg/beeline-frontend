@@ -26,6 +26,8 @@ export default [
       isLoggedIn: false,
       myBookingRoutes: [],
       myLiteRoutes: [],
+      myActivatedCrowdstartRoutes: [],
+      myActivatedCrowdstartRouteIds: [],
     }
 
     $scope.$watch(() => UserService.getUser(), (user) => {
@@ -75,6 +77,24 @@ export default [
         });
       }
     )
+
+    // Kickstarted routes
+    $scope.$watchCollection(() => RoutesService.getActivatedKickstarterRoutes(), (routes) => {
+      $scope.data.myActivatedCrowdstartRoutes = routes;
+      $scope.data.myActivatedCrowdstartRouteIds = _.map(routes, r => r.id);
+    })
+
+    // blend activatedCrowdstartRoutes and recentRoutes
+    $scope.$watchGroup(
+      ['data.myActivatedCrowdstartRouteIds', 'data.myBookingRoutes'],
+      ([activatedCrowdstartRouteIds, recentRoutes]) => {
+        if (activatedCrowdstartRouteIds && recentRoutes) {
+          let recentRouteIds = _.map(recentRoutes, route => route.id)
+          $scope.data.myActivatedCrowdstartRoutes = _.filter ($scope.data.myActivatedCrowdstartRoutes,
+            (route) => !recentRouteIds.includes(route.id)
+          );
+        }
+      });
 
     // Resolved when the map is initialized
     var gmapIsReady = new Promise((resolve, reject) => {
