@@ -41,6 +41,7 @@ require('./services/LazyLoadService')
 require('./directives/searchInput')
 require('./services/PlaceService')
 require('./services/ServerTimeService')
+require('./services/PersonalRoutesService')
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
