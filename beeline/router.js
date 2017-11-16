@@ -4,15 +4,6 @@ import _ from 'lodash';
 const introSlidesVersion = '2017-02-20'
 
 /**
-  * If you want to hide tabs while maintaining proper back button functionality
-  * then add data: {hideTabs: true} to the state definition. The hiding of the
-  * tabs will be handled globally in main.js ($rootScope.$on('$stateChangeSuccess'))
-  *
-  * I have absolutely no idea what happens if you use subtabs.
-  * The point is, don't use subtabs.
-**/
-
-/**
   * The other parameters we define is
     @prop data.back : stateParams -> Array
       A function that returns a state array [state name, state params]
@@ -39,18 +30,8 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'WelcomeController'
     })
 
-
-    // ////////////////////////////////////////////////////////////////////////////
-    // Main interface
-    // ////////////////////////////////////////////////////////////////////////////
-    /** Instead of using abstract: true, we make this page not abstract, because
-        we want to provide the $backOrDefault method to the tabs scope.
-        When our back button is clicked, this method will be called.
-        (We are overriding the default back button. cf tabs.html)
-        **/
     .state('tabs', {
       url: '/tabs',
-      abstract: true,
       templateUrl: 'templates/tabs.html',
       controller: 'TabsController'
     })
@@ -347,11 +328,9 @@ function($stateProvider, $urlRouterProvider) {
     // if none of the above states are matched, use this as the fallback
     if (viewedIntroSlidesVersion
       && viewedIntroSlidesVersion >= introSlidesVersion) {
-      $urlRouterProvider.otherwise('/tabs/routes');
+      $urlRouterProvider.otherwise('/tabs');
     } else {
-      // $urlRouterProvider.otherwise('/tabs/routes/map');
       window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
-
       $urlRouterProvider.otherwise('/intro');
     }
 }]

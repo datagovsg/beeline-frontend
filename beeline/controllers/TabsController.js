@@ -8,8 +8,12 @@ export default [
   'RoutesService',
   'LiteRoutesService',
   'LiteRouteSubscriptionService',
+  'PersonalRoutesService',
+  '$state',
+  'loadingSpinner',
   function($scope, MapOptions, SharedVariableService, uiGmapGoogleMapApi, UserService,
-    RoutesService, LiteRoutesService, LiteRouteSubscriptionService) {
+    RoutesService, LiteRoutesService, LiteRouteSubscriptionService, PersonalRoutesService, $state, loadingSpinner) {
+
     $scope.map = MapOptions.defaultMapOptions({
       busLocation: {
         coordinates: null,
@@ -30,6 +34,8 @@ export default [
       myActivatedCrowdstartRouteIds: [],
     }
 
+
+
     $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.data.isLoggedIn = user !== null
     })
@@ -47,7 +53,7 @@ export default [
 
         // "Fill in" the recent routes with the all routes data
         let allRoutesById = _.keyBy(allRoutes, 'id');
-        $scope.data.myBookingRoutes = recentRoutes.map( (recentRoute) => {
+        $scope.data.myBookingRoutes = recentRoutes.map((recentRoute) => {
           return _.assign({
             alightStopStopId: recentRoute.alightStopStopId,
             boardStopStopId: recentRoute.boardStopStopId
@@ -78,7 +84,7 @@ export default [
       }
     )
 
-    // Kickstarted routes
+    // activated Kickstarted routes
     $scope.$watchCollection(() => RoutesService.getActivatedKickstarterRoutes(), (routes) => {
       $scope.data.myActivatedCrowdstartRoutes = routes;
       $scope.data.myActivatedCrowdstartRouteIds = _.map(routes, r => r.id);
@@ -94,7 +100,30 @@ export default [
             (route) => !recentRouteIds.includes(route.id)
           );
         }
-      });
+    });
+
+    if (UserService.getUser()) {
+      loadingSpinner(PersonalRoutesService.load()).then((routes) => {
+        [$scope.data.myLiteRoutes, $scope.data.myBookingRoutes] = _.partition(routes, (route) => route.tags.includes('lite'))
+
+        if (routes.length == 0) {
+          // no personal route yet
+          $state.go("tabs.routes")
+        } else {
+          if (routes[0].tags.includes('public')) {
+            $state.go("tabs.my-booking-routes", {
+              routeId: routes[0].id,
+              pickupStopId:  routes[0].boardStopStopId,
+              dropoffStopId: routes[0].alightStopStopId,})
+          } else if (routes[0].tags.includes('lite')) {
+            $state.go("tabs.my-lite-routes", {
+              label: routes[0].label})
+          }
+        }
+      })
+    } else {
+      $state.go('tabs.routes')
+    }
 
     // Resolved when the map is initialized
     var gmapIsReady = new Promise((resolve, reject) => {
