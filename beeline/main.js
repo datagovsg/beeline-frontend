@@ -21,12 +21,12 @@ var app = angular.module('beeline', [
 ])
 
 
-app.run(function($rootScope, replace, p) {
+app.run(['$rootScope', 'replace', 'p', function($rootScope, replace, p) {
   $rootScope.o = {
     ...p,
     replace
   }
-})
+}])
 
 
 require('angular-simple-logger');
