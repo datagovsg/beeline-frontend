@@ -119,12 +119,8 @@ export default [
         })
       }))
       //to mark no tracking data if no ping or pings are too old
-      if (_.every($scope.mapObject.allRecentPings, 'isRecent')) {
-        $scope.hasTrackingData = true;
-      } else {
-        // isRecent could be undefined(no pings) or false (pings are out-dated)
-        $scope.hasTrackingData = false;
-      }
+      // isRecent could be undefined(no pings) or false (pings are out-dated)
+      $scope.hasTrackingData = _.any($scope.mapObject.allRecentPings, 'isRecent')
       let tripInfo = {
         'hasTrackingData': $scope.hasTrackingData,
         'statusMessages': $scope.mapObject.statusMessages.join(' ')
