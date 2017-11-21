@@ -145,8 +145,7 @@
         "DEEPLINK_5_SCHEME": " ",
         "DEEPLINK_5_HOST": " "
       },
-      "cordova-hot-code-push-plugin": {},
-      "cordova-hot-code-push-local-dev-addon": {}
+      "cordova-hot-code-push-plugin": {}
     },
     "platforms": [
       "android"

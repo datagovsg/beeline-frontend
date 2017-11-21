@@ -14,7 +14,14 @@ Run `npm run install-android`
 ## iOS development
 NOTE: Cordova 7.x is not supported until nordnet/cordova-hot-code-push-local-dev-addon#20 merged  
 Install [Xcode](https://developer.apple.com/xcode/) for iOS development  
+
 Run `npm run install-ios`
+
+When prompted whether to overwrite `config.xml` and `resources/`, select `No`
+
+Open `platforms/ios/Beeline.xcodeproj` in Xcode
+
+Select target platform to run (e.g. iPhone 6) and run it
 
 # Building 
 
