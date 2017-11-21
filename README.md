@@ -12,7 +12,8 @@ Install [Android Studio](https://developer.android.com/studio/index.html)
 Run `npm run install-android`
 
 ## iOS development
-NOTE: Cordova 7.x is not supported until nordnet/cordova-hot-code-push-local-dev-addon#20 merged  
+NOTE: Cordova 7.x is not supported until nordnet/cordova-hot-code-push-local-dev-addon#20 merged. This is why in `package.json` we set the cordova version to `^6.5.0`.
+
 Install [Xcode](https://developer.apple.com/xcode/) for iOS development  
 
 Run `npm run install-ios`
