@@ -6,7 +6,7 @@ export default [
   'UserService',
   'RoutesService',
   function($scope, UserService, RoutesService) {
-    var routesPromise;
+    var routesPromise
     $scope.routesById = {}
 
     $scope.$on('$ionicView.beforeEnter', () => {
@@ -23,23 +23,23 @@ export default [
       })
 
       routesPromise = RoutesService.fetchRoutes(true, {
-        endDate: Date.now() +  14*24*60*60*1000,
-        startDate: Date.now() - 365*24*60*60*1000,
+        endDate: Date.now() + 14 * 24 * 60 * 60 * 1000,
+        startDate: Date.now() - 365 * 24 * 60 * 60 * 1000,
         tags: '[]',
       })
-      .then((routes) => {
-        $scope.routesById = _.keyBy(routes, r => r.id);
+      .then(routes => {
+        $scope.routesById = _.keyBy(routes, r => r.id)
       })
     }
 
-    var inFlight = false;
+    var inFlight = false
 
-    $scope.loadMore = function () {
+    $scope.loadMore = function() {
       if (inFlight) {
-        return;
+        return
       }
 
-      inFlight = true;
+      inFlight = true
       UserService.beeline({
         method: 'GET',
         url: '/transactions/user_history?' + qs.stringify({
@@ -47,15 +47,14 @@ export default [
           perPage: $scope.perPage,
         }),
       })
-      .then((response) => {
-        inFlight = false;
-        var newTransactions = response.data.transactions;
+      .then(response => {
+        inFlight = false
+        var newTransactions = response.data.transactions
 
-        if (newTransactions.length != $scope.perPage) {
-          $scope.hasMoreData = false;
-        }
-        else {
-          $scope.page++;
+        if (newTransactions.length === $scope.perPage) {
+          $scope.page++
+        } else {
+          $scope.hasMoreData = false
         }
 
         for (let t of newTransactions) {
@@ -83,12 +82,13 @@ export default [
           }
         })
 
-        $scope.transactions = $scope.transactions || [];
-        $scope.transactions = $scope.transactions.concat(newTransactions);
-        $scope.$broadcast('scroll.infiniteScrollComplete');
+        $scope.transactions = $scope.transactions || []
+        $scope.transactions = $scope.transactions.concat(newTransactions)
+        $scope.$broadcast('scroll.infiniteScrollComplete')
       })
-      .then(null, (error) => {
-        inFlight = false;
+      .then(null, error => {
+        inFlight = false
       })
     }
-}]
+  },
+]

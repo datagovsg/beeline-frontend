@@ -85,7 +85,7 @@ export default ['$scope', '$q', '$ionicPopup', 'KickstarterService',
     $scope.$watchGroup([
       () => KickstarterService.getCrowdstart(),
       () => KickstarterService.getBids(),
-      'data.placeQuery'
+      'data.placeQuery',
     ], ([crowdstartRoutes, userBids, placeQuery]) => {
       if (!crowdstartRoutes || !userBids) return
       // hide the animated-route
@@ -107,13 +107,11 @@ export default ['$scope', '$q', '$ionicPopup', 'KickstarterService',
 
       // Filter the routes
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-        // $scope.data.filteredNearbyKickstarterRoutes = SearchService.filterRoutesByPlaceAndText($scope.data.filteredNearbyKickstarterRoutes,  placeQuery, placeQuery.queryText);
         kickstarter = SearchService.filterRoutesByPlaceAndText(kickstarter, placeQuery, placeQuery.queryText)
         backedKickstarter = SearchService.filterRoutesByPlaceAndText(backedKickstarter, placeQuery, placeQuery.queryText)
       } else if (placeQuery && placeQuery.queryText) {
-        // $scope.data.filteredNearbyKickstarterRoutes = SearchService.filterRoutesByText($scope.data.filteredNearbyKickstarterRoutes,  placeQuery.queryText);
         kickstarter = SearchService.filterRoutesByText(kickstarter, placeQuery.queryText)
-        backedKickstarter = SearchService.filterRoutesByText(backedKickstarter,  placeQuery.queryText)
+        backedKickstarter = SearchService.filterRoutesByText(backedKickstarter, placeQuery.queryText)
       }
 
       // publish
@@ -162,14 +160,14 @@ export default ['$scope', '$q', '$ionicPopup', 'KickstarterService',
             type: 'button-positive',
             onTap: function(e) {
               $scope.closePopup()
-            }
-          }
-        ]
+            },
+          },
+        ],
       })
     }
 
     $scope.closePopup = function() {
       $scope.kickstartHelpPopup.close()
     }
-  }
+  },
 ]

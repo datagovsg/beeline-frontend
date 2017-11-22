@@ -1,51 +1,61 @@
 const queryString = require('querystring')
 
-export default['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'UserService', 'LoginDialog', 
-async function($scope, $state, $stateParams, $ionicPopup, $ionicLoading, UserService, LoginDialog) {
+export default[
+  '$scope',
+  '$state',
+  '$stateParams',
+  '$ionicPopup',
+  '$ionicLoading',
+  'UserService',
+  async function(
+    $scope,
+    $state,
+    $stateParams,
+    $ionicPopup,
+    $ionicLoading,
+    UserService) {
+    // Verify if refCode is provided
+    $scope.isLoaded = false
+    $ionicLoading.show()
 
-  // Verify if refCode is provided
-  $scope.isLoaded = false;
-  $ionicLoading.show()
+    $scope.refCode = $stateParams.refCode
 
-  $scope.refCode = $stateParams.refCode;
+    if ($scope.refCode) {
+      var query = queryString.stringify({code: $scope.refCode})
 
-  if($scope.refCode) {
-    var query = queryString.stringify({code: $scope.refCode})
+      try {
+        var refCodeOwner = await UserService.beeline({
+          method: 'GET',
+          url: '/promotions/refCodeOwner?' + query,
+        })
 
-    try {
-      var refCodeOwner = await UserService.beeline({
-        method: 'GET',
-        url: '/promotions/refCodeOwner?'+query,
-      });
-      
-      if(refCodeOwner) {
-        $scope.refCodeOwner = refCodeOwner.data
+        if (refCodeOwner) {
+          $scope.refCodeOwner = refCodeOwner.data
+        }
+      } catch (error) {
+        $ionicPopup.alert({
+          title: error.data.message,
+          subTitle: error.statusText,
+        })
       }
-
-    } catch (error){
-      $ionicPopup.alert({
-        title: error.data.message,
-        subTitle: error.statusText
-      });
     }
-  }
 
-  $ionicLoading.hide();
-  $scope.isLoaded = true;
+    $ionicLoading.hide()
+    $scope.isLoaded = true
 
-  $scope.data = {}
+    $scope.data = {}
 
-  $scope.register = async function(){
-    await UserService.registerViaReferralWelcome($scope.data.telephone, 
-      $scope.refCode, $scope.refCodeOwner)
+    $scope.register = async function() {
+      await UserService.registerViaReferralWelcome($scope.data.telephone,
+        $scope.refCode, $scope.refCodeOwner)
 
-    $state.go('tabs.routes')
+      $state.go('tabs.routes')
 
-    await $ionicPopup.alert({
-      title: 'Welcome to Beeline',
-      subTitle: 'Success! You can now use your $10 ride credits when you make bookings.'
-    })
-  }
-
-}]
+      await $ionicPopup.alert({
+        title: 'Welcome to Beeline',
+        subTitle: 'Success! You can now use your $10 ride credits when you make bookings.',
+      })
+    }
+  },
+]
 

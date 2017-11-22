@@ -1,135 +1,132 @@
-import faqModalTemplate from '../templates/faq-modal.html';
-import contactUsModalTemplate from '../templates/contact-us-modal.html';
-import shareReferralModalTemplate from '../templates/share-referral-modal.html';
-import commonmark from 'commonmark';
-import _ from 'lodash';
+import faqModalTemplate from '../templates/faq-modal.html'
+import contactUsModalTemplate from '../templates/contact-us-modal.html'
+import shareReferralModalTemplate from '../templates/share-referral-modal.html'
+import commonmark from 'commonmark'
+import _ from 'lodash'
 
-
-var reader = new commonmark.Parser({safe: true});
-var writer = new commonmark.HtmlRenderer({safe: true});
+var reader = new commonmark.Parser({safe: true})
+var writer = new commonmark.HtmlRenderer({safe: true})
 
 export default [
   '$scope', 'UserService', 'StripeService', 'KickstarterService',
   '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading',
-  '$state', '$cordovaSocialSharing','replace', 'DevicePromise',
+  '$cordovaSocialSharing', 'replace', 'DevicePromise',
   function(
     $scope, UserService, StripeService, KickstarterService,
-    $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading, $state,
+    $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading,
     $cordovaSocialSharing, replace, DevicePromise) {
+    $scope.data = {}
+    $scope.hasCordova = Boolean(window.cordova) || false
+    $scope.isOnKickstarter = false
 
-    $scope.data = {};
-    $scope.hasCordova = !!window.cordova || false
-    $scope.isOnKickstarter = false;
-
-    DevicePromise.then(()=>{
+    DevicePromise.then(() => {
       if ($scope.hasCordova) {
-        chcp.getVersionInfo((error, data)=>{
-          $scope.data.currentVersion = data.currentWebVersion || null;
+        chcp.getVersionInfo((error, data) => {
+          $scope.data.currentVersion = data.currentWebVersion || null
         })
       }
     })
 
-    let isPressed = false;
+    let isPressed = false
 
     // Track the login state of the user service
     $scope.$watch(function() {
-      return UserService.getUser();
+      return UserService.getUser()
     }, function(newUser) {
-      $scope.user = newUser;
+      $scope.user = newUser
 
-      if(newUser){
+      if (newUser) {
         $scope.shareMsg = UserService.getReferralMsg()
       } else {
         $scope.shareMsg = null
       }
-    });
+    })
 
     // Function that allows user to share an invitation with a referral code to other apps on the phone
-    $scope.cordovaShare = async function(){
+    $scope.cordovaShare = async function() {
       $cordovaSocialSharing.share($scope.shareMsg, "Try out Beeline!")
     }
 
     // Map in the login items
-    $scope.logIn = UserService.promptLogIn;
-    $scope.logOut = UserService.promptLogOut;
+    $scope.logIn = UserService.promptLogIn
+    $scope.logOut = UserService.promptLogOut
 
     // Generic event handler to allow user to update their
     // name, email
     // FIXME: Get Yixin to review the user info update flow.
-    $scope.updateUserInfo = function(field){
-      return UserService.promptUpdateUserInfo(field);
+    $scope.updateUserInfo = function(field) {
+      return UserService.promptUpdateUserInfo(field)
     }
 
     // Update telephone is distinct from the update user due to verification
-    $scope.updateTelephone = UserService.promptUpdatePhone;
+    $scope.updateTelephone = UserService.promptUpdatePhone
 
     // Configure modals
 
     // Load the pages only when requested.
     function assetScope(assetName) {
-      var newScope = $scope.$new();
-      newScope.error = newScope.html = null;
+      var newScope = $scope.$new()
+      newScope.error = newScope.html = null
       newScope.$on('modal.shown', () => {
         UserService.beeline({
           method: 'GET',
-          url: replace(`/assets/${assetName}`)
+          url: replace(`/assets/${assetName}`),
         })
-        .then((response) => {
-          newScope.html = writer.render(reader.parse(response.data.data));
-          newScope.error = false;
+        .then(response => {
+          newScope.html = writer.render(reader.parse(response.data.data))
+          newScope.error = false
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
-          newScope.html = "";
-          newScope.error = error;
+          newScope.html = ""
+          newScope.error = error
         })
       })
-      return newScope;
-    };
+      return newScope
+    }
 
     $scope.shareReferralModal = $ionicModal.fromTemplate(
       shareReferralModalTemplate,
       {scope: $scope}
-    );
+    )
 
     $scope.faqModal = $ionicModal.fromTemplate(
       faqModalTemplate,
       {scope: assetScope('FAQ')}
-    );
-    $scope.showPrivacyPolicy = () => Legalese.showPrivacyPolicy();
-    $scope.showTermsOfUse = () => Legalese.showTermsOfUse();
+    )
+    $scope.showPrivacyPolicy = () => Legalese.showPrivacyPolicy()
+    $scope.showTermsOfUse = () => Legalese.showTermsOfUse()
     $scope.contactUsModal = $ionicModal.fromTemplate(
       contactUsModalTemplate,
       {scope: $scope}
-    );
+    )
     $scope.$on('$destroy', function() {
-      $scope.faqModal.destroy();
-      $scope.contactUsModal.destroy();
-      $scope.shareReferralModal.destroy();
-    });
+      $scope.faqModal.destroy()
+      $scope.contactUsModal.destroy()
+      $scope.shareReferralModal.destroy()
+    })
 
     $scope.hasPaymentInfo = function() {
-      return _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0;
-    };
+      return _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
+    }
 
     $scope.promptChangeOrRemoveCard = async function() {
-
-      if (isPressed) return;
+      if (isPressed) return
 
       try {
-        isPressed = true;
-        $scope.isOnKickstarter = await checkIfOnKickstarter();
+        isPressed = true
+        $scope.isOnKickstarter = await checkIfOnKickstarter()
       } catch (err) {
-        console.log(err);
+        console.log(err)
         await $ionicLoading.show({
           template: `
           <div> Network error. ${err && err.data && err.data.message} Please try again later.</div>
           `,
           duration: 3500,
         })
-        return;
+        return
       } finally {
-        isPressed = false;
+        isPressed = false
       }
 
       $scope.cardDetailPopup = $ionicPopup.show({
@@ -152,24 +149,23 @@ export default [
           </div>
         `,
         buttons: [
-          {  text: 'Cancel' },
+          {text: 'Cancel'},
           {
             text: 'Remove',
             type: ($scope.isOnKickstarter ? 'button-disabled' : 'button-positive'),
             onTap: function(e) {
               if ($scope.isOnKickstarter) {
-                e.preventDefault();
+                e.preventDefault()
+              } else {
+                removeCard()
               }
-              else {
-                removeCard();
-              }
-            }
-          }
-        ]
-      });
-    };
+            },
+          },
+        ],
+      })
+    }
 
-    var removeCard = async function() {
+    async function removeCard() {
       var response = await $ionicPopup.confirm({
         title: 'Remove Payment Method',
         scope: $scope,
@@ -180,13 +176,13 @@ export default [
         <div class="item item-text-wrap text-center">
             <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
         </div>
-        `
+        `,
       })
 
-      if (!response) return;
+      if (!response) return
 
       try {
-        await loadingSpinner(UserService.removePaymentInfo());
+        await loadingSpinner(UserService.removePaymentInfo())
 
         await $ionicLoading.show({
           template: `
@@ -194,9 +190,8 @@ export default [
           `,
           duration: 1500,
         })
-      }
-      catch(err) {
-        console.log(err);
+      } catch (err) {
+        console.log(err)
         await $ionicLoading.show({
           template: `
           <div> Failed to delete payment method. ${err && err.data && err.data.message} Please try again later.</div>
@@ -204,60 +199,56 @@ export default [
           duration: 3500,
         })
       } finally {
-        $scope.$digest();
+        $scope.$digest()
       }
-    };
+    }
 
     async function checkIfOnKickstarter() {
-      let response = await KickstarterService.hasBids();
-      return response;
-    };
+      let response = await KickstarterService.hasBids()
+      return response
+    }
 
     $scope.addCard = async function() {
-
-      if (isPressed) return;
+      if (isPressed) return
 
       try {
-        isPressed = true;
-        const stripeToken = await StripeService.promptForToken(null, null, true);
+        isPressed = true
+        const stripeToken = await StripeService.promptForToken(null, null, true)
 
-        if (!stripeToken) return;
+        if (!stripeToken) return
 
         await loadingSpinner(
           UserService.savePaymentInfo(stripeToken.id)
-        );
-
+        )
       } catch (err) {
-        console.log(err);
+        console.log(err)
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
       } finally {
-        isPressed = false;
-        $scope.$digest();
+        isPressed = false
+        $scope.$digest()
       }
-    };
+    }
 
     $scope.changeCard = async function() {
-
-      if (isPressed) return;
+      if (isPressed) return
 
       try {
-        isPressed = true;
-        $scope.cardDetailPopup.close();
-        const stripeToken = await StripeService.promptForToken(null, null, true);
+        isPressed = true
+        $scope.cardDetailPopup.close()
+        const stripeToken = await StripeService.promptForToken(null, null, true)
 
-        if (!stripeToken) return;
+        if (!stripeToken) return
 
         await loadingSpinner(
           UserService.updatePaymentInfo(stripeToken.id)
-        );
-
+        )
       } catch (err) {
-        console.log(err);
+        console.log(err)
         throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
       } finally {
-        isPressed = false;
-        $scope.$digest();
+        isPressed = false
+        $scope.$digest()
       }
-    };
-
-}];
+    }
+  },
+]

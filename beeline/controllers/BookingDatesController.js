@@ -263,11 +263,11 @@ export default [
     // get whole range of dates in the month
     function getFullMonthDates(oneUTCDateInMonth) {
       // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
-      let endOfMonth = new moment(oneUTCDateInMonth).endOf('month')
+      let endOfMonth = moment(oneUTCDateInMonth).endOf('month')
       let lastDate = endOfMonth.date()
       let fullMonthDates = []
       for (let i = 1; i <= lastDate; i++) {
-        let candidate = new moment.utc([endOfMonth.year(), endOfMonth.month(), i])
+        let candidate = moment.utc([endOfMonth.year(), endOfMonth.month(), i])
         fullMonthDates.push(candidate)
       }
       return fullMonthDates
