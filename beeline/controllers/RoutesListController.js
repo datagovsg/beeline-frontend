@@ -33,7 +33,7 @@ export default [
     // Explicitly declare/initialize of scope variables we use
     $scope.data = {
       placeQuery: null, // The place object used to search
-      queryText: "", // The actual text in the box used only for the clear button
+      queryText: '', // The actual text in the box used only for the clear button
       // Different types of route data
       activatedCrowdstartRoutes: [],
       recentRoutes: [],
@@ -97,11 +97,11 @@ export default [
     $scope.refreshRoutes = function(ignoreCache) {
       RoutesService.fetchRoutePasses(ignoreCache)
       RoutesService.fetchRoutes(ignoreCache)
-      var routesPromise = RoutesService.fetchRoutesWithRoutePass()
-      var recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
-      var allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(ignoreCache)
-      var crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(ignoreCache)
-      var liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache)
+      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
+      const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
+      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(ignoreCache)
+      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(ignoreCache)
+      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache)
       return $q.all([
         routesPromise,
         recentRoutesPromise,
@@ -117,7 +117,7 @@ export default [
       })
     }
 
-    $scope.$watch("data.queryText", queryText => {
+    $scope.$watch('data.queryText', (queryText) => {
       if (queryText.length === 0) $scope.data.placeQuery = null
     })
 
@@ -170,13 +170,13 @@ export default [
         }
         // "Fill in" the recent routes with the all routes data
         let allRoutesById = _.keyBy(allRoutes, 'id')
-        $scope.data.recentRoutes = recentRoutes.map(recentRoute => {
+        $scope.data.recentRoutes = recentRoutes.map((recentRoute) => {
           return _.assign({
             alightStopStopId: recentRoute.alightStopStopId,
             boardStopStopId: recentRoute.boardStopStopId,
           }, allRoutesById[recentRoute.id])
         // Clean out "junk" routes which may be old/obsolete
-        }).filter(route => route && route.id !== undefined)
+        }).filter((route) => route && route.id !== undefined)
         $scope.data.recentRoutesById = _.keyBy($scope.data.recentRoutes, 'id')
       }
     )
@@ -186,9 +186,9 @@ export default [
       ['data.activatedCrowdstartRoutes', 'data.recentRoutesById'],
       ([activatedCrowdstartRoutes, recentRoutesById]) => {
         if (activatedCrowdstartRoutes && recentRoutesById) {
-          let activatedCrowdstartRoutesIds = _.map(activatedCrowdstartRoutes, route => route.id)
+          let activatedCrowdstartRoutesIds = _.map(activatedCrowdstartRoutes, (route) => route.id)
           $scope.data.recentRoutes = $scope.data.recentRoutes.filter(
-            route => !activatedCrowdstartRoutesIds.includes(route.id)
+            (route) => !activatedCrowdstartRoutesIds.includes(route.id)
           )
         }
       }
@@ -208,7 +208,7 @@ export default [
             if (Object.prototype.hasOwnProperty.call(recentRoutesById, id)) {
               let route = recentRoutesById[id]
               let lnglat = null
-              let tripStopsByKey = _.keyBy(route.trips[0].tripStops, stop => stop.stopId)
+              let tripStopsByKey = _.keyBy(route.trips[0].tripStops, (stop) => stop.stopId)
               if (route.schedule && route.schedule.slice(0, 2) === 'AM') {
                 lnglat = tripStopsByKey[route.boardStopStopId].stop.coordinates.coordinates
               } else {
@@ -219,7 +219,7 @@ export default [
             }
           }
           // filter recently booked route ids
-          _.remove(placeResults, x => {
+          _.remove(placeResults, (x) => {
             return recentRoutesById[x.id]
           })
           // publish unique routes
@@ -239,14 +239,14 @@ export default [
         if (!routes || !bids) return
 
         // Filter to the routes the user bidded on
-        let biddedRouteIds = bids.map(bid => bid.routeId)
-        routes = routes.filter(route => {
+        let biddedRouteIds = bids.map((bid) => bid.routeId)
+        routes = routes.filter((route) => {
           return biddedRouteIds.includes(route.id.toString())
         })
 
         // don't display it in backed list if the pass expires after 1 month of 1st trip
         // and don't display it if it's 7 days after expired and not actived
-        routes = routes.filter(route => (!route.passExpired && route.isActived) ||
+        routes = routes.filter((route) => (!route.passExpired && route.isActived) ||
                                         !route.isExpired ||
                                         !route.is7DaysOld)
 
@@ -261,7 +261,7 @@ export default [
           )
         }
         // Map to scope once done filtering and sorting
-        $scope.data.biddedCrowdstartRoutes = _.sortBy(routes, route => {
+        $scope.data.biddedCrowdstartRoutes = _.sortBy(routes, (route) => {
           return parseInt(route.label.slice(1))
         })
       }
@@ -289,11 +289,11 @@ export default [
           )
         }
        // Add the subscription information
-        _.forEach(liteRoutes, liteRoute => {
+        _.forEach(liteRoutes, (liteRoute) => {
           liteRoute.isSubscribed = Boolean(subscribed.includes(liteRoute.label))
         })
         // Sort by label and publish
-        $scope.data.liteRoutes = _.sortBy(liteRoutes, route => {
+        $scope.data.liteRoutes = _.sortBy(liteRoutes, (route) => {
           return parseInt(route.label.slice(1))
         })
       }
@@ -302,7 +302,7 @@ export default [
     // Normal routes
     // Sort them by start time
     $scope.$watchGroup(
-      [() => RoutesService.getRoutesWithRoutePass(), "data.placeQuery"],
+      [() => RoutesService.getRoutesWithRoutePass(), 'data.placeQuery'],
       ([allRoutes, placeQuery]) => {
         // Input validation
         if (!allRoutes) return
@@ -320,9 +320,9 @@ export default [
           )
         }
         // Sort the routes by the time of day
-        $scope.data.routes = _.sortBy(allRoutes, 'label', route => {
-          var firstTripStop = _.get(route, 'trips[0].tripStops[0]')
-          var midnightOfTrip = new Date(firstTripStop.time.getTime())
+        $scope.data.routes = _.sortBy(allRoutes, 'label', (route) => {
+          const firstTripStop = _.get(route, 'trips[0].tripStops[0]')
+          const midnightOfTrip = new Date(firstTripStop.time.getTime())
           midnightOfTrip.setHours(0, 0, 0, 0)
           return firstTripStop.time.getTime() - midnightOfTrip.getTime()
         })
@@ -341,12 +341,12 @@ export default [
 
         // Filter out the routes the user bidded on
         // These are already shown elsewhere
-        let biddedRouteIds = bids.map(bid => bid.routeId)
-        routes = routes.filter(route => {
+        let biddedRouteIds = bids.map((bid) => bid.routeId)
+        routes = routes.filter((route) => {
           return !biddedRouteIds.includes(route.id.toString())
         })
         // Filter out the expired routes
-        routes = routes.filter(route => !route.isExpired)
+        routes = routes.filter((route) => !route.isExpired)
         // Filter the routes
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
           routes = SearchService.filterRoutesByPlaceAndText(
@@ -358,7 +358,7 @@ export default [
           )
         }
         // Map to scope once done filtering and sorting
-        $scope.data.crowdstartRoutes = _.sortBy(routes, route => {
+        $scope.data.crowdstartRoutes = _.sortBy(routes, (route) => {
           return parseInt(route.label.slice(1))
         })
       }

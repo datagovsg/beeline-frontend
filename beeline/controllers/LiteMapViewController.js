@@ -57,44 +57,44 @@ export default [
       return formatTime(input)
     }
 
-    LiteRoutesService.fetchLiteRoute(routeLabel).then(response => {
-      var route = response[routeLabel]
+    LiteRoutesService.fetchLiteRoute(routeLabel).then((response) => {
+      const route = response[routeLabel]
       if (route.path) {
         RoutesService.decodeRoutePath(route.path)
-          .then(decodedPath => {
+          .then((decodedPath) => {
             $scope.mapObject.routePath = decodedPath
           })
           .catch(() => {
             $scope.mapObject.routePath = []
           })
       }
-      var trips = _.sortBy(route.trips, trip => {
+      const trips = _.sortBy(route.trips, (trip) => {
         return trip.date
       })
       let nextTrips = trips.filter(
-        trip => trip.date === trips[0].date)
-      var liteTripStops = LiteRoutesService.computeLiteStops(nextTrips)
+        (trip) => trip.date === trips[0].date)
+      const liteTripStops = LiteRoutesService.computeLiteStops(nextTrips)
       $scope.mapObject.stops = liteTripStops
       SharedVariableService.setStops(liteTripStops)
     })
 
-    MapService.on('ping-trips', trips => {
+    MapService.on('ping-trips', (trips) => {
       $scope.mapObject.pingTrips = trips
     })
 
     // fetch driver pings every 4s
     $scope.timeout = new SafeInterval(pingLoop, 4000, 1000)
 
-    MapService.on("killPingLoop", () => {
+    MapService.on('killPingLoop', () => {
       $scope.timeout.stop()
     })
 
-    MapService.on("startPingLoop", () => {
+    MapService.on('startPingLoop', () => {
       $scope.timeout.start()
     })
 
     // load icons and path earlier by restart timeout on watching trips
-    $scope.$watchCollection('mapObject.pingTrips', pt => {
+    $scope.$watchCollection('mapObject.pingTrips', (pt) => {
       $scope.timeout.stop()
 
       if (pt) {
@@ -109,8 +109,8 @@ export default [
 
       $scope.mapObject.statusMessages.length = $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
-        return TripService.DriverPings(trip.id)
-        .then(async info => {
+        return TripService.driverPings(trip.id)
+        .then(async (info) => {
           const now = ServerTime.getTime()
           $scope.mapObject.allRecentPings[index] = {
             ...info,

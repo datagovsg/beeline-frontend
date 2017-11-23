@@ -8,6 +8,7 @@ import {sleep} from '../shared/util'
 export default [
   '$scope',
   '$q',
+  '$window',
   '$ionicPopup',
   'KickstarterService',
   'SearchService',
@@ -16,6 +17,7 @@ export default [
   function(
     $scope,
     $q,
+    $window,
     $ionicPopup,
     KickstarterService,
     SearchService,
@@ -31,7 +33,7 @@ export default [
       stagingFilterText: '',
       nearbyKickstarterRoutes: null,
       placeQuery: null, // The place object used to search
-      queryText: "", // The actual text in the box used only for the clear button
+      queryText: '', // The actual text in the box used only for the clear button
       routesAvailable: false,
     }
 
@@ -56,7 +58,7 @@ export default [
       $scope.$digest()
     }
 
-    $scope.$watch("data.queryText", queryText => {
+    $scope.$watch('data.queryText', (queryText) => {
       if (queryText.length === 0) $scope.data.placeQuery = null
     })
 
@@ -89,8 +91,8 @@ export default [
         $scope.data.error = true
       })
       .then(() => {
-        if (!window.localStorage.showCrowdstart) {
-          window.localStorage.showCrowdstart = true
+        if (!$window.localStorage.showCrowdstart) {
+          $window.localStorage.showCrowdstart = true
           $scope.showHelpPopup()
         }
       })
@@ -104,19 +106,19 @@ export default [
       // hide the animated-route
       $scope.data.routesAvailable = true
       $scope.userBids = userBids
-      $scope.recentBidsById = _.keyBy($scope.userBids, r => r.routeId)
-      let recentAndAvailable = _.partition(crowdstartRoutes, x => {
+      $scope.recentBidsById = _.keyBy($scope.userBids, (r) => r.routeId)
+      let recentAndAvailable = _.partition(crowdstartRoutes, (x) => {
         return _.includes(_.keys($scope.recentBidsById), x.id.toString())
       })
       // don't display it in backed list if the pass expires after 1 month of 1st trip
       // and don't display it if it's 7 days after expired and not actived
-      let backedKickstarter = recentAndAvailable[0].filter(route =>
+      let backedKickstarter = recentAndAvailable[0].filter((route) =>
         (!route.passExpired && route.isActived) ||
         !route.isExpired ||
         !route.is7DaysOld) ||
         []
       // don't display it in kickstarter if it's expired
-      let kickstarter = recentAndAvailable[1].filter(route => !route.isExpired) || []
+      let kickstarter = recentAndAvailable[1].filter((route) => !route.isExpired) || []
 
       // Filter the routes
       if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
@@ -128,8 +130,8 @@ export default [
       }
 
       // publish
-      $scope.data.filteredKickstarter = _.sortBy(kickstarter, x => parseInt(x.label.slice(1)))
-      $scope.data.filteredbackedKickstarter = _.sortBy(backedKickstarter, x => parseInt(x.label.slice(1)))
+      $scope.data.filteredKickstarter = _.sortBy(kickstarter, (x) => parseInt(x.label.slice(1)))
+      $scope.data.filteredbackedKickstarter = _.sortBy(backedKickstarter, (x) => parseInt(x.label.slice(1)))
     })
 
     // Deciding whether to do a place query

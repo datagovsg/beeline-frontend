@@ -10,7 +10,7 @@ export default [
     UserService,
     RoutesService
   ) {
-    var routesPromise
+    let routesPromise
     $scope.routesById = {}
 
     $scope.$on('$ionicView.beforeEnter', () => {
@@ -31,12 +31,12 @@ export default [
         startDate: Date.now() - 365 * 24 * 60 * 60 * 1000,
         tags: '[]',
       })
-      .then(routes => {
-        $scope.routesById = _.keyBy(routes, r => r.id)
+      .then((routes) => {
+        $scope.routesById = _.keyBy(routes, (r) => r.id)
       })
     }
 
-    var inFlight = false
+    let inFlight = false
 
     $scope.loadMore = function() {
       if (inFlight) {
@@ -51,9 +51,9 @@ export default [
           perPage: $scope.perPage,
         }),
       })
-      .then(response => {
+      .then((response) => {
         inFlight = false
-        var newTransactions = response.data.transactions
+        const newTransactions = response.data.transactions
 
         if (newTransactions.length === $scope.perPage) {
           $scope.page++
@@ -62,7 +62,7 @@ export default [
         }
 
         for (let t of newTransactions) {
-          t.itemsByType = _.groupBy(t.transactionItems, ti => ti.itemType)
+          t.itemsByType = _.groupBy(t.transactionItems, (ti) => ti.itemType)
         }
 
         // add route information to ticket sale items and route credit items
@@ -78,10 +78,10 @@ export default [
               ticketExpenseItem.route = $scope.routesById[ticketExpenseItem.ticketExpense.boardStop.trip.routeId]
             }
             for (let routeCreditItem of t.itemsByType.routeCredits || []) {
-              routeCreditItem.route = $scope.routesById[routeCreditItem.routeCredits.tag.substring(routeCreditItem.routeCredits.tag.indexOf("-") + 1)]
+              routeCreditItem.route = $scope.routesById[routeCreditItem.routeCredits.tag.substring(routeCreditItem.routeCredits.tag.indexOf('-') + 1)]
             }
             for (let routePassItem of t.itemsByType.routePass || []) {
-              routePassItem.route = $scope.routesById[routePassItem.routePass.tag.substring(routePassItem.routePass.tag.indexOf("-") + 1)]
+              routePassItem.route = $scope.routesById[routePassItem.routePass.tag.substring(routePassItem.routePass.tag.indexOf('-') + 1)]
             }
           }
         })
@@ -90,7 +90,7 @@ export default [
         $scope.transactions = $scope.transactions.concat(newTransactions)
         $scope.$broadcast('scroll.infiniteScrollComplete')
       })
-      .then(null, error => {
+      .then(null, (error) => {
         inFlight = false
       })
     }

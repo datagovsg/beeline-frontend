@@ -13,7 +13,7 @@ export default [
       $ionicHistory.clearHistory()
 
       // Back button goes back to routes list
-      var deregister = $ionicPlatform.registerBackButtonAction(() => {
+      const deregister = $ionicPlatform.registerBackButtonAction(() => {
         $state.go('tabs.routes')
       }, 101)
       $scope.$on('$ionicView.beforeLeave', deregister)

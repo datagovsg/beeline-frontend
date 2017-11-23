@@ -3,6 +3,7 @@ import processingPaymentsTemplate from '../templates/processing-payments.html'
 import _ from 'lodash'
 
 export default [
+  '$document',
   '$scope',
   '$state',
   '$ionicPopup',
@@ -18,6 +19,7 @@ export default [
   'CreditsService',
   '$ionicPosition',
   function(
+    $document,
     $scope,
     $state,
     $ionicPopup,
@@ -57,7 +59,7 @@ export default [
       feedback: null,
       promoCodeIsValid: null,
       isVerifying: null,
-      selectedDates: ($stateParams.selectedDates || '').split(',').map(s => parseInt(s)),
+      selectedDates: ($stateParams.selectedDates || '').split(',').map((s) => parseInt(s)),
       // if 2 requests sent to verify promo code, only the latter triggered matters
       // always need to have this if using debounce with promise
       lastestVerifyPromoCodePromise: null,
@@ -68,22 +70,22 @@ export default [
 
     $scope.isPaymentProcessing = false
 
-    RoutesService.getRoute(parseInt($scope.book.routeId)).then(route => {
+    RoutesService.getRoute(parseInt($scope.book.routeId)).then((route) => {
       $scope.book.route = route
       $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]]
             .tripStops
-            .filter(ts => $scope.book.boardStopId === ts.stop.id)[0]
+            .filter((ts) => $scope.book.boardStopId === ts.stop.id)[0]
       $scope.book.alightStop = route.tripsByDate[$scope.book.selectedDates[0]]
             .tripStops
-            .filter(ts => $scope.book.alightStopId === ts.stop.id)[0]
+            .filter((ts) => $scope.book.alightStopId === ts.stop.id)[0]
     })
 
     RoutesService.getRouteFeatures(parseInt($scope.book.routeId))
-    .then(features => {
+    .then((features) => {
       $scope.book.features = features
     })
 
-    $scope.$watch(() => UserService.getUser(), user => {
+    $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.isLoggedIn = Boolean(user)
       $scope.user = user
       $scope.hasSavedPaymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
@@ -108,7 +110,7 @@ export default [
     $scope.$on('companyTnc.done', () => {
       $ionicScrollDelegate.resize()
     })
-    $scope.$watch('book.price', price => {
+    $scope.$watch('book.price', (price) => {
       if (parseFloat(price) === 0) {
         $scope.disp.zeroDollarPurchase = true
       } else {
@@ -117,10 +119,10 @@ export default [
     })
 
     $scope.checkValidDate = async function() {
-      var previouslyBookedDays = await TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
-      var selectedAndInvalid = _.intersection(
+      const previouslyBookedDays = await TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
+      const selectedAndInvalid = _.intersection(
         $scope.book.selectedDates, // list of integers
-        Object.keys(previouslyBookedDays).map(s => parseInt(s))
+        Object.keys(previouslyBookedDays).map((s) => parseInt(s))
       )
       $scope.book.hasInvalidDate = (selectedAndInvalid.length > 0)
     }
@@ -164,7 +166,7 @@ export default [
         // disable the button
         $scope.isPaymentProcessing = true
 
-        var stripeToken = await StripeService.promptForToken(
+        const stripeToken = await StripeService.promptForToken(
           null,
           isFinite($scope.book.price) ? $scope.book.price * 100 : '',
           null)
@@ -196,7 +198,7 @@ export default [
         $scope.isPaymentProcessing = true
 
         if (!$scope.hasSavedPaymentInfo) {
-          var stripeToken = await StripeService.promptForToken(
+          let stripeToken = await StripeService.promptForToken(
             null,
             isFinite($scope.book.price) ? $scope.book.price * 100 : '',
             null)
@@ -205,10 +207,7 @@ export default [
             $scope.isPaymentProcessing = false // re-enable button
             return
           }
-        }
 
-        // saves payment info if doesn't exist
-        if (!$scope.hasSavedPaymentInfo) {
           await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
         }
 
@@ -230,7 +229,7 @@ export default [
     }
 
     $scope.scrollToPriceCalculator = function() {
-      var priceCalculatorPosition = $ionicPosition.position(angular.element(document.getElementById('priceCalc')))
+      const priceCalculatorPosition = $ionicPosition.position(angular.element($document.getElementById('priceCalc')))
       $ionicScrollDelegate.scrollTo(priceCalculatorPosition.left, priceCalculatorPosition.top, true)
     }
 
@@ -241,7 +240,7 @@ export default [
           template: processingPaymentsTemplate,
         })
 
-        var result = await UserService.beeline({
+        const result = await UserService.beeline({
           method: 'POST',
           url: '/transactions/tickets/payment',
           data: _.defaults(paymentOptions, {
@@ -291,13 +290,13 @@ export default [
       const currentVerifyPromoCodePromise =
             $scope.book.lastestVerifyPromoCodePromise =
             BookingService.computePriceInfo(book)
-                .then(priceInfo => {
+                .then((priceInfo) => {
                   if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
                     $scope.book.feedback = 'Valid'
                     $scope.book.promoCodeIsValid = true
                   }
                 })
-                .catch(error => {
+                .catch((error) => {
                   // still need this check as the latter promise may come back earlier than the 1st one
                   if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
                     if (error.data && error.data.source === 'promoCode') {

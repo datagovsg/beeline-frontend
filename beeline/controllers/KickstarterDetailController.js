@@ -26,7 +26,7 @@ export default [
 
     $scope.book.routeId = Number($stateParams.routeId)
 
-    $scope.$watch(() => KickstarterService.getCrowdstartById($scope.book.routeId), route => {
+    $scope.$watch(() => KickstarterService.getCrowdstartById($scope.book.routeId), (route) => {
       if (!route) return
       $scope.book.route = route
       $scope.book.bidOptions = route.notes.tier;
@@ -35,7 +35,7 @@ export default [
     })
 
     $scope.showStops = function() {
-      $state.go("tabs.crowdstart-stops", {
+      $state.go('tabs.crowdstart-stops', {
         routeId: $scope.book.routeId,
       })
     }
