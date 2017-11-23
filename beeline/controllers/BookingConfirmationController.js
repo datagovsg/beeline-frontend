@@ -3,7 +3,12 @@ export default [
   '$state',
   '$ionicHistory',
   '$ionicPlatform',
-  function($scope, $state, $ionicHistory, $ionicPlatform) {
+  function(
+    $scope,
+    $state,
+    $ionicHistory,
+    $ionicPlatform
+  ) {
     $scope.$on('$ionicView.afterEnter', () => {
       $ionicHistory.clearHistory()
 

@@ -14,7 +14,8 @@ export default [
     $stateParams,
     BookingService,
     RoutesService,
-    MapService) {
+    MapService
+  ) {
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
 
     var originalMapObject = {

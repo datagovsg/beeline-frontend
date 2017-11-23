@@ -5,7 +5,12 @@ export default [
   'MapOptions',
   'SharedVariableService',
   'uiGmapGoogleMapApi',
-  function($scope, MapOptions, SharedVariableService, uiGmapGoogleMapApi) {
+  function(
+    $scope,
+    MapOptions,
+    SharedVariableService,
+    uiGmapGoogleMapApi
+  ) {
     $scope.map = MapOptions.defaultMapOptions({
       busLocation: {
         coordinates: null,

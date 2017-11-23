@@ -5,10 +5,23 @@ import {sleep} from '../shared/util'
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
-export default ['$scope', '$q', '$ionicPopup', 'KickstarterService',
-  'SearchService', 'SearchEventService', 'PlaceService',
-  function($scope, $q, $ionicPopup, KickstarterService, SearchService,
-    SearchEventService, PlaceService) {
+export default [
+  '$scope',
+  '$q',
+  '$ionicPopup',
+  'KickstarterService',
+  'SearchService',
+  'SearchEventService',
+  'PlaceService',
+  function(
+    $scope,
+    $q,
+    $ionicPopup,
+    KickstarterService,
+    SearchService,
+    SearchEventService,
+    PlaceService
+  ) {
     // https://github.com/angular/angular.js/wiki/Understanding-Scopes
     $scope.data = {
       error: null,

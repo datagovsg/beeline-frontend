@@ -12,8 +12,17 @@ export default [
   '$q',
   '$ionicScrollDelegate',
   '$ionicPopup',
-  function($scope, UserService, RoutesService, $stateParams, TicketService,
-    loadingSpinner, $q, $ionicScrollDelegate, $ionicPopup) {
+  function(
+    $scope,
+    UserService,
+    RoutesService,
+    $stateParams,
+    TicketService,
+    loadingSpinner,
+    $q,
+    $ionicScrollDelegate,
+    $ionicPopup
+  ) {
     // Booking session logic.
     // Defines the set of variables that, when changed, all user inputs
     // on this page should be cleared.

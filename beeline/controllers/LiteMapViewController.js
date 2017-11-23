@@ -21,7 +21,8 @@ export default [
     // $timeout,
     TripService,
     LiteRoutesService,
-    ServerTime) {
+    ServerTime
+  ) {
     let routeLabel = $stateParams.label ? $stateParams.label : null
     // Date calculated as Date.now() + Local-Server-TimeDiff
     $scope.mapObject = {

@@ -1,6 +1,12 @@
 export default [
-  '$scope', '$stateParams', 'KickstarterService',
-  function($scope, $stateParams, KickstarterService) {
+  '$scope',
+  '$stateParams',
+  'KickstarterService',
+  function(
+    $scope,
+    $stateParams,
+    KickstarterService
+  ) {
     // Default settings for various info used in the page
     $scope.book = {
       routeId: null,

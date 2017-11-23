@@ -1,9 +1,17 @@
 import _ from 'lodash'
 
 export default [
-  '$scope', '$state', '$stateParams', 'BookingService', 'KickstarterService',
+  '$scope',
+  '$state',
+  '$stateParams',
+  'BookingService',
+  'KickstarterService',
   function(
-    $scope, $state, $stateParams, BookingService, KickstarterService
+    $scope,
+    $state,
+    $stateParams,
+    BookingService,
+    KickstarterService
   ) {
     $scope.routePath = []
 
