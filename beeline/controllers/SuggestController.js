@@ -33,7 +33,7 @@ export default [
       $scope.newSuggestionModal.destroy()
     })
 
-    $scope.$on('$ionicView.afterEnter', event => {
+    $scope.$on('$ionicView.afterEnter', (event) => {
       // if we had anonymous suggestions before, convert them to suggestions
       // associated with this user
       $scope.$watch(function() {
@@ -44,7 +44,7 @@ export default [
             method: 'POST',
             url: '/suggestions/deanonymize',
           })
-          .then(response => {
+          .then((response) => {
             if (response.data > 0) queryData()
           })
         }
@@ -55,10 +55,10 @@ export default [
         Search.data.startLat && Search.data.startLng) {
         $state.params.action = ''
 
-        var arrivalTime = new Date(Search.data.arrivalTime)
-        var secondsSinceMidnight = arrivalTime.getHours() * 60 * 60 +
-            arrivalTime.getMinutes() * 60 +
-            arrivalTime.getSeconds()
+        const arrivalTime = new Date(Search.data.arrivalTime)
+        const secondsSinceMidnight = arrivalTime.getHours() * 60 * 60 +
+              arrivalTime.getMinutes() * 60 +
+              arrivalTime.getSeconds()
 
         UserService.beeline({
           method: 'POST',
@@ -74,7 +74,7 @@ export default [
         .then(() => {
           queryData()
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err)
           alert('You must be logged in to make a suggestion')
           $state.go('tabs.suggest', {action: ''})
@@ -89,16 +89,16 @@ export default [
 
     // populate
     function queryData() {
-      var suggestions
+      let suggestions
 
       UserService.beeline({
         url: '/suggestions',
         method: 'GET',
       })
-      .then(response => {
+      .then((response) => {
         suggestions = response.data
 
-        var countSimilar = suggestions.map(suggestion =>
+        const countSimilar = suggestions.map((suggestion) =>
           UserService.beeline({
             url: `/suggestions/${suggestion.id}/similar`,
             method: 'GET',
@@ -106,8 +106,8 @@ export default [
 
         return Promise.all(countSimilar)
       })
-      .then(similars => {
-        for (var i = 0; i < suggestions.length; i++) {
+      .then((similars) => {
+        for (let i = 0; i < suggestions.length; i++) {
           suggestions[i].numSimilar = similars[i].data.length
         }
         return suggestions
@@ -136,7 +136,7 @@ export default [
       $scope.getSuggestionById = function(tid) {
         SuggestionService.getSuggestionById(tid)
         $scope.suggestion = SuggestionService.getSelectedSuggestion()
-        console.log("selected suggestion is " + $scope.suggestion.id)
+        console.log('selected suggestion is ' + $scope.suggestion.id)
       }
     }
 
@@ -176,7 +176,7 @@ export default [
         title: 'Delete suggestion',
         template: 'Are you sure you want to delete this suggestion?',
       })
-      .then(result => {
+      .then((result) => {
         if (result) {
           UserService.beeline({
             method: 'DELETE',
@@ -204,9 +204,9 @@ export default [
     }
 
     $scope.submitSuggestion = function(suggestion) {
-      var arrivalTime = new (
-        Date.bind.apply(Date, [{}, 2015, 1, 1].concat(suggestion.time.split(':'))))
-      var secondsSinceMidnight = arrivalTime.getHours() * 60 * 60 +
+      const arrivalTime = new (
+        Date.bind(...[{}, 2015, 1, 1].concat(suggestion.time.split(':'))))
+      const secondsSinceMidnight = arrivalTime.getHours() * 60 * 60 +
           arrivalTime.getMinutes() * 60 +
           arrivalTime.getSeconds()
 

@@ -10,9 +10,11 @@
   },
   "rules": {
     "no-unused-vars": ["error"],
-    "semi": [2, "never"],
+    "semi": ["error", "never"],
     "comma-dangle": ["error", "always-multiline"],
-    "radix": ["error", "as-needed"]
+    "radix": ["error", "as-needed"],
+    "require-jsdoc": ["warn"],
+    "max-len": ["warn"]
   },
   "globals": {
     "angular": true
