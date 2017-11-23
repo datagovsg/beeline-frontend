@@ -4,8 +4,8 @@ import shareReferralModalTemplate from '../templates/share-referral-modal.html'
 import commonmark from 'commonmark'
 import _ from 'lodash'
 
-var reader = new commonmark.Parser({safe: true})
-var writer = new commonmark.HtmlRenderer({safe: true})
+const reader = new commonmark.Parser({safe: true})
+const writer = new commonmark.HtmlRenderer({safe: true})
 
 export default [
   '$scope',
@@ -14,6 +14,7 @@ export default [
   'KickstarterService',
   '$ionicModal',
   '$ionicPopup',
+  '$window',
   'Legalese',
   'loadingSpinner',
   '$ionicLoading',
@@ -27,6 +28,7 @@ export default [
     KickstarterService,
     $ionicModal,
     $ionicPopup,
+    $window,
     Legalese,
     loadingSpinner,
     $ionicLoading,
@@ -35,7 +37,7 @@ export default [
     DevicePromise
   ) {
     $scope.data = {}
-    $scope.hasCordova = Boolean(window.cordova) || false
+    $scope.hasCordova = Boolean($window.cordova) || false
     $scope.isOnKickstarter = false
 
     DevicePromise.then(() => {
@@ -63,7 +65,7 @@ export default [
 
     // Function that allows user to share an invitation with a referral code to other apps on the phone
     $scope.cordovaShare = async function() {
-      $cordovaSocialSharing.share($scope.shareMsg, "Try out Beeline!")
+      $cordovaSocialSharing.share($scope.shareMsg, 'Try out Beeline!')
     }
 
     // Map in the login items
@@ -84,20 +86,20 @@ export default [
 
     // Load the pages only when requested.
     function assetScope(assetName) {
-      var newScope = $scope.$new()
+      const newScope = $scope.$new()
       newScope.error = newScope.html = null
       newScope.$on('modal.shown', () => {
         UserService.beeline({
           method: 'GET',
           url: replace(`/assets/${assetName}`),
         })
-        .then(response => {
+        .then((response) => {
           newScope.html = writer.render(reader.parse(response.data.data))
           newScope.error = false
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
-          newScope.html = ""
+          newScope.html = ''
           newScope.error = error
         })
       })
@@ -185,7 +187,7 @@ export default [
     }
 
     async function removeCard() {
-      var response = await $ionicPopup.confirm({
+      const response = await $ionicPopup.confirm({
         title: 'Remove Payment Method',
         scope: $scope,
         template: `

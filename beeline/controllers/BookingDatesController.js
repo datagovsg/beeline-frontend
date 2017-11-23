@@ -1,4 +1,4 @@
-var moment = require('moment')
+const moment = require('moment')
 import _ from 'lodash'
 import tapToSelectMultipleDaysTemplate from '../templates/tap-to-select-multiple-days.html'
 
@@ -12,6 +12,7 @@ export default [
   '$q',
   '$ionicScrollDelegate',
   '$ionicPopup',
+  '$window',
   function(
     $scope,
     UserService,
@@ -21,7 +22,8 @@ export default [
     loadingSpinner,
     $q,
     $ionicScrollDelegate,
-    $ionicPopup
+    $ionicPopup,
+    $window
   ) {
     // Booking session logic.
     // Defines the set of variables that, when changed, all user inputs
@@ -37,7 +39,7 @@ export default [
       boardStopId: parseInt($stateParams.boardStop),
       alightStopId: parseInt($stateParams.alightStop),
       priceInfo: {},
-      selectedDates: ($stateParams.selectedDates || '').split(',').map(ms => parseInt(ms)),
+      selectedDates: ($stateParams.selectedDates || '').split(',').map((ms) => parseInt(ms)),
       invalidStopDates: [],
       applyRoutePass: false,
       applyReferralCredits: false,
@@ -59,16 +61,16 @@ export default [
       selectedDatesMoments: [],
     }
 
-    var routePromise = loadRoutes()
-    var multipleDatePopup = null
+    const routePromise = loadRoutes()
+    let multipleDatePopup = null
 
-    var ridesRemainingPromise = RoutesService.fetchRoutePassCount()
+    const ridesRemainingPromise = RoutesService.fetchRoutePassCount()
     $q.all([routePromise, ridesRemainingPromise]).then(function(values) {
       let ridesRemainingMap = values[1]
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
 
-    $scope.$watch(() => UserService.getUser(), user => {
+    $scope.$watch(() => UserService.getUser(), (user) => {
       loadTickets()
       $scope.book.applyReferralCredits = Boolean(user)
       $scope.book.applyCredits = Boolean(user)
@@ -76,13 +78,13 @@ export default [
 
     $scope.$watch(
        /* Don't watch the entire moment objects, just their value */
-       () => $scope.disp.selectedDatesMoments.map(m => m.valueOf()),
+       () => $scope.disp.selectedDatesMoments.map((m) => m.valueOf()),
        () => {
          // multiple-date-picker gives us the
          // date in midnight local time
          // Need to convert to UTC
          $scope.book.selectedDates = $scope.disp.selectedDatesMoments.map(
-           m => m.valueOf()
+           (m) => m.valueOf()
          )
        }, true)
 
@@ -98,29 +100,29 @@ export default [
         for (let time of Object.keys($scope.disp.availabilityDays)) {
           time = parseInt(time)
           let timeMoment = moment(time).utcOffset(0)
+          let annotation = $scope.book.route.tripsByDate[time].bookingInfo &&
+                           $scope.book.route.tripsByDate[time].bookingInfo.notes &&
+                           ' '
           if (time in $scope.disp.previouslyBookedDays) {
             $scope.disp.highlightDays.push({
               date: timeMoment,
               css: 'previously-booked',
               selectable: false,
-              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
-                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
+              annotation: annotation,
             })
           } else if ($scope.disp.availabilityDays[time] <= 0) {
             $scope.disp.highlightDays.push({
               date: timeMoment,
               css: 'sold-out',
               selectable: false,
-              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
-                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
+              annotation: annotation,
             })
           } else {
             $scope.disp.highlightDays.push({
               date: timeMoment,
               css: '',
               selectable: true,
-              annotation: $scope.book.route.tripsByDate[time].bookingInfo &&
-                          $scope.book.route.tripsByDate[time].bookingInfo.notes && ' ',
+              annotation: annotation,
             })
             $scope.disp.daysAllowed.push(timeMoment)
           }
@@ -129,7 +131,7 @@ export default [
         $scope.disp.selectedDatesMoments = _.intersectionBy(
           $scope.disp.selectedDatesMoments,
           $scope.disp.daysAllowed,
-          m => m.valueOf()
+          (m) => m.valueOf()
         )
       })
 
@@ -138,8 +140,8 @@ export default [
     })
 
     function loadTickets() {
-      var ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
-        .catch(err => null)
+      const ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
+        .catch((err) => null)
 
       loadingSpinner($q.all([ticketsPromise]).then(([tickets]) => {
         $scope.disp.previouslyBookedDays = tickets || {}
@@ -147,8 +149,8 @@ export default [
     }
 
     function loadRoutes() {
-      var routePromise = RoutesService.getRoute($scope.book.routeId, true)
-      return loadingSpinner(routePromise.then(route => {
+      const routePromise = RoutesService.getRoute($scope.book.routeId, true)
+      return loadingSpinner(routePromise.then((route) => {
         // Route
         $scope.book.route = route
         updateCalendar() // updates availabilityDays
@@ -158,25 +160,25 @@ export default [
 
     function updateCalendar() {
       // ensure cancelled trips are not shown
-      // var runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
-      var runningTrips = $scope.book.route.trips.filter(tr => tr.isRunning)
+      // const runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
+      const runningTrips = $scope.book.route.trips.filter((tr) => tr.isRunning)
 
       // discover which month to show. Use UTC timezone
-      $scope.disp.month = moment(_.min(runningTrips.map(t => t.date))).utcOffset(0)
+      $scope.disp.month = moment(_.min(runningTrips.map((t) => t.date))).utcOffset(0)
 
       // reset
       $scope.disp.availabilityDays = {}
 
       // booking window restriction
-      var now = Date.now()
+      const now = Date.now()
 
       for (let trip of runningTrips) {
         // FIXME: disable today if past the booking window
 
         // Make it available, only if the stop is valid for this trip
-        var stopIds = trip.tripStops
-          .filter(t => t.time.getTime() > now)
-          .map(ts => ts.stop.id)
+        let stopIds = trip.tripStops
+          .filter((t) => t.time.getTime() > now)
+          .map((ts) => ts.stop.id)
         if (stopIds.indexOf($scope.book.boardStopId) === -1 ||
             stopIds.indexOf($scope.book.alightStopId) === -1) {
           continue
@@ -206,28 +208,28 @@ export default [
       multipleDatePopup.close()
     }
 
-    if (!window.localStorage.showMultipleDays) {
-      window.localStorage.showMultipleDays = true
+    if (!$window.localStorage.showMultipleDays) {
+      $window.localStorage.showMultipleDays = true
       showHelpPopup()
     }
 
-    $scope.$watch('book.pickWholeMonth', pickWholeMonth => {
+    $scope.$watch('book.pickWholeMonth', (pickWholeMonth) => {
       // original value
       if (pickWholeMonth === null) {
-        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '').split(',').map(ms => moment(parseInt(ms)))
+        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '').split(',').map((ms) => moment(parseInt(ms)))
       } else {
         let wholeMonthDates = getFullMonthDates($scope.disp.month)
         let allowedInWholeMonth = _.intersectionBy(
           wholeMonthDates,
           $scope.disp.daysAllowed,
-          m => m.valueOf()
+          (m) => m.valueOf()
         )
         if (pickWholeMonth) {
           if ($scope.disp.selectedDatesMoments.length > 0) {
             $scope.disp.selectedDatesMoments = _.unionBy(
               $scope.disp.selectedDatesMoments,
               allowedInWholeMonth,
-              m => m.valueOf()
+              (m) => m.valueOf()
             )
           } else {
             $scope.disp.selectedDatesMoments = allowedInWholeMonth
@@ -239,13 +241,13 @@ export default [
           let intersection = _.intersectionBy(
             $scope.disp.selectedDatesMoments,
             wholeMonthDates,
-            m => m.valueOf()
+            (m) => m.valueOf()
           )
           if (allowedInWholeMonth.length === intersection.length) {
             $scope.disp.selectedDatesMoments = _.differenceBy(
               $scope.disp.selectedDatesMoments,
               wholeMonthDates,
-              m => m.valueOf()
+              (m) => m.valueOf()
             )
           } // else do nothing
         }
@@ -259,12 +261,12 @@ export default [
       let allowedInWholeMonth = _.intersectionBy(
         wholeMonthDates,
         $scope.disp.daysAllowed,
-        m => m.valueOf()
+        (m) => m.valueOf()
       )
       let intersection = _.intersectionBy(
         $scope.disp.selectedDatesMoments,
         allowedInWholeMonth,
-        m => m.valueOf()
+        (m) => m.valueOf()
       )
       $scope.book.pickWholeMonth = (allowedInWholeMonth.length === intersection.length && allowedInWholeMonth.length > 0)
     }

@@ -100,7 +100,8 @@
     "install-android": "ionic cordova platform remove android && ionic cordova platform add android",
     "install-ios": "ionic cordova platform remove ios && ionic cordova platform add ios",
     "dev-android": "node scripts/dev-android.js",
-    "start": "http-server -c-1 www/"
+    "start": "http-server -c-1 www/",
+    "lint": "node scripts/lint.js"
   },
   "author": "Government Technology Agency of Singapore (https://www.tech.gov.sg)",
   "license": "Apache-2.0",

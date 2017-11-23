@@ -37,7 +37,7 @@ export default [
 
     $scope.book.routeId = Number($stateParams.routeId)
 
-    $scope.book.creditTag = "crowdstart-" + $scope.book.routeId
+    $scope.book.creditTag = 'crowdstart-' + $scope.book.routeId
 
     $scope.modalMap = MapOptions.defaultMapOptions()
 
@@ -81,10 +81,10 @@ export default [
         $scope.book.alightStopId = Number($scope.book.bid.alightStopId)
         $scope.book.boardStop = route.trips[0]
               .tripStops
-              .find(ts => $scope.book.boardStopId === ts.stop.id)
+              .find((ts) => $scope.book.boardStopId === ts.stop.id)
         $scope.book.alightStop = route.trips[0]
               .tripStops
-              .find(ts => $scope.book.alightStopId === ts.stop.id)
+              .find((ts) => $scope.book.alightStopId === ts.stop.id)
         $scope.book.passAvailable = (passes || []).length
       }
     )
@@ -99,7 +99,7 @@ export default [
       if (stops.length === 0) {
         return
       }
-      var bounds = new google.maps.LatLngBounds()
+      const bounds = new google.maps.LatLngBounds()
       for (let s of stops) {
         bounds.extend(new google.maps.LatLng(
           s.coordinates.coordinates[1],

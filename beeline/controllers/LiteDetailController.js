@@ -43,30 +43,30 @@ export default [
       hasTrips: true,
     }
 
-    $scope.$watch('book.todayTrips', trips => {
+    $scope.$watch('book.todayTrips', (trips) => {
       if (!trips) return
       $scope.book.hasTrips = trips.length > 0
     })
 
-    var routePromise
-    var subscriptionPromise
+    let routePromise
+    let subscriptionPromise
 
     $scope.book.label = $stateParams.label
 
     routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label)
     subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label)
 
-    subscriptionPromise.then(response => {
+    subscriptionPromise.then((response) => {
       $scope.book.isSubscribed = response
     })
 
-    var availableTripsPromise = routePromise.then(route => {
+    routePromise.then((route) => {
       $scope.book.route = route[$scope.book.label]
       // get route features
-      RoutesService.getRouteFeatures($scope.book.route.id).then(data => {
+      RoutesService.getRouteFeatures($scope.book.route.id).then((data) => {
         $scope.disp.features = data
       })
-      $scope.book.route.trips = _.sortBy($scope.book.route.trips, trip => {
+      $scope.book.route.trips = _.sortBy($scope.book.route.trips, (trip) => {
         return trip.date
       })
     })
@@ -85,7 +85,7 @@ export default [
       // the handler for $ionicView.beforeLeave in .then(() => {})
       // the user might have already navigated away from the page, and
       // the event will not be fired
-      const leavePromise = new Promise(resolve => {
+      const leavePromise = new Promise((resolve) => {
         $scope.$on('$ionicView.beforeLeave', resolve)
       })
 
@@ -95,7 +95,7 @@ export default [
       .then(() => {
         MapService.emit('startPingLoop')
 
-        const listener = tripInfo => {
+        const listener = (tripInfo) => {
           updateTripInfo(tripInfo)
         }
         MapService.on('tripInfo', listener)
@@ -108,14 +108,14 @@ export default [
       })
     })
 
-    $scope.$watch(() => UserService.getUser() && UserService.getUser().id, userId => {
+    $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
       $scope.isLoggedIn = Boolean(userId)
     })
 
     $scope.$watchCollection(() => [].concat(LiteRouteSubscriptionService.getSubscriptionSummary()),
-    newValue => {
+    (newValue) => {
       LiteRouteSubscriptionService.isSubscribed($scope.book.label)
-      .then(response => {
+      .then((response) => {
         if (response) {
           $scope.book.isSubscribed = true
         } else {
@@ -129,7 +129,7 @@ export default [
     }
 
     $scope.showConfirmationPopup = async function() {
-      var response = await $ionicPopup.confirm({
+      const response = await $ionicPopup.confirm({
         title: 'Are you sure you want to bookmark this route?',
       })
 
@@ -141,7 +141,7 @@ export default [
       try {
         $scope.book.waitingForSubscriptionResult = true
 
-        var subscribeResult = await loadingSpinner(
+        const subscribeResult = await loadingSpinner(
           LiteRoutesService.subscribeLiteRoute($scope.book.label)
         )
 
@@ -161,7 +161,7 @@ export default [
             `,
           })
           .then(() => {
-            $state.transitionTo("tabs.tickets")
+            $state.transitionTo('tabs.tickets')
           })
         }
       } catch (err) {
@@ -179,9 +179,9 @@ export default [
     // TODO: Move bulk of promptUntrack code into service or directive as both
     // LiteSummaryController and LiteRouteTrackerController uses it
     $scope.promptUntrack = async function() {
-      var response = await $ionicPopup.confirm({
+      const response = await $ionicPopup.confirm({
         title: 'Are you sure you want to unbookmark this route?',
-        subTitle: "This tracking-only route will be removed from your trips list.",
+        subTitle: 'This tracking-only route will be removed from your trips list.',
       })
 
       if (!response) return
@@ -189,7 +189,7 @@ export default [
       try {
         $scope.book.waitingForSubscriptionResult = true
 
-        var unsubscribeResult = await loadingSpinner(
+        const unsubscribeResult = await loadingSpinner(
           LiteRoutesService.unsubscribeLiteRoute($scope.book.label)
         )
 
@@ -207,7 +207,7 @@ export default [
           if ($state.current && $state.current.name === 'tabs.lite-route-tracker') {
             $state.transitionTo('tabs.tickets')
           } else {
-            $state.transitionTo("tabs.routes")
+            $state.transitionTo('tabs.routes')
           }
         }
       } catch (err) {

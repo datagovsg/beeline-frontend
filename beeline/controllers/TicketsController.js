@@ -13,8 +13,8 @@ export default [
     LiteRoutesService,
     loadingSpinner
   ) {
-    var normalRoutesPromise = Promise.resolve(null)
-    var liteRoutesPromise = Promise.resolve(null)
+    let normalRoutesPromise = Promise.resolve(null)
+    let liteRoutesPromise = Promise.resolve(null)
 
     // Track the login state of the user service
     $scope.logIn = function() {
@@ -37,11 +37,11 @@ export default [
       loadingSpinner(Promise.all([normalRoutesPromise, liteRoutesPromise]))
     })
 
-    $scope.$watch(() => TicketService.getShouldRefreshTickets(), value => {
+    $scope.$watch(() => TicketService.getShouldRefreshTickets(), (value) => {
       if (!value) return
       normalRoutesPromise = refreshNormalTickets(true)
     })
-    $scope.$watch(() => LiteRoutesService.getShouldRefreshLiteTickets(), value => {
+    $scope.$watch(() => LiteRoutesService.getShouldRefreshLiteTickets(), (value) => {
       if (!value) return
       liteRoutesPromise = refreshLiteTickets(true)
     })
@@ -52,12 +52,12 @@ export default [
     }
 
     function refreshNormalTickets(ignoreCache) {
-      return TicketService.getCategorizedTickets(ignoreCache).then(categorizedTickets => {
+      return TicketService.getCategorizedTickets(ignoreCache).then((categorizedTickets) => {
         $scope.tickets.today = categorizedTickets.today
         $scope.tickets.soon = categorizedTickets.afterToday
         $scope.error = false
       })
-      .catch(error => {
+      .catch((error) => {
         $scope.error = true
       })
       .finally(() => {
@@ -67,17 +67,17 @@ export default [
 
     function refreshLiteTickets(ignoreCache) {
       LiteRoutesService.clearShouldRefreshLiteTickets()
-      return LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then(async liteRouteSubscriptions => {
-        var allLiteRoutes = await LiteRoutesService.getLiteRoutes(ignoreCache)
+      return LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then(async (liteRouteSubscriptions) => {
+        const allLiteRoutes = await LiteRoutesService.getLiteRoutes(ignoreCache)
         $scope.liteRouteSubscriptions = liteRouteSubscriptions
-          .map(subscribedLiteLabel => ({
+          .map((subscribedLiteLabel) => ({
             label: subscribedLiteLabel,
             liteRoute: allLiteRoutes[subscribedLiteLabel],
           }))
-          .filter(subscription => subscription.liteRoute)
+          .filter((subscription) => subscription.liteRoute)
         $scope.error = false
       })
-      .catch(error => {
+      .catch((error) => {
         $scope.error = true
       })
       .finally(() => {

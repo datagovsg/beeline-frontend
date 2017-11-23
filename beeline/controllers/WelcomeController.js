@@ -22,10 +22,10 @@ export default[
     $scope.refCode = $stateParams.refCode
 
     if ($scope.refCode) {
-      var query = queryString.stringify({code: $scope.refCode})
+      const query = queryString.stringify({code: $scope.refCode})
 
       try {
-        var refCodeOwner = await UserService.beeline({
+        const refCodeOwner = await UserService.beeline({
           method: 'GET',
           url: '/promotions/refCodeOwner?' + query,
         })

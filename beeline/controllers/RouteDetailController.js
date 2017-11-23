@@ -1,14 +1,14 @@
 export default [
-  "$scope",
-  "$state",
-  "$stateParams",
-  "$ionicLoading",
-  "$ionicPopup",
-  "UserService",
-  "RoutesService",
-  "BookingService",
-  "FastCheckoutService",
-  "MapService",
+  '$scope',
+  '$state',
+  '$stateParams',
+  '$ionicLoading',
+  '$ionicPopup',
+  'UserService',
+  'RoutesService',
+  'BookingService',
+  'FastCheckoutService',
+  'MapService',
   function(
     $scope,
     $state,
@@ -71,24 +71,24 @@ export default [
     // Hooks
     // ------------------------------------------------------------------------
     $scope.choosePickup = () => {
-      $state.go("tabs.route-stops", {
+      $state.go('tabs.route-stops', {
         routeId: routeId,
-        type: "pickup",
+        type: 'pickup',
         // stopId: $scope.data.pickupStop.id,
         stopId: pickupStopId,
-        callback: stop => {
+        callback: (stop) => {
           $scope.data.pickupStop = stop
         },
       })
     }
 
     $scope.chooseDropoff = () => {
-      $state.go("tabs.route-stops", {
+      $state.go('tabs.route-stops', {
         routeId: routeId,
-        type: "dropoff",
+        type: 'dropoff',
         // stopId: $scope.data.dropoffStop.id,
         stopId: dropoffStopId,
-        callback: stop => {
+        callback: (stop) => {
           $scope.data.dropoffStop = stop
         },
       })
@@ -121,11 +121,11 @@ export default [
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
         hideOnStateChange: true,
       })
-      var promises = Promise.all([FastCheckoutService.verify(routeId), RoutesService.getRoute(routeId)])
-      promises.then(response => {
+      const promises = Promise.all([FastCheckoutService.verify(routeId), RoutesService.getRoute(routeId)])
+      promises.then((response) => {
         $scope.data.nextTrip = response[0]
-        $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map(ts => ts.stop.id)
-        var route = response[1]
+        $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map((ts) => ts.stop.id)
+        const route = response[1]
         $ionicLoading.hide()
         // Grab the price data
         $scope.data.price = route.trips[0].price
@@ -133,15 +133,15 @@ export default [
         $scope.data.routeSupportsRoutePass = FastCheckoutService.routeQualifiedForRoutePass(route)
         // Grab the stop data
         let [pickups, dropoffs] = BookingService.computeStops(route.trips)
-        pickups = new Map(pickups.map(stop => [stop.id, stop]))
-        dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]))
+        pickups = new Map(pickups.map((stop) => [stop.id, stop]))
+        dropoffs = new Map(dropoffs.map((stop) => [stop.id, stop]))
         // if pickupStop is updated from 'tabs.route-stops' state
         if (!$scope.data.pickupStop && pickupStopId) $scope.data.pickupStop = pickups.get(pickupStopId)
         if (!$scope.data.dropoffStop && dropoffStopId) $scope.data.dropoffStop = dropoffs.get(dropoffStopId)
-      }).catch(error => {
+      }).catch((error) => {
         $ionicLoading.hide()
         $ionicPopup.alert({
-          title: "Sorry there's been a problem loading the route information",
+          title: 'Sorry there\'s been a problem loading the route information',
           subTitle: error,
         })
       })
@@ -150,23 +150,23 @@ export default [
     // Get the route credits
     $scope.$watch(
       () => RoutesService.getPassCountForRoute(routeId),
-      passCount => {
+      (passCount) => {
         $scope.data.passCount = passCount
       }
     )
 
     // re-verify the fastCheckout once user is logged in
     UserService.userEvents.on('userChanged', () => {
-      FastCheckoutService.verify(routeId).then(response => {
+      FastCheckoutService.verify(routeId).then((response) => {
         $scope.data.nextTrip = response
       })
     })
 
-    $scope.$watch(() => UserService.getUser(), user => {
+    $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.data.isLoggedIn = Boolean(user)
     })
 
-    $scope.$watch('data.pickupStop', ps => {
+    $scope.$watch('data.pickupStop', (ps) => {
       if (ps) {
         MapService.emit('board-stop-selected', {stop: ps})
         if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ps.id) === -1) {
@@ -177,7 +177,7 @@ export default [
       }
     })
 
-    $scope.$watch('data.dropoffStop', ds => {
+    $scope.$watch('data.dropoffStop', (ds) => {
       if (ds) {
         MapService.emit('alight-stop-selected', {stop: ds})
         if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ds.id) === -1) {

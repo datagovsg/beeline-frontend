@@ -4,6 +4,7 @@ export default [
   '$scope',
   '$state',
   '$stateParams',
+  '$timeout',
   'loadingSpinner',
   'UserService',
   '$ionicPopup',
@@ -14,6 +15,7 @@ export default [
     $scope,
     $state,
     $stateParams,
+    $timeout,
     loadingSpinner,
     UserService,
     $ionicPopup,
@@ -44,7 +46,7 @@ export default [
     $scope.book.routeId = Number($stateParams.routeId)
     $scope.priceInfo.bidPrice = Number($stateParams.bidPrice)
 
-    $scope.$watch(() => KickstarterService.getCrowdstartById($scope.book.routeId), route => {
+    $scope.$watch(() => KickstarterService.getCrowdstartById($scope.book.routeId), (route) => {
       if (!route) return
       $scope.book.route = route
       // give 1st and last stop as board and alight stop for fake ticket
@@ -52,17 +54,17 @@ export default [
       $scope.book.alightStopId = _.last(route.trips[0].tripStops).id
       $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
       $scope.priceInfo.totalDue = $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount
-      $scope.$watch('priceInfo.bidPrice', price => {
+      $scope.$watch('priceInfo.bidPrice', (price) => {
         $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
         $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount
       })
     })
 
-    $scope.$watch(() => UserService.getUser(), async user => {
+    $scope.$watch(() => UserService.getUser(), async (user) => {
       $scope.isLoggedIn = Boolean(user)
       $scope.user = user
       if ($scope.isLoggedIn) {
-        $scope.$watch(() => UserService.getUser().savedPaymentInfo, paymentInfo => {
+        $scope.$watch(() => UserService.getUser().savedPaymentInfo, (paymentInfo) => {
           $scope.data.hasCreditInfo = $scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0
           if ($scope.data.hasCreditInfo) {
             $scope.data.brand = paymentInfo.sources.data[0].brand
@@ -83,7 +85,6 @@ export default [
 
     $scope.createBid = async function() {
       try {
-        var bidPrice = $scope.priceInfo.bidPrice
         // disable the button
         $scope.waitingForPaymentResult = true
 
@@ -102,12 +103,13 @@ export default [
       } finally {
         $scope.waitingForPaymentResult = false
         // to make $digest not throw errors
-        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise((resolve) => $timeout(resolve, 0))
         $scope.$digest()
       }
 
       try {
-        var bidResult = await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStopId, $scope.book.alightStopId, bidPrice))
+        const bidPrice = $scope.priceInfo.bidPrice
+        await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStopId, $scope.book.alightStopId, bidPrice))
         await $ionicPopup.alert({
           title: 'Success',
         })
@@ -136,7 +138,7 @@ export default [
 
         if (!stripeToken) return
 
-        var result = await loadingSpinner(
+        await loadingSpinner(
           UserService.updatePaymentInfo(stripeToken.id)
         )
       } catch (error) {
