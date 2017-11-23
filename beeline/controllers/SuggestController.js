@@ -7,14 +7,14 @@ export default [
   '$ionicModal',
   '$ionicPopup',
   function(
-  $scope,
-  $state,
-  $stateParams,
-  SuggestionService,
-  UserService,
-  $ionicModal,
-  $ionicPopup
-) {
+    $scope,
+    $state,
+    $stateParams,
+    SuggestionService,
+    UserService,
+    $ionicModal,
+    $ionicPopup
+  ) {
     $scope.user = null
 
     $scope.newSuggestion = {

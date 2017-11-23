@@ -3,14 +3,36 @@ import processingPaymentsTemplate from '../templates/processing-payments.html'
 import _ from 'lodash'
 
 export default [
-  '$scope', '$state', '$ionicPopup', 'BookingService',
-  'UserService', '$ionicLoading', 'StripeService', '$stateParams',
-  'RoutesService', '$ionicScrollDelegate', 'TicketService',
-  'loadingSpinner', 'CreditsService', '$ionicPosition',
-  function($scope, $state, $ionicPopup, BookingService,
-    UserService, $ionicLoading, StripeService, $stateParams,
-    RoutesService, $ionicScrollDelegate, TicketService,
-    loadingSpinner, CreditsService, $ionicPosition) {
+  '$scope',
+  '$state',
+  '$ionicPopup',
+  'BookingService',
+  'UserService',
+  '$ionicLoading',
+  'StripeService',
+  '$stateParams',
+  'RoutesService',
+  '$ionicScrollDelegate',
+  'TicketService',
+  'loadingSpinner',
+  'CreditsService',
+  '$ionicPosition',
+  function(
+    $scope,
+    $state,
+    $ionicPopup,
+    BookingService,
+    UserService,
+    $ionicLoading,
+    StripeService,
+    $stateParams,
+    RoutesService,
+    $ionicScrollDelegate,
+    TicketService,
+    loadingSpinner,
+    CreditsService,
+    $ionicPosition
+  ) {
     // Booking session logic
     $scope.session = {
       sessionId: Number($stateParams.sessionId),

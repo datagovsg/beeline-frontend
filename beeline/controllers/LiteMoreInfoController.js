@@ -1,6 +1,14 @@
 export default [
-  '$scope', '$stateParams', 'LiteRoutesService', 'RoutesService',
-  function($scope, $stateParams, LiteRoutesService, RoutesService) {
+  '$scope',
+  '$stateParams',
+  'LiteRoutesService',
+  'RoutesService',
+  function(
+    $scope,
+    $stateParams,
+    LiteRoutesService,
+    RoutesService
+  ) {
     // https://github.com/angular/angular.js/wiki/Understanding-Scopes
     $scope.data = {
       companyId: null,

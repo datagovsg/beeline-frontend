@@ -5,7 +5,11 @@ export default [
   '$scope',
   'UserService',
   'RoutesService',
-  function($scope, UserService, RoutesService) {
+  function(
+    $scope,
+    UserService,
+    RoutesService
+  ) {
     var routesPromise
     $scope.routesById = {}
 

@@ -1,11 +1,26 @@
 import busStopListTemplate from '../templates/bus-stop-list.html'
 
 export default [
-  '$scope', '$state', '$stateParams', '$ionicModal', 'BookingService',
-  'RoutesService', 'KickstarterService', 'CompanyService', 'MapOptions',
+  '$scope',
+  '$state',
+  '$stateParams',
+  '$ionicModal',
+  'BookingService',
+  'RoutesService',
+  'KickstarterService',
+  'CompanyService',
+  'MapOptions',
   function(
-    $scope, $interpolate, $state, $stateParams, $ionicModal, BookingService,
-    RoutesService, KickstarterService, CompanyService, MapOptions
+    $scope,
+    $interpolate,
+    $state,
+    $stateParams,
+    $ionicModal,
+    BookingService,
+    RoutesService,
+    KickstarterService,
+    CompanyService,
+    MapOptions
   ) {
     // Default settings for various info used in the page
     $scope.book = {

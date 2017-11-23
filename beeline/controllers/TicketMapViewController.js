@@ -12,8 +12,17 @@ export default [
   'TripService',
   'TicketService',
   'ServerTime',
-  function($scope, SharedVariableService, $stateParams,
-    RoutesService, MapService, $timeout, TripService, TicketService, ServerTime) {
+  function(
+    $scope,
+    SharedVariableService,
+    $stateParams,
+    RoutesService,
+    MapService,
+    $timeout,
+    TripService,
+    TicketService,
+    ServerTime
+  ) {
     let ticketId = $stateParams.ticketId ? Number($stateParams.ticketId) : null
     // Date calculated as Date.now() + Local-Server-TimeDiff
 

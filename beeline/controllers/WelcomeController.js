@@ -13,7 +13,8 @@ export default[
     $stateParams,
     $ionicPopup,
     $ionicLoading,
-    UserService) {
+    UserService
+  ) {
     // Verify if refCode is provided
     $scope.isLoaded = false
     $ionicLoading.show()

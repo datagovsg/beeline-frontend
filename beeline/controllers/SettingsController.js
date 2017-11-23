@@ -8,13 +8,32 @@ var reader = new commonmark.Parser({safe: true})
 var writer = new commonmark.HtmlRenderer({safe: true})
 
 export default [
-  '$scope', 'UserService', 'StripeService', 'KickstarterService',
-  '$ionicModal', '$ionicPopup', 'Legalese', 'loadingSpinner', '$ionicLoading',
-  '$cordovaSocialSharing', 'replace', 'DevicePromise',
+  '$scope',
+  'UserService',
+  'StripeService',
+  'KickstarterService',
+  '$ionicModal',
+  '$ionicPopup',
+  'Legalese',
+  'loadingSpinner',
+  '$ionicLoading',
+  '$cordovaSocialSharing',
+  'replace',
+  'DevicePromise',
   function(
-    $scope, UserService, StripeService, KickstarterService,
-    $ionicModal, $ionicPopup, Legalese, loadingSpinner, $ionicLoading,
-    $cordovaSocialSharing, replace, DevicePromise) {
+    $scope,
+    UserService,
+    StripeService,
+    KickstarterService,
+    $ionicModal,
+    $ionicPopup,
+    Legalese,
+    loadingSpinner,
+    $ionicLoading,
+    $cordovaSocialSharing,
+    replace,
+    DevicePromise
+  ) {
     $scope.data = {}
     $scope.hasCordova = Boolean(window.cordova) || false
     $scope.isOnKickstarter = false
