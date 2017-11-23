@@ -101,7 +101,9 @@ export default [
     $scope.bookNext = () => {
       $scope.disp.isBooking = true
       FastCheckoutService.fastCheckout(routeId,
-        $scope.data.pickupStop.id, $scope.data.dropoffStop.id, [$scope.data.nextTrip.date.getTime()])
+                                       $scope.data.pickupStop.id,
+                                       $scope.data.dropoffStop.id,
+                                       [$scope.data.nextTrip.date.getTime()])
         .then(reactivateButton, reactivateButton)
     }
 
@@ -118,26 +120,36 @@ export default [
     // force reload when revisit the same route
     $scope.$on('$ionicView.afterEnter', () => {
       $ionicLoading.show({
-        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
+        template: `<ion-spinner icon='crescent'>\
+        </ion-spinner><br/><small>Loading route information</small>`,
         hideOnStateChange: true,
       })
-      const promises = Promise.all([FastCheckoutService.verify(routeId), RoutesService.getRoute(routeId)])
+      const promises = Promise.all([
+        FastCheckoutService.verify(routeId),
+        RoutesService.getRoute(routeId),
+      ])
       promises.then((response) => {
         $scope.data.nextTrip = response[0]
-        $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map((ts) => ts.stop.id)
+        $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops
+          .map((ts) => ts.stop.id)
         const route = response[1]
         $ionicLoading.hide()
         // Grab the price data
         $scope.data.price = route.trips[0].price
         // routeSupportsRoutePass
-        $scope.data.routeSupportsRoutePass = FastCheckoutService.routeQualifiedForRoutePass(route)
+        $scope.data.routeSupportsRoutePass = FastCheckoutService
+          .routeQualifiedForRoutePass(route)
         // Grab the stop data
         let [pickups, dropoffs] = BookingService.computeStops(route.trips)
         pickups = new Map(pickups.map((stop) => [stop.id, stop]))
         dropoffs = new Map(dropoffs.map((stop) => [stop.id, stop]))
         // if pickupStop is updated from 'tabs.route-stops' state
-        if (!$scope.data.pickupStop && pickupStopId) $scope.data.pickupStop = pickups.get(pickupStopId)
-        if (!$scope.data.dropoffStop && dropoffStopId) $scope.data.dropoffStop = dropoffs.get(dropoffStopId)
+        if (!$scope.data.pickupStop && pickupStopId) {
+          $scope.data.pickupStop = pickups.get(pickupStopId)
+        }
+        if (!$scope.data.dropoffStop && dropoffStopId) {
+          $scope.data.dropoffStop = dropoffs.get(dropoffStopId)
+        }
       }).catch((error) => {
         $ionicLoading.hide()
         $ionicPopup.alert({
@@ -169,7 +181,9 @@ export default [
     $scope.$watch('data.pickupStop', (ps) => {
       if (ps) {
         MapService.emit('board-stop-selected', {stop: ps})
-        if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ps.id) === -1) {
+        if ($scope.data.nextTripStopIds &&
+            $scope.data.nextTripStopIds.indexOf(ps.id) === -1
+        ) {
           $scope.data.boardStopInvalid = true
         } else {
           $scope.data.boardStopInvalid = false
@@ -180,7 +194,9 @@ export default [
     $scope.$watch('data.dropoffStop', (ds) => {
       if (ds) {
         MapService.emit('alight-stop-selected', {stop: ds})
-        if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ds.id) === -1) {
+        if ($scope.data.nextTripStopIds &&
+            $scope.data.nextTripStopIds.indexOf(ds.id) === -1
+        ) {
           $scope.data.alightStopInvalid = true
         } else {
           $scope.data.alightStopInvalid = false

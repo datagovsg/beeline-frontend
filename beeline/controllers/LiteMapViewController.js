@@ -107,7 +107,9 @@ export default [
       $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
       $scope.mapObject.allRecentPings = $scope.mapObject.allRecentPings || []
 
-      $scope.mapObject.statusMessages.length = $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
+      $scope.mapObject.statusMessages.length =
+        $scope.mapObject.allRecentPings.length =
+        $scope.mapObject.pingTrips.length
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.driverPings(trip.id)
         .then(async (info) => {
@@ -118,12 +120,15 @@ export default [
               (now - info.pings[0].time.getTime()) < 5 * 60000,
           }
 
-          $scope.mapObject.statusMessages[index] = _.get(info, 'statuses[0].message', null)
+          $scope.mapObject.statusMessages[index] = _.get(info,
+                                                         'statuses[0].message',
+                                                         null)
         })
       }))
       // to mark no tracking data if no ping or pings are too old
       // isRecent could be undefined(no pings) or false (pings are out-dated)
-      $scope.hasTrackingData = _.any($scope.mapObject.allRecentPings, 'isRecent')
+      $scope.hasTrackingData = _.any($scope.mapObject.allRecentPings,
+                                     'isRecent')
       let tripInfo = {
         hasTrackingData: $scope.hasTrackingData,
         statusMessages: $scope.mapObject.statusMessages.join(' '),

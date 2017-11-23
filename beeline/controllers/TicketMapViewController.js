@@ -123,15 +123,23 @@ export default [
       $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
       $scope.mapObject.allRecentPings = $scope.mapObject.allRecentPings || []
 
-      $scope.mapObject.statusMessages.length = $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
+      $scope.mapObject.statusMessages.length =
+        $scope.mapObject.allRecentPings.length =
+        $scope.mapObject.pingTrips.length
 
       await Promise.all($scope.mapObject.pingTrips.map((trip, index) => {
         return TripService.driverPings(trip.id)
         .then((info) => {
           const ticketInfo = {
             tripCode: info && info.code,
-            vehicle: info && info.trip && info.trip.vehicle && info.trip.vehicle.vehicleNumber,
-            driver: info && info.trip && info.trip.tripDriver && info.trip.tripDriver.name,
+            vehicle: info &&
+                     info.trip &&
+                     info.trip.vehicle &&
+                     info.trip.vehicle.vehicleNumber,
+            driver: info &&
+                    info.trip &&
+                    info.trip.tripDriver &&
+                    info.trip.tripDriver.name,
             tripStatus: info && info.trip && info.trip.status,
           }
           MapService.emit('ticketInfo', ticketInfo)
@@ -143,7 +151,9 @@ export default [
               (now - info.pings[0].time.getTime()) < 2 * 60 * 60000,
           }
 
-          $scope.mapObject.statusMessages[index] = _.get(info, 'statuses[0].message', null)
+          $scope.mapObject.statusMessages[index] = _.get(info,
+                                                         'statuses[0].message',
+                                                         null)
         })
       }))
     }

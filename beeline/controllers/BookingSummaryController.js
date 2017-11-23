@@ -59,8 +59,10 @@ export default [
       feedback: null,
       promoCodeIsValid: null,
       isVerifying: null,
-      selectedDates: ($stateParams.selectedDates || '').split(',').map((s) => parseInt(s)),
-      // if 2 requests sent to verify promo code, only the latter triggered matters
+      selectedDates: ($stateParams.selectedDates || '')
+        .split(',')
+        .map((s) => parseInt(s)),
+      // if 2 requests sent to verify promo code, only the latter matters
       // always need to have this if using debounce with promise
       lastestVerifyPromoCodePromise: null,
     }
@@ -88,7 +90,11 @@ export default [
     $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.isLoggedIn = Boolean(user)
       $scope.user = user
-      $scope.hasSavedPaymentInfo = _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
+      $scope.hasSavedPaymentInfo = _.get(
+        $scope.user,
+        'savedPaymentInfo.sources.data.length',
+        0
+      ) > 0
       $scope.book.applyReferralCredits = Boolean(user)
       $scope.book.applyCredits = Boolean(user)
       if ($scope.isLoggedIn) {
@@ -119,7 +125,8 @@ export default [
     })
 
     $scope.checkValidDate = async function() {
-      const previouslyBookedDays = await TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
+      const previouslyBookedDays = await TicketService
+        .fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
       const selectedAndInvalid = _.intersection(
         $scope.book.selectedDates, // list of integers
         Object.keys(previouslyBookedDays).map((s) => parseInt(s))
@@ -190,8 +197,9 @@ export default [
       }
     }
 
-    // Processes payment with customer object. If customer object does not exist,
-    // prompts for card, creates customer object, and proceeds as usual.
+    // Processes payment with customer object.
+    // If customer object does not exist, prompts for card,
+    // creates customer object, and proceeds as usual.
     $scope.payWithSavedInfo = async function() {
       try {
         // disable the button
@@ -229,8 +237,14 @@ export default [
     }
 
     $scope.scrollToPriceCalculator = function() {
-      const priceCalculatorPosition = $ionicPosition.position(angular.element($document.getElementById('priceCalc')))
-      $ionicScrollDelegate.scrollTo(priceCalculatorPosition.left, priceCalculatorPosition.top, true)
+      const priceCalculatorPosition = $ionicPosition.position(
+        angular.element($document.getElementById('priceCalc'))
+      )
+      $ionicScrollDelegate.scrollTo(
+        priceCalculatorPosition.left,
+        priceCalculatorPosition.top,
+        true
+      )
     }
 
     // After you have settled the payment mode
@@ -245,9 +259,9 @@ export default [
           url: '/transactions/tickets/payment',
           data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips($scope.book),
-            promoCode: $scope.book.promoCode ? {code: $scope.book.promoCode} : {code: ''},
-            // don't use route credits if toggle if off
-            // creditTag: $scope.book.applyRoutePass ? $scope.book.creditTag : null,
+            promoCode: $scope.book.promoCode ?
+                       {code: $scope.book.promoCode} :
+                       {code: ''},
             applyRoutePass: Boolean($scope.book.applyRoutePass),
             applyCredits: $scope.book.applyCredits,
             applyReferralCredits: $scope.book.applyReferralCredits,
@@ -280,25 +294,35 @@ export default [
     function verifyPromoCode() {
       if ($scope.book.promoCodeEntered === null ||
           !$scope.book.promoCodeEntered) {
-        $scope.book.feedback = $scope.book.promoCodeEntered = $scope.book.promoCodeIsValid = null
+        $scope.book.feedback =
+          $scope.book.promoCodeEntered =
+          $scope.book.promoCodeIsValid =
+          null
         $scope.$digest()
         return
       }
       let bookClone = _.cloneDeep($scope.book)
-      let book = _.assign(bookClone, {promoCode: $scope.book.promoCodeEntered.toUpperCase()})
+      let book = _.assign(bookClone, {
+        promoCode: $scope.book.promoCodeEntered.toUpperCase(),
+      })
       $scope.book.isVerifying = true
       const currentVerifyPromoCodePromise =
             $scope.book.lastestVerifyPromoCodePromise =
             BookingService.computePriceInfo(book)
                 .then((priceInfo) => {
-                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                  if (currentVerifyPromoCodePromise ===
+                      $scope.book.lastestVerifyPromoCodePromise
+                  ) {
                     $scope.book.feedback = 'Valid'
                     $scope.book.promoCodeIsValid = true
                   }
                 })
                 .catch((error) => {
-                  // still need this check as the latter promise may come back earlier than the 1st one
-                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                  // still need this check as the latter promise may come back
+                  //  earlier than the 1st one
+                  if (currentVerifyPromoCodePromise ===
+                      $scope.book.lastestVerifyPromoCodePromise
+                  ) {
                     if (error.data && error.data.source === 'promoCode') {
                       $scope.book.feedback = error.data.message || 'Invalid'
                       $scope.book.promoCodeIsValid = null
@@ -308,7 +332,9 @@ export default [
                     }
                   }
                 }).finally(() => {
-                  if (currentVerifyPromoCodePromise === $scope.book.lastestVerifyPromoCodePromise) {
+                  if (currentVerifyPromoCodePromise ===
+                      $scope.book.lastestVerifyPromoCodePromise
+                  ) {
                     $scope.book.isVerifying = null
                   }
                 })
@@ -324,10 +350,15 @@ export default [
           scope: $scope,
           template: `
             <label>
-              <input type="text" style="text-transform: uppercase" placeholder="PROMOCODE" ng-model="book.promoCodeEntered">
+              <input type="text"
+                    style="text-transform: uppercase"
+                    placeholder="PROMOCODE"
+                    ng-model="book.promoCodeEntered">
               </input>
             </label>
-            <div class="text-center"><ion-spinner ng-show="book.isVerifying"></ion-spinner></div>
+            <div class="text-center">
+              <ion-spinner ng-show="book.isVerifying"></ion-spinner>
+            </div>
             <div class="text-center"> {{book.feedback}}</div>
           `,
           title: 'Enter Promo Code',
@@ -344,7 +375,8 @@ export default [
               onTap: function(e) {
                 e.preventDefault()
                 if ($scope.book.promoCodeIsValid) {
-                  $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
+                  $scope.book.promoCode = $scope.book.promoCodeEntered
+                    .toUpperCase()
                   $scope.book.feedback = $scope.book.promoCodeEntered = null
                   $scope.enterPromoCodePopup.close()
                 }

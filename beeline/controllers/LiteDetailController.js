@@ -54,7 +54,8 @@ export default [
     $scope.book.label = $stateParams.label
 
     routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label)
-    subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label)
+    subscriptionPromise = LiteRouteSubscriptionService
+      .isSubscribed($scope.book.label)
 
     subscriptionPromise.then((response) => {
       $scope.book.isSubscribed = response
@@ -91,16 +92,22 @@ export default [
 
       sendTripsToMapView()
 
-      const dataPromise = loadingSpinner(Promise.all([routePromise, subscriptionPromise])
-      .then(() => {
-        MapService.emit('startPingLoop')
+      const dataPromise = loadingSpinner(
+        Promise.all([routePromise, subscriptionPromise])
+          .then(
+            () => {
+              MapService.emit('startPingLoop')
 
-        const listener = (tripInfo) => {
-          updateTripInfo(tripInfo)
-        }
-        MapService.on('tripInfo', listener)
-        leavePromise.then(() => MapService.removeListener('tripInfo', listener))
-      }))
+              const listener = (tripInfo) => {
+                updateTripInfo(tripInfo)
+              }
+              MapService.on('tripInfo', listener)
+              leavePromise.then(
+                () => MapService.removeListener('tripInfo', listener)
+              )
+            }
+          )
+      )
 
       Promise.all([dataPromise, leavePromise])
       .then(() => {
@@ -108,21 +115,26 @@ export default [
       })
     })
 
-    $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
-      $scope.isLoggedIn = Boolean(userId)
-    })
+    $scope.$watch(
+      () => UserService.getUser() && UserService.getUser().id,
+      (userId) => {
+        $scope.isLoggedIn = Boolean(userId)
+      }
+    )
 
-    $scope.$watchCollection(() => [].concat(LiteRouteSubscriptionService.getSubscriptionSummary()),
-    (newValue) => {
-      LiteRouteSubscriptionService.isSubscribed($scope.book.label)
-      .then((response) => {
-        if (response) {
-          $scope.book.isSubscribed = true
-        } else {
-          $scope.book.isSubscribed = false
-        }
-      })
-    })
+    $scope.$watchCollection(
+      () => [].concat(LiteRouteSubscriptionService.getSubscriptionSummary()),
+      (newValue) => {
+        LiteRouteSubscriptionService.isSubscribed($scope.book.label)
+        .then((response) => {
+          if (response) {
+            $scope.book.isSubscribed = true
+          } else {
+            $scope.book.isSubscribed = false
+          }
+        })
+      }
+    )
 
     $scope.login = function() {
       UserService.promptLogIn()
@@ -181,7 +193,8 @@ export default [
     $scope.promptUntrack = async function() {
       const response = await $ionicPopup.confirm({
         title: 'Are you sure you want to unbookmark this route?',
-        subTitle: 'This tracking-only route will be removed from your trips list.',
+        subTitle: 'This tracking-only route will be removed from ' +
+                  'your trips list.',
       })
 
       if (!response) return
@@ -204,7 +217,9 @@ export default [
             `,
             duration: 1000,
           })
-          if ($state.current && $state.current.name === 'tabs.lite-route-tracker') {
+          if ($state.current &&
+              $state.current.name === 'tabs.lite-route-tracker'
+          ) {
             $state.transitionTo('tabs.tickets')
           } else {
             $state.transitionTo('tabs.routes')

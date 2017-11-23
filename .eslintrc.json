@@ -1,20 +1,22 @@
 {
   "parser": "babel-eslint",
   "extends": [
+    "eslint:recommended",
+    "google",
     // https://github.com/Gillespie59/eslint-plugin-angular
-    "plugin:angular/johnpapa",
-    "google"
+    "plugin:angular/johnpapa"
   ],
   "env": {
-    "browser": true
+    "browser": true,
+    "node": true,
+    "es6": true
   },
   "rules": {
     "no-unused-vars": ["error"],
     "semi": ["error", "never"],
     "comma-dangle": ["error", "always-multiline"],
     "radix": ["error", "as-needed"],
-    "require-jsdoc": ["warn"],
-    "max-len": ["warn"]
+    "require-jsdoc": ["warn"]
   },
   "globals": {
     "angular": true

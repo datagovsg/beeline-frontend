@@ -63,7 +63,8 @@ export default [
       }
     })
 
-    // Function that allows user to share an invitation with a referral code to other apps on the phone
+    // Function that allows user to share an invitation with a referral code to
+    // other apps on the phone
     $scope.cordovaShare = async function() {
       $cordovaSocialSharing.share($scope.shareMsg, 'Try out Beeline!')
     }
@@ -141,7 +142,8 @@ export default [
         console.log(err)
         await $ionicLoading.show({
           template: `
-          <div> Network error. ${err && err.data && err.data.message} Please try again later.</div>
+          <div> Network error. ${err && err.data && err.data.message} Please \
+          try again later.</div>
           `,
           duration: 3500,
         })
@@ -156,7 +158,8 @@ export default [
         template: `
           <div class="item item-text-wrap text-center">
             <div>
-              <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
+              <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in \
+              <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
             </div>
             <div>
               <button class="button button-outline button-royal small-button"
@@ -166,14 +169,17 @@ export default [
             </div>
           </div>
           <div class="item item-text-wrap text-center" ng-if="isOnKickstarter">
-            You cannot remove this card unless the Crowdstart route you back expires.
+            You cannot remove this card unless the Crowdstart route you back \
+            expires.
           </div>
         `,
         buttons: [
           {text: 'Cancel'},
           {
             text: 'Remove',
-            type: ($scope.isOnKickstarter ? 'button-disabled' : 'button-positive'),
+            type: $scope.isOnKickstarter ?
+                  'button-disabled' :
+                  'button-positive',
             onTap: function(e) {
               if ($scope.isOnKickstarter) {
                 e.preventDefault()
@@ -195,7 +201,8 @@ export default [
             Are you sure you want to delete this payment method?
         </div>
         <div class="item item-text-wrap text-center">
-            <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
+            <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in \
+            <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
         </div>
         `,
       })
@@ -215,7 +222,8 @@ export default [
         console.log(err)
         await $ionicLoading.show({
           template: `
-          <div> Failed to delete payment method. ${err && err.data && err.data.message} Please try again later.</div>
+          <div> Failed to delete payment method. \
+          ${err && err.data && err.data.message} Please try again later.</div>
           `,
           duration: 3500,
         })
@@ -243,7 +251,9 @@ export default [
         )
       } catch (err) {
         console.log(err)
-        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
+        throw new Error(
+          `Error saving credit card details. ${_.get(err, 'data.message')}`
+        )
       } finally {
         isPressed = false
         $scope.$digest()
@@ -265,7 +275,9 @@ export default [
         )
       } catch (err) {
         console.log(err)
-        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
+        throw new Error(
+          `Error saving credit card details. ${_.get(err, 'data.message')}`
+        )
       } finally {
         isPressed = false
         $scope.$digest()

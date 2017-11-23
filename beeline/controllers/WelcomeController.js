@@ -54,7 +54,8 @@ export default[
 
       await $ionicPopup.alert({
         title: 'Welcome to Beeline',
-        subTitle: 'Success! You can now use your $10 ride credits when you make bookings.',
+        subTitle: 'Success! You can now use your $10 ride credits when you ' +
+                  'make bookings.',
       })
     }
   },

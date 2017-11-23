@@ -69,19 +69,31 @@ export default [
         routesPromise.then(() => {
           for (let t of newTransactions) {
             for (let ticketSaleItem of t.itemsByType.ticketSale || []) {
-              ticketSaleItem.route = $scope.routesById[ticketSaleItem.ticketSale.boardStop.trip.routeId]
+              ticketSaleItem.route = $scope.routesById[
+                ticketSaleItem.ticketSale.boardStop.trip.routeId
+              ]
             }
             for (let ticketRefundItem of t.itemsByType.ticketRefund || []) {
-              ticketRefundItem.route = $scope.routesById[ticketRefundItem.ticketRefund.boardStop.trip.routeId]
+              ticketRefundItem.route = $scope.routesById[
+                ticketRefundItem.ticketRefund.boardStop.trip.routeId
+              ]
             }
             for (let ticketExpenseItem of t.itemsByType.ticketExpense || []) {
-              ticketExpenseItem.route = $scope.routesById[ticketExpenseItem.ticketExpense.boardStop.trip.routeId]
+              ticketExpenseItem.route = $scope.routesById[
+                ticketExpenseItem.ticketExpense.boardStop.trip.routeId
+              ]
             }
             for (let routeCreditItem of t.itemsByType.routeCredits || []) {
-              routeCreditItem.route = $scope.routesById[routeCreditItem.routeCredits.tag.substring(routeCreditItem.routeCredits.tag.indexOf('-') + 1)]
+              const tag = routeCreditItem.routeCredits.tag
+              routeCreditItem.route = $scope.routesById[
+                tag.substring(tag.indexOf('-') + 1)
+              ]
             }
             for (let routePassItem of t.itemsByType.routePass || []) {
-              routePassItem.route = $scope.routesById[routePassItem.routePass.tag.substring(routePassItem.routePass.tag.indexOf('-') + 1)]
+              const tag = routePassItem.routePass.tag
+              routePassItem.route = $scope.routesById[
+                tag.substring(tag.indexOf('-') + 1)
+              ]
             }
           }
         })
