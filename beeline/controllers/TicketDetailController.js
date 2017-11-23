@@ -1,8 +1,5 @@
-import _ from 'lodash';
-
 export default [
   '$scope',
-  '$rootScope',
   '$stateParams',
   'TicketService',
   'CompanyService',
@@ -12,7 +9,6 @@ export default [
   'MapService',
   function(
     $scope,
-    $rootScope,
     $stateParams,
     TicketService,
     CompanyService,
@@ -21,7 +17,6 @@ export default [
     RoutesService,
     MapService
   ) {
-
     $scope.disp = {
       code: null,
       vehicle: null,
@@ -30,25 +25,25 @@ export default [
     }
 
     // Initialize the necessary basic data data
-    $scope.user = UserService.getUser();
+    $scope.user = UserService.getUser()
 
-    $scope.showTerms = (companyId) => {
-      CompanyService.showTerms(companyId);
-    };
+    $scope.showTerms = companyId => {
+      CompanyService.showTerms(companyId)
+    }
 
-    var ticketPromise = TicketService.getTicketById(+$stateParams.ticketId);
-    var tripPromise = ticketPromise.then((ticket) => {
-      return TripService.getTripData(+ticket.alightStop.tripId);
-    });
-    var routePromise = tripPromise.then((trip) => {
-      return RoutesService.getRoute(+trip.routeId);
-    });
-    var companyPromise = routePromise.then((route) => {
-      return CompanyService.getCompany(+route.transportCompanyId);
-    });
-    ticketPromise.then((ticket) => {
-      $scope.ticket = ticket;
-    });
+    var ticketPromise = TicketService.getTicketById(Number($stateParams.ticketId))
+    var tripPromise = ticketPromise.then(ticket => {
+      return TripService.getTripData(Number(ticket.alightStop.tripId))
+    })
+    var routePromise = tripPromise.then(trip => {
+      return RoutesService.getRoute(Number(trip.routeId))
+    })
+    var companyPromise = routePromise.then(route => {
+      return CompanyService.getCompany(Number(route.transportCompanyId))
+    })
+    ticketPromise.then(ticket => {
+      $scope.ticket = ticket
+    })
 
     function sentTripToMapView() {
       const trip = $scope.trip
@@ -57,17 +52,19 @@ export default [
       }
     }
 
-    tripPromise.then((trip) => {
-      $scope.trip = trip;
+    tripPromise.then(trip => {
+      $scope.trip = trip
       sentTripToMapView()
-    });
+    })
 
-    routePromise.then((route) => {
-      $scope.route = route;
-    });
-    companyPromise.then((company) => { $scope.company = company; });
+    routePromise.then(route => {
+      $scope.route = route
+    })
+    companyPromise.then(company => {
+      $scope.company = company
+    })
 
-    const listener = (info) => {
+    const listener = info => {
       $scope.disp = {...info}
     }
 
@@ -80,8 +77,6 @@ export default [
     $scope.$on('$ionicView.beforeLeave', () => {
       MapService.emit('killTicketPingLoop')
       MapService.removeListener('ticketInfo', listener)
-    });
-
-
-  }
-];
+    })
+  },
+]

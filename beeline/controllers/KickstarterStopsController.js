@@ -2,7 +2,6 @@ export default [
   "$scope",
   "$state",
   "$stateParams",
-  "$ionicHistory",
   "$ionicLoading",
   "$ionicPopup",
   "$ionicScrollDelegate",
@@ -13,7 +12,6 @@ export default [
     $scope,
     $state,
     $stateParams,
-    $ionicHistory,
     $ionicLoading,
     $ionicPopup,
     $ionicScrollDelegate,
@@ -24,7 +22,7 @@ export default [
     // ------------------------------------------------------------------------
     // Input
     // ------------------------------------------------------------------------
-    let routeId = $stateParams.routeId ? +$stateParams.routeId : null;
+    let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
     // ------------------------------------------------------------------------
     // Model
     // ------------------------------------------------------------------------
@@ -32,45 +30,44 @@ export default [
       selectedStop: null, // stop object
       boardStops: null,
       alightStops: null,
-    };
+    }
 
     // ------------------------------------------------------------------------
     // Hooks
     // ------------------------------------------------------------------------
-    $scope.selectStop = (stop) => {
-      $scope.data.selectedStop = stop;
+    $scope.selectStop = stop => {
+      $scope.data.selectedStop = stop
       MapService.emit('stop-selected', stop)
-    };
+    }
     $scope.done = () => {
       $state.go("tabs.crowdstart-detail", {
-        routeId: routeId
+        routeId: routeId,
       })
-    };
+    }
 
     // ------------------------------------------------------------------------
     // Initialization
     // ------------------------------------------------------------------------
     $ionicLoading.show({
       template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading stop information</small>`,
-      hideOnStateChange: true
-    });
+      hideOnStateChange: true,
+    })
     RoutesService.getRoute(routeId).then(route => {
       // Load the stops data into the view
-      let [pickups, dropoffs] = BookingService.computeStops(route.trips);
+      let [pickups, dropoffs] = BookingService.computeStops(route.trips)
       // $scope.data.stops = pickups.concat(dropoffs)
       $scope.data.boardStops = pickups
       $scope.data.alightStops = dropoffs
       // Scroll to the selected stop if we have one
-      $ionicScrollDelegate.resize();
-      $ionicLoading.hide();
+      $ionicScrollDelegate.resize()
+      $ionicLoading.hide()
     }).catch(error => {
       // On error close out
-      $ionicLoading.hide();
+      $ionicLoading.hide()
       $ionicPopup.alert({
         title: "Sorry there's been a problem loading the stop information",
-        subTitle: error
-      });
-    });
-
-  }
-];
+        subTitle: error,
+      })
+    })
+  },
+]

@@ -1,51 +1,36 @@
-import {NetworkError} from '../shared/errors';
-import {formatDate, formatTime, formatUTCDate, formatHHMM_ampm} from '../shared/format';
-import loadingTemplate from '../templates/loading.html';
+import _ from 'lodash'
 
 export default [
-  '$rootScope',
   '$scope',
-  '$interpolate',
   '$state',
   '$stateParams',
-  '$ionicModal',
   '$ionicPopup',
   '$ionicLoading',
   'RoutesService',
   'LiteRoutesService',
   'LiteRouteSubscriptionService',
   'UserService',
-  'CompanyService',
-  'uiGmapGoogleMapApi',
-  'MapOptions',
   'loadingSpinner',
   'MapService',
   function(
-    $rootScope,
     $scope,
-    $interpolate,
     $state,
     $stateParams,
-    $ionicModal,
     $ionicPopup,
     $ionicLoading,
     RoutesService,
     LiteRoutesService,
     LiteRouteSubscriptionService,
     UserService,
-    CompanyService,
-    uiGmapGoogleMapApi,
-    MapOptions,
     loadingSpinner,
     MapService
   ) {
-
     $scope.disp = {
       companyInfo: {},
       showTooltip: true,
       hasTrackingData: null,
       statusMessages: null,
-    };
+    }
 
     // Default settings for various info used in the page
     $scope.book = {
@@ -55,38 +40,38 @@ export default [
       isSubscribed: false,
       todayTrips: null,
       inServiceWindow: false,
-      hasTrips: true
-    };
+      hasTrips: true,
+    }
 
-    $scope.$watch('book.todayTrips',(trips)=>{
-      if (!trips) return;
+    $scope.$watch('book.todayTrips', trips => {
+      if (!trips) return
       $scope.book.hasTrips = trips.length > 0
-    });
+    })
 
-    var routePromise, subscriptionPromise;
+    var routePromise
+    var subscriptionPromise
 
-    $scope.book.label = $stateParams.label;
+    $scope.book.label = $stateParams.label
 
-    routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label);
-    subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label);
+    routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label)
+    subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label)
 
-    subscriptionPromise.then((response)=>{
-      $scope.book.isSubscribed = response;
-    });
+    subscriptionPromise.then(response => {
+      $scope.book.isSubscribed = response
+    })
 
-    var availableTripsPromise = routePromise.then((route)=>{
-      $scope.book.route = route[$scope.book.label];
-      //get route features
-      RoutesService.getRouteFeatures($scope.book.route.id).then((data)=>{
-        $scope.disp.features = data;
-      });
-      $scope.book.route.trips = _.sortBy($scope.book.route.trips, (trip)=>{
+    var availableTripsPromise = routePromise.then(route => {
+      $scope.book.route = route[$scope.book.label]
+      // get route features
+      RoutesService.getRouteFeatures($scope.book.route.id).then(data => {
+        $scope.disp.features = data
+      })
+      $scope.book.route.trips = _.sortBy($scope.book.route.trips, trip => {
         return trip.date
       })
-    });
+    })
 
-
-    function sendTripsToMapView () {
+    function sendTripsToMapView() {
       const todayTrips = $scope.book.todayTrips
       if (todayTrips && todayTrips.length > 0) {
         MapService.emit('ping-trips', todayTrips)
@@ -100,7 +85,7 @@ export default [
       // the handler for $ionicView.beforeLeave in .then(() => {})
       // the user might have already navigated away from the page, and
       // the event will not be fired
-      const leavePromise = new Promise((resolve) => {
+      const leavePromise = new Promise(resolve => {
         $scope.$on('$ionicView.beforeLeave', resolve)
       })
 
@@ -110,37 +95,36 @@ export default [
       .then(() => {
         MapService.emit('startPingLoop')
 
-        const listener = (tripInfo) => {
+        const listener = tripInfo => {
           updateTripInfo(tripInfo)
         }
         MapService.on('tripInfo', listener)
         leavePromise.then(() => MapService.removeListener('tripInfo', listener))
-      }));
+      }))
 
       Promise.all([dataPromise, leavePromise])
       .then(() => {
         MapService.emit('killPingLoop')
-      });
-    });
-
-    $scope.$watch(() => UserService.getUser() && UserService.getUser().id, (userId) => {
-      $scope.isLoggedIn = userId ? true : false;
+      })
     })
 
-    $scope.$watchCollection( () => [].concat(LiteRouteSubscriptionService.getSubscriptionSummary()),
-    (newValue) => {
+    $scope.$watch(() => UserService.getUser() && UserService.getUser().id, userId => {
+      $scope.isLoggedIn = Boolean(userId)
+    })
+
+    $scope.$watchCollection(() => [].concat(LiteRouteSubscriptionService.getSubscriptionSummary()),
+    newValue => {
       LiteRouteSubscriptionService.isSubscribed($scope.book.label)
-      .then((response) => {
+      .then(response => {
         if (response) {
-          $scope.book.isSubscribed = true;
-        }
-        else {
-          $scope.book.isSubscribed = false;
+          $scope.book.isSubscribed = true
+        } else {
+          $scope.book.isSubscribed = false
         }
       })
-    });
+    })
 
-    $scope.login = function () {
+    $scope.login = function() {
       UserService.promptLogIn()
     }
 
@@ -149,21 +133,20 @@ export default [
         title: 'Are you sure you want to bookmark this route?',
       })
 
-      if (!response) return;
+      if (!response) return
       $scope.followRoute()
     }
 
     $scope.followRoute = async function() {
-
       try {
-        $scope.book.waitingForSubscriptionResult = true;
+        $scope.book.waitingForSubscriptionResult = true
 
         var subscribeResult = await loadingSpinner(
           LiteRoutesService.subscribeLiteRoute($scope.book.label)
         )
 
         if (subscribeResult) {
-          $scope.book.isSubscribed = true;
+          $scope.book.isSubscribed = true
           $ionicPopup.alert({
             title: 'Success',
             template: `
@@ -178,42 +161,40 @@ export default [
             `,
           })
           .then(() => {
-            $state.transitionTo("tabs.tickets");
+            $state.transitionTo("tabs.tickets")
           })
         }
-      }
-      catch(err) {
+      } catch (err) {
         await $ionicLoading.show({
           template: `
           <div>Error, please try again later.</div>
           `,
           duration: 1000,
         })
+      } finally {
+        $scope.book.waitingForSubscriptionResult = false
       }
-      finally {
-        $scope.book.waitingForSubscriptionResult = false;
-      }
-    };
+    }
 
     // TODO: Move bulk of promptUntrack code into service or directive as both
     // LiteSummaryController and LiteRouteTrackerController uses it
     $scope.promptUntrack = async function() {
       var response = await $ionicPopup.confirm({
         title: 'Are you sure you want to unbookmark this route?',
-        subTitle: "This tracking-only route will be removed from your trips list."
+        subTitle: "This tracking-only route will be removed from your trips list.",
       })
 
-      if (!response) return;
+      if (!response) return
 
       try {
-        $scope.book.waitingForSubscriptionResult = true;
+        $scope.book.waitingForSubscriptionResult = true
 
         var unsubscribeResult = await loadingSpinner(
           LiteRoutesService.unsubscribeLiteRoute($scope.book.label)
         )
 
         if (unsubscribeResult) {
-          $scope.book.isSubscribed = false;
+          $scope.book.isSubscribed = false
         }
 
         if (!$scope.book.isSubscribed) {
@@ -224,36 +205,33 @@ export default [
             duration: 1000,
           })
           if ($state.current && $state.current.name === 'tabs.lite-route-tracker') {
-            $state.transitionTo('tabs.tickets');
+            $state.transitionTo('tabs.tickets')
           } else {
-            $state.transitionTo("tabs.routes");
+            $state.transitionTo("tabs.routes")
           }
         }
-      }
-      catch(err) {
+      } catch (err) {
         await $ionicLoading.show({
           template: `
           <div>Error, please try again later.</div>
           `,
           duration: 1000,
         })
+      } finally {
+        $scope.book.waitingForSubscriptionResult = false
       }
-      finally {
-        $scope.book.waitingForSubscriptionResult = false;
-      }
-    };
+    }
 
     $scope.hideTooltip = () => {
       if ($scope.disp.showTooltip) {
-        $scope.disp.showTooltip = false;
+        $scope.disp.showTooltip = false
       }
     }
 
     function updateTripInfo(tripInfo) {
       $scope.disp.hasTrackingData = tripInfo.hasTrackingData
       $scope.disp.statusMessages = tripInfo.statusMessages
-      $scope.$digest();
+      $scope.$digest()
     }
-
-  }
-];
+  },
+]

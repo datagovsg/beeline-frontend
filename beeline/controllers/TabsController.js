@@ -1,17 +1,16 @@
+import _ from 'lodash'
 
 export default [
   '$scope',
   'MapOptions',
   'SharedVariableService',
-  '$rootScope',
   'uiGmapGoogleMapApi',
-  function($scope, MapOptions, SharedVariableService, $rootScope,
-    uiGmapGoogleMapApi) {
+  function($scope, MapOptions, SharedVariableService, uiGmapGoogleMapApi) {
     $scope.map = MapOptions.defaultMapOptions({
       busLocation: {
         coordinates: null,
         icon: null,
-      }
+      },
     })
 
     $scope.disp = {
@@ -19,26 +18,24 @@ export default [
       routeMessage: null,
     }
 
-
     // Resolved when the map is initialized
     var gmapIsReady = new Promise((resolve, reject) => {
-      var resolved = false;
+      var resolved = false
       $scope.$watch('map.control.getGMap', function() {
         if ($scope.map.control.getGMap) {
           if (!resolved) {
-            resolved = true;
-            resolve();
+            resolved = true
+            resolve()
           }
         }
-      });
-    });
-
-
-    gmapIsReady.then(() => {
-      MapOptions.disableMapLinks();
+      })
     })
 
-    uiGmapGoogleMapApi.then((googleMaps) => {
+    gmapIsReady.then(() => {
+      MapOptions.disableMapLinks()
+    })
+
+    uiGmapGoogleMapApi.then(googleMaps => {
       $scope.map.busLocation.icon = {
         url: `img/busMarker.svg`,
         scaledSize: new googleMaps.Size(68, 86),
@@ -46,9 +43,9 @@ export default [
       }
     })
 
-    $scope.$watch('mapObject.stops', (stops) => {
+    $scope.$watch('mapObject.stops', stops => {
       if (stops && stops.length > 0) {
-        var bounds = MapOptions.formBounds(stops);
+        var bounds = MapOptions.formBounds(stops)
         if ($scope.map.control.getGMap) {
           var gmap = $scope.map.control.getGMap()
           google.maps.event.trigger(gmap, 'resize')
@@ -70,7 +67,7 @@ export default [
 
     $scope.mapObject = _.assign({}, originalMapObject)
 
-    $scope.$watch(() => SharedVariableService.get(), (data) => {
+    $scope.$watch(() => SharedVariableService.get(), data => {
       $scope.mapObject = _.assign($scope.mapObject, data)
     }, true)
 
@@ -87,23 +84,22 @@ export default [
       }
     }
 
-    $scope.$watch('mapObject.chosenStop', (stop) => {
+    $scope.$watch('mapObject.chosenStop', stop => {
       if (stop) {
         panToStop(stop, true)
       }
     })
 
-    $scope.$watch('mapObject.boardStop', (stop) => {
+    $scope.$watch('mapObject.boardStop', stop => {
       if (stop) {
         panToStop(stop.stop)
       }
     })
 
-    $scope.$watch('mapObject.alightStop', (stop) => {
+    $scope.$watch('mapObject.alightStop', stop => {
       if (stop) {
         panToStop(stop.stop)
       }
     })
-
-  }
-];
+  },
+]
