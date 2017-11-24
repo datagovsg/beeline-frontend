@@ -9,7 +9,7 @@ export default [
   'BookingService',
   'FastCheckoutService',
   'MapService',
-  function(
+  function (
     $scope,
     $state,
     $stateParams,
@@ -94,7 +94,7 @@ export default [
       })
     }
 
-    function reactivateButton() {
+    function reactivateButton () {
       $scope.disp.isBooking = false
     }
 

@@ -5,7 +5,7 @@ export default [
   'LiteRouteSubscriptionService',
   'LiteRoutesService',
   'loadingSpinner',
-  function(
+  function (
     $scope,
     TicketService,
     UserService,
@@ -17,7 +17,7 @@ export default [
     let liteRoutesPromise = Promise.resolve(null)
 
     // Track the login state of the user service
-    $scope.logIn = function() {
+    $scope.logIn = function () {
       UserService.promptLogIn()
     }
 
@@ -56,12 +56,12 @@ export default [
       }
     )
 
-    function refreshTickets(ignoreCache) {
+    function refreshTickets (ignoreCache) {
       normalRoutesPromise = refreshNormalTickets(ignoreCache)
       liteRoutesPromise = refreshLiteTickets(ignoreCache)
     }
 
-    function refreshNormalTickets(ignoreCache) {
+    function refreshNormalTickets (ignoreCache) {
       return TicketService.getCategorizedTickets(ignoreCache)
         .then((categorizedTickets) => {
           $scope.tickets.today = categorizedTickets.today
@@ -76,7 +76,7 @@ export default [
         })
     }
 
-    function refreshLiteTickets(ignoreCache) {
+    function refreshLiteTickets (ignoreCache) {
       LiteRoutesService.clearShouldRefreshLiteTickets()
       return LiteRouteSubscriptionService.getSubscriptions(ignoreCache)
         .then(async (liteRouteSubscriptions) => {

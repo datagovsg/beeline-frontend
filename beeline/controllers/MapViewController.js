@@ -8,7 +8,7 @@ export default [
   'BookingService',
   'RoutesService',
   'MapService',
-  function(
+  function (
     $scope,
     SharedVariableService,
     $stateParams,
@@ -36,16 +36,16 @@ export default [
       routeMessage: null,
     }
 
-    $scope.closeWindow = function() {
+    $scope.closeWindow = function () {
       $scope.disp.popupStop = null
     }
 
-    $scope.applyTapBoard = function(stop) {
+    $scope.applyTapBoard = function (stop) {
       $scope.disp.popupStop = stop
       $scope.$digest()
     }
 
-    $scope.formatStopTime = function(input) {
+    $scope.formatStopTime = function (input) {
       if (Array.isArray(input)) {
         return formatTimeArray(input)
       }

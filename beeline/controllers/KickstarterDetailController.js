@@ -6,7 +6,7 @@ export default [
   '$stateParams',
   'BookingService',
   'KickstarterService',
-  function(
+  function (
     $scope,
     $state,
     $stateParams,
@@ -38,14 +38,14 @@ export default [
       }
     )
 
-    $scope.showStops = function() {
+    $scope.showStops = function () {
       $state.go('tabs.crowdstart-stops', {
         routeId: $scope.book.routeId,
       })
     }
 
-    $scope.updateSelection = function(position, tiers, price) {
-      _.forEach(tiers, function(tier, index) {
+    $scope.updateSelection = function (position, tiers, price) {
+      _.forEach(tiers, function (tier, index) {
         if (position === index) {
           $scope.book.bidPrice = $scope.book.bidPrice === price ? null : price
         }

@@ -3,7 +3,7 @@ export default [
   '$stateParams',
   'LiteRoutesService',
   'RoutesService',
-  function(
+  function (
     $scope,
     $stateParams,
     LiteRoutesService,

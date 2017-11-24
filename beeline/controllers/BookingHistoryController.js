@@ -5,7 +5,7 @@ export default [
   '$scope',
   'UserService',
   'RoutesService',
-  function(
+  function (
     $scope,
     UserService,
     RoutesService
@@ -18,7 +18,7 @@ export default [
       $scope.loadMore()
     })
 
-    function reset() {
+    function reset () {
       _.assign($scope, {
         hasMoreData: true,
         page: 1,
@@ -38,7 +38,7 @@ export default [
 
     let inFlight = false
 
-    $scope.loadMore = function() {
+    $scope.loadMore = function () {
       if (inFlight) {
         return
       }

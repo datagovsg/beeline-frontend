@@ -21,7 +21,7 @@ export default [
   '$cordovaSocialSharing',
   'replace',
   'DevicePromise',
-  function(
+  function (
     $scope,
     UserService,
     StripeService,
@@ -51,9 +51,9 @@ export default [
     let isPressed = false
 
     // Track the login state of the user service
-    $scope.$watch(function() {
+    $scope.$watch(function () {
       return UserService.getUser()
-    }, function(newUser) {
+    }, function (newUser) {
       $scope.user = newUser
 
       if (newUser) {
@@ -65,7 +65,7 @@ export default [
 
     // Function that allows user to share an invitation with a referral code to
     // other apps on the phone
-    $scope.cordovaShare = async function() {
+    $scope.cordovaShare = async function () {
       $cordovaSocialSharing.share($scope.shareMsg, 'Try out Beeline!')
     }
 
@@ -76,7 +76,7 @@ export default [
     // Generic event handler to allow user to update their
     // name, email
     // FIXME: Get Yixin to review the user info update flow.
-    $scope.updateUserInfo = function(field) {
+    $scope.updateUserInfo = function (field) {
       return UserService.promptUpdateUserInfo(field)
     }
 
@@ -86,7 +86,7 @@ export default [
     // Configure modals
 
     // Load the pages only when requested.
-    function assetScope(assetName) {
+    function assetScope (assetName) {
       const newScope = $scope.$new()
       newScope.error = newScope.html = null
       newScope.$on('modal.shown', () => {
@@ -122,17 +122,17 @@ export default [
       contactUsModalTemplate,
       {scope: $scope}
     )
-    $scope.$on('$destroy', function() {
+    $scope.$on('$destroy', function () {
       $scope.faqModal.destroy()
       $scope.contactUsModal.destroy()
       $scope.shareReferralModal.destroy()
     })
 
-    $scope.hasPaymentInfo = function() {
+    $scope.hasPaymentInfo = function () {
       return _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
     }
 
-    $scope.promptChangeOrRemoveCard = async function() {
+    $scope.promptChangeOrRemoveCard = async function () {
       if (isPressed) return
 
       try {
@@ -180,7 +180,7 @@ export default [
             type: $scope.isOnKickstarter ?
                   'button-disabled' :
                   'button-positive',
-            onTap: function(e) {
+            onTap: function (e) {
               if ($scope.isOnKickstarter) {
                 e.preventDefault()
               } else {
@@ -192,7 +192,7 @@ export default [
       })
     }
 
-    async function removeCard() {
+    async function removeCard () {
       const response = await $ionicPopup.confirm({
         title: 'Remove Payment Method',
         scope: $scope,
@@ -232,12 +232,12 @@ export default [
       }
     }
 
-    async function checkIfOnKickstarter() {
+    async function checkIfOnKickstarter () {
       let response = await KickstarterService.hasBids()
       return response
     }
 
-    $scope.addCard = async function() {
+    $scope.addCard = async function () {
       if (isPressed) return
 
       try {
@@ -260,7 +260,7 @@ export default [
       }
     }
 
-    $scope.changeCard = async function() {
+    $scope.changeCard = async function () {
       if (isPressed) return
 
       try {

@@ -7,7 +7,7 @@ export default [
   'UserService',
   'RoutesService',
   'MapService',
-  function(
+  function (
     $scope,
     $stateParams,
     TicketService,
@@ -47,7 +47,7 @@ export default [
       $scope.ticket = ticket
     })
 
-    function sentTripToMapView() {
+    function sentTripToMapView () {
       const trip = $scope.trip
       if (trip) {
         MapService.emit('ping-single-trip', [trip])
