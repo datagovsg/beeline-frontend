@@ -3,7 +3,6 @@
   "extends": [
     "eslint:recommended",
     "google",
-    // https://github.com/Gillespie59/eslint-plugin-angular
     "plugin:angular/johnpapa"
   ],
   "env": {
