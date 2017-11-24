@@ -102,7 +102,6 @@ app
 .controller('BookingDatesController', require('./controllers/BookingDatesController.js').default)
 .controller('BookingSummaryController', require('./controllers/BookingSummaryController.js').default)
 .controller('BookingConfirmationController', require('./controllers/BookingConfirmationController.js').default)
-.controller('SuggestController', require('./controllers/SuggestController.js').default)
 .controller('SettingsController', require('./controllers/SettingsController.js').default)
 .controller('TicketsController', require('./controllers/TicketsController.js').default)
 .controller('TicketDetailController', require('./controllers/TicketDetailController.js').default)
