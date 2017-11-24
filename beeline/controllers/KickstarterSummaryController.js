@@ -46,31 +46,42 @@ export default [
     $scope.book.routeId = Number($stateParams.routeId)
     $scope.priceInfo.bidPrice = Number($stateParams.bidPrice)
 
-    $scope.$watch(() => KickstarterService.getCrowdstartById($scope.book.routeId), (route) => {
-      if (!route) return
-      $scope.book.route = route
-      // give 1st and last stop as board and alight stop for fake ticket
-      $scope.book.boardStopId = _.first(route.trips[0].tripStops).id
-      $scope.book.alightStopId = _.last(route.trips[0].tripStops).id
-      $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
-      $scope.priceInfo.totalDue = $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount
-      $scope.$watch('priceInfo.bidPrice', (price) => {
+    $scope.$watch(
+      () => KickstarterService.getCrowdstartById($scope.book.routeId),
+      (route) => {
+        if (!route) return
+        $scope.book.route = route
+        // give 1st and last stop as board and alight stop for fake ticket
+        $scope.book.boardStopId = _.first(route.trips[0].tripStops).id
+        $scope.book.alightStopId = _.last(route.trips[0].tripStops).id
         $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
-        $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount
-      })
-    })
+        $scope.priceInfo.totalDue = $scope.priceInfo.bidPrice *
+                                    $scope.priceInfo.tripCount
+        $scope.$watch('priceInfo.bidPrice', (price) => {
+          $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
+          $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount
+        })
+      }
+    )
 
     $scope.$watch(() => UserService.getUser(), async (user) => {
       $scope.isLoggedIn = Boolean(user)
       $scope.user = user
       if ($scope.isLoggedIn) {
-        $scope.$watch(() => UserService.getUser().savedPaymentInfo, (paymentInfo) => {
-          $scope.data.hasCreditInfo = $scope.user && $scope.user.savedPaymentInfo && $scope.user.savedPaymentInfo.sources.data.length > 0
-          if ($scope.data.hasCreditInfo) {
-            $scope.data.brand = paymentInfo.sources.data[0].brand
-            $scope.data.last4Digtis = paymentInfo.sources.data[0].last4
+        $scope.$watch(
+          () => UserService.getUser().savedPaymentInfo,
+          (paymentInfo) => {
+            $scope.data.hasCreditInfo =
+              $scope.user &&
+              $scope.user.savedPaymentInfo &&
+              $scope.user.savedPaymentInfo.sources.data.length > 0
+
+            if ($scope.data.hasCreditInfo) {
+              $scope.data.brand = paymentInfo.sources.data[0].brand
+              $scope.data.last4Digtis = paymentInfo.sources.data[0].last4
+            }
           }
-        })
+        )
       }
     })
 
@@ -89,7 +100,9 @@ export default [
         $scope.waitingForPaymentResult = true
 
         if (!$scope.data.hasCreditInfo) {
-          const stripeToken = await StripeService.promptForToken(null, null, true)
+          const stripeToken = await StripeService.promptForToken(null,
+                                                                 null,
+                                                                 true)
 
           if (!stripeToken) return
 
@@ -98,8 +111,10 @@ export default [
           )
         }
       } catch (err) {
-        console.log(err)
-        throw new Error(`Error saving credit card details. ${_.get(err, 'data.message')}`)
+        console.error(err)
+        throw new Error(
+          `Error saving credit card details. ${_.get(err, 'data.message')}`
+        )
       } finally {
         $scope.waitingForPaymentResult = false
         // to make $digest not throw errors
@@ -109,7 +124,12 @@ export default [
 
       try {
         const bidPrice = $scope.priceInfo.bidPrice
-        await loadingSpinner(KickstarterService.createBid($scope.book.route, $scope.book.boardStopId, $scope.book.alightStopId, bidPrice))
+        await loadingSpinner(
+          KickstarterService.createBid($scope.book.route,
+                                       $scope.book.boardStopId,
+                                       $scope.book.alightStopId,
+                                       bidPrice)
+        )
         await $ionicPopup.alert({
           title: 'Success',
         })
@@ -121,7 +141,8 @@ export default [
         await $ionicPopup.alert({
           title: 'Error processing bid',
           template: `
-          <div> There was an error creating the bid. ${err && err.data && err.data.message} Please try again later.</div>
+          <div> There was an error creating the bid. \
+          ${err && err.data && err.data.message} Please try again later.</div>
           `,
         })
         $state.go('tabs.crowdstart')
@@ -142,8 +163,10 @@ export default [
           UserService.updatePaymentInfo(stripeToken.id)
         )
       } catch (error) {
-        console.log(error)
-        throw new Error(`Error saving credit card details. ${_.get(error, 'data.message')}`)
+        console.error(error)
+        throw new Error(
+          `Error saving credit card details. ${_.get(error, 'data.message')}`
+        )
       }
     }
   },

@@ -21,14 +21,17 @@ export default [
       UserService.promptLogIn()
     }
 
-    $scope.$watch(() => UserService.getUser() && UserService.getUser().id, () => {
-      $scope.user = UserService.getUser()
-      if ($scope.user) {
-        refreshTickets(true)
-      } else {
-        refreshTickets()
+    $scope.$watch(
+      () => UserService.getUser() && UserService.getUser().id,
+      () => {
+        $scope.user = UserService.getUser()
+        if ($scope.user) {
+          refreshTickets(true)
+        } else {
+          refreshTickets()
+        }
       }
-    })
+    )
 
     // Grab the tickets
     $scope.tickets = {}
@@ -37,14 +40,21 @@ export default [
       loadingSpinner(Promise.all([normalRoutesPromise, liteRoutesPromise]))
     })
 
-    $scope.$watch(() => TicketService.getShouldRefreshTickets(), (value) => {
-      if (!value) return
-      normalRoutesPromise = refreshNormalTickets(true)
-    })
-    $scope.$watch(() => LiteRoutesService.getShouldRefreshLiteTickets(), (value) => {
-      if (!value) return
-      liteRoutesPromise = refreshLiteTickets(true)
-    })
+    $scope.$watch(
+      () => TicketService.getShouldRefreshTickets(),
+      (value) => {
+        if (!value) return
+        normalRoutesPromise = refreshNormalTickets(true)
+      }
+    )
+
+    $scope.$watch(
+      () => LiteRoutesService.getShouldRefreshLiteTickets(),
+      (value) => {
+        if (!value) return
+        liteRoutesPromise = refreshLiteTickets(true)
+      }
+    )
 
     function refreshTickets(ignoreCache) {
       normalRoutesPromise = refreshNormalTickets(ignoreCache)
@@ -52,37 +62,40 @@ export default [
     }
 
     function refreshNormalTickets(ignoreCache) {
-      return TicketService.getCategorizedTickets(ignoreCache).then((categorizedTickets) => {
-        $scope.tickets.today = categorizedTickets.today
-        $scope.tickets.soon = categorizedTickets.afterToday
-        $scope.error = false
-      })
-      .catch((error) => {
-        $scope.error = true
-      })
-      .finally(() => {
-        $scope.$broadcast('scroll.refreshComplete')
-      })
+      return TicketService.getCategorizedTickets(ignoreCache)
+        .then((categorizedTickets) => {
+          $scope.tickets.today = categorizedTickets.today
+          $scope.tickets.soon = categorizedTickets.afterToday
+          $scope.error = false
+        })
+        .catch((error) => {
+          $scope.error = true
+        })
+        .finally(() => {
+          $scope.$broadcast('scroll.refreshComplete')
+        })
     }
 
     function refreshLiteTickets(ignoreCache) {
       LiteRoutesService.clearShouldRefreshLiteTickets()
-      return LiteRouteSubscriptionService.getSubscriptions(ignoreCache).then(async (liteRouteSubscriptions) => {
-        const allLiteRoutes = await LiteRoutesService.getLiteRoutes(ignoreCache)
-        $scope.liteRouteSubscriptions = liteRouteSubscriptions
-          .map((subscribedLiteLabel) => ({
-            label: subscribedLiteLabel,
-            liteRoute: allLiteRoutes[subscribedLiteLabel],
-          }))
-          .filter((subscription) => subscription.liteRoute)
-        $scope.error = false
-      })
-      .catch((error) => {
-        $scope.error = true
-      })
-      .finally(() => {
-        $scope.$broadcast('scroll.refreshComplete')
-      })
+      return LiteRouteSubscriptionService.getSubscriptions(ignoreCache)
+        .then(async (liteRouteSubscriptions) => {
+          const allLiteRoutes = await LiteRoutesService
+            .getLiteRoutes(ignoreCache)
+          $scope.liteRouteSubscriptions = liteRouteSubscriptions
+            .map((subscribedLiteLabel) => ({
+              label: subscribedLiteLabel,
+              liteRoute: allLiteRoutes[subscribedLiteLabel],
+            }))
+            .filter((subscription) => subscription.liteRoute)
+          $scope.error = false
+        })
+        .catch((error) => {
+          $scope.error = true
+        })
+        .finally(() => {
+          $scope.$broadcast('scroll.refreshComplete')
+        })
     }
     $scope.refreshTickets = refreshTickets
   },

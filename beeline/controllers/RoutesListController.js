@@ -27,13 +27,13 @@ export default [
     SearchEventService,
     PlaceService
   ) {
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // State
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Explicitly declare/initialize of scope variables we use
     $scope.data = {
       placeQuery: null, // The place object used to search
-      queryText: '', // The actual text in the box used only for the clear button
+      queryText: '', // The actual text in the box
       // Different types of route data
       activatedCrowdstartRoutes: [],
       recentRoutes: [],
@@ -59,8 +59,9 @@ export default [
       let place = {queryText: $scope.data.queryText}
       SearchEventService.emit('search-item', $scope.data.queryText)
 
-      // Reset routes, crowdstartRoutes and liteRoutes here because they are used to
-      // determine whether we do a place query (see watchGroup with all 3)
+      // Reset routes, crowdstartRoutes and liteRoutes here because they are
+      // used to determine whether we do a place query (see watchGroup with
+      // all 3)
       // If we don't reset, we could end up with the case where the criteria
       // is applied to the wrong version of them
       // E.g.
@@ -70,9 +71,9 @@ export default [
       //    only one of them has changed. WLOG assume it is routes.
       // 4. Then routes is filtered from the new search, while crowdstartRoutes
       //    is filtered from the old search.
-      // 5. Then the check (routes.length + crowdstartRoutes.length + liteRoutes.length> 0)
-      //    is using the wrong version of crowdstartRoutes and could result in us doing
-      //    unnecessary place queries.
+      // 5. Then the check (routes.length + crowdstartRoutes.length +
+      //    liteRoutes.length> 0) is using the wrong version of crowdstartRoutes
+      //    and could result in us doing unnecessary place queries.
       //
       // Resetting to null also has the benefit that the check whether we do
       // place queries is only done once.
@@ -82,9 +83,9 @@ export default [
       $scope.data.placeQuery = place
       $scope.$digest()
     }
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // UI Hooks
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     $scope.$watch('data.queryText',
       _.debounce(autoComplete, 1000, {leading: false, trailing: true})
@@ -99,9 +100,12 @@ export default [
       RoutesService.fetchRoutes(ignoreCache)
       const routesPromise = RoutesService.fetchRoutesWithRoutePass()
       const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
-      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(ignoreCache)
-      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(ignoreCache)
-      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(ignoreCache)
+      const allLiteRoutesPromise = LiteRoutesService
+        .fetchLiteRoutes(ignoreCache)
+      const crowdstartRoutesPromise = KickstarterService
+        .fetchCrowdstart(ignoreCache)
+      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService
+        .getSubscriptions(ignoreCache)
       return $q.all([
         routesPromise,
         recentRoutesPromise,
@@ -121,9 +125,9 @@ export default [
       if (queryText.length === 0) $scope.data.placeQuery = null
     })
 
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Model Hooks
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Kickstarted routes
     $scope.$watchGroup(
       [() => RoutesService.getActivatedKickstarterRoutes(), 'data.placeQuery'],
@@ -186,7 +190,10 @@ export default [
       ['data.activatedCrowdstartRoutes', 'data.recentRoutesById'],
       ([activatedCrowdstartRoutes, recentRoutesById]) => {
         if (activatedCrowdstartRoutes && recentRoutesById) {
-          let activatedCrowdstartRoutesIds = _.map(activatedCrowdstartRoutes, (route) => route.id)
+          let activatedCrowdstartRoutesIds = _.map(
+            activatedCrowdstartRoutes,
+            (route) => route.id
+          )
           $scope.data.recentRoutes = $scope.data.recentRoutes.filter(
             (route) => !activatedCrowdstartRoutesIds.includes(route.id)
           )
@@ -208,13 +215,17 @@ export default [
             if (Object.prototype.hasOwnProperty.call(recentRoutesById, id)) {
               let route = recentRoutesById[id]
               let lnglat = null
-              let tripStopsByKey = _.keyBy(route.trips[0].tripStops, (stop) => stop.stopId)
+              let tripStopsByKey = _.keyBy(route.trips[0].tripStops,
+                                           (stop) => stop.stopId)
               if (route.schedule && route.schedule.slice(0, 2) === 'AM') {
-                lnglat = tripStopsByKey[route.boardStopStopId].stop.coordinates.coordinates
+                lnglat = tripStopsByKey[route.boardStopStopId]
+                  .stop.coordinates.coordinates
               } else {
-                lnglat = tripStopsByKey[route.alightStopStopId].stop.coordinates.coordinates
+                lnglat = tripStopsByKey[route.alightStopStopId]
+                  .stop.coordinates.coordinates
               }
-              let results = SearchService.filterRoutesByLngLat($scope.data.routes, lnglat)
+              let results = SearchService
+                .filterRoutesByLngLat($scope.data.routes, lnglat)
               placeResults = _.concat(placeResults, results)
             }
           }
@@ -244,11 +255,14 @@ export default [
           return biddedRouteIds.includes(route.id.toString())
         })
 
-        // don't display it in backed list if the pass expires after 1 month of 1st trip
-        // and don't display it if it's 7 days after expired and not actived
-        routes = routes.filter((route) => (!route.passExpired && route.isActived) ||
-                                        !route.isExpired ||
-                                        !route.is7DaysOld)
+        // don't display it in backed list if the pass expires after 1 month
+        // of 1st trip and don't display it if it's 7 days after expired and
+        // not actived
+        routes = routes.filter(
+          (route) => (!route.passExpired && route.isActived) ||
+                     !route.isExpired ||
+                     !route.is7DaysOld
+        )
 
         // Filter the routes
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
@@ -376,12 +390,14 @@ export default [
           // Important comments in the autoComplete function
           if (!routes || !crowdstartRoutes || !liteRoutes) return
           // Criteria for making a place query
-          if (routes.length + crowdstartRoutes.length + liteRoutes.length > 0) return
+          if (routes.length +
+              crowdstartRoutes.length +
+              liteRoutes.length > 0) return
 
           let placeQuery = $scope.data.placeQuery
           if (!placeQuery) return
 
-          // If placeQuery.geometry exists, then we've already made a place query
+          // If placeQuery.geometry exists then we've already made a place query
           if (placeQuery.geometry) return
 
           let place = await PlaceService.handleQuery($scope.data.queryText)
@@ -396,19 +412,20 @@ export default [
           $scope.$digest()
         }
 
-        handlePlaceQuery().then(stopFilteringAfterDelay, stopFilteringAfterDelay)
+        handlePlaceQuery()
+          .then(stopFilteringAfterDelay, stopFilteringAfterDelay)
       }
     )
 
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Misc
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     // Session ID cache for some reason?
     // let ionic to clear page cache if user goes through booking process of the
     // same route few times, always start with clean form (pre-chosen stops etc.
-    // are cleared),this is the internal mechanism of ionic (as any part of query
-    // string change, the cache are cleared)
+    // are cleared), this is the internal mechanism of ionic (as any part of
+    // query string change, the cache are cleared)
     $scope.$on('$ionicView.beforeEnter', () => {
       $scope.data.nextSessionId = BookingService.newSession()
     })

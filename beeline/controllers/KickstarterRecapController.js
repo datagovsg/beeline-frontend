@@ -49,13 +49,17 @@ export default [
     $scope.showStops = function() {
       $scope.modal.show()
 
-      $scope.$watch(() => $scope.modalMap.control.getGMap && $scope.modalMap.control.getGMap(), function(modalMap) {
-        if (modalMap) {
-          MapOptions.resizePreserveCenter(modalMap)
-          // set modalMap bound
-          $scope.panToStops(modalMap, $scope.busStops)
+      $scope.$watch(
+        () => $scope.modalMap.control.getGMap &&
+              $scope.modalMap.control.getGMap(),
+        function(modalMap) {
+          if (modalMap) {
+            MapOptions.resizePreserveCenter(modalMap)
+            // set modalMap bound
+            $scope.panToStops(modalMap, $scope.busStops)
+          }
         }
-      })
+      )
     }
     $scope.close = function() {
       $scope.modal.hide()
@@ -65,14 +69,19 @@ export default [
       $scope.modal.remove()
     })
 
-    $scope.$watchGroup([() => KickstarterService.getCrowdstartById($scope.book.routeId),
-      () => KickstarterService.getBidInfo($scope.book.routeId),
-      () => RoutesService.getRoutePasses($scope.book.creditTag)],
+    $scope.$watchGroup(
+      [
+        () => KickstarterService.getCrowdstartById($scope.book.routeId),
+        () => KickstarterService.getBidInfo($scope.book.routeId),
+        () => RoutesService.getRoutePasses($scope.book.creditTag),
+      ],
       ([route, bid, passes]) => {
         if (!route) return
         $scope.book.route = route;
-        /** Summarizes the stops from trips by comparing their stop location and time */
-        [$scope.book.boardStops, $scope.book.alightStops] = BookingService.computeStops($scope.book.route.trips)
+        // Summarizes the stops from trips by comparing their stop location
+        // and time
+        [$scope.book.boardStops, $scope.book.alightStops] = BookingService
+          .computeStops($scope.book.route.trips)
         $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops)
         if (!bid) return
         $scope.book.bid = bid

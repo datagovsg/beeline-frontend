@@ -1,6 +1,7 @@
 const moment = require('moment')
 import _ from 'lodash'
-import tapToSelectMultipleDaysTemplate from '../templates/tap-to-select-multiple-days.html'
+import tapToSelectMultipleDaysTemplate
+  from '../templates/tap-to-select-multiple-days.html'
 
 export default [
   '$scope',
@@ -39,7 +40,9 @@ export default [
       boardStopId: parseInt($stateParams.boardStop),
       alightStopId: parseInt($stateParams.alightStop),
       priceInfo: {},
-      selectedDates: ($stateParams.selectedDates || '').split(',').map((ms) => parseInt(ms)),
+      selectedDates: ($stateParams.selectedDates || '')
+        .split(',')
+        .map((ms) => parseInt(ms)),
       invalidStopDates: [],
       applyRoutePass: false,
       applyReferralCredits: false,
@@ -100,8 +103,9 @@ export default [
         for (let time of Object.keys($scope.disp.availabilityDays)) {
           time = parseInt(time)
           let timeMoment = moment(time).utcOffset(0)
-          let annotation = $scope.book.route.tripsByDate[time].bookingInfo &&
-                           $scope.book.route.tripsByDate[time].bookingInfo.notes &&
+          let trip = $scope.book.route.tripsByDate[time]
+          let annotation = trip.bookingInfo &&
+                           trip.bookingInfo.notes &&
                            ' '
           if (time in $scope.disp.previouslyBookedDays) {
             $scope.disp.highlightDays.push({
@@ -140,7 +144,8 @@ export default [
     })
 
     function loadTickets() {
-      const ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
+      const ticketsPromise = TicketService
+        .fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
         .catch((err) => null)
 
       loadingSpinner($q.all([ticketsPromise]).then(([tickets]) => {
@@ -160,11 +165,12 @@ export default [
 
     function updateCalendar() {
       // ensure cancelled trips are not shown
-      // const runningTrips = $scope.book.route.trips.filter(tr => tr.status !== 'cancelled');
       const runningTrips = $scope.book.route.trips.filter((tr) => tr.isRunning)
 
       // discover which month to show. Use UTC timezone
-      $scope.disp.month = moment(_.min(runningTrips.map((t) => t.date))).utcOffset(0)
+      $scope.disp.month = moment(
+        _.min(runningTrips.map((t) => t.date))
+      ).utcOffset(0)
 
       // reset
       $scope.disp.availabilityDays = {}
@@ -184,7 +190,8 @@ export default [
           continue
         }
 
-        $scope.disp.availabilityDays[trip.date.getTime()] = trip.availability.seatsAvailable
+        $scope.disp.availabilityDays[trip.date.getTime()] =
+          trip.availability.seatsAvailable
       }
     }
 
@@ -216,7 +223,9 @@ export default [
     $scope.$watch('book.pickWholeMonth', (pickWholeMonth) => {
       // original value
       if (pickWholeMonth === null) {
-        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '').split(',').map((ms) => moment(parseInt(ms)))
+        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '')
+          .split(',')
+          .map((ms) => moment(parseInt(ms)))
       } else {
         let wholeMonthDates = getFullMonthDates($scope.disp.month)
         let allowedInWholeMonth = _.intersectionBy(
@@ -236,7 +245,8 @@ export default [
           }
         } else {
           // pickWholeMonth == false
-          // try to test the intersectionBy, if the same length [pickWholeMonth changes from true to false]
+          // try to test the intersectionBy, if the same
+          // length [pickWholeMonth changes from true to false]
           // do differenceBy otherwise omit
           let intersection = _.intersectionBy(
             $scope.disp.selectedDatesMoments,
@@ -268,7 +278,10 @@ export default [
         allowedInWholeMonth,
         (m) => m.valueOf()
       )
-      $scope.book.pickWholeMonth = (allowedInWholeMonth.length === intersection.length && allowedInWholeMonth.length > 0)
+      $scope.book.pickWholeMonth = (
+        allowedInWholeMonth.length === intersection.length &&
+        allowedInWholeMonth.length > 0
+      )
     }
 
     // get whole range of dates in the month

@@ -31,7 +31,9 @@ export default [
       CompanyService.showTerms(companyId)
     }
 
-    const ticketPromise = TicketService.getTicketById(Number($stateParams.ticketId))
+    const ticketPromise = TicketService.getTicketById(
+      Number($stateParams.ticketId)
+    )
     const tripPromise = ticketPromise.then((ticket) => {
       return TripService.getTripData(Number(ticket.alightStop.tripId))
     })

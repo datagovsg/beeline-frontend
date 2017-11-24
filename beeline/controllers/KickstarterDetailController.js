@@ -26,13 +26,17 @@ export default [
 
     $scope.book.routeId = Number($stateParams.routeId)
 
-    $scope.$watch(() => KickstarterService.getCrowdstartById($scope.book.routeId), (route) => {
-      if (!route) return
-      $scope.book.route = route
-      $scope.book.bidOptions = route.notes.tier;
-      [$scope.book.boardStops, $scope.book.alightStops] = BookingService.computeStops($scope.book.route.trips)
-      $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops)
-    })
+    $scope.$watch(
+      () => KickstarterService.getCrowdstartById($scope.book.routeId),
+      (route) => {
+        if (!route) return
+        $scope.book.route = route
+        $scope.book.bidOptions = route.notes.tier;
+        [$scope.book.boardStops, $scope.book.alightStops] = BookingService
+          .computeStops($scope.book.route.trips)
+        $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops)
+      }
+    )
 
     $scope.showStops = function() {
       $state.go('tabs.crowdstart-stops', {

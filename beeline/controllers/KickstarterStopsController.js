@@ -49,7 +49,8 @@ export default [
     // Initialization
     // ------------------------------------------------------------------------
     $ionicLoading.show({
-      template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading stop information</small>`,
+      template: `<ion-spinner icon='crescent'></ion-spinner>
+                 <br/><small>Loading stop information</small>`,
       hideOnStateChange: true,
     })
     RoutesService.getRoute(routeId).then((route) => {

@@ -48,7 +48,8 @@ export default [
     // Initialization
     // ------------------------------------------------------------------------
     $ionicLoading.show({
-      template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading stop information</small>`,
+      template: `<ion-spinner icon='crescent'></ion-spinner>\
+        <br/><small>Loading stop information</small>`,
       hideOnStateChange: true,
     })
     RoutesService.getRoute(routeId).then((route) => {
@@ -75,8 +76,12 @@ export default [
 
     $scope.$watch('data.selectedStop', (stop) => {
       if (stop) {
-        if (type === 'pickup') MapService.emit('board-stop-selected', {stop: stop})
-        if (type === 'dropoff') MapService.emit('alight-stop-selected', {stop: stop})
+        if (type === 'pickup') {
+          MapService.emit('board-stop-selected', {stop: stop})
+        }
+        if (type === 'dropoff') {
+          MapService.emit('alight-stop-selected', {stop: stop})
+        }
       }
     })
   },
