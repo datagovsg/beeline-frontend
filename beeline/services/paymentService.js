@@ -1,43 +1,42 @@
 import assert from 'assert'
-import processingPaymentsTemplate from '../templates/processing-payments.html';
+import processingPaymentsTemplate from '../templates/processing-payments.html'
 
 angular.module('beeline')
-.factory('PaymentService', ['UserService','RoutesService', '$ionicPopup',
+.factory('PaymentService', ['UserService', 'RoutesService', '$ionicPopup',
   '$ionicLoading', 'BookingService', 'CreditsService', 'StripeService',
   'loadingSpinner', 'TicketService', '$state',
-  function paymentService(UserService, RoutesService,
+  function paymentService (UserService, RoutesService,
     $ionicPopup, $ionicLoading, BookingService, CreditsService, StripeService,
     loadingSpinner, TicketService, $state) {
-    var isPaymentProcessing = false
+    let isPaymentProcessing = false
     /** After you have settled the payment mode **/
     // book is booking Object
-    async function completePayment(paymentOptions, book) {
+    async function completePayment (paymentOptions, book) {
       try {
         $ionicLoading.show({
-          template: processingPaymentsTemplate
+          template: processingPaymentsTemplate,
         })
-        var result = await UserService.beeline({
+        let result = await UserService.beeline({
           method: 'POST',
           url: '/transactions/tickets/payment',
           data: _.defaults(paymentOptions, {
             trips: BookingService.prepareTrips(book),
-            promoCode: book.promoCode ? { code: book.promoCode } : { code: '' },
+            promoCode: book.promoCode ? {code: book.promoCode} : {code: ''},
             applyRoutePass: book.applyRoutePass ? true : false,
             applyCredits: book.applyCredits ? true : false,
             applyReferralCredits: book.applyReferralCredits ? true : false,
-            expectedPrice: book.price
+            expectedPrice: book.price,
           }),
-        });
+        })
 
-        assert(result.status == 200);
+        assert(result.status == 200)
 
-        $ionicLoading.hide();
+        $ionicLoading.hide()
 
-        TicketService.setShouldRefreshTickets();
-        $state.go('tabs.route-confirmation');
-
+        TicketService.setShouldRefreshTickets()
+        $state.go('tabs.route-confirmation')
       } catch (err) {
-        $ionicLoading.hide();
+        $ionicLoading.hide()
         await $ionicPopup.alert({
           title: 'Error processing payment',
           template: err.data.message,
@@ -47,97 +46,97 @@ angular.module('beeline')
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass()
 
-        CreditsService.fetchReferralCredits(true);
-        CreditsService.fetchUserCredits(true);
+        CreditsService.fetchReferralCredits(true)
+        CreditsService.fetchUserCredits(true)
       }
     }
 
-    async function payZeroDollar(book) {
+    async function payZeroDollar (book) {
       if (await $ionicPopup.confirm({
         title: 'Complete Purchase',
-        template: 'Are you sure you want to complete the purchase?'
+        template: 'Are you sure you want to complete the purchase?',
       })) {
         try {
-          isPaymentProcessing = true;
+          isPaymentProcessing = true
           await completePayment({
-            stripeToken: 'this-will-not-be-used'
+            stripeToken: 'this-will-not-be-used',
           }, book)
         } finally {
-          isPaymentProcessing = false;
+          isPaymentProcessing = false
         }
       }
     }
 
     // Prompts for card and processes payment with one time stripe token.
-    async function payWithoutSavingCard(book) {
+    async function payWithoutSavingCard (book) {
       try {
         // disable the button
-        isPaymentProcessing = true;
+        isPaymentProcessing = true
 
-        var stripeToken = await loadingSpinner(StripeService.promptForToken(
+        let stripeToken = await loadingSpinner(StripeService.promptForToken(
           null,
           isFinite(book.price) ? book.price * 100 : '',
-          null));
+          null))
 
         if (!stripeToken) {
-          return;
+          return
         }
 
         await completePayment({
           stripeToken: stripeToken.id,
-        }, book);
+        }, book)
       } catch (err) {
         await $ionicPopup.alert({
           title: 'Error contacting the payment gateway',
           template: err.data && err.data.message || err,
         })
       } finally {
-        isPaymentProcessing = false;
+        isPaymentProcessing = false
       }
     }
 
     // Processes payment with customer object. If customer object does not exist,
     // prompts for card, creates customer object, and proceeds as usual.
-    async function payWithSavedInfo(book) {
+    async function payWithSavedInfo (book) {
       try {
         // disable the button
-        isPaymentProcessing = true;
+        isPaymentProcessing = true
 
         if (!book.hasSavedPaymentInfo) {
-          var stripeToken = await StripeService.promptForToken(
+          let stripeToken = await StripeService.promptForToken(
             null,
             isFinite(book.price) ? book.price * 100 : '',
-            null);
+            null)
 
           if (!stripeToken) {
-            isPaymentProcessing = false; // re-enable button
-            return;
+            isPaymentProcessing = false // re-enable button
+            return
           }
 
           await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
         }
 
-        var user = await UserService.getUser()
+        let user = await UserService.getUser()
 
         await completePayment({
           customerId: user.savedPaymentInfo.id,
           sourceId: _.head(user.savedPaymentInfo.sources.data).id,
-        }, book);
+        }, book)
       } catch (err) {
-        isPaymentProcessing = false; // re-enable button
+        isPaymentProcessing = false // re-enable button
         await $ionicPopup.alert({
           title: 'Error saving payment method',
           template: err.data.message,
         })
       } finally {
-        isPaymentProcessing = false;
+        isPaymentProcessing = false
       }
     }
 
 
-    var instance = {
-      payForRoutePass: async function(route, expectedPrice, passValue, paymentOptions) {
-        var paymentPromise
+    let instance = {
+      payForRoutePass: async function (route, expectedPrice, passValue, paymentOptions) {
+        let paymentPromise
         try {
           let routePassTagList = route.tags.filter((tag) => {
             return tag.includes('rp-')
@@ -149,15 +148,19 @@ angular.module('beeline')
             url: '/transactions/route_passes/payment',
             data: _.defaults(paymentOptions, {
               creditTag: routePassTagList[0],
-              promoCode: { code: '' },
+              promoCode: {code: ''},
               companyId: route.transportCompanyId,
               expectedPrice: expectedPrice,
-              value: passValue
+              value: passValue,
             }),
           }))
-          paymentPromise = new Promise((resolve, reject) => {return resolve('routePassPurchaseDone')})
+          paymentPromise = new Promise((resolve, reject) => {
+return resolve('routePassPurchaseDone')
+})
         } catch (err) {
-          paymentPromise = new Promise((resolve, reject) => {return resolve('routePassError')})
+          paymentPromise = new Promise((resolve, reject) => {
+return resolve('routePassError')
+})
         } finally {
           RoutesService.fetchRoutePasses(true)
           RoutesService.fetchRoutePassCount()
@@ -166,19 +169,17 @@ angular.module('beeline')
         }
       },
 
-      payHandler : function (book, savePaymentChecked) {
+      payHandler: function (book, savePaymentChecked) {
         if (book.price === 0) {
-          payZeroDollar(book);
+          payZeroDollar(book)
+        } else if (book.hasSavedPaymentInfo || savePaymentChecked) {
+          payWithSavedInfo(book)
+        } else {
+          payWithoutSavingCard(book)
         }
-        else if (book.hasSavedPaymentInfo || savePaymentChecked) {
-          payWithSavedInfo(book);
-        }
-        else {
-          payWithoutSavingCard(book);
-        }
-      }
+      },
 
     }
-    return instance;
+    return instance
   }]
 )

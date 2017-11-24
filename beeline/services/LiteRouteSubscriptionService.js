@@ -1,12 +1,11 @@
-import _ from 'lodash';
-import assert from 'assert';
-
+import _ from 'lodash'
+import assert from 'assert'
 
 
 export default ['$http', 'UserService', '$q',
-  function LiteRouteSubscriptionService($http, UserService, $q) {
-    var LiteRouteSubscriptionCache = null;
-    var liteRouteSubscriptionsSummary = [];
+  function LiteRouteSubscriptionService ($http, UserService, $q) {
+    let LiteRouteSubscriptionCache = null
+    let liteRouteSubscriptionsSummary = []
 
 
     UserService.userEvents.on('userChanged', () => {
@@ -15,40 +14,38 @@ export default ['$http', 'UserService', '$q',
 
     var instance = {
 
-      getSubscriptionSummary: function() {
-        return liteRouteSubscriptionsSummary;
+      getSubscriptionSummary: function () {
+        return liteRouteSubscriptionsSummary
       },
 
-      getSubscriptions: function(ignoreCache) {
+      getSubscriptions: function (ignoreCache) {
         if (UserService.getUser()) {
-          if (LiteRouteSubscriptionCache && !ignoreCache) return liteRouteSubscriptionsSummary;
+          if (LiteRouteSubscriptionCache && !ignoreCache) return liteRouteSubscriptionsSummary
           return LiteRouteSubscriptionCache = UserService.beeline({
             method: 'GET',
             url: '/liteRoutes/subscriptions',
           }).then((response) => {
-            liteRouteSubscriptionsSummary = response.data.map(subs=>subs.routeLabel);
-            return liteRouteSubscriptionsSummary;
-    			});
-        }
-        else {
-          liteRouteSubscriptionsSummary = [];
-          return $q.resolve([]);
+            liteRouteSubscriptionsSummary = response.data.map((subs)=>subs.routeLabel)
+            return liteRouteSubscriptionsSummary
+    			})
+        } else {
+          liteRouteSubscriptionsSummary = []
+          return $q.resolve([])
         }
       },
 
-      isSubscribed: async function(label, ignoreCache) {
-        var subscriptions = await this.getSubscriptions(ignoreCache);
-        assert(subscriptions);
+      isSubscribed: async function (label, ignoreCache) {
+        let subscriptions = await this.getSubscriptions(ignoreCache)
+        assert(subscriptions)
 
-        var subscription = subscriptions.includes(label)
+        let subscription = subscriptions.includes(label)
         if (subscription) {
-          return true;
+          return true
+        } else {
+          return false
         }
-        else {
-          return false;
-        }
-      }
-    };
+      },
+    }
 
-    return instance;
+    return instance
 }]

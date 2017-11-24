@@ -1,23 +1,22 @@
-import moment from 'moment';
+import moment from 'moment'
 import {retriveNextTrip} from '../shared/util'
 import assert from 'assert'
 
 angular.module('beeline')
 .factory('FastCheckoutService', ['RoutesService', 'UserService',
   'purchaseRoutePassService', 'TicketService', '$stateParams', 'BookingSummaryModalService', '$ionicLoading',
-  function fastCheckoutService(RoutesService, UserService,
+  function fastCheckoutService (RoutesService, UserService,
     purchaseRoutePassService, TicketService, $stateParams, BookingSummaryModalService, $ionicLoading) {
-
-    var user;
-    var hasSavedPaymentInfo;
-    var paymentInfo;
-    var ridesRemaining;
-    var route;
-    var routeId;
+    let user
+    let hasSavedPaymentInfo
+    let paymentInfo
+    let ridesRemaining
+    let route
+    let routeId
 
     // login
-    function userLoginPromise() {
-      return new Promise((resolve,reject) => {
+    function userLoginPromise () {
+      return new Promise((resolve, reject) => {
         if (UserService.getUser()) {
           return resolve(UserService.getUser())
         } else {
@@ -30,8 +29,8 @@ angular.module('beeline')
     }
 
     // ridesRemaining promise
-    function ridesRemainingPromise(routeId) {
-      return new Promise((resolve,reject) => {
+    function ridesRemainingPromise (routeId) {
+      return new Promise((resolve, reject) => {
         if (RoutesService.getPassCountForRoute(routeId)) {
           return resolve(RoutesService.getPassCountForRoute(routeId))
         } else {
@@ -45,19 +44,19 @@ angular.module('beeline')
     }
 
     //  modal for purchase route pass
-    function purchaseRoutePass(hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, boardStopId, alightStopId, selectedDates) {
+    function purchaseRoutePass (hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, boardStopId, alightStopId, selectedDates) {
       return purchaseRoutePassService.show(hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, boardStopId, alightStopId, selectedDates)
     }
 
 
-    function routeQualifiedForRoutePass(route) {
+    function routeQualifiedForRoutePass (route) {
       if (route && route.tags) {
-        var rpList = route.tags.filter((tag) => tag.includes('rp-'))
+        let rpList = route.tags.filter((tag) => tag.includes('rp-'))
         return rpList && rpList.length === 1 && route.notes && route.notes.passSizes && route.notes.passSizes.length > 0
       }
     }
 
-    function purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId, hasSavedPaymentInfo) {
+    function purchaseTicketUsingRoutePass (routeId, route, selectedDates, boardStopId, alightStopId, hasSavedPaymentInfo) {
       return BookingSummaryModalService.show({
         routeId: routeId,
         price: route.trips[0].price,
@@ -70,48 +69,50 @@ angular.module('beeline')
       })
     }
 
-     function verifyPromise(routeId) {
+     function verifyPromise (routeId) {
       return new Promise(async (resolve, reject) => {
         route = await RoutesService.getRoute(routeId)
-        var nextTrip = retriveNextTrip(route)
+        let nextTrip = retriveNextTrip(route)
         if (nextTrip === null) {
           return reject('There is no next trip')
         }
-        var seatsAvailable = false
+        let seatsAvailable = false
         if (nextTrip && nextTrip.availability && nextTrip.availability.seatsAvailable > 0) {
           seatsAvailable = true
         }
-        var hasNextTripTicket = null, previouslyBookedDays = null
+        let hasNextTripTicket = null, previouslyBookedDays = null
         // user has the next trip ticket
         if (UserService.getUser()) {
-          var allTickets = TicketService.getTickets();
+          let allTickets = TicketService.getTickets()
           if (allTickets != null) {
-            var ticketsByRouteId = _.groupBy(allTickets, ticket => ticket.boardStop.trip.routeId);
+            let ticketsByRouteId = _.groupBy(allTickets, (ticket) => ticket.boardStop.trip.routeId)
             if (ticketsByRouteId && ticketsByRouteId[route.id]) {
-              previouslyBookedDays =  _.keyBy(ticketsByRouteId[route.id], t => new Date(t.boardStop.trip.date).getTime());
+              previouslyBookedDays = _.keyBy(ticketsByRouteId[route.id], (t) => new Date(t.boardStop.trip.date).getTime())
             }
           }
           if (previouslyBookedDays) {
-            var bookedDays = Object.keys(previouslyBookedDays).map(x=>{return parseInt(x)});
-            //compare current date with next trip
-            if (nextTrip && _.includes(bookedDays,nextTrip.date.getTime())) {
-              hasNextTripTicket = true;
+            let bookedDays = Object.keys(previouslyBookedDays).map((x)=>{
+return parseInt(x)
+})
+            // compare current date with next trip
+            if (nextTrip && _.includes(bookedDays, nextTrip.date.getTime())) {
+              hasNextTripTicket = true
             } else {
-              hasNextTripTicket = false;
+              hasNextTripTicket = false
             }
           } else {
-            hasNextTripTicket = false;
+            hasNextTripTicket = false
           }
         }
         _.assign(nextTrip, {hasNextTripTicket, seatsAvailable})
         if (hasNextTripTicket === true || seatsAvailable === false) {
-          nextTrip.errorMessage = "Next Trip is not available or user already purchased"
+          nextTrip.errorMessage = 'Next Trip is not available or user already purchased'
         }
         return resolve(nextTrip)
       })
     }
 
-    var instance = {
+    let instance = {
 
       verify: function (routeId) {
         return verifyPromise(routeId)
@@ -126,8 +127,7 @@ angular.module('beeline')
             route = await RoutesService.getRoute(routeId)
             await purchaseRoutePass(true, route, routeId, hasSavedPaymentInfo, paymentInfo)
             return resolve('success')
-          }
-          catch (err) {
+          } catch (err) {
             console.log(err)
             return reject('failed')
           }
@@ -140,8 +140,8 @@ angular.module('beeline')
             user = await userLoginPromise()
             $ionicLoading.show({
               template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading</small>`,
-              hideOnStateChange: true
-            });
+              hideOnStateChange: true,
+            })
             let verifyNextTrip = await verifyPromise(routeId)
             if (verifyNextTrip.errorMessage) {
               return reject(verifyNextTrip.errorMessage)
@@ -150,7 +150,7 @@ angular.module('beeline')
             paymentInfo = hasSavedPaymentInfo ? _.get(user, 'savedPaymentInfo') : null
             route = await RoutesService.getRoute(routeId)
             ridesRemaining = await ridesRemainingPromise(routeId)
-            $ionicLoading.hide();
+            $ionicLoading.hide()
             if (!ridesRemaining) {
               if (route && routeQualifiedForRoutePass(route)) {
                 await purchaseRoutePass(false, route, routeId, hasSavedPaymentInfo, paymentInfo, boardStopId, alightStopId, selectedDates)
@@ -164,15 +164,14 @@ angular.module('beeline')
                     selectedDates: selectedDates,
                     boardStopId: boardStopId,
                     alightStopId: alightStopId,
-                    hasSavedPaymentInfo: hasSavedPaymentInfo
+                    hasSavedPaymentInfo: hasSavedPaymentInfo,
                   })
               }
             } else {
               await purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId, hasSavedPaymentInfo)
             }
             return resolve('success')
-          }
-          catch (err) {
+          } catch (err) {
             $ionicLoading.hide()
             console.log(err)
             return reject('failed')
@@ -180,9 +179,8 @@ angular.module('beeline')
         })
       },
 
-      routeQualifiedForRoutePass: (route) => routeQualifiedForRoutePass(route)
+      routeQualifiedForRoutePass: (route) => routeQualifiedForRoutePass(route),
     }
-    return instance;
-
+    return instance
   }]
 )
