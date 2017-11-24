@@ -28,8 +28,9 @@ export default [
       calculatedAmount: '',
       bidPrice: null,
     };
-    
+
     $scope.book.routeId = +$stateParams.routeId;
+    $scope.book.routeDescription = $stateParams.routeDescription;
 
     $scope.$watch(()=>KickstarterService.getCrowdstartById($scope.book.routeId), (route)=>{
       if (!route) return;
@@ -42,7 +43,8 @@ export default [
 
     $scope.showStops = function(){
       $state.go("tabs.crowdstart-stops", {
-        routeId: $scope.book.routeId
+        routeId: $scope.book.routeId,
+        routeDescription: $scope.book.routeDescription,
       });
     };
 

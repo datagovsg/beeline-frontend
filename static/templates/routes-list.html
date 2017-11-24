@@ -34,6 +34,7 @@
           ng-repeat="route in data.activatedCrowdstartRoutes"
           ui-sref="tabs.route-detail({
             routeId: route.id,
+            routeDescription: 'From '  + route.from + ' To ' + route.to,
             pickupStopId:  data.recentRoutesById[route.id].boardStopStopId,
             dropoffStopId: data.recentRoutesById[route.id].alightStopStopId,
           })"
@@ -53,6 +54,7 @@
           ng-repeat="route in data.recentRoutes"
           ui-sref="tabs.route-detail({
             routeId: route.id,
+            routeDescription: 'From '  + route.from + ' To ' + route.to,
             pickupStopId:  data.recentRoutesById[route.id].boardStopStopId,
             dropoffStopId: data.recentRoutesById[route.id].alightStopStopId,
           })"
@@ -72,7 +74,8 @@
           ng-repeat="route in data.routesYouMayLike"
           ng-if="!data.queryText"
           ui-sref="tabs.route-detail({
-            routeId: route.id
+            routeId: route.id,
+            routeDescription: 'From '  + route.from + ' To ' + route.to,
           })"
           class="item-text-wrap item-icon-right"
         >
@@ -104,7 +107,10 @@
         </div>
         <ion-item
           ng-repeat="route in data.routes"
-          ui-sref="tabs.route-detail({ routeId: route.id })"
+          ui-sref="tabs.route-detail({
+            routeId: route.id,
+            routeDescription: 'From '  + route.from + ' To ' + route.to,
+           })"
           class="item-text-wrap item-icon-right"
         >
           <regular-route route="route"></regular-route>
@@ -114,7 +120,10 @@
         <!-- Available Lite Routes Section -->
         <ion-item
           ng-repeat="route in data.liteRoutes"
-          ui-sref="tabs.lite-detail({ label: route.label })"
+          ui-sref="tabs.lite-detail({
+            label: route.label,
+            routeDescription: 'From '  + route.from + ' To ' + route.to,
+           })"
           class="item-icon-right"
         >
           <lite-route route="route"></lite-route>
@@ -132,7 +141,10 @@
         <ion-item
           ng-repeat="route in data.crowdstartRoutes"
           class="item-text-wrap item-icon-right"
-          ui-sref="tabs.crowdstart-detail({ routeId: route.id})"
+          ui-sref="tabs.crowdstart-detail({
+            routeId: route.id,
+            routeDescription: 'From '  + route.from + ' To ' + route.to,
+          })"
         >
         <kickstart-route route="route"></kickstart-route>
       </ion-list>

@@ -66,6 +66,7 @@ export default [
     var routePromise, subscriptionPromise;
 
     $scope.book.label = $stateParams.label;
+    $scope.book.routeDescription = $stateParams.routeDescription;
 
     routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label);
     subscriptionPromise = LiteRouteSubscriptionService.isSubscribed($scope.book.label);

@@ -49,7 +49,8 @@
 
       <div>
         <ion-item ng-repeat="route in data.filteredKickstarter" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-detail({
-                                    routeId: route.id
+                                    routeId: route.id,
+                                    routeDescription: 'From '  + route.from + ' To ' + route.to,
                                    })">
          <kickstart-route route="route"></kickstart-route>
          <i class="icon ion-ios-arrow-right"></i>

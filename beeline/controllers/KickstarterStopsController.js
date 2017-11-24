@@ -25,6 +25,7 @@ export default [
     // Input
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? +$stateParams.routeId : null;
+    let routeDescription = $stateParams.routeDescription || null
     // ------------------------------------------------------------------------
     // Model
     // ------------------------------------------------------------------------
@@ -43,7 +44,8 @@ export default [
     };
     $scope.done = () => {
       $state.go("tabs.crowdstart-detail", {
-        routeId: routeId
+        routeId: routeId,
+        routeDescription: routeDescription,
       })
     };
 

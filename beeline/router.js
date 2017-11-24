@@ -68,7 +68,7 @@ function($stateProvider, $urlRouterProvider) {
       }
     })
     .state('tabs.route-detail', {
-      url: '/route/:routeId?pickupStopId&dropoffStopId',
+      url: '/route/:routeId/:routeDescription/?pickupStopId&dropoffStopId',
       views: {
         'tab-routes': {
           templateUrl: 'templates/route-detail.html',
@@ -139,7 +139,7 @@ function($stateProvider, $urlRouterProvider) {
       }
     })
     .state('tabs.lite-detail', {
-      url: '/lite/detail/:label',
+      url: '/lite/detail/:label/:routeDescription',
       views: {
         'tab-lite': {
           templateUrl: 'templates/tab-lite-detail.html',
@@ -156,7 +156,7 @@ function($stateProvider, $urlRouterProvider) {
       }
     })
     .state('tabs.lite-more-info', {
-      url: '/lite/more-info/:label/:companyId/',
+      url: '/lite/more-info/:label/:routeDescription/:companyId/',
       views: {
         'tab-lite': {
           templateUrl: 'templates/tab-lite-more-info.html',
@@ -272,7 +272,7 @@ function($stateProvider, $urlRouterProvider) {
     })
 
     .state('tabs.crowdstart-detail', {
-      url: '/crowdstart/:routeId/detail',
+      url: '/crowdstart/:routeId/:routeDescription/detail',
       views: {
         'tab-crowdstart': {
           templateUrl: 'templates/kickstarter-detail.html',
@@ -290,7 +290,7 @@ function($stateProvider, $urlRouterProvider) {
     })
 
     .state('tabs.crowdstart-stops', {
-      url: '/crowdstart/:routeId/stops',
+      url: '/crowdstart/:routeId/:routeDescription/stops',
       views: {
         'tab-crowdstart': {
           templateUrl: 'templates/kickstarter-stops.html',

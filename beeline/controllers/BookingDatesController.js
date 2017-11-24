@@ -27,6 +27,7 @@ export default [
     // Data logic;
     $scope.book = {
       routeId: +$stateParams.routeId,
+      routeDescription: $stateParams.routeDescription,
       route: null,
       boardStopId: parseInt($stateParams.boardStop),
       alightStopId: parseInt($stateParams.alightStop),
