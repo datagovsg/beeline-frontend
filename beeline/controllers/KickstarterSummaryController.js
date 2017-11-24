@@ -111,7 +111,7 @@ export default [
           )
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
         throw new Error(
           `Error saving credit card details. ${_.get(err, 'data.message')}`
         )
@@ -163,7 +163,7 @@ export default [
           UserService.updatePaymentInfo(stripeToken.id)
         )
       } catch (error) {
-        console.log(error)
+        console.error(error)
         throw new Error(
           `Error saving credit card details. ${_.get(error, 'data.message')}`
         )

@@ -16,9 +16,12 @@
     "semi": ["error", "never"],
     "comma-dangle": ["error", "always-multiline"],
     "radix": ["error", "as-needed"],
-    "require-jsdoc": ["warn"]
+    "require-jsdoc": ["warn"],
+    "no-console": ["error", {"allow": ["warn", "error"]}]
   },
   "globals": {
-    "angular": true
+    "angular": true,
+    "google": true,
+    "chcp": true
   }
 }

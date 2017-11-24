@@ -99,7 +99,7 @@ export default [
           newScope.error = false
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           newScope.html = ''
           newScope.error = error
         })
@@ -139,7 +139,7 @@ export default [
         isPressed = true
         $scope.isOnKickstarter = await checkIfOnKickstarter()
       } catch (err) {
-        console.log(err)
+        console.error(err)
         await $ionicLoading.show({
           template: `
           <div> Network error. ${err && err.data && err.data.message} Please \
@@ -219,7 +219,7 @@ export default [
           duration: 1500,
         })
       } catch (err) {
-        console.log(err)
+        console.error(err)
         await $ionicLoading.show({
           template: `
           <div> Failed to delete payment method. \
@@ -250,7 +250,7 @@ export default [
           UserService.savePaymentInfo(stripeToken.id)
         )
       } catch (err) {
-        console.log(err)
+        console.error(err)
         throw new Error(
           `Error saving credit card details. ${_.get(err, 'data.message')}`
         )
@@ -274,7 +274,7 @@ export default [
           UserService.updatePaymentInfo(stripeToken.id)
         )
       } catch (err) {
-        console.log(err)
+        console.error(err)
         throw new Error(
           `Error saving credit card details. ${_.get(err, 'data.message')}`
         )
