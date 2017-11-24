@@ -31,6 +31,7 @@ export default [
       (route) => {
         if (!route) return
         $scope.book.route = route
+        $scope.book.routeDescription = route.label + ' ' + route.from + ' - ' + route.to
         $scope.book.bidOptions = route.notes.tier;
         [$scope.book.boardStops, $scope.book.alightStops] = BookingService
           .computeStops($scope.book.route.trips)

@@ -1,4 +1,7 @@
-<ion-view on-touch="hideTooltip()" class="lite-detail page-with-map" view-title="Route Details">
+<ion-view on-touch="hideTooltip()" class="lite-detail page-with-map">
+  <ion-nav-title>
+    {{book.routeDescription}}
+  </ion-nav-title>
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
        ui-sref="tabs.routes">

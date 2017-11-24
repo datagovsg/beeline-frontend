@@ -1,4 +1,7 @@
-<ion-view class="route-detail page-with-map" hide-back-button="true" view-title="Route Details">
+<ion-view class="route-detail page-with-map" hide-back-button="true">
+  <ion-nav-title>
+    {{data.routeDescription}}
+  </ion-nav-title>
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
        ui-sref="tabs.routes">

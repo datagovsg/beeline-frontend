@@ -41,6 +41,7 @@ export default [
       todayTrips: null,
       inServiceWindow: false,
       hasTrips: true,
+      routeDescription: null,
     }
 
     $scope.$watch('book.todayTrips', (trips) => {
@@ -63,6 +64,7 @@ export default [
 
     routePromise.then((route) => {
       $scope.book.route = route[$scope.book.label]
+      $scope.book.routeDescription = $scope.book.route.label + ' ' + $scope.book.route.from + ' - ' + $scope.book.route.to
       // get route features
       RoutesService.getRouteFeatures($scope.book.route.id).then((data) => {
         $scope.disp.features = data

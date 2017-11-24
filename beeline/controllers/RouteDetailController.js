@@ -133,6 +133,7 @@ export default [
         $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops
           .map((ts) => ts.stop.id)
         const route = response[1]
+        $scope.data.routeDescription = route.label + ' ' + route.from + ' - ' + route.to
         $ionicLoading.hide()
         // Grab the price data
         $scope.data.price = route.trips[0].price
