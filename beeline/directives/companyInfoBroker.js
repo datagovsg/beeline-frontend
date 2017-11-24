@@ -1,6 +1,6 @@
 
 export default ['CompanyService',
-  function(CompanyService) {
+  function (CompanyService) {
     return {
       replace: true,
       template: '',
@@ -8,18 +8,18 @@ export default ['CompanyService',
         'companyId': '<',
         'company': '=',
       },
-      link: function(scope, element, attributes) {
-        scope.$watch('companyId', function(companyId) {
+      link: function (scope, element, attributes) {
+        scope.$watch('companyId', function (companyId) {
           if (!companyId) {
             scope.company = {}
-            return;
+            return
           }
 
-          var companyPromise = CompanyService.getCompany(+companyId)
+          let companyPromise = CompanyService.getCompany(+companyId)
           .then((company) => {
             scope.company = company
-          });
-        });
+          })
+        })
       },
-    };
+    }
 }]

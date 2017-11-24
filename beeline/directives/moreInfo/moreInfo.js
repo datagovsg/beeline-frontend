@@ -6,7 +6,7 @@ export default function () {
       companyId: '<',
       features: '<',
     },
-    link: function(scope, elem, attr) {
-    }
-  };
+    link: function (scope, elem, attr) {
+    },
+  }
 }

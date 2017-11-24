@@ -1,10 +1,10 @@
-import commonmark from 'commonmark';
+import commonmark from 'commonmark'
 
-var reader = new commonmark.Parser({safe: true});
-var writer = new commonmark.HtmlRenderer({safe: true});
+let reader = new commonmark.Parser({safe: true})
+let writer = new commonmark.HtmlRenderer({safe: true})
 
 export default ['CompanyService', '$q',
-function companyTnc(CompanyService, $q) {
+function companyTnc (CompanyService, $q) {
   return {
     template: require('./companyTnc.html'),
     replace: false,
@@ -12,28 +12,28 @@ function companyTnc(CompanyService, $q) {
       companyId: '=',
       features: '=',
     },
-    link: function(scope, elem, attr) {
-      scope.company = {};
+    link: function (scope, elem, attr) {
+      scope.company = {}
 
-      scope.$watch('companyId', function() {
+      scope.$watch('companyId', function () {
         if (!scope.companyId) {
-          scope.company = null;
-          return;
+          scope.company = null
+          return
         }
 
-        var companyPromise = CompanyService.getCompany(scope.companyId)
+        let companyPromise = CompanyService.getCompany(scope.companyId)
         .then((company) => {
-          scope.company = company;
-          scope.$emit('companyTnc.done');
-          return company;
-        });
-      });
+          scope.company = company
+          scope.$emit('companyTnc.done')
+          return company
+        })
+      })
 
       scope.showTerms = () => {
-        if (!scope.company) return;
+        if (!scope.company) return
 
-        CompanyService.showTerms(scope.company.id);
+        CompanyService.showTerms(scope.company.id)
       }
-    }
-  };
+    },
+  }
 }]

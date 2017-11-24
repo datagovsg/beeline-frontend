@@ -1,5 +1,5 @@
 export default ['uiGmapGoogleMapApi', 'LiteRoutesService', 'uiGmapCtrlHandle',
-  function(uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle) {
+  function (uiGmapGoogleMapApi, LiteRoutesService, uiGmapCtrlHandle) {
     return {
       replace: false,
       require: '^uiGmapGoogleMap',
@@ -25,14 +25,13 @@ export default ['uiGmapGoogleMapApi', 'LiteRoutesService', 'uiGmapCtrlHandle',
         'availableTrips': '<',
         'isLiteFrequent': '<?',
       },
-      link: function(scope, element, attributes, ctrl) {
-
+      link: function (scope, element, attributes, ctrl) {
         scope.disp = {
           popupStop: null,
         }
 
         uiGmapGoogleMapApi.then((googleMaps) => {
-          scope.googleMaps = googleMaps;
+          scope.googleMaps = googleMaps
           scope.boardMarker = {
             icon: {
               url: 'img/map/MapRoutePickupStop@2x.png',
@@ -52,28 +51,28 @@ export default ['uiGmapGoogleMapApi', 'LiteRoutesService', 'uiGmapCtrlHandle',
         })
 
         scope.$watch('availableTrips', (availableTrips) => {
-          if (!availableTrips || availableTrips.length==0) return;
-          scope.tripStops = LiteRoutesService.computeLiteStops(availableTrips);
-          uiGmapCtrlHandle.mapPromise(scope, ctrl).then(panToStops);
+          if (!availableTrips || availableTrips.length==0) return
+          scope.tripStops = LiteRoutesService.computeLiteStops(availableTrips)
+          uiGmapCtrlHandle.mapPromise(scope, ctrl).then(panToStops)
         })
 
         scope.applyTapBoard = function (stop) {
-          scope.disp.popupStop = stop;
+          scope.disp.popupStop = stop
         }
 
         scope.closeWindow = function () {
-          scope.disp.popupStop = null;
+          scope.disp.popupStop = null
         }
 
-        function panToStops(map) {
-          var bounds = new scope.googleMaps.LatLngBounds();
+        function panToStops (map) {
+          let bounds = new scope.googleMaps.LatLngBounds()
           for (let tripStop of scope.tripStops) {
             bounds.extend(new google.maps.LatLng(tripStop.coordinates.coordinates[1],
-                                                 tripStop.coordinates.coordinates[0]));
+                                                 tripStop.coordinates.coordinates[0]))
           }
           google.maps.event.trigger(map, 'resize')
-          map.fitBounds(bounds);
+          map.fitBounds(bounds)
         }
       },
-    };
+    }
 }]

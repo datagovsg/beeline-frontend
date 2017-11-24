@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   return {
     restrict: 'E',
     replace: true,
@@ -8,5 +8,5 @@ export default function() {
       <span>&nbsp;&nbsp;Search in Map</span>
     </div>
     `,
-  };
+  }
 }

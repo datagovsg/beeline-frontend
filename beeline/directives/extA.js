@@ -8,16 +8,16 @@ function () {
         </a>
       `,
       scope: {
-        href: '@'
+        href: '@',
       },
       transclude: true,
       restrict: 'E',
-      controller: ['$scope', function($scope) {
+      controller: ['$scope', function ($scope) {
         $scope.openLink = function ($event) {
-          $event.preventDefault();
+          $event.preventDefault()
           window.open($scope.href, '_system')
         }
-      }]
+      }],
     }
   }
 )

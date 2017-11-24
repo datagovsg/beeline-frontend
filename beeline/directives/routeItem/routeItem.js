@@ -1,7 +1,7 @@
-import routeItemTemplate from './routeItem.html';
+import routeItemTemplate from './routeItem.html'
 
 export default ['$state', 'BookingService',
-function($state, BookingService) {
+function ($state, BookingService) {
   return {
     replace: false,
     template: routeItemTemplate,
@@ -20,7 +20,7 @@ function($state, BookingService) {
       endLocation: '?routeItemEndLocation',
       description: '?routeItemDescription',
     },
-    link: function(scope, element, attributes) {
+    link: function (scope, element, attributes) {
     },
-  };
+  }
 }]

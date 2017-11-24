@@ -11,7 +11,7 @@ export default ['$state', '$ionicModal', '$http', 'uiGmapGoogleMapApi',
         template: busStopSelectorTemplate,
         scope: {
           busStops: '=',
-          ngModel: "=",
+          ngModel: '=',
           change: '=',
           placeholder: '@',
           title: '@',
@@ -26,14 +26,14 @@ export default ['$state', '$ionicModal', '$http', 'uiGmapGoogleMapApi',
             busStopSelectorDialog.show(
               _.assign({selectedStop: scope.ngModel},
                       _.pick(scope, [
-                        'busStops', 'markerOptions', 'title', 'button', 'pinOptions'
+                        'busStops', 'markerOptions', 'title', 'button', 'pinOptions',
                       ])))
             .then((selectedStop) => {
-              scope.ngModel = selectedStop;
+              scope.ngModel = selectedStop
             })
           }
 
-          scope.formatTime = formatTime;
+          scope.formatTime = formatTime
         },
-      };
-}];
+      }
+}]

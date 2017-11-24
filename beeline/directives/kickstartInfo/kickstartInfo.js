@@ -7,7 +7,7 @@
 export default function () {
   return {
     template: require('./kickstartInfo.html'),
-    restrict : 'E',
+    restrict: 'E',
     replace: false,
     scope: {
       route: '<',
@@ -15,5 +15,5 @@ export default function () {
       preorderHide: '<?',
       contentHide: '<?',
     },
-  };
+  }
 }

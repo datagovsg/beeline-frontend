@@ -1,7 +1,7 @@
-import progressBar from './progressBar.html';
+import progressBar from './progressBar.html'
 
 export default [
-  function() {
+  function () {
     return {
       restrict: 'E',
       template: progressBar,
@@ -12,13 +12,13 @@ export default [
         detail: '<',
         needed: '<',
       },
-      link: function(scope, elem, attr) {
+      link: function (scope, elem, attr) {
         scope.$watchGroup(['backer1', 'pax1'], () => {
-          scope.percentage = Math.min((scope.backer1/scope.pax1), 1);
+          scope.percentage = Math.min((scope.backer1/scope.pax1), 1)
           // if (!isFinite(scope.moreNeeded))
           //   scope.moreNeeded = '';
         })
-      }
+      },
     }
-  }
+  },
 ]

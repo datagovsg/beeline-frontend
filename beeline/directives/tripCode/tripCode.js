@@ -1,6 +1,6 @@
 
 
-export default function() {
+export default function () {
   return {
     template: `
 <span class="ch c0">{{codeStr[0]}}</span><span
@@ -14,35 +14,33 @@ export default function() {
       scope.$watch('code', (code) => {
         if (code) {
           scope.codeStr = code.toString()
-        }
-        else {
+        } else {
           scope.codeStr = ''
         }
       })
 
-      var exit = false;
-      function delay(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
+      let exit = false
+      function delay (ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms))
       }
       scope.$on('$destroy', () => exit = true);
 
-      (async function() {
+      (async function () {
         while (!exit) {
-          for (var i=0; i<4 && !exit; i++) {
+          for (let i=0; i<4 && !exit; i++) {
             let charElem = elem[0].querySelector(`.c${i}`)
 
             if (charElem.classList.contains('shrink')) {
-              charElem.classList.remove('shrink');
-            }
-            else {
-              charElem.classList.add('shrink');
+              charElem.classList.remove('shrink')
+            } else {
+              charElem.classList.add('shrink')
             }
 
-            await delay(250);
+            await delay(250)
           }
         }
       })()
-      .then(null, console.error);
-    }
+      .then(null, console.error)
+    },
   }
 }

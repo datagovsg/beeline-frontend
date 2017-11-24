@@ -1,10 +1,10 @@
-import {SafeInterval} from '../SafeInterval';
-const leftPad = require('left-pad');
+import {SafeInterval} from '../SafeInterval'
+const leftPad = require('left-pad')
 
 angular.module('beeline')
-.directive('mapBusIcon',['TripService','uiGmapGoogleMapApi', '$timeout', 'RotatedImage',
+.directive('mapBusIcon', ['TripService', 'uiGmapGoogleMapApi', '$timeout', 'RotatedImage',
 'LngLatDistance', 'BearingFromLngLats',
-  function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance,
+  function (TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance,
            BearingFromLngLats) {
     const busIconImage = new RotatedImage('./img/busTop-small.png')
 
@@ -20,12 +20,12 @@ angular.module('beeline')
       scope: {
         pings: '<',
         idkey: '<',
-        overlay: '<'
+        overlay: '<',
       },
-      controller: ['$scope', function($scope) {
-        $scope.bearing = null;
-        $scope.busIcon = null;
-        $scope.icon = null;
+      controller: ['$scope', function ($scope) {
+        $scope.bearing = null
+        $scope.busIcon = null
+        $scope.icon = null
 
         /**
           Here's the algorithm:
@@ -53,7 +53,7 @@ angular.module('beeline')
 
           const busIcon = ($scope.busIcon && $scope.bearing !== null &&
                   Math.abs($scope.bearing - bearing) < 0.1) ?
-              $scope.busIcon : busIconImage.rotate(bearing, $scope.overlay || '');
+              $scope.busIcon : busIconImage.rotate(bearing, $scope.overlay || '')
 
           $scope.busIcon = busIcon
           $scope.icon = {
@@ -66,11 +66,11 @@ angular.module('beeline')
           $scope.bearing = bearing
         })
       }],
-    };
+    }
 
-    function bearingFromPings(pings) {
+    function bearingFromPings (pings) {
       if (pings.length < 2) {
-        return 0.75 * 2 * Math.PI; // DEFAULT - 270°
+        return 0.75 * 2 * Math.PI // DEFAULT - 270°
       }
 
       const firstPingLngLat = pings[0].coordinates.coordinates
