@@ -18,7 +18,7 @@ export default [
   'loadingSpinner',
   'CreditsService',
   '$ionicPosition',
-  function(
+  function (
     $document,
     $scope,
     $state,
@@ -102,7 +102,7 @@ export default [
       }
     })
 
-    $scope.login = function() {
+    $scope.login = function () {
       $scope.isPreviewCalculating = true
       UserService.promptLogIn()
       $scope.scrollToPriceCalculator()
@@ -124,7 +124,7 @@ export default [
       }
     })
 
-    $scope.checkValidDate = async function() {
+    $scope.checkValidDate = async function () {
       const previouslyBookedDays = await TicketService
         .fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
       const selectedAndInvalid = _.intersection(
@@ -134,11 +134,11 @@ export default [
       $scope.book.hasInvalidDate = (selectedAndInvalid.length > 0)
     }
 
-    $scope.refreshPrices = function() {
+    $scope.refreshPrices = function () {
       $scope.$broadcast('priceCalculator.recomputePrices')
     }
 
-    $scope.payHandler = async function() {
+    $scope.payHandler = async function () {
       if ($scope.disp.payZeroDollar) {
         $scope.payZeroDollar()
       } else if ($scope.disp.savePaymentChecked) {
@@ -148,7 +148,7 @@ export default [
       }
     }
 
-    $scope.payZeroDollar = async function() {
+    $scope.payZeroDollar = async function () {
       if (await $ionicPopup.confirm({
         title: 'Complete Purchase',
         template: 'Are you sure you want to complete the purchase?',
@@ -168,7 +168,7 @@ export default [
     }
 
     // Prompts for card and processes payment with one time stripe token.
-    $scope.payWithoutSavingCard = async function() {
+    $scope.payWithoutSavingCard = async function () {
       try {
         // disable the button
         $scope.isPaymentProcessing = true
@@ -200,7 +200,7 @@ export default [
     // Processes payment with customer object.
     // If customer object does not exist, prompts for card,
     // creates customer object, and proceeds as usual.
-    $scope.payWithSavedInfo = async function() {
+    $scope.payWithSavedInfo = async function () {
       try {
         // disable the button
         $scope.isPaymentProcessing = true
@@ -236,7 +236,7 @@ export default [
       }
     }
 
-    $scope.scrollToPriceCalculator = function() {
+    $scope.scrollToPriceCalculator = function () {
       const priceCalculatorPosition = $ionicPosition.position(
         angular.element($document.getElementById('priceCalc'))
       )
@@ -248,7 +248,7 @@ export default [
     }
 
     // After you have settled the payment mode
-    async function completePayment(paymentOptions) {
+    async function completePayment (paymentOptions) {
       try {
         $ionicLoading.show({
           template: processingPaymentsTemplate,
@@ -291,7 +291,7 @@ export default [
       }
     }
 
-    function verifyPromoCode() {
+    function verifyPromoCode () {
       if ($scope.book.promoCodeEntered === null ||
           !$scope.book.promoCodeEntered) {
         $scope.book.feedback =
@@ -344,7 +344,7 @@ export default [
       _.debounce(verifyPromoCode, 800, {leading: false, trailing: true})
     )
 
-    $scope.promptPromoCode = async function() {
+    $scope.promptPromoCode = async function () {
       if ($scope.isLoggedIn) {
         $scope.enterPromoCodePopup = $ionicPopup.show({
           scope: $scope,
@@ -364,7 +364,7 @@ export default [
           title: 'Enter Promo Code',
           buttons: [
             {text: 'Close',
-              onTap: function(e) {
+              onTap: function (e) {
                 $scope.book.feedback = null
                 $scope.book.promoCodeEntered = null
               },
@@ -372,7 +372,7 @@ export default [
             {
               text: 'Apply',
               type: 'button-positive',
-              onTap: function(e) {
+              onTap: function (e) {
                 e.preventDefault()
                 if ($scope.book.promoCodeIsValid) {
                   $scope.book.promoCode = $scope.book.promoCodeEntered

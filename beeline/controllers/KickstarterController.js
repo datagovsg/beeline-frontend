@@ -14,7 +14,7 @@ export default [
   'SearchService',
   'SearchEventService',
   'PlaceService',
-  function(
+  function (
     $scope,
     $q,
     $window,
@@ -37,7 +37,7 @@ export default [
       routesAvailable: false,
     }
 
-    function autoComplete() {
+    function autoComplete () {
       if (!$scope.data.queryText) {
         $scope.data.isFiltering = false
         return
@@ -66,7 +66,7 @@ export default [
       _.debounce(autoComplete, 1000, {leading: false, trailing: true})
     )
 
-    $scope.refreshRoutes = function() {
+    $scope.refreshRoutes = function () {
       $q.all([
         KickstarterService.fetchCrowdstart(true),
         KickstarterService.fetchBids(true),
@@ -162,7 +162,7 @@ export default [
     // Deciding whether to do a place query
     $scope.$watchCollection('data.filteredKickstarter',
       (newRoutes, oldRoutes) => {
-        async function handlePlaceQuery() {
+        async function handlePlaceQuery () {
           if (!newRoutes) return
 
           // Criteria for making a place query
@@ -180,7 +180,7 @@ export default [
           $scope.$digest()
         }
 
-        async function stopFilteringAfterDelay() {
+        async function stopFilteringAfterDelay () {
           await sleep(500)
           $scope.data.isFiltering = false
           $scope.$digest()
@@ -191,7 +191,7 @@ export default [
       }
     )
 
-    $scope.showHelpPopup = function() {
+    $scope.showHelpPopup = function () {
       $scope.kickstartHelpPopup = $ionicPopup.show({
         template: kickstartHelpTemplate,
         title: 'Crowdstart Routes',
@@ -199,7 +199,7 @@ export default [
           {
             text: 'OK',
             type: 'button-positive',
-            onTap: function(e) {
+            onTap: function (e) {
               $scope.closePopup()
             },
           },
@@ -207,7 +207,7 @@ export default [
       })
     }
 
-    $scope.closePopup = function() {
+    $scope.closePopup = function () {
       $scope.kickstartHelpPopup.close()
     }
   },

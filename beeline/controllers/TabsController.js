@@ -5,7 +5,7 @@ export default [
   'MapOptions',
   'SharedVariableService',
   'uiGmapGoogleMapApi',
-  function(
+  function (
     $scope,
     MapOptions,
     SharedVariableService,
@@ -26,7 +26,7 @@ export default [
     // Resolved when the map is initialized
     const gmapIsReady = new Promise((resolve, reject) => {
       let resolved = false
-      $scope.$watch('map.control.getGMap', function() {
+      $scope.$watch('map.control.getGMap', function () {
         if ($scope.map.control.getGMap) {
           if (!resolved) {
             resolved = true
@@ -76,7 +76,7 @@ export default [
       $scope.mapObject = _.assign($scope.mapObject, data)
     }, true)
 
-    function panToStop(stop, setZoom) {
+    function panToStop (stop, setZoom) {
       if ($scope.map.control.getGMap) {
         const gmap = $scope.map.control.getGMap()
         gmap.panTo({

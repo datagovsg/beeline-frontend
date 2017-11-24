@@ -16,7 +16,8 @@
     "comma-dangle": ["error", "always-multiline"],
     "radix": ["error", "as-needed"],
     "require-jsdoc": ["warn"],
-    "no-console": ["error", {"allow": ["warn", "error"]}]
+    "no-console": ["error", {"allow": ["warn", "error"]}],
+    "space-before-function-paren": ["error", "always"]
   },
   "globals": {
     "angular": true,

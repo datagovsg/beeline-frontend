@@ -7,7 +7,7 @@ export default[
   '$ionicPopup',
   '$ionicLoading',
   'UserService',
-  async function(
+  async function (
     $scope,
     $state,
     $stateParams,
@@ -46,7 +46,7 @@ export default[
 
     $scope.data = {}
 
-    $scope.register = async function() {
+    $scope.register = async function () {
       await UserService.registerViaReferralWelcome($scope.data.telephone,
         $scope.refCode, $scope.refCodeOwner)
 

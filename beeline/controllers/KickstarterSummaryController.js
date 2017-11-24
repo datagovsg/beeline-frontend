@@ -11,7 +11,7 @@ export default [
   'KickstarterService',
   'CompanyService',
   'StripeService',
-  function(
+  function (
     $scope,
     $state,
     $stateParams,
@@ -90,11 +90,11 @@ export default [
       await CompanyService.showTerms($scope.book.route.transportCompanyId)
     }
 
-    $scope.login = function() {
+    $scope.login = function () {
       UserService.promptLogIn()
     }
 
-    $scope.createBid = async function() {
+    $scope.createBid = async function () {
       try {
         // disable the button
         $scope.waitingForPaymentResult = true
@@ -153,7 +153,7 @@ export default [
     }
 
     // update the saving card info then place bid
-    $scope.updateSavingCard = async function() {
+    $scope.updateSavingCard = async function () {
       try {
         const stripeToken = await StripeService.promptForToken(null, null, true)
 

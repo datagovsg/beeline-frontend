@@ -10,7 +10,7 @@ export default [
   'KickstarterService',
   'CompanyService',
   'MapOptions',
-  function(
+  function (
     $scope,
     $interpolate,
     $state,
@@ -46,13 +46,13 @@ export default [
       animation: 'slide-in-up',
     })
 
-    $scope.showStops = function() {
+    $scope.showStops = function () {
       $scope.modal.show()
 
       $scope.$watch(
         () => $scope.modalMap.control.getGMap &&
               $scope.modalMap.control.getGMap(),
-        function(modalMap) {
+        function (modalMap) {
           if (modalMap) {
             MapOptions.resizePreserveCenter(modalMap)
             // set modalMap bound
@@ -61,11 +61,11 @@ export default [
         }
       )
     }
-    $scope.close = function() {
+    $scope.close = function () {
       $scope.modal.hide()
     }
     // Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
+    $scope.$on('$destroy', function () {
       $scope.modal.remove()
     })
 
@@ -104,7 +104,7 @@ export default [
     }
 
     /* Pans to the stops on the screen */
-    $scope.panToStops = function(gmap, stops) {
+    $scope.panToStops = function (gmap, stops) {
       if (stops.length === 0) {
         return
       }
@@ -119,7 +119,7 @@ export default [
     }
 
     // pans to single stop
-    $scope.panToStop = function(gmap, stop) {
+    $scope.panToStop = function (gmap, stop) {
       if (!stop) return
       $scope.book.chosenStop = stop
       gmap.panTo({

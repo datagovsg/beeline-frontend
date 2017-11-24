@@ -3,7 +3,7 @@ export default [
   '$state',
   '$ionicHistory',
   '$ionicPlatform',
-  function(
+  function (
     $scope,
     $state,
     $ionicHistory,

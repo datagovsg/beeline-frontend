@@ -12,7 +12,7 @@ export default [
   'UserService',
   'loadingSpinner',
   'MapService',
-  function(
+  function (
     $scope,
     $state,
     $stateParams,
@@ -72,7 +72,7 @@ export default [
       })
     })
 
-    function sendTripsToMapView() {
+    function sendTripsToMapView () {
       const todayTrips = $scope.book.todayTrips
       if (todayTrips && todayTrips.length > 0) {
         MapService.emit('ping-trips', todayTrips)
@@ -136,11 +136,11 @@ export default [
       }
     )
 
-    $scope.login = function() {
+    $scope.login = function () {
       UserService.promptLogIn()
     }
 
-    $scope.showConfirmationPopup = async function() {
+    $scope.showConfirmationPopup = async function () {
       const response = await $ionicPopup.confirm({
         title: 'Are you sure you want to bookmark this route?',
       })
@@ -149,7 +149,7 @@ export default [
       $scope.followRoute()
     }
 
-    $scope.followRoute = async function() {
+    $scope.followRoute = async function () {
       try {
         $scope.book.waitingForSubscriptionResult = true
 
@@ -190,7 +190,7 @@ export default [
 
     // TODO: Move bulk of promptUntrack code into service or directive as both
     // LiteSummaryController and LiteRouteTrackerController uses it
-    $scope.promptUntrack = async function() {
+    $scope.promptUntrack = async function () {
       const response = await $ionicPopup.confirm({
         title: 'Are you sure you want to unbookmark this route?',
         subTitle: 'This tracking-only route will be removed from ' +
@@ -243,7 +243,7 @@ export default [
       }
     }
 
-    function updateTripInfo(tripInfo) {
+    function updateTripInfo (tripInfo) {
       $scope.disp.hasTrackingData = tripInfo.hasTrackingData
       $scope.disp.statusMessages = tripInfo.statusMessages
       $scope.$digest()

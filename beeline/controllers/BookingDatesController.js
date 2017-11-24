@@ -14,7 +14,7 @@ export default [
   '$ionicScrollDelegate',
   '$ionicPopup',
   '$window',
-  function(
+  function (
     $scope,
     UserService,
     RoutesService,
@@ -68,7 +68,7 @@ export default [
     let multipleDatePopup = null
 
     const ridesRemainingPromise = RoutesService.fetchRoutePassCount()
-    $q.all([routePromise, ridesRemainingPromise]).then(function(values) {
+    $q.all([routePromise, ridesRemainingPromise]).then(function (values) {
       let ridesRemainingMap = values[1]
       $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
     })
@@ -143,7 +143,7 @@ export default [
       $ionicScrollDelegate.resize()
     })
 
-    function loadTickets() {
+    function loadTickets () {
       const ticketsPromise = TicketService
         .fetchPreviouslyBookedDaysByRouteId($scope.book.routeId, true)
         .catch((err) => null)
@@ -153,7 +153,7 @@ export default [
       }))
     }
 
-    function loadRoutes() {
+    function loadRoutes () {
       const routePromise = RoutesService.getRoute($scope.book.routeId, true)
       return loadingSpinner(routePromise.then((route) => {
         // Route
@@ -163,7 +163,7 @@ export default [
       }))
     }
 
-    function updateCalendar() {
+    function updateCalendar () {
       // ensure cancelled trips are not shown
       const runningTrips = $scope.book.route.trips.filter((tr) => tr.isRunning)
 
@@ -195,7 +195,7 @@ export default [
       }
     }
 
-    function showHelpPopup() {
+    function showHelpPopup () {
       multipleDatePopup = $ionicPopup.show({
         title: 'Tap to select multiple days',
         template: tapToSelectMultipleDaysTemplate,
@@ -203,7 +203,7 @@ export default [
           {
             text: 'OK',
             type: 'button-positive',
-            onTap: function(e) {
+            onTap: function (e) {
               closePopup()
             },
           },
@@ -211,7 +211,7 @@ export default [
       })
     }
 
-    function closePopup() {
+    function closePopup () {
       multipleDatePopup.close()
     }
 
@@ -264,7 +264,7 @@ export default [
       }
     })
 
-    $scope.logMonthChanged = function(newMonth, oldMonth) {
+    $scope.logMonthChanged = function (newMonth, oldMonth) {
       // if wholeMonthDates are all in selectedDatesMoments
       // mark pickWholeMonth = true , otherwise false
       let wholeMonthDates = getFullMonthDates(newMonth)
@@ -285,7 +285,7 @@ export default [
     }
 
     // get whole range of dates in the month
-    function getFullMonthDates(oneUTCDateInMonth) {
+    function getFullMonthDates (oneUTCDateInMonth) {
       // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
       let endOfMonth = moment(oneUTCDateInMonth).endOf('month')
       let lastDate = endOfMonth.date()

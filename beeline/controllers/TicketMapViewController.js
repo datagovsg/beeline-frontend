@@ -12,7 +12,7 @@ export default [
   'TripService',
   'TicketService',
   'ServerTime',
-  function(
+  function (
     $scope,
     SharedVariableService,
     $stateParams,
@@ -44,16 +44,16 @@ export default [
       routeMessage: null,
     }
 
-    $scope.closeWindow = function() {
+    $scope.closeWindow = function () {
       $scope.disp.popupStop = null
     }
 
-    $scope.applyTapBoard = function(stop) {
+    $scope.applyTapBoard = function (stop) {
       $scope.disp.popupStop = stop
       $scope.$digest()
     }
 
-    $scope.formatStopTime = function(input) {
+    $scope.formatStopTime = function (input) {
       if (Array.isArray(input)) {
         return formatTimeArray(input)
       }
@@ -117,7 +117,7 @@ export default [
       }
     })
 
-    async function pingLoop() {
+    async function pingLoop () {
       if (!$scope.mapObject.pingTrips) return
 
       $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []

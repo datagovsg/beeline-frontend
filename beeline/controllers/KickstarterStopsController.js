@@ -8,7 +8,7 @@ export default [
   'RoutesService',
   'BookingService',
   'MapService',
-  function(
+  function (
     $scope,
     $state,
     $stateParams,

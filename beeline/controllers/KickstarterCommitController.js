@@ -3,7 +3,7 @@ export default [
   '$stateParams',
   '$window',
   'KickstarterService',
-  function(
+  function (
     $scope,
     $stateParams,
     $window,

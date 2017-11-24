@@ -12,7 +12,7 @@ export default [
   'BookingService',
   'SearchEventService',
   'PlaceService',
-  function(
+  function (
     // Angular Tools
     $scope,
     $q,
@@ -47,7 +47,7 @@ export default [
       routesAvailable: false,
     }
 
-    function autoComplete() {
+    function autoComplete () {
       if (!$scope.data.queryText) {
         $scope.data.isFiltering = false
         return
@@ -95,7 +95,7 @@ export default [
     // Report any errors that happen
     // Note that theres no need to update the scope manually
     // since this is done by the service watchers
-    $scope.refreshRoutes = function(ignoreCache) {
+    $scope.refreshRoutes = function (ignoreCache) {
       RoutesService.fetchRoutePasses(ignoreCache)
       RoutesService.fetchRoutes(ignoreCache)
       const routesPromise = RoutesService.fetchRoutesWithRoutePass()
@@ -386,7 +386,7 @@ export default [
         'data.liteRoutes',
       ],
       ([routes, crowdstartRoutes, liteRoutes]) => {
-        async function handlePlaceQuery() {
+        async function handlePlaceQuery () {
           // Important comments in the autoComplete function
           if (!routes || !crowdstartRoutes || !liteRoutes) return
           // Criteria for making a place query
@@ -406,7 +406,7 @@ export default [
           $scope.$digest()
         }
 
-        async function stopFilteringAfterDelay() {
+        async function stopFilteringAfterDelay () {
           await sleep(500)
           $scope.data.isFiltering = false
           $scope.$digest()
