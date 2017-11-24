@@ -51,6 +51,7 @@ export default [
       isLoggedIn: null,
       boardStopInvalid: null,
       alightStopInvalid: null,
+      route: null,
     }
 
     $scope.disp = {
@@ -133,6 +134,7 @@ export default [
         $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops
           .map((ts) => ts.stop.id)
         const route = response[1]
+        $scope.data.route = route;
         $ionicLoading.hide()
         // Grab the price data
         $scope.data.price = route.trips[0].price
