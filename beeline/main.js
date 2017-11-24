@@ -1,18 +1,18 @@
 import {formatDate, formatDateMMMdd, formatTime, formatTimeArray,
-        formatUTCDate, titleCase} from './shared/format';
-import {companyLogo, miniCompanyLogo} from './shared/imageSources';
+        formatUTCDate, titleCase} from './shared/format'
+import {companyLogo, miniCompanyLogo} from './shared/imageSources'
 
 // node imports
-import compareVersions from 'compare-versions';
-import assert from 'assert';
+import compareVersions from 'compare-versions'
+import assert from 'assert'
 
 // Angular imports
-import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker';
+import MultipleDatePicker from 'multiple-date-picker/dist/multipleDatePicker'
 
 // Configuration Imports
-import configureRoutes from './router.js';
+import configureRoutes from './router.js'
 
-var app = angular.module('beeline', [
+let app = angular.module('beeline', [
   'ionic',
   'ngCordova',
   'uiGmapgoogle-maps',
@@ -20,20 +20,20 @@ var app = angular.module('beeline', [
   'ngclipboard',
 ])
 
-require('angular-simple-logger');
-require('angular-google-maps');
-require('clipboard');
-require('ngclipboard');
-require('./directives/extA');
-require('./services/RotatedImageService');
-require('./services/GeoUtils');
-require('./directives/mapBusPolyRoute');
-require('./directives/mapBusIcon');
-require('./directives/routeItem/animatedRoute');
-require('./services/assetScopeModalService');
-require('./services/fastCheckoutService');
-require('./services/purchaseRoutePassService');
-require('./services/paymentService');
+require('angular-simple-logger')
+require('angular-google-maps')
+require('clipboard')
+require('ngclipboard')
+require('./directives/extA')
+require('./services/RotatedImageService')
+require('./services/GeoUtils')
+require('./directives/mapBusPolyRoute')
+require('./directives/mapBusIcon')
+require('./directives/routeItem/animatedRoute')
+require('./services/assetScopeModalService')
+require('./services/fastCheckoutService')
+require('./services/purchaseRoutePassService')
+require('./services/paymentService')
 require('./services/bookingSummaryModalService')
 require('./services/SharedVariableService')
 require('./services/MapService')
@@ -59,19 +59,19 @@ app
 .filter('routeEndRoad', () => (route) => (route && route.trips) ? route.trips[0].tripStops[route.trips[0].tripStops.length - 1].stop.road : '')
 .filter('companyLogo', () => companyLogo)
 .filter('miniCompanyLogo', () => miniCompanyLogo)
-.filter('monthNames', function() {
-  return function(i) {
-    monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',');
-    return monthNames[i];
-  };
+.filter('monthNames', function () {
+  return function (i) {
+    monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',')
+    return monthNames[i]
+  }
 })
 // round up a float number with optional precision
-.filter('floatRoundUp', function() {
-  return function(number, precision) {
+.filter('floatRoundUp', function () {
+  return function (number, precision) {
     if (!precision) precision = 2
-    var temp = number * Math.pow(10, precision)
-    temp = Math.ceil(temp);
-    return temp / Math.pow(10,precision)
+    let temp = number * Math.pow(10, precision)
+    temp = Math.ceil(temp)
+    return temp / Math.pow(10, precision)
   }
 })
 .factory('TicketService', require('./services/TicketService.js').default)
@@ -167,105 +167,103 @@ app
     $locationProvider.html5Mode({enabled: true})
   }
 }])
-.config(['$ionicConfigProvider', function($ionicConfigProvider) {
-  $ionicConfigProvider.tabs.position('bottom');
-  $ionicConfigProvider.tabs.style('standard');
-  $ionicConfigProvider.navBar.alignTitle('center');
-  $ionicConfigProvider.scrolling.jsScrolling(false);
-  //kickstart-summary use default history stack
-  $ionicConfigProvider.backButton.previousTitleText(false).text(' ');
+.config(['$ionicConfigProvider', function ($ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('bottom')
+  $ionicConfigProvider.tabs.style('standard')
+  $ionicConfigProvider.navBar.alignTitle('center')
+  $ionicConfigProvider.scrolling.jsScrolling(false)
+  // kickstart-summary use default history stack
+  $ionicConfigProvider.backButton.previousTitleText(false).text(' ')
 }])
 .config(['$httpProvider', function ($httpProvider) {
-  $httpProvider.useApplyAsync(true);
+  $httpProvider.useApplyAsync(true)
 }])
-.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
+.config(['uiGmapGoogleMapApiProvider', function (uiGmapGoogleMapApiProvider) {
   if (process.env.GOOGLE_API_KEY) {
     uiGmapGoogleMapApiProvider.configure({
       key: process.env.GOOGLE_API_KEY,
-      libraries: 'places,geometry'
-    });
+      libraries: 'places,geometry',
+    })
   } else {
     uiGmapGoogleMapApiProvider.configure({
       client: 'gme-infocommunications',
-      libraries: 'places,geometry'
-    });
+      libraries: 'places,geometry',
+    })
   }
 }])
-.config(['$ionicConfigProvider', function($ionicConfigProvider) {
-  $ionicConfigProvider.views.transition('none');
+.config(['$ionicConfigProvider', function ($ionicConfigProvider) {
+  $ionicConfigProvider.views.transition('none')
 }])
-.run(['$ionicPlatform', function($ionicPlatform) {
- $ionicPlatform.ready(function() {
+.run(['$ionicPlatform', function ($ionicPlatform) {
+ $ionicPlatform.ready(function () {
   if (typeof IonicDeeplink !== 'undefined') {
     IonicDeeplink.route(
       {}, // No predetermined matches
-      function(match) {},
-      function(nomatch) {
-        window.location.href = "#" + (nomatch.$link.fragment || nomatch.$link.path)
+      function (match) {},
+      function (nomatch) {
+        window.location.href = '#' + (nomatch.$link.fragment || nomatch.$link.path)
       }
-    );
+    )
   }
- });
+ })
 }])
-.run(['$rootScope', 'replace', 'p', function($rootScope, replace, p) {
+.run(['$rootScope', 'replace', 'p', function ($rootScope, replace, p) {
   $rootScope.o = {
     ...p,
-    replace
+    replace,
   }
 }])
-.run(['$ionicPlatform', function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+.run(['$ionicPlatform', function ($ionicPlatform) {
+  $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-      cordova.plugins.Keyboard.disableScroll(false);
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false)
+      cordova.plugins.Keyboard.disableScroll(false)
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
-      StatusBar.styleLightContent();
+      StatusBar.styleLightContent()
     }
-  });
+  })
 }])
-.run(['$ionicPopup', function($ionicPopup) {
+.run(['$ionicPopup', function ($ionicPopup) {
   // Check that external dependencies have loaded
   if (typeof StripeCheckout === 'undefined'
     || typeof Stripe === 'undefined') {
-
       document.addEventListener('online', () => {
-        window.location.reload(true);
+        window.location.reload(true)
       })
 
 
       $ionicPopup.alert({
         title: 'Unable to connect to the Internet',
-        template: `Please check your Internet connection`
+        template: `Please check your Internet connection`,
       })
       .then(() => {
-        window.location.reload(true);
+        window.location.reload(true)
       })
   }
 }])
-.run(['$rootScope', '$ionicTabsDelegate', function($rootScope, $ionicTabsDelegate) {
+.run(['$rootScope', '$ionicTabsDelegate', function ($rootScope, $ionicTabsDelegate) {
   // hide/show tabs bar depending on how the route is configured
-  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+  $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.hideTabs) {
-      $ionicTabsDelegate.showBar(false);
+      $ionicTabsDelegate.showBar(false)
+    } else {
+      $ionicTabsDelegate.showBar(true)
     }
-    else {
-      $ionicTabsDelegate.showBar(true);
-    }
-  });
+  })
 }])
 .run(['RoutesService', 'KickstarterService', 'LiteRoutesService', 'TicketService',
   function (RoutesService, KickstarterService, LiteRoutesService, TicketService) {
     // Pre-fetch the routes
-    RoutesService.fetchRoutes();
-    RoutesService.fetchRecentRoutes();
-    KickstarterService.fetchCrowdstart();
-    KickstarterService.fetchBids();
-    LiteRoutesService.fetchLiteRoutes();
-    TicketService.fetchTickets();
+    RoutesService.fetchRoutes()
+    RoutesService.fetchRecentRoutes()
+    KickstarterService.fetchCrowdstart()
+    KickstarterService.fetchBids()
+    LiteRoutesService.fetchLiteRoutes()
+    TicketService.fetchTickets()
 }])
 .run(['$templateCache', function ($templateCache) {
   $templateCache.put('templates/intro-slides.html', require('../www/templates/intro-slides.html'))
@@ -279,42 +277,42 @@ app
   $templateCache.put('templates/tab-booking-confirmation.html', require('../www/templates/tab-booking-confirmation.html'))
 }])
 
-var devicePromise = new Promise((resolve, reject) => {
+let devicePromise = new Promise((resolve, reject) => {
   if (window.cordova) {
-    document.addEventListener('deviceready', resolve, false);
-  }
-  else {
+    document.addEventListener('deviceready', resolve, false)
+  } else {
     console.log('No cordova detected')
-    resolve();
+    resolve()
   }
 })
 
-app.service('DevicePromise', () => devicePromise);
+app.service('DevicePromise', () => devicePromise)
 
 app.run(['UserService', '$ionicPopup', async function (UserService, $ionicPopup) {
   // Version check, if we're in an app
-  if (!window.cordova)
-    return;
+  if (!window.cordova) {
+return
+}
 
-  await devicePromise;
+  await devicePromise
 
-  assert(window.cordova.InAppBrowser);
-  assert(window.cordova.getAppVersion);
-  assert(window.device);
+  assert(window.cordova.InAppBrowser)
+  assert(window.cordova.getAppVersion)
+  assert(window.device)
 
-  var versionNumberPromise = cordova.getAppVersion.getVersionNumber();
+  let versionNumberPromise = cordova.getAppVersion.getVersionNumber()
 
-  var versionRequirementsPromise = UserService.beeline({
+  let versionRequirementsPromise = UserService.beeline({
     method: 'GET',
     url: '/versionRequirements',
   })
 
-  var [versionNumber, versionRequirementsResponse] = await Promise.all([
-    versionNumberPromise, versionRequirementsPromise
-  ]);
+  let [versionNumber, versionRequirementsResponse] = await Promise.all([
+    versionNumberPromise, versionRequirementsPromise,
+  ])
 
-  var appRequirements = versionRequirementsResponse.data.commuterApp;
-  assert(appRequirements);
+  let appRequirements = versionRequirementsResponse.data.commuterApp
+  assert(appRequirements)
 
   if (compareVersions(versionNumber, appRequirements.minVersion) < 0) {
     while (true) {
@@ -325,7 +323,7 @@ app.run(['UserService', '$ionicPopup', async function (UserService, $ionicPopup)
       })
 
       if (appRequirements.upgradeUrl) {
-        cordova.InAppBrowser.open(appRequirements.upgradeUrl[device.platform], '_system');
+        cordova.InAppBrowser.open(appRequirements.upgradeUrl[device.platform], '_system')
       }
     }
   }
