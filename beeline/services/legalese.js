@@ -1,17 +1,17 @@
 export default ['$rootScope', '$ionicModal',
   function ($rootScope, $ionicModal) {
-    let privacyPolicyModalTemplate =  require('../templates/'+$rootScope.o.APP.PREFIX+'privacy-policy-modal.html');
-    let termsOfUseModalTemplate =  require('../templates/'+$rootScope.o.APP.PREFIX+'terms-of-use-modal.html');
+    let privacyPolicyModalTemplate = require('../templates/'+$rootScope.o.APP.PREFIX+'privacy-policy-modal.html')
+    let termsOfUseModalTemplate = require('../templates/'+$rootScope.o.APP.PREFIX+'terms-of-use-modal.html')
 
-    function showModal(template) {
-      var scope = $rootScope.$new();
-      var modal = $ionicModal.fromTemplate(
+    function showModal (template) {
+      let scope = $rootScope.$new()
+      let modal = $ionicModal.fromTemplate(
         template,
         {scope: scope}
-      );
-      modal.show();
+      )
+      modal.show()
 
-      scope.modal = modal;
+      scope.modal = modal
       scope.$on('modal.hidden', () => modal.remove())
     }
 

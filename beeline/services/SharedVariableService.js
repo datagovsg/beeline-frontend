@@ -1,9 +1,8 @@
 
 angular.module('beeline')
-.factory('SharedVariableService',  ['RoutesService',
+.factory('SharedVariableService', ['RoutesService',
   (RoutesService) => {
-
-    var sharedData = {
+    let sharedData = {
       stops: [],
       boardStops: [],
       alightStops: [],
@@ -14,55 +13,55 @@ angular.module('beeline')
       liteTripStops: [],
       pingTrips: [],
       chosenStop: null,
-    };
+    }
 
-    var instance = {
-      get: function() {
+    let instance = {
+      get: function () {
         return sharedData
       },
 
-      set: function(mapObject) {
+      set: function (mapObject) {
         sharedData = _.assign(sharedData, mapObject)
       },
 
-      setStops: function(stops) {
+      setStops: function (stops) {
         sharedData.stops = stops
       },
 
-      setBoardStops: function(boardStops) {
+      setBoardStops: function (boardStops) {
         sharedData.boardStops = boardStops
       },
 
-      setAlightStops: function(alightStops) {
+      setAlightStops: function (alightStops) {
         sharedData.alightStops = alightStops
       },
 
-      setRoutePath: function(routePath) {
+      setRoutePath: function (routePath) {
         sharedData.routePath = routePath
       },
 
-      setBoardStop: function(boardStop) {
+      setBoardStop: function (boardStop) {
         sharedData.boardStop = boardStop
       },
 
-      setAlightStop: function(alightStop) {
+      setAlightStop: function (alightStop) {
         sharedData.alightStop = alightStop
       },
 
-      setLiteTripStops: function(liteTripStops) {
+      setLiteTripStops: function (liteTripStops) {
         sharedData.liteTripStops = liteTripStops
       },
 
-      setPingTrips: function(pingTrips) {
+      setPingTrips: function (pingTrips) {
         sharedData.pingTrips = pingTrips
       },
 
-      setChosenStop: function(chosenStop) {
+      setChosenStop: function (chosenStop) {
         sharedData.chosenStop = chosenStop
-      }
+      },
 
     }
 
-    return instance;
+    return instance
   }]
 )

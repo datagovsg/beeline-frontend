@@ -4,12 +4,12 @@ export default ['KickstarterService',
     return {
       template: require('./kickstartRoute.html'),
       scope: {
-        'route': '<'
+        'route': '<',
       },
-      controller: ['$scope', function($scope) {
+      controller: ['$scope', function ($scope) {
         $scope.bids = {}
         $scope.$watch(() => KickstarterService.getBids(),
-          bids => $scope.bids = bids)
-      }]
+          (bids) => $scope.bids = bids)
+      }],
     }
 }]

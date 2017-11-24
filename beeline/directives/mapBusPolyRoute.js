@@ -3,7 +3,7 @@ import {SafeInterval} from '../SafeInterval'
 angular.module('beeline')
 .directive('mapBusPolyRoute', ['TripService', 'uiGmapGoogleMapApi', '$timeout',
   'RotatedImage', 'LngLatDistance', 'BearingFromLngLats',
-  function(TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance,
+  function (TripService, uiGmapGoogleMapApi, $timeout, RotatedImage, LngLatDistance,
            BearingFromLngLats) {
     return {
       replace: false,
@@ -20,7 +20,7 @@ angular.module('beeline')
         hasTrackingData: '=?',
         routeMessage: '=?',
       },
-      controller: ['$scope', function($scope) {
+      controller: ['$scope', function ($scope) {
         $scope.map = {
           busLocations: [
             {
@@ -53,7 +53,7 @@ angular.module('beeline')
           $scope.timeout.start()
         })
 
-        async function pingLoop() {
+        async function pingLoop () {
           if (!$scope.availableTrips) return
 
           $scope.statusMessages = $scope.statusMessages || []

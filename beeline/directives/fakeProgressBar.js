@@ -1,5 +1,5 @@
 export default ['$timeout',
-  function($timeout) {
+  function ($timeout) {
     return {
       template: `
         <progress class="fakeProgressBar" max="100" value={{progressValue}}></progress>
@@ -9,14 +9,14 @@ export default ['$timeout',
         'max': '<',
       },
       link (scope, elem, attr) {
-        scope.progressValue = 0;
-        var timeout;
-        var makeProgress = function() {
-          scope.progressValue = (scope.progressValue + 1) % (scope.max+1);
-          timeout = $timeout(makeProgress, scope.interval);
+        scope.progressValue = 0
+        let timeout
+        var makeProgress = function () {
+          scope.progressValue = (scope.progressValue + 1) % (scope.max+1)
+          timeout = $timeout(makeProgress, scope.interval)
         }
-        makeProgress();
-        scope.$on('$destroy', ()=>$timeout.cancel(timeout));
-      }
+        makeProgress()
+        scope.$on('$destroy', ()=>$timeout.cancel(timeout))
+      },
     }
 }]

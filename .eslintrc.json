@@ -2,8 +2,7 @@
   "parser": "babel-eslint",
   "extends": [
     "eslint:recommended",
-    "google",
-    "plugin:angular/johnpapa"
+    "google"
   ],
   "env": {
     "browser": true,

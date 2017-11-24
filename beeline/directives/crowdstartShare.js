@@ -1,5 +1,5 @@
 export default ['$cordovaSocialSharing', 'rootScope',
-  function($cordovaSocialSharing, $rootScope) {
+  function ($cordovaSocialSharing, $rootScope) {
     return {
       replace: true,
       restrict: 'E',
@@ -20,16 +20,16 @@ export default ['$cordovaSocialSharing', 'rootScope',
       scope: {
         'routeId': '<',
       },
-      link: function(scope, element, attributes) {
-        scope.showCopy = !window.cordova || false;
-        //if has cordova no need to show shareLink text area
+      link: function (scope, element, attributes) {
+        scope.showCopy = !window.cordova || false
+        // if has cordova no need to show shareLink text area
         // scope.shareLink = "Hey, check out this new Crowdstart route from "+$rootScope.o.APP.NAME +"! "+$rootScope.o.APP.INDEX+"#/tabs/crowdstart/"+scope.routeId+"/detail";
-        scope.shareLink =  `Hey, check out this new Crowdstart route from ${$rootScope.o.APP.NAME}! ${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`
+        scope.shareLink = `Hey, check out this new Crowdstart route from ${$rootScope.o.APP.NAME}! ${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`
 
-        scope.shareAnywhere = function() {
+        scope.shareAnywhere = function () {
           $cordovaSocialSharing.share(`Hey, check out this new Crowdstart route from ${$rootScope.o.APP.NAME}!`,
-            `New ${$rootScope.o.APP.NAME} Crowdstart Route`, null, `${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`);
-        };
+            `New ${$rootScope.o.APP.NAME} Crowdstart Route`, null, `${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`)
+        }
       },
-    };
+    }
 }]

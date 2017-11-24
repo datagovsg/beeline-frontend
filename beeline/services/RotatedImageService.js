@@ -8,7 +8,7 @@ angular.module('beeline')
   canvas.height = HEIGHT
 
   class RotatedImage {
-    constructor(imgSource) {
+    constructor (imgSource) {
       this.loaded = false
       this.image = new Image()
       this.image.src = imgSource
@@ -20,14 +20,14 @@ angular.module('beeline')
       })
     }
 
-    rotate(radians, overlayText) {
+    rotate (radians, overlayText) {
       if (!this.loaded) {
         return null
       }
 
       const ctx = canvas.getContext('2d')
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      //resetTransform not working in safari
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      // resetTransform not working in safari
       // ctx.resetTransform()
       ctx.clearRect(0, 0, WIDTH, HEIGHT)
 

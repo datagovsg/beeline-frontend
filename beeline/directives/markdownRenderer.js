@@ -1,19 +1,19 @@
-import commonmark from 'commonmark';
+import commonmark from 'commonmark'
 
-var reader = new commonmark.Parser({safe: true});
-var writer = new commonmark.HtmlRenderer({safe: true});
+let reader = new commonmark.Parser({safe: true})
+let writer = new commonmark.HtmlRenderer({safe: true})
 
-export default function() {
+export default function () {
   return {
     replace: true,
     template: '<div ng-bind-html="markdownHTML"></div>',
     scope: {
       data: '<',
     },
-    link: function(scope, element, attributes) {
+    link: function (scope, element, attributes) {
       scope.$watch('data', (data) => {
-        scope.markdownHTML = data && writer.render(reader.parse(data));
+        scope.markdownHTML = data && writer.render(reader.parse(data))
       })
     },
-  };
+  }
 }

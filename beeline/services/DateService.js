@@ -1,2 +1,2 @@
 
-export default () => ({date: new Date()});
+export default () => ({date: new Date()})

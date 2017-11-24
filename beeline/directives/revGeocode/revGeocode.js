@@ -9,9 +9,9 @@ export default [
     '$http',
     'OneMapService',
     'UserService',
-    function($http,
+    function ($http,
              OneMapService,
-             UserService){
+             UserService) {
       return {
         restrict: 'E',
         transclude: true,
@@ -34,44 +34,43 @@ export default [
     {{y | number:4}}, {{x | number:4}}
 </div>
         `,
-        link: async function(scope, elem) {
-            scope.geocodeW = {}//`${scope.y}, ${scope.x}`
-            var oneMapToken = await OneMapService.token();
-            //var url = `http://staging.beeline.sg/onemap/revgeocode?location=${scope.x},${scope.y}`;
+        link: async function (scope, elem) {
+            scope.geocodeW = {}// `${scope.y}, ${scope.x}`
+            let oneMapToken = await OneMapService.token()
+            // var url = `http://staging.beeline.sg/onemap/revgeocode?location=${scope.x},${scope.y}`;
 
-            function updateDescription() {
+            function updateDescription () {
                 if (scope.geocodeW && scope.geocodeW.GeocodeInfo &&
                     scope.geocodeW.GeocodeInfo[0].ROAD) {
                     scope.description1 = titleCase(scope.geocodeW.GeocodeInfo[0].BLOCK)
-                        + ' ' + titleCase(scope.geocodeW.GeocodeInfo[0].ROAD);
-                    scope.description2 = titleCase(scope.geocodeW.GeocodeInfo[0].BUILDINGNAME);
-                }
-                else {
+                        + ' ' + titleCase(scope.geocodeW.GeocodeInfo[0].ROAD)
+                    scope.description2 = titleCase(scope.geocodeW.GeocodeInfo[0].BUILDINGNAME)
+                } else {
                     scope.description1 =
                         parseFloat(scope.y).toFixed(4) + ', ' +
                         parseFloat(scope.x).toFixed(4)
-                    scope.description2 = null;
+                    scope.description2 = null
                 }
             }
-            function geocode() {
+            function geocode () {
                 scope.geocodePromiseW = UserService.beeline({
                     method: 'GET',
-                    url: `/onemap/revgeocode?location=${scope.x},${scope.y}`
+                    url: `/onemap/revgeocode?location=${scope.x},${scope.y}`,
                 })
                 .then((response) => {
                     // console.log(response);
-                    scope.geocodeW = response.data;
-                    updateDescription();
+                    scope.geocodeW = response.data
+                    updateDescription()
                 })
             }
-            scope.$watchGroup(['x', 'y'], geocode);
+            scope.$watchGroup(['x', 'y'], geocode)
             // Hack to reverse the erasure of the description when suggestion page is reloaded
             scope.$watchGroup(['description1', 'description2'], function () {
                 if (scope.description1 == undefined || scope.description2 == undefined) {
-                    updateDescription();
+                    updateDescription()
                 }
-            });
+            })
         }, /* link(...) */
-      };
-    }
-  ];
+      }
+    },
+  ]

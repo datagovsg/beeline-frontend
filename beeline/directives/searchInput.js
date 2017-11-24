@@ -25,19 +25,19 @@ angular.module('beeline').directive('searchInput', function () {
         </label>
       </div>
     `,
-    link(scope, elem, attr) {
-      scope.$watch('searchText' , (qt) => {
-        if(!qt || qt.trim().length < 3) {
-          scope.queryText = ""
+    link (scope, elem, attr) {
+      scope.$watch('searchText', (qt) => {
+        if (!qt || qt.trim().length < 3) {
+          scope.queryText = ''
         } else {
           scope.queryText = qt.trim()
         }
       })
       scope.keypress = function (e) {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
           e.target.blur()
         }
       }
-    }
+    },
   }
 })

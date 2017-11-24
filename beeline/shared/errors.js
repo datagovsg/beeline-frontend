@@ -1,6 +1,6 @@
 
 export class NetworkError extends Error {
-  constructor(str) {
-    super(str);
+  constructor (str) {
+    super(str)
   }
 }
