@@ -1,3 +1,5 @@
+/* eslint-disable angular/window-service */
+
 // Version follows '[date] comment' format
 const introSlidesVersion = '2017-02-20'
 
@@ -23,11 +25,9 @@ const introSlidesVersion = '2017-02-20'
 export default [
   '$stateProvider',
   '$urlRouterProvider',
-  '$window',
   function (
     $stateProvider,
     $urlRouterProvider,
-    $window
   ) {
       $stateProvider
 
@@ -353,7 +353,7 @@ export default [
         },
       })
 
-      let viewedIntroSlidesVersion = $window
+      let viewedIntroSlidesVersion = window
                                      .localStorage
                                      .viewedBeelineSlidesVersion
       // if none of the above states are matched, use this as the fallback
@@ -362,7 +362,7 @@ export default [
         $urlRouterProvider.otherwise('/tabs/routes')
       } else {
         // $urlRouterProvider.otherwise('/tabs/routes/map');
-        $window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
+        window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
 
         $urlRouterProvider.otherwise('/intro')
       }
