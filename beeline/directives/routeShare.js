@@ -6,10 +6,10 @@ angular.module('beeline').directive('routeShare', ['$cordovaSocialSharing', '$io
       restrict: 'E',
       template: `<div>
                   <button class="button button-clear" ng-click="shareAnywhere()" ng-if="!showCopy">
-                    <i class="icon ion-share">share</i>
+                    <i class="icon ion-share"></i>
                   </button>
                   <button class="button button-clear" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}} ng-click="feedback()">
-                    <i class="icon ion-share">copy</i>
+                    <i class="icon ion-share"></i>
                   </button>
                 </div>`,
       scope: {
