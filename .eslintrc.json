@@ -2,7 +2,8 @@
   "parser": "babel-eslint",
   "extends": [
     "eslint:recommended",
-    "google"
+    "google",
+    "prettier"
   ],
   "env": {
     "browser": true,
@@ -15,8 +16,7 @@
     "comma-dangle": ["error", "always-multiline"],
     "radix": ["error", "as-needed"],
     "require-jsdoc": ["warn"],
-    "no-console": ["error", {"allow": ["warn", "error"]}],
-    "space-before-function-paren": ["error", "always"]
+    "no-console": ["error", {"allow": ["warn", "error"]}]
   },
   "globals": {
     "angular": true,
