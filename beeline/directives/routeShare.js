@@ -18,12 +18,13 @@ angular.module('beeline').directive('routeShare', ['$cordovaSocialSharing', '$io
       },
       link: function(scope, element, attributes) {
 
-        scope.showCopy = !window.cordova
-        console.log($rootScope.o.APP.INDEX)
+        scope.showCopy = !window.cordova || false
+
+        const domain = $rootScope.o.APP.INDEX === 'https://app.beeline.sg' ? 'https://app.beeline.sg' : 'https://grabshuttle.beeline.sg'
         if(scope.isNormalRoute) {
-          scope.shareLink =   `${$rootScope.o.APP.INDEX}/tabs/route/${scope.routeId}`
+          scope.shareLink =   `${domain}/tabs/route/${scope.routeId}`
         } else {
-          scope.shareLink =   `${$rootScope.o.APP.INDEX}/tabs/crowdstart/${scope.routeId}/detail`
+          scope.shareLink =   `${domain}/tabs/crowdstart/${scope.routeId}/detail`
         }
 
         scope.shareAnywhere = function() {
