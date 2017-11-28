@@ -7,6 +7,7 @@ import {
   formatTimeArray,
   formatUTCDate,
   titleCase,
+  formatHHMMampm,
 } from "./shared/format"
 import { companyLogo, miniCompanyLogo } from "./shared/imageSources"
 
@@ -59,7 +60,7 @@ app
   .filter("formatUTCDate", () => formatUTCDate)
   .filter("formatTime", () => formatTime)
   .filter("formatTimeArray", () => formatTimeArray)
-  .filter("formatHHMM_ampm", () => formatHHMM_ampm)
+  .filter("formatHHMMampm", () => formatHHMMampm)
   .filter("titleCase", () => titleCase)
   .filter("routeStartTime", () => route =>
     route && route.trips ? route.trips[0].tripStops[0].time : ""
@@ -431,7 +432,7 @@ app
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false)
           cordova.plugins.Keyboard.disableScroll(false)
         }
-        if (window.StatusBar) {
+        if (StatusBar) {
           // org.apache.cordova.statusbar required
           StatusBar.styleLightContent()
         }
@@ -584,20 +585,18 @@ app.run([
     let appRequirements = versionRequirementsResponse.data.commuterApp
     assert(appRequirements)
 
-    if (compareVersions(versionNumber, appRequirements.minVersion) < 0) {
-      while (true) {
-        await $ionicPopup.alert({
-          title: "Update required",
-          template: `Your version of the app is too old. Please visit the app
-        store to upgrade your app.`,
-        })
+    while (compareVersions(versionNumber, appRequirements.minVersion) < 0) {
+      await $ionicPopup.alert({
+        title: "Update required",
+        template: `Your version of the app is too old. Please visit the app
+      store to upgrade your app.`,
+      })
 
-        if (appRequirements.upgradeUrl) {
-          cordova.InAppBrowser.open(
-            appRequirements.upgradeUrl[device.platform],
-            "_system"
-          )
-        }
+      if (appRequirements.upgradeUrl) {
+        cordova.InAppBrowser.open(
+          appRequirements.upgradeUrl[device.platform],
+          "_system"
+        )
       }
     }
   },

@@ -24,6 +24,7 @@
     "chcp": true,
     "IonicDeeplink": true,
     "device": true,
-    "cordova": true
+    "cordova": true,
+    "StatusBar": true
   }
 }
