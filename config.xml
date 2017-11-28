@@ -84,7 +84,7 @@
         <config-file url="https://app.beeline.sg/chcp.json" />
         <native-interface version="2" />
     </chcp>
-    <engine name="android" spec="^6.2.3" />
+    <engine name="android" spec="^6.3.0" />
     <plugin name="cordova-hot-code-push-plugin" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
     <plugin name="cordova-plugin-console" spec="~1.0.6" />

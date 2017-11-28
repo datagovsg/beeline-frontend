@@ -1,10 +1,7 @@
 <ion-view id="pg_kickstarter_detail" view-title="Crowdstart Route Details"
  can-swipe-back="false" class="kickstarter-detail2 page-with-map">
   <ion-nav-buttons side="right">
-    <button class="button button-clear"
-       ui-sref="tabs.crowdstart">
-       <i class="icon ion-ios-close-outline"></i>
-    </button>
+    <route-share is-normal-route="false" route-id="book.routeId"></route-share>
   </ion-nav-buttons>
   <div class="bar bar-subheader item kickstarter-breadcrumbs"ng-if="!book.route.isExpired">
     <img src="img/KickstarterProgressBar02_RouteDetails.svg" />
