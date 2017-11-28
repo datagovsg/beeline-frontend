@@ -1,5 +1,4 @@
 import { SafeInterval } from "../SafeInterval"
-import { formatTime, formatTimeArray } from "../shared/format"
 import _ from "lodash"
 
 export default [
@@ -12,6 +11,7 @@ export default [
   "TripService",
   "TicketService",
   "ServerTime",
+  "MapViewFactory",
   function(
     $scope,
     SharedVariableService,
@@ -21,44 +21,13 @@ export default [
     $timeout,
     TripService,
     TicketService,
-    ServerTime
+    ServerTime,
+    MapViewFactory
   ) {
     let ticketId = $stateParams.ticketId ? Number($stateParams.ticketId) : null
     // Date calculated as Date.now() + Local-Server-TimeDiff
 
-    const originalMapObject = {
-      stops: [],
-      routePath: [],
-      alightStop: null,
-      boardStop: null,
-      pingTrips: [],
-      allRecentPings: [],
-      chosenStop: null,
-      statusMessages: [],
-    }
-
-    $scope.mapObject = _.assign({}, originalMapObject)
-
-    $scope.disp = {
-      popupStop: null,
-      routeMessage: null,
-    }
-
-    $scope.closeWindow = function() {
-      $scope.disp.popupStop = null
-    }
-
-    $scope.applyTapBoard = function(stop) {
-      $scope.disp.popupStop = stop
-      $scope.$digest()
-    }
-
-    $scope.formatStopTime = function(input) {
-      if (Array.isArray(input)) {
-        return formatTimeArray(input)
-      }
-      return formatTime(input)
-    }
+    MapViewFactory.init($scope)
 
     if (ticketId) {
       const ticketPromise = TicketService.getTicketById(ticketId)

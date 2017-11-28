@@ -1,3 +1,5 @@
+// import _ from "lodash"
+
 import {
   formatDate,
   formatDateMMMdd,
@@ -12,8 +14,7 @@ import { companyLogo, miniCompanyLogo } from "./shared/imageSources"
 import compareVersions from "compare-versions"
 import assert from "assert"
 
-// Angular imports
-import MultipleDatePicker from "multiple-date-picker/dist/multipleDatePicker"
+import "multiple-date-picker/dist/multipleDatePicker"
 
 // Configuration Imports
 import configureRoutes from "./router.js"
@@ -80,7 +81,9 @@ app
   .filter("miniCompanyLogo", () => miniCompanyLogo)
   .filter("monthNames", function() {
     return function(i) {
-      monthNames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(",")
+      let monthNames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(
+        ","
+      )
       return monthNames[i]
     }
   })
@@ -100,6 +103,7 @@ app
     "LiteRouteSubscriptionService",
     require("./services/LiteRouteSubscriptionService.js").default
   )
+  .factory("MapViewFactory", require("./services/MapViewFactory.js").default)
   .factory("UserService", require("./services/UserService.js").default)
   .factory("TripService", require("./services/TripService.js").default)
   .factory("CompanyService", require("./services/CompanyService.js").default)
@@ -543,7 +547,7 @@ let devicePromise = new Promise((resolve, reject) => {
   if (window.cordova) {
     document.addEventListener("deviceready", resolve, false)
   } else {
-    console.log("No cordova detected")
+    console.warn("No cordova detected")
     resolve()
   }
 })

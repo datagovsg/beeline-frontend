@@ -5,7 +5,14 @@ export default [
   "MapOptions",
   "SharedVariableService",
   "uiGmapGoogleMapApi",
-  function($scope, MapOptions, SharedVariableService, uiGmapGoogleMapApi) {
+  "MapViewFactory",
+  function(
+    $scope,
+    MapOptions,
+    SharedVariableService,
+    uiGmapGoogleMapApi,
+    MapViewFactory
+  ) {
     $scope.map = MapOptions.defaultMapOptions({
       busLocation: {
         coordinates: null,
@@ -54,18 +61,7 @@ export default [
       }
     })
 
-    const originalMapObject = {
-      stops: [],
-      routePath: [],
-      alightStop: null,
-      boardStop: null,
-      pingTrips: [],
-      allRecentPings: [],
-      chosenStop: null,
-      statusMessages: [],
-    }
-
-    $scope.mapObject = _.assign({}, originalMapObject)
+    MapViewFactory.initMapObject($scope)
 
     $scope.$watch(
       () => SharedVariableService.get(),
