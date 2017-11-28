@@ -20,8 +20,8 @@ export default [
       },
     })
 
-    $scope.mapObject = MapViewFactory.mapObject
-    $scope.disp = MapViewFactory.disp
+    $scope.mapObject = MapViewFactory.mapObject()
+    $scope.disp = MapViewFactory.disp()
 
     // Resolved when the map is initialized
     const gmapIsReady = new Promise((resolve, reject) => {

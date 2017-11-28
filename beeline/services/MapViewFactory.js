@@ -5,9 +5,9 @@ export default [
   function MapViewFactory() {
     return {
       init: function($scope) {
-        $scope.mapObject = this.mapObject
+        $scope.mapObject = this.mapObject()
 
-        $scope.disp = this.disp
+        $scope.disp = this.disp()
 
         $scope.closeWindow = function() {
           $scope.disp.popupStop = null
@@ -25,22 +25,26 @@ export default [
           return formatTime(input)
         }
       },
-      mapObject: _.assign(
-        {},
-        {
-          stops: [],
-          routePath: [],
-          alightStop: null,
-          boardStop: null,
-          pingTrips: [],
-          allRecentPings: [],
-          chosenStop: null,
-          statusMessages: [],
+      mapObject: function() {
+        return _.assign(
+          {},
+          {
+            stops: [],
+            routePath: [],
+            alightStop: null,
+            boardStop: null,
+            pingTrips: [],
+            allRecentPings: [],
+            chosenStop: null,
+            statusMessages: [],
+          }
+        )
+      },
+      disp: function() {
+        return {
+          popupStop: null,
+          routeMessage: null,
         }
-      ),
-      disp: {
-        popupStop: null,
-        routeMessage: null,
       },
     }
   },
