@@ -12,8 +12,6 @@ import { companyLogo, miniCompanyLogo } from "./shared/imageSources"
 import compareVersions from "compare-versions"
 import assert from "assert"
 
-// Angular imports
-import MultipleDatePicker from "multiple-date-picker/dist/multipleDatePicker"
 
 // Configuration Imports
 import configureRoutes from "./router.js"
