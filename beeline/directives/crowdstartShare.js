@@ -25,8 +25,7 @@ export default [
       link: function(scope, element, attributes) {
         scope.showCopy = !window.cordova || false
         // if has cordova no need to show shareLink text area
-        // scope.shareLink = "Hey, check out this new Crowdstart route from "+$rootScope.o.APP.NAME +"! "+$rootScope.o.APP.INDEX+"#/tabs/crowdstart/"+scope.routeId+"/detail";
-        const domain = $rootScope.o.APP.INDEX === 'https://app.beeline.sg' ? 'https://app.beeline.sg' : 'https://grabshuttle.beeline.sg'
+        const domain = $rootScope.o.APP.NAME === 'GrabShuttle' ?  'https://grabshuttle.beeline.sg' : 'https://app.beeline.sg'
         scope.shareLink =  `Hey, check out this new Crowdstart route from ${$rootScope.o.APP.NAME}! ${domain}/tabs/crowdstart/${scope.routeId}/detail`
 
         scope.shareAnywhere = function() {

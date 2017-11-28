@@ -20,7 +20,7 @@ angular.module('beeline').directive('routeShare', ['$cordovaSocialSharing', '$io
 
         scope.showCopy = !window.cordova || false
 
-        const domain = $rootScope.o.APP.INDEX === 'https://app.beeline.sg' ? 'https://app.beeline.sg' : 'https://grabshuttle.beeline.sg'
+        const domain = $rootScope.o.APP.NAME === 'GrabShuttle' ?  'https://grabshuttle.beeline.sg' : 'https://app.beeline.sg'
         if(scope.isNormalRoute) {
           scope.shareLink =   `${domain}/tabs/route/${scope.routeId}`
         } else {
