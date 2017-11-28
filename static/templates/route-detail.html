@@ -5,6 +5,9 @@
        <i class="icon ion-ios-arrow-back"></i>
     </button>
   </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <route-share is-normal-route="true" route-id="data.routeId"></route-share>
+  </ion-nav-buttons>
   <ion-content scroll="false">
     <form name="stopsForm">
       <div class="rides-remaining" ng-if="data.passCount > 0 || data.routeSupportsRoutePass" >
