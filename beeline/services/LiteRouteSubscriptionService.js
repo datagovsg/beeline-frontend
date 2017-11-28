@@ -1,40 +1,44 @@
-import _ from 'lodash'
-import assert from 'assert'
+import _ from "lodash"
+import assert from "assert"
 
-
-export default ['$http', 'UserService', '$q',
-  function LiteRouteSubscriptionService ($http, UserService, $q) {
+export default [
+  "$http",
+  "UserService",
+  "$q",
+  function LiteRouteSubscriptionService($http, UserService, $q) {
     let LiteRouteSubscriptionCache = null
     let liteRouteSubscriptionsSummary = []
 
-
-    UserService.userEvents.on('userChanged', () => {
+    UserService.userEvents.on("userChanged", () => {
       instance.getSubscriptions(true)
     })
 
     var instance = {
-
-      getSubscriptionSummary: function () {
+      getSubscriptionSummary: function() {
         return liteRouteSubscriptionsSummary
       },
 
-      getSubscriptions: function (ignoreCache) {
+      getSubscriptions: function(ignoreCache) {
         if (UserService.getUser()) {
-          if (LiteRouteSubscriptionCache && !ignoreCache) return liteRouteSubscriptionsSummary
-          return LiteRouteSubscriptionCache = UserService.beeline({
-            method: 'GET',
-            url: '/liteRoutes/subscriptions',
-          }).then((response) => {
-            liteRouteSubscriptionsSummary = response.data.map((subs)=>subs.routeLabel)
+          if (LiteRouteSubscriptionCache && !ignoreCache) {
             return liteRouteSubscriptionsSummary
-    			})
+          }
+          return (LiteRouteSubscriptionCache = UserService.beeline({
+            method: "GET",
+            url: "/liteRoutes/subscriptions",
+          }).then(response => {
+            liteRouteSubscriptionsSummary = response.data.map(
+              subs => subs.routeLabel
+            )
+            return liteRouteSubscriptionsSummary
+          }))
         } else {
           liteRouteSubscriptionsSummary = []
           return $q.resolve([])
         }
       },
 
-      isSubscribed: async function (label, ignoreCache) {
+      isSubscribed: async function(label, ignoreCache) {
         let subscriptions = await this.getSubscriptions(ignoreCache)
         assert(subscriptions)
 
@@ -48,4 +52,5 @@ export default ['$http', 'UserService', '$q',
     }
 
     return instance
-}]
+  },
+]

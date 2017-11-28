@@ -1,8 +1,10 @@
-export default ['$cordovaSocialSharing', 'rootScope',
-  function ($cordovaSocialSharing, $rootScope) {
+export default [
+  "$cordovaSocialSharing",
+  "rootScope",
+  function($cordovaSocialSharing, $rootScope) {
     return {
       replace: true,
-      restrict: 'E',
+      restrict: "E",
       template: `<div class="item item-text-wrap">
                   <div class="share-box">
                     Share this campaign to your friends and colleagues to increase the chance of activating this route!
@@ -18,18 +20,27 @@ export default ['$cordovaSocialSharing', 'rootScope',
                   </div>
                 </div>`,
       scope: {
-        'routeId': '<',
+        routeId: "<",
       },
-      link: function (scope, element, attributes) {
+      link: function(scope, element, attributes) {
         scope.showCopy = !window.cordova || false
         // if has cordova no need to show shareLink text area
         // scope.shareLink = "Hey, check out this new Crowdstart route from "+$rootScope.o.APP.NAME +"! "+$rootScope.o.APP.INDEX+"#/tabs/crowdstart/"+scope.routeId+"/detail";
-        scope.shareLink = `Hey, check out this new Crowdstart route from ${$rootScope.o.APP.NAME}! ${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`
+        scope.shareLink = `Hey, check out this new Crowdstart route from ${
+          $rootScope.o.APP.NAME
+        }! ${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`
 
-        scope.shareAnywhere = function () {
-          $cordovaSocialSharing.share(`Hey, check out this new Crowdstart route from ${$rootScope.o.APP.NAME}!`,
-            `New ${$rootScope.o.APP.NAME} Crowdstart Route`, null, `${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`)
+        scope.shareAnywhere = function() {
+          $cordovaSocialSharing.share(
+            `Hey, check out this new Crowdstart route from ${
+              $rootScope.o.APP.NAME
+            }!`,
+            `New ${$rootScope.o.APP.NAME} Crowdstart Route`,
+            null,
+            `${$rootScope.o.APP.INDEX}#/tabs/crowdstart/${scope.routeId}/detail`
+          )
         }
       },
     }
-}]
+  },
+]

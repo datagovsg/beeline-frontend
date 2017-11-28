@@ -1,14 +1,16 @@
-import loginModalTemplate from '../templates/login-modal.html'
+import loginModalTemplate from "../templates/login-modal.html"
 const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$|^########$/
 
-export default ['$rootScope', '$ionicModal', 'Legalese',
-  function ($rootScope, $ionicModal, Legalese) {
+export default [
+  "$rootScope",
+  "$ionicModal",
+  "Legalese",
+  function($rootScope, $ionicModal, Legalese) {
     this.show = () => {
       let scope = $rootScope.$new()
-      let loginModal = $ionicModal.fromTemplate(
-        loginModalTemplate,
-        {scope: scope}
-      )
+      let loginModal = $ionicModal.fromTemplate(loginModalTemplate, {
+        scope: scope,
+      })
 
       scope.modal = loginModal
       scope.phonePattern = VALID_PHONE_REGEX
@@ -18,15 +20,15 @@ export default ['$rootScope', '$ionicModal', 'Legalese',
       scope.data = {}
       scope.form = {}
 
-      function cleanup () {
+      function cleanup() {
         loginModal.remove()
       }
 
       let loginPromise = new Promise((resolve, reject) => {
-        scope.$on('modal.hidden', () => {
+        scope.$on("modal.hidden", () => {
           if (scope.reject) {
-scope.reject(null)
-}
+            scope.reject(null)
+          }
           scope.accept = scope.reject = null
         })
 
@@ -53,4 +55,5 @@ scope.reject(null)
 
       return loginPromise
     }
-}]
+  },
+]

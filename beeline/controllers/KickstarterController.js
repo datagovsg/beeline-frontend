@@ -1,20 +1,20 @@
-import _ from 'lodash'
-import kickstartHelpTemplate from '../templates/kickstart-popup.html'
-import {sleep} from '../shared/util'
+import _ from "lodash"
+import kickstartHelpTemplate from "../templates/kickstart-popup.html"
+import { sleep } from "../shared/util"
 
 // Parse out the available regions from the routes
 // Filter what is displayed by the region filter
 // Split the routes into those the user has recently booked and the rest
 export default [
-  '$scope',
-  '$q',
-  '$window',
-  '$ionicPopup',
-  'KickstarterService',
-  'SearchService',
-  'SearchEventService',
-  'PlaceService',
-  function (
+  "$scope",
+  "$q",
+  "$window",
+  "$ionicPopup",
+  "KickstarterService",
+  "SearchService",
+  "SearchEventService",
+  "PlaceService",
+  function(
     $scope,
     $q,
     $window,
@@ -29,15 +29,15 @@ export default [
       error: null,
       kickstarter: null,
       backedKickstarter: null,
-      filterText: '',
-      stagingFilterText: '',
+      filterText: "",
+      stagingFilterText: "",
       nearbyKickstarterRoutes: null,
       placeQuery: null, // The place object used to search
-      queryText: '', // The actual text in the box
+      queryText: "", // The actual text in the box
       routesAvailable: false,
     }
 
-    function autoComplete () {
+    function autoComplete() {
       if (!$scope.data.queryText) {
         $scope.data.isFiltering = false
         return
@@ -47,8 +47,8 @@ export default [
       $scope.$digest()
       // default 'place' object only has 'queryText' but no geometry
       // if has predicted place assign the 1st prediction to place object
-      let place = {queryText: $scope.data.queryText}
-      SearchEventService.emit('search-item', $scope.data.queryText)
+      let place = { queryText: $scope.data.queryText }
+      SearchEventService.emit("search-item", $scope.data.queryText)
 
       // Reset filteredKickstarter here because they are used to
       // determine whether we do a place query (see watchGroup with both)
@@ -58,28 +58,31 @@ export default [
       $scope.$digest()
     }
 
-    $scope.$watch('data.queryText', (queryText) => {
+    $scope.$watch("data.queryText", queryText => {
       if (queryText.length === 0) $scope.data.placeQuery = null
     })
 
-    $scope.$watch('data.queryText',
-      _.debounce(autoComplete, 1000, {leading: false, trailing: true})
+    $scope.$watch(
+      "data.queryText",
+      _.debounce(autoComplete, 1000, { leading: false, trailing: true })
     )
 
-    $scope.refreshRoutes = function () {
-      $q.all([
-        KickstarterService.fetchCrowdstart(true),
-        KickstarterService.fetchBids(true),
-        KickstarterService.fetchNearbyKickstarterIds()])
-      .then(() => {
-        $scope.data.error = null
-      })
-      .catch(() => {
-        $scope.data.error = true
-      })
-      .then(() => {
-        $scope.$broadcast('scroll.refreshComplete')
-      })
+    $scope.refreshRoutes = function() {
+      $q
+        .all([
+          KickstarterService.fetchCrowdstart(true),
+          KickstarterService.fetchBids(true),
+          KickstarterService.fetchNearbyKickstarterIds(),
+        ])
+        .then(() => {
+          $scope.data.error = null
+        })
+        .catch(() => {
+          $scope.data.error = true
+        })
+        .then(() => {
+          $scope.$broadcast("scroll.refreshComplete")
+        })
     }
 
     // replace loading spinner by animated-route
@@ -101,28 +104,30 @@ export default [
       [
         () => KickstarterService.getCrowdstart(),
         () => KickstarterService.getBids(),
-        'data.placeQuery',
+        "data.placeQuery",
       ],
       ([crowdstartRoutes, userBids, placeQuery]) => {
         if (!crowdstartRoutes || !userBids) return
         // hide the animated-route
         $scope.data.routesAvailable = true
         $scope.userBids = userBids
-        $scope.recentBidsById = _.keyBy($scope.userBids, (r) => r.routeId)
-        let recentAndAvailable = _.partition(crowdstartRoutes, (x) => {
+        $scope.recentBidsById = _.keyBy($scope.userBids, r => r.routeId)
+        let recentAndAvailable = _.partition(crowdstartRoutes, x => {
           return _.includes(_.keys($scope.recentBidsById), x.id.toString())
         })
         // don't display it in backed list if the pass expires after 1 month of
         // 1st trip and don't display it if it's 7 days after expired and
         // not actived
-        let backedKickstarter = recentAndAvailable[0].filter((route) =>
-          (!route.passExpired && route.isActived) ||
-          !route.isExpired ||
-          !route.is7DaysOld) ||
-          []
+        let backedKickstarter =
+          recentAndAvailable[0].filter(
+            route =>
+              (!route.passExpired && route.isActived) ||
+              !route.isExpired ||
+              !route.is7DaysOld
+          ) || []
         // don't display it in kickstarter if it's expired
-        let kickstarter = recentAndAvailable[1]
-          .filter((route) => !route.isExpired) || []
+        let kickstarter =
+          recentAndAvailable[1].filter(route => !route.isExpired) || []
 
         // Filter the routes
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
@@ -148,21 +153,20 @@ export default [
         }
 
         // publish
-        $scope.data.filteredKickstarter = _.sortBy(
-          kickstarter,
-          (x) => parseInt(x.label.slice(1))
+        $scope.data.filteredKickstarter = _.sortBy(kickstarter, x =>
+          parseInt(x.label.slice(1))
         )
-        $scope.data.filteredbackedKickstarter = _.sortBy(
-          backedKickstarter,
-          (x) => parseInt(x.label.slice(1))
+        $scope.data.filteredbackedKickstarter = _.sortBy(backedKickstarter, x =>
+          parseInt(x.label.slice(1))
         )
       }
     )
 
     // Deciding whether to do a place query
-    $scope.$watchCollection('data.filteredKickstarter',
+    $scope.$watchCollection(
+      "data.filteredKickstarter",
       (newRoutes, oldRoutes) => {
-        async function handlePlaceQuery () {
+        async function handlePlaceQuery() {
           if (!newRoutes) return
 
           // Criteria for making a place query
@@ -180,26 +184,28 @@ export default [
           $scope.$digest()
         }
 
-        async function stopFilteringAfterDelay () {
+        async function stopFilteringAfterDelay() {
           await sleep(500)
           $scope.data.isFiltering = false
           $scope.$digest()
         }
 
-        handlePlaceQuery()
-          .then(stopFilteringAfterDelay, stopFilteringAfterDelay)
+        handlePlaceQuery().then(
+          stopFilteringAfterDelay,
+          stopFilteringAfterDelay
+        )
       }
     )
 
-    $scope.showHelpPopup = function () {
+    $scope.showHelpPopup = function() {
       $scope.kickstartHelpPopup = $ionicPopup.show({
         template: kickstartHelpTemplate,
-        title: 'Crowdstart Routes',
+        title: "Crowdstart Routes",
         buttons: [
           {
-            text: 'OK',
-            type: 'button-positive',
-            onTap: function (e) {
+            text: "OK",
+            type: "button-positive",
+            onTap: function(e) {
               $scope.closePopup()
             },
           },
@@ -207,7 +213,7 @@ export default [
       })
     }
 
-    $scope.closePopup = function () {
+    $scope.closePopup = function() {
       $scope.kickstartHelpPopup.close()
     }
   },

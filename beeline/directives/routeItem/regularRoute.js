@@ -1,9 +1,8 @@
-
-export default function () {
+export default function() {
   return {
-    template: require('./regularRoute.html'),
+    template: require("./regularRoute.html"),
     scope: {
-      'route': '<',
+      route: "<",
     },
   }
 }

@@ -1,91 +1,93 @@
-const path = require('path');
-const fs = require('fs');
-const assert = require('assert')
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const InlineEnviromentVariablesPlugin = require(
-  'inline-environment-variables-webpack-plugin'
-);
+const path = require("path")
+const fs = require("fs")
+const assert = require("assert")
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const InlineEnviromentVariablesPlugin = require("inline-environment-variables-webpack-plugin")
 
-const prefix = process.env.BUILD_PREFIX || 'www'
+const prefix = process.env.BUILD_PREFIX || "www"
 // const prefix = 'www'
 
-const DEFAULT_BACKEND_URL = "https://api.beeline.sg";
+const DEFAULT_BACKEND_URL = "https://api.beeline.sg"
 const BACKEND_URL_NOT_SET_MESSAGE = `
 BACKEND_URL environment variable not set. Defaulting to ${DEFAULT_BACKEND_URL}
 `
-if (typeof process.env.BACKEND_URL === 'undefined') {
-  console.log(BACKEND_URL_NOT_SET_MESSAGE);
-  process.env.BACKEND_URL = DEFAULT_BACKEND_URL;
+if (typeof process.env.BACKEND_URL === "undefined") {
+  console.log(BACKEND_URL_NOT_SET_MESSAGE)
+  process.env.BACKEND_URL = DEFAULT_BACKEND_URL
 }
 
-const INLINED_ENVIRONMENT_VARIABLES = [
-  "BACKEND_URL"
-];
+const INLINED_ENVIRONMENT_VARIABLES = ["BACKEND_URL"]
 
 INLINED_ENVIRONMENT_VARIABLES.forEach(function(key) {
-  assert(process.env[key], "process.env." + key + " must be set");
-});
+  assert(process.env[key], "process.env." + key + " must be set")
+})
 
 module.exports = function(env) {
-  env = env || {};
+  env = env || {}
   return [
-
     // Javascript Config
     {
-      devtool: 'source-map',
+      devtool: "source-map",
       module: {
         rules: [
           // Enable ES6 goodness
           {
             test: /\.js$/,
-            loader: 'babel-loader',
-            exclude: /node_modules/
+            loader: "babel-loader",
+            exclude: /node_modules/,
           },
           // Allow HTML imports
           {
             test: /\.html$/,
-            loader: 'html-loader',
-            options: { attrs: false } // disable img:src loading
+            loader: "html-loader",
+            options: { attrs: false }, // disable img:src loading
           },
           // Allow JSON imports
           {
             test: /\.json$/,
-            loader: 'json-loader'
+            loader: "json-loader",
           },
           // Fix for libraries that require globals
           {
-            test: require.resolve('multiple-date-picker/dist/multipleDatePicker'),
-            loader: 'imports-loader?moment'
-          }
-        ]
+            test: require.resolve(
+              "multiple-date-picker/dist/multipleDatePicker"
+            ),
+            loader: "imports-loader?moment",
+          },
+        ],
       },
-      entry: ['babel-polyfill', path.resolve('beeline/main.js')],
+      entry: ["babel-polyfill", path.resolve("beeline/main.js")],
       output: {
-        path: path.resolve(prefix, 'lib/beeline'),
-        filename: 'bundle.js',
-        pathinfo: env.production ? false : true
+        path: path.resolve(prefix, "lib/beeline"),
+        filename: "bundle.js",
+        pathinfo: env.production ? false : true,
       },
       plugins: [
-        new InlineEnviromentVariablesPlugin(INLINED_ENVIRONMENT_VARIABLES)
-      ]
+        new InlineEnviromentVariablesPlugin(INLINED_ENVIRONMENT_VARIABLES),
+      ],
     },
 
     // CSS Config
     {
       entry: {
-        'ionic.app': './scss/ionic.app.scss',
-        'operator-grab': './scss/operator-grab.scss'
+        "ionic.app": "./scss/ionic.app.scss",
+        "operator-grab": "./scss/operator-grab.scss",
       },
       module: {
-        rules: [{
-          test: /\.scss$/,
-          use: ExtractTextPlugin.extract({
-            use: [
-              { loader: 'css-loader', options: { url: false, minimize: true } },
-              { loader: 'sass-loader' }
-            ],
-          })
-        }]
+        rules: [
+          {
+            test: /\.scss$/,
+            use: ExtractTextPlugin.extract({
+              use: [
+                {
+                  loader: "css-loader",
+                  options: { url: false, minimize: true },
+                },
+                { loader: "sass-loader" },
+              ],
+            }),
+          },
+        ],
       },
       // This output is entirely superfluous.
       // We are abusing Webpack so that it will compile the SCSS
@@ -94,14 +96,11 @@ module.exports = function(env) {
       // and also by <link href="....XXX.css" />
       output: {
         path: path.resolve(prefix, `css`),
-        filename: '[name].css.js',
+        filename: "[name].css.js",
         pathinfo: env.production ? false : true,
       },
       // The actual css output we care about
-      plugins: [
-        new ExtractTextPlugin('[name].css')
-      ]
-    }
-
+      plugins: [new ExtractTextPlugin("[name].css")],
+    },
   ]
-};
+}

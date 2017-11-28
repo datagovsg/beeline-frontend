@@ -1,7 +1,11 @@
-const shell = require('shelljs')
-shell.exec('git remote set-branches --add origin master', {async: false})
-shell.exec('git fetch', {async: false})
-shell.exec('printf "Linting the following JS files in this branch:\n\n"', {async: false})
-shell.exec('git diff --name-only origin/master -- \'*.js\'', {async: false})
-shell.exec('printf "\n\n----------------------------------------------------------------\n\n"')
-shell.exec('./node_modules/eslint/bin/eslint.js `git diff --name-only origin/master -- \'*.js\'`', {async: false})
+const shell = require("shelljs")
+shell.exec('printf "Linting the following JS files in this branch:\n\n"', {
+  async: false,
+})
+shell.exec("git diff --name-only --cached origin/master -- 'beeline/*.js'", {
+  async: false,
+})
+shell.exec(
+  "./node_modules/eslint/bin/eslint.js --fix `git diff --name-only --cached origin/master -- 'beeline/*.js'`",
+  { async: false }
+)

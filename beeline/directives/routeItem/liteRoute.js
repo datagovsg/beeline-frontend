@@ -1,9 +1,8 @@
-
-export default function () {
+export default function() {
   return {
-    template: require('./liteRoute.html'),
+    template: require("./liteRoute.html"),
     scope: {
-      'route': '<',
+      route: "<",
     },
   }
 }

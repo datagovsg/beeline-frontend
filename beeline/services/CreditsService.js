@@ -1,8 +1,11 @@
-import _ from 'lodash'
-import assert from 'assert'
+import _ from "lodash"
+import assert from "assert"
 
-export default ['$http', 'UserService', '$q',
-  function CreditsService ($http, UserService, $q) {
+export default [
+  "$http",
+  "UserService",
+  "$q",
+  function CreditsService($http, UserService, $q) {
     // General credits
     let userCreditsCache
     let userCredits
@@ -11,13 +14,13 @@ export default ['$http', 'UserService', '$q',
     let referralCreditsCache
     let referralCredits
 
-    UserService.userEvents.on('userChanged', () => {
+    UserService.userEvents.on("userChanged", () => {
       instance.fetchUserCredits(true)
       instance.fetchReferralCredits(true)
     })
 
     var instance = {
-      getUserCredits: function () {
+      getUserCredits: function() {
         return userCredits
       },
 
@@ -26,7 +29,7 @@ export default ['$http', 'UserService', '$q',
       // - ignoreCache - boolean
       // output:
       // - Promise containing amount of general credits associated with user
-      fetchUserCredits: function (ignoreCache) {
+      fetchUserCredits: function(ignoreCache) {
         if (!ignoreCache && userCreditsCache) {
           return userCreditsCache
         }
@@ -34,20 +37,18 @@ export default ['$http', 'UserService', '$q',
         let user = UserService.getUser()
 
         if (!user) {
-          return userCreditsCache = Promise.resolve(
-            userCredits = null
-          )
+          return (userCreditsCache = Promise.resolve((userCredits = null)))
         } else {
-          return userCreditsCache = UserService.beeline({
-            method: 'GET',
-            url: '/credits',
-          }).then((response) => {
-            return userCredits = response.data
-          })
+          return (userCreditsCache = UserService.beeline({
+            method: "GET",
+            url: "/credits",
+          }).then(response => {
+            return (userCredits = response.data)
+          }))
         }
       },
 
-      getReferralCredits: function () {
+      getReferralCredits: function() {
         return referralCredits
       },
 
@@ -56,7 +57,7 @@ export default ['$http', 'UserService', '$q',
       // - ignoreCache - boolean
       // output:
       // - Promise containing amount of referral credits associated with user
-      fetchReferralCredits: function (ignoreCache) {
+      fetchReferralCredits: function(ignoreCache) {
         if (!ignoreCache && referralCreditsCache) {
           return referralCreditsCache
         }
@@ -64,20 +65,20 @@ export default ['$http', 'UserService', '$q',
         let user = UserService.getUser()
 
         if (!user) {
-          return referralCreditsCache = Promise.resolve(
-            referralCredits = null
-          )
+          return (referralCreditsCache = Promise.resolve(
+            (referralCredits = null)
+          ))
         } else {
-          return referralCreditsCache = UserService.beeline({
-            method: 'GET',
-            url: '/user/referralCredits',
-          }).then((response) => {
-            return referralCredits = response.data
-          })
+          return (referralCreditsCache = UserService.beeline({
+            method: "GET",
+            url: "/user/referralCredits",
+          }).then(response => {
+            return (referralCredits = response.data)
+          }))
         }
       },
-
     }
 
     return instance
-}]
+  },
+]

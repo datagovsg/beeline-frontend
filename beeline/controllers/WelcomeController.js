@@ -1,13 +1,13 @@
-const queryString = require('querystring')
+const queryString = require("querystring")
 
-export default[
-  '$scope',
-  '$state',
-  '$stateParams',
-  '$ionicPopup',
-  '$ionicLoading',
-  'UserService',
-  async function (
+export default [
+  "$scope",
+  "$state",
+  "$stateParams",
+  "$ionicPopup",
+  "$ionicLoading",
+  "UserService",
+  async function(
     $scope,
     $state,
     $stateParams,
@@ -22,12 +22,12 @@ export default[
     $scope.refCode = $stateParams.refCode
 
     if ($scope.refCode) {
-      const query = queryString.stringify({code: $scope.refCode})
+      const query = queryString.stringify({ code: $scope.refCode })
 
       try {
         const refCodeOwner = await UserService.beeline({
-          method: 'GET',
-          url: '/promotions/refCodeOwner?' + query,
+          method: "GET",
+          url: "/promotions/refCodeOwner?" + query,
         })
 
         if (refCodeOwner) {
@@ -46,18 +46,21 @@ export default[
 
     $scope.data = {}
 
-    $scope.register = async function () {
-      await UserService.registerViaReferralWelcome($scope.data.telephone,
-        $scope.refCode, $scope.refCodeOwner)
+    $scope.register = async function() {
+      await UserService.registerViaReferralWelcome(
+        $scope.data.telephone,
+        $scope.refCode,
+        $scope.refCodeOwner
+      )
 
-      $state.go('tabs.routes')
+      $state.go("tabs.routes")
 
       await $ionicPopup.alert({
-        title: 'Welcome to Beeline',
-        subTitle: 'Success! You can now use your $10 ride credits when you ' +
-                  'make bookings.',
+        title: "Welcome to Beeline",
+        subTitle:
+          "Success! You can now use your $10 ride credits when you " +
+          "make bookings.",
       })
     }
   },
 ]
-

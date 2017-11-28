@@ -1,14 +1,15 @@
 let googleMaps
 
 export default [
-  'uiGmapGoogleMapApi', '$cordovaGeolocation',
-  function (uiGmapGoogleMapApi, $cordovaGeolocation) {
-    let markerOptionsPromise = uiGmapGoogleMapApi.then((googleMaps) => {
+  "uiGmapGoogleMapApi",
+  "$cordovaGeolocation",
+  function(uiGmapGoogleMapApi, $cordovaGeolocation) {
+    let markerOptionsPromise = uiGmapGoogleMapApi.then(googleMaps => {
       return {
         markerOptions: {
           boardMarker: {
             icon: {
-              url: 'img/map/MapRoutePickupStop@2x.png',
+              url: "img/map/MapRoutePickupStop@2x.png",
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },
@@ -16,7 +17,7 @@ export default [
           },
           alightMarker: {
             icon: {
-              url: 'img/map/MapRouteDropoffStop@2x.png',
+              url: "img/map/MapRouteDropoffStop@2x.png",
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },
@@ -24,7 +25,7 @@ export default [
           },
           startMarker: {
             icon: {
-              url: 'img/map/SelectedPinStart@2x.png',
+              url: "img/map/SelectedPinStart@2x.png",
               scaledSize: new googleMaps.Size(34, 46),
               anchor: new googleMaps.Point(17, 41),
             },
@@ -32,7 +33,7 @@ export default [
           },
           endMarker: {
             icon: {
-              url: 'img/map/SelectedPinStop@2x.png',
+              url: "img/map/SelectedPinStop@2x.png",
               scaledSize: new googleMaps.Size(34, 46),
               anchor: new googleMaps.Point(17, 41),
             },
@@ -41,77 +42,85 @@ export default [
         },
         pathOptions: {
           routePath: {
-            color: '#4b3863',
+            color: "#4b3863",
             weight: 3.0,
             opacity: 0.7,
           },
           crowdstartPath: {
-            color: '#AAAAAA',
+            color: "#AAAAAA",
             weight: 3.0,
             opacity: 0.4,
           },
           actualPath: {
-            color: '#000000',
+            color: "#000000",
             weight: 3.0,
             opacity: 1.0,
           },
         },
         bounds: {
           Singapore: {
-  	        north: 1.516329,
-  	        east: 104.08,
-  	        south: 1.1954,
-  	        west: 103.5814,
-  	      },
+            north: 1.516329,
+            east: 104.08,
+            south: 1.1954,
+            west: 103.5814,
+          },
         },
       }
     })
 
-    this.defaultMapOptions = function (options) {
-      let mapOptions = _.assign({
-        center: {latitude: 1.370244, longitude: 103.823315},
-        zoom: 11,
-        bounds: { // so that autocomplete will mainly search within Singapore
-          northeast: {
+    this.defaultMapOptions = function(options) {
+      let mapOptions = _.assign(
+        {
+          center: { latitude: 1.370244, longitude: 103.823315 },
+          zoom: 11,
+          bounds: {
+            // so that autocomplete will mainly search within Singapore
+            northeast: {
               latitude: 1.485152,
               longitude: 104.091837,
             },
-          southwest: {
+            southwest: {
               latitude: 1.205764,
               longitude: 103.589899,
             },
+          },
+          control: {},
+          options: {
+            disableDefaultUI: true,
+            styles: [
+              {
+                featureType: "poi",
+                stylers: [
+                  {
+                    visibility: "off",
+                  },
+                ],
+              },
+            ],
+            draggable: true,
+            gestureHandling: "greedy",
+          },
+          markerOptions: {
+            alightMarker: {},
+            boardMarker: {},
+            startMarker: {},
+            endMarker: {},
+          },
+          events: {},
+          markers: [],
+          lines: [],
         },
-        control: {},
-        options: {
-          disableDefaultUI: true,
-          styles: [{
-              featureType: 'poi',
-              stylers: [{
-                  visibility: 'off',
-                }],
-            }],
-          draggable: true,
-          gestureHandling: 'greedy',
-        },
-        markerOptions: {
-          alightMarker: {},
-          boardMarker: {},
-          startMarker: {},
-          endMarker: {},
-        },
-        events: {},
-        markers: [],
-        lines: [],
-      }, options || {})
+        options || {}
+      )
 
-      markerOptionsPromise.then((options) => {
+      markerOptionsPromise.then(options => {
         _.assign(mapOptions, options)
       })
 
       return mapOptions
     }
 
-    this.locateMe = function (mapControl) {
+    this.locateMe = function(mapControl) {
       let options = {
         timeout: 5000,
         enableHighAccuracy: true,
@@ -120,51 +129,63 @@ export default [
       // promise
       // FIXME: use navigator.geoLocation
       $cordovaGeolocation
-      .getCurrentPosition({timeout: 5000, enableHighAccuracy: true})
-      .then(function (userpos) {
-        if (!mapControl.getGMap) return
+        .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
+        .then(
+          function(userpos) {
+            if (!mapControl.getGMap) return
 
-        let gmap = mapControl.getGMap()
+            let gmap = mapControl.getGMap()
 
-        gmap.panTo(new google.maps.LatLng(userpos.coords.latitude, userpos.coords.longitude))
-        setTimeout(function () {
-          gmap.setZoom(17)
-        }, 300)
-      }, function (err) {
-        console.log('ERROR - ' + err)
-      })
+            gmap.panTo(
+              new google.maps.LatLng(
+                userpos.coords.latitude,
+                userpos.coords.longitude
+              )
+            )
+            setTimeout(function() {
+              gmap.setZoom(17)
+            }, 300)
+          },
+          function(err) {
+            console.log("ERROR - " + err)
+          }
+        )
     }
 
-    this.disableMapLinks = function () {
-      setTimeout(function () {
-        let anchorElems = document.querySelectorAll('ui-gmap-google-map a[href]')
+    this.disableMapLinks = function() {
+      setTimeout(function() {
+        let anchorElems = document.querySelectorAll(
+          "ui-gmap-google-map a[href]"
+        )
 
-        for (let i=0; i<anchorElems.length; i++) {
+        for (let i = 0; i < anchorElems.length; i++) {
           let anchorElem = anchorElems[i]
-          if (!anchorElem.dataset['clickDisabled']) {
-            anchorElem.addEventListener('click', (e) => e.preventDefault())
-            anchorElem.dataset['clickDisabled'] = true
+          if (!anchorElem.dataset["clickDisabled"]) {
+            anchorElem.addEventListener("click", e => e.preventDefault())
+            anchorElem.dataset["clickDisabled"] = true
           }
         }
       }, 300)
     }
 
-    this.resizePreserveCenter = function (map) {
+    this.resizePreserveCenter = function(map) {
       let oldCenter = map.getCenter()
-      google.maps.event.trigger(map, 'resize')
+      google.maps.event.trigger(map, "resize")
       map.setCenter(oldCenter)
     }
 
-    this.formBounds = function (stops) {
+    this.formBounds = function(stops) {
       if (stops.length == 0) {
         return
       }
       let bounds = new google.maps.LatLngBounds()
       for (let s of stops) {
-        bounds.extend(new google.maps.LatLng(
-          s.coordinates.coordinates[1],
-          s.coordinates.coordinates[0]
-        ))
+        bounds.extend(
+          new google.maps.LatLng(
+            s.coordinates.coordinates[1],
+            s.coordinates.coordinates[0]
+          )
+        )
       }
       return bounds
     }

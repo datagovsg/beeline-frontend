@@ -1,11 +1,11 @@
 export default [
-  '$scope',
-  'TicketService',
-  'UserService',
-  'LiteRouteSubscriptionService',
-  'LiteRoutesService',
-  'loadingSpinner',
-  function (
+  "$scope",
+  "TicketService",
+  "UserService",
+  "LiteRouteSubscriptionService",
+  "LiteRoutesService",
+  "loadingSpinner",
+  function(
     $scope,
     TicketService,
     UserService,
@@ -17,7 +17,7 @@ export default [
     let liteRoutesPromise = Promise.resolve(null)
 
     // Track the login state of the user service
-    $scope.logIn = function () {
+    $scope.logIn = function() {
       UserService.promptLogIn()
     }
 
@@ -36,13 +36,13 @@ export default [
     // Grab the tickets
     $scope.tickets = {}
 
-    $scope.$on('$ionicView.afterEnter', () => {
+    $scope.$on("$ionicView.afterEnter", () => {
       loadingSpinner(Promise.all([normalRoutesPromise, liteRoutesPromise]))
     })
 
     $scope.$watch(
       () => TicketService.getShouldRefreshTickets(),
-      (value) => {
+      value => {
         if (!value) return
         normalRoutesPromise = refreshNormalTickets(true)
       }
@@ -50,51 +50,52 @@ export default [
 
     $scope.$watch(
       () => LiteRoutesService.getShouldRefreshLiteTickets(),
-      (value) => {
+      value => {
         if (!value) return
         liteRoutesPromise = refreshLiteTickets(true)
       }
     )
 
-    function refreshTickets (ignoreCache) {
+    function refreshTickets(ignoreCache) {
       normalRoutesPromise = refreshNormalTickets(ignoreCache)
       liteRoutesPromise = refreshLiteTickets(ignoreCache)
     }
 
-    function refreshNormalTickets (ignoreCache) {
+    function refreshNormalTickets(ignoreCache) {
       return TicketService.getCategorizedTickets(ignoreCache)
-        .then((categorizedTickets) => {
+        .then(categorizedTickets => {
           $scope.tickets.today = categorizedTickets.today
           $scope.tickets.soon = categorizedTickets.afterToday
           $scope.error = false
         })
-        .catch((error) => {
+        .catch(error => {
           $scope.error = true
         })
         .finally(() => {
-          $scope.$broadcast('scroll.refreshComplete')
+          $scope.$broadcast("scroll.refreshComplete")
         })
     }
 
-    function refreshLiteTickets (ignoreCache) {
+    function refreshLiteTickets(ignoreCache) {
       LiteRoutesService.clearShouldRefreshLiteTickets()
       return LiteRouteSubscriptionService.getSubscriptions(ignoreCache)
-        .then(async (liteRouteSubscriptions) => {
-          const allLiteRoutes = await LiteRoutesService
-            .getLiteRoutes(ignoreCache)
+        .then(async liteRouteSubscriptions => {
+          const allLiteRoutes = await LiteRoutesService.getLiteRoutes(
+            ignoreCache
+          )
           $scope.liteRouteSubscriptions = liteRouteSubscriptions
-            .map((subscribedLiteLabel) => ({
+            .map(subscribedLiteLabel => ({
               label: subscribedLiteLabel,
               liteRoute: allLiteRoutes[subscribedLiteLabel],
             }))
-            .filter((subscription) => subscription.liteRoute)
+            .filter(subscription => subscription.liteRoute)
           $scope.error = false
         })
-        .catch((error) => {
+        .catch(error => {
           $scope.error = true
         })
         .finally(() => {
-          $scope.$broadcast('scroll.refreshComplete')
+          $scope.$broadcast("scroll.refreshComplete")
         })
     }
     $scope.refreshTickets = refreshTickets
