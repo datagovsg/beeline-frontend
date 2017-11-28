@@ -4,27 +4,10 @@ import _ from "lodash"
 export default [
   function MapViewFactory() {
     return {
-      initMapObject: function($scope) {
-        const originalMapObject = {
-          stops: [],
-          routePath: [],
-          alightStop: null,
-          boardStop: null,
-          pingTrips: [],
-          allRecentPings: [],
-          chosenStop: null,
-          statusMessages: [],
-        }
-
-        $scope.mapObject = _.assign({}, originalMapObject)
-      },
       init: function($scope) {
-        this.initMapObject($scope)
+        $scope.mapObject = this.mapObject
 
-        $scope.disp = {
-          popupStop: null,
-          routeMessage: null,
-        }
+        $scope.disp = this.disp
 
         $scope.closeWindow = function() {
           $scope.disp.popupStop = null
@@ -41,6 +24,23 @@ export default [
           }
           return formatTime(input)
         }
+      },
+      mapObject: _.assign(
+        {},
+        {
+          stops: [],
+          routePath: [],
+          alightStop: null,
+          boardStop: null,
+          pingTrips: [],
+          allRecentPings: [],
+          chosenStop: null,
+          statusMessages: [],
+        }
+      ),
+      disp: {
+        popupStop: null,
+        routeMessage: null,
       },
     }
   },

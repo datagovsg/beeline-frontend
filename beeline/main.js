@@ -432,7 +432,7 @@ app
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false)
           cordova.plugins.Keyboard.disableScroll(false)
         }
-        if (StatusBar) {
+        if (window.StatusBar) {
           // org.apache.cordova.statusbar required
           StatusBar.styleLightContent()
         }

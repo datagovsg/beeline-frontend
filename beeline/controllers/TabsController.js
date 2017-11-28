@@ -20,10 +20,8 @@ export default [
       },
     })
 
-    $scope.disp = {
-      popupStop: null,
-      routeMessage: null,
-    }
+    $scope.mapObject = MapViewFactory.mapObject
+    $scope.disp = MapViewFactory.disp
 
     // Resolved when the map is initialized
     const gmapIsReady = new Promise((resolve, reject) => {
@@ -60,8 +58,6 @@ export default [
         }
       }
     })
-
-    MapViewFactory.initMapObject($scope)
 
     $scope.$watch(
       () => SharedVariableService.get(),
