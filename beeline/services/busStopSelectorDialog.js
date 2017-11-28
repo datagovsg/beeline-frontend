@@ -1,33 +1,54 @@
-import busStopSelectorListTemplate from '../templates/busStopSelectorList.html'
-import {formatTime} from '../shared/format'
-import _ from 'lodash'
+import busStopSelectorListTemplate from "../templates/busStopSelectorList.html"
+import { formatTime } from "../shared/format"
+import _ from "lodash"
 
-export default ['$rootScope', '$ionicModal', 'MapOptions',
-  'uiGmapGoogleMapApi', '$ionicScrollDelegate',
-  function ($rootScope, $ionicModal, MapOptions, uiGmapGoogleMapApi, $ionicScrollDelegate) {
+export default [
+  "$rootScope",
+  "$ionicModal",
+  "MapOptions",
+  "uiGmapGoogleMapApi",
+  "$ionicScrollDelegate",
+  function(
+    $rootScope,
+    $ionicModal,
+    MapOptions,
+    uiGmapGoogleMapApi,
+    $ionicScrollDelegate
+  ) {
     let scope = $rootScope.$new()
 
     initializeScope(scope)
-    scope.selectionModal = $ionicModal.fromTemplate(busStopSelectorListTemplate, {
-      scope: scope,
-      animation: 'slide-in-up',
-    })
+    scope.selectionModal = $ionicModal.fromTemplate(
+      busStopSelectorListTemplate,
+      {
+        scope: scope,
+        animation: "slide-in-up",
+      }
+    )
 
-    this.show = function (options) {
-      _.assign(scope, _.pick(options, [
-        'busStops', 'markerOptions', 'title', 'button', 'pinOptions',
-      ]))
+    this.show = function(options) {
+      _.assign(
+        scope,
+        _.pick(options, [
+          "busStops",
+          "markerOptions",
+          "title",
+          "button",
+          "pinOptions",
+        ])
+      )
       scope.data.selectedStop = options.selectedStop
 
       return new Promise((resolve, reject) => {
         // Initialize the selected stop
-        scope.selectionModal.show()
-        .then(() => {
+        scope.selectionModal.show().then(() => {
           scope.fitMap()
 
           // I have no idea why $getByHandle doesn't work in Ionic 1.3.1
           // var scrollDelegate = $ionicScrollDelegate.$getByHandle('stopsListScroll');
-          let scrollDelegate = $ionicScrollDelegate._instances.find((inst) => inst.$$delegateHandle === 'stopsListScroll')
+          let scrollDelegate = $ionicScrollDelegate._instances.find(
+            inst => inst.$$delegateHandle === "stopsListScroll"
+          )
           scrollDelegate.resize()
           scrollDelegate.scrollTop()
         })
@@ -43,7 +64,7 @@ export default ['$rootScope', '$ionicModal', 'MapOptions',
       @method selectStop -- fired when tapping on a stop in the list
       @method close -- closes the modal
     **/
-    function initializeScope (scope) {
+    function initializeScope(scope) {
       scope.data = {}
       scope.map = MapOptions.defaultMapOptions()
 
@@ -51,16 +72,22 @@ export default ['$rootScope', '$ionicModal', 'MapOptions',
         await uiGmapGoogleMapApi
         MapOptions.disableMapLinks()
 
-        if (!scope.map.control || !scope.busStops ||
-                scope.busStops.length == 0) {
-return
-}
+        if (
+          !scope.map.control ||
+          !scope.busStops ||
+          scope.busStops.length == 0
+        ) {
+          return
+        }
         // Pan to the bus stops
         let bounds = new google.maps.LatLngBounds()
         for (let bs of scope.busStops) {
-          bounds.extend(new google.maps.LatLng(
+          bounds.extend(
+            new google.maps.LatLng(
               bs.coordinates.coordinates[1],
-              bs.coordinates.coordinates[0]))
+              bs.coordinates.coordinates[0]
+            )
+          )
         }
         scope.map.control.getGMap().fitBounds(bounds)
         if (scope.map.control.getGMap().getZoom() > 17) {
@@ -73,7 +100,7 @@ return
         scope.resolve(scope.data.selectedStop)
       }
 
-      function panToStop (stop) {
+      function panToStop(stop) {
         if (!stop) {
           return
         }
@@ -86,8 +113,9 @@ return
       }
 
       // BECAUSE ANGULAR SCOPES ARE STUPID
-      scope.$watch('data.selectedStop', (stop) => {
+      scope.$watch("data.selectedStop", stop => {
         panToStop(stop)
       })
     }
-}]
+  },
+]

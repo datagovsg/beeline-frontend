@@ -1,6 +1,6 @@
-export default function () {
+export default function() {
   return {
-    restrict: 'E',
+    restrict: "E",
     replace: true,
     template: `
     <div class="search-button item">

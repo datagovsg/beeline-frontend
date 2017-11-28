@@ -1,114 +1,126 @@
-
-
-export function twoPad (s, len, ch) {
+export function twoPad(s, len, ch) {
   len = len || 2
-  ch = ch || '0'
+  ch = ch || "0"
 
-  s = s + ''
+  s = s + ""
   while (s.length < len) {
     s = ch + s
   }
   return s
 }
 
-export function timeSinceMidnight (date) {
-  if (!date) return ''
-  if (typeof date == 'string' || typeof date == 'number') {
+export function timeSinceMidnight(date) {
+  if (!date) return ""
+  if (typeof date == "string" || typeof date == "number") {
     date = new Date(date)
   }
 
-  return date.getHours() * 3600000 +
+  return (
+    date.getHours() * 3600000 +
     date.getMinutes() * 60000 +
     date.getSeconds() * 1000 +
     date.getMilliseconds()
+  )
 }
 
-export function formatDate (date) {
-  if (!date) return ''
-  if (typeof date == 'string' || typeof date == 'number') {
+export function formatDate(date) {
+  if (!date) return ""
+  if (typeof date == "string" || typeof date == "number") {
     date = new Date(date)
   }
-  return twoPad(date.getDate()) + '-' +
-            twoPad(date.getMonth() + 1) + '-' +
-            twoPad(date.getFullYear())
+  return (
+    twoPad(date.getDate()) +
+    "-" +
+    twoPad(date.getMonth() + 1) +
+    "-" +
+    twoPad(date.getFullYear())
+  )
 }
 
-export function formatDateMMMdd (date) {
-  let monthNames = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(',')
+export function formatDateMMMdd(date) {
+  let monthNames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(",")
 
-  if (!date) return ''
-  if (typeof date == 'string' || typeof date == 'number') {
+  if (!date) return ""
+  if (typeof date == "string" || typeof date == "number") {
     date = new Date(date)
   }
-  return monthNames[date.getMonth()] + ' ' + twoPad(date.getDate())
+  return monthNames[date.getMonth()] + " " + twoPad(date.getDate())
 }
 
-export function formatUTCDate (date) {
-  if (!date) return ''
-  if (typeof date == 'string') {
+export function formatUTCDate(date) {
+  if (!date) return ""
+  if (typeof date == "string") {
     date = new Date(date)
   }
-  return twoPad(date.getUTCDate()) + '-' +
-            twoPad(date.getUTCMonth() + 1) + '-' +
-            twoPad(date.getUTCFullYear())
+  return (
+    twoPad(date.getUTCDate()) +
+    "-" +
+    twoPad(date.getUTCMonth() + 1) +
+    "-" +
+    twoPad(date.getUTCFullYear())
+  )
 }
 
-export function formatTime (date, prePadding) {
-  if (!date) return ''
-  if (typeof date == 'string' || typeof date == 'number') {
+export function formatTime(date, prePadding) {
+  if (!date) return ""
+  if (typeof date == "string" || typeof date == "number") {
     date = new Date(date)
   }
 
   // Fix time zone to +0800
-  date = new Date(date.getTime() + 8*60*60*1000)
+  date = new Date(date.getTime() + 8 * 60 * 60 * 1000)
 
   let hours = date.getUTCHours()
 
   let hourPart = 12 - (24 - hours) % 12
-  hourPart = prePadding ? twoPad(hourPart, 2, '\u2007') : hourPart
+  hourPart = prePadding ? twoPad(hourPart, 2, "\u2007") : hourPart
 
-    /* \u2007 is a figure space */
-  return hourPart + ':' +
-            twoPad(date.getUTCMinutes()) + '\u00a0' /* non-breaking space */
-            + (hours >= 12 ? 'pm' : 'am')/* + ':' +
+  /* \u2007 is a figure space */
+  return (
+    hourPart +
+    ":" +
+    twoPad(date.getUTCMinutes()) +
+    "\u00a0" /* non-breaking space */ +
+    (hours >= 12 ? "pm" : "am")
+  ) /* + ':' +
             twoPad(date.getSeconds()) */
 }
 
-export function formatTimeArray (timeArray) {
-  if (timeArray.length ==0 ) return
+export function formatTimeArray(timeArray) {
+  if (timeArray.length == 0) return
   else {
-    return timeArray.map((x)=>formatTime(x, true)).join(', ')
+    return timeArray.map(x => formatTime(x, true)).join(", ")
   }
 }
 
 // func to generate something like '14:15 pm' from JS date obj
-export function formatHHMM_ampm (t) {
+export function formatHHMM_ampm(t) {
   let h = t.getHours(),
     m = t.getMinutes(),
-    term = 'am'
+    term = "am"
 
   if (h >= 12) {
-    term = 'pm'
+    term = "pm"
     if (h > 12) {
- h = h - 12
-}
+      h = h - 12
+    }
     h = h.toString()
   }
 
   if (h.toString().length == 1) {
- h = '0' + h.toString()
-}
+    h = "0" + h.toString()
+  }
   if (m.toString().length == 1) {
- m = '0' + m.toString()
+    m = "0" + m.toString()
+  }
+
+  return h + ":" + m + " " + term
 }
 
-  return h + ':' + m + ' ' + term
-}
+export function titleCase(s) {
+  if (!s) return ""
 
-export function titleCase (s) {
-  if (!s) return ''
-
-  return s.replace(/\w\S*/g, function (txt) {
+  return s.replace(/\w\S*/g, function(txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   })
 }

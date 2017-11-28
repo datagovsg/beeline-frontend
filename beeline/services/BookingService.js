@@ -1,25 +1,32 @@
-import {NetworkError} from '../shared/errors'
-import {formatDate, formatDateMMMdd, formatTime, formatUTCDate,
-        timeSinceMidnight} from '../shared/format'
-import _ from 'lodash'
+import { NetworkError } from "../shared/errors"
+import {
+  formatDate,
+  formatDateMMMdd,
+  formatTime,
+  formatUTCDate,
+  timeSinceMidnight,
+} from "../shared/format"
+import _ from "lodash"
 
-export default ['UserService', 'CompanyService', 'RoutesService', '$http',
-  function (UserService, CompanyService, RoutesService, $http) {
-    this.prepareTrips = function (booking) {
+export default [
+  "UserService",
+  "CompanyService",
+  "RoutesService",
+  "$http",
+  function(UserService, CompanyService, RoutesService, $http) {
+    this.prepareTrips = function(booking) {
       // create a list of trips
       let trips = []
 
       for (let dt of booking.selectedDates) {
         trips.push({
           tripId: booking.route.tripsByDate[dt].id,
-          boardStopId: booking.route.tripsByDate[dt]
-                  .tripStops
-                  .filter((ts) => booking.boardStopId == ts.stop.id)
-                  [0].id,
-          alightStopId: booking.route.tripsByDate[dt]
-                  .tripStops
-                  .filter((ts) => booking.alightStopId == ts.stop.id)
-                  [0].id,
+          boardStopId: booking.route.tripsByDate[dt].tripStops.filter(
+            ts => booking.boardStopId == ts.stop.id
+          )[0].id,
+          alightStopId: booking.route.tripsByDate[dt].tripStops.filter(
+            ts => booking.alightStopId == ts.stop.id
+          )[0].id,
         })
       }
       return trips
@@ -28,9 +35,8 @@ export default ['UserService', 'CompanyService', 'RoutesService', '$http',
     /* If a booking has selectedDates array, then it
       checks the prices.
     */
-    this.computePriceInfo = function (booking) {
-      if (!booking.selectedDates ||
-            booking.selectedDates.length == 0) {
+    this.computePriceInfo = function(booking) {
+      if (!booking.selectedDates || booking.selectedDates.length == 0) {
         return Promise.resolve({
           total: 0,
         })
@@ -38,51 +44,57 @@ export default ['UserService', 'CompanyService', 'RoutesService', '$http',
         let trips = this.prepareTrips(booking)
 
         let rv = UserService.beeline({
-          method: 'POST',
-          url: '/transactions/tickets/quote',
+          method: "POST",
+          url: "/transactions/tickets/quote",
           data: {
             // creditTag: booking.applyRoutePass ? booking.creditTag : null,
             trips: trips,
             dryRun: true,
-            promoCode: booking.promoCode ? {
-              code: booking.promoCode,
-            } : {
-              code: '', // Allow default promo codes to be used
-            },
+            promoCode: booking.promoCode
+              ? {
+                  code: booking.promoCode,
+                }
+              : {
+                  code: "", // Allow default promo codes to be used
+                },
             applyCredits: booking.applyCredits,
             applyReferralCredits: booking.applyReferralCredits,
             applyRoutePass: !!booking.applyRoutePass,
           },
         })
-        .then((resp) => {
-          // Find the 'payment' entry in the list of transaction itemss
-          let txItems = _.groupBy(resp.data.transactionItems, 'itemType')
-          let totalBeforeDiscount = _.reduce(txItems.ticketSale, (sum, n) => {
-            return sum + parseFloat(n.credit)
-          }, 0)
+          .then(resp => {
+            // Find the 'payment' entry in the list of transaction itemss
+            let txItems = _.groupBy(resp.data.transactionItems, "itemType")
+            let totalBeforeDiscount = _.reduce(
+              txItems.ticketSale,
+              (sum, n) => {
+                return sum + parseFloat(n.credit)
+              },
+              0
+            )
 
-          // FIXME: include discounts, vouchers
-          return {
-            totalDue: txItems.payment[0].debit,
-            tripCount: trips.length,
-            pricesPerTrip: this.summarizePrices(booking),
-            routePass: txItems['routePass'],
-            referralCredits: txItems['referralCredits'],
-            credits: txItems['userCredit'],
-            discounts: txItems.discount,
-            totalBeforeDiscount,
-          }
-        })
-        .then(null, (err) => {
-          console.log(err.stack)
-          throw err
-        })
+            // FIXME: include discounts, vouchers
+            return {
+              totalDue: txItems.payment[0].debit,
+              tripCount: trips.length,
+              pricesPerTrip: this.summarizePrices(booking),
+              routePass: txItems["routePass"],
+              referralCredits: txItems["referralCredits"],
+              credits: txItems["userCredit"],
+              discounts: txItems.discount,
+              totalBeforeDiscount,
+            }
+          })
+          .then(null, err => {
+            console.log(err.stack)
+            throw err
+          })
 
         return rv
       }
     }
 
-    this.summarizePrices = function (booking) {
+    this.summarizePrices = function(booking) {
       if (!booking.selectedDates) {
         return []
       }
@@ -105,9 +117,9 @@ export default ['UserService', 'CompanyService', 'RoutesService', '$http',
       return rv
     }
 
-    this.computeChanges = function (route) {
+    this.computeChanges = function(route) {
       // convert dates (should be in ISO format therefore sortable)
-      route.trips = _.sortBy(route.trips, (trip) => trip.date)
+      route.trips = _.sortBy(route.trips, trip => trip.date)
 
       for (let trip of route.trips) {
         trip.date = new Date(trip.date)
@@ -117,7 +129,7 @@ export default ['UserService', 'CompanyService', 'RoutesService', '$http',
       }
 
       // summarize trips by date
-      route.tripsByDate = _.keyBy(route.trips, (t) => t.date.getTime())
+      route.tripsByDate = _.keyBy(route.trips, t => t.date.getTime())
 
       let changes = {
         timeChanges: [],
@@ -141,7 +153,7 @@ export default ['UserService', 'CompanyService', 'RoutesService', '$http',
           humanReadable: Result of humanReadable(before, after)
 
       */
-      function summarizeChanges (trips, comparable, humanReadable) {
+      function summarizeChanges(trips, comparable, humanReadable) {
         let changes = []
         // var current = {};
         let lastComparable = undefined
@@ -155,8 +167,8 @@ export default ['UserService', 'CompanyService', 'RoutesService', '$http',
 
           let valueComparable = comparable(trip)
           if (lastComparable == undefined) {
-lastComparable = valueComparable
-}
+            lastComparable = valueComparable
+          }
 
           if (lastComparable != valueComparable) {
             let hr = humanReadable(lastTrip, trip)
@@ -183,16 +195,21 @@ lastComparable = valueComparable
       }
 
       for (let trip of route.trips) {
-        trip.tripStops = _.sortBy(trip.tripStops, (ts) => ts.time)
+        trip.tripStops = _.sortBy(trip.tripStops, ts => ts.time)
       }
 
       // summarize price/stop/time
-      changes.priceChanges = summarizeChanges(route.trips,
-        (trip) => trip.price,
-        (bef, aft) => [`Ticket price changed from $${bef.price} to $${aft.price}`])
+      changes.priceChanges = summarizeChanges(
+        route.trips,
+        trip => trip.price,
+        (bef, aft) => [
+          `Ticket price changed from $${bef.price} to $${aft.price}`,
+        ]
+      )
 
-      changes.stopChanges = summarizeChanges(route.trips,
-        (trip) => trip.tripStops.map((ts) => ts.stop.id).join(','),
+      changes.stopChanges = summarizeChanges(
+        route.trips,
+        trip => trip.tripStops.map(ts => ts.stop.id).join(","),
         (bef, aft) => {
           let stopInfo = {}
 
@@ -203,82 +220,116 @@ lastComparable = valueComparable
             stopInfo[ts.stop.id] = ts.stop
           }
 
-          let beforeStops = bef.tripStops.map((ts) => ts.stop.id)
-          let afterStops = aft.tripStops.map((ts) => ts.stop.id)
+          let beforeStops = bef.tripStops.map(ts => ts.stop.id)
+          let afterStops = aft.tripStops.map(ts => ts.stop.id)
 
           let droppedStops = _.subtract(beforeStops, afterStops)
           let newStops = _.subtract(afterStops, beforeStops)
 
           let messages = []
           if (droppedStops.length > 0) {
-            messages.push('Stops '
-              + droppedStops.map((sid) => stopInfo[sid].description).join(', ')
-              + ' no longer serviced')
+            messages.push(
+              "Stops " +
+                droppedStops.map(sid => stopInfo[sid].description).join(", ") +
+                " no longer serviced"
+            )
           }
           if (newStops.length > 0) {
-            messages.push('New stops '
-              + newStops.map((sid) => stopInfo[sid].description).join(', ')
-              + ' added to route')
+            messages.push(
+              "New stops " +
+                newStops.map(sid => stopInfo[sid].description).join(", ") +
+                " added to route"
+            )
           }
           return messages
-        })
+        }
+      )
 
-      console.log(route.trips.map((t) => t.date).join('\n'))
+      console.log(route.trips.map(t => t.date).join("\n"))
       console.log(
-          route.trips.map(
-            (trip) => trip.tripStops
-              .map((ts) => (ts.time.getTime() % (24 * 60 * 60 * 1000)) + ':' + ts.stop.id)
+        route.trips
+          .map(trip =>
+            trip.tripStops
+              .map(
+                ts =>
+                  ts.time.getTime() % (24 * 60 * 60 * 1000) + ":" + ts.stop.id
+              )
               .sort()
-              .join(',')
-            ).join('\n'))
-      changes.timeChanges = summarizeChanges(route.trips,
-          (trip) => trip.tripStops
-                .map((ts) => (ts.time.getTime() % (24 * 60 * 60 * 1000)) + ':' + ts.stop.id)
-                .sort()
-                .join(','),
-          (bef, aft) => {
-            let messages = []
+              .join(",")
+          )
+          .join("\n")
+      )
+      changes.timeChanges = summarizeChanges(
+        route.trips,
+        trip =>
+          trip.tripStops
+            .map(
+              ts => ts.time.getTime() % (24 * 60 * 60 * 1000) + ":" + ts.stop.id
+            )
+            .sort()
+            .join(","),
+        (bef, aft) => {
+          let messages = []
 
-            let befStopInfo = {}
-            let aftStopInfo = {}
+          let befStopInfo = {}
+          let aftStopInfo = {}
 
-            for (let ts of aft.tripStops) {
-              aftStopInfo[ts.stop.id] = ts
-            }
+          for (let ts of aft.tripStops) {
+            aftStopInfo[ts.stop.id] = ts
+          }
 
-            for (let ts of bef.tripStops) {
-              if (!(ts.stop.id in aftStopInfo)) {
-                continue /* if stop was added, then it would have been handled by
+          for (let ts of bef.tripStops) {
+            if (!(ts.stop.id in aftStopInfo)) {
+              continue /* if stop was added, then it would have been handled by
                           stop change messages */
-              }
-              let befTime = formatTime(new Date(ts.time))
-              let aftTime = formatTime(new Date(aftStopInfo[ts.stop.id].time))
-
-              messages.push(`Arrival time at stop ${ts.stop.description} changed from ${befTime} to ${aftTime}`)
             }
-            return messages
-          })
+            let befTime = formatTime(new Date(ts.time))
+            let aftTime = formatTime(new Date(aftStopInfo[ts.stop.id].time))
+
+            messages.push(
+              `Arrival time at stop ${ts.stop.description} changed from ${
+                befTime
+              } to ${aftTime}`
+            )
+          }
+          return messages
+        }
+      )
       return changes
     }
 
-    this.computeStops = function (trips) {
-      let tripStops = _.flatten(trips.map((trip) => trip.tripStops))
-      let uniqueStops = _.uniqBy(tripStops, (ts) => ts.stop.id)
-      let stopData = _.keyBy(uniqueStops, (ts) => ts.stop.id)
+    this.computeStops = function(trips) {
+      let tripStops = _.flatten(trips.map(trip => trip.tripStops))
+      let uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id)
+      let stopData = _.keyBy(uniqueStops, ts => ts.stop.id)
 
       let boardStops = _(uniqueStops)
-        .filter((ts) => ts.canBoard)
-        .map((ts) => {
-          return _.extend({canBoard: true, time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop)
+        .filter(ts => ts.canBoard)
+        .map(ts => {
+          return _.extend(
+            {
+              canBoard: true,
+              time: ts.time,
+              timeSinceMidnight: timeSinceMidnight(ts.time),
+            },
+            ts.stop
+          )
         })
-        .orderBy((s) => s.timeSinceMidnight)
+        .orderBy(s => s.timeSinceMidnight)
         .value()
       let alightStops = _(uniqueStops)
-        .filter((ts) => ts.canAlight)
-        .map((ts) => {
-          return _.extend({canBoard: false, time: ts.time, timeSinceMidnight: timeSinceMidnight(ts.time)}, ts.stop)
+        .filter(ts => ts.canAlight)
+        .map(ts => {
+          return _.extend(
+            {
+              canBoard: false,
+              time: ts.time,
+              timeSinceMidnight: timeSinceMidnight(ts.time),
+            },
+            ts.stop
+          )
         })
-        .orderBy((s) => s.timeSinceMidnight)
+        .orderBy(s => s.timeSinceMidnight)
         .value()
       return [boardStops, alightStops]
     }
@@ -287,4 +338,5 @@ lastComparable = valueComparable
     let session = Date.now()
     this.newSession = () => ++session
     this.getSession = () => session
-}]
+  },
+]

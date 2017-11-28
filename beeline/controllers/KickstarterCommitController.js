@@ -1,14 +1,9 @@
 export default [
-  '$scope',
-  '$stateParams',
-  '$window',
-  'KickstarterService',
-  function (
-    $scope,
-    $stateParams,
-    $window,
-    KickstarterService
-  ) {
+  "$scope",
+  "$stateParams",
+  "$window",
+  "KickstarterService",
+  function($scope, $stateParams, $window, KickstarterService) {
     // Default settings for various info used in the page
     $scope.book = {
       routeId: null,
@@ -32,12 +27,12 @@ export default [
         $scope.book.route = route
         if (!bid) return
         $scope.book.bidPrice = bid.bidPrice
-        $scope.book.boardStop = $scope.book.route.trips[0]
-              .tripStops
-              .find((ts) => bid.boardStopId === ts.stop.id)
-        $scope.book.alightStop = $scope.book.route.trips[0]
-              .tripStops
-              .find((ts) => bid.alightStopId === ts.stop.id)
+        $scope.book.boardStop = $scope.book.route.trips[0].tripStops.find(
+          ts => bid.boardStopId === ts.stop.id
+        )
+        $scope.book.alightStop = $scope.book.route.trips[0].tripStops.find(
+          ts => bid.alightStopId === ts.stop.id
+        )
       }
     )
   },

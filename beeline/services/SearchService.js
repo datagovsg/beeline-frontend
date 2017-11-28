@@ -1,9 +1,9 @@
-import _ from 'lodash'
+import _ from "lodash"
 
-export default function SearchService () {
+export default function SearchService() {
   // Helper to calculate distance in meters between a pair of coordinates
   // faster but less accurate
-  function latlngDistance (ll1, ll2) {
+  function latlngDistance(ll1, ll2) {
     let rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
     let rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
 
@@ -32,21 +32,20 @@ export default function SearchService () {
   // };
 
   return {
-
-    filterRoutesByText: function (routes, string) {
-      return routes.filter((route) => this.routeContainsString(route, string))
+    filterRoutesByText: function(routes, string) {
+      return routes.filter(route => this.routeContainsString(route, string))
     },
 
-    filterRoutes: function (routes, regionId, string) {
+    filterRoutes: function(routes, regionId, string) {
       return this.filterRoutesByText(routes, string)
     },
 
-    filterRoutesByPlace: function (routes, place) {
+    filterRoutesByPlace: function(routes, place) {
       const maxDistance = 1000 // Arbitrary constant for closeness
 
       // Check the trips stops of a route to see if any come close
-      let filteredRoutes = routes.filter((route) => {
-        return _.some(route.trips[0].tripStops, (tripStop) => {
+      let filteredRoutes = routes.filter(route => {
+        return _.some(route.trips[0].tripStops, tripStop => {
           let distance = latlngDistance(
             [
               tripStop.stop.coordinates.coordinates[1],
@@ -61,12 +60,12 @@ export default function SearchService () {
       return filteredRoutes
     },
 
-    filterRoutesByLngLat: function (routes, lnglat) {
+    filterRoutesByLngLat: function(routes, lnglat) {
       const maxDistance = 500 // Arbitrary constant for closeness
 
       // Check the trips stops of a route to see if any come close
-      let filteredRoutes = routes.filter((route) => {
-        return _.some(route.trips[0].tripStops, (tripStop) => {
+      let filteredRoutes = routes.filter(route => {
+        return _.some(route.trips[0].tripStops, tripStop => {
           let distance = latlngDistance(
             [
               tripStop.stop.coordinates.coordinates[1],
@@ -81,41 +80,45 @@ export default function SearchService () {
       return filteredRoutes
     },
 
-    filterRoutesByPlaceAndText: function (routes, place, text) {
+    filterRoutesByPlaceAndText: function(routes, place, text) {
       let placeResults = this.filterRoutesByPlace(routes, place)
       let textResults = this.filterRoutesByText(routes, text)
-      return _.unionBy(placeResults, textResults, 'id')
+      return _.unionBy(placeResults, textResults, "id")
     },
 
     // Input: a Route and a string
     // Output: True if route metatdata contains the string
-    routeContainsString: function (route, string) {
+    routeContainsString: function(route, string) {
       if (!string) return true
 
-      function containsIgnoreCase (s, t) {
-        if (typeof s === 'string') {
+      function containsIgnoreCase(s, t) {
+        if (typeof s === "string") {
           // If the search phrase (t) is more than one word, just find t in s
           // Otherwise, split s and see if any words in s start with t
-          if (t.split(' ').length > 1) {
+          if (t.split(" ").length > 1) {
             return s.toUpperCase().includes(t.toUpperCase())
           } else {
             // Split on non-alphanumeric chars
             let words = s.toUpperCase().split(/[^A-Za-z0-9]/)
-            return words.some((word) => word.startsWith(t.toUpperCase()))
+            return words.some(word => word.startsWith(t.toUpperCase()))
           }
         } else {
           return false
         }
       }
-      return containsIgnoreCase(route.name, string) ||
+      return (
+        containsIgnoreCase(route.name, string) ||
         containsIgnoreCase(route.notes && route.notes.description, string) ||
         containsIgnoreCase(route.schedule, string) ||
         containsIgnoreCase(route.label, string) ||
-        (route.trips[0] && (
-          route.trips[0].tripStops.some((ts) => containsIgnoreCase(ts.stop.description, string)) ||
-          route.trips[0].tripStops.some((ts) => containsIgnoreCase(ts.stop.road, string))
-        ))
+        (route.trips[0] &&
+          (route.trips[0].tripStops.some(ts =>
+            containsIgnoreCase(ts.stop.description, string)
+          ) ||
+            route.trips[0].tripStops.some(ts =>
+              containsIgnoreCase(ts.stop.road, string)
+            )))
+      )
     },
-
   }
 }

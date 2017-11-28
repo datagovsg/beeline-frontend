@@ -1,12 +1,11 @@
-export default function () {
+export default function() {
   return {
-    template: require('./moreInfo.html'),
+    template: require("./moreInfo.html"),
     replace: false,
     scope: {
-      companyId: '<',
-      features: '<',
+      companyId: "<",
+      features: "<",
     },
-    link: function (scope, elem, attr) {
-    },
+    link: function(scope, elem, attr) {},
   }
 }
