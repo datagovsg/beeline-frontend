@@ -12,6 +12,9 @@ export default [
   "BookingService",
   "SearchEventService",
   "PlaceService",
+  "Legalese",
+  "$rootScope",
+  "$ionicPopup",
   function(
     // Angular Tools
     $scope,
@@ -25,7 +28,10 @@ export default [
     SearchService,
     BookingService,
     SearchEventService,
-    PlaceService
+    PlaceService,
+    Legalese,
+    $rootScope,
+    $ionicPopup
   ) {
     // -------------------------------------------------------------------------
     // State
@@ -47,7 +53,21 @@ export default [
       routesAvailable: false,
     }
 
-    function autoComplete() {
+    // show legal document update
+    // '2017-11-08' is the latest version
+    if ($rootScope.o.APP.NAME=='Beeline' && !window.localStorage.viewedBeelineLegalDocumentVersion) {
+      window.localStorage.viewedBeelineLegalDocumentVersion = '2017-11-08'
+      $ionicPopup.alert({
+        title: "Beeline Notes",
+        template: "Beeline <b>Privacy Policy</b> and <b>Terms of Use</b> are updated, please check them out."
+      }).then(() => {
+        Legalese.showPrivacyPolicy()
+      }).then(() => {
+        Legalese.showTermsOfUse()
+      })
+    }
+
+    function autoComplete () {
       if (!$scope.data.queryText) {
         $scope.data.isFiltering = false
         return

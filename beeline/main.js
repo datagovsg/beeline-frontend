@@ -88,7 +88,9 @@ app
   .filter("floatRoundUp", function() {
     return function(number, precision) {
       if (!precision) precision = 2
-      let temp = number * Math.pow(10, precision)
+      // 4.4 * (10 ^ 2) = 440.000000006
+      // Math.ceil(440.000000006) = 441
+      let temp = (number * Math.pow(10, precision)).toFixed(4)
       temp = Math.ceil(temp)
       return temp / Math.pow(10, precision)
     }
