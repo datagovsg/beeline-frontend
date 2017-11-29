@@ -9,6 +9,7 @@ export default [
   "BookingService",
   "FastCheckoutService",
   "MapService",
+  "TicketService",
   function(
     $scope,
     $state,
@@ -19,7 +20,8 @@ export default [
     RoutesService,
     BookingService,
     FastCheckoutService,
-    MapService
+    MapService,
+    TicketService
   ) {
     // ------------------------------------------------------------------------
     // Input
@@ -186,6 +188,20 @@ export default [
         } else {
           $scope.data.alightStopInvalid = false;
         }
+      }
+    })
+
+    $scope.toggle = function() {
+      $scope.activeTab = $scope.activeTab === 0 ? 1 : 0
+    }
+
+    $scope.$watch('data.nextTrip.hasNextTripTicket' , (hasNextTripTicket) =>{
+      $scope.activeTab = hasNextTripTicket ? 1 : 0
+      if (hasNextTripTicket) {
+        var ticketPromise = TicketService.getTicketById(+$scope.data.nextTrip.nextTripTicketId);
+        ticketPromise.then((ticket) => {
+          $scope.ticket = ticket;
+        });
       }
     })
 

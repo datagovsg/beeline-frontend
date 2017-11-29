@@ -1,4 +1,4 @@
-<ion-view class="ticket-detail2 page-with-map" ng-init="activeTab=0"
+<ion-view class="ticket-detail page-with-map" ng-init="activeTab=0"
   hide-back-button="true" can-swipe-back="false">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
@@ -6,14 +6,20 @@
        <i class="icon ion-ios-arrow-back"></i> Tickets
     </button>
   </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-clear back-button"
+       ng-click="onTap()">
+       <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-nav-title>Ticket for {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}</ion-nav-title>
   <div class="tabs tabs-top tabs-icon-left tabs-light tabs-striped tabs-color-royal">
     <a class="tab-item" on-tap="activeTab=0" ng-class="{active: activeTab===0}">
-      <span class="tab-title-large"><i class="ticket-nav-ticket"></i>Ticket</a>
-    </span>
-      <a class="tab-item" on-tap="activeTab=1" ng-class="{active: activeTab===1}">
-        <span class="tab-title-large"><i class="ticket-nav-moreInfo"></i>More Info</span>
-      </a>
+      <span class="tab-title-large"><i class="ticket-nav-ticket"></i>Ticket</span>
+    </a>
+    <a class="tab-item" on-tap="activeTab=1" ng-class="{active: activeTab===1}">
+      <span class="tab-title-large"><i class="ticket-nav-moreInfo"></i>More Info</span>
+    </a>
   </div>
   <ion-content class="has-tabs-top" scroll=false>
 
