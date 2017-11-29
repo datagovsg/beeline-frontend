@@ -1,7 +1,7 @@
-export default [
+angular.module("beeline").directive("crowdstartShare", [
+  "$rootScope",
   "$cordovaSocialSharing",
-  "rootScope",
-  function($cordovaSocialSharing, $rootScope) {
+  function($rootScope, $cordovaSocialSharing) {
     return {
       replace: true,
       restrict: "E",
@@ -25,8 +25,13 @@ export default [
       link: function(scope, element, attributes) {
         scope.showCopy = !window.cordova || false
         // if has cordova no need to show shareLink text area
-        const domain = $rootScope.o.APP.NAME === 'GrabShuttle' ?  'https://grabshuttle.beeline.sg' : 'https://app.beeline.sg'
-        scope.shareLink =  `Hey, check out this new crowdstart route from ${$rootScope.o.APP.NAME}! ${domain}/tabs/crowdstart/${scope.routeId}/detail`
+        const domain =
+          $rootScope.o.APP.NAME === "GrabShuttle"
+            ? "https://grabshuttle.beeline.sg"
+            : "https://app.beeline.sg"
+        scope.shareLink = `Hey, check out this new crowdstart route from ${
+          $rootScope.o.APP.NAME
+        }! ${domain}/tabs/crowdstart/${scope.routeId}/detail`
 
         scope.shareAnywhere = function() {
           $cordovaSocialSharing.share(scope.shareLink)
@@ -34,4 +39,4 @@ export default [
       },
     }
   },
-]
+])
