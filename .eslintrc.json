@@ -21,6 +21,10 @@
   "globals": {
     "angular": true,
     "google": true,
-    "chcp": true
+    "chcp": true,
+    "IonicDeeplink": true,
+    "device": true,
+    "cordova": true,
+    "StatusBar": true
   }
 }

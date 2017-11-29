@@ -1,5 +1,4 @@
 import { SafeInterval } from "../SafeInterval"
-import { formatTime, formatTimeArray } from "../shared/format"
 import _ from "lodash"
 
 export default [
@@ -12,6 +11,7 @@ export default [
   "TripService",
   "LiteRoutesService",
   "ServerTime",
+  "MapViewFactory",
   function(
     $scope,
     SharedVariableService,
@@ -21,41 +21,12 @@ export default [
     // $timeout,
     TripService,
     LiteRoutesService,
-    ServerTime
+    ServerTime,
+    MapViewFactory
   ) {
     let routeLabel = $stateParams.label ? $stateParams.label : null
     // Date calculated as Date.now() + Local-Server-TimeDiff
-    $scope.mapObject = {
-      stops: [],
-      routePath: [],
-      alightStop: null,
-      boardStop: null,
-      pingTrips: null,
-      allRecentPings: [],
-      chosenStop: null,
-      statusMessages: [],
-    }
-
-    $scope.disp = {
-      popupStop: null,
-      routeMessage: null,
-    }
-
-    $scope.closeWindow = function() {
-      $scope.disp.popupStop = null
-    }
-
-    $scope.applyTapBoard = function(stop) {
-      $scope.disp.popupStop = stop
-      $scope.$digest()
-    }
-
-    $scope.formatStopTime = function(input) {
-      if (Array.isArray(input)) {
-        return formatTimeArray(input)
-      }
-      return formatTime(input)
-    }
+    MapViewFactory.init($scope)
 
     LiteRoutesService.fetchLiteRoute(routeLabel).then(response => {
       const route = response[routeLabel]

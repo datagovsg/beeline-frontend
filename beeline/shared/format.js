@@ -94,10 +94,10 @@ export function formatTimeArray(timeArray) {
 }
 
 // func to generate something like '14:15 pm' from JS date obj
-export function formatHHMM_ampm(t) {
-  let h = t.getHours(),
-    m = t.getMinutes(),
-    term = "am"
+export function formatHHMMampm(t) {
+  let h = t.getHours()
+  let m = t.getMinutes()
+  let term = "am"
 
   if (h >= 12) {
     term = "pm"

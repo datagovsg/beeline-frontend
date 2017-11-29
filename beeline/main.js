@@ -1,3 +1,5 @@
+// import _ from "lodash"
+
 import {
   formatDate,
   formatDateMMMdd,
@@ -5,6 +7,7 @@ import {
   formatTimeArray,
   formatUTCDate,
   titleCase,
+  formatHHMMampm,
 } from "./shared/format"
 import { companyLogo, miniCompanyLogo } from "./shared/imageSources"
 
@@ -12,8 +15,7 @@ import { companyLogo, miniCompanyLogo } from "./shared/imageSources"
 import compareVersions from "compare-versions"
 import assert from "assert"
 
-// Angular imports
-import MultipleDatePicker from "multiple-date-picker/dist/multipleDatePicker"
+import "multiple-date-picker/dist/multipleDatePicker"
 
 // Configuration Imports
 import configureRoutes from "./router.js"
@@ -58,7 +60,7 @@ app
   .filter("formatUTCDate", () => formatUTCDate)
   .filter("formatTime", () => formatTime)
   .filter("formatTimeArray", () => formatTimeArray)
-  .filter("formatHHMM_ampm", () => formatHHMM_ampm)
+  .filter("formatHHMMampm", () => formatHHMMampm)
   .filter("titleCase", () => titleCase)
   .filter("routeStartTime", () => route =>
     route && route.trips ? route.trips[0].tripStops[0].time : ""
@@ -80,7 +82,9 @@ app
   .filter("miniCompanyLogo", () => miniCompanyLogo)
   .filter("monthNames", function() {
     return function(i) {
-      monthNames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(",")
+      let monthNames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(
+        ","
+      )
       return monthNames[i]
     }
   })
@@ -100,6 +104,7 @@ app
     "LiteRouteSubscriptionService",
     require("./services/LiteRouteSubscriptionService.js").default
   )
+  .factory("MapViewFactory", require("./services/MapViewFactory.js").default)
   .factory("UserService", require("./services/UserService.js").default)
   .factory("TripService", require("./services/TripService.js").default)
   .factory("CompanyService", require("./services/CompanyService.js").default)
@@ -543,7 +548,7 @@ let devicePromise = new Promise((resolve, reject) => {
   if (window.cordova) {
     document.addEventListener("deviceready", resolve, false)
   } else {
-    console.log("No cordova detected")
+    console.warn("No cordova detected")
     resolve()
   }
 })
@@ -580,20 +585,18 @@ app.run([
     let appRequirements = versionRequirementsResponse.data.commuterApp
     assert(appRequirements)
 
-    if (compareVersions(versionNumber, appRequirements.minVersion) < 0) {
-      while (true) {
-        await $ionicPopup.alert({
-          title: "Update required",
-          template: `Your version of the app is too old. Please visit the app
-        store to upgrade your app.`,
-        })
+    while (compareVersions(versionNumber, appRequirements.minVersion) < 0) {
+      await $ionicPopup.alert({
+        title: "Update required",
+        template: `Your version of the app is too old. Please visit the app
+      store to upgrade your app.`,
+      })
 
-        if (appRequirements.upgradeUrl) {
-          cordova.InAppBrowser.open(
-            appRequirements.upgradeUrl[device.platform],
-            "_system"
-          )
-        }
+      if (appRequirements.upgradeUrl) {
+        cordova.InAppBrowser.open(
+          appRequirements.upgradeUrl[device.platform],
+          "_system"
+        )
       }
     }
   },

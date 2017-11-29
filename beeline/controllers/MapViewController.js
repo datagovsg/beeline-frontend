@@ -1,6 +1,3 @@
-import { formatTime, formatTimeArray } from "../shared/format"
-import _ from "lodash"
-
 export default [
   "$scope",
   "SharedVariableService",
@@ -8,49 +5,19 @@ export default [
   "BookingService",
   "RoutesService",
   "MapService",
+  "MapViewFactory",
   function(
     $scope,
     SharedVariableService,
     $stateParams,
     BookingService,
     RoutesService,
-    MapService
+    MapService,
+    MapViewFactory
   ) {
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
 
-    const originalMapObject = {
-      stops: [],
-      routePath: [],
-      alightStop: null,
-      boardStop: null,
-      pingTrips: [],
-      allRecentPings: [],
-      chosenStop: null,
-      statusMessages: [],
-    }
-
-    $scope.mapObject = _.assign({}, originalMapObject)
-
-    $scope.disp = {
-      popupStop: null,
-      routeMessage: null,
-    }
-
-    $scope.closeWindow = function() {
-      $scope.disp.popupStop = null
-    }
-
-    $scope.applyTapBoard = function(stop) {
-      $scope.disp.popupStop = stop
-      $scope.$digest()
-    }
-
-    $scope.formatStopTime = function(input) {
-      if (Array.isArray(input)) {
-        return formatTimeArray(input)
-      }
-      return formatTime(input)
-    }
+    MapViewFactory.init($scope)
 
     MapService.on("board-stop-selected", stop => {
       $scope.mapObject.boardStop = stop
