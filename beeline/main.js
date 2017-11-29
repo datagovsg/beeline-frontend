@@ -33,6 +33,7 @@ require("angular-google-maps")
 require("clipboard")
 require("ngclipboard")
 require("./directives/extA")
+require("./directives/crowdstartShare")
 require("./directives/routeShare")
 require("./services/RotatedImageService")
 require("./services/GeoUtils")
@@ -305,10 +306,6 @@ app
   .directive(
     "inServiceWindow",
     require("./directives/inServiceWindow.js").default
-  )
-  .directive(
-    "crowdstartShare",
-    require("./directives/crowdstartShare.js").default
   )
   .directive(
     "poweredByBeeline",

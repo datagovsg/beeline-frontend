@@ -12,7 +12,6 @@ export default [
   "MapOptions",
   function(
     $scope,
-    $interpolate,
     $state,
     $stateParams,
     $ionicModal,
