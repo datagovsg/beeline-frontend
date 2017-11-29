@@ -3,21 +3,21 @@ import _ from "lodash"
 
 angular.module("beeline").factory("MapViewFactory", () => {
   return {
-    init: function($scope) {
-      $scope.mapObject = this.mapObject()
+    init: function(scope) {
+      scope.mapObject = this.mapObject()
 
-      $scope.disp = this.disp()
+      scope.disp = this.disp()
 
-      $scope.closeWindow = function() {
-        $scope.disp.popupStop = null
+      scope.closeWindow = function() {
+        scope.disp.popupStop = null
       }
 
-      $scope.applyTapBoard = function(stop) {
-        $scope.disp.popupStop = stop
-        $scope.$digest()
+      scope.applyTapBoard = function(stop) {
+        scope.disp.popupStop = stop
+        scope.$digest()
       }
 
-      $scope.formatStopTime = function(input) {
+      scope.formatStopTime = function(input) {
         if (Array.isArray(input)) {
           return formatTimeArray(input)
         }
