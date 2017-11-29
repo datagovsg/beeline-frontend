@@ -50,6 +50,7 @@ require("./services/LazyLoadService")
 require("./directives/searchInput")
 require("./services/PlaceService")
 require("./services/ServerTimeService")
+require("./services/MapViewFactory")
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -104,7 +105,6 @@ app
     "LiteRouteSubscriptionService",
     require("./services/LiteRouteSubscriptionService.js").default
   )
-  .factory("MapViewFactory", require("./services/MapViewFactory.js").default)
   .factory("UserService", require("./services/UserService.js").default)
   .factory("TripService", require("./services/TripService.js").default)
   .factory("CompanyService", require("./services/CompanyService.js").default)
