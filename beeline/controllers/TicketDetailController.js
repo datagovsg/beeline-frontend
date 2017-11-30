@@ -29,10 +29,6 @@ export default [
       tripStatus: null,
     }
 
-    $scope.onTap = function() {
-      $scope.activeTab = $scope.activeTab === 0 ? 1 : 0
-    }
-
     // Initialize the necessary basic data data
     $scope.user = UserService.getUser();
 

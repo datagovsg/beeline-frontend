@@ -1,4 +1,4 @@
-<ion-view class="route-detail page-with-map" hide-back-button="true" view-title="Route Details" ng-init="activeTab = 0">
+<ion-view class="route-detail page-with-map" hide-back-button="true" ng-init="activeTab = 0">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
        ui-sref="tabs.routes"
@@ -7,8 +7,9 @@
     </button>
     <button menu-toggle="left" class="button button-icon icon ion-navicon"  ng-if="data.showSideMenu"></button>
   </ion-nav-buttons>
+  <ion-nav-title>{{disp.navTitle}}</ion-nav-title>
   <ion-content scroll="false">
-    <div ng-show="activeTab==0">
+    <div ng-show="activeTab==0" class="bookingView">
       <form name="stopsForm">
         <div class="rides-remaining" ng-if="data.passCount > 0 || data.routeSupportsRoutePass" >
             <i class="icon">
@@ -54,7 +55,7 @@
           <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
         </button>
         <button class="button primary-button" ng-click="toggle()" ng-if="data.nextTrip.hasNextTripTicket">
-          View Ticket
+           View Ticket <b>></b>
         </button>
         <span ng-if="data.price">
           $<span ng-bind="data.price"></span> per trip
@@ -70,35 +71,46 @@
         </button>
       </div>
     </div>
-    <div ng-show="activeTab===1">
-      <div class="booking-info">
+    <div ng-show="activeTab===1" class="ticketView">
+      <div class="booking-info trip-info">
+        <div class="row">
+          <div class="col col-20">
+            <span class="bus-number">{{data.label}}</span>
+          </div>
+          <div class="col">
+            <h4>Trip Code </h4>
+            <trip-code class="trip-code" code="disp.tripCode" ng-if="disp.tripCode">
+            </trip-code>
+            <span ng-if="!disp.tripCode">Not available</span>
+          </div>
+          <div class="col">
+            <h4>Vehicle No.</h4>
+            <div ng-if="disp.vehicle" class="vehicleNo" ng-bind="disp.vehicle">
+            </div>
+            <div ng-if="!disp.vehicle">
+              Not provided
+            </div>
+          </div>
+          <div class="col">
+            <h4>Passenger</h4>
+            <div ng-bind="data.user.name">
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="route-info">
             <div class="start">
               <span class="time" ng-bind="ticket.boardStop.time | date:'h:mm a' : '+0800'"></span><img class="route-icon" src="./img/RoutePairSmallStart.svg" />
-                <div class="routeDetailDesc">
-                  {{ticket.boardStop.stop.description}}, {{ticket.boardStop.stop.road}}</div>
+              <div class="routeDetailDesc">{{ticket.boardStop.stop.description}}, {{ticket.boardStop.stop.road}}</div>
             </div>
-              <div class="end">
+            <div class="end">
               <span class="time" ng-bind="ticket.alightStop.time | date:'h:mm a' : '+0800'"></span><img class="route-icon" src="./img/RoutePairSmallEnd.svg" />
-                <div class="routeDetailDesc">{{ticket.alightStop.stop.description}}, {{ticket.alightStop.stop.road}}</div>
+              <div class="routeDetailDesc">{{ticket.alightStop.stop.description}}, {{ticket.alightStop.stop.road}}</div>
             </div>
           </div>
         </div>
         <button class="button primary-button" ng-click="toggle()">
-          Go Boooking
-        </button>
-        <span ng-if="data.price">
-          $<span ng-bind="data.price"></span> per trip
-        </span>
-        <button class="button button-clear button-royal"
-          ui-sref = "tabs.route-dates({
-            routeId: data.routeId,
-            boardStop: data.pickupStop.id,
-            alightStop: data.dropoffStop.id,
-          })"
-          ng-disabled="stopsForm.$invalid">
-          <u>Advance Booking</u>
+           <b><</b> Buy More Tickets
         </button>
       </div>
    </div>

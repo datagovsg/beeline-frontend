@@ -32,7 +32,37 @@
         line-height: 1.0;
       }
     }
+    @keyframes slide-in-from-left {
+      0% {
+        transform: translateX(-900px);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+    @keyframes slide-in-from-right {
+      0% {
+        transform: translateX(900px);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
 
+    //animation
+    .bookingView.ng-hide-remove {
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+        animation-name: slide-in-from-left;
+        animation-timing-function: linear;
+    }
+
+    .ticketView.ng-hide-remove {
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+        animation-name: slide-in-from-right;
+        animation-timing-function: linear;
+    }
   }
 }
 

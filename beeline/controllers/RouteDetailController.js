@@ -1,3 +1,4 @@
+import moment from "moment"
 export default [
   "$scope",
   "$state",
@@ -10,6 +11,7 @@ export default [
   "FastCheckoutService",
   "MapService",
   "TicketService",
+  "TripService",
   function(
     $scope,
     $state,
@@ -21,7 +23,8 @@ export default [
     BookingService,
     FastCheckoutService,
     MapService,
-    TicketService
+    TicketService,
+    TripService
   ) {
     // ------------------------------------------------------------------------
     // Input
@@ -55,10 +58,12 @@ export default [
       alightStopInvalid: null,
       // defined in state tabs.my-booking-routes but not in tabs.route-detail
       showSideMenu: $state.current.data && $state.current.data.showSideMenu,
+      label: null,
     }
 
     $scope.disp = {
-      isBooking : false
+      isBooking : false,
+      navTitle: "Route Details",
     }
 
     $scope.mapObject = {
@@ -130,6 +135,7 @@ export default [
         $scope.data.nextTrip = response[0]
         $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map(ts => ts.stop.id)
         var route = response[1]
+        $scope.data.label = route.label
         $ionicLoading.hide();
         // Grab the price data
         $scope.data.price = route.trips[0].price;
@@ -167,6 +173,9 @@ export default [
 
     $scope.$watch(() => UserService.getUser(), (user) => {
       $scope.data.isLoggedIn = user ? true : false
+      if (user) {
+        $scope.data.user = user
+      }
     })
 
     $scope.$watch('data.pickupStop', (ps) => {
@@ -193,6 +202,11 @@ export default [
 
     $scope.toggle = function() {
       $scope.activeTab = $scope.activeTab === 0 ? 1 : 0
+      if ($scope.activeTab === 0) {
+        $scope.disp.navTitle = "Route Details"
+      } else {
+        $scope.disp.navTitle = "Ticket for "+ moment($scope.ticket.boardStop.time).utcOffset('+08:00').format('D MMM Y')
+      }
     }
 
     $scope.$watch('data.nextTrip.hasNextTripTicket' , (hasNextTripTicket) =>{
@@ -201,6 +215,9 @@ export default [
         var ticketPromise = TicketService.getTicketById(+$scope.data.nextTrip.nextTripTicketId);
         ticketPromise.then((ticket) => {
           $scope.ticket = ticket;
+          ticketPromise.then((ticket) => {
+            return TripService.getTripData(+ticket.alightStop.tripId);
+          });
         });
       }
     })
