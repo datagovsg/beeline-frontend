@@ -1,5 +1,4 @@
 import busStopSelectorListTemplate from "../templates/busStopSelectorList.html"
-import { formatTime } from "../shared/format"
 import _ from "lodash"
 
 export default [
@@ -8,7 +7,7 @@ export default [
   "MapOptions",
   "uiGmapGoogleMapApi",
   "$ionicScrollDelegate",
-  function(
+  function SelectorDialog(
     $rootScope,
     $ionicModal,
     MapOptions,
@@ -45,7 +44,6 @@ export default [
           scope.fitMap()
 
           // I have no idea why $getByHandle doesn't work in Ionic 1.3.1
-          // var scrollDelegate = $ionicScrollDelegate.$getByHandle('stopsListScroll');
           let scrollDelegate = $ionicScrollDelegate._instances.find(
             inst => inst.$$delegateHandle === "stopsListScroll"
           )
@@ -56,14 +54,14 @@ export default [
       })
     }
 
-    /**
+    /*
       Initializes properties and methods on scope
 
       @prop map
       @method fitMap
       @method selectStop -- fired when tapping on a stop in the list
       @method close -- closes the modal
-    **/
+    */
     function initializeScope(scope) {
       scope.data = {}
       scope.map = MapOptions.defaultMapOptions()

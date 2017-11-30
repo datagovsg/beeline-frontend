@@ -40,7 +40,6 @@ require("./services/GeoUtils")
 require("./directives/mapBusPolyRoute")
 require("./directives/mapBusIcon")
 require("./directives/routeItem/animatedRoute")
-require("./services/assetScopeModalService")
 require("./services/fastCheckoutService")
 require("./services/purchaseRoutePassService")
 require("./services/paymentService")
@@ -109,10 +108,6 @@ app
   .factory("UserService", require("./services/UserService.js").default)
   .factory("TripService", require("./services/TripService.js").default)
   .factory("CompanyService", require("./services/CompanyService.js").default)
-  .factory(
-    "SuggestionService",
-    require("./services/SuggestionService.js").default
-  )
   .factory("RoutesService", require("./services/RoutesService.js").default)
   .factory("CreditsService", require("./services/CreditsService.js").default)
   .factory(
@@ -121,7 +116,6 @@ app
   )
   .service("BookingService", require("./services/BookingService.js").default)
   .factory("OneMapService", require("./services/OneMapService.js").default)
-  .factory("DateService", require("./services/DateService.js").default)
   .factory("StripeService", require("./services/StripeService.js").default)
   .factory("loadingSpinner", require("./services/LoadingSpinner.js").default)
   .factory("GoogleAnalytics", require("./services/GoogleAnalytics.js").default)

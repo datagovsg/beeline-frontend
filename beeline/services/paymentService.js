@@ -1,5 +1,6 @@
 import assert from "assert"
 import processingPaymentsTemplate from "../templates/processing-payments.html"
+import _ from "lodash"
 
 angular.module("beeline").factory("PaymentService", [
   "UserService",
@@ -24,7 +25,6 @@ angular.module("beeline").factory("PaymentService", [
     TicketService,
     $state
   ) {
-    let isPaymentProcessing = false
     /** After you have settled the payment mode **/
     // book is booking Object
     async function completePayment(paymentOptions, book) {
@@ -75,15 +75,14 @@ angular.module("beeline").factory("PaymentService", [
         })
       ) {
         try {
-          isPaymentProcessing = true
           await completePayment(
             {
               stripeToken: "this-will-not-be-used",
             },
             book
           )
-        } finally {
-          isPaymentProcessing = false
+        } catch (e) {
+          console.error(e)
         }
       }
     }
@@ -91,9 +90,6 @@ angular.module("beeline").factory("PaymentService", [
     // Prompts for card and processes payment with one time stripe token.
     async function payWithoutSavingCard(book) {
       try {
-        // disable the button
-        isPaymentProcessing = true
-
         let stripeToken = await loadingSpinner(
           StripeService.promptForToken(
             null,
@@ -117,8 +113,6 @@ angular.module("beeline").factory("PaymentService", [
           title: "Error contacting the payment gateway",
           template: (err.data && err.data.message) || err,
         })
-      } finally {
-        isPaymentProcessing = false
       }
     }
 
@@ -126,9 +120,6 @@ angular.module("beeline").factory("PaymentService", [
     // prompts for card, creates customer object, and proceeds as usual.
     async function payWithSavedInfo(book) {
       try {
-        // disable the button
-        isPaymentProcessing = true
-
         if (!book.hasSavedPaymentInfo) {
           let stripeToken = await StripeService.promptForToken(
             null,
@@ -137,7 +128,6 @@ angular.module("beeline").factory("PaymentService", [
           )
 
           if (!stripeToken) {
-            isPaymentProcessing = false // re-enable button
             return
           }
 
@@ -154,13 +144,10 @@ angular.module("beeline").factory("PaymentService", [
           book
         )
       } catch (err) {
-        isPaymentProcessing = false // re-enable button
         await $ionicPopup.alert({
           title: "Error saving payment method",
           template: err.data.message,
         })
-      } finally {
-        isPaymentProcessing = false
       }
     }
 
@@ -202,8 +189,8 @@ angular.module("beeline").factory("PaymentService", [
           RoutesService.fetchRoutePasses(true)
           RoutesService.fetchRoutePassCount()
           RoutesService.fetchRoutesWithRoutePass()
-          return paymentPromise
         }
+        return paymentPromise
       },
 
       payHandler: function(book, savePaymentChecked) {

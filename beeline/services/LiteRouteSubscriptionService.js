@@ -1,11 +1,9 @@
-import _ from "lodash"
 import assert from "assert"
 
 export default [
-  "$http",
   "UserService",
   "$q",
-  function LiteRouteSubscriptionService($http, UserService, $q) {
+  function LiteRouteSubscriptionService(UserService, $q) {
     let LiteRouteSubscriptionCache = null
     let liteRouteSubscriptionsSummary = []
 
@@ -13,7 +11,7 @@ export default [
       instance.getSubscriptions(true)
     })
 
-    var instance = {
+    let instance = {
       getSubscriptionSummary: function() {
         return liteRouteSubscriptionsSummary
       },

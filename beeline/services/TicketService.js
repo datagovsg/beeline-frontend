@@ -3,11 +3,9 @@ import assert from "assert"
 import querystring from "querystring"
 
 export default [
-  "$http",
-  "$filter",
   "UserService",
   "p",
-  function TicketService($http, $filter, UserService, p) {
+  function TicketService(UserService, p) {
     let ticketsCache = null
     let allTickets = null
     let ticketsByRouteId = null

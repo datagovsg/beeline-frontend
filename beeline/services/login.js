@@ -5,7 +5,7 @@ export default [
   "$rootScope",
   "$ionicModal",
   "Legalese",
-  function($rootScope, $ionicModal, Legalese) {
+  function Login($rootScope, $ionicModal, Legalese) {
     this.show = () => {
       let scope = $rootScope.$new()
       let loginModal = $ionicModal.fromTemplate(loginModalTemplate, {

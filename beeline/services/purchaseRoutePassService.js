@@ -1,6 +1,6 @@
 import routePassTemplate from "../templates/route-pass-modal.html"
-import assert from "assert"
 import commonmark from "commonmark"
+import _ from "lodash"
 
 angular
   .module("beeline")
@@ -10,24 +10,20 @@ angular
     "RoutesService",
     "loadingSpinner",
     "StripeService",
-    "assetScopeModalService",
     "PaymentService",
     "UserService",
-    "BookingSummaryModalService",
     "$state",
-    modalService,
+    ModalService,
   ])
 
-function modalService(
+function ModalService(
   $rootScope,
   $ionicModal,
   RoutesService,
   loadingSpinner,
   StripeService,
-  assetScopeModalService,
   PaymentService,
   UserService,
-  BookingSummaryModalService,
   $state
 ) {
   let self = this
@@ -73,8 +69,6 @@ function modalService(
     scope.payForRoutePass = async function() {
       try {
         let paymentPromise
-        let quantity =
-          scope.book.priceSchedules[scope.book.routePassChoice].quantity
         let expectedPrice =
           scope.book.priceSchedules[scope.book.routePassChoice].totalPrice
         let passValue =
@@ -135,7 +129,7 @@ function modalService(
           return paymentPromise
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
         return new Promise((resolve, reject) => {
           return reject("routePassError")
         })
@@ -143,7 +137,6 @@ function modalService(
     }
 
     function cleanup() {
-      console.log("cleanup")
       routePassModal.remove()
     }
 
@@ -213,7 +206,7 @@ function modalService(
       })
       .catch(error => {
         scope.routePassTerms.error = error
-        console.log(error)
+        console.error(error)
       })
 
     purchaseRoutePassPromise.then(cleanup, cleanup)

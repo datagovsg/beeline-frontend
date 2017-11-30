@@ -1,9 +1,9 @@
-let googleMaps
+import _ from "lodash"
 
 export default [
   "uiGmapGoogleMapApi",
   "$cordovaGeolocation",
-  function(uiGmapGoogleMapApi, $cordovaGeolocation) {
+  function MapOptions(uiGmapGoogleMapApi, $cordovaGeolocation) {
     let markerOptionsPromise = uiGmapGoogleMapApi.then(googleMaps => {
       return {
         markerOptions: {
@@ -121,11 +121,6 @@ export default [
     }
 
     this.locateMe = function(mapControl) {
-      let options = {
-        timeout: 5000,
-        enableHighAccuracy: true,
-      }
-
       // promise
       // FIXME: use navigator.geoLocation
       $cordovaGeolocation
@@ -147,7 +142,7 @@ export default [
             }, 300)
           },
           function(err) {
-            console.log("ERROR - " + err)
+            console.error("ERROR - " + err)
           }
         )
     }

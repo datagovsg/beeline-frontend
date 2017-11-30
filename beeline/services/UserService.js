@@ -1,7 +1,5 @@
-import querystring from "querystring"
 import uuid from "uuid"
 import _ from "lodash"
-import assert from "assert"
 import verifiedPromptTemplate from "../templates/verified-prompt.html"
 import requestingVerificationCodeTemplate from "../templates/requesting-verification-code.html"
 import sendingVerificationCodeTemplate from "../templates/sending-verification-code.html"
@@ -21,7 +19,6 @@ export default [
   "$ionicLoading",
   "$rootScope",
   "LoginDialog",
-  "$q",
   "loadingSpinner",
   function UserService(
     $http,
@@ -29,7 +26,6 @@ export default [
     $ionicLoading,
     $rootScope,
     LoginDialog,
-    $q,
     loadingSpinner
   ) {
     // ////////////////////////////////////////////////////////////////////////////
@@ -240,8 +236,7 @@ export default [
             name: "phone",
             pattern: VALID_PHONE_REGEX,
             errorMsg:
-              "The phone no. you provide does not appear to be in the correct format. \
-            Please provide a valid 8-digit phone no. starting with the number 8 or 9.",
+              "The phone no. you provide does not appear to be in the correct format. Please provide a valid 8-digit phone no. starting with the number 8 or 9.",
           },
         ],
       })
@@ -365,16 +360,6 @@ export default [
       })
     }
 
-    function register(newUser) {
-      return beelineRequest({
-        method: "POST",
-        url: "/users",
-        data: newUser,
-      }).then(function(response) {
-        return response.data
-      })
-    }
-
     async function checkNewUser(user) {
       if (user.name || user.email) {
         // Not a new user
@@ -385,8 +370,7 @@ export default [
         let accountResponse = await verifiedPrompt({
           title: "Account Details",
           bodyText:
-            "Welcome! This looks like your first login.\
-          Please complete the account setup.",
+            "Welcome! This looks like your first login. Please complete the account setup.",
           inputs: [
             {
               type: "text",
@@ -400,8 +384,7 @@ export default [
               name: "email",
               inputPlaceHolder: "name@example.com",
               errorMsg:
-                "Email address does not appear to be in the correct format. \
-              Please provide a valid email address.",
+                "Email address does not appear to be in the correct format. Please provide a valid email address.",
             },
           ],
         })
@@ -411,7 +394,7 @@ export default [
           return
         } else {
           $ionicLoading.show({ template: registeringWithServerTemplate })
-          let updateResponse = await updateUserInfo({
+          await updateUserInfo({
             name: accountResponse.name,
             email: accountResponse.email,
           })
@@ -476,8 +459,7 @@ export default [
             type: "email",
             name: "email",
             errorMsg:
-              "Email address doesn't appear to be in the correct format. \
-            Please provide a valid email address.",
+              "Email address doesn't appear to be in the correct format. Please provide a valid email address.",
           }
         }
         let verifiedResponse = await verifiedPrompt({

@@ -1,7 +1,6 @@
 angular.module("beeline").factory("ServerTime", [
-  "UserService",
   "$http",
-  function(UserService, $http) {
+  function($http) {
     class ServerTime {
       sync() {
         return new Promise(resolve => {

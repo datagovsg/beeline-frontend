@@ -14,23 +14,6 @@ export default function SearchService() {
     return dist
   }
 
-  // Helper to calculate distance in meters between a pair of coordinates
-  // let latlngDistance = (ll1, ll2) => {
-  //   let lat1 = ll1[0];
-  //   let lon1 = ll1[1];
-  //   let lat2 = ll2[0];
-  //   let lon2 = ll2[1];
-  //   var R = 6378.137; // Radius of earth in KM
-  //   var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
-  //   var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
-  //   var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-  //   Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-  //   Math.sin(dLon/2) * Math.sin(dLon/2);
-  //   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  //   var d = R * c;
-  //   return d * 1000; // meters
-  // };
-
   return {
     filterRoutesByText: function(routes, string) {
       return routes.filter(route => this.routeContainsString(route, string))

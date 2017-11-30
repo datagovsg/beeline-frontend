@@ -6,39 +6,13 @@
 import querystring from "querystring"
 import _ from "lodash"
 import assert from "assert"
-import moment from "moment"
-
-function transformTime(liteRoutesByLabel) {
-  for (let label in liteRoutesByLabel) {
-    let liteRoute = liteRoutesByLabel[label]
-    // no starting time and ending time
-    if (!liteRoute.trips) {
-      liteRoute.startTime = null
-      liteRoute.endTime = null
-      return
-    }
-    let allTripStops = _.flatten(liteRoute.trips.map(trip => trip.tripStops))
-    let allStopTimes = allTripStops.map(stop => stop.time).sort()
-    liteRoute.startTime = allStopTimes[0]
-    liteRoute.endTime = allStopTimes[allStopTimes.length - 1]
-  }
-}
 
 export default [
-  "$http",
   "UserService",
-  "$q",
   "LiteRouteSubscriptionService",
   "p",
-  function LiteRoutesService(
-    $http,
-    UserService,
-    $q,
-    LiteRouteSubscriptionService,
-    p
-  ) {
+  function LiteRoutesService(UserService, LiteRouteSubscriptionService, p) {
     let liteRoutesCache
-    let liteRoutesPromise
 
     // For single lite route
     let lastLiteRouteLabel = null
@@ -49,21 +23,25 @@ export default [
 
     function transformTime(liteRoutesByLabel) {
       for (let label in liteRoutesByLabel) {
-        let liteRoute = liteRoutesByLabel[label]
-        // no starting time and ending time
-        if (!liteRoute.trips) {
-          liteRoute.startTime = null
-          liteRoute.endTime = null
-          return
+        if ({}.hasOwnProperty.call(liteRoutesByLabel, label)) {
+          let liteRoute = liteRoutesByLabel[label]
+          // no starting time and ending time
+          if (!liteRoute.trips) {
+            liteRoute.startTime = null
+            liteRoute.endTime = null
+            return
+          }
+          let minTripDate = _.min(liteRoute.trips.map(trip => trip.date))
+          let tripAsMinTripDate = liteRoute.trips.filter(
+            trip => trip.date === minTripDate
+          )
+          let tripStops = _.flatten(
+            tripAsMinTripDate.map(trip => trip.tripStops)
+          )
+          let allStopTimes = tripStops.map(stop => stop.time).sort()
+          liteRoute.startTime = allStopTimes[0]
+          liteRoute.endTime = allStopTimes[allStopTimes.length - 1]
         }
-        var minTripDate = _.min(liteRoute.trips.map(trip => trip.date))
-        let tripAsMinTripDate = liteRoute.trips.filter(
-          trip => trip.date === minTripDate
-        )
-        let tripStops = _.flatten(tripAsMinTripDate.map(trip => trip.tripStops))
-        let allStopTimes = tripStops.map(stop => stop.time).sort()
-        liteRoute.startTime = allStopTimes[0]
-        liteRoute.endTime = allStopTimes[allStopTimes.length - 1]
       }
     }
 
@@ -103,16 +81,18 @@ export default [
       })
       let newStops = []
       for (let stopId in boardStops) {
-        let stop = boardStops[stopId][0].stop
-        stop.canBoard = boardStops[stopId][0].canBoard
-        let timeArray = _.map(boardStops[stopId], stop => {
-          return stop.time
-        })
-        let sortedTime = _(timeArray)
-          .uniq()
-          .sort()
-          .value()
-        newStops.push(_.extend({ time: sortedTime }, stop))
+        if ({}.hasOwnProperty.call(boardStops, stopId)) {
+          let stop = boardStops[stopId][0].stop
+          stop.canBoard = boardStops[stopId][0].canBoard
+          let timeArray = _.map(boardStops[stopId], stop => {
+            return stop.time
+          })
+          let sortedTime = _(timeArray)
+            .uniq()
+            .sort()
+            .value()
+          newStops.push(_.extend({ time: sortedTime }, stop))
+        }
       }
       return newStops
     }
