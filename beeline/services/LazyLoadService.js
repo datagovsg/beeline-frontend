@@ -1,14 +1,18 @@
-angular.module("beeline").factory("LazyLoadService", () => lazy)
+angular.module("beeline").factory("LazyLoadService", LazyLoadService)
 
-function lazy(fn) {
-  let hasValue = false
-  let currentValue = null
+function LazyLoadService() {
+  return {
+    lazyLoad: function(fn) {
+      let hasValue = false
+      let currentValue = null
 
-  return () => {
-    if (!hasValue) {
-      hasValue = true
-      currentValue = fn()
-    }
-    return currentValue
+      return () => {
+        if (!hasValue) {
+          hasValue = true
+          currentValue = fn()
+        }
+        return currentValue
+      }
+    },
   }
 }

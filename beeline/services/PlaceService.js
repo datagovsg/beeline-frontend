@@ -8,10 +8,10 @@ angular.module("beeline").factory("PlaceService", [
     let placesService
 
     uiGmapGoogleMapApi.then(googleMaps => {
-      autocompleteService = LazyLoadService(
+      autocompleteService = LazyLoadService.lazyLoad(
         () => new googleMaps.places.AutocompleteService()
       )
-      placesService = LazyLoadService(
+      placesService = LazyLoadService.lazyLoad(
         () =>
           new google.maps.places.PlacesService(document.createElement("div"))
       )
