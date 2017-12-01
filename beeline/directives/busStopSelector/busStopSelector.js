@@ -1,21 +1,10 @@
 import busStopSelectorTemplate from "./busStopSelector.html"
 import { formatTime } from "../../shared/format"
+import _ from "lodash"
 
 export default [
-  "$state",
-  "$ionicModal",
-  "$http",
-  "uiGmapGoogleMapApi",
-  "MapOptions",
   "busStopSelectorDialog",
-  function(
-    $state,
-    $ionicModal,
-    $http,
-    uiGmapGoogleMapApi,
-    MapOptions,
-    busStopSelectorDialog
-  ) {
+  function(busStopSelectorDialog) {
     return {
       restrict: "E",
       replace: true,

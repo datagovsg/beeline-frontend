@@ -227,10 +227,6 @@ app
     require("./controllers/KickstarterStopsController.js").default
   )
   .directive(
-    "suggestionViewer",
-    require("./directives/suggestionViewer/suggestionViewer").default
-  )
-  .directive(
     "startEndPicker",
     require("./directives/startEndPicker/startEndPicker").default
   )
@@ -249,10 +245,6 @@ app
   .directive(
     "fancyPrice",
     require("./directives/fancyPrice/fancyPrice").default
-  )
-  .directive(
-    "bookingBreadcrumbs",
-    require("./directives/bookingBreadcrumbs/bookingBreadcrumbs").default
   )
   .directive(
     "routeItem",
