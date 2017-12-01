@@ -1,21 +1,8 @@
-import { SafeInterval } from "../SafeInterval"
-const leftPad = require("left-pad")
-
 angular.module("beeline").directive("mapBusIcon", [
-  "TripService",
-  "uiGmapGoogleMapApi",
-  "$timeout",
   "RotatedImage",
-  "LngLatDistance",
-  "BearingFromLngLats",
-  function(
-    TripService,
-    uiGmapGoogleMapApi,
-    $timeout,
-    RotatedImage,
-    LngLatDistance,
-    BearingFromLngLats
-  ) {
+  "lngLatDistance",
+  "bearingFromLngLats",
+  function(RotatedImage, lngLatDistance, bearingFromLngLats) {
     const busIconImage = new RotatedImage("./img/busTop-small.png")
 
     return {
@@ -51,8 +38,6 @@ angular.module("beeline").directive("mapBusIcon", [
           This function also caches the previous known angle and
           avoids re-rendering the image
           */
-          const now = Date.now()
-
           busIconImage.imageLoadPromise.then(() => $scope.$digest())
 
           $scope.$watchGroup(
@@ -65,8 +50,6 @@ angular.module("beeline").directive("mapBusIcon", [
               // Do not update if bus icon image is not loaded yet
               if (!gapi || !pings) return
               const bearing = bearingFromPings(pings)
-              const oldLocationStatus =
-                $scope.locationStatus && $scope.locationStatus[index]
 
               const busIcon =
                 $scope.busIcon &&
@@ -100,10 +83,10 @@ angular.module("beeline").directive("mapBusIcon", [
       for (let i = 1; i < pings.length; i++) {
         const lastPingLngLat = pings[i].coordinates.coordinates
         if (
-          LngLatDistance(firstPingLngLat, lastPingLngLat) >= 50 ||
+          lngLatDistance(firstPingLngLat, lastPingLngLat) >= 50 ||
           i === pings.length - 1
         ) {
-          return BearingFromLngLats(firstPingLngLat, lastPingLngLat)
+          return bearingFromLngLats(firstPingLngLat, lastPingLngLat)
         }
       }
     }

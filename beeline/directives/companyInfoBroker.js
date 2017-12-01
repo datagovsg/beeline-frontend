@@ -15,11 +15,9 @@ export default [
             return
           }
 
-          let companyPromise = CompanyService.getCompany(+companyId).then(
-            company => {
-              scope.company = company
-            }
-          )
+          CompanyService.getCompany(+companyId).then(company => {
+            scope.company = company
+          })
         })
       },
     }

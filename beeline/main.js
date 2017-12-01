@@ -37,7 +37,6 @@ require("./directives/crowdstartShare")
 require("./directives/routeShare")
 require("./services/RotatedImageService")
 require("./services/GeoUtils")
-require("./directives/mapBusPolyRoute")
 require("./directives/mapBusIcon")
 require("./directives/routeItem/animatedRoute")
 require("./services/fastCheckoutService")
@@ -227,7 +226,6 @@ app
     "KickstarterStopsController",
     require("./controllers/KickstarterStopsController.js").default
   )
-  .directive("searchButton", require("./directives/searchButton.js").default)
   .directive(
     "suggestionViewer",
     require("./directives/suggestionViewer/suggestionViewer").default
@@ -271,10 +269,6 @@ app
     require("./directives/companyInfoBroker.js").default
   )
   .directive("moreInfo", require("./directives/moreInfo/moreInfo").default)
-  .directive(
-    "markdownRenderer",
-    require("./directives/markdownRenderer").default
-  )
   .directive("mapPolyRoute", require("./directives/mapPolyRoute").default)
   .directive("mapBusStops", require("./directives/mapBusStops").default)
   .directive(
@@ -304,10 +298,6 @@ app
   .directive(
     "poweredByBeeline",
     require("./directives/poweredByBeeline/poweredByBeeline.js").default
-  )
-  .directive(
-    "gmapAutocomplete",
-    require("./directives/autocomplete.js").default
   )
   .directive(
     "regularRoute",

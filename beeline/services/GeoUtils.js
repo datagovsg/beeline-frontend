@@ -1,9 +1,9 @@
 angular
   .module("beeline")
-  .factory("LngLatDistance", () => LngLatDistance)
-  .factory("BearingFromLngLats", () => BearingFromLngLats)
+  .factory("lngLatDistance", () => lngLatDistance)
+  .factory("bearingFromLngLats", () => bearingFromLngLats)
 
-function LngLatDistance(ll1, ll2) {
+function lngLatDistance(ll1, ll2) {
   let rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
   let rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
 
@@ -14,7 +14,7 @@ function LngLatDistance(ll1, ll2) {
   return dist
 }
 
-function BearingFromLngLats(ll1, ll2) {
+function bearingFromLngLats(ll1, ll2) {
   let rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
   let rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
 
