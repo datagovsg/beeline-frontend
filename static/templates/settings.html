@@ -24,6 +24,11 @@
       <div ng-show="user" class="item" on-tap="updateUserInfo('email')">
         Email <span class="item-note">{{ user.email }}</span>
       </div>
+      <div ng-show="user" class="item" on-tap="verifyEmail()"
+          ng-if="!user.emailVerified">
+        Email is not verified
+        <span class="item-note">Click to verify</span>
+      </div>
       <div ng-show="user" class="item" on-tap="updateTelephone()">
         Phone Number <span class="item-note">{{ user.telephone.slice(3)}}</span>
       </div>

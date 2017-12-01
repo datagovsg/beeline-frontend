@@ -83,6 +83,32 @@ export default [
       return UserService.promptUpdateUserInfo(field)
     }
 
+    $scope.verifyEmail = function () {
+      const alertScope = $scope.$new()
+
+      return UserService.sendEmailVerification()
+      .then(() => {
+        return $ionicPopup.alert({
+          title: 'Email Verification Sent',
+          template: `We have sent an email verification to {{user.email}}.
+          Please check your inbox for further instructions`,
+          scope: $scope,
+        })
+      })
+      .catch((err) => {
+        _.assign(alertScope, {message: _.get(err, 'data.message')})
+
+        return $ionicPopup.alert({
+          title: 'Email Verification Failed',
+          template: `There was a problem sending the email verification: {{message}}`,
+          scope: alertScope,
+        })
+      })
+      .finally(() => {
+        alertScope.$destroy()
+      })
+    }
+
     // Update telephone is distinct from the update user due to verification
     $scope.updateTelephone = UserService.promptUpdatePhone
 
