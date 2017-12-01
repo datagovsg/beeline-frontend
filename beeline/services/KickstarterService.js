@@ -1,6 +1,5 @@
 import querystring from "querystring"
 import _ from "lodash"
-import assert from "assert"
 import { SafeInterval } from "../SafeInterval"
 
 let transformKickstarterData = function(kickstarterRoutes) {
@@ -8,7 +7,7 @@ let transformKickstarterData = function(kickstarterRoutes) {
   for (let kickstarter of kickstarterRoutes) {
     kickstarter.isActived = false
     if (kickstarter.bids && kickstarter.bids.length > 0) {
-      var bidsByTier = _.groupBy(kickstarter.bids, x => x.priceF)
+      let bidsByTier = _.groupBy(kickstarter.bids, x => x.priceF)
       kickstarter.notes.tier.map(tier => {
         let countCommitted = bidsByTier[tier.price]
           ? bidsByTier[tier.price].length
@@ -80,7 +79,7 @@ let transformKickstarterData = function(kickstarterRoutes) {
   return kickstarterRoutes
 }
 
-var updateStatus = function(route) {
+let updateStatus = function(route) {
   // status of kickstarter
   route.status = ""
   if (route.notes.tier[0].moreNeeded == 0) {
@@ -113,28 +112,24 @@ let updateAfterBid = function(route, price) {
 }
 
 export default [
-  "$http",
   "UserService",
   "$q",
-  "$rootScope",
   "RoutesService",
   "p",
   "DevicePromise",
   function KickstarterService(
-    $http,
     UserService,
     $q,
-    $rootScope,
     RoutesService,
     p,
     DevicePromise
   ) {
     let kickstarterRoutesCache
     let bidsCache
-    let kickstarterSummary = null,
-      bidsById = null
-    let kickstarterRoutesList = null,
-      kickstarterRoutesById = null
+    let kickstarterSummary = null
+    let bidsById = null
+    let kickstarterRoutesList = null
+    let kickstarterRoutesById = null
     let nearbyKickstarterRoutesById = null
 
     UserService.userEvents.on("userChanged", () => {

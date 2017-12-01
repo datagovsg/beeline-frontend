@@ -1,13 +1,11 @@
-import moment from "moment"
 import { retriveNextTrip } from "../shared/util"
-import assert from "assert"
+import _ from "lodash"
 
 angular.module("beeline").factory("FastCheckoutService", [
   "RoutesService",
   "UserService",
   "purchaseRoutePassService",
   "TicketService",
-  "$stateParams",
   "BookingSummaryModalService",
   "$ionicLoading",
   function fastCheckoutService(
@@ -15,7 +13,6 @@ angular.module("beeline").factory("FastCheckoutService", [
     UserService,
     purchaseRoutePassService,
     TicketService,
-    $stateParams,
     BookingSummaryModalService,
     $ionicLoading
   ) {
@@ -24,7 +21,6 @@ angular.module("beeline").factory("FastCheckoutService", [
     let paymentInfo
     let ridesRemaining
     let route
-    let routeId
 
     // login
     function userLoginPromise() {
@@ -128,8 +124,8 @@ angular.module("beeline").factory("FastCheckoutService", [
         ) {
           seatsAvailable = true
         }
-        let hasNextTripTicket = null,
-          previouslyBookedDays = null
+        let hasNextTripTicket = null
+        let previouslyBookedDays = null
         // user has the next trip ticket
         if (UserService.getUser()) {
           let allTickets = TicketService.getTickets()
@@ -191,7 +187,7 @@ angular.module("beeline").factory("FastCheckoutService", [
             )
             return resolve("success")
           } catch (err) {
-            console.log(err)
+            console.error(err)
             return reject("failed")
           }
         })
@@ -260,7 +256,7 @@ angular.module("beeline").factory("FastCheckoutService", [
             return resolve("success")
           } catch (err) {
             $ionicLoading.hide()
-            console.log(err)
+            console.error(err)
             return reject("failed")
           }
         })

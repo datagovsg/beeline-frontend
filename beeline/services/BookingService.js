@@ -1,19 +1,9 @@
-import { NetworkError } from "../shared/errors"
-import {
-  formatDate,
-  formatDateMMMdd,
-  formatTime,
-  formatUTCDate,
-  timeSinceMidnight,
-} from "../shared/format"
+import { formatTime, timeSinceMidnight } from "../shared/format"
 import _ from "lodash"
 
 export default [
   "UserService",
-  "CompanyService",
-  "RoutesService",
-  "$http",
-  function(UserService, CompanyService, RoutesService, $http) {
+  function BookingService(UserService) {
     this.prepareTrips = function(booking) {
       // create a list of trips
       let trips = []
@@ -86,7 +76,7 @@ export default [
             }
           })
           .then(null, err => {
-            console.log(err.stack)
+            console.error(err.stack)
             throw err
           })
 
@@ -140,12 +130,12 @@ export default [
       /**
         Produce an array of changes.
 
-        @param trips
-        @param comparable : function (trip : Trip) : T, where T can be compared for changes
-        @param humanReadable : function (before : Trip, after : Trip) : string,
+        @param {Object[]} trips
+        @param {function} comparable : function (trip : Trip) : T, where T can be compared for changes
+        @param {function} humanReadable : function (before : Trip, after : Trip) : string,
             A human-readable message telling the user what has changed
 
-        @returns An array, Each entry consists of an object with
+        @return {Object[]} An array, Each entry consists of an object with
         the following properties:
           startDate : Date,
           endDate: Date,
@@ -155,16 +145,10 @@ export default [
       */
       function summarizeChanges(trips, comparable, humanReadable) {
         let changes = []
-        // var current = {};
         let lastComparable = undefined
         let lastTrip = undefined
 
         for (let trip of trips) {
-          // if (current.startDate == undefined) {
-          //   current.startDate = trip.date;
-          //   current.endDate = trip.date;
-          // }
-
           let valueComparable = comparable(trip)
           if (lastComparable == undefined) {
             lastComparable = valueComparable
@@ -178,19 +162,11 @@ export default [
               humanReadable: hr,
               comparable: valueComparable,
             })
-            // current = {
-            //   startDate: trip.date,
-            //   endDate: trip.date,
-            // };
           }
 
-          // current.endDate = trip.date;
           lastTrip = trip
           lastComparable = valueComparable
         }
-        // if (changes.length != 0) {
-        //   changes.push(current);
-        // }
         return changes
       }
 
@@ -245,8 +221,8 @@ export default [
         }
       )
 
-      console.log(route.trips.map(t => t.date).join("\n"))
-      console.log(
+      console.warn(route.trips.map(t => t.date).join("\n"))
+      console.warn(
         route.trips
           .map(trip =>
             trip.tripStops
@@ -270,8 +246,6 @@ export default [
             .join(","),
         (bef, aft) => {
           let messages = []
-
-          let befStopInfo = {}
           let aftStopInfo = {}
 
           for (let ts of aft.tripStops) {
@@ -301,7 +275,6 @@ export default [
     this.computeStops = function(trips) {
       let tripStops = _.flatten(trips.map(trip => trip.tripStops))
       let uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id)
-      let stopData = _.keyBy(uniqueStops, ts => ts.stop.id)
 
       let boardStops = _(uniqueStops)
         .filter(ts => ts.canBoard)

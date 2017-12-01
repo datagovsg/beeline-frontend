@@ -1,11 +1,6 @@
-import _ from "lodash"
-import assert from "assert"
-
 export default [
-  "$http",
   "UserService",
-  "$q",
-  function CreditsService($http, UserService, $q) {
+  function CreditsService(UserService) {
     // General credits
     let userCreditsCache
     let userCredits
@@ -19,7 +14,7 @@ export default [
       instance.fetchReferralCredits(true)
     })
 
-    var instance = {
+    const instance = {
       getUserCredits: function() {
         return userCredits
       },

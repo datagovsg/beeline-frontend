@@ -1,5 +1,4 @@
 import bookingSummaryTemplate from "../templates/booking-summary-modal.html"
-import assert from "assert"
 
 angular
   .module("beeline")
@@ -8,19 +7,15 @@ angular
     "$ionicModal",
     "RoutesService",
     "loadingSpinner",
-    "StripeService",
-    "assetScopeModalService",
     "PaymentService",
-    modalService,
+    ModalService,
   ])
 
-function modalService(
+function ModalService(
   $rootScope,
   $ionicModal,
   RoutesService,
   loadingSpinner,
-  StripeService,
-  assetScopeModalService,
   PaymentService
 ) {
   this.show = booking => {
@@ -61,7 +56,7 @@ function modalService(
             scope.disp.hasError = false
             return resolve("ticket purchased successfully")
           } catch (err) {
-            console.log(err)
+            console.error(err)
             scope.disp.hasError = true
             return reject("ticket purhchased failed")
           }

@@ -1,7 +1,7 @@
 export default [
   "$rootScope",
   "$ionicModal",
-  function($rootScope, $ionicModal) {
+  function Legalese($rootScope, $ionicModal) {
     let privacyPolicyModalTemplate = require("../templates/" +
       $rootScope.o.APP.PREFIX +
       "privacy-policy-modal.html")

@@ -1,7 +1,7 @@
 import loadingTemplate from "../templates/loading.html"
 import assert from "assert"
 
-/**
+/*
 
 loadingSpinner(promise1);
 loadingSpinner(promise2);
@@ -18,7 +18,7 @@ try {
   $ionicLoading.hide();
 }
 
-**/
+*/
 export default [
   "$ionicLoading",
   function($ionicLoading) {

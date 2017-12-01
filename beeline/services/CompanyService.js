@@ -8,8 +8,7 @@ export default [
   "UserService",
   "$ionicModal",
   "$rootScope",
-  "$q",
-  function CompanyService(UserService, $ionicModal, $rootScope, $q) {
+  function CompanyService(UserService, $ionicModal, $rootScope) {
     let companyCache = {}
     let termsScope
 

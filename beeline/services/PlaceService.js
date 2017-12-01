@@ -1,14 +1,17 @@
+import _ from "lodash"
+
 angular.module("beeline").factory("PlaceService", [
   "uiGmapGoogleMapApi",
   "LazyLoadService",
   function placeService(uiGmapGoogleMapApi, LazyLoadService) {
-    let autocompleteService, placesService
+    let autocompleteService
+    let placesService
 
     uiGmapGoogleMapApi.then(googleMaps => {
-      autocompleteService = LazyLoadService(
+      autocompleteService = LazyLoadService.lazyLoad(
         () => new googleMaps.places.AutocompleteService()
       )
-      placesService = LazyLoadService(
+      placesService = LazyLoadService.lazyLoad(
         () =>
           new google.maps.places.PlacesService(document.createElement("div"))
       )

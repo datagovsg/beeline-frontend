@@ -64,7 +64,7 @@ export default [
       instance.fetchRecentRoutes(true)
     })
 
-    var instance = {
+    let instance = {
       // Retrive the data on a single route, but pulls a lot more data
       // Pulls all the trips plus the route path
       // getRoute() will return the heavier stuff (all trips, availability, path)
