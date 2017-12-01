@@ -13,7 +13,6 @@ export default [
         inServiceWindow: "=",
       },
       link: function(scope, element, attributes) {
-        let allStopsTime
         scope.inServiceWindow = null
         // check in service window every 1 min, if fails re-try in 1 sec
         scope.timeout = new SafeInterval(

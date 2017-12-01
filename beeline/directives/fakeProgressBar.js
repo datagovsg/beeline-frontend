@@ -12,7 +12,7 @@ export default [
       link(scope, elem, attr) {
         scope.progressValue = 0
         let timeout
-        var makeProgress = function() {
+        let makeProgress = function() {
           scope.progressValue = (scope.progressValue + 1) % (scope.max + 1)
           timeout = $timeout(makeProgress, scope.interval)
         }
