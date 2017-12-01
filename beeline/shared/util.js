@@ -1,18 +1,5 @@
 import _ from "lodash"
 
-/* Update a scope so that the child scopes also
-receive the $ionicView.*Enter events */
-export function setupBroadcastViewEnter($scope) {
-  $scope.$on("$ionicView.afterEnter", function(a, b) {
-    // var next = $scope.$$childHead;
-    // while (next) {
-    //     next.$broadcast('$ionicView.afterEnter', a, b);
-    //     next = next.$$nextSibling;
-    // }
-    $scope.$broadcast("mapRequireResize")
-  })
-}
-
 let lineSymbol = {
   path: "M 0,-1 0,1",
   strokeOpacity: 1,
@@ -81,8 +68,8 @@ export function retriveNextTrip(route) {
   let nextTrip = null
   for (let trip of sortedRunningTripInDates) {
     let sortedTripStopsInTime = _.sortBy(trip.tripStops, "time")
-    let boardTime = null,
-      lastStopTime = null
+    let boardTime = null
+    let lastStopTime = null
     if (trip.bookingInfo.windowSize && trip.bookingInfo.windowType) {
       if (trip.bookingInfo.windowType === "firstStop") {
         boardTime =
