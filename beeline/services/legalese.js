@@ -10,12 +10,16 @@ export default [
       "terms-of-use-modal.html")
 
     function showModal(template) {
-      let scope = $rootScope.$new()
-      let modal = $ionicModal.fromTemplate(template, { scope: scope })
-      modal.show()
+      return new Promise((resolve, reject) => {
+        let scope = $rootScope.$new()
+        let modal = $ionicModal.fromTemplate(template, { scope: scope })
+        modal.show()
 
-      scope.modal = modal
-      scope.$on("modal.hidden", () => modal.remove())
+        scope.modal = modal
+        scope.$on("modal.hidden", () => {
+          return resolve(modal.remove())
+        })
+      })
     }
 
     this.showPrivacyPolicy = () => showModal(privacyPolicyModalTemplate)
