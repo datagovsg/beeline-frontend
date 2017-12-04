@@ -55,19 +55,39 @@ export default [
 
     // show legal document update
     // '2017-11-08' is the latest version
-    if ($rootScope.o.APP.NAME=='Beeline' && !window.localStorage.viewedBeelineLegalDocumentVersion) {
-      window.localStorage.viewedBeelineLegalDocumentVersion = '2017-11-08'
-      $ionicPopup.alert({
+    let notesPopup = null
+    if (
+      $rootScope.o.APP.NAME == "Beeline" &&
+      !window.localStorage.viewedBeelineLegalDocumentVersion
+    ) {
+      window.localStorage.viewedBeelineLegalDocumentVersion = "2017-11-08"
+      notesPopup = $ionicPopup.show({
         title: "Beeline Notes",
-        template: "Beeline <b>Privacy Policy</b> and <b>Terms of Use</b> are updated, please check them out."
-      }).then(() => {
-        Legalese.showPrivacyPolicy()
-      }).then(() => {
-        Legalese.showTermsOfUse()
+        template:
+          "Beeline <b>Privacy Policy</b> and <b>Terms of Use</b> are updated, please check them out.",
+        buttons: [
+          {
+            text: "Learn More",
+            type: "button-positive",
+            onTap: () => $scope.learnMore(),
+          },
+          {
+            text: "Ok",
+          },
+        ],
       })
     }
 
-    function autoComplete () {
+    $scope.learnMore = function() {
+      // notesPopup is resolved when it's closed
+      notesPopup.then(() => {
+        Legalese.showPrivacyPolicy().then(() => {
+          Legalese.showTermsOfUse()
+        })
+      })
+    }
+
+    function autoComplete() {
       if (!$scope.data.queryText) {
         $scope.data.isFiltering = false
         return
