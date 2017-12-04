@@ -69,7 +69,7 @@ export default [
           {
             text: "Learn More",
             type: "button-positive",
-            onTap: () => $scope.learnMore(),
+            onTap: () => learnMore(),
           },
           {
             text: "Ok",
@@ -78,7 +78,7 @@ export default [
       })
     }
 
-    $scope.learnMore = function() {
+    function learnMore() {
       // notesPopup is resolved when it's closed
       notesPopup.then(() => {
         Legalese.showPrivacyPolicy().then(() => {
