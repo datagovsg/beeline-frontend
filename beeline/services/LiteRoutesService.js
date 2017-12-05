@@ -36,7 +36,7 @@ export default [
             trip => trip.date === minTripDate
           )
           let tripStops = _.flatten(
-            tripAsMinTripDate.map(trip => trip.tripStops)
+            tripAsMinTripDate.map(trip => trip.tripStops || [])
           )
           let allStopTimes = tripStops.map(stop => stop.time).sort()
           liteRoute.startTime = allStopTimes[0]
