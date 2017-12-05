@@ -2,11 +2,16 @@ import querystring from "querystring"
 import _ from "lodash"
 import assert from "assert"
 
-// Adapter function to convert what we get from the server into what we want
-// Ideally shouldn't need this if the server stays up to date
-// Transforms the data in place rather than making a new array
-// This is to save time since its a deep copy
-// and you wont need the original array anyway
+/**
+ * Adapter function to convert what we get from the server into what we want
+ * Ideally shouldn't need this if the server stays up to date
+ * Transforms the data in place rather than making a new array
+ * This is to save time since its a deep copy and you wont need the original array anyway
+ *
+ * @param {Object} data - the response from the `/routes` endpoint
+ * @return {Object}
+ *   the response, with time and locations flattened into it from the trip stops
+ */
 function transformRouteData(data) {
   _(data).each(function(route) {
     for (let trip of route.trips) {
@@ -140,9 +145,16 @@ export default [
           method: "GET",
           url: url,
         }).then(function(response) {
-          // Checking that we have trips, so that users of it don't choke
-          // on trips[0]
-          let routes = response.data.filter(r => r.trips && r.trips.length)
+          // Checking that we have trips,
+          // and that these trips have at least two stops,
+          // so that users of it don't choke on trips[0]
+          let routes = response.data.filter(
+            r =>
+              r.trips &&
+              r.trips.length &&
+              r.trips[0].tripStops &&
+              r.trips[0].tripStops.length >= 2
+          )
           transformRouteData(routes)
           activeRoutes = routes
           return routes
