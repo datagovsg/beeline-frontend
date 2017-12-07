@@ -53,11 +53,11 @@ export default [
     // fetch driver pings every 4s
     $scope.timeout = new SafeInterval(pingLoop, 4000, 1000)
 
-    MapService.on("killPingLoop", () => {
+    MapService.once("killPingLoop", () => {
       $scope.timeout.stop()
     })
 
-    MapService.on("startPingLoop", () => {
+    MapService.once("startPingLoop", () => {
       $scope.timeout.start()
     })
 

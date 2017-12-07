@@ -34,31 +34,26 @@ export default [
     const ticketPromise = TicketService.getTicketById(
       Number($stateParams.ticketId)
     )
-    const tripPromise = ticketPromise.then(ticket => {
-      return TripService.getTripData(Number(ticket.alightStop.tripId))
-    })
-    const routePromise = tripPromise.then(trip => {
-      return RoutesService.getRoute(Number(trip.routeId))
+    const routePromise = ticketPromise.then(ticket => {
+      return RoutesService.getRoute(Number(ticket.boardStop.trip.routeId))
     })
     const companyPromise = routePromise.then(route => {
       return CompanyService.getCompany(Number(route.transportCompanyId))
     })
-    ticketPromise.then(ticket => {
-      $scope.ticket = ticket
-    })
 
-    function sentTripToMapView() {
+    const sentTripToMapView = () => {
       const trip = $scope.trip
       if (trip) {
         MapService.emit("ping-single-trip", [trip])
       }
     }
 
-    tripPromise.then(trip => {
-      $scope.trip = trip
+    ticketPromise.then(ticket => {
+      $scope.ticket = ticket
+      $scope.trip = ticket.boardStop.trip
+      $scope.tripCode = ticket.tripCode
       sentTripToMapView()
     })
-
     routePromise.then(route => {
       $scope.route = route
     })

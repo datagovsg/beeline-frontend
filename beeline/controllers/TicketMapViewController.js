@@ -99,17 +99,13 @@ export default [
         $scope.mapObject.pingTrips.map((trip, index) => {
           return TripService.driverPings(trip.id).then(info => {
             const ticketInfo = {
-              tripCode: info && info.code,
               vehicle:
                 info &&
                 info.trip &&
                 info.trip.vehicle &&
                 info.trip.vehicle.vehicleNumber,
               driver:
-                info &&
-                info.trip &&
-                info.trip.tripDriver &&
-                info.trip.tripDriver.name,
+                info && info.trip && info.trip.driver && info.trip.driver.name,
               tripStatus: info && info.trip && info.trip.status,
             }
             MapService.emit("ticketInfo", ticketInfo)
