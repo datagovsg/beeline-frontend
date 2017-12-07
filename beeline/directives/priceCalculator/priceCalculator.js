@@ -1,20 +1,13 @@
 import priceCalculatorTemplate from "./priceCalculator.html"
 import assert from "assert"
-const queryString = require("querystring")
+import _ from "lodash"
 
 export default [
   "BookingService",
   "RoutesService",
   "UserService",
-  "$ionicPopup",
   "CreditsService",
-  function(
-    BookingService,
-    RoutesService,
-    UserService,
-    $ionicPopup,
-    CreditsService
-  ) {
+  function(BookingService, RoutesService, UserService, CreditsService) {
     return {
       restrict: "E",
       template: priceCalculatorTemplate,
@@ -93,7 +86,7 @@ export default [
             )
 
             $scope.isCalculating++
-            var promise = BookingService.computePriceInfo($scope.booking)
+            let promise = BookingService.computePriceInfo($scope.booking)
               .then(priceInfo => {
                 // Check to ensure that the order of
                 // replies don't affect the result
@@ -124,7 +117,7 @@ export default [
             latestRequest = promise
           }
 
-          var latestRequest = null
+          let latestRequest = null
           $scope.$watch(
             () =>
               _.pick($scope.booking, [

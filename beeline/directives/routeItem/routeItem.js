@@ -1,9 +1,7 @@
 import routeItemTemplate from "./routeItem.html"
 
 export default [
-  "$state",
-  "BookingService",
-  function($state, BookingService) {
+  function() {
     return {
       replace: false,
       template: routeItemTemplate,

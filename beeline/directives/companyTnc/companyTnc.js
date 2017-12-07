@@ -1,8 +1,3 @@
-import commonmark from "commonmark"
-
-let reader = new commonmark.Parser({ safe: true })
-let writer = new commonmark.HtmlRenderer({ safe: true })
-
 export default [
   "CompanyService",
   "$q",
@@ -23,13 +18,11 @@ export default [
             return
           }
 
-          let companyPromise = CompanyService.getCompany(scope.companyId).then(
-            company => {
-              scope.company = company
-              scope.$emit("companyTnc.done")
-              return company
-            }
-          )
+          CompanyService.getCompany(scope.companyId).then(company => {
+            scope.company = company
+            scope.$emit("companyTnc.done")
+            return company
+          })
         })
 
         scope.showTerms = () => {

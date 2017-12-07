@@ -1,21 +1,11 @@
-import { defaultMapOptions, dashedLineIcons } from "../../shared/util"
+import { defaultMapOptions } from "../../shared/util"
 import startEndPickerTemplate from "./startEndPicker.html"
+import _ from "lodash"
 
 export default [
-  "$state",
-  "$ionicModal",
-  "$http",
   "uiGmapGoogleMapApi",
-  "uiGmapIsReady",
   "$cordovaGeolocation",
-  function(
-    $state,
-    $ionicModal,
-    $http,
-    uiGmapGoogleMapApi,
-    uiGmapIsReady,
-    $cordovaGeolocation
-  ) {
+  function(uiGmapGoogleMapApi, $cordovaGeolocation) {
     return {
       restrict: "E",
       transclude: true,
@@ -46,7 +36,6 @@ export default [
         })
 
         scope.prompt = scope.prompt || "Next"
-        console.log(scope.setPoint)
         scope.setPoint = scope.setPoint === undefined ? "start" : scope.setPoint
         scope.startPoint = _.extend(
           {
@@ -312,16 +301,11 @@ export default [
 
         scope.$on("mapRequireResize", async function() {
           await uiGmapGoogleMapApi
-          google.maps.event.trigger($scope.map.mapControl.getGMap(), "resize")
+          google.maps.event.trigger(scope.map.mapControl.getGMap(), "resize")
         })
 
         // Click function for User Position Icon
         scope.getUserLocation = function() {
-          let options = {
-            timeout: 5000,
-            enableHighAccuracy: true,
-          }
-
           // promise
           $cordovaGeolocation
             .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
@@ -339,7 +323,7 @@ export default [
                 }, 300)
               },
               function(err) {
-                console.log("ERROR - " + err)
+                console.error("ERROR - " + err)
               }
             )
         }
