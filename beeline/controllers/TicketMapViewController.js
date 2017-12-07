@@ -69,13 +69,16 @@ export default [
 
     // fetch driver pings every 4s
     $scope.timeout = new SafeInterval(pingLoop, 4000, 1000)
+    $scope.statusTimeout = new SafeInterval(statusLoop, 60000, 1000)
 
     MapService.once("killTicketPingLoop", () => {
       $scope.timeout.stop()
+      $scope.statusTimeout.stop()
     })
 
     MapService.once("startTicketPingLoop", () => {
       $scope.timeout.start()
+      $scope.statusTimeout.start()
     })
 
     // load icons and path earlier by restart timeout on watching trips
@@ -86,46 +89,56 @@ export default [
       }
     })
 
+    /**
+     * Request driver pings for the given trip
+     */
     async function pingLoop() {
       if (!$scope.mapObject.pingTrips) return
 
-      $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
       $scope.mapObject.allRecentPings = $scope.mapObject.allRecentPings || []
-
-      $scope.mapObject.statusMessages.length = $scope.mapObject.allRecentPings.length =
-        $scope.mapObject.pingTrips.length
+      $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
 
       await Promise.all(
         $scope.mapObject.pingTrips.map((trip, index) => {
-          return TripService.driverPings(trip.id).then(info => {
-            const ticketInfo = {
-              vehicle:
-                info &&
-                info.trip &&
-                info.trip.vehicle &&
-                info.trip.vehicle.vehicleNumber,
-              driver:
-                info && info.trip && info.trip.driver && info.trip.driver.name,
-              tripStatus: info && info.trip && info.trip.status,
+          return TripService.driverPings(trip.id).then(pings => {
+            const [ping] = pings || []
+            if (ping) {
+              const now = ServerTime.getTime()
+              $scope.mapObject.allRecentPings[index] = {
+                pings,
+                isRecent: now - ping.time.getTime() < 2 * 60 * 60000,
+              }
+              MapService.emit("ping", ping)
             }
-            MapService.emit("ticketInfo", ticketInfo)
-            const now = ServerTime.getTime()
-
-            $scope.mapObject.allRecentPings[index] = {
-              ...info,
-              isRecent:
-                info.pings[0] &&
-                now - info.pings[0].time.getTime() < 2 * 60 * 60000,
-            }
-
-            $scope.mapObject.statusMessages[index] = _.get(
-              info,
-              "statuses[0].message",
-              null
-            )
           })
         })
       )
+    }
+
+    /**
+     * Request status messages for the given trip
+     */
+    async function statusLoop() {
+      if (!$scope.mapObject.pingTrips) return
+
+      $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
+      $scope.mapObject.statusMessages.length = $scope.mapObject.pingTrips.length
+
+      $scope.mapObject.pingTrips.map((trip, index) => {
+        return TripService.statuses(trip.id).then(statuses => {
+          const status = _.get(statuses, "[0]", null)
+
+          $scope.mapObject.statusMessages[index] = _.get(
+            status,
+            "message",
+            null
+          )
+
+          if (status) {
+            MapService.emit("status", status)
+          }
+        })
+      })
     }
   },
 ]
