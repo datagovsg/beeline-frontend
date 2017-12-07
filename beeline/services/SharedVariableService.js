@@ -1,9 +1,9 @@
+import _ from "lodash"
 
-angular.module('beeline')
-.factory('SharedVariableService',  ['RoutesService',
-  (RoutesService) => {
-
-    var sharedData = {
+angular.module("beeline").factory("SharedVariableService", [
+  "RoutesService",
+  RoutesService => {
+    let sharedData = {
       stops: [],
       boardStops: [],
       alightStops: [],
@@ -14,9 +14,9 @@ angular.module('beeline')
       liteTripStops: [],
       pingTrips: [],
       chosenStop: null,
-    };
+    }
 
-    var instance = {
+    let instance = {
       get: function() {
         return sharedData
       },
@@ -59,10 +59,9 @@ angular.module('beeline')
 
       setChosenStop: function(chosenStop) {
         sharedData.chosenStop = chosenStop
-      }
-
+      },
     }
 
-    return instance;
-  }]
-)
+    return instance
+  },
+])

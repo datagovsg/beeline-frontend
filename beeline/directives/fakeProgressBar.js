@@ -1,22 +1,24 @@
-export default ['$timeout',
+export default [
+  "$timeout",
   function($timeout) {
     return {
       template: `
         <progress class="fakeProgressBar" max="100" value={{progressValue}}></progress>
       `,
       scope: {
-        'interval': '<',
-        'max': '<',
+        interval: "<",
+        max: "<",
       },
-      link (scope, elem, attr) {
-        scope.progressValue = 0;
-        var timeout;
-        var makeProgress = function() {
-          scope.progressValue = (scope.progressValue + 1) % (scope.max+1);
-          timeout = $timeout(makeProgress, scope.interval);
+      link(scope, elem, attr) {
+        scope.progressValue = 0
+        let timeout
+        let makeProgress = function() {
+          scope.progressValue = (scope.progressValue + 1) % (scope.max + 1)
+          timeout = $timeout(makeProgress, scope.interval)
         }
-        makeProgress();
-        scope.$on('$destroy', ()=>$timeout.cancel(timeout));
-      }
+        makeProgress()
+        scope.$on("$destroy", () => $timeout.cancel(timeout))
+      },
     }
-}]
+  },
+]

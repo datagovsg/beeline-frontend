@@ -1,12 +1,30 @@
 {
-  "extends": "google",
+  "parser": "babel-eslint",
+  "extends": [
+    "eslint:recommended",
+    "google",
+    "prettier"
+  ],
   "env": {
-      "browser": true
+    "browser": true,
+    "node": true,
+    "es6": true
   },
   "rules": {
-    "padded-blocks": "off",
-    "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
-    "no-unused-vars": ["warn"],
-    "semi": [2, "never"]
+    "no-unused-vars": ["error"],
+    "semi": ["error", "never"],
+    "comma-dangle": ["error", "always-multiline"],
+    "radix": ["error", "as-needed"],
+    "require-jsdoc": ["warn"],
+    "no-console": ["error", {"allow": ["warn", "error"]}]
+  },
+  "globals": {
+    "angular": true,
+    "google": true,
+    "chcp": true,
+    "IonicDeeplink": true,
+    "device": true,
+    "cordova": true,
+    "StatusBar": true
   }
 }

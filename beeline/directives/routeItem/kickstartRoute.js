@@ -1,15 +1,21 @@
-
-export default ['KickstarterService',
-  function (KickstarterService) {
+export default [
+  "KickstarterService",
+  function(KickstarterService) {
     return {
-      template: require('./kickstartRoute.html'),
+      template: require("./kickstartRoute.html"),
       scope: {
-        'route': '<'
+        route: "<",
       },
-      controller: ['$scope', function($scope) {
-        $scope.bids = {}
-        $scope.$watch(() => KickstarterService.getBids(),
-          bids => $scope.bids = bids)
-      }]
+      controller: [
+        "$scope",
+        function($scope) {
+          $scope.bids = {}
+          $scope.$watch(
+            () => KickstarterService.getBids(),
+            bids => ($scope.bids = bids)
+          )
+        },
+      ],
     }
-}]
+  },
+]

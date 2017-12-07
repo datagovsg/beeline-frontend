@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - '9'
+script:
+  - git remote set-branches --add origin master
+  - git fetch
+  - echo Linting the following JS files in this branch - `git diff --name-only origin/master -- '*.js'`
+  - ./node_modules/eslint/bin/eslint.js `git diff --name-only origin/master -- '*.js'`

@@ -29,13 +29,13 @@ export default [
     // ------------------------------------------------------------------------
     // Input
     // ------------------------------------------------------------------------
-    let routeId = $stateParams.routeId ? +$stateParams.routeId : null;
+    let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
     let pickupStopId = $stateParams.pickupStopId
-                         ? +$stateParams.pickupStopId
-                         : null;
+      ? Number($stateParams.pickupStopId)
+      : null
     let dropoffStopId = $stateParams.dropoffStopId
-                          ? +$stateParams.dropoffStopId
-                          : null;
+      ? Number($stateParams.dropoffStopId)
+      : null
 
     // ------------------------------------------------------------------------
     // Model
@@ -62,7 +62,7 @@ export default [
     }
 
     $scope.disp = {
-      isBooking : false,
+      isBooking: false,
       navTitle: "Route Details",
     }
 
@@ -85,11 +85,11 @@ export default [
         type: "pickup",
         // stopId: $scope.data.pickupStop.id,
         stopId: pickupStopId,
-        callback: (stop) => {
-          $scope.data.pickupStop = stop;
-        }
-      });
-    };
+        callback: stop => {
+          $scope.data.pickupStop = stop
+        },
+      })
+    }
 
     $scope.chooseDropoff = () => {
       $state.go("tabs.route-stops", {
@@ -97,24 +97,27 @@ export default [
         type: "dropoff",
         // stopId: $scope.data.dropoffStop.id,
         stopId: dropoffStopId,
-        callback: (stop) => {
-          $scope.data.dropoffStop = stop;
-        }
-      });
-    };
+        callback: stop => {
+          $scope.data.dropoffStop = stop
+        },
+      })
+    }
 
-    function reactivateButton () {
+    function reactivateButton() {
       $scope.disp.isBooking = false
     }
 
     $scope.bookNext = () => {
       $scope.disp.isBooking = true
-      FastCheckoutService.fastCheckout(routeId,
-        $scope.data.pickupStop.id, $scope.data.dropoffStop.id, [$scope.data.nextTrip.date.getTime()])
-        .then( reactivateButton , reactivateButton)
-    };
+      FastCheckoutService.fastCheckout(
+        routeId,
+        $scope.data.pickupStop.id,
+        $scope.data.dropoffStop.id,
+        [$scope.data.nextTrip.date.getTime()]
+      ).then(reactivateButton, reactivateButton)
+    }
 
-    $scope.buyMore =  () => {
+    $scope.buyMore = () => {
       FastCheckoutService.buyMore(routeId)
     }
 
@@ -125,77 +128,98 @@ export default [
     // Load the route information
     // Show a loading overlay while we wait
     // force reload when revisit the same route
-    $scope.$on('$ionicView.afterEnter', () => {
+    $scope.$on("$ionicView.afterEnter", () => {
       $ionicLoading.show({
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-        hideOnStateChange: true
-      });
-      var promises = Promise.all([FastCheckoutService.verify(routeId), RoutesService.getRoute(routeId)])
-      promises.then((response) => {
-        $scope.data.nextTrip = response[0]
-        $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map(ts => ts.stop.id)
-        var route = response[1]
-        $scope.data.label = route.label
-        $ionicLoading.hide();
-        // Grab the price data
-        $scope.data.price = route.trips[0].price;
-        // routeSupportsRoutePass
-        $scope.data.routeSupportsRoutePass = FastCheckoutService.routeQualifiedForRoutePass(route)
-        // Grab the stop data
-        let [pickups, dropoffs] = BookingService.computeStops(route.trips);
-        pickups = new Map(pickups.map(stop => [stop.id, stop]));
-        dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]));
-        // if pickupStop is updated from 'tabs.route-stops' state
-        if (!$scope.data.pickupStop && pickupStopId) $scope.data.pickupStop = pickups.get(pickupStopId);
-        if (!$scope.data.dropoffStop && dropoffStopId) $scope.data.dropoffStop = dropoffs.get(dropoffStopId);
-      }).catch(error => {
-        $ionicLoading.hide();
-        $ionicPopup.alert({
-          title: "Sorry there's been a problem loading the route information",
-          subTitle: error
-        });
-      });
-    });
-
+        hideOnStateChange: true,
+      })
+      let promises = Promise.all([
+        FastCheckoutService.verify(routeId),
+        RoutesService.getRoute(routeId),
+      ])
+      promises
+        .then(response => {
+          $scope.data.nextTrip = response[0]
+          $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map(
+            ts => ts.stop.id
+          )
+          let route = response[1]
+          $scope.data.label = route.label
+          $ionicLoading.hide()
+          // Grab the price data
+          $scope.data.price = route.trips[0].price
+          // routeSupportsRoutePass
+          $scope.data.routeSupportsRoutePass = FastCheckoutService.routeQualifiedForRoutePass(
+            route
+          )
+          // Grab the stop data
+          let [pickups, dropoffs] = BookingService.computeStops(route.trips)
+          pickups = new Map(pickups.map(stop => [stop.id, stop]))
+          dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]))
+          // if pickupStop is updated from 'tabs.route-stops' state
+          if (!$scope.data.pickupStop && pickupStopId)
+            $scope.data.pickupStop = pickups.get(pickupStopId)
+          if (!$scope.data.dropoffStop && dropoffStopId)
+            $scope.data.dropoffStop = dropoffs.get(dropoffStopId)
+        })
+        .catch(error => {
+          $ionicLoading.hide()
+          $ionicPopup.alert({
+            title: "Sorry there's been a problem loading the route information",
+            subTitle: error,
+          })
+        })
+    })
 
     // Get the route credits
     $scope.$watch(
       () => RoutesService.getPassCountForRoute(routeId),
-      (passCount) => { $scope.data.passCount = passCount; }
+      passCount => {
+        $scope.data.passCount = passCount
+      }
     )
 
     // re-verify the fastCheckout once user is logged in
-    UserService.userEvents.on('userChanged', () => {
-      FastCheckoutService.verify(routeId).then((response) => {
+    UserService.userEvents.on("userChanged", () => {
+      FastCheckoutService.verify(routeId).then(response => {
         $scope.data.nextTrip = response
       })
     })
 
-    $scope.$watch(() => UserService.getUser(), (user) => {
-      $scope.data.isLoggedIn = user ? true : false
-      if (user) {
-        $scope.data.user = user
+    $scope.$watch(
+      () => UserService.getUser(),
+      user => {
+        $scope.data.isLoggedIn = user ? true : false
+        if (user) {
+          $scope.data.user = user
+        }
       }
-    })
+    )
 
-    $scope.$watch('data.pickupStop', (ps) => {
+    $scope.$watch("data.pickupStop", ps => {
       if (ps) {
-        MapService.emit('board-stop-selected', {stop: ps})
-        if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ps.id) === -1) {
-          $scope.data.boardStopInvalid = true;
+        MapService.emit("board-stop-selected", { stop: ps })
+        if (
+          $scope.data.nextTripStopIds &&
+          $scope.data.nextTripStopIds.indexOf(ps.id) === -1
+        ) {
+          $scope.data.boardStopInvalid = true
         } else {
-          $scope.data.boardStopInvalid = false;
+          $scope.data.boardStopInvalid = false
         }
       }
     })
 
-    $scope.$watch('data.dropoffStop', (ds) => {
+    $scope.$watch("data.dropoffStop", ds => {
       if (ds) {
-        MapService.emit('alight-stop-selected', {stop: ds})
-        if ($scope.data.nextTripStopIds && $scope.data.nextTripStopIds.indexOf(ds.id) === -1) {
-          $scope.data.alightStopInvalid = true;
+        MapService.emit("alight-stop-selected", { stop: ds })
+        if (
+          $scope.data.nextTripStopIds &&
+          $scope.data.nextTripStopIds.indexOf(ds.id) === -1
+        ) {
+          $scope.data.alightStopInvalid = true
         } else {
-          $scope.data.alightStopInvalid = false;
+          $scope.data.alightStopInvalid = false
         }
       }
     })
@@ -205,22 +229,27 @@ export default [
       if ($scope.activeTab === 0) {
         $scope.disp.navTitle = "Route Details"
       } else {
-        $scope.disp.navTitle = "Ticket for "+ moment($scope.ticket.boardStop.time).utcOffset('+08:00').format('D MMM Y')
+        $scope.disp.navTitle =
+          "Ticket for " +
+          moment($scope.ticket.boardStop.time)
+            .utcOffset("+08:00")
+            .format("D MMM Y")
       }
     }
 
-    $scope.$watch('data.nextTrip.hasNextTripTicket' , (hasNextTripTicket) =>{
+    $scope.$watch("data.nextTrip.hasNextTripTicket", hasNextTripTicket => {
       $scope.activeTab = hasNextTripTicket ? 1 : 0
       if (hasNextTripTicket) {
-        var ticketPromise = TicketService.getTicketById(+$scope.data.nextTrip.nextTripTicketId);
-        ticketPromise.then((ticket) => {
-          $scope.ticket = ticket;
-          ticketPromise.then((ticket) => {
-            return TripService.getTripData(+ticket.alightStop.tripId);
-          });
-        });
+        let ticketPromise = TicketService.getTicketById(
+          +$scope.data.nextTrip.nextTripTicketId
+        )
+        ticketPromise.then(ticket => {
+          $scope.ticket = ticket
+          ticketPromise.then(ticket => {
+            return TripService.getTripData(+ticket.alightStop.tripId)
+          })
+        })
       }
     })
-
-  }
-];
+  },
+]

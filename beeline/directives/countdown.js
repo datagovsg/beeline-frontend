@@ -1,11 +1,11 @@
-import moment from 'moment'
-export default ['$interval',
+import moment from "moment"
+export default [
+  "$interval",
   function($interval) {
-
     return {
       scope: {
-        boardTime: '<',
-        bookingEnds: '='
+        boardTime: "<",
+        bookingEnds: "=",
       },
       template: `
       <div>
@@ -14,35 +14,37 @@ export default ['$interval',
       </div>
       `,
       link(scope, elem, attr) {
-
-        var stopTime // so that we can cancel the time updates
+        let stopTime // so that we can cancel the time updates
 
         // used to update the UI
         function updateTime() {
-          scope.minsBeforeClose = moment(scope.boardTime).diff(moment(Date.now()), 'minutes');
+          scope.minsBeforeClose = moment(scope.boardTime).diff(
+            moment(Date.now()),
+            "minutes"
+          )
         }
 
-        scope.$watch('boardTime', (bt) => {
+        scope.$watch("boardTime", bt => {
           if (bt && !stopTime) {
-            scope.bookingEnds = false;
-            stopTime = $interval(updateTime, 100*30);
+            scope.bookingEnds = false
+            stopTime = $interval(updateTime, 100 * 30)
           }
         })
 
         // watch the expression, and update the UI on change.
-        scope.$watch('minsBeforeClose', function(value) {
+        scope.$watch("minsBeforeClose", function(value) {
           if (value <= 0) {
             scope.bookingEnds = true
             $interval.cancel(stopTime)
           }
-        });
+        })
 
         // listen on DOM destroy (removal) event, and cancel the next UI update
         // to prevent updating time after the DOM element was removed.
-        scope.$on('$destroy', function() {
-          $interval.cancel(stopTime);
-        });
-
-      }
+        scope.$on("$destroy", function() {
+          $interval.cancel(stopTime)
+        })
+      },
     }
-}]
+  },
+]

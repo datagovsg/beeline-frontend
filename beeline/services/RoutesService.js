@@ -1,101 +1,112 @@
-import querystring from 'querystring';
-import _ from 'lodash';
-import assert from 'assert';
+import querystring from "querystring"
+import _ from "lodash"
+import assert from "assert"
 
-// Adapter function to convert what we get from the server into what we want
-// Ideally shouldn't need this if the server stays up to date
-// Transforms the data in place rather than making a new array
-// This is to save time since its a deep copy
-// and you wont need the original array anyway
+/**
+ * Adapter function to convert what we get from the server into what we want
+ * Ideally shouldn't need this if the server stays up to date
+ * Transforms the data in place rather than making a new array
+ * This is to save time since its a deep copy and you wont need the original array anyway
+ *
+ * @param {Object} data - the response from the `/routes` endpoint
+ * @return {Object}
+ *   the response, with time and locations flattened into it from the trip stops
+ */
 function transformRouteData(data) {
   _(data).each(function(route) {
     for (let trip of route.trips) {
-      assert.equal(typeof trip.date, 'string');
-      trip.date = new Date(trip.date);
+      assert.equal(typeof trip.date, "string")
+      trip.date = new Date(trip.date)
 
       for (let tripStop of trip.tripStops) {
-        assert.equal(typeof tripStop.time, 'string');
-        tripStop.time = new Date(tripStop.time);
+        assert.equal(typeof tripStop.time, "string")
+        tripStop.time = new Date(tripStop.time)
       }
     }
 
-    var firstTripStops = route.trips[0].tripStops;
-    route.startTime = firstTripStops[0].time;
-    route.startRoad = firstTripStops[0].stop.description;
-    route.endTime = firstTripStops[firstTripStops.length - 1].time;
-    route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description;
-    route.tripsByDate = _.keyBy(route.trips,
-        trip => trip.date.getTime());
-  });
-  return data;
+    let firstTripStops = route.trips[0].tripStops
+    route.startTime = firstTripStops[0].time
+    route.startRoad = firstTripStops[0].stop.description
+    route.endTime = firstTripStops[firstTripStops.length - 1].time
+    route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description
+    route.tripsByDate = _.keyBy(route.trips, trip => trip.date.getTime())
+  })
+  return data
 }
 
-export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
+export default [
+  "$http",
+  "UserService",
+  "uiGmapGoogleMapApi",
+  "$q",
+  "p",
   function RoutesService($http, UserService, uiGmapGoogleMapApi, $q, p) {
     // For all routes
-    var routesCache;
-    var activeRoutes;
-    var recentRoutesCache;
-    var recentRoutes;
+    let routesCache
+    let activeRoutes
+    let recentRoutesCache
+    let recentRoutes
 
     // For single routes
-    var lastRouteId = null;
-    var lastPromise = null;
+    let lastRouteId = null
+    let lastPromise = null
 
     // For Route Credits
-    var routePassesCache;
-    var tagToPassesMap;
-    var routePassCache;
-    var routeToRidesRemainingMap;
-    var routesWithRoutePassPromise;
-    var routesWithRoutePass;
-    var activatedKickstarterRoutes;
-    var routeToRoutePassTagsPromise = null;
-    var routeToRoutePassTags = null;
+    let routePassesCache
+    let tagToPassesMap
+    let routePassCache
+    let routeToRidesRemainingMap
+    let routesWithRoutePassPromise
+    let routesWithRoutePass
+    let activatedKickstarterRoutes
+    let routeToRoutePassTagsPromise = null
+    let routeToRoutePassTags = null
 
-    UserService.userEvents.on('userChanged', () => {
+    UserService.userEvents.on("userChanged", () => {
       instance.fetchRecentRoutes(true)
       instance.fetchRoutePasses(true)
       instance.fetchRoutesWithRoutePass()
       instance.fetchRecentRoutes(true)
     })
 
-    var instance = {
-
+    let instance = {
       // Retrive the data on a single route, but pulls a lot more data
       // Pulls all the trips plus the route path
       // getRoute() will return the heavier stuff (all trips, availability, path)
       getRoute: function(routeId, ignoreCache, options) {
-        assert.equal(typeof routeId, 'number');
+        assert.equal(typeof routeId, "number")
 
         if (!ignoreCache && !options && lastRouteId === routeId) {
-          return lastPromise;
+          return lastPromise
         }
 
-        var startDate = new Date();
-        startDate.setHours(3,0,0,0,0)
+        let startDate = new Date()
+        startDate.setHours(3, 0, 0, 0, 0)
 
-        var finalOptions = _.assign({
-          startDate: startDate.getTime(),
-          includeTrips: true,
-        }, options)
+        let finalOptions = _.assign(
+          {
+            startDate: startDate.getTime(),
+            includeTrips: true,
+          },
+          options
+        )
 
-        lastRouteId = routeId;
-        return lastPromise = UserService.beeline({
-          method: 'GET',
+        lastRouteId = routeId
+        return (lastPromise = UserService.beeline({
+          method: "GET",
           url: `/routes/${routeId}?${querystring.stringify(finalOptions)}`,
         })
-        .then(function(response) {
-          transformRouteData([response.data]);
-          return response.data;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+          .then(function(response) {
+            transformRouteData([response.data])
+            return response.data
+          })
+          .catch(err => {
+            console.error(err)
+          }))
       },
 
       // Returns list of all routes
-      getRoutes: function(){
+      getRoutes: function() {
         return activeRoutes
       },
 
@@ -105,45 +116,57 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       // trip data (limited to 5 trips, no path)
       // Return promise with all routes
       fetchRoutes: function(ignoreCache, options) {
-        if (routesCache && !ignoreCache && !options) return routesCache;
+        if (routesCache && !ignoreCache && !options) return routesCache
 
-        var url = '/routes?';
+        let url = "/routes?"
 
         // Start at midnight to avoid cut trips in the middle
         // FIXME: use date-based search instead
-        var startDate = new Date();
-        startDate.setHours(3,0,0,0,0)
+        let startDate = new Date()
+        startDate.setHours(3, 0, 0, 0, 0)
 
-        var finalOptions = _.assign({
-          startDate: startDate.getTime(),
-          includeTrips: true,
-          limitTrips: 5,
-          includePath: false,
-          tags: JSON.stringify(['public']),
-        }, options,
-        p.transportCompanyId ? {transportCompanyId: p.transportCompanyId}: {})
+        let finalOptions = _.assign(
+          {
+            startDate: startDate.getTime(),
+            includeTrips: true,
+            limitTrips: 5,
+            includePath: false,
+            tags: JSON.stringify(["public"]),
+          },
+          options,
+          p.transportCompanyId
+            ? { transportCompanyId: p.transportCompanyId }
+            : {}
+        )
 
         url += querystring.stringify(finalOptions)
 
-        var routesPromise = UserService.beeline({
-          method: 'GET',
+        let routesPromise = UserService.beeline({
+          method: "GET",
           url: url,
-        })
-        .then(function(response) {
-          // Checking that we have trips, so that users of it don't choke
-          // on trips[0]
-          var routes = response.data.filter(r => r.trips && r.trips.length);
+        }).then(function(response) {
+          // Checking that we have trips,
+          // and that these trips have at least two stops,
+          // so that users of it don't choke on trips[0]
+          let routes = response.data.filter(
+            r =>
+              r.trips &&
+              r.trips.length &&
+              r.trips[0].tripStops &&
+              r.trips[0].tripStops.length >= 2
+          )
           transformRouteData(routes)
           activeRoutes = routes
-          return routes;
-        });
+          return routes
+        })
 
         // Cache the promise -- prevents two requests from being
         // in flight together
-        if (!options)
-          routesCache = routesPromise;
+        if (!options) {
+          routesCache = routesPromise
+        }
 
-        return routesPromise;
+        return routesPromise
       },
 
       /**
@@ -165,74 +188,79 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       searchRoutes: function(search) {
         // return Promise object
         return UserService.beeline({
-          method: 'GET',
-          url: '/routes/search_by_latlon?' + querystring.stringify({
-            startLat: search.startLat,
-            startLng: search.startLng,
-            endLat: search.endLat,
-            endLng: search.endLng,
-            arrivalTime: search.arrivalTime,
-            startTime:  search.startTime,
-            endTime: search.endTime,
-            tags: JSON.stringify(['public'])
-          }),
+          method: "GET",
+          url:
+            "/routes/search_by_latlon?" +
+            querystring.stringify({
+              startLat: search.startLat,
+              startLng: search.startLng,
+              endLat: search.endLat,
+              endLng: search.endLng,
+              arrivalTime: search.arrivalTime,
+              startTime: search.startTime,
+              endTime: search.endTime,
+              tags: JSON.stringify(["public"]),
+            }),
         }).then(function(response) {
-          return transformRouteData(response.data);
-        });
+          return transformRouteData(response.data)
+        })
       },
 
       // Retrieves the recent routes for a user
       // If not logged in then just returns an empty array
       fetchRecentRoutes: function(ignoreCache) {
         if (UserService.getUser()) {
-          if (recentRoutesCache && !ignoreCache) return recentRoutesCache;
-          return recentRoutesCache = UserService.beeline({
-            method: 'GET',
-            url: '/routes/recent?limit=10'
+          if (recentRoutesCache && !ignoreCache) return recentRoutesCache
+          return (recentRoutesCache = UserService.beeline({
+            method: "GET",
+            url: "/routes/recent?limit=10",
           }).then(function(response) {
             recentRoutes = response.data
             return recentRoutes
-          });
+          }))
         } else {
-          //if user not logged in clear recentRoutes
-          recentRoutes = [];
-          return $q.resolve([]);
+          // if user not logged in clear recentRoutes
+          recentRoutes = []
+          return $q.resolve([])
         }
       },
 
-      getRecentRoutes: function(){
+      getRecentRoutes: function() {
         return recentRoutes
       },
 
-  // TODO: make a directive, otherwise literoute need to inject this routeservice
-      decodeRoutePath: function (path) {
-        assert.strictEqual(typeof path, 'string');
-        return uiGmapGoogleMapApi.then((googleMaps) => {
+      // TODO: make a directive, otherwise literoute need to inject this routeservice
+      decodeRoutePath: function(path) {
+        assert.strictEqual(typeof path, "string")
+        return uiGmapGoogleMapApi.then(googleMaps => {
           // Array of LatLng objects
-          return googleMaps.geometry.encoding.decodePath(path);
+          return googleMaps.geometry.encoding.decodePath(path)
         })
       },
 
-      getRouteFeatures: function (routeId) {
+      getRouteFeatures: function(routeId) {
         return UserService.beeline({
-          method: 'GET',
+          method: "GET",
           url: `/routes/${routeId}/features`,
         })
-        .then(function(response) {
-          return response.data;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+          .then(function(response) {
+            return response.data
+          })
+          .catch(err => {
+            console.error(err)
+          })
       },
 
-  // Return an array of regions covered by a given array of routes
+      // Return an array of regions covered by a given array of routes
       getUniqueRegionsFromRoutes: function(routes) {
-        return _(routes).map(function(route) {return route.regions;})
-        .flatten()
-        .uniqBy('id')
-        .sortBy('name')
-        .value();
+        return _(routes)
+          .map(function(route) {
+            return route.regions
+          })
+          .flatten()
+          .uniqBy("id")
+          .sortBy("name")
+          .value()
       },
 
       // get all route passes associated with the user
@@ -241,26 +269,25 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       // - ignoreCache - boolean
       // output:
       // - Promise containing all route passes associated with user
-      fetchRoutePasses: function(ignoreCache){
-        if(!ignoreCache && routePassesCache){
+      fetchRoutePasses: function(ignoreCache) {
+        if (!ignoreCache && routePassesCache) {
           return routePassesCache
         }
         // Destroy the cache for dependent calls
         // This is a hack
-        routesWithRoutePassPromise = null;
-        routePassCache = null;
+        routesWithRoutePassPromise = null
+        routePassCache = null
 
-        let user = UserService.getUser();
-        if(!user){
-          return routePassesCache = Promise.resolve(tagToPassesMap = null);
-        }
-        else {
-          return routePassesCache = UserService.beeline({
-            method: 'GET',
-            url: '/route_passes'
-          }).then((response) => {
-            return tagToPassesMap = response.data
-          })
+        let user = UserService.getUser()
+        if (!user) {
+          return (routePassesCache = Promise.resolve((tagToPassesMap = null)))
+        } else {
+          return (routePassesCache = UserService.beeline({
+            method: "GET",
+            url: "/route_passes",
+          }).then(response => {
+            return (tagToPassesMap = response.data)
+          }))
         }
       },
 
@@ -270,8 +297,8 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       // output:
       // - Object containing all route passes associated with user
       // - [tag provided] amount of credits specific to the tag
-      getRoutePasses: function(tag){
-        if(tag && tagToPassesMap){
+      getRoutePasses: function(tag) {
+        if (tag && tagToPassesMap) {
           return tagToPassesMap[tag]
         } else {
           return tagToPassesMap
@@ -284,7 +311,7 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       // - creditTag - string: tag associated with route
       // output:
       // - promise containing number of rides remaining on the route pass for specified route
-      getRoutePassCount: function(){
+      getRoutePassCount: function() {
         return routeToRidesRemainingMap
       },
 
@@ -293,11 +320,11 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       // null means not logged in so we don't know
       getPassCountForRoute: function(routeId) {
         if (UserService.getUser()) {
-          if (!routeToRidesRemainingMap) return null;
-          let ridesRemaining = routeToRidesRemainingMap[routeId];
-          return ridesRemaining ? ridesRemaining : 0;
+          if (!routeToRidesRemainingMap) return null
+          let ridesRemaining = routeToRidesRemainingMap[routeId]
+          return ridesRemaining ? ridesRemaining : 0
         } else {
-          return null;
+          return null
         }
       },
 
@@ -306,35 +333,38 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       // - ignoreCache - boolean to determine if cache should be ignored
       // output:
       // - promise containing a map of routeId to Rides Remaining
-      fetchRoutePassCount: function(ignoreCache){
-        if(ignoreCache || !routePassCache){
+      fetchRoutePassCount: function(ignoreCache) {
+        if (ignoreCache || !routePassCache) {
           let allRoutesPromise = this.fetchRoutes(ignoreCache)
           let allRoutePassesPromise = this.fetchRoutePasses(ignoreCache)
 
-          routePassCache = $q.all([allRoutesPromise, allRoutePassesPromise]).then(function(values){
-            let allRoutes = values[0]
-            let allRoutePasses = values[1];
-            let allRoutePassTags = _.keys(allRoutePasses);
-            routeToRidesRemainingMap = {}
+          routePassCache = $q
+            .all([allRoutesPromise, allRoutePassesPromise])
+            .then(function(values) {
+              let allRoutes = values[0]
+              let allRoutePasses = values[1]
+              let allRoutePassTags = _.keys(allRoutePasses)
+              routeToRidesRemainingMap = {}
 
-            allRoutes.forEach(function(route){
-              let notableTags = _.intersection(route.tags, allRoutePassTags);
-              if(notableTags.length < 1) return //no credit for such route
-              else {
-                // support multiple tags e.g. crowdstart-140, rp-161
-                // calculate the rides left in the route pass
-                notableTags.forEach(function(tag) {
-                  let passesAvailable = allRoutePasses[tag];
-                  routeToRidesRemainingMap[route.id] =
-                    (routeToRidesRemainingMap[route.id] || 0) + passesAvailable;
-                })
-              }
+              allRoutes.forEach(function(route) {
+                let notableTags = _.intersection(route.tags, allRoutePassTags)
+                if (notableTags.length < 1) return
+                else {
+                  // no credit for such route
+                  // support multiple tags e.g. crowdstart-140, rp-161
+                  // calculate the rides left in the route pass
+                  notableTags.forEach(function(tag) {
+                    let passesAvailable = allRoutePasses[tag]
+                    routeToRidesRemainingMap[route.id] =
+                      (routeToRidesRemainingMap[route.id] || 0) +
+                      passesAvailable
+                  })
+                }
+              })
+              return routeToRidesRemainingMap
             })
-            return routeToRidesRemainingMap
-          })
         }
         return routePassCache
-
       },
 
       // Generates a list of all routes, modifying those with route
@@ -350,30 +380,34 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       // - updates routesWithRoutePass: array containing all avaialable routes,
       // modifying those with route credits remaining with a ridesRemaining property
       fetchRoutesWithRoutePass: function(ignoreCache) {
-        if(ignoreCache || !routesWithRoutePassPromise){
-          return routesWithRoutePassPromise = $q.all([
-            this.fetchRoutes(ignoreCache),
-            this.fetchRoutePassCount(ignoreCache),
-          ]).then(([allRoutes, routeToRidesRemainingMap]) => {
-            if(routeToRidesRemainingMap){
-              routesWithRoutePass = allRoutes.map(route => {
-                var clone = _.clone(route);
-                clone.ridesRemaining = (route.id in routeToRidesRemainingMap) ?
-                  routeToRidesRemainingMap[route.id] : null;
-                return clone;
-              })
-              activatedKickstarterRoutes = routesWithRoutePass.filter(
-                route => route.id in routeToRidesRemainingMap)
+        if (ignoreCache || !routesWithRoutePassPromise) {
+          return (routesWithRoutePassPromise = $q
+            .all([
+              this.fetchRoutes(ignoreCache),
+              this.fetchRoutePassCount(ignoreCache),
+            ])
+            .then(([allRoutes, routeToRidesRemainingMap]) => {
+              if (routeToRidesRemainingMap) {
+                routesWithRoutePass = allRoutes.map(route => {
+                  let clone = _.clone(route)
+                  clone.ridesRemaining =
+                    route.id in routeToRidesRemainingMap
+                      ? routeToRidesRemainingMap[route.id]
+                      : null
+                  return clone
+                })
+                activatedKickstarterRoutes = routesWithRoutePass.filter(
+                  route => route.id in routeToRidesRemainingMap
+                )
 
-              return routesWithRoutePass;
-            } else {
-              return routesWithRoutePass = allRoutes
-            }
-          })
+                return routesWithRoutePass
+              } else {
+                return (routesWithRoutePass = allRoutes)
+              }
+            }))
         }
 
         return routesWithRoutePassPromise
-
       },
 
       // Returns array containing all avaialable routes,
@@ -386,94 +420,105 @@ export default ['$http', 'UserService', 'uiGmapGoogleMapApi', '$q', 'p',
       // Returns array containing only those routes with
       // ridesRemaining property
       // Updated by: fetchRoutesWithRoutePass
-      getActivatedKickstarterRoutes: function(){
+      getActivatedKickstarterRoutes: function() {
         return activatedKickstarterRoutes
       },
 
       // Returns promise containing a map of all routeId to their corresponding tags
       // based on the route passes available to a user
-      fetchRoutePassTags: function(ignoreCache){
+      fetchRoutePassTags: function(ignoreCache) {
         if (!ignoreCache && routeToRoutePassTagsPromise) {
-          return routeToRoutePassTagsPromise;
+          return routeToRoutePassTagsPromise
         }
 
         let routesPromise = this.fetchRoutesWithRoutePass()
         let routePassesPromise = this.fetchRoutePasses()
 
-        return routeToRoutePassTagsPromise = $q.all([routesPromise, routePassesPromise])
-        .then(([routes, routePasses])=>{
-          if(routePasses){
-            routeToRoutePassTags = {}
-            routes.forEach(route => {
-              let routePassTags = _.keys(routePasses);
-              let notableTags = _.intersection(route.tags, routePassTags)
-              if(notableTags.length >= 1){
-                // sort in alphabetical order followed by
-                // to encourage use of crowdstart credit before rp-
-                notableTags = _.sortBy(notableTags, function(tag) {
-                  return tag
-                })
-                // filter out no balance tag
-                notableTags = _.filter(notableTags, (tag)=>{
-                  return routePasses[tag] > 0
-                })
-                routeToRoutePassTags[route.id] = notableTags
-              } else {
-                routeToRoutePassTags[route.id] = null
-              }
-            })
+        return (routeToRoutePassTagsPromise = $q
+          .all([routesPromise, routePassesPromise])
+          .then(([routes, routePasses]) => {
+            if (routePasses) {
+              routeToRoutePassTags = {}
+              routes.forEach(route => {
+                let routePassTags = _.keys(routePasses)
+                let notableTags = _.intersection(route.tags, routePassTags)
+                if (notableTags.length >= 1) {
+                  // sort in alphabetical order followed by
+                  // to encourage use of crowdstart credit before rp-
+                  notableTags = _.sortBy(notableTags, function(tag) {
+                    return tag
+                  })
+                  // filter out no balance tag
+                  notableTags = _.filter(notableTags, tag => {
+                    return routePasses[tag] > 0
+                  })
+                  routeToRoutePassTags[route.id] = notableTags
+                } else {
+                  routeToRoutePassTags[route.id] = null
+                }
+              })
 
-            return routeToRoutePassTags
-          } else {
-            return routeToRoutePassTags = null
-          }
-        })
+              return routeToRoutePassTags
+            } else {
+              return (routeToRoutePassTags = null)
+            }
+          }))
       },
 
       // Returns the route pass tag matched to a route if routeId is given
       // Otherwise, returns a map of all routeId to their corresponding tags
       // based on the route passes available to a user
-      getRoutePassTags: function(routeId){
-        if(routeId && routeToRoutePassTags){
+      getRoutePassTags: function(routeId) {
+        if (routeId && routeToRoutePassTags) {
           return routeToRoutePassTags[routeId]
         } else {
           return routeToRoutePassTags
         }
       },
 
-      fetchPriceSchedule: function(routeId){
+      fetchPriceSchedule: function(routeId) {
         return UserService.beeline({
-          method: 'GET',
+          method: "GET",
           url: `/routes/${routeId}/price_schedule`,
         })
-        .then(function(response) {
-          let priceSchedules = []
-          _.forEach(response.data, (value , key) => {
-            let quantity = parseInt(key)
-            let singleSchedule = null
-            if (quantity === 1) {
-              singleSchedule = {"quantity": 1, "price": parseFloat(value.price), "totalPrice": parseFloat(value.price)}
-            } else {
-              // in case no discount is found
-              let discount = value.discount || 0
-              let price = (value.price / quantity)
-              let originalPrice = discount + value.price
-              let computedDiscount = (discount / originalPrice).toFixed(2) * 100
-              singleSchedule = {"quantity": quantity, "price": price, "discount": computedDiscount, "totalPrice": parseFloat(value.price)}
-            }
-            priceSchedules.push(singleSchedule)
+          .then(function(response) {
+            let priceSchedules = []
+            _.forEach(response.data, (value, key) => {
+              let quantity = parseInt(key)
+              let singleSchedule = null
+              if (quantity === 1) {
+                singleSchedule = {
+                  quantity: 1,
+                  price: parseFloat(value.price),
+                  totalPrice: parseFloat(value.price),
+                }
+              } else {
+                // in case no discount is found
+                let discount = value.discount || 0
+                let price = value.price / quantity
+                let originalPrice = discount + value.price
+                let computedDiscount =
+                  (discount / originalPrice).toFixed(2) * 100
+                singleSchedule = {
+                  quantity: quantity,
+                  price: price,
+                  discount: computedDiscount,
+                  totalPrice: parseFloat(value.price),
+                }
+              }
+              priceSchedules.push(singleSchedule)
+            })
+            // sort the schedules from biggest quantity to 1 ticket
+            priceSchedules = _.sortBy(priceSchedules, function(schedule) {
+              return schedule.quantity
+            }).reverse()
+            return priceSchedules
           })
-          // sort the schedules from biggest quantity to 1 ticket
-          priceSchedules = _.sortBy(priceSchedules, function(schedule) {
-            return schedule.quantity
-          }).reverse()
-          return priceSchedules
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      }
-
-    };
-    return instance;
-}]
+          .catch(err => {
+            console.error(err)
+          })
+      },
+    }
+    return instance
+  },
+]

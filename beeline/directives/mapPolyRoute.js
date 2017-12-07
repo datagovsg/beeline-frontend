@@ -5,14 +5,14 @@ export default function() {
     <ui-gmap-polyline path="routePath" stroke="strokeOptions" static="true"></ui-gmap-polyline>
     `,
     scope: {
-      'routePath': '<',
+      routePath: "<",
     },
     link: function(scope, element, attributes) {
       scope.strokeOptions = {
-        color: '#4b3863',
+        color: "#4b3863",
         weight: 3.0,
-        opacity: 0.7
-      };
+        opacity: 0.7,
+      }
     },
-  };
+  }
 }

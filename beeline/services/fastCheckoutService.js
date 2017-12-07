@@ -1,29 +1,36 @@
-import moment from 'moment';
-import {retriveNextTrip} from '../shared/util'
-import assert from 'assert'
+import { retriveNextTrip } from "../shared/util"
+import _ from "lodash"
 
-angular.module('beeline')
-.factory('FastCheckoutService', ['RoutesService', 'UserService',
-  'purchaseRoutePassService', 'TicketService', '$stateParams', 'BookingSummaryModalService', '$ionicLoading',
-  function fastCheckoutService(RoutesService, UserService,
-    purchaseRoutePassService, TicketService, $stateParams, BookingSummaryModalService, $ionicLoading) {
-
-    var user;
-    var hasSavedPaymentInfo;
-    var paymentInfo;
-    var ridesRemaining;
-    var route;
-    var routeId;
+angular.module("beeline").factory("FastCheckoutService", [
+  "RoutesService",
+  "UserService",
+  "purchaseRoutePassService",
+  "TicketService",
+  "BookingSummaryModalService",
+  "$ionicLoading",
+  function fastCheckoutService(
+    RoutesService,
+    UserService,
+    purchaseRoutePassService,
+    TicketService,
+    BookingSummaryModalService,
+    $ionicLoading
+  ) {
+    let user
+    let hasSavedPaymentInfo
+    let paymentInfo
+    let ridesRemaining
+    let route
 
     // login
     function userLoginPromise() {
-      return new Promise((resolve,reject) => {
+      return new Promise((resolve, reject) => {
         if (UserService.getUser()) {
           return resolve(UserService.getUser())
         } else {
-          UserService.promptLogIn().then((user) => {
+          UserService.promptLogIn().then(user => {
             if (user) return resolve(user)
-            else return reject('Not Logged In')
+            else return reject("Not Logged In")
           })
         }
       })
@@ -31,33 +38,65 @@ angular.module('beeline')
 
     // ridesRemaining promise
     function ridesRemainingPromise(routeId) {
-      return new Promise((resolve,reject) => {
+      return new Promise((resolve, reject) => {
         if (RoutesService.getPassCountForRoute(routeId)) {
           return resolve(RoutesService.getPassCountForRoute(routeId))
         } else {
-          RoutesService.fetchRoutesWithRoutePass().then(() => {
-            return resolve(RoutesService.getPassCountForRoute(routeId))
-          }).catch((err) =>{
-            return reject(err)
-          })
+          RoutesService.fetchRoutesWithRoutePass()
+            .then(() => {
+              return resolve(RoutesService.getPassCountForRoute(routeId))
+            })
+            .catch(err => {
+              return reject(err)
+            })
         }
       })
     }
 
     //  modal for purchase route pass
-    function purchaseRoutePass(hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, boardStopId, alightStopId, selectedDates) {
-      return purchaseRoutePassService.show(hideOneTicket, route, routeId, hasSavedPaymentInfo, savedPaymentInfo, boardStopId, alightStopId, selectedDates)
+    function purchaseRoutePass(
+      hideOneTicket,
+      route,
+      routeId,
+      hasSavedPaymentInfo,
+      savedPaymentInfo,
+      boardStopId,
+      alightStopId,
+      selectedDates
+    ) {
+      return purchaseRoutePassService.show(
+        hideOneTicket,
+        route,
+        routeId,
+        hasSavedPaymentInfo,
+        savedPaymentInfo,
+        boardStopId,
+        alightStopId,
+        selectedDates
+      )
     }
-
 
     function routeQualifiedForRoutePass(route) {
       if (route && route.tags) {
-        var rpList = route.tags.filter((tag) => tag.includes('rp-'))
-        return rpList && rpList.length === 1 && route.notes && route.notes.passSizes && route.notes.passSizes.length > 0
+        let rpList = route.tags.filter(tag => tag.includes("rp-"))
+        return (
+          rpList &&
+          rpList.length === 1 &&
+          route.notes &&
+          route.notes.passSizes &&
+          route.notes.passSizes.length > 0
+        )
       }
     }
 
-    function purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId, hasSavedPaymentInfo) {
+    function purchaseTicketUsingRoutePass(
+      routeId,
+      route,
+      selectedDates,
+      boardStopId,
+      alightStopId,
+      hasSavedPaymentInfo
+    ) {
       return BookingSummaryModalService.show({
         routeId: routeId,
         price: route.trips[0].price,
@@ -70,120 +109,168 @@ angular.module('beeline')
       })
     }
 
-     function verifyPromise(routeId) {
+    function verifyPromise(routeId) {
       return new Promise(async (resolve, reject) => {
         route = await RoutesService.getRoute(routeId)
-        var nextTrip = retriveNextTrip(route)
+        let nextTrip = retriveNextTrip(route)
         if (nextTrip === null) {
-          return reject('There is no next trip')
+          return reject("There is no next trip")
         }
-        var seatsAvailable = false
-        if (nextTrip && nextTrip.availability && nextTrip.availability.seatsAvailable > 0) {
+        let seatsAvailable = false
+        if (
+          nextTrip &&
+          nextTrip.availability &&
+          nextTrip.availability.seatsAvailable > 0
+        ) {
           seatsAvailable = true
         }
-        var hasNextTripTicket = null, previouslyBookedDays = null, nextTripTicketId = null
+        let hasNextTripTicket = null
+        let previouslyBookedDays = null
+        let nextTripTicketId = null
         // user has the next trip ticket
         if (UserService.getUser()) {
-          var allTickets = TicketService.getTickets();
+          let allTickets = TicketService.getTickets()
           if (allTickets != null) {
-            var ticketsByRouteId = _.groupBy(allTickets, ticket => ticket.boardStop.trip.routeId);
+            let ticketsByRouteId = _.groupBy(
+              allTickets,
+              ticket => ticket.boardStop.trip.routeId
+            )
             if (ticketsByRouteId && ticketsByRouteId[route.id]) {
-              previouslyBookedDays =  _.keyBy(ticketsByRouteId[route.id], t => new Date(t.boardStop.trip.date).getTime());
+              previouslyBookedDays = _.keyBy(ticketsByRouteId[route.id], t =>
+                new Date(t.boardStop.trip.date).getTime()
+              )
             }
           }
           if (previouslyBookedDays) {
-            var bookedDays = Object.keys(previouslyBookedDays).map(x=>{return parseInt(x)});
-            //compare current date with next trip
-            if (nextTrip && _.includes(bookedDays,nextTrip.date.getTime())) {
-              hasNextTripTicket = true;
-              nextTripTicketId = previouslyBookedDays[nextTrip.date.getTime()].id
+            let bookedDays = Object.keys(previouslyBookedDays).map(x => {
+              return parseInt(x)
+            })
+            // compare current date with next trip
+            if (nextTrip && _.includes(bookedDays, nextTrip.date.getTime())) {
+              hasNextTripTicket = true
+              nextTripTicketId =
+                previouslyBookedDays[nextTrip.date.getTime()].id
             } else {
-              hasNextTripTicket = false;
+              hasNextTripTicket = false
             }
           } else {
-            hasNextTripTicket = false;
+            hasNextTripTicket = false
           }
         }
-        _.assign(nextTrip, {hasNextTripTicket, seatsAvailable, nextTripTicketId})
+        _.assign(nextTrip, {
+          hasNextTripTicket,
+          seatsAvailable,
+          nextTripTicketId,
+        })
         if (hasNextTripTicket === true || seatsAvailable === false) {
-          nextTrip.errorMessage = "Next Trip is not available or user already purchased"
+          nextTrip.errorMessage =
+            "Next Trip is not available or user already purchased"
         }
         return resolve(nextTrip)
       })
     }
 
-    var instance = {
-
-      verify: function (routeId) {
+    let instance = {
+      verify: function(routeId) {
         return verifyPromise(routeId)
       },
 
-      buyMore: function (routeId) {
+      buyMore: function(routeId) {
         return new Promise(async (resolve, reject) => {
           try {
             user = await userLoginPromise()
-            hasSavedPaymentInfo = _.get(user, 'savedPaymentInfo.sources.data.length', 0) > 0
-            paymentInfo = hasSavedPaymentInfo ? _.get(user, 'savedPaymentInfo') : null
+            hasSavedPaymentInfo =
+              _.get(user, "savedPaymentInfo.sources.data.length", 0) > 0
+            paymentInfo = hasSavedPaymentInfo
+              ? _.get(user, "savedPaymentInfo")
+              : null
             route = await RoutesService.getRoute(routeId)
-            await purchaseRoutePass(true, route, routeId, hasSavedPaymentInfo, paymentInfo)
-            return resolve('success')
-          }
-          catch (err) {
-            console.log(err)
-            return reject('failed')
+            await purchaseRoutePass(
+              true,
+              route,
+              routeId,
+              hasSavedPaymentInfo,
+              paymentInfo
+            )
+            return resolve("success")
+          } catch (err) {
+            console.error(err)
+            return reject("failed")
           }
         })
       },
 
-      fastCheckout: function (routeId, boardStopId, alightStopId, selectedDates) {
+      fastCheckout: function(
+        routeId,
+        boardStopId,
+        alightStopId,
+        selectedDates
+      ) {
         return new Promise(async (resolve, reject) => {
           try {
             user = await userLoginPromise()
             $ionicLoading.show({
               template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading</small>`,
-              hideOnStateChange: true
-            });
+              hideOnStateChange: true,
+            })
             let verifyNextTrip = await verifyPromise(routeId)
             if (verifyNextTrip.errorMessage) {
               return reject(verifyNextTrip.errorMessage)
             }
-            hasSavedPaymentInfo = _.get(user, 'savedPaymentInfo.sources.data.length', 0) > 0
-            paymentInfo = hasSavedPaymentInfo ? _.get(user, 'savedPaymentInfo') : null
+            hasSavedPaymentInfo =
+              _.get(user, "savedPaymentInfo.sources.data.length", 0) > 0
+            paymentInfo = hasSavedPaymentInfo
+              ? _.get(user, "savedPaymentInfo")
+              : null
             route = await RoutesService.getRoute(routeId)
             ridesRemaining = await ridesRemainingPromise(routeId)
-            $ionicLoading.hide();
+            $ionicLoading.hide()
             if (!ridesRemaining) {
               if (route && routeQualifiedForRoutePass(route)) {
-                await purchaseRoutePass(false, route, routeId, hasSavedPaymentInfo, paymentInfo, boardStopId, alightStopId, selectedDates)
+                await purchaseRoutePass(
+                  false,
+                  route,
+                  routeId,
+                  hasSavedPaymentInfo,
+                  paymentInfo,
+                  boardStopId,
+                  alightStopId,
+                  selectedDates
+                )
               } else {
                 // ask for stripe payment for single ticket
                 await BookingSummaryModalService.show({
-                    routeId: routeId,
-                    price: route.trips[0].price,
-                    route: route,
-                    applyRoutePass: false,
-                    selectedDates: selectedDates,
-                    boardStopId: boardStopId,
-                    alightStopId: alightStopId,
-                    hasSavedPaymentInfo: hasSavedPaymentInfo
-                  })
+                  routeId: routeId,
+                  price: route.trips[0].price,
+                  route: route,
+                  applyRoutePass: false,
+                  selectedDates: selectedDates,
+                  boardStopId: boardStopId,
+                  alightStopId: alightStopId,
+                  hasSavedPaymentInfo: hasSavedPaymentInfo,
+                })
               }
             } else {
-              await purchaseTicketUsingRoutePass(routeId, route, selectedDates, boardStopId, alightStopId, hasSavedPaymentInfo)
+              await purchaseTicketUsingRoutePass(
+                routeId,
+                route,
+                selectedDates,
+                boardStopId,
+                alightStopId,
+                hasSavedPaymentInfo
+              )
             }
-            return resolve('success')
-          }
-          catch (err) {
+            return resolve("success")
+          } catch (err) {
             $ionicLoading.hide()
-            console.log(err)
-            return reject('failed')
+            console.error(err)
+            return reject("failed")
           }
         })
       },
 
-      routeQualifiedForRoutePass: (route) => routeQualifiedForRoutePass(route)
+      routeQualifiedForRoutePass: route => routeQualifiedForRoutePass(route),
     }
-    return instance;
-
-  }]
-)
+    return instance
+  },
+])
