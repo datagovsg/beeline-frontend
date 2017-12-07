@@ -46,7 +46,7 @@ export default [
       SharedVariableService.setStops(liteTripStops)
     })
 
-    MapService.on("ping-trips", trips => {
+    MapService.once("ping-trips", trips => {
       $scope.mapObject.pingTrips = trips
     })
 
