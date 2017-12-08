@@ -124,21 +124,23 @@ export default [
       $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
       $scope.mapObject.statusMessages.length = $scope.mapObject.pingTrips.length
 
-      $scope.mapObject.pingTrips.map((trip, index) => {
-        return TripService.statuses(trip.id).then(statuses => {
-          const status = _.get(statuses, "[0]", null)
+      await Promise.all(
+        $scope.mapObject.pingTrips.map((trip, index) => {
+          return TripService.statuses(trip.id).then(statuses => {
+            const status = _.get(statuses, "[0]", null)
 
-          $scope.mapObject.statusMessages[index] = _.get(
-            status,
-            "message",
-            null
-          )
+            $scope.mapObject.statusMessages[index] = _.get(
+              status,
+              "message",
+              null
+            )
 
-          if (status) {
-            MapService.emit("status", status)
-          }
+            if (status) {
+              MapService.emit("status", status)
+            }
+          })
         })
-      })
+      )
     }
   },
 ]
