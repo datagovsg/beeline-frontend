@@ -50,7 +50,7 @@ export default [
       $scope.mapObject.pingTrips = trips
     })
 
-    // fetch driver pings every 4s
+    // fetch driver pings every 4s and statuses every 60s
     $scope.timeout = new SafeInterval(pingLoop, 4000, 1000)
     $scope.statusTimeout = new SafeInterval(statusLoop, 60000, 1000)
 
