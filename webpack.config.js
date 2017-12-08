@@ -1,5 +1,5 @@
+/* eslint no-console: 0 */
 const path = require("path")
-const fs = require("fs")
 const assert = require("assert")
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const InlineEnviromentVariablesPlugin = require("inline-environment-variables-webpack-plugin")
@@ -16,7 +16,17 @@ if (typeof process.env.BACKEND_URL === "undefined") {
   process.env.BACKEND_URL = DEFAULT_BACKEND_URL
 }
 
-const INLINED_ENVIRONMENT_VARIABLES = ["BACKEND_URL"]
+const DEFAULT_TRACKING_URL = "https://tracking.beeline.sg"
+const TRACKING_URL_NOT_SET_MESSAGE = `
+TRACKING_URL environment variable not set. Defaulting to ${DEFAULT_TRACKING_URL}
+`
+if (typeof process.env.TRACKING_URL === "undefined") {
+  console.log(TRACKING_URL_NOT_SET_MESSAGE)
+  process.env.TRACKING_URL = DEFAULT_TRACKING_URL
+}
+
+
+const INLINED_ENVIRONMENT_VARIABLES = ["BACKEND_URL", "TRACKING_URL"]
 
 INLINED_ENVIRONMENT_VARIABLES.forEach(function(key) {
   assert(process.env[key], "process.env." + key + " must be set")

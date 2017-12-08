@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 const shell = require("shelljs");
 const assert = require("assert");
 
@@ -9,6 +10,13 @@ Watch and production flags cannot be used together
 const BACKEND_URL_NOT_SET_MESSAGE = `
 BACKEND_URL environment variable not set. Defaulting to ${DEFAULT_BACKEND_URL}
 `
+
+
+const DEFAULT_TRACKING_URL = "https://tracking.beeline.sg"
+const TRACKING_URL_NOT_SET_MESSAGE = `
+TRACKING_URL environment variable not set. Defaulting to ${DEFAULT_TRACKING_URL}
+`
+
 const BUILD_COMPLETED_MESSAGE = "Beeline frontend build process complete";
 const PRODUCTION_BUILD_MESSAGE = `
 Starting production build. Remove the --production flag for development builds
@@ -44,6 +52,11 @@ if (production) {
   if (typeof process.env.BACKEND_URL === 'undefined') {
     console.log(BACKEND_URL_NOT_SET_MESSAGE);
     process.env.BACKEND_URL = DEFAULT_BACKEND_URL;
+  }
+  // Configure default environment variables for non production builds
+  if (typeof process.env.TRACKING_URL === 'undefined') {
+    console.log(TRACKING_URL_NOT_SET_MESSAGE)
+    process.env.TRACKING_URL = DEFAULT_TRACKING_URL
   }
   if (watch) { shell.exec("webpack -w", { async: true }); }
   else { shell.exec("webpack"); }
