@@ -58,7 +58,7 @@
           <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
         </button>
         <button class="button primary-button" ng-click="toggle()" ng-if="data.nextTrip.hasNextTripTicket">
-           View Ticket <b>></b>
+           View Ticket
         </button>
         <span ng-if="data.price">
           $<span ng-bind="data.price"></span> per trip
@@ -94,10 +94,8 @@
               Not provided
             </div>
           </div>
-          <div class="col">
-            <h4>Passenger</h4>
-            <div ng-bind="data.user.name">
-            </div>
+          <div class="col col-20 text-right">
+            <i class="fa fa-times fa-2x" aria-hidden="true" ng-click="toggle()"></i>
           </div>
         </div>
         <div class="row">
@@ -112,9 +110,6 @@
             </div>
           </div>
         </div>
-        <button class="button primary-button" ng-click="toggle()">
-           <b><</b> Buy More Tickets
-        </button>
       </div>
    </div>
 

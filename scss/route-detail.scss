@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     top: auto;
+    margin-bottom: 10px;
     // @include desktop { &.has-tabs { top: $bar-height; } }
     @include desktop { top: $bar-height;  }
     .booking-info {
@@ -32,37 +33,28 @@
         line-height: 1.0;
       }
     }
-    @keyframes slide-in-from-left {
+    @keyframes slide-in-from-bottom {
       0% {
-        transform: translateX(-900px);
+        transform: translateY(900px);
       }
       100% {
-        transform: translateX(0);
+        transform: translateY(0);
       }
-    }
-    @keyframes slide-in-from-right {
-      0% {
-        transform: translateX(900px);
-      }
-      100% {
-        transform: translateX(0);
-      }
-    }
-
-    //animation
-    .bookingView.ng-hide-remove {
-        animation-duration: 0.5s;
-        animation-fill-mode: forwards;
-        animation-name: slide-in-from-left;
-        animation-timing-function: linear;
     }
 
     .ticketView.ng-hide-remove {
-        animation-duration: 0.5s;
-        animation-fill-mode: forwards;
-        animation-name: slide-in-from-right;
-        animation-timing-function: linear;
+      animation-duration: 0.5s;
+      animation-fill-mode: backwards;
+      animation-name: slide-in-from-bottom;
     }
+
+    .ticketView {
+      border: 2px solid #BFBFBF;
+      border-radius: 15px;
+      background-color: white;
+      box-shadow: 10px 10px 5px #aaaaaa;
+    }
+
   }
 }
 
