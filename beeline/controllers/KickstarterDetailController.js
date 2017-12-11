@@ -47,5 +47,22 @@ export default [
         }
       })
     }
+
+    // hide/show tabs bar depending on how the route is configured
+    $scope.$on("$stateChangeSuccess", function(
+      event,
+      toState,
+      toParams,
+      fromState,
+      fromParams
+    ) {
+      if (fromState && fromState.name === "tabs.routes") {
+        $scope.backState = "tabs.routes"
+      }
+    })
+
+    $scope.goBack = function() {
+      $state.go($scope.backState ? $scope.backState : "tabs.crowdstart")
+    }
   },
 ]

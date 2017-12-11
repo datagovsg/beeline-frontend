@@ -1,5 +1,11 @@
 <ion-view id="pg_kickstarter_detail" view-title="Crowdstart Route Details"
  can-swipe-back="false" class="kickstarter-detail2 page-with-map">
+ <ion-nav-buttons side="left">
+   <button class="button button-clear back-button"
+      ng-click="goBack()">
+      <i class="icon ion-ios-arrow-back"></i>
+   </button>
+ </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <route-share is-normal-route="false" route-id="book.routeId"></route-share>
   </ion-nav-buttons>
