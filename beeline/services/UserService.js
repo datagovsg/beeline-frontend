@@ -68,7 +68,15 @@ export default [
       return $http(options)
     }
 
-    const tracking = function(options) {
+    /**
+     * Send a standard http request to the endpoint defined in
+     * `process.env.TRACKING_URL`. Usually used to retrieve recent pings to
+     * determine trip vehicle location and bearing
+     * @param {object} options - the standard options object, with one
+     * exception - the url specified will be relative to `process.env.TRACKING_URL`
+     * @return {object} the $http response
+     */
+    function tracking(options) {
       options.url = process.env.TRACKING_URL + options.url
       return $http(options)
     }
