@@ -18,10 +18,13 @@ export default [
     MapService
   ) {
     $scope.disp = {
-      code: null,
       vehicle: null,
       driver: null,
       tripStatus: null,
+    }
+    $scope.latestInfo = {
+      vehicleId: null,
+      driverId: null,
     }
 
     // Initialize the necessary basic data data
@@ -30,6 +33,25 @@ export default [
     $scope.showTerms = companyId => {
       CompanyService.showTerms(companyId)
     }
+
+    const updateLatestInfo = id =>
+      TripService.latestInfo(Number(id)).then(info => {
+        $scope.disp = {
+          vehicle:
+            info &&
+            info.trip &&
+            info.trip.vehicle &&
+            info.trip.vehicle.vehicleNumber,
+          driver:
+            info && info.trip && info.trip.driver && info.trip.driver.name,
+        }
+        $scope.latestInfo = {
+          vehicleId:
+            info && info.trip && info.trip.vehicle && info.trip.vehicle.id,
+          driverId:
+            info && info.trip && info.trip.driver && info.trip.driver.id,
+        }
+      })
 
     const ticketPromise = TicketService.getTicketById(
       Number($stateParams.ticketId)
@@ -48,6 +70,10 @@ export default [
       }
     }
 
+    ticketPromise
+      .then(ticket => ticket.boardStop.trip.id)
+      .then(updateLatestInfo)
+
     ticketPromise.then(ticket => {
       $scope.ticket = ticket
       $scope.trip = ticket.boardStop.trip
@@ -61,19 +87,30 @@ export default [
       $scope.company = company
     })
 
-    const listener = info => {
-      $scope.disp = { ...info }
+    const updateIfVehicleOrDriverChanged = ping => {
+      if (
+        $scope.latestInfo.vehicleId !== ping.vehicleId ||
+        $scope.latestInfo.driverId !== ping.driverId
+      ) {
+        updateLatestInfo(ping.tripId)
+      }
+    }
+
+    const updateStatus = status => {
+      $scope.disp.tripStatus = status.status
     }
 
     $scope.$on("$ionicView.afterEnter", () => {
       sentTripToMapView()
       MapService.emit("startTicketPingLoop")
-      MapService.on("ticketInfo", listener)
+      MapService.on("ping", updateIfVehicleOrDriverChanged)
+      MapService.on("status", updateStatus)
     })
 
     $scope.$on("$ionicView.beforeLeave", () => {
       MapService.emit("killTicketPingLoop")
-      MapService.removeListener("ticketInfo", listener)
+      MapService.removeListener("ping", updateIfVehicleOrDriverChanged)
+      MapService.removeListener("status", updateStatus)
     })
   },
 ]
