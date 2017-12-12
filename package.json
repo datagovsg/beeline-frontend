@@ -112,7 +112,7 @@
     "start": "http-server -c-1 www/",
     "lint": "node scripts/lint.js",
     "prettier": "node scripts/prettier.js",
-    "prettier-lint": "git fetch && npm run prettier && npm run lint"
+    "prettier-lint": "bash scripts/prettier-lint.sh"
   },
   "author": "Government Technology Agency of Singapore (https://www.tech.gov.sg)",
   "license": "Apache-2.0",
