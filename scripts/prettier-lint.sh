@@ -1,13 +1,14 @@
-printf "Running pre-commit hook!\n\n"
+printf "\n------------------------------------------------------\n\n"
+printf "Running pre-commit hook...\n\n"
 
 git fetch
 
 src_dir='beeline/*.js'
-diff_filenames=$(git diff --name-only --cached origin/master -- $src_dir)
+diff_filenames=$(git diff --name-only --cached origin/master -- "$src_dir")
 
 if [ -z "$diff_filenames" ]
 then 
-  printf "No file changes detected"
+  printf "No file changes detected!\n"
 else
   printf "Running prettier and eslint on the following JS files in this branch...\n"
   printf "%b\n" "$diff_filenames"
@@ -34,14 +35,19 @@ else
     # fi
   fi
 
-  printf "\nRunning ESLint with --fix option...\n"
+  printf "\nRunning ESLint with --fix option... "
   # printf "Do you want to commit those changes? (Y/N) "
   # read auto_commit_eslint
 
   # Detect if eslint can autofix
   ./node_modules/eslint/bin/eslint.js --fix $diff_filenames
 
+  printf "Done!\n"
+
   # for file in $prettier_diff; do
   #   git add $file
   # done
 fi
+
+printf "\nPre-commit hook completed\n"
+printf "\n------------------------------------------------------\n\n"
