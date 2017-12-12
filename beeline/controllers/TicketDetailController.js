@@ -66,7 +66,7 @@ export default [
     const sentTripToMapView = () => {
       const trip = $scope.trip
       if (trip) {
-        MapService.emit("ping-single-trip", [trip])
+        MapService.emit("ping-trip", [trip])
       }
     }
 
@@ -102,13 +102,13 @@ export default [
 
     $scope.$on("$ionicView.afterEnter", () => {
       sentTripToMapView()
-      MapService.emit("startTicketPingLoop")
+      MapService.emit("startPingLoop")
       MapService.on("ping", updateIfVehicleOrDriverChanged)
       MapService.on("status", updateStatus)
     })
 
     $scope.$on("$ionicView.beforeLeave", () => {
-      MapService.emit("killTicketPingLoop")
+      MapService.emit("killPingLoop")
       MapService.removeListener("ping", updateIfVehicleOrDriverChanged)
       MapService.removeListener("status", updateStatus)
     })

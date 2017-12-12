@@ -1,4 +1,3 @@
-import { SafeInterval } from "../SafeInterval"
 import _ from "lodash"
 
 export default [
@@ -22,10 +21,9 @@ export default [
     ServerTime,
     MapViewFactory
   ) {
-    let routeLabel = $stateParams.label ? $stateParams.label : null
-    // Date calculated as Date.now() + Local-Server-TimeDiff
     MapViewFactory.init($scope)
 
+    let routeLabel = $stateParams.label ? $stateParams.label : null
     LiteRoutesService.fetchLiteRoute(routeLabel).then(response => {
       const route = response[routeLabel]
       if (route.path) {
@@ -46,32 +44,7 @@ export default [
       SharedVariableService.setStops(liteTripStops)
     })
 
-    MapService.once("ping-trips", trips => {
-      $scope.mapObject.pingTrips = trips
-    })
-
-    // fetch driver pings every 4s and statuses every 60s
-    $scope.timeout = new SafeInterval(pingLoop, 4000, 1000)
-    $scope.statusTimeout = new SafeInterval(statusLoop, 60000, 1000)
-
-    MapService.once("killPingLoop", () => {
-      $scope.timeout.stop()
-      $scope.statusTimeout.stop()
-    })
-
-    MapService.once("startPingLoop", () => {
-      $scope.timeout.start()
-      $scope.statusTimeout.start()
-    })
-
-    // load icons and path earlier by restart timeout on watching trips
-    $scope.$watchCollection("mapObject.pingTrips", pt => {
-      $scope.timeout.stop()
-
-      if (pt) {
-        $scope.timeout.start()
-      }
-    })
+    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
 
     /**
      * Request driver pings for the given trip
