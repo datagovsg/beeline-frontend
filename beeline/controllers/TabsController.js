@@ -52,6 +52,8 @@ export default [
       }
     )
 
+    $scope.login = UserService.promptLogIn
+
     // my Booking routes
     $scope.$watchGroup(
       [

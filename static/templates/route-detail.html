@@ -76,10 +76,7 @@
     </div>
     <div ng-show="activeTab===1" class="ticketView">
       <div class="row">
-        <!-- delay directive rendering until nextTripTicketId is ready -->
-        <div class="col" ng-if="data.nextTripTicketId">
-          <ticket-detail ticket-id="data.nextTripTicketId"></ticket-detail>
-        </div>
+        <ticket-detail ticket-id="data.nextTripTicketId" class="col" ng-if="data.nextTripTicketId"></ticket-detail>
         <div>
           <i class="fa fa-times fa-lg" aria-hidden="true" ng-click="toggle()"></i>
         </div>

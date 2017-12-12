@@ -54,3 +54,14 @@
     }
   }
 }
+
+ticket-detail {
+  margin: 20px;
+  border: 2px solid #BFBFBF;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 10px 10px 5px #aaaaaa;
+  .item {
+    margin: 20px;
+  }
+}
