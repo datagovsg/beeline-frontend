@@ -6,9 +6,7 @@ export default [
   "$stateParams",
   "RoutesService",
   "MapService",
-  "TripService",
   "LiteRoutesService",
-  "ServerTime",
   "MapViewFactory",
   function(
     $scope,
@@ -16,9 +14,7 @@ export default [
     $stateParams,
     RoutesService,
     MapService,
-    TripService,
     LiteRoutesService,
-    ServerTime,
     MapViewFactory
   ) {
     MapViewFactory.init($scope)

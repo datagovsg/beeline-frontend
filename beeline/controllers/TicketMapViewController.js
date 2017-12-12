@@ -5,22 +5,18 @@ export default [
   "SharedVariableService",
   "$stateParams",
   "RoutesService",
-  "MapService",
   "$timeout",
   "TripService",
   "TicketService",
-  "ServerTime",
   "MapViewFactory",
   function(
     $scope,
     SharedVariableService,
     $stateParams,
     RoutesService,
-    MapService,
     $timeout,
     TripService,
     TicketService,
-    ServerTime,
     MapViewFactory
   ) {
     MapViewFactory.init($scope)
