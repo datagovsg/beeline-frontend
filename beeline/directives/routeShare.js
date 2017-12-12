@@ -8,10 +8,10 @@ angular.module("beeline").directive("routeShare", [
       restrict: "E",
       template: `<div>
                   <button class="button button-clear" ng-click="shareAnywhere()" ng-if="!showCopy">
-                    <i class="icon ion-share"></i>
+                    <i class="fa fa-share-alt"></i>
                   </button>
                   <button class="button button-clear" ng-if="showCopy" ngclipboard data-clipboard-text={{shareLink}} ng-click="feedback()">
-                    <i class="icon ion-share"></i>
+                    <i class="fa fa-share-alt"></i>
                   </button>
                 </div>`,
       scope: {

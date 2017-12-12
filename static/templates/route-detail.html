@@ -7,7 +7,7 @@
     </button>
     <button menu-toggle="left" class="button button-icon icon ion-navicon"  ng-if="data.showSideMenu"></button>
   </ion-nav-buttons>
-  <ion-nav-title>{{disp.navTitle}}</ion-nav-title>
+  <ion-nav-title>{{data.label}}</ion-nav-title>
   <ion-nav-buttons side="right">
     <route-share is-normal-route="true" route-id="data.routeId"></route-share>
   </ion-nav-buttons>
@@ -77,9 +77,14 @@
     <div ng-show="activeTab===1" class="ticketView">
       <div class="booking-info trip-info">
         <div class="row">
-          <div class="col col-20">
-            <span class="bus-number">{{data.label}}</span>
+          <div class="col text-center">
+            {{disp.navTitle}}
           </div>
+          <div class="col col-20 text-right">
+            <i class="fa fa-times fa-2x" aria-hidden="true" ng-click="toggle()"></i>
+          </div>
+        </div>
+        <div class="row">
           <div class="col">
             <h4>Trip Code </h4>
             <trip-code class="trip-code" code="disp.tripCode" ng-if="disp.tripCode">
@@ -93,9 +98,6 @@
             <div ng-if="!disp.vehicle">
               Not provided
             </div>
-          </div>
-          <div class="col col-20 text-right">
-            <i class="fa fa-times fa-2x" aria-hidden="true" ng-click="toggle()"></i>
           </div>
         </div>
         <div class="row">

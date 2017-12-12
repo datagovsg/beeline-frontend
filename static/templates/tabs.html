@@ -37,14 +37,14 @@ navigation history that also transitions its views in and out.
       </header>
       <ion-content class="has-header">
         <ion-list>
-          <!-- <ion-item menu-close ui-sref="tabs.routes">
+          <!-- <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
             <i class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp; Search Routes
           </ion-item> -->
-          <ion-item menu-close ui-sref="tabs.routes">
-            <i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; All Routes
+          <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; All Routes
           </ion-item>
-          <ion-item menu-close ui-sref="tabs.crowdstart">
-            <i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; Crowdstart Routes
+          <ion-item menu-close ui-sref="tabs.crowdstart" ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; Crowdstart Routes
           </ion-item>
           <!--My routes section  -->
           <h2 class="item item-divider" ng-if="data.myBookingRoutes.length > 0 || data.myLiteRoutes.length > 0">My Routes</h2>
@@ -53,25 +53,28 @@ navigation history that also transitions its views in and out.
               routeId: item.id,
               pickupStopId:  item.boardStopStopId,
               dropoffStopId: item.alightStopStopId,
-            })">
-            <i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
+            })"
+            ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
           </ion-item>
           <ion-item  class="sub-list" ng-repeat="item in data.myActivatedCrowdstartRoutes" menu-close  ng-if="data.myActivatedCrowdstartRoutes.length > 0"
             ui-sref="tabs.my-booking-routes({
               routeId: item.id
-            })">
-            <i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
+            })"
+            ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
           </ion-item>
           <ion-item  class="sub-list" ng-repeat="item in data.myLiteRoutes" menu-close  ng-if="data.myLiteRoutes.length > 0"
             ui-sref="tabs.my-lite-routes({
               label: item.label
-            })">
-            <i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
+            })"
+            ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
           </ion-item>
-          <ion-item menu-close ui-sref="tabs.tickets">
+          <ion-item menu-close ui-sref="tabs.tickets" ui-sref-active="active">
             <i class="fa fa-ticket fa-fw" aria-hidden="true"></i>&nbsp; Tickets
           </ion-item>
-          <ion-item menu-close ui-sref="tabs.settings">
+          <ion-item menu-close ui-sref="tabs.settings" ui-sref-active="active">
             <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
           </ion-item>
         </ion-list>
