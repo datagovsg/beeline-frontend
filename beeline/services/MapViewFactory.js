@@ -4,7 +4,9 @@ import _ from "lodash"
 
 angular.module("beeline").factory("MapViewFactory", [
   "MapService",
-  function MapViewFactory(MapService) {
+  "TripService",
+  "ServerTime",
+  function MapViewFactory(MapService, TripService, ServerTime) {
     return {
       init: function(scope) {
         scope.mapObject = this.mapObject()
@@ -74,6 +76,57 @@ angular.module("beeline").factory("MapViewFactory", [
             scope.timeout.start()
           }
         })
+      },
+      pingLoop: function(scope, recentTimeBound) {
+        return async function() {
+          if (!scope.mapObject.pingTrips) return
+
+          scope.mapObject.allRecentPings = scope.mapObject.allRecentPings || []
+          scope.mapObject.allRecentPings.length =
+            scope.mapObject.pingTrips.length
+
+          await Promise.all(
+            scope.mapObject.pingTrips.map((trip, index) => {
+              return TripService.driverPings(trip.id).then(pings => {
+                const [ping] = pings || []
+                if (ping) {
+                  const now = ServerTime.getTime()
+                  scope.mapObject.allRecentPings[index] = {
+                    pings,
+                    isRecent: now - ping.time.getTime() < recentTimeBound,
+                  }
+                  MapService.emit("ping", ping)
+                }
+              })
+            })
+          )
+        }
+      },
+      statusLoop: function(scope) {
+        return async function() {
+          if (!scope.mapObject.pingTrips) return
+
+          scope.mapObject.statusMessages = scope.mapObject.statusMessages || []
+          scope.mapObject.statusMessages.length =
+            scope.mapObject.pingTrips.length
+
+          await Promise.all(
+            scope.mapObject.pingTrips.map((trip, index) => {
+              return TripService.statuses(trip.id).then(statuses => {
+                const status = _.get(statuses, "[0]", null)
+                scope.mapObject.statusMessages[index] = _.get(
+                  status,
+                  "message",
+                  null
+                )
+
+                if (status) {
+                  MapService.emit("status", status)
+                }
+              })
+            })
+          )
+        }
       },
     }
   },
