@@ -77,6 +77,11 @@ navigation history that also transitions its views in and out.
           <ion-item menu-close ui-sref="tabs.settings" ui-sref-active="active">
             <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
           </ion-item>
+          <div class="item item-divider"></div>
+          <ion-item menu-close ng-if="!data.isLoggedIn" ng-click="login()">
+            <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>&nbsp; Log In
+          </ion-item>
+          <powered-by-beeline suggest-hide="true" power-hide="false" built-by-show="true"></powered-by-beeline>
         </ion-list>
       </ion-content>
     </ion-side-menu>
