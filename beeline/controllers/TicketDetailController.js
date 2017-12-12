@@ -66,7 +66,7 @@ export default [
     const sentTripToMapView = () => {
       const trip = $scope.trip
       if (trip) {
-        MapService.emit("ping-trip", [trip])
+        MapService.emit("ping-trips", [trip])
       }
     }
 
