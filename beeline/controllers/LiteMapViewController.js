@@ -40,12 +40,10 @@ export default [
       SharedVariableService.setStops(liteTripStops)
     })
 
-    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
-
     /**
      * Request driver pings for the given trip
      */
-    async function pingLoop() {
+    const pingLoop = async function() {
       const recentTimeBound = 5 * 60000
       await MapViewFactory.pingLoop($scope, recentTimeBound)()
 
@@ -63,5 +61,6 @@ export default [
     }
 
     const statusLoop = MapViewFactory.statusLoop($scope)
+    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
   },
 ]
