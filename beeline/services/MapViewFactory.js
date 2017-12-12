@@ -81,9 +81,12 @@ angular.module("beeline").factory("MapViewFactory", [
         return async function() {
           if (!scope.mapObject.pingTrips) return
 
-          scope.mapObject.allRecentPings = scope.mapObject.allRecentPings || []
-          scope.mapObject.allRecentPings.length =
-            scope.mapObject.pingTrips.length
+          // if scope.mapObject.allRecentPings doesn't exist yet, initialize
+          // it as a new empty array. The array will be filled in in the
+          // subsequent chunk of code mapping over pingTrips
+          scope.mapObject.allRecentPings =
+            scope.mapObject.allRecentPings ||
+            new Array(scope.mapObject.pingTrips.length)
 
           await Promise.all(
             scope.mapObject.pingTrips.map((trip, index) => {
@@ -106,9 +109,12 @@ angular.module("beeline").factory("MapViewFactory", [
         return async function() {
           if (!scope.mapObject.pingTrips) return
 
-          scope.mapObject.statusMessages = scope.mapObject.statusMessages || []
-          scope.mapObject.statusMessages.length =
-            scope.mapObject.pingTrips.length
+          // if scope.mapObject.statusMessages doesn't exist yet, initialize
+          // it as a new empty array. The array will be filled in in the
+          // subsequent chunk of code mapping over pingTrips
+          scope.mapObject.statusMessages =
+            scope.mapObject.statusMessages ||
+            new Array(scope.mapObject.pingTrips.length)
 
           await Promise.all(
             scope.mapObject.pingTrips.map((trip, index) => {
