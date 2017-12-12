@@ -532,9 +532,9 @@ export default [
       })
     }
 
-    let sendEmailVerification = function () {
+    let sendEmailVerification = function() {
       return beelineRequest({
-        method: 'POST',
+        method: "POST",
         url: `/users/sendEmailVerification`,
       })
     }

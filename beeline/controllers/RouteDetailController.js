@@ -63,7 +63,7 @@ export default [
 
     $scope.disp = {
       isBooking: false,
-      navTitle: "Route Details",
+      ticketTitle: null,
     }
 
     $scope.mapObject = {
@@ -140,6 +140,10 @@ export default [
       promises
         .then(response => {
           $scope.data.nextTrip = response[0]
+          $scope.activeTab = $scope.data.nextTrip.hasNextTripTicket ? 1 : 0
+          if ($scope.data.nextTrip.hasNextTripTicket) {
+            $scope.data.nextTripTicketId = $scope.data.nextTrip.nextTripTicketId
+          }
           $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map(
             ts => ts.stop.id
           )
@@ -226,30 +230,6 @@ export default [
 
     $scope.toggle = function() {
       $scope.activeTab = $scope.activeTab === 0 ? 1 : 0
-      if ($scope.activeTab === 0) {
-        $scope.disp.navTitle = "Route Details"
-      } else {
-        $scope.disp.navTitle =
-          "Ticket for " +
-          moment($scope.ticket.boardStop.time)
-            .utcOffset("+08:00")
-            .format("D MMM Y")
-      }
     }
-
-    $scope.$watch("data.nextTrip.hasNextTripTicket", hasNextTripTicket => {
-      $scope.activeTab = hasNextTripTicket ? 1 : 0
-      if (hasNextTripTicket) {
-        let ticketPromise = TicketService.getTicketById(
-          +$scope.data.nextTrip.nextTripTicketId
-        )
-        ticketPromise.then(ticket => {
-          $scope.ticket = ticket
-          ticketPromise.then(ticket => {
-            return TripService.getTripData(+ticket.alightStop.tripId)
-          })
-        })
-      }
-    })
   },
 ]
