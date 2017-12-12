@@ -68,6 +68,19 @@ export default [
       return $http(options)
     }
 
+    /**
+     * Send a standard http request to the endpoint defined in
+     * `process.env.TRACKING_URL`. Usually used to retrieve recent pings to
+     * determine trip vehicle location and bearing
+     * @param {object} options - the standard options object, with one
+     * exception - the url specified will be relative to `process.env.TRACKING_URL`
+     * @return {object} the $http response
+     */
+    function tracking(options) {
+      options.url = process.env.TRACKING_URL + options.url
+      return $http(options)
+    }
+
     // Requests a verification code to be sent to a mobile number
     // Verification code is used to log in
     let sendTelephoneVerificationCode = function(number) {
@@ -138,7 +151,7 @@ export default [
     }
 
     // Updates user fields
-    function updateUserInfo(update) {
+    const updateUserInfo = function(update) {
       return beelineRequest({
         method: "PUT",
         url: "/user",
@@ -350,7 +363,7 @@ export default [
     // Use the referral code and apply rewards to newUser
     // Input:
     // - refCode - String: referral code
-    async function applyRefCode(refCode) {
+    const applyRefCode = async function(refCode) {
       return beelineRequest({
         method: "POST",
         url: "/user/applyRefCode",
@@ -360,7 +373,7 @@ export default [
       })
     }
 
-    async function checkNewUser(user) {
+    const checkNewUser = async function(user) {
       if (user.name || user.email) {
         // Not a new user
         return
@@ -532,9 +545,9 @@ export default [
       })
     }
 
-    let sendEmailVerification = function () {
+    let sendEmailVerification = function() {
       return beelineRequest({
-        method: 'POST',
+        method: "POST",
         url: `/users/sendEmailVerification`,
       })
     }
@@ -552,6 +565,7 @@ export default [
         return user
       },
       beeline: beelineRequest,
+      tracking,
       promptLogIn,
       loginIfNeeded,
       promptUpdatePhone,

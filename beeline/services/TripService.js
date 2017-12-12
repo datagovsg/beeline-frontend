@@ -16,9 +16,9 @@ export default [
 
       driverPings: function(id) {
         assert(typeof id === "number")
-        return UserService.beeline({
+        return UserService.tracking({
           method: "GET",
-          url: `/trips/${id}/pingsByTripId?limit=20`,
+          url: `/trips/${id}/pings?limit=20`,
           timeout: 10000,
         }).then(function(response) {
           for (let ping of response.data) {
