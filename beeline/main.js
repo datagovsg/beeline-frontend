@@ -239,10 +239,6 @@ app
     require("./controllers/KickstarterStopsController.js").default
   )
   .directive(
-    "startEndPicker",
-    require("./directives/startEndPicker/startEndPicker").default
-  )
-  .directive(
     "busStopSelector",
     require("./directives/busStopSelector/busStopSelector").default
   )
