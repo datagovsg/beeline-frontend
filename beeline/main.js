@@ -114,7 +114,6 @@ app
     require("./services/LiteRoutesService.js").default
   )
   .service("BookingService", require("./services/BookingService.js").default)
-  .factory("OneMapService", require("./services/OneMapService.js").default)
   .factory("StripeService", require("./services/StripeService.js").default)
   .factory("loadingSpinner", require("./services/LoadingSpinner.js").default)
   .factory("GoogleAnalytics", require("./services/GoogleAnalytics.js").default)
@@ -237,10 +236,6 @@ app
   .directive(
     "priceCalculator",
     require("./directives/priceCalculator/priceCalculator").default
-  )
-  .directive(
-    "revGeocode",
-    require("./directives/revGeocode/revGeocode").default
   )
   .directive(
     "fancyPrice",
