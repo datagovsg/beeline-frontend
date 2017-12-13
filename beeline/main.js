@@ -238,10 +238,6 @@ app
     "KickstarterStopsController",
     require("./controllers/KickstarterStopsController.js").default
   )
-  .directive(
-    "busStopSelector",
-    require("./directives/busStopSelector/busStopSelector").default
-  )
   .directive("myLocation", require("./directives/myLocation.js").default)
   .directive("mapBusStops", require("./directives/mapBusStops").default)
   .config(configureRoutes)
@@ -437,10 +433,6 @@ app
       $templateCache.put(
         "templates/ticket-detail.html",
         require("../www/templates/ticket-detail.html")
-      )
-      $templateCache.put(
-        "templates/tab-booking-stops.html",
-        require("../www/templates/tab-booking-stops.html")
       )
       $templateCache.put(
         "templates/tab-booking-dates.html",
