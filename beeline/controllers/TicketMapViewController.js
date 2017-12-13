@@ -5,7 +5,6 @@ export default [
   "SharedVariableService",
   "$stateParams",
   "RoutesService",
-  "$timeout",
   "TripService",
   "TicketService",
   "MapViewFactory",
@@ -14,7 +13,6 @@ export default [
     SharedVariableService,
     $stateParams,
     RoutesService,
-    $timeout,
     TripService,
     TicketService,
     MapViewFactory
