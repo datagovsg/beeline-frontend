@@ -1,6 +1,6 @@
 import assert from "assert"
 
-export default [
+angular.module("beeline").factory("LiteRouteSubscriptionService", [
   "UserService",
   "$q",
   function LiteRouteSubscriptionService(UserService, $q) {
@@ -51,4 +51,4 @@ export default [
 
     return instance
   },
-]
+])

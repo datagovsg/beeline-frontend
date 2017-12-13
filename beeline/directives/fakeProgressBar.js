@@ -1,4 +1,4 @@
-export default [
+angular.module("beeline").directive("fakeProgressBar", [
   "$timeout",
   function($timeout) {
     return {
@@ -21,4 +21,4 @@ export default [
       },
     }
   },
-]
+])

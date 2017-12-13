@@ -1,6 +1,6 @@
 import assert from "assert"
 
-export default [
+angular.module("beeline").factory("TripService", [
   "UserService",
   function TripService(UserService) {
     return {
@@ -47,4 +47,4 @@ export default [
       },
     }
   },
-]
+])

@@ -1,7 +1,7 @@
 import { formatTime, timeSinceMidnight } from "../shared/format"
 import _ from "lodash"
 
-export default [
+angular.module("beeline").service("BookingService", [
   "UserService",
   function BookingService(UserService) {
     this.prepareTrips = function(booking) {
@@ -312,4 +312,4 @@ export default [
     this.newSession = () => ++session
     this.getSession = () => session
   },
-]
+])

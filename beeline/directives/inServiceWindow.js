@@ -1,7 +1,7 @@
 import { SafeInterval } from "../SafeInterval"
 import _ from "lodash"
 
-export default [
+angular.module("beeline").directive("inServiceWindow", [
   "$timeout",
   function($timeout) {
     return {
@@ -57,4 +57,4 @@ export default [
       },
     }
   },
-]
+])

@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-export default [
+angular.module("beeline").service("MapOptions", [
   "uiGmapGoogleMapApi",
   "$cordovaGeolocation",
   function MapOptions(uiGmapGoogleMapApi, $cordovaGeolocation) {
@@ -185,4 +185,4 @@ export default [
       return bounds
     }
   },
-]
+])

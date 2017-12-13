@@ -34,7 +34,7 @@ function transformRouteData(data) {
   return data
 }
 
-export default [
+angular.module("beeline").factory("RoutesService", [
   "$http",
   "UserService",
   "uiGmapGoogleMapApi",
@@ -521,4 +521,4 @@ export default [
     }
     return instance
   },
-]
+])

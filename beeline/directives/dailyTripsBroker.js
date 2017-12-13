@@ -3,7 +3,7 @@ import _ from "lodash"
 
 // since it's broker, we allow 2-way binding for now and
 // view update the data model which controll relies on
-export default [
+angular.module("beeline").directive("dailyTripsBroker", [
   "LiteRoutesService",
   "$timeout",
   function(LiteRoutesService, $timeout) {
@@ -59,4 +59,4 @@ export default [
       },
     }
   },
-]
+])

@@ -2,7 +2,7 @@ import _ from "lodash"
 import assert from "assert"
 import querystring from "querystring"
 
-export default [
+angular.module("beeline").factory("TicketService", [
   "UserService",
   "p",
   function TicketService(UserService, p) {
@@ -106,4 +106,4 @@ export default [
       },
     }
   },
-]
+])

@@ -7,7 +7,7 @@ import querystring from "querystring"
 import _ from "lodash"
 import assert from "assert"
 
-export default [
+angular.module("beeline").factory("LiteRoutesService", [
   "UserService",
   "LiteRouteSubscriptionService",
   "p",
@@ -241,4 +241,4 @@ export default [
       computeLiteStops: computeLiteStops,
     }
   },
-]
+])

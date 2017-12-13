@@ -1,5 +1,6 @@
 import moment from "moment"
-export default [
+
+angular.module("beeline").directive("countdown", [
   "$interval",
   function($interval) {
     return {
@@ -47,4 +48,4 @@ export default [
       },
     }
   },
-]
+])
