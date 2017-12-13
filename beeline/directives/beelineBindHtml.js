@@ -1,4 +1,4 @@
-export default [
+angular.module("beeline").directive("beelineBindHtml", [
   "$compile",
   function($compile) {
     return {
@@ -30,4 +30,4 @@ export default [
       },
     }
   },
-]
+])

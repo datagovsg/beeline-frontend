@@ -1,4 +1,4 @@
-export default [
+angular.module("beeline").service("Legalese", [
   "$rootScope",
   "$ionicModal",
   function Legalese($rootScope, $ionicModal) {
@@ -25,4 +25,4 @@ export default [
     this.showPrivacyPolicy = () => showModal(privacyPolicyModalTemplate)
     this.showTermsOfUse = () => showModal(termsOfUseModalTemplate)
   },
-]
+])

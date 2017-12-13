@@ -111,7 +111,7 @@ let updateAfterBid = function(route, price) {
   updateStatus(route)
 }
 
-export default [
+angular.module("beeline").service("KickstarterService", [
   "UserService",
   "$q",
   "RoutesService",
@@ -334,4 +334,4 @@ export default [
       fetchNearbyKickstarterIds: fetchNearbyKickstarterIds,
     }
   },
-]
+])

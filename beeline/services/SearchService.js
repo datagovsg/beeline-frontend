@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-export default function SearchService() {
+angular.module("beeline").factory("SearchService", function SearchService() {
   // Helper to calculate distance in meters between a pair of coordinates
   // faster but less accurate
   function latlngDistance(ll1, ll2) {
@@ -104,4 +104,4 @@ export default function SearchService() {
       )
     },
   }
-}
+})

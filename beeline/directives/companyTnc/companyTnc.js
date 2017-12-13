@@ -1,4 +1,4 @@
-export default [
+angular.module("beeline").directive("companyTnc", [
   "CompanyService",
   "$q",
   function companyTnc(CompanyService, $q) {
@@ -33,4 +33,4 @@ export default [
       },
     }
   },
-]
+])

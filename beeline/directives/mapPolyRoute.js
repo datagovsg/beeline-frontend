@@ -1,4 +1,4 @@
-export default function() {
+angular.module("beeline").directive("mapPolyRoute", function() {
   return {
     replace: false,
     template: `
@@ -15,4 +15,4 @@ export default function() {
       }
     },
   }
-}
+})

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 ;(function(i, s, o, g, r, a, m) {
   i["GoogleAnalyticsObject"] = r
   ;(i[r] =
@@ -18,17 +20,17 @@
   "ga"
 )
 
-export default function() {
+angular.module("beeline").factory("GoogleAnalytics", function() {
   return function() {
     window.ga(...arguments)
   }
-}
+})
 
 let devicePromise = new Promise((resolve, reject) => {
   if (window.cordova) {
     document.addEventListener("deviceready", resolve, false)
   } else {
-    console.log("No cordova detected")
+    console.warn("No cordova detected")
     resolve()
   }
 })

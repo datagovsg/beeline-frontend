@@ -2,7 +2,7 @@ import priceCalculatorTemplate from "./priceCalculator.html"
 import assert from "assert"
 import _ from "lodash"
 
-export default [
+angular.module("beeline").directive("priceCalculator", [
   "BookingService",
   "RoutesService",
   "UserService",
@@ -140,4 +140,4 @@ export default [
       ],
     }
   },
-]
+])

@@ -1,4 +1,4 @@
-export default [
+angular.module("beeline").factory("StripeService", [
   "UserService",
   "$ionicPopup",
   "$ionicPlatform",
@@ -81,4 +81,4 @@ export default [
       },
     }
   },
-]
+])

@@ -1,4 +1,4 @@
-export default [
+angular.module("beeline").factory("CreditsService", [
   "UserService",
   function CreditsService(UserService) {
     // General credits
@@ -76,4 +76,4 @@ export default [
 
     return instance
   },
-]
+])

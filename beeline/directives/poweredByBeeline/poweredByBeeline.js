@@ -1,6 +1,6 @@
 import querystring from "querystring"
 
-export default [
+angular.module("beeline").directive("poweredByBeeline", [
   "$rootScope",
   "p",
   function($rootScope, p) {
@@ -30,4 +30,4 @@ export default [
       },
     }
   },
-]
+])

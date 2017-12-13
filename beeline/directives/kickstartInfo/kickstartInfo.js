@@ -3,7 +3,7 @@
 // passHide hides the pass in summary page
 // preorderHide hides the info about asking user to "preorder", takes effect in recap page
 
-export default function() {
+angular.module("beeline").directive("kickstartInfo", function() {
   return {
     template: require("./kickstartInfo.html"),
     restrict: "E",
@@ -15,4 +15,4 @@ export default function() {
       contentHide: "<?",
     },
   }
-}
+})

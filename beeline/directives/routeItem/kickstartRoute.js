@@ -1,4 +1,4 @@
-export default [
+angular.module("beeline").directive("kickstartRoute", [
   "KickstarterService",
   function(KickstarterService) {
     return {
@@ -18,4 +18,4 @@ export default [
       ],
     }
   },
-]
+])
