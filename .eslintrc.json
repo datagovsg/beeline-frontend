@@ -25,6 +25,8 @@
     "IonicDeeplink": true,
     "device": true,
     "cordova": true,
-    "StatusBar": true
+    "StatusBar": true,
+    "Stripe": true,
+    "StripeCheckout": true
   }
 }

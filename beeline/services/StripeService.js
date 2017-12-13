@@ -3,7 +3,7 @@ export default [
   "$ionicPopup",
   "$ionicPlatform",
   "$rootScope",
-  function initStripe(UserService, $ionicPopup, $ionicPlatform, $rootScope) {
+  function StripeService(UserService, $ionicPopup, $ionicPlatform, $rootScope) {
     let stripeKeyPromise = UserService.beeline({
       url: "/stripe-key",
       method: "GET",
@@ -59,51 +59,11 @@ export default [
       })
     }
 
-    async function tokenFromCardIO(description, amount, isAddPayment) {
-      let cardDetails = await new Promise((resolve, reject) =>
-        CardIO.scan(
-          {
-            expiry: true,
-            cvv: true,
-            zip: false,
-            suppressManual: false,
-            suppressConfirm: false,
-            hideLogo: true,
-          },
-          resolve,
-          () => resolve(null)
-        )
-      )
-
-      if (cardDetails == null) return
-
-      let tokenPromise = new Promise(
-        (resolve, reject) =>
-          Stripe.createToken({
-            number: cardDetails["card_number"],
-            cvc: cardDetails["cvv"],
-            exp_month: cardDetails["expiry_month"],
-            exp_year: cardDetails["expiry_year"],
-          }),
-        (statusCode, response) => {
-          if (response.error) {
-            reject(new Error(response.error.message))
-          } else {
-            resolve(response)
-          }
-        }
-      )
-
-      return tokenPromise
-    }
-
     return {
       async promptForToken(description, amount, isAddPayment) {
         let tokenPromise
 
-        if (window.CardIO) {
-          tokenPromise = tokenFromCardIO(description, amount, isAddPayment)
-        } else if (StripeCheckout) {
+        if (StripeCheckout) {
           tokenPromise = tokenFromStripeCheckout(
             description,
             amount,
@@ -119,7 +79,6 @@ export default [
 
         return tokenPromise
       },
-      loaded: typeof StripeCheckout !== "undefined" ? true : false,
     }
   },
 ]
