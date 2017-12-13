@@ -4,7 +4,9 @@ import _ from "lodash"
 
 angular.module("beeline").factory("MapViewFactory", [
   "MapService",
-  function MapViewFactory(MapService) {
+  "TripService",
+  "ServerTime",
+  function MapViewFactory(MapService, TripService, ServerTime) {
     return {
       init: function(scope) {
         scope.mapObject = this.mapObject()
@@ -74,6 +76,63 @@ angular.module("beeline").factory("MapViewFactory", [
             scope.timeout.start()
           }
         })
+      },
+      pingLoop: function(scope, recentTimeBound) {
+        return async function() {
+          if (!scope.mapObject.pingTrips) return
+
+          // if scope.mapObject.allRecentPings doesn't exist yet, initialize
+          // it as a new empty array. The array will be filled in in the
+          // subsequent chunk of code mapping over pingTrips
+          scope.mapObject.allRecentPings =
+            scope.mapObject.allRecentPings ||
+            new Array(scope.mapObject.pingTrips.length)
+
+          await Promise.all(
+            scope.mapObject.pingTrips.map((trip, index) => {
+              return TripService.driverPings(trip.id).then(pings => {
+                const [ping] = pings || []
+                if (ping) {
+                  const now = ServerTime.getTime()
+                  scope.mapObject.allRecentPings[index] = {
+                    pings,
+                    isRecent: now - ping.time.getTime() < recentTimeBound,
+                  }
+                  MapService.emit("ping", ping)
+                }
+              })
+            })
+          )
+        }
+      },
+      statusLoop: function(scope) {
+        return async function() {
+          if (!scope.mapObject.pingTrips) return
+
+          // if scope.mapObject.statusMessages doesn't exist yet, initialize
+          // it as a new empty array. The array will be filled in in the
+          // subsequent chunk of code mapping over pingTrips
+          scope.mapObject.statusMessages =
+            scope.mapObject.statusMessages ||
+            new Array(scope.mapObject.pingTrips.length)
+
+          await Promise.all(
+            scope.mapObject.pingTrips.map((trip, index) => {
+              return TripService.statuses(trip.id).then(statuses => {
+                const status = _.get(statuses, "[0]", null)
+                scope.mapObject.statusMessages[index] = _.get(
+                  status,
+                  "message",
+                  null
+                )
+
+                if (status) {
+                  MapService.emit("status", status)
+                }
+              })
+            })
+          )
+        }
       },
     }
   },

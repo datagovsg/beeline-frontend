@@ -6,9 +6,7 @@ export default [
   "$stateParams",
   "RoutesService",
   "MapService",
-  "TripService",
   "LiteRoutesService",
-  "ServerTime",
   "MapViewFactory",
   function(
     $scope,
@@ -16,9 +14,7 @@ export default [
     $stateParams,
     RoutesService,
     MapService,
-    TripService,
     LiteRoutesService,
-    ServerTime,
     MapViewFactory
   ) {
     MapViewFactory.init($scope)
@@ -44,28 +40,13 @@ export default [
       SharedVariableService.setStops(liteTripStops)
     })
 
-    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
-
     /**
      * Request driver pings for the given trip
      */
-    async function pingLoop() {
-      if (!$scope.mapObject.pingTrips) return
+    const pingLoop = async function() {
+      const recentTimeBound = 5 * 60000
+      await MapViewFactory.pingLoop($scope, recentTimeBound)()
 
-      $scope.mapObject.allRecentPings = $scope.mapObject.allRecentPings || []
-      $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
-
-      await Promise.all(
-        $scope.mapObject.pingTrips.map((trip, index) => {
-          return TripService.driverPings(trip.id).then(async pings => {
-            const now = ServerTime.getTime()
-            $scope.mapObject.allRecentPings[index] = {
-              pings,
-              isRecent: pings[0] && now - pings[0].time.getTime() < 5 * 60000,
-            }
-          })
-        })
-      )
       // to mark no tracking data if no ping or pings are too old
       // isRecent could be undefined(no pings) or false (pings are out-dated)
       $scope.hasTrackingData = _.any(
@@ -79,28 +60,7 @@ export default [
       MapService.emit("tripInfo", tripInfo)
     }
 
-    /**
-     * Request status messages for the given trip
-     */
-    async function statusLoop() {
-      if (!$scope.mapObject.pingTrips) return
-
-      $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
-      $scope.mapObject.statusMessages.length = $scope.mapObject.pingTrips.length
-
-      await Promise.all(
-        $scope.mapObject.pingTrips.map((trip, index) => {
-          return TripService.statuses(trip.id).then(statuses => {
-            const status = _.get(statuses, "[0]", null)
-
-            $scope.mapObject.statusMessages[index] = _.get(
-              status,
-              "message",
-              null
-            )
-          })
-        })
-      )
-    }
+    const statusLoop = MapViewFactory.statusLoop($scope)
+    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
   },
 ]

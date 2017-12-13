@@ -5,22 +5,18 @@ export default [
   "SharedVariableService",
   "$stateParams",
   "RoutesService",
-  "MapService",
   "$timeout",
   "TripService",
   "TicketService",
-  "ServerTime",
   "MapViewFactory",
   function(
     $scope,
     SharedVariableService,
     $stateParams,
     RoutesService,
-    MapService,
     $timeout,
     TripService,
     TicketService,
-    ServerTime,
     MapViewFactory
   ) {
     MapViewFactory.init($scope)
@@ -60,60 +56,9 @@ export default [
       })
     }
 
+    const recentTimeBound = 2 * 60 * 60000
+    const pingLoop = MapViewFactory.pingLoop($scope, recentTimeBound)
+    const statusLoop = MapViewFactory.statusLoop($scope)
     MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
-
-    /**
-     * Request driver pings for the given trip
-     */
-    async function pingLoop() {
-      if (!$scope.mapObject.pingTrips) return
-
-      $scope.mapObject.allRecentPings = $scope.mapObject.allRecentPings || []
-      $scope.mapObject.allRecentPings.length = $scope.mapObject.pingTrips.length
-
-      await Promise.all(
-        $scope.mapObject.pingTrips.map((trip, index) => {
-          return TripService.driverPings(trip.id).then(pings => {
-            const [ping] = pings || []
-            if (ping) {
-              const now = ServerTime.getTime()
-              $scope.mapObject.allRecentPings[index] = {
-                pings,
-                isRecent: now - ping.time.getTime() < 2 * 60 * 60000,
-              }
-              MapService.emit("ping", ping)
-            }
-          })
-        })
-      )
-    }
-
-    /**
-     * Request status messages for the given trip
-     */
-    async function statusLoop() {
-      if (!$scope.mapObject.pingTrips) return
-
-      $scope.mapObject.statusMessages = $scope.mapObject.statusMessages || []
-      $scope.mapObject.statusMessages.length = $scope.mapObject.pingTrips.length
-
-      await Promise.all(
-        $scope.mapObject.pingTrips.map((trip, index) => {
-          return TripService.statuses(trip.id).then(statuses => {
-            const status = _.get(statuses, "[0]", null)
-
-            $scope.mapObject.statusMessages[index] = _.get(
-              status,
-              "message",
-              null
-            )
-
-            if (status) {
-              MapService.emit("status", status)
-            }
-          })
-        })
-      )
-    }
   },
 ]
