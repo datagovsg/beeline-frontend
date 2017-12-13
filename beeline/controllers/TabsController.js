@@ -125,34 +125,35 @@ export default [
         }
       }
     )
-
-    if (UserService.getUser()) {
-      loadingSpinner(PersonalRoutesService.load()).then(routes => {
-        ;[$scope.data.myLiteRoutes, $scope.data.myBookingRoutes] = _.partition(
-          routes,
-          route => route.tags.includes("lite")
-        )
-
-        if (routes.length == 0) {
-          // no personal route yet
-          $state.go("tabs.routes")
-        } else {
-          if (routes[0].tags.includes("public")) {
-            $state.go("tabs.my-booking-routes", {
-              routeId: routes[0].id,
-              pickupStopId: routes[0].boardStopStopId,
-              dropoffStopId: routes[0].alightStopStopId,
-            })
-          } else if (routes[0].tags.includes("lite")) {
-            $state.go("tabs.my-lite-routes", {
-              label: routes[0].label,
-            })
-          }
-        }
-      })
-    } else {
-      $state.go("tabs.routes")
-    }
+    // land the user to recent booking route
+    // hide this for now until we could handle it more intelligent (able to load AM/PM route dynamically)
+    // if (UserService.getUser()) {
+    //   loadingSpinner(PersonalRoutesService.load()).then(routes => {
+    //     ;[$scope.data.myLiteRoutes, $scope.data.myBookingRoutes] = _.partition(
+    //       routes,
+    //       route => route.tags.includes("lite")
+    //     )
+    //
+    //     if (routes.length == 0) {
+    //       // no personal route yet
+    //       $state.go("tabs.routes")
+    //     } else {
+    //       if (routes[0].tags.includes("public")) {
+    //         $state.go("tabs.my-booking-routes", {
+    //           routeId: routes[0].id,
+    //           pickupStopId: routes[0].boardStopStopId,
+    //           dropoffStopId: routes[0].alightStopStopId,
+    //         })
+    //       } else if (routes[0].tags.includes("lite")) {
+    //         $state.go("tabs.my-lite-routes", {
+    //           label: routes[0].label,
+    //         })
+    //       }
+    //     }
+    //   })
+    // } else {
+    //   $state.go("tabs.routes")
+    // }
 
     // Resolved when the map is initialized
     const gmapIsReady = new Promise((resolve, reject) => {

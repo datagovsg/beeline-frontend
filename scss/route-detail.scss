@@ -7,6 +7,7 @@
     flex-direction: column;
     top: auto;
     margin-bottom: 10px;
+    background-color: transparent!important;
     // @include desktop { &.has-tabs { top: $bar-height; } }
     @include desktop { top: $bar-height;  }
     .booking-info {
@@ -49,6 +50,7 @@
     }
 
   }
+
 }
 
 

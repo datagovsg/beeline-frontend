@@ -329,7 +329,8 @@ export default [
       viewedIntroSlidesVersion &&
       viewedIntroSlidesVersion >= introSlidesVersion
     ) {
-      $urlRouterProvider.otherwise("/tabs")
+      // $urlRouterProvider.otherwise("/tabs")
+      $urlRouterProvider.otherwise("/tabs/routes")
     } else {
       window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
       $urlRouterProvider.otherwise("/intro")
