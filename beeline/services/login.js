@@ -1,11 +1,11 @@
 import loginModalTemplate from "../templates/login-modal.html"
 const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$|^########$/
 
-export default [
+angular.module("beeline").service("LoginDialog", [
   "$rootScope",
   "$ionicModal",
   "Legalese",
-  function Login($rootScope, $ionicModal, Legalese) {
+  function LoginDialog($rootScope, $ionicModal, Legalese) {
     this.show = () => {
       let scope = $rootScope.$new()
       let loginModal = $ionicModal.fromTemplate(loginModalTemplate, {
@@ -56,4 +56,4 @@ export default [
       return loginPromise
     }
   },
-]
+])

@@ -16,9 +16,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      // ion-content background-color is transparent
+      background-color: $stable;
     }
 
     .rides-remaining {
+      // ion-content background-color is transparent
+      background-color: $stable;
       display: flex;
       padding: 0.5em;
       align-items: center;

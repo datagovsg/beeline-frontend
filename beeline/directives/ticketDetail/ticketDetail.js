@@ -74,7 +74,7 @@ angular.module("beeline").directive("ticketDetail", [
         const sentTripToMapView = () => {
           const trip = scope.trip
           if (trip) {
-            MapService.emit("ping-single-trip", [trip])
+            MapService.emit("ping-trips", [trip])
           }
         }
 
@@ -110,13 +110,13 @@ angular.module("beeline").directive("ticketDetail", [
 
         scope.$on("$ionicView.afterEnter", () => {
           sentTripToMapView()
-          MapService.emit("startTicketPingLoop")
+          MapService.emit("startPingLoop")
           MapService.on("ping", updateIfVehicleOrDriverChanged)
           MapService.on("status", updateStatus)
         })
 
         scope.$on("$ionicView.beforeLeave", () => {
-          MapService.emit("killTicketPingLoop")
+          MapService.emit("killPingLoop")
           MapService.removeListener("ping", updateIfVehicleOrDriverChanged)
           MapService.removeListener("status", updateStatus)
         })

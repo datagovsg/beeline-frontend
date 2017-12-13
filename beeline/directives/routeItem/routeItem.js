@@ -1,6 +1,6 @@
 import routeItemTemplate from "./routeItem.html"
 
-export default [
+angular.module("beeline").directive("routeItem", [
   function() {
     return {
       replace: false,
@@ -23,4 +23,4 @@ export default [
       link: function(scope, element, attributes) {},
     }
   },
-]
+])

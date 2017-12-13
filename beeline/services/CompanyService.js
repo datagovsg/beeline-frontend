@@ -4,7 +4,7 @@ import commonmark from "commonmark"
 let reader = new commonmark.Parser({ safe: true })
 let writer = new commonmark.HtmlRenderer({ safe: true })
 
-export default [
+angular.module("beeline").factory("CompanyService", [
   "UserService",
   "$ionicModal",
   "$rootScope",
@@ -49,4 +49,4 @@ export default [
       },
     }
   },
-]
+])

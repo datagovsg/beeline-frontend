@@ -1,6 +1,6 @@
 import progressBar from "./progressBar.html"
 
-export default [
+angular.module("beeline").directive("progressBar", [
   function() {
     return {
       restrict: "E",
@@ -19,4 +19,4 @@ export default [
       },
     }
   },
-]
+])

@@ -1,4 +1,4 @@
-export default function() {
+angular.module("beeline").directive("fancyPrice", function() {
   function linkFn(scope, elem, attrs) {
     scope.currency = scope.currency || "$"
     scope.integer = 0
@@ -29,4 +29,4 @@ export default function() {
 <span class="fraction">{{integer}}.{{fraction}}</span>
     `,
   }
-}
+})

@@ -1,4 +1,4 @@
-export default function() {
+angular.module("beeline").directive("moreInfo", function() {
   return {
     template: require("./moreInfo.html"),
     replace: false,
@@ -8,4 +8,4 @@ export default function() {
     },
     link: function(scope, elem, attr) {},
   }
-}
+})

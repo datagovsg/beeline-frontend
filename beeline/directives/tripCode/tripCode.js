@@ -1,4 +1,4 @@
-export default function() {
+angular.module("beeline").directive("tripCode", function() {
   return {
     template: `
 <span class="ch c0">{{codeStr[0]}}</span><span
@@ -39,4 +39,4 @@ export default function() {
       })().then(null, console.error)
     },
   }
-}
+})

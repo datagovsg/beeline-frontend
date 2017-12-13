@@ -32,25 +32,64 @@ require("angular-simple-logger")
 require("angular-google-maps")
 require("clipboard")
 require("ngclipboard")
-require("./directives/extA")
+
+// Directives
+require("./directives/beelineBindHtml")
+require("./directives/companyTnc/companyTnc")
+require("./directives/countdown")
 require("./directives/crowdstartShare")
-require("./directives/routeShare")
-require("./services/RotatedImageService")
-require("./services/GeoUtils")
+require("./directives/dailyTripsBroker")
+require("./directives/extA")
+require("./directives/fakeProgressBar")
+require("./directives/fancyPrice/fancyPrice")
+require("./directives/inServiceWindow")
+require("./directives/kickstartInfo/kickstartInfo")
 require("./directives/mapBusIcon")
+require("./directives/mapPolyRoute")
+require("./directives/moreInfo/moreInfo")
+require("./directives/poweredByBeeline/poweredByBeeline")
+require("./directives/priceCalculator/priceCalculator")
+require("./directives/progressBar/progressBar")
 require("./directives/routeItem/animatedRoute")
-require("./directives/ticketDetail/ticketDetail")
-require("./services/fastCheckoutService")
-require("./services/purchaseRoutePassService")
-require("./services/paymentService")
-require("./services/bookingSummaryModalService")
-require("./services/SharedVariableService")
-require("./services/MapService")
-require("./services/LazyLoadService")
+require("./directives/routeItem/kickstartRoute")
+require("./directives/routeItem/liteRoute")
+require("./directives/routeItem/regularRoute")
+require("./directives/routeItem/routeItem")
+require("./directives/routeShare")
 require("./directives/searchInput")
-require("./services/PlaceService")
-require("./services/ServerTimeService")
+require("./directives/tripCode/tripCode")
+require("./directives/ticketDetail/ticketDetail")
+
+// Services
+require("./services/BookingService")
+require("./services/bookingSummaryModalService")
+require("./services/CompanyService")
+require("./services/CreditsService")
+require("./services/fastCheckoutService")
+require("./services/GeoUtils")
+require("./services/GoogleAnalytics")
+require("./services/KickstarterService")
+require("./services/LazyLoadService")
+require("./services/legalese")
+require("./services/LiteRoutesService")
+require("./services/LiteRouteSubscriptionService")
+require("./services/LoadingSpinner")
+require("./services/login")
+require("./services/MapOptions")
+require("./services/MapService")
 require("./services/MapViewFactory")
+require("./services/paymentService")
+require("./services/PlaceService")
+require("./services/purchaseRoutePassService")
+require("./services/RotatedImageService")
+require("./services/RoutesService")
+require("./services/SearchService")
+require("./services/ServerTimeService")
+require("./services/SharedVariableService")
+require("./services/StripeService")
+require("./services/TicketService")
+require("./services/TripService")
+require("./services/UserService")
 require("./services/PersonalRoutesService")
 
 // //////////////////////////////////////////////////////////////////////////////
@@ -101,36 +140,9 @@ app
       return temp / Math.pow(10, precision)
     }
   })
-  .factory("TicketService", require("./services/TicketService.js").default)
-  .factory(
-    "LiteRouteSubscriptionService",
-    require("./services/LiteRouteSubscriptionService.js").default
-  )
-  .factory("UserService", require("./services/UserService.js").default)
-  .factory("TripService", require("./services/TripService.js").default)
-  .factory("CompanyService", require("./services/CompanyService.js").default)
-  .factory("RoutesService", require("./services/RoutesService.js").default)
-  .factory("CreditsService", require("./services/CreditsService.js").default)
-  .factory(
-    "LiteRoutesService",
-    require("./services/LiteRoutesService.js").default
-  )
-  .service("BookingService", require("./services/BookingService.js").default)
-  .factory("OneMapService", require("./services/OneMapService.js").default)
-  .factory("StripeService", require("./services/StripeService.js").default)
-  .factory("loadingSpinner", require("./services/LoadingSpinner.js").default)
-  .factory("GoogleAnalytics", require("./services/GoogleAnalytics.js").default)
-  .factory("SearchService", require("./services/SearchService.js").default)
-  .service("MapOptions", require("./services/MapOptions").default)
   .service(
     "busStopSelectorDialog",
     require("./services/busStopSelectorDialog.js").default
-  )
-  .service("Legalese", require("./services/legalese.js").default)
-  .service("LoginDialog", require("./services/login.js").default)
-  .service(
-    "KickstarterService",
-    require("./services/KickstarterService.js").default
   )
   .controller(
     "IntroSlidesController",
@@ -229,83 +241,11 @@ app
     require("./controllers/KickstarterStopsController.js").default
   )
   .directive(
-    "startEndPicker",
-    require("./directives/startEndPicker/startEndPicker").default
-  )
-  .directive(
     "busStopSelector",
     require("./directives/busStopSelector/busStopSelector").default
   )
-  .directive(
-    "priceCalculator",
-    require("./directives/priceCalculator/priceCalculator").default
-  )
-  .directive(
-    "revGeocode",
-    require("./directives/revGeocode/revGeocode").default
-  )
-  .directive(
-    "fancyPrice",
-    require("./directives/fancyPrice/fancyPrice").default
-  )
-  .directive(
-    "routeItem",
-    require("./directives/routeItem/routeItem.js").default
-  )
-  .directive(
-    "companyTnc",
-    require("./directives/companyTnc/companyTnc.js").default
-  )
-  .directive("tripCode", require("./directives/tripCode/tripCode.js").default)
   .directive("myLocation", require("./directives/myLocation.js").default)
-  .directive(
-    "companyInfoBroker",
-    require("./directives/companyInfoBroker.js").default
-  )
-  .directive("moreInfo", require("./directives/moreInfo/moreInfo").default)
-  .directive("mapPolyRoute", require("./directives/mapPolyRoute").default)
   .directive("mapBusStops", require("./directives/mapBusStops").default)
-  .directive(
-    "beelineBindHtml",
-    require("./directives/beelineBindHtml.js").default
-  )
-  .directive(
-    "kickstartInfo",
-    require("./directives/kickstartInfo/kickstartInfo.js").default
-  )
-  .directive(
-    "progressBar",
-    require("./directives/progressBar/progressBar.js").default
-  )
-  .directive(
-    "dailyTripsBroker",
-    require("./directives/dailyTripsBroker.js").default
-  )
-  .directive(
-    "fakeProgressBar",
-    require("./directives/fakeProgressBar.js").default
-  )
-  .directive(
-    "inServiceWindow",
-    require("./directives/inServiceWindow.js").default
-  )
-  .directive(
-    "poweredByBeeline",
-    require("./directives/poweredByBeeline/poweredByBeeline.js").default
-  )
-  .directive(
-    "regularRoute",
-    require("./directives/routeItem/regularRoute.js").default
-  )
-  .directive(
-    "kickstartRoute",
-    require("./directives/routeItem/kickstartRoute.js").default
-  )
-  .directive(
-    "liteRoute",
-    require("./directives/routeItem/liteRoute.js").default
-  )
-  .directive("countdown", require("./directives/countdown.js").default)
   .config(configureRoutes)
   .config([
     "$locationProvider",
