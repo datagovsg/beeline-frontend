@@ -19,6 +19,7 @@ angular.module("beeline").directive("ticketDetail", [
     MapService
   ) {
     return {
+      restrict: "E",
       template: ticketDetailTemplate,
       scope: {
         ticketId: "<?",
@@ -75,6 +76,9 @@ angular.module("beeline").directive("ticketDetail", [
           const trip = scope.trip
           if (trip) {
             MapService.emit("ping-trips", [trip])
+            MapService.emit("startPingLoop")
+            MapService.on("ping", updateIfVehicleOrDriverChanged)
+            MapService.on("status", updateStatus)
           }
         }
 
@@ -108,17 +112,30 @@ angular.module("beeline").directive("ticketDetail", [
           scope.disp.tripStatus = status.status
         }
 
-        scope.$on("$ionicView.afterEnter", () => {
-          sentTripToMapView()
-          MapService.emit("startPingLoop")
-          MapService.on("ping", updateIfVehicleOrDriverChanged)
-          MapService.on("status", updateStatus)
-        })
-
-        scope.$on("$ionicView.beforeLeave", () => {
+        const deregister = function() {
           MapService.emit("killPingLoop")
           MapService.removeListener("ping", updateIfVehicleOrDriverChanged)
           MapService.removeListener("status", updateStatus)
+        }
+
+        // when leaving tabs.route-detail or tabs.ticket-detail
+        scope.$on("$destroy", () => {
+          deregister()
+        })
+
+        // when leaving tabs.my-booking-routes or tabs.route-detail
+        scope.$on("leavingMyBookingRoute", (event, args) => {
+          if (
+            args.ticketId &&
+            scope.ticket &&
+            scope.ticket.id == args.ticketId
+          ) {
+            deregister()
+          }
+        })
+
+        scope.$on("enteringMyBookingRoute", (event, args) => {
+          sentTripToMapView()
         })
       },
     }

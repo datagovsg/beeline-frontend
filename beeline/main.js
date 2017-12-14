@@ -225,6 +225,10 @@ app
     require("./controllers/MapViewController.js").default
   )
   .controller(
+    "RouteDetailMapViewController",
+    require("./controllers/RouteDetailMapViewController.js").default
+  )
+  .controller(
     "LiteMapViewController",
     require("./controllers/LiteMapViewController.js").default
   )

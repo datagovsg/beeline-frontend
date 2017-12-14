@@ -51,7 +51,7 @@ export default [
 
           "map-area": {
             templateUrl: "templates/map-view.html",
-            controller: "MapViewController",
+            controller: "RouteDetailMapViewController",
           },
         },
         data: {
@@ -94,7 +94,7 @@ export default [
 
           "map-area": {
             templateUrl: "templates/map-view.html",
-            controller: "MapViewController",
+            controller: "RouteDetailMapViewController",
           },
         },
       })
@@ -161,19 +161,6 @@ export default [
           menuContent: {
             templateUrl: "templates/tab-lite-more-info.html",
             controller: "LiteMoreInfoController",
-          },
-        },
-      })
-
-      // ////////////////////////////////////////////////////////////////////////////
-      // Main interface, Sugesstions Tab
-      // ////////////////////////////////////////////////////////////////////////////
-      .state("tabs.suggest", {
-        url: "/suggest/:action",
-        views: {
-          menuContent: {
-            templateUrl: "templates/tab-suggest.html",
-            controller: "SuggestController",
           },
         },
       })

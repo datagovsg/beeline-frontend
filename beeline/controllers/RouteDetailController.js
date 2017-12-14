@@ -49,7 +49,6 @@ export default [
       nextTripStopIds: null,
       minsBeforeClose: null,
       seatsAvailable: null,
-      hasNextTripTicket: null,
       routeId: routeId,
       bookingEnds: null,
       routeSupportsRoutePass: null,
@@ -59,6 +58,7 @@ export default [
       // defined in state tabs.my-booking-routes but not in tabs.route-detail
       showSideMenu: $state.current.data && $state.current.data.showSideMenu,
       label: null,
+      showBooking: null,
     }
 
     $scope.disp = {
@@ -133,6 +133,21 @@ export default [
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
         hideOnStateChange: true,
       })
+
+      // show booking after choosing stops even has ticket
+      $scope.$on("$stateChangeSuccess", function(
+        event,
+        toState,
+        toParams,
+        fromState,
+        fromParams
+      ) {
+        if (fromState && fromState.name == "tabs.route-stops") {
+          $scope.data.showBooking = true
+          $scope.activeTab = 0
+        }
+      })
+
       let promises = Promise.all([
         FastCheckoutService.verify(routeId),
         RoutesService.getRoute(routeId),
@@ -140,9 +155,18 @@ export default [
       promises
         .then(response => {
           $scope.data.nextTrip = response[0]
-          $scope.activeTab = $scope.data.nextTrip.hasNextTripTicket ? 1 : 0
+          if ($scope.data.showBooking) {
+            $scope.activeTab = 0
+          } else {
+            $scope.activeTab = $scope.data.nextTrip.hasNextTripTicket ? 1 : 0
+          }
           if ($scope.data.nextTrip.hasNextTripTicket) {
             $scope.data.nextTripTicketId = $scope.data.nextTrip.nextTripTicketId
+            MapService.emit("ticketIdIsAvailable", $scope.data.nextTripTicketId)
+            // to inform RouteDetail to start the ping loop
+            $scope.$broadcast("enteringMyBookingRoute", {
+              ticketId: $scope.data.nextTripTicketId,
+            })
           }
           $scope.data.nextTripStopIds = $scope.data.nextTrip.tripStops.map(
             ts => ts.stop.id
@@ -173,6 +197,15 @@ export default [
             subTitle: error,
           })
         })
+    })
+
+    // to inform ticketDetail.js to kill ping loop and deregister
+    $scope.$on("$ionicView.leave", () => {
+      if ($scope.data.nextTripTicketId) {
+        $scope.$broadcast("leavingMyBookingRoute", {
+          ticketId: $scope.data.nextTripTicketId,
+        })
+      }
     })
 
     // Get the route credits
