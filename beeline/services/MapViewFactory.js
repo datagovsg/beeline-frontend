@@ -59,7 +59,8 @@ angular.module("beeline").factory("MapViewFactory", [
           scope.mapObject.pingTrips = trips
         })
 
-        MapService.once("killPingLoop", () => {
+        // in case "killPingLoop" is fired before "startPingLoop"
+        MapService.on("killPingLoop", () => {
           scope.timeout.stop()
           scope.statusTimeout.stop()
         })
