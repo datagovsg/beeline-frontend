@@ -10,6 +10,11 @@
       padding: $item-padding-small;
       .routeDetailDesc{
         flex: 1 1 auto;
+        // to show discription within 1 line to save space
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 40%;
       }
       .time{
         white-space: nowrap;
@@ -56,12 +61,12 @@
 }
 
 ticket-detail {
-  margin: 20px;
+  margin: 5px;
   border: 2px solid #BFBFBF;
   border-radius: 15px;
   background-color: white;
   box-shadow: 10px 10px 5px rgba(0,0,0,0.2);
   .item {
-    margin: 20px;
+    margin: 5px;
   }
 }
