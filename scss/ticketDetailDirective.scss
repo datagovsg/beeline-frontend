@@ -10,11 +10,20 @@
       padding: $item-padding-small;
       .routeDetailDesc{
         flex: 1 1 auto;
+        
         // to show discription within 1 line to save space
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 40%;
+        // white-space: nowrap;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
+        // max-width: 40%;
+
+        // https://stackoverflow.com/questions/15909489/text-overflow-ellipsis-on-two-lines
+        @supports (-webkit-line-clamp: 2) {
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
       }
       .time{
         white-space: nowrap;
@@ -65,8 +74,9 @@ ticket-detail {
   border: 2px solid #BFBFBF;
   border-radius: 15px;
   background-color: white;
-  box-shadow: 10px 10px 5px rgba(0,0,0,0.2);
+  box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
   .item {
     margin: 5px;
+    border: none;
   }
 }

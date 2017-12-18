@@ -1,9 +1,7 @@
   <div class="trip-info">
     <div class="item item-text-wrap">
-      <div class="row">
-        <div class="col text-center">
-          Ticket for {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}
-        </div>
+      <div class="text-center">
+        Ticket for {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}
       </div>
       <div class="service-cancellation" ng-if="disp.tripStatus == 'cancelled'">
         <div class="item item-text-wrap">
@@ -26,7 +24,7 @@
       </div>
       <div ng-if="disp.tripStatus !== 'cancelled'">
         <div class="row">
-          <div class="col">
+          <div class="col col-60">
             <h4>Trip Code </h4>
             <span ng-if="!tripCode">Not available</span>
             <trip-code class="trip-code" code="tripCode" ng-if="tripCode"/>
@@ -41,7 +39,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col col-60">
             <h4>Operated By</h4>
             <span ng-bind="company.name"></span>
             <a ng-click="showTerms(company.id)"><i class="icon ion-information-circled tnc"></i></a>
