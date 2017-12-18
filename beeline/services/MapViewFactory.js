@@ -59,15 +59,15 @@ angular.module("beeline").factory("MapViewFactory", [
           scope.mapObject.pingTrips = trips
         })
 
-        // in case "killPingLoop" is fired before "startPingLoop"
-        MapService.on("killPingLoop", () => {
-          scope.timeout.stop()
-          scope.statusTimeout.stop()
-        })
-
         MapService.once("startPingLoop", () => {
           scope.timeout.start()
           scope.statusTimeout.start()
+          // register this once startPingLoop is fired so to avoid race condition
+          // ("killPingLoop is fired before startPingLoop")
+          MapService.once("killPingLoop", () => {
+            scope.timeout.stop()
+            scope.statusTimeout.stop()
+          })
         })
 
         // load icons and path earlier by restart timeout on watching trips

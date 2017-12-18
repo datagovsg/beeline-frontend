@@ -59,6 +59,7 @@ export default [
       showSideMenu: $state.current.data && $state.current.data.showSideMenu,
       label: null,
       showBooking: null,
+      hasNextTripTicket: null,
     }
 
     $scope.disp = {
@@ -155,12 +156,13 @@ export default [
       promises
         .then(response => {
           $scope.data.nextTrip = response[0]
+          $scope.data.hasNextTripTicket = $scope.data.nextTrip.hasNextTripTicket
           if ($scope.data.showBooking) {
             $scope.activeTab = 0
           } else {
-            $scope.activeTab = $scope.data.nextTrip.hasNextTripTicket ? 1 : 0
+            $scope.activeTab = $scope.data.hasNextTripTicket ? 1 : 0
           }
-          if ($scope.data.nextTrip.hasNextTripTicket) {
+          if ($scope.data.hasNextTripTicket) {
             $scope.data.nextTripTicketId = $scope.data.nextTrip.nextTripTicketId
             MapService.emit("ticketIdIsAvailable", $scope.data.nextTripTicketId)
             // to inform RouteDetail to start the ping loop

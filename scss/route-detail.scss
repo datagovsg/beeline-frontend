@@ -53,8 +53,11 @@
       animation-name: slide-in-from-bottom;
     }
 
-    ticket-detail.col {
-      max-width: 90%;
+    .fa.fa-times {
+      position: absolute;
+      right: 30px;
+      top: 30px;
+      z-index: 3;
     }
 
   }

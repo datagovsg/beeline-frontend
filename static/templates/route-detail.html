@@ -42,7 +42,7 @@
         </div>
       </form>
       <div class="booking-info">
-        <span ng-if="data.nextTrip.hasNextTripTicket">
+        <span ng-if="data.hasNextTripTicket">
           You have already booked this trip.
         </span>
         <span ng-if="data.boardStopInvalid">
@@ -52,12 +52,12 @@
           The dropoff stop is not available for this trip.
         </span>
         <countdown board-time="data.nextTrip && data.nextTrip.boardTime" booking-ends="data.bookingEnds"></countdown>
-        <button class="button primary-button" ng-click="bookNext()" ng-if="!data.nextTrip.hasNextTripTicket"
-          ng-disabled="stopsForm.$invalid || !data.nextTrip.seatsAvailable || data.nextTrip.hasNextTripTicket || disp.isBooking || data.bookingEnds || data.boardStopInvalid || data.alightStopInvalid">
+        <button class="button primary-button" ng-click="bookNext()" ng-if="!data.hasNextTripTicket"
+          ng-disabled="stopsForm.$invalid || !data.nextTrip.seatsAvailable || data.hasNextTripTicket || disp.isBooking || data.bookingEnds || data.boardStopInvalid || data.alightStopInvalid">
           <span ng-if="data.nextTrip.seatsAvailable">Book Next Trip{{ ' '+(data.nextTrip.date.getTime() | date:'dd MMM' : 'Z')+' '}}<span ng-show="data.nextTrip.date">{{'('+(data.nextTrip.date.getTime() | date:'EEE' : 'Z')+')'}}</span></span>
           <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
         </button>
-        <button class="button primary-button" ng-click="toggle()" ng-if="data.nextTrip.hasNextTripTicket">
+        <button class="button primary-button" ng-click="toggle()" ng-if="data.hasNextTripTicket">
            View Ticket
         </button>
         <span ng-if="data.price">
@@ -77,9 +77,7 @@
     <div ng-show="activeTab===1" class="ticketView">
       <div class="row">
         <ticket-detail ticket-id="data.nextTripTicketId" class="col" ng-if="data.nextTripTicketId"></ticket-detail>
-        <div>
-          <i class="fa fa-times fa-lg" aria-hidden="true" ng-click="toggle()"></i>
-        </div>
+        <i class="fa fa-times fa-lg" aria-hidden="true" ng-click="toggle()"></i>
       </div>
    </div>
 
