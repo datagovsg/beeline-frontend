@@ -10,15 +10,18 @@
   <div class="built-by" ng-show="!transportCompanyId && builtByShow">
     <br>
     Built by
-    <a href="https://tech.gov.sg">
+    <a href="#" ng-click="openLink($event, 'https://tech.gov.sg')">
       <img
         src="img/govtech_logo.png"
         alt="GovTech"
       >
     </a>
     <div class="developer-list">
-      @artylope @chuasweechin @fynyky @huangkaiw3n
+      @artylope @chuasweechin @fynyky @huangkaiw3n @joelchoo
       @LoneRifle @shen-xujing @xkjyeah @yongjun21
     </div>
+    <a href="#" ng-click="openLink($event, 'https://attribution.beeline.sg/CREDITS.md')">
+      Built with open source software
+    </a>
   </div>
 </div>

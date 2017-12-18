@@ -23,6 +23,10 @@ angular.module("beeline").directive("poweredByBeeline", [
             "_system"
           )
         }
+        scope.openLink = function(event, url) {
+          event.preventDefault()
+          window.open(url, "_system")
+        }
         scope.powerHide = scope.powerHide
           ? scope.powerHide
           : $rootScope.o.APP.NAME == "Beeline"
