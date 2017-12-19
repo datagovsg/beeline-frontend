@@ -15,6 +15,7 @@ export default [
   "Legalese",
   "$rootScope",
   "$ionicPopup",
+  "$window",
   function(
     // Angular Tools
     $scope,
@@ -31,7 +32,8 @@ export default [
     PlaceService,
     Legalese,
     $rootScope,
-    $ionicPopup
+    $ionicPopup,
+    $window
   ) {
     // -------------------------------------------------------------------------
     // State
@@ -504,5 +506,31 @@ export default [
     $scope.$on("$ionicView.beforeEnter", () => {
       $scope.data.nextSessionId = BookingService.newSession()
     })
+
+    let menuGifPopup = null
+
+    function showMenuGifPopup() {
+      menuGifPopup = $ionicPopup.show({
+        title: "Tap to show menu",
+        template: '<center><img src="img/actionSheet.gif"/></center>',
+        buttons: [
+          {
+            text: "OK",
+            type: "button-positive",
+            onTap: function(e) {
+              closePopup()
+            },
+          },
+        ],
+      })
+    }
+    function closePopup() {
+      menuGifPopup.close()
+    }
+
+    if (!$window.localStorage.showMenuGif) {
+      $window.localStorage.showMenuGif = true
+      showMenuGifPopup()
+    }
   },
 ]
