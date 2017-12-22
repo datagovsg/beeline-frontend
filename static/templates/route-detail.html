@@ -1,15 +1,17 @@
 <ion-view class="route-detail page-with-map" hide-back-button="true" ng-init="activeTab = 0">
+  <!-- hide the left and right icon if activeTab===1 -->
+  <!-- to leave only 1 button to click in ticket view -->
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
        ui-sref="tabs.routes"
-       ng-if="!data.showSideMenu">
+       ng-if="!data.showSideMenu && activeTab===0">
        <i class="icon ion-ios-arrow-back"></i>
     </button>
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"  ng-if="data.showSideMenu"></button>
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"  ng-if="data.showSideMenu && activeTab===0"></button>
   </ion-nav-buttons>
   <ion-nav-title>{{data.label}}</ion-nav-title>
   <ion-nav-buttons side="right">
-    <route-share is-normal-route="true" route-id="data.routeId"></route-share>
+    <route-share is-normal-route="true" route-id="data.routeId" ng-if="activeTab===0"></route-share>
   </ion-nav-buttons>
   <ion-content scroll="false">
     <div ng-show="activeTab==0" class="bookingView">
@@ -76,8 +78,10 @@
     </div>
     <div ng-show="activeTab===1" class="ticketView">
       <div class="row">
+        <a class="btn btn-small" ng-click="toggle()">
+          <i class="fa fa-arrow-left"></i> Boooking
+        </a>
         <ticket-detail ticket-id="data.nextTripTicketId" class="col" ng-if="data.nextTripTicketId"></ticket-detail>
-        <i class="fa fa-times fa-lg" aria-hidden="true" ng-click="toggle()"></i>
       </div>
    </div>
 

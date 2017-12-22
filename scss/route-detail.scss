@@ -53,10 +53,10 @@
       animation-name: slide-in-from-bottom;
     }
 
-    .fa.fa-times {
+    .ticketView .row .btn.btn-small {
       position: absolute;
-      right: 30px;
-      top: 30px;
+      left: 30px;
+      top: 20px;
       z-index: 3;
     }
 
