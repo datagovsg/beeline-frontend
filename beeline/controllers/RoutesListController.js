@@ -512,7 +512,7 @@ export default [
     function showMenuGifPopup() {
       menuGifPopup = $ionicPopup.show({
         title: "Tap to show menu",
-        template: '<center><img src="img/actionSheet.gif"/></center>',
+        template: '<center><img src="img/sideMenu.gif"/></center>',
         buttons: [
           {
             text: "OK",
