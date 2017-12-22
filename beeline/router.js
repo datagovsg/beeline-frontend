@@ -324,6 +324,20 @@ export default [
         },
       })
 
+      .state("tabs.crowdstart-instant", {
+        url: "/crowdstart/instant?stops&arrivalTime",
+        views: {
+          "tab-crowdstart": {
+            templateUrl: "templates/kickstarter-instant.html",
+            controller: "KickstarterInstantController",
+          },
+        },
+        data: {
+          hideTabs: true,
+        },
+      })
+
+
       // ///////////////////////////////////////////////////////////////////////
       // Main interface, Settings Tab
       // ///////////////////////////////////////////////////////////////////////

@@ -99,3 +99,33 @@ export function retriveNextTrip(route) {
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
+
+/**
+ * onlyOneAtATime(fn)
+ *
+ * @param {function} fn: Function is a function that return a promise.
+ * @return {function} Function wrapping around fn which ensures
+ *  that fn cannot be called until the previous call has resolved/
+ *  rejected
+ *
+ */
+export function onlyOneAtATime(fn) {
+  let currentPromise = null
+
+  /** Wrapper */
+  function wrapper () {
+    if (currentPromise === null) {
+      // eslint-disable-next-line
+      currentPromise = Promise.resolve(fn.apply(this, arguments))
+
+      currentPromise
+        .catch((err) => {console.error(err)}) // execute regardless of errors
+        .then(() => {
+          currentPromise = null
+        })
+    } else {
+      return
+    }
+  }
+  return wrapper
+}
