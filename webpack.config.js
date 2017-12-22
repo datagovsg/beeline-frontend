@@ -75,6 +75,11 @@ module.exports = function(env) {
       plugins: [
         new InlineEnviromentVariablesPlugin(INLINED_ENVIRONMENT_VARIABLES),
       ],
+      externals: {
+        // Ionic's bundle already includes angular,
+        // so we don't have to load it again
+        angular: 'angular',
+      },
     },
 
     // CSS Config
