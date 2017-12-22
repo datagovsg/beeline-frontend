@@ -11,10 +11,10 @@ export default [
   "SearchService",
   "BookingService",
   "SearchEventService",
-  "PlaceService",
   "Legalese",
   "$rootScope",
   "$ionicPopup",
+  "OneMapPlaceService",
   function(
     // Angular Tools
     $scope,
@@ -28,10 +28,10 @@ export default [
     SearchService,
     BookingService,
     SearchEventService,
-    PlaceService,
     Legalese,
     $rootScope,
-    $ionicPopup
+    $ionicPopup,
+    OneMapPlaceService
   ) {
     // -------------------------------------------------------------------------
     // State
@@ -473,7 +473,9 @@ export default [
           // If placeQuery.geometry exists then we've already made a place query
           if (placeQuery.geometry) return
 
-          let place = await PlaceService.handleQuery($scope.data.queryText)
+          let place = await OneMapPlaceService.handleQuery(
+            $scope.data.queryText
+          )
 
           $scope.data.placeQuery = place
           $scope.$digest()

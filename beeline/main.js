@@ -89,6 +89,7 @@ require("./services/StripeService")
 require("./services/TicketService")
 require("./services/TripService")
 require("./services/UserService")
+require("./services/OneMapPlaceService")
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
