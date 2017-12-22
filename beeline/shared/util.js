@@ -113,13 +113,15 @@ export function onlyOneAtATime(fn) {
   let currentPromise = null
 
   /** Wrapper */
-  function wrapper () {
+  function wrapper() {
     if (currentPromise === null) {
       // eslint-disable-next-line
       currentPromise = Promise.resolve(fn.apply(this, arguments))
 
       currentPromise
-        .catch((err) => {console.error(err)}) // execute regardless of errors
+        .catch(err => {
+          console.error(err)
+        }) // execute regardless of errors
         .then(() => {
           currentPromise = null
         })
