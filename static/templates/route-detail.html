@@ -78,7 +78,9 @@
     </div>
     <div ng-show="activeTab===1" class="ticketView">
       <div class="row">
-        <i class="fa fa-arrow-left" ng-click="toggle()"> Booking</i>
+        <a class="btn btn-small" ng-click="toggle()">
+          <i class="fa fa-arrow-left"></i> Boooking
+        </a>
         <ticket-detail ticket-id="data.nextTripTicketId" class="col" ng-if="data.nextTripTicketId"></ticket-detail>
       </div>
    </div>
