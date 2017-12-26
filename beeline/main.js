@@ -47,6 +47,7 @@ require("./directives/kickstartInfo/kickstartInfo")
 require("./directives/mapBusIcon")
 require("./directives/mapPolyRoute")
 require("./directives/moreInfo/moreInfo")
+require("./directives/myLocation")
 require("./directives/poweredByBeeline/poweredByBeeline")
 require("./directives/priceCalculator/priceCalculator")
 require("./directives/progressBar/progressBar")
@@ -138,10 +139,6 @@ app
       return temp / Math.pow(10, precision)
     }
   })
-  .service(
-    "busStopSelectorDialog",
-    require("./services/busStopSelectorDialog.js").default
-  )
   .controller(
     "IntroSlidesController",
     require("./controllers/IntroSlidesController.js").default
@@ -238,8 +235,6 @@ app
     "KickstarterStopsController",
     require("./controllers/KickstarterStopsController.js").default
   )
-  .directive("myLocation", require("./directives/myLocation.js").default)
-  .directive("mapBusStops", require("./directives/mapBusStops").default)
   .config(configureRoutes)
   .config([
     "$locationProvider",
