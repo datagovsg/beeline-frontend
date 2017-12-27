@@ -11,6 +11,7 @@ export default [
   "SearchService",
   "BookingService",
   "SearchEventService",
+  "UserService",
   "Legalese",
   "$rootScope",
   "$ionicPopup",
@@ -28,6 +29,7 @@ export default [
     SearchService,
     BookingService,
     SearchEventService,
+    UserService,
     Legalese,
     $rootScope,
     $ionicPopup,
@@ -266,7 +268,7 @@ export default [
     // reset to null if user use search bar
     $scope.$watchGroup(
       ["data.recentRoutesById", "data.routes"],
-      ([recentRoutesById, routes]) => {
+      async ([recentRoutesById, routes]) => {
         if (recentRoutesById && routes) {
           let placeResults = []
           for (let id in recentRoutesById) {
@@ -279,13 +281,27 @@ export default [
                 stop => stop.stopId
               )
               if (route.schedule && route.schedule.slice(0, 2) === "AM") {
-                lnglat =
-                  tripStopsByKey[route.boardStopStopId].stop.coordinates
-                    .coordinates
+                if (route.boardStopStopId in tripStopsByKey) {
+                  lnglat =
+                    tripStopsByKey[route.boardStopStopId].stop.coordinates
+                      .coordinates
+                } else {
+                  lnglat = await UserService.beeline({
+                    method: "GET",
+                    url: "/stops/" + route.boardStopStopId,
+                  }).then(response => response.data.coordinates.coordinates)
+                }
               } else {
-                lnglat =
-                  tripStopsByKey[route.alightStopStopId].stop.coordinates
-                    .coordinates
+                if (route.alightStopStopId in tripStopsByKey) {
+                  lnglat =
+                    tripStopsByKey[route.alightStopStopId].stop.coordinates
+                      .coordinates
+                } else {
+                  lnglat = await UserService.beeline({
+                    method: "GET",
+                    url: "/stops/" + route.alightStopStopId,
+                  }).then(response => response.data.coordinates.coordinates)
+                }
               }
               let results = SearchService.filterRoutesByLngLat(
                 $scope.data.routes,
