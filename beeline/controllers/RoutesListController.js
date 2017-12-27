@@ -280,29 +280,21 @@ export default [
                 route.trips[0].tripStops,
                 stop => stop.stopId
               )
-              if (route.schedule && route.schedule.slice(0, 2) === "AM") {
-                if (route.boardStopStopId in tripStopsByKey) {
-                  lnglat =
-                    tripStopsByKey[route.boardStopStopId].stop.coordinates
-                      .coordinates
-                } else {
-                  lnglat = await UserService.beeline({
-                    method: "GET",
-                    url: "/stops/" + route.boardStopStopId,
-                  }).then(response => response.data.coordinates.coordinates)
-                }
+
+              let stopId =
+                route.schedule && route.schedule.slice(0, 2) === "AM"
+                  ? route.boardStopStopId
+                  : route.alightStopStopId
+
+              if (stopId in tripStopsByKey) {
+                lnglat = tripStopsByKey[stopId].stop.coordinates.coordinates
               } else {
-                if (route.alightStopStopId in tripStopsByKey) {
-                  lnglat =
-                    tripStopsByKey[route.alightStopStopId].stop.coordinates
-                      .coordinates
-                } else {
-                  lnglat = await UserService.beeline({
-                    method: "GET",
-                    url: "/stops/" + route.alightStopStopId,
-                  }).then(response => response.data.coordinates.coordinates)
-                }
+                lnglat = await UserService.beeline({
+                  method: "GET",
+                  url: "/stops/" + stopId,
+                }).then(response => response.data.coordinates.coordinates)
               }
+
               let results = SearchService.filterRoutesByLngLat(
                 $scope.data.routes,
                 lnglat
