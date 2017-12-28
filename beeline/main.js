@@ -59,6 +59,7 @@ require("./directives/routeItem/routeItem")
 require("./directives/routeShare")
 require("./directives/searchInput")
 require("./directives/tripCode/tripCode")
+require("./directives/companyInfoBroker")
 
 // Services
 require("./services/BookingService")
