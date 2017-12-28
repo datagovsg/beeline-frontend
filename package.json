@@ -11,6 +11,7 @@
     "clipboard": "^1.5.15",
     "commonmark": "^0.28.1",
     "compare-versions": "^3.0.0",
+    "cordova": "^6.5.0",
     "cordova-android": "6.3.0",
     "cordova-ios": "^4.4.0",
     "cordova-plugin-app-version": "~0.1.9",
@@ -145,8 +146,7 @@
         "DEEPLINK_5_SCHEME": " ",
         "DEEPLINK_5_HOST": " "
       },
-      "cordova-hot-code-push-plugin": {},
-      "cordova-hot-code-push-local-dev-addon": {}
+      "cordova-hot-code-push-plugin": {}
     },
     "platforms": [
       "android"
