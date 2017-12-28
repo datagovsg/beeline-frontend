@@ -11,6 +11,7 @@ export default [
   "SearchService",
   "BookingService",
   "SearchEventService",
+  "UserService",
   "Legalese",
   "$rootScope",
   "$ionicPopup",
@@ -28,6 +29,7 @@ export default [
     SearchService,
     BookingService,
     SearchEventService,
+    UserService,
     Legalese,
     $rootScope,
     $ionicPopup,
@@ -266,7 +268,7 @@ export default [
     // reset to null if user use search bar
     $scope.$watchGroup(
       ["data.recentRoutesById", "data.routes"],
-      ([recentRoutesById, routes]) => {
+      async ([recentRoutesById, routes]) => {
         if (recentRoutesById && routes) {
           let placeResults = []
           for (let id in recentRoutesById) {
@@ -278,15 +280,21 @@ export default [
                 route.trips[0].tripStops,
                 stop => stop.stopId
               )
-              if (route.schedule && route.schedule.slice(0, 2) === "AM") {
-                lnglat =
-                  tripStopsByKey[route.boardStopStopId].stop.coordinates
-                    .coordinates
+
+              let stopId =
+                route.schedule && route.schedule.slice(0, 2) === "AM"
+                  ? route.boardStopStopId
+                  : route.alightStopStopId
+
+              if (stopId in tripStopsByKey) {
+                lnglat = tripStopsByKey[stopId].stop.coordinates.coordinates
               } else {
-                lnglat =
-                  tripStopsByKey[route.alightStopStopId].stop.coordinates
-                    .coordinates
+                lnglat = await UserService.beeline({
+                  method: "GET",
+                  url: "/stops/" + stopId,
+                }).then(response => response.data.coordinates.coordinates)
               }
+
               let results = SearchService.filterRoutesByLngLat(
                 $scope.data.routes,
                 lnglat
