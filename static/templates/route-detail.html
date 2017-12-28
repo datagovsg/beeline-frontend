@@ -60,7 +60,7 @@
           <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
         </button>
         <button class="button primary-button" ng-click="toggle()" ng-if="data.hasNextTripTicket">
-           View Ticket
+           <i class="fa fa-ticket fa-fw" aria-hidden="true"></i>&nbsp; View Ticket
         </button>
         <span ng-if="data.price">
           $<span ng-bind="data.price"></span> per trip
@@ -79,7 +79,7 @@
     <div ng-show="activeTab===1" class="ticketView">
       <div class="row">
         <a class="btn btn-small" ng-click="toggle()">
-          <i class="fa fa-arrow-left"></i> Boooking
+          <i class="fa fa-arrow-left"></i> Booking
         </a>
         <ticket-detail ticket-id="data.nextTripTicketId" class="col" ng-if="data.nextTripTicketId"></ticket-detail>
       </div>
