@@ -965,7 +965,7 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "c5a58b7f622dd7771a14349033b3b268"
+    "hash": "6c43960b1d5ad1c3125103e3f601d761"
   },
   {
     "file": "templates/route-stops.html",
@@ -1009,7 +1009,7 @@
   },
   {
     "file": "templates/tabs.html",
-    "hash": "11a8ce53e3912d1bd79d8ef4876cb3ee"
+    "hash": "8308df8f8c0129196d9b631dbecbf98c"
   },
   {
     "file": "templates/terms-of-use.html",
