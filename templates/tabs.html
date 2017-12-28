@@ -5,88 +5,86 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 <ion-view id="tabs">
-  <ion-tabs class="tabs-icon-top tabs-calm">
+  <ion-side-menus>
 
-    <ion-tab title="Routes"
-             class="nav-text nav-routes"
-             href="#/tabs/routes">
-     <ion-nav-bar class="bar-royal">
-       <ion-nav-back-button></ion-nav-back-button>
-     </ion-nav-bar>
-      <ion-nav-view name="tab-routes"></ion-nav-view>
-    </ion-tab>
+    <!-- Main content, usually <ion-nav-view> -->
+    <ion-side-menu-content>
+      <div class="left-pane">
+        <ion-nav-bar class="bar-royal">
+        </ion-nav-bar>
 
-    <ion-tab title="Trips"
-            class="nav-text nav-tickets"
-             href="#/tabs/tickets">
-      <ion-nav-bar class="bar-royal">
-        <ion-nav-back-button></ion-nav-back-button>
-      </ion-nav-bar>
-      <ion-nav-view name="tab-tickets"></ion-nav-view>
-    </ion-tab>
+        <ion-nav-view name="menuContent"></ion-nav-view>
+      </div>
 
-    <!-- this tab is hidden too -->
-    <ion-tab title="Crowdstart"
-            class="nav-text nav-kickstarter"
-             href="#/tabs/crowdstart"
-             hidden="false">
-      <ion-nav-bar class="bar-royal">
-        <ion-nav-back-button></ion-nav-back-button>
-      </ion-nav-bar>
-      <ion-nav-view name="tab-crowdstart"></ion-nav-view>
-    </ion-tab>
+      <ui-gmap-google-map
+        center="map.center"
+        pan="true"
+        zoom="map.zoom"
+        bounds="map.bounds"
+        dragging="map.dragging"
+        control="map.control"
+        options="map.options"
+        data-tap-disabled="true"
+      >
+          <my-location></my-location>
+          <ui-view name="map-area"></ui-view>
+      </ui-gmap-google-map>
+    </ion-side-menu-content>
 
-    <ion-tab title="Settings"
-             class="nav-text nav-settings"
-             href="#/tabs/settings">
-      <ion-nav-bar class="bar-royal">
-        <ion-nav-back-button>Back</ion-nav-back-button>
-      </ion-nav-bar>
-      <ion-nav-view name="tab-settings"></ion-nav-view>
-    </ion-tab>
+    <!-- Left menu -->
+    <ion-side-menu side="left">
+      <header class="bar bar-header bar-stable">
+      </header>
+      <ion-content class="has-header">
+        <ion-list>
+          <!-- <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
+            <i class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp; Search Routes
+          </ion-item> -->
+          <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; All Routes
+          </ion-item>
+          <ion-item menu-close ui-sref="tabs.crowdstart" ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; Crowdstart Routes
+          </ion-item>
+          <!--My routes section  -->
+          <h2 class="item item-divider" ng-if="data.myBookingRoutes.length > 0 || data.myLiteRoutes.length > 0">My Routes</h2>
+          <ion-item  class="sub-list" ng-repeat="item in data.myBookingRoutes" menu-close  ng-if="data.myBookingRoutes.length > 0"
+            ui-sref="tabs.my-booking-routes({
+              routeId: item.id,
+              pickupStopId:  item.boardStopStopId,
+              dropoffStopId: item.alightStopStopId,
+            })"
+            ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
+          </ion-item>
+          <ion-item  class="sub-list" ng-repeat="item in data.myActivatedCrowdstartRoutes" menu-close  ng-if="data.myActivatedCrowdstartRoutes.length > 0"
+            ui-sref="tabs.my-booking-routes({
+              routeId: item.id
+            })"
+            ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
+          </ion-item>
+          <ion-item  class="sub-list" ng-repeat="item in data.myLiteRoutes" menu-close  ng-if="data.myLiteRoutes.length > 0"
+            ui-sref="tabs.my-lite-routes({
+              label: item.label
+            })"
+            ui-sref-active="active">
+            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
+          </ion-item>
+          <ion-item menu-close ui-sref="tabs.tickets" ui-sref-active="active">
+            <i class="fa fa-ticket fa-fw" aria-hidden="true"></i>&nbsp; Tickets
+          </ion-item>
+          <ion-item menu-close ui-sref="tabs.settings" ui-sref-active="active">
+            <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
+          </ion-item>
+          <div class="item item-divider"></div>
+          <ion-item menu-close ng-if="!data.isLoggedIn" ng-click="login()">
+            <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>&nbsp; Log In
+          </ion-item>
+          <powered-by-beeline suggest-hide="true" power-hide="false" built-by-show="true"></powered-by-beeline>
+        </ion-list>
+      </ion-content>
+    </ion-side-menu>
 
-    <!-- This tab is hidden -->
-    <ion-tab title="Booking"
-             href="#/tabs/booking"
-             hidden="true">
-      <ion-nav-bar class="bar-royal">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
-      </ion-nav-bar>
-      <ion-nav-view name="tab-booking"></ion-nav-view>
-    </ion-tab>
-
-    <ion-tab title="Lite"
-             href="#/tabs/lite"
-             hidden="true">
-      <ion-nav-bar class="bar-royal">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
-      </ion-nav-bar>
-      <ion-nav-view name="tab-lite"></ion-nav-view>
-    </ion-tab>
-
-    <ion-tab title="Search"
-             href="#/tabs/search"
-             hidden="true">
-      <ion-nav-bar class="bar-royal">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
-      </ion-nav-bar>
-      <ion-nav-view name="tab-search"></ion-nav-view>
-    </ion-tab>
-  </ion-tabs>
-  <ui-gmap-google-map
-    center="map.center"
-    pan="true"
-    zoom="map.zoom"
-    bounds="map.bounds"
-    dragging="map.dragging"
-    control="map.control"
-    options="map.options"
-    data-tap-disabled="true"
-  >
-      <my-location></my-location>
-      <ui-view name="map-area"></ui-view>
-  </ui-gmap-google-map>
+  </ion-side-menus>
 </ion-view>

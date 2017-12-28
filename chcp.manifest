@@ -77,7 +77,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "81b582703a0984697d202a923162df48"
+    "hash": "b5359651b4ecf6a85b9cb219db226911"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -85,7 +85,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "2993c6080cc2420d08127cacb46a1f0e"
+    "hash": "e6faf4ab1dc5ac9af9018f316731f7d4"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -596,6 +596,10 @@
     "hash": "bae792ee50886793958a08f17dfbac95"
   },
   {
+    "file": "img/sideMenu.gif",
+    "hash": "2d3126a315477757c6b6634935a92594"
+  },
+  {
     "file": "img/TapToSelectMultipleDay.svg",
     "hash": "a9fb1f6ce5ee819124c536d1770052d7"
   },
@@ -621,7 +625,7 @@
   },
   {
     "file": "index.html",
-    "hash": "f508978c328a270ea6015cb1ce19aec2"
+    "hash": "bd7e463f5676acdee9e4f24fdd81ac4d"
   },
   {
     "file": "js/ng-cordova.min.js",
@@ -629,11 +633,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "b2b9d1781592b15e4cd335dfc05f5f61"
+    "hash": "df67ca95f94d7f8b5ef6173816992e5d"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "489f2684133c82d0ea61d473f38fff3d"
+    "hash": "40dd632b06c024289ebde7bb609f87ff"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -917,7 +921,7 @@
   },
   {
     "file": "templates/booking-history.html",
-    "hash": "ca2d73abc342b91e378fd8eb03cc7b15"
+    "hash": "50174c77fa49947b052f6f4f6fcaa19e"
   },
   {
     "file": "templates/intro-slides.html",
@@ -945,7 +949,7 @@
   },
   {
     "file": "templates/kickstarter.html",
-    "hash": "570b3962f1c2817a02628061957b6251"
+    "hash": "7e018cc3a71d3181e688105ee8620954"
   },
   {
     "file": "templates/lite-tracker-more-info.html",
@@ -961,7 +965,7 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "3cd2b0658e64b1931af7ab93b80017bc"
+    "hash": "c5a58b7f622dd7771a14349033b3b268"
   },
   {
     "file": "templates/route-stops.html",
@@ -969,11 +973,11 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "10ea363aacedc768b52714b4a7b9ca8b"
+    "hash": "e3f7ddcafbc1ca843d071f22df81faea"
   },
   {
     "file": "templates/settings.html",
-    "hash": "57c58d7e957b432e415dadf736f46cd8"
+    "hash": "4a74582825957e5ef28c85d32ba3e64e"
   },
   {
     "file": "templates/tab-booking-confirmation.html",
@@ -993,7 +997,7 @@
   },
   {
     "file": "templates/tab-lite-detail.html",
-    "hash": "3a3350d2e039cc0a4bc112e34425ce7d"
+    "hash": "5345169bc6f495862892cf752e0ee24f"
   },
   {
     "file": "templates/tab-lite-more-info.html",
@@ -1001,15 +1005,11 @@
   },
   {
     "file": "templates/tab-lite-tracker.html",
-    "hash": "0a1d28667fa1a1db75a9627b7648e48c"
-  },
-  {
-    "file": "templates/tab-suggest.html",
-    "hash": "0caaeb5e240957052d7ae7d224967d5e"
+    "hash": "8bc613937373c5159e4b9b941ae2487c"
   },
   {
     "file": "templates/tabs.html",
-    "hash": "10306cc64b3b1b7f3d643b2b5b065787"
+    "hash": "11a8ce53e3912d1bd79d8ef4876cb3ee"
   },
   {
     "file": "templates/terms-of-use.html",
@@ -1017,11 +1017,11 @@
   },
   {
     "file": "templates/ticket-detail.html",
-    "hash": "f7583e1bac115a8e51f8eef7f544aa68"
+    "hash": "ba9c7d09b3f8b4dca8f8eaa170bc75ee"
   },
   {
     "file": "templates/tickets.html",
-    "hash": "82910b0f9d21382eabfe418d4a8ebcf8"
+    "hash": "f39ffbf5d6112e7915c85eff7d20328a"
   },
   {
     "file": "templates/welcome.html",
