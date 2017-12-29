@@ -103,11 +103,10 @@ export function sleep(ms) {
 /**
  * onlyOneAtATime(fn)
  *
- * @param {function} fn: Function is a function that return a promise.
+ * @param {function} fn A function that return a promise.
  * @return {function} Function wrapping around fn which ensures
  *  that fn cannot be called until the previous call has resolved/
  *  rejected
- *
  */
 export function onlyOneAtATime(fn) {
   let currentPromise = null
