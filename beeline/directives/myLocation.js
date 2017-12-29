@@ -1,4 +1,4 @@
-export default [
+angular.module("beeline").directive("myLocation", [
   "uiGmapGoogleMapApi",
   function(uiGmapGoogleMapApi) {
     return {
@@ -62,4 +62,4 @@ export default [
       },
     }
   },
-]
+])

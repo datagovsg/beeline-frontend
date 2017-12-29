@@ -178,12 +178,24 @@ angular.module("beeline").factory("PaymentService", [
               }),
             })
           )
-          paymentPromise = new Promise((resolve, reject) => {
+          paymentPromise = new Promise(async (resolve, reject) => {
+            await $ionicPopup.alert({
+              title: "Success",
+            })
             return resolve("routePassPurchaseDone")
           })
         } catch (err) {
-          paymentPromise = new Promise((resolve, reject) => {
-            return resolve("routePassError")
+          paymentPromise = new Promise(async (resolve, reject) => {
+            await $ionicPopup.alert({
+              title: "Error processing payment",
+              template: `
+              <div> There was an error creating the payment. \
+              ${err &&
+                err.data &&
+                err.data.message} Please try again later.</div>
+              `,
+            })
+            return reject("routePassError")
           })
         } finally {
           RoutesService.fetchRoutePasses(true)

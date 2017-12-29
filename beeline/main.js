@@ -47,6 +47,7 @@ require("./directives/kickstartInfo/kickstartInfo")
 require("./directives/mapBusIcon")
 require("./directives/mapPolyRoute")
 require("./directives/moreInfo/moreInfo")
+require("./directives/myLocation")
 require("./directives/poweredByBeeline/poweredByBeeline")
 require("./directives/priceCalculator/priceCalculator")
 require("./directives/progressBar/progressBar")
@@ -81,7 +82,6 @@ require("./services/MapOptions")
 require("./services/MapService")
 require("./services/MapViewFactory")
 require("./services/paymentService")
-require("./services/PlaceService")
 require("./services/purchaseRoutePassService")
 require("./services/RotatedImageService")
 require("./services/RoutesService")
@@ -93,6 +93,7 @@ require("./services/TicketService")
 require("./services/TripService")
 require("./services/UserService")
 require("./services/PersonalRoutesService")
+require("./services/OneMapPlaceService")
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -142,10 +143,6 @@ app
       return temp / Math.pow(10, precision)
     }
   })
-  .service(
-    "busStopSelectorDialog",
-    require("./services/busStopSelectorDialog.js").default
-  )
   .controller(
     "IntroSlidesController",
     require("./controllers/IntroSlidesController.js").default
@@ -246,12 +243,6 @@ app
     "KickstarterStopsController",
     require("./controllers/KickstarterStopsController.js").default
   )
-  .directive(
-    "busStopSelector",
-    require("./directives/busStopSelector/busStopSelector").default
-  )
-  .directive("myLocation", require("./directives/myLocation.js").default)
-  .directive("mapBusStops", require("./directives/mapBusStops").default)
   .config(configureRoutes)
   .config([
     "$locationProvider",
@@ -445,10 +436,6 @@ app
       $templateCache.put(
         "templates/ticket-detail.html",
         require("../www/templates/ticket-detail.html")
-      )
-      $templateCache.put(
-        "templates/tab-booking-stops.html",
-        require("../www/templates/tab-booking-stops.html")
       )
       $templateCache.put(
         "templates/tab-booking-dates.html",

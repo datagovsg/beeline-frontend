@@ -49,18 +49,6 @@
     }
   }
 
-  .stop-inputs {
-    .bus-stop-selector:nth-of-type(1) .stop-icon {
-      background: url('../img/RoutePairBigStart.svg') 0 50% no-repeat transparent;
-      background-size: 24px 24px;
-    }
-
-    .bus-stop-selector:nth-of-type(2) .stop-icon {
-      background: url('../img/RoutePairBigEnd.svg') 0 50% no-repeat transparent;
-      background-size: 24px 24px;
-    }
-  }
-
   .button{
     margin-top: $padding-large-vertical*3;
     margin-bottom: $padding-large-vertical*2;

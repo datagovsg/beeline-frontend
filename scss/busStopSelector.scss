@@ -1,23 +1,4 @@
 
-
-
-.bus-stop-selector {
-  /* 38px is related to the width of the icon representing stops */
-
-  .stop-icon {
-    background-size: auto 20px;
-    width: 24px;
-    /* height: 24px; */
-    display: inline-block;
-    vertical-align: bottom;
-    margin: 0 5px 0 0px;
-  }
-
-  .placeholder {
-    color: $hint-color;
-  }
-}
-
 /* ---------- BOOKINGS STOPS MODAL ---------- */
 .stop-selector {
   /* force full window */

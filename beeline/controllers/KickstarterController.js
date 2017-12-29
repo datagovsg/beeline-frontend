@@ -13,7 +13,7 @@ export default [
   "KickstarterService",
   "SearchService",
   "SearchEventService",
-  "PlaceService",
+  "OneMapPlaceService",
   function(
     $scope,
     $q,
@@ -22,7 +22,7 @@ export default [
     KickstarterService,
     SearchService,
     SearchEventService,
-    PlaceService
+    OneMapPlaceService
   ) {
     // https://github.com/angular/angular.js/wiki/Understanding-Scopes
     $scope.data = {
@@ -178,7 +178,9 @@ export default [
           // If placeQuery.geometry exists then we've already made a place query
           if (placeQuery.geometry) return
 
-          let place = await PlaceService.handleQuery($scope.data.queryText)
+          let place = await OneMapPlaceService.handleQuery(
+            $scope.data.queryText
+          )
 
           $scope.data.placeQuery = place
           $scope.$digest()
