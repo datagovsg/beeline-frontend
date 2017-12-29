@@ -77,7 +77,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "b5359651b4ecf6a85b9cb219db226911"
+    "hash": "bfd51634062df8239c85e22dbc92519e"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -85,7 +85,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "e6faf4ab1dc5ac9af9018f316731f7d4"
+    "hash": "58d30f9482e28847d1a80e43859de2f5"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -633,11 +633,11 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "df67ca95f94d7f8b5ef6173816992e5d"
+    "hash": "00e6203f3fe01e2c93ca91cfeaaf945e"
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "40dd632b06c024289ebde7bb609f87ff"
+    "hash": "834751c0d5aaf18bc797b053286893d0"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -949,7 +949,7 @@
   },
   {
     "file": "templates/kickstarter.html",
-    "hash": "7e018cc3a71d3181e688105ee8620954"
+    "hash": "1496587ee645f175f90e8c201316d266"
   },
   {
     "file": "templates/lite-tracker-more-info.html",
@@ -965,7 +965,7 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "6c43960b1d5ad1c3125103e3f601d761"
+    "hash": "5045a6a4df3b71e788e4e30489251d0e"
   },
   {
     "file": "templates/route-stops.html",
@@ -973,11 +973,11 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "e3f7ddcafbc1ca843d071f22df81faea"
+    "hash": "bff51c590dba9444d139b894acc57047"
   },
   {
     "file": "templates/settings.html",
-    "hash": "4a74582825957e5ef28c85d32ba3e64e"
+    "hash": "fd9684db4cfe94c2ad222b9c41ca67ee"
   },
   {
     "file": "templates/tab-booking-confirmation.html",
@@ -997,7 +997,7 @@
   },
   {
     "file": "templates/tab-lite-detail.html",
-    "hash": "5345169bc6f495862892cf752e0ee24f"
+    "hash": "36921b7e4aedb22ff6209f8146eb4a0c"
   },
   {
     "file": "templates/tab-lite-more-info.html",
@@ -1021,7 +1021,7 @@
   },
   {
     "file": "templates/tickets.html",
-    "hash": "f39ffbf5d6112e7915c85eff7d20328a"
+    "hash": "3d0a6bdef8cf923e97100867a79f5b90"
   },
   {
     "file": "templates/welcome.html",
