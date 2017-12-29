@@ -60,6 +60,7 @@ require("./directives/searchInput")
 require("./directives/tripCode/tripCode")
 require("./directives/ticketDetail/ticketDetail")
 require("./directives/companyInfoBroker")
+require("./directives/menuHamburger")
 
 // Services
 require("./services/BookingService")

@@ -422,3 +422,15 @@ textarea{
   }
 
 }
+
+// hamburger button with "menu"
+// http://blog.fontawesome.io/2014/09/25/custom-file-types-with-stacked-icons/
+menu-hamburger {
+  .filetype-text {
+    top: 2em;
+    font-size: .4em;
+  }
+  .fa-bars {
+    font-size: 1.6em;
+  }
+}

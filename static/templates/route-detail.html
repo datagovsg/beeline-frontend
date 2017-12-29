@@ -7,7 +7,8 @@
        ng-if="!data.showSideMenu && activeTab===0">
        <i class="icon ion-ios-arrow-back"></i>
     </button>
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"  ng-if="data.showSideMenu && activeTab===0"></button>
+    <menu-hamburger ng-if="data.showSideMenu && activeTab===0">
+    </menu-hamburger>
   </ion-nav-buttons>
   <ion-nav-title>{{data.label}}</ion-nav-title>
   <ion-nav-buttons side="right">
