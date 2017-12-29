@@ -104,26 +104,40 @@ export function sleep(ms) {
  * onlyOneAtATime(fn)
  *
  * @param {function} fn A function that return a promise.
+ * @param {object} options Options
+ * @param {object} options.indicatorScope A scope object on which to set an indicator
+ * @param {object} options.indicatorVariable A scope object on which to set an indicator
  * @return {function} Function wrapping around fn which ensures
  *  that fn cannot be called until the previous call has resolved/
  *  rejected
  */
-export function onlyOneAtATime(fn) {
+export function onlyOneAtATime(fn, options = {}) {
   let currentPromise = null
 
-  /** Wrapper */
-  function wrapper() {
-    if (currentPromise === null) {
-      // eslint-disable-next-line
-      currentPromise = Promise.resolve(fn.apply(this, arguments))
+  const { scope, indicatorVariable } = options
 
-      currentPromise
-        .catch(err => {
-          console.error(err)
-        }) // execute regardless of errors
-        .then(() => {
-          currentPromise = null
-        })
+  // eslint-disable-next-line
+  /** Wrapper function */
+  async function wrapper() {
+    if (currentPromise === null) {
+      try {
+        if (indicatorVariable) {
+          _.set(scope, indicatorVariable, true)
+        }
+
+        // eslint-disable-next-line
+        currentPromise = Promise.resolve(fn.apply(this, arguments))
+
+        return await currentPromise
+      } finally {
+        currentPromise = null
+
+        if (indicatorVariable) {
+          scope.$apply(() => {
+            _.set(scope, indicatorVariable, false)
+          })
+        }
+      }
     } else {
       return
     }

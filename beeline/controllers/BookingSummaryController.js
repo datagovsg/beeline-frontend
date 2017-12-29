@@ -1,5 +1,6 @@
 import assert from "assert"
 import processingPaymentsTemplate from "../templates/processing-payments.html"
+import onlyOneAtATime from "../util"
 import _ from "lodash"
 
 export default [
@@ -151,97 +152,77 @@ export default [
       }
     }
 
-    $scope.payZeroDollar = async function() {
-      if (
-        await $ionicPopup.confirm({
-          title: "Complete Purchase",
-          template: "Are you sure you want to complete the purchase?",
-        })
-      ) {
-        try {
-          $scope.isPaymentProcessing = true
-
+    $scope.payZeroDollar = onlyOneAtATime(
+      async function() {
+        if (
+          await $ionicPopup.confirm({
+            title: "Complete Purchase",
+            template: "Are you sure you want to complete the purchase?",
+          })
+        ) {
           await completePayment({
             stripeToken: "this-will-not-be-used",
           })
-        } finally {
-          $scope.$apply(() => {
-            $scope.isPaymentProcessing = false
-          })
         }
-      }
-    }
+      },
+      { scope: $scope, indicatorVariable: "isPaymentProcessing" }
+    )
 
     // Prompts for card and processes payment with one time stripe token.
-    $scope.payWithoutSavingCard = async function() {
-      try {
-        // disable the button
-        $scope.isPaymentProcessing = true
-
-        const stripeToken = await StripeService.promptForToken(
-          null,
-          isFinite($scope.book.price) ? $scope.book.price * 100 : "",
-          null
-        )
-
-        if (!stripeToken) {
-          return
-        }
-
-        await completePayment({
-          stripeToken: stripeToken.id,
-        })
-      } catch (err) {
-        await $ionicPopup.alert({
-          title: "Error contacting the payment gateway",
-          template: err.data.message,
-        })
-      } finally {
-        $scope.$apply(() => {
-          $scope.isPaymentProcessing = false
-        })
-      }
-    }
-
-    // Processes payment with customer object.
-    // If customer object does not exist, prompts for card,
-    // creates customer object, and proceeds as usual.
-    $scope.payWithSavedInfo = async function() {
-      try {
-        // disable the button
-        $scope.isPaymentProcessing = true
-
-        if (!$scope.hasSavedPaymentInfo) {
-          let stripeToken = await StripeService.promptForToken(
+    $scope.payWithoutSavingCard = onlyOneAtATime(
+      async function() {
+        try {
+          const stripeToken = await StripeService.promptForToken(
             null,
             isFinite($scope.book.price) ? $scope.book.price * 100 : "",
             null
           )
 
           if (!stripeToken) {
-            $scope.isPaymentProcessing = false // re-enable button
             return
           }
 
-          await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
+          await completePayment({
+            stripeToken: stripeToken.id,
+          })
+        } catch (err) {
+          await $ionicPopup.alert({
+            title: "Error contacting the payment gateway",
+            template: err.data.message,
+          })
         }
+      },
+      { scope: $scope, indicatorVariable: "isPaymentProcessing" }
+    )
 
-        await completePayment({
-          customerId: $scope.user.savedPaymentInfo.id,
-          sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
-        })
-      } catch (err) {
-        $scope.isPaymentProcessing = false // re-enable button
-        await $ionicPopup.alert({
-          title: "Error saving payment method",
-          template: err.data.message,
-        })
-      } finally {
-        $scope.$apply(() => {
-          $scope.isPaymentProcessing = false
-        })
-      }
-    }
+    // Processes payment with customer object.
+    // If customer object does not exist, prompts for card,
+    // creates customer object, and proceeds as usual.
+    $scope.payWithSavedInfo = onlyOneAtATime(
+      async function() {
+        try {
+          if (!$scope.hasSavedPaymentInfo) {
+            let stripeToken = await StripeService.promptForToken(
+              null,
+              isFinite($scope.book.price) ? $scope.book.price * 100 : "",
+              null
+            )
+            await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
+          }
+
+          await completePayment({
+            customerId: $scope.user.savedPaymentInfo.id,
+            sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
+          })
+        } catch (err) {
+          await $ionicPopup.alert({
+            title: "Error saving payment method",
+            template: err.data.message,
+          })
+        }
+      },
+      { scope: $scope, indicatorVariable: "isPaymentProcessing" }
+    )
 
     $scope.scrollToPriceCalculator = function() {
       const priceCalculatorPosition = $ionicPosition.position(

@@ -2,6 +2,7 @@ import faqModalTemplate from "../templates/faq-modal.html"
 import contactUsModalTemplate from "../templates/contact-us-modal.html"
 import shareReferralModalTemplate from "../templates/share-referral-modal.html"
 import commonmark from "commonmark"
+import { onlyOneAtATime } from "../util"
 import _ from "lodash"
 
 const reader = new commonmark.Parser({ safe: true })
@@ -48,8 +49,6 @@ export default [
       }
     })
 
-    let isPressed = false
-
     // Track the login state of the user service
     $scope.$watch(
       function() {
@@ -83,30 +82,30 @@ export default [
       return UserService.promptUpdateUserInfo(field)
     }
 
-    $scope.verifyEmail = function () {
+    $scope.verifyEmail = function() {
       const alertScope = $scope.$new()
 
       return UserService.sendEmailVerification()
-      .then(() => {
-        return $ionicPopup.alert({
-          title: 'Email Verification Sent',
-          template: `We have sent an email verification to {{user.email}}.
+        .then(() => {
+          return $ionicPopup.alert({
+            title: "Email Verification Sent",
+            template: `We have sent an email verification to {{user.email}}.
           Please check your inbox for further instructions`,
-          scope: $scope,
+            scope: $scope,
+          })
         })
-      })
-      .catch((err) => {
-        _.assign(alertScope, {message: _.get(err, 'data.message')})
+        .catch(err => {
+          _.assign(alertScope, { message: _.get(err, "data.message") })
 
-        return $ionicPopup.alert({
-          title: 'Email Verification Failed',
-          template: `There was a problem sending the email verification: {{message}}`,
-          scope: alertScope,
+          return $ionicPopup.alert({
+            title: "Email Verification Failed",
+            template: `There was a problem sending the email verification: {{message}}`,
+            scope: alertScope,
+          })
         })
-      })
-      .finally(() => {
-        alertScope.$destroy()
-      })
+        .finally(() => {
+          alertScope.$destroy()
+        })
     }
 
     // Update telephone is distinct from the update user due to verification
@@ -159,11 +158,8 @@ export default [
       return _.get($scope.user, "savedPaymentInfo.sources.data.length", 0) > 0
     }
 
-    $scope.promptChangeOrRemoveCard = async function() {
-      if (isPressed) return
-
+    $scope.promptChangeOrRemoveCard = onlyOneAtATime(async function() {
       try {
-        isPressed = true
         $scope.isOnKickstarter = await checkIfOnKickstarter()
       } catch (err) {
         console.error(err)
@@ -175,8 +171,6 @@ export default [
           duration: 3500,
         })
         return
-      } finally {
-        isPressed = false
       }
 
       $scope.cardDetailPopup = $ionicPopup.show({
@@ -217,7 +211,7 @@ export default [
           },
         ],
       })
-    }
+    })
 
     async function removeCard() {
       const response = await $ionicPopup.confirm({
@@ -264,11 +258,8 @@ export default [
       return response
     }
 
-    $scope.addCard = async function() {
-      if (isPressed) return
-
+    $scope.addCard = onlyOneAtATime(async function() {
       try {
-        isPressed = true
         const stripeToken = await StripeService.promptForToken(null, null, true)
 
         if (!stripeToken) return
@@ -280,16 +271,12 @@ export default [
           `Error saving credit card details. ${_.get(err, "data.message")}`
         )
       } finally {
-        isPressed = false
         $scope.$digest()
       }
-    }
+    })
 
-    $scope.changeCard = async function() {
-      if (isPressed) return
-
+    $scope.changeCard = onlyOneAtATime(async function() {
       try {
-        isPressed = true
         $scope.cardDetailPopup.close()
         const stripeToken = await StripeService.promptForToken(null, null, true)
 
@@ -302,9 +289,8 @@ export default [
           `Error saving credit card details. ${_.get(err, "data.message")}`
         )
       } finally {
-        isPressed = false
         $scope.$digest()
       }
-    }
+    })
   },
 ]
