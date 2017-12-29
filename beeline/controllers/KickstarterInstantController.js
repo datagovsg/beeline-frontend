@@ -111,7 +111,7 @@ angular.module("beeline").controller("KickstarterInstantController", [
         }).then(response => {
           const routeId = response.data.route.id
 
-          $state.go("tabs.crowdstart-stops", { routeId })
+          $state.go("tabs.crowdstart-recap", { routeId })
         })
       ).catch(err => {
         $ionicPopup.alert({
