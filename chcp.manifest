@@ -597,7 +597,7 @@
   },
   {
     "file": "img/sideMenu.gif",
-    "hash": "2d3126a315477757c6b6634935a92594"
+    "hash": "66f9ef2b80a5a299f158a332deb51466"
   },
   {
     "file": "img/TapToSelectMultipleDay.svg",
@@ -637,7 +637,7 @@
   },
   {
     "file": "lib/beeline/bundle.js.map",
-    "hash": "c456f65d70b3700d4b29041a958fbb02"
+    "hash": "c07fb7871126eaff007ff77e28db20ca"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -973,7 +973,7 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "df120e0058d7f32d3242bd30b8812582"
+    "hash": "98f3c55a657535b229c2769f8e71a279"
   },
   {
     "file": "templates/settings.html",
