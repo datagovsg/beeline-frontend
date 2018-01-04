@@ -36,7 +36,7 @@
   <!-- dynamic join starts here -->
   <div ng-if="detail" class="high-joined" ng-style="{
             width:
-(backer1/pax1)*200 + '%',
+(backer1 <= pax1 ? (backer1/pax1) : 1)*200 + '%',
             }">
       <span class="line"></span>
       <div>{{backer1}} pax<br />pre-ordered</div>
@@ -45,7 +45,7 @@
   <!-- dynamic join line ends here -->
 
   <!-- number needed section start -->
-  <div ng-if="detail" class="needed-label-default">
+  <div ng-if="detail && backer1 < pax1" class="needed-label-default">
     <!-- full mark -->
     <div class="bar-100">
         <div class="needed-label">
