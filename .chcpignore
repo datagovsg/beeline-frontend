@@ -1,3 +1,3 @@
 CNAME
 apple-app-site-association
-lib/beeline/bundle.js.map
+**/beeline/bundle.js.map
