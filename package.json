@@ -92,13 +92,10 @@
   ],
   "cordovaPlatforms": [
     {
-      "platform": "ios",
-      "locator": "ios@4.4.0"
-    },
-    {
       "platform": "android",
       "locator": "android@6.3.0"
-    }
+    },
+    "ios"
   ],
   "scripts": {
     "build": "node scripts/build.js",
