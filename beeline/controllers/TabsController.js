@@ -12,6 +12,7 @@ export default [
   "PersonalRoutesService",
   "$state",
   "loadingSpinner",
+  "$ionicSideMenuDelegate",
   function(
     $scope,
     MapOptions,
@@ -23,8 +24,16 @@ export default [
     LiteRouteSubscriptionService,
     PersonalRoutesService,
     $state,
-    loadingSpinner
+    loadingSpinner,
+    $ionicSideMenuDelegate
   ) {
+    $scope.sideMenusHandler = $ionicSideMenuDelegate.$getByHandle(
+      "my-side-menus"
+    )
+    $scope.isMenuOpen = function() {
+      return $scope.sideMenusHandler.isOpen()
+    }
+
     $scope.map = MapOptions.defaultMapOptions({
       busLocation: {
         coordinates: null,

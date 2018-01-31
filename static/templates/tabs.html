@@ -5,10 +5,10 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 <ion-view id="tabs">
-  <ion-side-menus>
+  <ion-side-menus delegate-handle="my-side-menus">
 
     <!-- Main content, usually <ion-nav-view> -->
-    <ion-side-menu-content>
+    <ion-side-menu-content ng-class="isMenuOpen() ? 'menu-open' : ''">
       <div class="left-pane">
         <ion-nav-bar class="bar-royal">
         </ion-nav-bar>

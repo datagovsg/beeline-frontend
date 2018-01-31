@@ -512,28 +512,9 @@ export default [
 
     let menuGifPopup = null
 
-    function showMenuGifPopup() {
-      menuGifPopup = $ionicPopup.show({
-        title: "Tap to show menu",
-        template: '<center><img src="img/sideMenu.gif"/></center>',
-        buttons: [
-          {
-            text: "OK",
-            type: "button-positive",
-            onTap: function(e) {
-              closePopup()
-            },
-          },
-        ],
-      })
-    }
     function closePopup() {
       menuGifPopup.close()
     }
 
-    if (!$window.localStorage.showMenuGif) {
-      $window.localStorage.showMenuGif = true
-      showMenuGifPopup()
-    }
   },
 ]

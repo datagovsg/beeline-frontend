@@ -48,4 +48,13 @@
     }
   }
 
+  .menu-content.menu-open {
+    box-shadow: none;
+    width:100%;
+    transform: translate3d(0px, 0, 0) !important;
+    transition: all 0s ease 0s;
+    z-index: -1;
+    opacity: 0.2;
+  }
+
 }
