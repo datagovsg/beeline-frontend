@@ -39,7 +39,9 @@ export default [
 
     function autoComplete() {
       if (!$scope.data.queryText) {
+        $scope.data.placeQuery = null
         $scope.data.isFiltering = false
+        $scope.$digest()
         return
       }
 
@@ -60,7 +62,7 @@ export default [
     }
 
     $scope.$watch("data.queryText", queryText => {
-      if (queryText.length === 0) $scope.data.placeQuery = null
+      if (queryText.length === 0) $scope.data.isFiltering = true
     })
 
     let debouncedAutocomplete = _.debounce(autoComplete, 1000, {
