@@ -39,12 +39,15 @@ export default [
 
     function autoComplete() {
       if (!$scope.data.queryText) {
+        $scope.data.placeQuery = null
         $scope.data.isFiltering = false
+        $scope.$digest()
         return
       }
+
       // show the spinner
       $scope.data.isFiltering = true
-      $scope.$digest()
+
       // default 'place' object only has 'queryText' but no geometry
       // if has predicted place assign the 1st prediction to place object
       let place = { queryText: $scope.data.queryText }
@@ -59,13 +62,15 @@ export default [
     }
 
     $scope.$watch("data.queryText", queryText => {
-      if (queryText.length === 0) $scope.data.placeQuery = null
+      if (queryText.length === 0) $scope.data.isFiltering = true
     })
 
-    $scope.$watch(
-      "data.queryText",
-      _.debounce(autoComplete, 1000, { leading: false, trailing: true })
-    )
+    let debouncedAutocomplete = _.debounce(autoComplete, 1000, {
+      leading: false,
+      trailing: true,
+    })
+
+    $scope.$watch("data.queryText", debouncedAutocomplete)
 
     $scope.refreshRoutes = function() {
       $q

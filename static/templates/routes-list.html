@@ -34,7 +34,7 @@
           Your Routes
         </div>
         <ion-item
-          ng-repeat="route in data.activatedCrowdstartRoutes"
+          ng-repeat="route in data.activatedCrowdstartRoutes | limitTo:10 track by route.id"
           ui-sref="tabs.route-detail({
             routeId: route.id,
             pickupStopId:  data.recentRoutesById[route.id].boardStopStopId,
@@ -53,7 +53,7 @@
           Recently Booked Routes
         </div>
         <ion-item
-          ng-repeat="route in data.recentRoutes"
+          ng-repeat="route in data.recentRoutes | limitTo:10 track by route.id"
           ui-sref="tabs.route-detail({
             routeId: route.id,
             pickupStopId:  data.recentRoutesById[route.id].boardStopStopId,
@@ -72,7 +72,7 @@
         </div>
         <!-- hide route item if search bar is not empty -->
         <ion-item
-          ng-repeat="route in data.routesYouMayLike"
+          ng-repeat="route in data.routesYouMayLike | limitTo:10 track by route.id"
           ng-if="!data.queryText"
           ui-sref="tabs.route-detail({
             routeId: route.id
@@ -91,7 +91,7 @@
           Your Crowdstart Pre-orders
         </div>
         <ion-item
-          ng-repeat="route in data.backedCrowdstartRoutes"
+          ng-repeat="route in data.backedCrowdstartRoutes | limitTo:10 track by route.id"
           class="item-text-wrap item-icon-right"
           ui-sref="tabs.crowdstart-recap({ routeId: route.id })">
           <kickstart-route route="route"></kickstart-route>
@@ -106,7 +106,7 @@
           Available Routes
         </div>
         <ion-item
-          ng-repeat="route in data.routes"
+          ng-repeat="route in data.routes | limitTo:30 track by route.id"
           ui-sref="tabs.route-detail({ routeId: route.id })"
           class="item-text-wrap item-icon-right"
         >
@@ -116,7 +116,7 @@
 
         <!-- Available Lite Routes Section -->
         <ion-item
-          ng-repeat="route in data.liteRoutes"
+          ng-repeat="route in data.liteRoutes | limitTo:10 track by route.id"
           ui-sref="tabs.lite-detail({ label: route.label })"
           class="item-icon-right"
         >
@@ -133,7 +133,7 @@
           Crowdstart Routes
         </div>
         <ion-item
-          ng-repeat="route in data.crowdstartRoutes"
+          ng-repeat="route in data.crowdstartRoutes | limitTo:30 track by route.id"
           class="item-text-wrap item-icon-right"
           ui-sref="tabs.crowdstart-detail({ routeId: route.id})"
         >
