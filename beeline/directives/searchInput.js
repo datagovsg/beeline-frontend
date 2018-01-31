@@ -26,9 +26,7 @@ angular.module("beeline").directive("searchInput", function() {
     `,
     link(scope, elem, attr) {
       scope.$watch("searchText", qt => {
-        if (!qt || qt.trim().length < 3) {
-          scope.queryText = ""
-        } else {
+        if (qt || qt === "") {
           scope.queryText = qt.trim()
         }
       })

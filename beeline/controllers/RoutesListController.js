@@ -97,9 +97,10 @@ export default [
         $scope.data.isFiltering = false
         return
       }
+
       // show the spinner
       $scope.data.isFiltering = true
-      $scope.$digest()
+
       // default 'place' object only has 'queryText' but no geometry
       let place = { queryText: $scope.data.queryText }
       SearchEventService.emit("search-item", $scope.data.queryText)
@@ -132,10 +133,12 @@ export default [
     // UI Hooks
     // -------------------------------------------------------------------------
 
-    $scope.$watch(
-      "data.queryText",
-      _.debounce(autoComplete, 1000, { leading: false, trailing: true })
-    )
+    let debouncedAutocomplete = _.debounce(autoComplete, 1000, {
+      leading: false,
+      trailing: true,
+    })
+
+    $scope.$watch("data.queryText", debouncedAutocomplete)
 
     // Manually pull the newest data from the server
     // Report any errors that happen
@@ -211,26 +214,12 @@ export default [
       [
         () => RoutesService.getRecentRoutes(),
         () => RoutesService.getRoutesWithRoutePass(),
-        "data.placeQuery",
       ],
-      ([recentRoutes, allRoutes, placeQuery]) => {
+      ([recentRoutes, allRoutes]) => {
         // If we cant find route data here then proceed with empty
         // This allows it to organically "clear" any state
         if (!recentRoutes || !allRoutes) return
 
-        // Filtering
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          allRoutes = SearchService.filterRoutesByPlaceAndText(
-            allRoutes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          allRoutes = SearchService.filterRoutesByText(
-            allRoutes,
-            placeQuery.queryText
-          )
-        }
         // "Fill in" the recent routes with the all routes data
         let allRoutesById = _.keyBy(allRoutes, "id")
         $scope.data.recentRoutes = recentRoutes
