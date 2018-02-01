@@ -33,11 +33,11 @@
         <animated-route></animated-route>
       </ion-item>
       <!-- recently bid Crowdstart -->
-      <div class="item item-divider" ng-if="data.filteredbackedKickstarter.length > 0">
+      <div class="item item-divider" ng-if="data.filteredbackedKickstarter.length > 0 && !data.queryText">
         Your Crowdstart pre-orders
       </div>
 
-      <ion-item ng-repeat="route in data.filteredbackedKickstarter | limitTo:10 track by route.id" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-recap({
+      <ion-item ng-repeat="route in data.filteredbackedKickstarter | limitTo:10 track by route.id" ng-if="!data.queryText" class="item-text-wrap item-icon-right" ui-sref="tabs.crowdstart-recap({
                      routeId: route.id
                    })">
         <kickstart-route route="route"></kickstart-route>

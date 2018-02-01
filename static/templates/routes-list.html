@@ -28,7 +28,8 @@
         <!-- Recent Routes Section -->
         <div
           class="item item-divider"
-          ng-if="data.activatedCrowdstartRoutes &&
+          ng-if="!data.queryText &&
+                 data.activatedCrowdstartRoutes &&
                  data.activatedCrowdstartRoutes.length > 0"
         >
           Your Routes
@@ -40,7 +41,8 @@
             pickupStopId:  data.recentRoutesById[route.id].boardStopStopId,
             dropoffStopId: data.recentRoutesById[route.id].alightStopStopId,
           })"
-          ng-if="data.activatedCrowdstartRoutes &&
+          ng-if="!data.queryText &&
+                 data.activatedCrowdstartRoutes &&
                  data.activatedCrowdstartRoutes.length > 0"
           class="item-icon-right"
         >
@@ -49,11 +51,14 @@
         </ion-item>
 
         <!-- Recently booked routes -->
-        <div class="item item-divider" ng-if="data.recentRoutes.length > 0">
+        <div class="item item-divider" ng-if="!data.queryText &&
+                 data.recentRoutes.length > 0">
           Recently Booked Routes
         </div>
         <ion-item
           ng-repeat="route in data.recentRoutes | limitTo:10 track by route.id"
+          ng-if="!data.queryText &&
+                 data.recentRoutes.length > 0"
           ui-sref="tabs.route-detail({
             routeId: route.id,
             pickupStopId:  data.recentRoutesById[route.id].boardStopStopId,
@@ -72,8 +77,8 @@
         </div>
         <!-- hide route item if search bar is not empty -->
         <ion-item
-          ng-repeat="route in data.routesYouMayLike | limitTo:10 track by route.id"
-          ng-if="!data.queryText"
+          ng-repeat="route in data.routesYouMayLike | limitTo:5 track by route.id"
+          ng-if="data.routesYouMayLike.length > 0 && !data.queryText"
           ui-sref="tabs.route-detail({
             routeId: route.id
           })"
@@ -86,12 +91,13 @@
         <!-- Backed Crowdstart Routes -->
         <div
           class="item item-divider"
-          ng-if="data.backedCrowdstartRoutes.length > 0"
+          ng-if="data.queryText && data.backedCrowdstartRoutes.length > 0"
         >
           Your Crowdstart Pre-orders
         </div>
         <ion-item
           ng-repeat="route in data.backedCrowdstartRoutes | limitTo:10 track by route.id"
+          ng-if="data.queryText && data.backedCrowdstartRoutes.length > 0"
           class="item-text-wrap item-icon-right"
           ui-sref="tabs.crowdstart-recap({ routeId: route.id })">
           <kickstart-route route="route"></kickstart-route>
