@@ -25,6 +25,17 @@ export default [
     $ionicPopup,
     $window
   ) {
+    // always load the tickets and reset pickWholeMonth & selectedDatesMoments
+    // in case of view history
+    // e.g. booking-stop => booking.dates => booking.summary => booking.dates => booking.stop
+    $scope.$on("$ionicView.enter", function() {
+      $scope.book.pickWholeMonth = null
+      $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
+        .split(",")
+        .map(ms => moment(parseInt(ms)))
+      loadTickets()
+    })
+
     // Booking session logic.
     // Defines the set of variables that, when changed, all user inputs
     // on this page should be cleared.
@@ -39,9 +50,7 @@ export default [
       boardStopId: parseInt($stateParams.boardStop),
       alightStopId: parseInt($stateParams.alightStop),
       priceInfo: {},
-      selectedDates: ($stateParams.selectedDates || "")
-        .split(",")
-        .map(ms => parseInt(ms)),
+      selectedDates: [],
       invalidStopDates: [],
       applyRoutePass: false,
       applyReferralCredits: false,
@@ -60,7 +69,9 @@ export default [
       previouslyBookedDays: undefined,
       highlightDays: [],
       daysAllowed: [],
-      selectedDatesMoments: [],
+      selectedDatesMoments: ($stateParams.selectedDates || "")
+        .split(",")
+        .map(ms => moment(parseInt(ms))),
     }
 
     const routePromise = loadRoutes()
@@ -75,7 +86,6 @@ export default [
     $scope.$watch(
       () => UserService.getUser(),
       user => {
-        loadTickets()
         $scope.book.applyReferralCredits = Boolean(user)
         $scope.book.applyCredits = Boolean(user)
       }
@@ -134,7 +144,6 @@ export default [
             $scope.disp.daysAllowed.push(timeMoment)
           }
         }
-
         $scope.disp.selectedDatesMoments = _.intersectionBy(
           $scope.disp.selectedDatesMoments,
           $scope.disp.daysAllowed,
@@ -149,7 +158,7 @@ export default [
 
     function loadTickets() {
       const ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId(
-        $scope.book.routeId,
+        Number($stateParams.routeId),
         true
       ).catch(err => null)
 
