@@ -480,6 +480,10 @@ export default [
             $scope.data.queryText
           )
 
+          // If place is null, setting placeQuery to place will cause the whole
+          // list to be displayed
+          if (!place) return
+
           $scope.data.placeQuery = place
           $scope.$digest()
         }
