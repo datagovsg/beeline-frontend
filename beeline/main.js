@@ -94,6 +94,7 @@ require("./services/TripService")
 require("./services/UserService")
 require("./services/PersonalRoutesService")
 require("./services/OneMapPlaceService")
+require("./services/ErrorInterceptor")
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -278,6 +279,7 @@ app
     "$httpProvider",
     function($httpProvider) {
       $httpProvider.useApplyAsync(true)
+      $httpProvider.interceptors.push("ErrorInterceptor")
     },
   ])
   .config([
