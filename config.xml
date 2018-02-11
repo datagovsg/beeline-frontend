@@ -1,12 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="3000400" id="sg.beeline" version="3.4.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="sg.beeline.beeline" ios-CFBundleVersion="3.5.1" version="3.5.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Beeline</name>
     <description>
-    Beeline
-  </description>
+      Beeline
+    </description>
     <author email="feedback@beeline.sg" href="https://beeline.sg/">
-    Beeline
-  </author>
+      Beeline
+    </author>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string>need your current location to display it on the app, also for nearby crowdstart routes. It is secure and private.</string>
+    </edit-config>
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="https://js.stripe.com/*" />
@@ -79,13 +82,13 @@
         <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
         <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
+        <icon height="1024" src="resources/ios/icon/icon-1024.png" width="1024" />
+        <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
     <chcp>
         <config-file url="https://app.beeline.sg/chcp.json" />
         <native-interface version="2" />
     </chcp>
-    <engine name="android" spec="6.3.0" />
-    <engine name="ios" spec="4.4.0" />
     <plugin name="cordova-hot-code-push-plugin" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
     <plugin name="cordova-plugin-console" spec="~1.0.6" />
@@ -116,4 +119,7 @@
         <variable name="DEEPLINK_5_HOST" value=" " />
     </plugin>
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
+    <engine name="android" spec="~6.1.2" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
+    <engine name="ios" spec="~4.3.1" />
 </widget>
