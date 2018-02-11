@@ -14,3 +14,7 @@ build
 .chcplogin
 
 \.chcpenv
+
+
+resources/ios
+resources/android
