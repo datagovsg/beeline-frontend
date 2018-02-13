@@ -226,30 +226,17 @@ angular.module("beeline").factory("FastCheckoutService", [
             ridesRemaining = await ridesRemainingPromise(routeId)
             $ionicLoading.hide()
             if (!ridesRemaining) {
-              if (route && routeQualifiedForRoutePass(route)) {
-                await purchaseRoutePass(
-                  false,
-                  route,
-                  routeId,
-                  hasSavedPaymentInfo,
-                  paymentInfo,
-                  boardStopId,
-                  alightStopId,
-                  selectedDates
-                )
-              } else {
-                // ask for stripe payment for single ticket
-                await BookingSummaryModalService.show({
-                  routeId: routeId,
-                  price: route.trips[0].price,
-                  route: route,
-                  applyRoutePass: false,
-                  selectedDates: selectedDates,
-                  boardStopId: boardStopId,
-                  alightStopId: alightStopId,
-                  hasSavedPaymentInfo: hasSavedPaymentInfo,
-                })
-              }
+              // ask for stripe payment for single ticket
+              await BookingSummaryModalService.show({
+                routeId: routeId,
+                price: route.trips[0].price,
+                route: route,
+                applyRoutePass: false,
+                selectedDates: selectedDates,
+                boardStopId: boardStopId,
+                alightStopId: alightStopId,
+                hasSavedPaymentInfo: hasSavedPaymentInfo,
+              })
             } else {
               await purchaseTicketUsingRoutePass(
                 routeId,
