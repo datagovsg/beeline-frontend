@@ -26,11 +26,6 @@ export default [
         templateUrl: "templates/intro-slides.html",
         controller: "IntroSlidesController",
       })
-      .state("welcome", {
-        url: "/welcome?refCode",
-        templateUrl: "templates/welcome.html",
-        controller: "WelcomeController",
-      })
 
       .state("tabs", {
         url: "/tabs",

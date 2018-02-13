@@ -20,13 +20,15 @@ angular.module("beeline").factory("UserService", [
   "$rootScope",
   "LoginDialog",
   "loadingSpinner",
+  "RequestService",
   function UserService(
     $http,
     $ionicPopup,
     $ionicLoading,
     $rootScope,
     LoginDialog,
-    loadingSpinner
+    loadingSpinner,
+    RequestService
   ) {
     // ////////////////////////////////////////////////////////////////////////////
     // Private internal methods and variables
@@ -37,54 +39,10 @@ angular.module("beeline").factory("UserService", [
       : null
     let userEvents = new EventEmitter()
 
-    // General purpose wrapper for making http requests to server
-    // Adds the appropriate http headers and token if signed in
-    let beelineRequest = function(options) {
-      options.url = process.env.BACKEND_URL + options.url
-      options.headers = options.headers || {}
-      // Attach the session token if logged in
-      if (sessionToken) {
-        options.headers.authorization = "Bearer " + sessionToken
-      }
-      // Attach headers to track execution environment
-      if (window.device) {
-        options.headers["Beeline-Device-UUID"] = window.device.uuid
-        options.headers["Beeline-Device-Model"] = window.device.model
-        options.headers["Beeline-Device-Platform"] = window.device.platform
-        options.headers["Beeline-Device-Version"] = window.device.version
-        options.headers["Beeline-Device-Manufacturer"] =
-          window.device.manufacturer
-        options.headers["Beeline-Device-Serial"] = window.device.serial
-      } else {
-        window.localStorage.uuid = window.localStorage.uuid || uuid.v4()
-        options.headers["Beeline-Device-UUID"] = window.localStorage.uuid
-        options.headers["Beeline-Device-Model"] = window.navigator.userAgent
-        options.headers["Beeline-Device-Platform"] = "Browser"
-      }
-      options.headers["Beeline-App-Name"] = $rootScope.o.APP.NAME.replace(
-        /\s/g,
-        ""
-      )
-      return $http(options)
-    }
-
-    /**
-     * Send a standard http request to the endpoint defined in
-     * `process.env.TRACKING_URL`. Usually used to retrieve recent pings to
-     * determine trip vehicle location and bearing
-     * @param {object} options - the standard options object, with one
-     * exception - the url specified will be relative to `process.env.TRACKING_URL`
-     * @return {object} the $http response
-     */
-    function tracking(options) {
-      options.url = process.env.TRACKING_URL + options.url
-      return $http(options)
-    }
-
     // Requests a verification code to be sent to a mobile number
     // Verification code is used to log in
     let sendTelephoneVerificationCode = function(number) {
-      return beelineRequest({
+      return RequestService.beeline({
         method: "POST",
         url: "/users/sendTelephoneVerification",
         data: {
@@ -100,7 +58,7 @@ angular.module("beeline").factory("UserService", [
 
     // Submit the received code and number for verification to the server
     let verifyTelephone = function(telephoneNumber, code) {
-      return beelineRequest({
+      return RequestService.beeline({
         method: "POST",
         url: "/users/verifyTelephone",
         data: {
@@ -122,7 +80,7 @@ angular.module("beeline").factory("UserService", [
     // The returned update toke is used together with the verification number
     // @returns Promise.<update token>
     let requestUpdateTelephone = function(telephone) {
-      return beelineRequest({
+      return RequestService.beeline({
         url: "/user/requestUpdateTelephone",
         method: "POST",
         data: { newTelephone: "+65" + telephone },
@@ -136,7 +94,7 @@ angular.module("beeline").factory("UserService", [
     // requestUpdateTelephone and the verification key received
     // by SMS
     let updateTelephone = function(updateToken, verificationKey) {
-      return beelineRequest({
+      return RequestService.beeline({
         url: "/user/updateTelephone",
         method: "POST",
         data: {
@@ -152,7 +110,7 @@ angular.module("beeline").factory("UserService", [
 
     // Updates user fields
     const updateUserInfo = function(update) {
-      return beelineRequest({
+      return RequestService.beeline({
         method: "PUT",
         url: "/user",
         data: update,
@@ -175,7 +133,7 @@ angular.module("beeline").factory("UserService", [
     // Updates the user info if necessary
     // If the session is invalid then log out
     let verifySession = function() {
-      return beelineRequest({
+      return RequestService.beeline({
         url: "/user",
         method: "GET",
       }).then(
@@ -197,12 +155,6 @@ angular.module("beeline").factory("UserService", [
           }
         }
       )
-    }
-
-    let getReferralMsg = function() {
-      const shareMsgTemplate =
-        "Hey, here is $10 credits for you to try out Beeline rides. \nVisit https://app.beeline.sg/#/welcome?refCode="
-      return shareMsgTemplate + user.referralCode.code
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -317,60 +269,6 @@ angular.module("beeline").factory("UserService", [
         if (user) return user
         else throw new Error("Log in aborted")
       }
-    }
-
-    // Registration Sequence used for Welcome page (via Referral Link)
-    // Verifies telephone number and prompts for name and email for registration
-    // Saves referral code to user data
-    let registerViaReferralWelcome = async function(
-      telephoneNumber,
-      refCode,
-      refCodeOwner
-    ) {
-      try {
-        if (!telephoneNumber) return
-
-        await loadingSpinner(sendTelephoneVerificationCode(telephoneNumber))
-
-        // Ask for verification code
-        let verificationCode = await promptVerificationCode(telephoneNumber)
-        if (!verificationCode) return
-
-        let user = await loadingSpinner(
-          verifyTelephone(telephoneNumber, verificationCode.code)
-        )
-
-        // Is the user name null?
-        await loadingSpinner(
-          (async () => {
-            await checkNewUser(user)
-
-            if (refCode && refCodeOwner) {
-              await applyRefCode(refCode)
-            }
-          })()
-        )
-      } catch (error) {
-        // If an error occurs at any point stop and alert the user
-        $ionicPopup.alert({
-          title: "Error while trying to connect to server.",
-          subTitle: error && error.data && error.data.message,
-        })
-        throw error // Allow the calling function to catch the error
-      }
-    }
-
-    // Use the referral code and apply rewards to newUser
-    // Input:
-    // - refCode - String: referral code
-    const applyRefCode = async function(refCode) {
-      return beelineRequest({
-        method: "POST",
-        url: "/user/applyRefCode",
-        data: {
-          refCode: refCode,
-        },
-      })
     }
 
     const checkNewUser = async function(user) {
@@ -509,7 +407,7 @@ angular.module("beeline").factory("UserService", [
 
     // Saves payment info to backend and update user object
     let savePaymentInfo = function(stripeTokenId) {
-      return beelineRequest({
+      return RequestService.beeline({
         method: "POST",
         url: `/users/${user.id}/creditCards`,
         data: {
@@ -522,7 +420,7 @@ angular.module("beeline").factory("UserService", [
 
     // Update/change payment info to backend and update user object
     let updatePaymentInfo = function(stripeTokenId) {
-      return beelineRequest({
+      return RequestService.beeline({
         method: "POST",
         url: `/users/${user.id}/creditCards/replace`,
         data: {
@@ -535,7 +433,7 @@ angular.module("beeline").factory("UserService", [
 
     // Remove payment info from backend and update user object
     let removePaymentInfo = function() {
-      return beelineRequest({
+      return RequestService.beeline({
         method: "DELETE",
         url: `/users/${user.id}/creditCards/${
           user.savedPaymentInfo.sources.data[0].id
@@ -546,7 +444,7 @@ angular.module("beeline").factory("UserService", [
     }
 
     let sendEmailVerification = function() {
-      return beelineRequest({
+      return RequestService.beeline({
         method: "POST",
         url: `/users/sendEmailVerification`,
       })
@@ -564,22 +462,18 @@ angular.module("beeline").factory("UserService", [
       getUser: function() {
         return user
       },
-      beeline: beelineRequest,
-      tracking,
       promptLogIn,
       loginIfNeeded,
       promptUpdatePhone,
       promptUpdateUserInfo,
       promptLogOut,
-      registerViaReferralWelcome,
-      verifySession,
-      applyRefCode,
       userEvents,
       savePaymentInfo,
       updatePaymentInfo,
       removePaymentInfo,
-      getReferralMsg,
       sendEmailVerification,
+      beeline: RequestService.beeline,
+      tracking: RequestService.tracking,
     }
   },
 ])

@@ -19,7 +19,7 @@ try {
 }
 
 */
-angular.module("beeline").factory("loadingSpinner", [
+angular.module("common").factory("loadingSpinner", [
   "$ionicLoading",
   function($ionicLoading) {
     /* Number of promises being watched by loading spinner */

@@ -20,12 +20,15 @@ import "multiple-date-picker/dist/multipleDatePicker"
 // Configuration Imports
 import configureRoutes from "./router.js"
 
+import common from "./common/main"
+
 let app = angular.module("beeline", [
   "ionic",
   "ngCordova",
   "uiGmapgoogle-maps",
   "multipleDatePicker",
   "ngclipboard",
+  "common",
 ])
 
 require("angular-simple-logger")
@@ -76,7 +79,6 @@ require("./services/LazyLoadService")
 require("./services/legalese")
 require("./services/LiteRoutesService")
 require("./services/LiteRouteSubscriptionService")
-require("./services/LoadingSpinner")
 require("./services/login")
 require("./services/MapOptions")
 require("./services/MapService")
@@ -91,9 +93,9 @@ require("./services/SharedVariableService")
 require("./services/StripeService")
 require("./services/TicketService")
 require("./services/TripService")
-require("./services/UserService")
 require("./services/PersonalRoutesService")
 require("./services/OneMapPlaceService")
+require("./user/UserService")
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -190,10 +192,6 @@ app
   .controller(
     "LiteMoreInfoController",
     require("./controllers/LiteMoreInfoController.js").default
-  )
-  .controller(
-    "WelcomeController",
-    require("./controllers/WelcomeController.js").default
   )
   .controller(
     "KickstarterController",
