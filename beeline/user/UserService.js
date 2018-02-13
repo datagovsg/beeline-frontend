@@ -1,4 +1,3 @@
-import uuid from "uuid"
 import _ from "lodash"
 import verifiedPromptTemplate from "../templates/verified-prompt.html"
 import requestingVerificationCodeTemplate from "../templates/requesting-verification-code.html"

@@ -20,7 +20,8 @@ import "multiple-date-picker/dist/multipleDatePicker"
 // Configuration Imports
 import configureRoutes from "./router.js"
 
-import common from "./common/main"
+// Import app modules
+import "./common/main"
 
 let app = angular.module("beeline", [
   "ionic",

@@ -1,3 +1,5 @@
+import uuid from "uuid"
+
 angular.module("common").factory("RequestService", [
   "$http",
   "$rootScope",
