@@ -463,9 +463,9 @@ let devicePromise = new Promise((resolve, reject) => {
 app.service("DevicePromise", () => devicePromise)
 
 app.run([
-  "UserService",
+  "RequestService",
   "$ionicPopup",
-  async function(UserService, $ionicPopup) {
+  async function(RequestService, $ionicPopup) {
     // Version check, if we're in an app
     if (!window.cordova) {
       return
@@ -479,7 +479,7 @@ app.run([
 
     let versionNumberPromise = cordova.getAppVersion.getVersionNumber()
 
-    let versionRequirementsPromise = UserService.beeline({
+    let versionRequirementsPromise = RequestService.beeline({
       method: "GET",
       url: "/versionRequirements",
     })

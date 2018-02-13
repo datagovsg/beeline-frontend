@@ -113,12 +113,14 @@ let updateAfterBid = function(route, price) {
 
 angular.module("beeline").service("KickstarterService", [
   "UserService",
+  "RequestService",
   "$q",
   "RoutesService",
   "p",
   "DevicePromise",
   function KickstarterService(
     UserService,
+    RequestService,
     $q,
     RoutesService,
     p,
@@ -155,7 +157,7 @@ angular.module("beeline").service("KickstarterService", [
     function fetchBids(ignoreCache) {
       if (UserService.getUser()) {
         if (bidsCache && !ignoreCache) return bidsCache
-        return (bidsCache = UserService.beeline({
+        return (bidsCache = RequestService.beeline({
           method: "GET",
           url: "/crowdstart/bids",
         }).then(response => {
@@ -184,7 +186,7 @@ angular.module("beeline").service("KickstarterService", [
           "?" +
           querystring.stringify({ transportCompanyId: p.transportCompanyId })
       }
-      return (kickstarterRoutesCache = UserService.beeline({
+      return (kickstarterRoutesCache = RequestService.beeline({
         method: "GET",
         url: url,
       }).then(response => {
@@ -223,7 +225,7 @@ angular.module("beeline").service("KickstarterService", [
         longitude: locationOrNull.coords.longitude,
       }
 
-      let nearbyPromise = UserService.beeline({
+      let nearbyPromise = RequestService.beeline({
         method: "GET",
         url:
           "/routes/search_by_latlon?" +
@@ -243,7 +245,7 @@ angular.module("beeline").service("KickstarterService", [
           ),
       })
 
-      let nearbyReversePromise = UserService.beeline({
+      let nearbyReversePromise = RequestService.beeline({
         method: "GET",
         url:
           "/routes/search_by_latlon?" +
@@ -308,7 +310,7 @@ angular.module("beeline").service("KickstarterService", [
       },
 
       createBid: function(route, boardStopId, alightStopId, bidPrice) {
-        return UserService.beeline({
+        return RequestService.beeline({
           method: "POST",
           url: `/crowdstart/routes/${route.id}/bids`,
           data: {

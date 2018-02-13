@@ -37,10 +37,11 @@ function transformRouteData(data) {
 angular.module("beeline").factory("RoutesService", [
   "$http",
   "UserService",
+  "RequestService",
   "uiGmapGoogleMapApi",
   "$q",
   "p",
-  function RoutesService($http, UserService, uiGmapGoogleMapApi, $q, p) {
+  function RoutesService($http, UserService, RequestService, uiGmapGoogleMapApi, $q, p) {
     // For all routes
     let routesCache
     let activeRoutes
@@ -92,7 +93,7 @@ angular.module("beeline").factory("RoutesService", [
         )
 
         lastRouteId = routeId
-        return (lastPromise = UserService.beeline({
+        return (lastPromise = RequestService.beeline({
           method: "GET",
           url: `/routes/${routeId}?${querystring.stringify(finalOptions)}`,
         })
@@ -141,7 +142,7 @@ angular.module("beeline").factory("RoutesService", [
 
         url += querystring.stringify(finalOptions)
 
-        let routesPromise = UserService.beeline({
+        let routesPromise = RequestService.beeline({
           method: "GET",
           url: url,
         }).then(function(response) {
@@ -187,7 +188,7 @@ angular.module("beeline").factory("RoutesService", [
       **/
       searchRoutes: function(search) {
         // return Promise object
-        return UserService.beeline({
+        return RequestService.beeline({
           method: "GET",
           url:
             "/routes/search_by_latlon?" +
@@ -211,7 +212,7 @@ angular.module("beeline").factory("RoutesService", [
       fetchRecentRoutes: function(ignoreCache) {
         if (UserService.getUser()) {
           if (recentRoutesCache && !ignoreCache) return recentRoutesCache
-          return (recentRoutesCache = UserService.beeline({
+          return (recentRoutesCache = RequestService.beeline({
             method: "GET",
             url: "/routes/recent?limit=10",
           }).then(function(response) {
@@ -239,7 +240,7 @@ angular.module("beeline").factory("RoutesService", [
       },
 
       getRouteFeatures: function(routeId) {
-        return UserService.beeline({
+        return RequestService.beeline({
           method: "GET",
           url: `/routes/${routeId}/features`,
         })
@@ -282,7 +283,7 @@ angular.module("beeline").factory("RoutesService", [
         if (!user) {
           return (routePassesCache = Promise.resolve((tagToPassesMap = null)))
         } else {
-          return (routePassesCache = UserService.beeline({
+          return (routePassesCache = RequestService.beeline({
             method: "GET",
             url: "/route_passes",
           }).then(response => {
@@ -477,7 +478,7 @@ angular.module("beeline").factory("RoutesService", [
       },
 
       fetchPriceSchedule: function(routeId) {
-        return UserService.beeline({
+        return RequestService.beeline({
           method: "GET",
           url: `/routes/${routeId}/price_schedule`,
         })

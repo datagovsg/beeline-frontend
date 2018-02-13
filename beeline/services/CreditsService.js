@@ -1,6 +1,6 @@
 angular.module("beeline").factory("CreditsService", [
-  "UserService",
-  function CreditsService(UserService) {
+  "UserService", "RequestService",
+  function CreditsService(UserService, RequestService) {
     // General credits
     let userCreditsCache
     let userCredits
@@ -34,7 +34,7 @@ angular.module("beeline").factory("CreditsService", [
         if (!user) {
           return (userCreditsCache = Promise.resolve((userCredits = null)))
         } else {
-          return (userCreditsCache = UserService.beeline({
+          return (userCreditsCache = RequestService.beeline({
             method: "GET",
             url: "/credits",
           }).then(response => {
@@ -64,7 +64,7 @@ angular.module("beeline").factory("CreditsService", [
             (referralCredits = null)
           ))
         } else {
-          return (referralCreditsCache = UserService.beeline({
+          return (referralCreditsCache = RequestService.beeline({
             method: "GET",
             url: "/user/referralCredits",
           }).then(response => {

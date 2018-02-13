@@ -11,7 +11,7 @@ export default [
   "SearchService",
   "BookingService",
   "SearchEventService",
-  "UserService",
+  "RequestService",
   "Legalese",
   "$rootScope",
   "$ionicPopup",
@@ -31,7 +31,7 @@ export default [
     SearchService,
     BookingService,
     SearchEventService,
-    UserService,
+    RequestService,
     Legalese,
     $rootScope,
     $ionicPopup,
@@ -284,7 +284,7 @@ export default [
               if (stopId in tripStopsByKey) {
                 lnglat = tripStopsByKey[stopId].stop.coordinates.coordinates
               } else {
-                lnglat = await UserService.beeline({
+                lnglat = await RequestService.beeline({
                   method: "GET",
                   url: "/stops/" + stopId,
                 }).then(response => response.data.coordinates.coordinates)

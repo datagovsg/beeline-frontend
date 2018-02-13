@@ -1,9 +1,9 @@
 import assert from "assert"
 
 angular.module("beeline").factory("LiteRouteSubscriptionService", [
-  "UserService",
+  "UserService","RequestService"
   "$q",
-  function LiteRouteSubscriptionService(UserService, $q) {
+  function LiteRouteSubscriptionService(UserService,RequestService, $q) {
     let LiteRouteSubscriptionCache = null
     let liteRouteSubscriptionsSummary = []
 
@@ -21,7 +21,7 @@ angular.module("beeline").factory("LiteRouteSubscriptionService", [
           if (LiteRouteSubscriptionCache && !ignoreCache) {
             return liteRouteSubscriptionsSummary
           }
-          return (LiteRouteSubscriptionCache = UserService.beeline({
+          return (LiteRouteSubscriptionCache = RequestService.beeline({
             method: "GET",
             url: "/liteRoutes/subscriptions",
           }).then(response => {

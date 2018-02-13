@@ -5,10 +5,10 @@ let reader = new commonmark.Parser({ safe: true })
 let writer = new commonmark.HtmlRenderer({ safe: true })
 
 angular.module("beeline").factory("CompanyService", [
-  "UserService",
+  "RequestService",
   "$ionicModal",
   "$rootScope",
-  function CompanyService(UserService, $ionicModal, $rootScope) {
+  function CompanyService(RequestService, $ionicModal, $rootScope) {
     let companyCache = {}
     let termsScope
 
@@ -17,7 +17,7 @@ angular.module("beeline").factory("CompanyService", [
         assert(typeof id === "number")
         if (companyCache[id] && !ignoreCache) return companyCache[id]
 
-        return (companyCache[id] = UserService.beeline({
+        return (companyCache[id] = RequestService.beeline({
           url: "/companies/" + id,
           method: "GET",
         }).then(function(response) {

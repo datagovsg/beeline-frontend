@@ -8,10 +8,10 @@ import _ from "lodash"
 import assert from "assert"
 
 angular.module("beeline").factory("LiteRoutesService", [
-  "UserService",
+  "RequestService",
   "LiteRouteSubscriptionService",
   "p",
-  function LiteRoutesService(UserService, LiteRouteSubscriptionService, p) {
+  function LiteRoutesService(RequestService, LiteRouteSubscriptionService, p) {
     let liteRoutesCache
 
     // For single lite route
@@ -125,7 +125,7 @@ angular.module("beeline").factory("LiteRoutesService", [
 
       url += querystring.stringify(finalOptions)
 
-      let liteRoutesPromise = UserService.beeline({
+      let liteRoutesPromise = RequestService.beeline({
         method: "GET",
         url: url,
       }).then(function(response) {
@@ -170,7 +170,7 @@ angular.module("beeline").factory("LiteRoutesService", [
       url += querystring.stringify(finalOptions)
 
       lastLiteRouteLabel = liteRouteLabel
-      return (lastLiteRoutePromise = UserService.beeline({
+      return (lastLiteRoutePromise = RequestService.beeline({
         method: "GET",
         url: url,
       })
@@ -190,7 +190,7 @@ angular.module("beeline").factory("LiteRoutesService", [
         return liteRoutes
       },
       subscribeLiteRoute: function(liteRouteLabel) {
-        let subscribePromise = UserService.beeline({
+        let subscribePromise = RequestService.beeline({
           method: "POST",
           url: "/liteRoutes/subscriptions",
           data: {
@@ -210,7 +210,7 @@ angular.module("beeline").factory("LiteRoutesService", [
         return subscribePromise
       },
       unsubscribeLiteRoute: function(liteRouteLabel) {
-        let unsubscribePromise = UserService.beeline({
+        let unsubscribePromise = RequestService.beeline({
           method: "DELETE",
           url: "/liteRoutes/subscriptions/" + liteRouteLabel,
         }).then(function(response) {

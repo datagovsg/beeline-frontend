@@ -9,6 +9,7 @@ const writer = new commonmark.HtmlRenderer({ safe: true })
 export default [
   "$scope",
   "UserService",
+  "RequestService",
   "StripeService",
   "KickstarterService",
   "$ionicModal",
@@ -22,6 +23,7 @@ export default [
   function(
     $scope,
     UserService,
+    RequestService,
     StripeService,
     KickstarterService,
     $ionicModal,
@@ -104,7 +106,7 @@ export default [
       const newScope = $scope.$new()
       newScope.error = newScope.html = null
       newScope.$on("modal.shown", () => {
-        UserService.beeline({
+        RequestService.beeline({
           method: "GET",
           url: replace(`/assets/${assetName}`),
         })

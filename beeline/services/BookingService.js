@@ -2,8 +2,8 @@ import { formatTime, timeSinceMidnight } from "../shared/format"
 import _ from "lodash"
 
 angular.module("beeline").service("BookingService", [
-  "UserService",
-  function BookingService(UserService) {
+  "RequestService",
+  function BookingService(RequestService) {
     this.prepareTrips = function(booking) {
       // create a list of trips
       let trips = []
@@ -33,7 +33,7 @@ angular.module("beeline").service("BookingService", [
       } else {
         let trips = this.prepareTrips(booking)
 
-        let rv = UserService.beeline({
+        let rv = RequestService.beeline({
           method: "POST",
           url: "/transactions/tickets/quote",
           data: {

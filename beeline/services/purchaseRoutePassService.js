@@ -12,6 +12,7 @@ angular
     "StripeService",
     "PaymentService",
     "UserService",
+    "RequestService",
     "$state",
     ModalService,
   ])
@@ -24,6 +25,7 @@ function ModalService(
   StripeService,
   PaymentService,
   UserService,
+  RequestService,
   $state
 ) {
   let self = this
@@ -194,7 +196,7 @@ function ModalService(
     scope.routePassTerms = {}
     const reader = new commonmark.Parser({ safe: true })
     const writer = new commonmark.HtmlRenderer({ safe: true })
-    UserService.beeline({
+    RequestService.beeline({
       method: "GET",
       url: "/assets/routepass-tc",
     })

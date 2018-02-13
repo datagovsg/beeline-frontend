@@ -9,6 +9,7 @@ export default [
   "$ionicPopup",
   "BookingService",
   "UserService",
+  "RequestService",
   "$ionicLoading",
   "StripeService",
   "$stateParams",
@@ -25,6 +26,7 @@ export default [
     $ionicPopup,
     BookingService,
     UserService,
+    RequestService,
     $ionicLoading,
     StripeService,
     $stateParams,
@@ -261,7 +263,7 @@ export default [
           template: processingPaymentsTemplate,
         })
 
-        const result = await UserService.beeline({
+        const result = await RequestService.beeline({
           method: "POST",
           url: "/transactions/tickets/payment",
           data: _.defaults(paymentOptions, {
