@@ -1,6 +1,5 @@
 import faqModalTemplate from "../templates/faq-modal.html"
 import contactUsModalTemplate from "../templates/contact-us-modal.html"
-import shareReferralModalTemplate from "../templates/share-referral-modal.html"
 import commonmark from "commonmark"
 import _ from "lodash"
 
@@ -18,7 +17,6 @@ export default [
   "Legalese",
   "loadingSpinner",
   "$ionicLoading",
-  "$cordovaSocialSharing",
   "replace",
   "DevicePromise",
   function(
@@ -32,7 +30,6 @@ export default [
     Legalese,
     loadingSpinner,
     $ionicLoading,
-    $cordovaSocialSharing,
     replace,
     DevicePromise
   ) {
@@ -57,20 +54,8 @@ export default [
       },
       function(newUser) {
         $scope.user = newUser
-
-        if (newUser) {
-          $scope.shareMsg = UserService.getReferralMsg()
-        } else {
-          $scope.shareMsg = null
-        }
       }
     )
-
-    // Function that allows user to share an invitation with a referral code to
-    // other apps on the phone
-    $scope.cordovaShare = async function() {
-      $cordovaSocialSharing.share($scope.shareMsg, "Try out Beeline!")
-    }
 
     // Map in the login items
     $scope.logIn = UserService.promptLogIn
@@ -83,30 +68,30 @@ export default [
       return UserService.promptUpdateUserInfo(field)
     }
 
-    $scope.verifyEmail = function () {
+    $scope.verifyEmail = function() {
       const alertScope = $scope.$new()
 
       return UserService.sendEmailVerification()
-      .then(() => {
-        return $ionicPopup.alert({
-          title: 'Email Verification Sent',
-          template: `We have sent an email verification to {{user.email}}.
+        .then(() => {
+          return $ionicPopup.alert({
+            title: "Email Verification Sent",
+            template: `We have sent an email verification to {{user.email}}.
           Please check your inbox for further instructions`,
-          scope: $scope,
+            scope: $scope,
+          })
         })
-      })
-      .catch((err) => {
-        _.assign(alertScope, {message: _.get(err, 'data.message')})
+        .catch(err => {
+          _.assign(alertScope, { message: _.get(err, "data.message") })
 
-        return $ionicPopup.alert({
-          title: 'Email Verification Failed',
-          template: `There was a problem sending the email verification: {{message}}`,
-          scope: alertScope,
+          return $ionicPopup.alert({
+            title: "Email Verification Failed",
+            template: `There was a problem sending the email verification: {{message}}`,
+            scope: alertScope,
+          })
         })
-      })
-      .finally(() => {
-        alertScope.$destroy()
-      })
+        .finally(() => {
+          alertScope.$destroy()
+        })
     }
 
     // Update telephone is distinct from the update user due to verification
@@ -135,11 +120,6 @@ export default [
       })
       return newScope
     }
-
-    $scope.shareReferralModal = $ionicModal.fromTemplate(
-      shareReferralModalTemplate,
-      { scope: $scope }
-    )
 
     $scope.faqModal = $ionicModal.fromTemplate(faqModalTemplate, {
       scope: assetScope("FAQ"),
