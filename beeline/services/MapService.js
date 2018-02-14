@@ -10,7 +10,7 @@ angular.module("beeline").factory("SearchEventService", [
       // ga site search
       // https://support.google.com/analytics/answer/1012264?hl=en
       let page = window.location.hash.substr(1) + "/search?q=" + data
-      GoogleAnalytics("send", "pageview", {
+      GoogleAnalytics.send("send", "pageview", {
         page: page,
       })
     })
