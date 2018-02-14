@@ -5,11 +5,8 @@ angular.module("beeline").service("BookingService", [
   "RequestService",
   function BookingService(RequestService) {
     this.getTripsFromBooking = function(booking) {
-      // create a list of trips
-      let trips = []
-
-      for (let dt of booking.selectedDates) {
-        trips.push({
+      return booking.selectedDates.map(dt => {
+        return {
           tripId: booking.route.tripsByDate[dt].id,
           boardStopId: booking.route.tripsByDate[dt].tripStops.filter(
             ts => booking.boardStopId == ts.stop.id
@@ -17,9 +14,8 @@ angular.module("beeline").service("BookingService", [
           alightStopId: booking.route.tripsByDate[dt].tripStops.filter(
             ts => booking.alightStopId == ts.stop.id
           )[0].id,
-        })
-      }
-      return trips
+        }
+      })
     }
 
     /* If a booking has selectedDates array, then it
@@ -91,20 +87,15 @@ angular.module("beeline").service("BookingService", [
 
       let dates = _.sortBy(booking.selectedDates)
 
-      if (dates.length == 0) return []
+      if (dates.length === 0) return []
 
-      let current = {}
-      let rv = []
-
-      for (let dt of dates) {
-        current = {
+      return dates.map(dt => {
+        return {
           startDate: dt,
           price: booking.route.tripsByDate[dt].price,
           bookingInfo: booking.route.tripsByDate[dt].bookingInfo,
         }
-        rv.push(current)
-      }
-      return rv
+      })
     }
 
     this.getStopsFromTrips = function(trips) {
