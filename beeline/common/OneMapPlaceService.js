@@ -1,6 +1,6 @@
 import querystring from "querystring"
 
-angular.module("beeline").factory("OneMapPlaceService", [
+angular.module("common").factory("OneMapPlaceService", [
   "$http",
   function OneMapPlaceService($http) {
     return {

@@ -92,7 +92,6 @@ require("./services/StripeService")
 require("./services/TicketService")
 require("./services/TripService")
 require("./services/PersonalRoutesService")
-require("./services/OneMapPlaceService")
 require("./services/UserService")
 
 // //////////////////////////////////////////////////////////////////////////////
