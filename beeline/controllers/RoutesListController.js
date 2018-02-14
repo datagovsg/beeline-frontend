@@ -513,12 +513,5 @@ export default [
     $scope.$on("$ionicView.beforeEnter", () => {
       $scope.data.nextSessionId = BookingService.newSession()
     })
-
-    let menuGifPopup = null
-
-    function closePopup() {
-      menuGifPopup.close()
-    }
-
   },
 ]

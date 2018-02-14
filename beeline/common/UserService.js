@@ -469,8 +469,6 @@ angular.module("beeline").factory("UserService", [
       updatePaymentInfo,
       removePaymentInfo,
       sendEmailVerification,
-      beeline: RequestService.beeline,
-      tracking: RequestService.tracking,
     }
   },
 ])

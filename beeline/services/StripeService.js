@@ -4,7 +4,13 @@ angular.module("beeline").factory("StripeService", [
   "$ionicPopup",
   "$ionicPlatform",
   "$rootScope",
-  function StripeService(UserService, RequestService, $ionicPopup, $ionicPlatform, $rootScope) {
+  function StripeService(
+    UserService,
+    RequestService,
+    $ionicPopup,
+    $ionicPlatform,
+    $rootScope
+  ) {
     let stripeKeyPromise = RequestService.beeline({
       url: "/stripe-key",
       method: "GET",

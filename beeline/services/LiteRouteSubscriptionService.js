@@ -1,9 +1,10 @@
 import assert from "assert"
 
 angular.module("beeline").factory("LiteRouteSubscriptionService", [
-  "UserService","RequestService"
+  "UserService",
+  "RequestService",
   "$q",
-  function LiteRouteSubscriptionService(UserService,RequestService, $q) {
+  function LiteRouteSubscriptionService(UserService, RequestService, $q) {
     let LiteRouteSubscriptionCache = null
     let liteRouteSubscriptionsSummary = []
 

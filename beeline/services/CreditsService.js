@@ -1,5 +1,6 @@
 angular.module("beeline").factory("CreditsService", [
-  "UserService", "RequestService",
+  "UserService",
+  "RequestService",
   function CreditsService(UserService, RequestService) {
     // General credits
     let userCreditsCache

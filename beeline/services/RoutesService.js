@@ -41,7 +41,14 @@ angular.module("beeline").factory("RoutesService", [
   "uiGmapGoogleMapApi",
   "$q",
   "p",
-  function RoutesService($http, UserService, RequestService, uiGmapGoogleMapApi, $q, p) {
+  function RoutesService(
+    $http,
+    UserService,
+    RequestService,
+    uiGmapGoogleMapApi,
+    $q,
+    p
+  ) {
     // For all routes
     let routesCache
     let activeRoutes
