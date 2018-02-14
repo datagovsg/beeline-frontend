@@ -1,7 +1,7 @@
 import { timeSinceMidnight } from "../shared/format"
 import _ from "lodash"
 
-angular.module("beeline").service("BookingService", [
+angular.module("common").service("BookingService", [
   "RequestService",
   function BookingService(RequestService) {
     this.getTripsFromBooking = function(booking) {

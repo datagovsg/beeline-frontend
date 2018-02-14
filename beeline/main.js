@@ -82,7 +82,7 @@ require("./services/legalese")
 require("./services/login")
 
 // Services
-require("./services/BookingService")
+require("./common/BookingService")
 require("./services/bookingSummaryModalService")
 require("./services/fastCheckoutService")
 require("./services/MapOptions")
