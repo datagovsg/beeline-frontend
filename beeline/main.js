@@ -96,7 +96,7 @@ require("./services/TicketService")
 require("./services/TripService")
 require("./services/PersonalRoutesService")
 require("./services/OneMapPlaceService")
-require("./common/UserService")
+require("./services/UserService")
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
