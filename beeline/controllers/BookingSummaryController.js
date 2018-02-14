@@ -1,6 +1,5 @@
-import assert from "assert"
-import processingPaymentsTemplate from "../templates/processing-payments.html"
 import _ from "lodash"
+import processingPaymentsTemplate from "../templates/processing-payments.html"
 
 export default [
   "$document",
@@ -8,6 +7,7 @@ export default [
   "$state",
   "$ionicPopup",
   "BookingService",
+  "PaymentService",
   "UserService",
   "RequestService",
   "$ionicLoading",
@@ -25,6 +25,7 @@ export default [
     $state,
     $ionicPopup,
     BookingService,
+    PaymentService,
     UserService,
     RequestService,
     $ionicLoading,
@@ -163,7 +164,7 @@ export default [
         try {
           $scope.isPaymentProcessing = true
 
-          await completePayment({
+          await completePaymentWithUI({
             stripeToken: "this-will-not-be-used",
           })
         } finally {
@@ -190,7 +191,7 @@ export default [
           return
         }
 
-        await completePayment({
+        await completePaymentWithUI({
           stripeToken: stripeToken.id,
         })
       } catch (err) {
@@ -228,7 +229,7 @@ export default [
           await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
         }
 
-        await completePayment({
+        await completePaymentWithUI({
           customerId: $scope.user.savedPaymentInfo.id,
           sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
         })
@@ -254,50 +255,6 @@ export default [
         priceCalculatorPosition.top,
         true
       )
-    }
-
-    // After you have settled the payment mode
-    async function completePayment(paymentOptions) {
-      try {
-        $ionicLoading.show({
-          template: processingPaymentsTemplate,
-        })
-
-        const result = await RequestService.beeline({
-          method: "POST",
-          url: "/transactions/tickets/payment",
-          data: _.defaults(paymentOptions, {
-            trips: BookingService.prepareTrips($scope.book),
-            promoCode: $scope.book.promoCode
-              ? { code: $scope.book.promoCode }
-              : { code: "" },
-            applyRoutePass: Boolean($scope.book.applyRoutePass),
-            applyCredits: $scope.book.applyCredits,
-            applyReferralCredits: $scope.book.applyReferralCredits,
-            expectedPrice: $scope.book.price,
-          }),
-        })
-
-        assert(result.status === 200)
-
-        $ionicLoading.hide()
-
-        TicketService.setShouldRefreshTickets()
-        $state.go("tabs.route-confirmation")
-      } catch (err) {
-        $ionicLoading.hide()
-        await $ionicPopup.alert({
-          title: "Error processing payment",
-          template: err.data.message,
-        })
-      } finally {
-        RoutesService.fetchRoutePasses(true)
-        RoutesService.fetchRoutePassCount()
-        RoutesService.fetchRoutesWithRoutePass()
-
-        CreditsService.fetchReferralCredits(true)
-        CreditsService.fetchUserCredits(true)
-      }
     }
 
     function verifyPromoCode() {
@@ -350,6 +307,24 @@ export default [
             $scope.book.isVerifying = null
           }
         }))
+    }
+
+    async function completePaymentWithUI(paymentOptions) {
+      try {
+        $ionicLoading.show({
+          template: processingPaymentsTemplate,
+        })
+
+        await PaymentService.completePayment(paymentOptions, $scope.book)
+        $state.go("tabs.route-confirmation")
+      } catch (err) {
+        await $ionicPopup.alert({
+          title: "Error processing payment",
+          template: err.data.message,
+        })
+      } finally {
+        $ionicLoading.hide()
+      }
     }
 
     $scope.$watch(

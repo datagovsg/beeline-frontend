@@ -1,5 +1,4 @@
 import assert from "assert"
-import processingPaymentsTemplate from "../templates/processing-payments.html"
 import _ from "lodash"
 
 angular.module("beeline").factory("PaymentService", [
@@ -31,9 +30,6 @@ angular.module("beeline").factory("PaymentService", [
     // book is booking Object
     async function completePayment(paymentOptions, book) {
       try {
-        $ionicLoading.show({
-          template: processingPaymentsTemplate,
-        })
         let result = await RequestService.beeline({
           method: "POST",
           url: "/transactions/tickets/payment",
@@ -48,17 +44,7 @@ angular.module("beeline").factory("PaymentService", [
         })
 
         assert(result.status == 200)
-
-        $ionicLoading.hide()
-
         TicketService.setShouldRefreshTickets()
-        $state.go("tabs.route-confirmation")
-      } catch (err) {
-        $ionicLoading.hide()
-        await $ionicPopup.alert({
-          title: "Error processing payment",
-          template: err.data.message,
-        })
       } finally {
         RoutesService.fetchRoutePasses(true)
         RoutesService.fetchRoutePassCount()
