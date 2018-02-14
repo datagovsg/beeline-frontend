@@ -1,3 +1,5 @@
+import _ from "lodash"
+
 export default [
   "$scope",
   "SharedVariableService",
@@ -42,7 +44,7 @@ export default [
       RoutesService.getRoute(routeId).then(response => {
         const route = response
         // Grab the stop data
-        let [pickups, dropoffs] = BookingService.computeStops(route.trips)
+        let [pickups, dropoffs] = BookingService.getStopsFromTrips(route.trips)
         const stops = pickups.concat(dropoffs)
         SharedVariableService.setStops(stops)
         $scope.mapObject.stops = stops

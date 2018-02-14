@@ -29,7 +29,7 @@ export default [
         ;[
           $scope.book.boardStops,
           $scope.book.alightStops,
-        ] = BookingService.computeStops($scope.book.route.trips)
+        ] = BookingService.getStopsFromTrips($scope.book.route.trips)
         $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops)
       }
     )
