@@ -1,10 +1,17 @@
 angular.module("beeline").factory("StripeService", [
   "UserService",
+  "RequestService",
   "$ionicPopup",
   "$ionicPlatform",
   "$rootScope",
-  function StripeService(UserService, $ionicPopup, $ionicPlatform, $rootScope) {
-    let stripeKeyPromise = UserService.beeline({
+  function StripeService(
+    UserService,
+    RequestService,
+    $ionicPopup,
+    $ionicPlatform,
+    $rootScope
+  ) {
+    let stripeKeyPromise = RequestService.beeline({
       url: "/stripe-key",
       method: "GET",
     }).then(response => {

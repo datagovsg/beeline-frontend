@@ -4,6 +4,7 @@ import _ from "lodash"
 
 angular.module("beeline").factory("PaymentService", [
   "UserService",
+  "RequestService",
   "RoutesService",
   "$ionicPopup",
   "$ionicLoading",
@@ -15,6 +16,7 @@ angular.module("beeline").factory("PaymentService", [
   "$state",
   function paymentService(
     UserService,
+    RequestService,
     RoutesService,
     $ionicPopup,
     $ionicLoading,
@@ -32,7 +34,7 @@ angular.module("beeline").factory("PaymentService", [
         $ionicLoading.show({
           template: processingPaymentsTemplate,
         })
-        let result = await UserService.beeline({
+        let result = await RequestService.beeline({
           method: "POST",
           url: "/transactions/tickets/payment",
           data: _.defaults(paymentOptions, {
@@ -166,7 +168,7 @@ angular.module("beeline").factory("PaymentService", [
           // assert there is no more than 1 rp- tag
           assert(routePassTagList.length === 1)
           await loadingSpinner(
-            UserService.beeline({
+            RequestService.beeline({
               method: "POST",
               url: "/transactions/route_passes/payment",
               data: _.defaults(paymentOptions, {

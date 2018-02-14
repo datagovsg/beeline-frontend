@@ -3,9 +3,9 @@ import _ from "lodash"
 
 export default [
   "$scope",
-  "UserService",
+  "RequestService",
   "RoutesService",
-  function($scope, UserService, RoutesService) {
+  function($scope, RequestService, RoutesService) {
     let routesPromise
     $scope.routesById = {}
 
@@ -39,7 +39,7 @@ export default [
       }
 
       inFlight = true
-      UserService.beeline({
+      RequestService.beeline({
         method: "GET",
         url:
           "/transactions/user_history?" +

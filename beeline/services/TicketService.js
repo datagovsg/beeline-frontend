@@ -4,8 +4,9 @@ import querystring from "querystring"
 
 angular.module("beeline").factory("TicketService", [
   "UserService",
+  "RequestService",
   "p",
-  function TicketService(UserService, p) {
+  function TicketService(UserService, RequestService, p) {
     let ticketsCache = null
     let allTickets = null
     let ticketsByRouteId = null
@@ -26,7 +27,7 @@ angular.module("beeline").factory("TicketService", [
           "?" +
           querystring.stringify({ transportCompanyId: p.transportCompanyId })
       }
-      return (ticketsCache = UserService.beeline({
+      return (ticketsCache = RequestService.beeline({
         method: "GET",
         url: url,
       }).then(response => {
