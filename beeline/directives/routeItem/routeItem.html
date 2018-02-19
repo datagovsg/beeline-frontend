@@ -6,15 +6,13 @@
 </div>
 <div class="stops">
   <div class="start">
+    <span class="stop-icon"></span>
     <span class="time" ng-if="!hideTiming" ng-transclude="startTime"></span>
-    <span class="stop-icon">
-      <span class="line"></span>
-    </span>
     <span class="road" ng-transclude="startLocation"></span>
   </div>
   <div class="end">
-    <span class="time" ng-if="!hideTiming" ng-transclude="endTime"></span>
     <span class="stop-icon"></span>
+    <span class="time" ng-if="!hideTiming" ng-transclude="endTime"></span>
     <span class="road" ng-transclude="endLocation"></span>
   </div>
 </div>

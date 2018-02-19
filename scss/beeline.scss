@@ -165,9 +165,8 @@ table.booking-info {
 .bus-number {
   display: inline;
   text-align: center;
-  font-size: $font-size-small;
-  background-color: $royal;
-  color: $light;
+  font-size: $font-size-large;
+  font-weight: normal;
   padding: $padding-small-vertical;
   border-radius: $border-radius-large;
 }

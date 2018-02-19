@@ -63,11 +63,14 @@ route-item {
       /* this value depends on the width of the image -- leaving as a constant */
       width: 15px;
       flex: 0 0 auto;
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      margin-top: $font-size-base / 2;
     }
-    .start .stop-icon {
-      background: url('../img/RoutePairSmallStart.svg') left ($font-size-base / 2) no-repeat;
-      position: relative;
 
+    .start .stop-icon {
+      background: #00C4A5;
       /*
         we want line to be:
             - the height of .start (=> height: 100%),
@@ -78,18 +81,9 @@ route-item {
               N.B. overflow must be "visible" on .start for this to work
             - positioned relative to the stop icon => .start { position: relative }
       */
-      .line {
-        width: 2px;
-        height: 100%;
-        background: url('../img/RoutePairSmallLine.svg') center center;
-        top: $line-height-computed / 2;
-        left: 4px;
-        position: absolute;
-        display: block;
-      }
     }
     .end .stop-icon {
-      background: url('../img/RoutePairSmallEnd.svg') left ($font-size-base / 2) no-repeat;
+      background: #FF6C6A;
     }
 
     .start, .end {
@@ -99,7 +93,7 @@ route-item {
       display: flex;
 
       .time {
-        text-transform: lowercase;
+        text-transform: uppercase;
         flex: 0 0 5em;
       }
 
@@ -107,6 +101,7 @@ route-item {
         text-transform: capitalize;
         flex: 1 1 auto;
         white-space: initial;
+        font-weight: $route-item-font-weight-small;
       }
     }
   }
@@ -125,6 +120,7 @@ route-item {
 
   .icon-and-schedule {
     margin-top: 0.5em;
+    font-weight: $route-item-font-weight-small;
 
     & + .icon-and-schedule {
       margin-top: 0em;
@@ -153,6 +149,7 @@ route-item {
 
   .mini-info {
     font-size: $font-size-small;
+    font-weight: $route-item-font-weight-small;
     color: $normal-grey;
     &.important{
       color: $balanced;
