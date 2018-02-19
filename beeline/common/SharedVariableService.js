@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-angular.module("beeline").factory("SharedVariableService", [
+angular.module("common").factory("SharedVariableService", [
   "RoutesService",
   RoutesService => {
     let sharedData = {
