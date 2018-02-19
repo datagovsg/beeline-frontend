@@ -6,5 +6,6 @@ require("./GoogleAnalytics")
 require("./OneMapPlaceService")
 require("./MapViewFactory")
 require("./RotatedImageService")
+require("./ServerTimeService")
 
 module.exports = common

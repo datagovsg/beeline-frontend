@@ -1,4 +1,4 @@
-angular.module("beeline").factory("ServerTime", [
+angular.module("common").factory("ServerTime", [
   "$http",
   function($http) {
     class ServerTime {
