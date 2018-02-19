@@ -2,7 +2,7 @@ import { formatTime, formatTimeArray } from "../shared/format"
 import { SafeInterval } from "../SafeInterval"
 import _ from "lodash"
 
-angular.module("beeline").factory("MapViewFactory", [
+angular.module("common").factory("MapViewFactory", [
   "MapService",
   "TripService",
   "ServerTime",
