@@ -1,8 +1,8 @@
 import EventEmitter from "events"
 
-angular.module("beeline").factory("MapService", () => new EventEmitter())
+angular.module("common").factory("MapService", () => new EventEmitter())
 
-angular.module("beeline").factory("SearchEventService", [
+angular.module("common").factory("SearchEventService", [
   "GoogleAnalytics",
   GoogleAnalytics => {
     const emitter = new EventEmitter()
