@@ -1,6 +1,6 @@
 import querystring from "querystring"
 import _ from "lodash"
-import { SafeInterval } from "../SafeInterval"
+import { SafeInterval } from "../../SafeInterval"
 
 let transformKickstarterData = function(kickstarterRoutes) {
   if (!kickstarterRoutes) return null
