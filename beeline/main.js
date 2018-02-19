@@ -68,6 +68,7 @@ require("./directives/companyInfoBroker")
 require("./directives/menuHamburger")
 
 // Data Services
+require("./services/data/CompanyService")
 require("./services/data/CreditsService")
 require("./services/data/KickstarterService")
 require("./services/data/LiteRoutesService")
@@ -83,7 +84,6 @@ require("./services/login")
 // Services
 require("./services/BookingService")
 require("./services/bookingSummaryModalService")
-require("./services/CompanyService")
 require("./services/fastCheckoutService")
 require("./services/MapOptions")
 require("./services/MapService")
