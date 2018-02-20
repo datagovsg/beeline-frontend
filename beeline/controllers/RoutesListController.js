@@ -39,22 +39,9 @@ export default [
     OneMapPlaceService,
     $ionicHistory
   ) {
-    // -------------------------------------------------------------------------
-    // Inputs
-    // -------------------------------------------------------------------------
-
-    $scope.disp = {
-      yourRoutes:
-        $ionicHistory.currentStateName() === "tabs.yourRoutes" ? true : false,
-      title:
-        $ionicHistory.currentStateName() === "tabs.yourRoutes"
-          ? "Your Routes"
-          : "Routes",
-    }
-
-    // -------------------------------------------------------------------------
-    // State
-    // -------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     // Explicitly declare/initialize of scope variables we use
     $scope.data = {
       placeQuery: null, // The place object used to search
@@ -68,15 +55,23 @@ export default [
       subscribedLiteRoutes: null,
       routes: null,
       crowdstartRoutes: null,
-      nextSessionId: null,
       isFiltering: null,
       routesYouMayLike: null,
       routesAvailable: false,
     }
 
-    // -------------------------------------------------------------------------
-    // Ionic Events
-    // -------------------------------------------------------------------------
+    $scope.disp = {
+      yourRoutes:
+        $ionicHistory.currentStateName() === "tabs.yourRoutes" ? true : false,
+      title:
+        $ionicHistory.currentStateName() === "tabs.yourRoutes"
+          ? "Your Routes"
+          : "Routes",
+    }
+
+    // ------------------------------------------------------------------------
+    // Ionic events
+    // ------------------------------------------------------------------------
     $scope.$on("$ionicView.enter", function() {
       // Refresh routes on enter for my routes in case we did something that
       // changed my routes e.g. unsubscribing lite route, booking a route
@@ -85,132 +80,16 @@ export default [
       }
     })
 
-    // -------------------------------------------------------------------------
-    // UI Hooks
-    // -------------------------------------------------------------------------
-
-    // show legal document update
-    // '2017-11-08' is the latest version
-    if (
-      $rootScope.o.APP.NAME == "Beeline" &&
-      !window.localStorage.viewedBeelineLegalDocumentVersion
-    ) {
-      let notesPopup = null
-
-      window.localStorage.viewedBeelineLegalDocumentVersion = "2017-11-08"
-      notesPopup = $ionicPopup.show({
-        title: "Beeline Notes",
-        template:
-          "Beeline <b>Privacy Policy</b> and <b>Terms of Use</b> are updated, please check them out.",
-        buttons: [
-          {
-            text: "Learn More",
-            type: "button-positive",
-            onTap: () => {
-              // display privacy policy and termsOfUse
-              // notesPopup is resolved when it's closed
-              notesPopup.then(() => {
-                Legalese.showPrivacyPolicy().then(() => {
-                  Legalese.showTermsOfUse()
-                })
-              })
-            },
-          },
-          {
-            text: "Ok",
-          },
-        ],
-      })
-    }
-
-    // Manually pull the newest data from the server
-    // Report any errors that happen
-    // Note that theres no need to update the scope manually
-    // since this is done by the service watchers
-    $scope.refreshRoutes = function(ignoreCache) {
-      RoutesService.fetchRoutePasses(ignoreCache)
-      RoutesService.fetchRoutes(ignoreCache)
-      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
-      const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
-      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
-        ignoreCache
-      )
-      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(
-        ignoreCache
-      )
-      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
-        ignoreCache
-      )
-      return $q
-        .all([
-          routesPromise,
-          recentRoutesPromise,
-          allLiteRoutesPromise,
-          liteRouteSubscriptionsPromise,
-          crowdstartRoutesPromise,
-        ])
-        .then(() => {
-          $scope.error = null
-        })
-        .catch(() => {
-          $scope.error = true
-        })
-        .then(() => {
-          $scope.$broadcast("scroll.refreshComplete")
-        })
-    }
-
-    // -------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // Watchers
-    // -------------------------------------------------------------------------
-
-    function autoComplete() {
-      if (!$scope.data.queryText) {
-        $scope.data.placeQuery = null
-        $scope.data.isFiltering = false
-        $scope.$digest()
-        return
-      }
-
-      // show the spinner
-      $scope.data.isFiltering = true
-      $scope.$digest()
-
-      // default 'place' object only has 'queryText' but no geometry
-      let place = { queryText: $scope.data.queryText }
-      SearchEventService.emit("search-item", $scope.data.queryText)
-
-      // Reset routes, crowdstartRoutes and liteRoutes here because they are
-      // used to determine whether we do a place query (see watchGroup with
-      // all 3)
-      // If we don't reset, we could end up with the case where the criteria
-      // is applied to the wrong version of them
-      // E.g.
-      // 1. User makes one search. App completely finishes all filtering.
-      // 2. User makes another search.
-      // 3. First time we enter watchgroup for routes + crowdstartRoutes, only
-      //    only one of them has changed. WLOG assume it is routes.
-      // 4. Then routes is filtered from the new search, while crowdstartRoutes
-      //    is filtered from the old search.
-      // 5. Then the check (routes.length + crowdstartRoutes.length +
-      //    liteRoutes.length> 0) is using the wrong version of crowdstartRoutes
-      //    and could result in us doing unnecessary place queries.
-      //
-      // Resetting to null also has the benefit that the check whether we do
-      // place queries is only done once.
-      $scope.data.routes = null
-      $scope.data.crowdstartRoutes = null
-      $scope.data.liteRoutes = null
-      $scope.data.placeQuery = place
-      $scope.$digest()
-    }
-
-    let debouncedAutocomplete = _.debounce(autoComplete, 300, {
-      leading: false,
-      trailing: true,
-    })
-
-    $scope.$watch("data.queryText", debouncedAutocomplete)
+    // ------------------------------------------------------------------------
+    $scope.$watch(
+      "data.queryText",
+      _.debounce(autoComplete, 300, {
+        leading: false,
+        trailing: true,
+      })
+    )
 
     $scope.$watch("data.queryText", queryText => {
       if (queryText.length === 0) $scope.data.isFiltering = true
@@ -555,5 +434,123 @@ export default [
         )
       }
     )
+
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
+    // show legal document update
+    // '2017-11-08' is the latest version
+    if (
+      $rootScope.o.APP.NAME == "Beeline" &&
+      !window.localStorage.viewedBeelineLegalDocumentVersion
+    ) {
+      let notesPopup = null
+
+      window.localStorage.viewedBeelineLegalDocumentVersion = "2017-11-08"
+      notesPopup = $ionicPopup.show({
+        title: "Beeline Notes",
+        template:
+          "Beeline <b>Privacy Policy</b> and <b>Terms of Use</b> are updated, please check them out.",
+        buttons: [
+          {
+            text: "Learn More",
+            type: "button-positive",
+            onTap: () => {
+              // display privacy policy and termsOfUse
+              // notesPopup is resolved when it's closed
+              notesPopup.then(() => {
+                Legalese.showPrivacyPolicy().then(() => {
+                  Legalese.showTermsOfUse()
+                })
+              })
+            },
+          },
+          {
+            text: "Ok",
+          },
+        ],
+      })
+    }
+
+    // Manually pull the newest data from the server
+    // Report any errors that happen
+    // Note that theres no need to update the scope manually
+    // since this is done by the service watchers
+    $scope.refreshRoutes = function(ignoreCache) {
+      RoutesService.fetchRoutePasses(ignoreCache)
+      RoutesService.fetchRoutes(ignoreCache)
+      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
+      const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
+      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
+        ignoreCache
+      )
+      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(
+        ignoreCache
+      )
+      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
+        ignoreCache
+      )
+      return $q
+        .all([
+          routesPromise,
+          recentRoutesPromise,
+          allLiteRoutesPromise,
+          liteRouteSubscriptionsPromise,
+          crowdstartRoutesPromise,
+        ])
+        .then(() => {
+          $scope.error = null
+        })
+        .catch(() => {
+          $scope.error = true
+        })
+        .then(() => {
+          $scope.$broadcast("scroll.refreshComplete")
+        })
+    }
+
+    // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    function autoComplete() {
+      if (!$scope.data.queryText) {
+        $scope.data.placeQuery = null
+        $scope.data.isFiltering = false
+        $scope.$digest()
+        return
+      }
+
+      // show the spinner
+      $scope.data.isFiltering = true
+      $scope.$digest()
+
+      // default 'place' object only has 'queryText' but no geometry
+      let place = { queryText: $scope.data.queryText }
+      SearchEventService.emit("search-item", $scope.data.queryText)
+
+      // Reset routes, crowdstartRoutes and liteRoutes here because they are
+      // used to determine whether we do a place query (see watchGroup with
+      // all 3)
+      // If we don't reset, we could end up with the case where the criteria
+      // is applied to the wrong version of them
+      // E.g.
+      // 1. User makes one search. App completely finishes all filtering.
+      // 2. User makes another search.
+      // 3. First time we enter watchgroup for routes + crowdstartRoutes, only
+      //    only one of them has changed. WLOG assume it is routes.
+      // 4. Then routes is filtered from the new search, while crowdstartRoutes
+      //    is filtered from the old search.
+      // 5. Then the check (routes.length + crowdstartRoutes.length +
+      //    liteRoutes.length> 0) is using the wrong version of crowdstartRoutes
+      //    and could result in us doing unnecessary place queries.
+      //
+      // Resetting to null also has the benefit that the check whether we do
+      // place queries is only done once.
+      $scope.data.routes = null
+      $scope.data.crowdstartRoutes = null
+      $scope.data.liteRoutes = null
+      $scope.data.placeQuery = place
+      $scope.$digest()
+    }
   },
 ]

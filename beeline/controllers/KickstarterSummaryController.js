@@ -23,6 +23,15 @@ export default [
     CompanyService,
     StripeService
   ) {
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+    let bidPrice = $stateParams.bidPrice ? Number($stateParams.bidPrice) : null
+
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     // Default settings for various info used in the page
     $scope.book = {
       routeId: null,
@@ -43,9 +52,12 @@ export default [
       last4Digtis: null,
     }
 
-    $scope.book.routeId = Number($stateParams.routeId)
-    $scope.priceInfo.bidPrice = Number($stateParams.bidPrice)
+    $scope.book.routeId = routeId
+    $scope.priceInfo.bidPrice = bidPrice
 
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
     $scope.$watch(
       () => KickstarterService.getCrowdstartById($scope.book.routeId),
       route => {
@@ -88,6 +100,9 @@ export default [
       }
     )
 
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
     $scope.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return
       await CompanyService.showTerms($scope.book.route.transportCompanyId)

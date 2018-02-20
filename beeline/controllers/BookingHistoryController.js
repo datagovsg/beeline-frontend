@@ -6,33 +6,24 @@ export default [
   "RequestService",
   "RoutesService",
   function($scope, RequestService, RoutesService) {
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     let routesPromise
+    let inFlight = false
     $scope.routesById = {}
 
+    // ------------------------------------------------------------------------
+    // Ionic events
+    // ------------------------------------------------------------------------
     $scope.$on("$ionicView.beforeEnter", () => {
       reset()
       $scope.loadMore()
     })
 
-    function reset() {
-      _.assign($scope, {
-        hasMoreData: true,
-        page: 1,
-        perPage: 20,
-        transactions: null,
-      })
-
-      routesPromise = RoutesService.fetchRoutes(true, {
-        endDate: Date.now() + 14 * 24 * 60 * 60 * 1000,
-        startDate: Date.now() - 365 * 24 * 60 * 60 * 1000,
-        tags: "[]",
-      }).then(routes => {
-        $scope.routesById = _.keyBy(routes, r => r.id)
-      })
-    }
-
-    let inFlight = false
-
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
     $scope.loadMore = function() {
       if (inFlight) {
         return
@@ -103,6 +94,26 @@ export default [
         .then(null, error => {
           inFlight = false
         })
+    }
+
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+    function reset() {
+      _.assign($scope, {
+        hasMoreData: true,
+        page: 1,
+        perPage: 20,
+        transactions: null,
+      })
+
+      routesPromise = RoutesService.fetchRoutes(true, {
+        endDate: Date.now() + 14 * 24 * 60 * 60 * 1000,
+        startDate: Date.now() - 365 * 24 * 60 * 60 * 1000,
+        tags: "[]",
+      }).then(routes => {
+        $scope.routesById = _.keyBy(routes, r => r.id)
+      })
     }
   },
 ]

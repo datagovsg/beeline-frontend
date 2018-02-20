@@ -33,12 +33,16 @@ export default [
     CreditsService,
     $ionicPosition
   ) {
-    // Booking session logic
-    $scope.session = {
-      sessionId: Number($stateParams.sessionId),
-    }
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     $scope.book = {
-      routeId: Number($stateParams.routeId),
+      routeId,
       route: null,
       qty: 1,
       boardStopId: parseInt($stateParams.boardStop),
@@ -71,7 +75,10 @@ export default [
 
     $scope.isPaymentProcessing = false
 
-    RoutesService.getRoute(parseInt($scope.book.routeId)).then(route => {
+    // ------------------------------------------------------------------------
+    // Data Loading
+    // ------------------------------------------------------------------------
+    RoutesService.getRoute(routeId).then(route => {
       $scope.book.route = route
       $scope.book.boardStop = route.tripsByDate[
         $scope.book.selectedDates[0]
@@ -81,12 +88,13 @@ export default [
       ].tripStops.filter(ts => $scope.book.alightStopId === ts.stop.id)[0]
     })
 
-    RoutesService.getRouteFeatures(parseInt($scope.book.routeId)).then(
-      features => {
-        $scope.book.features = features
-      }
-    )
+    RoutesService.getRouteFeatures(routeId).then(features => {
+      $scope.book.features = features
+    })
 
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
     $scope.$watch(
       () => UserService.getUser(),
       user => {
@@ -102,20 +110,16 @@ export default [
       }
     )
 
-    $scope.login = function() {
-      $scope.isPreviewCalculating = true
-      UserService.promptLogIn()
-      $scope.scrollToPriceCalculator()
-    }
-
     $scope.$on("priceCalculator.done", () => {
       $ionicScrollDelegate.resize()
       $scope.isPreviewCalculating = false
       $scope.$broadcast("scroll.refreshComplete")
     })
+
     $scope.$on("companyTnc.done", () => {
       $ionicScrollDelegate.resize()
     })
+
     $scope.$watch("book.price", price => {
       if (parseFloat(price) === 0) {
         $scope.disp.zeroDollarPurchase = true
@@ -124,9 +128,23 @@ export default [
       }
     })
 
+    $scope.$watch(
+      "book.promoCodeEntered",
+      _.debounce(verifyPromoCode, 800, { leading: false, trailing: true })
+    )
+
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
+    $scope.login = function() {
+      $scope.isPreviewCalculating = true
+      UserService.promptLogIn()
+      $scope.scrollToPriceCalculator()
+    }
+
     $scope.checkValidDate = async function() {
       const previouslyBookedDays = await TicketService.fetchPreviouslyBookedDaysByRouteId(
-        $scope.book.routeId,
+        routeId,
         true
       )
       const selectedAndInvalid = _.intersection(
@@ -162,6 +180,57 @@ export default [
       )
     }
 
+    $scope.promptPromoCode = async function() {
+      if ($scope.isLoggedIn) {
+        $scope.enterPromoCodePopup = $ionicPopup.show({
+          scope: $scope,
+          template: `
+            <label>
+              <input type="text"
+                    style="text-transform: uppercase"
+                    placeholder="PROMOCODE"
+                    ng-model="book.promoCodeEntered">
+              </input>
+            </label>
+            <div class="text-center">
+              <ion-spinner ng-show="book.isVerifying"></ion-spinner>
+            </div>
+            <div class="text-center"> {{book.feedback}}</div>
+          `,
+          title: "Enter Promo Code",
+          buttons: [
+            {
+              text: "Close",
+              onTap: function(e) {
+                $scope.book.feedback = null
+                $scope.book.promoCodeEntered = null
+              },
+            },
+            {
+              text: "Apply",
+              type: "button-positive",
+              onTap: function(e) {
+                e.preventDefault()
+                if ($scope.book.promoCodeIsValid) {
+                  $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
+                  $scope.book.feedback = $scope.book.promoCodeEntered = null
+                  $scope.enterPromoCodePopup.close()
+                }
+              },
+            },
+          ],
+        })
+      } else {
+        await $ionicPopup.alert({
+          title: "You need to log in before enter any promo code",
+        })
+        $scope.login()
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
     function verifyPromoCode() {
       if (
         $scope.book.promoCodeEntered === null ||
@@ -212,59 +281,6 @@ export default [
             $scope.book.isVerifying = null
           }
         }))
-    }
-
-    $scope.$watch(
-      "book.promoCodeEntered",
-      _.debounce(verifyPromoCode, 800, { leading: false, trailing: true })
-    )
-
-    $scope.promptPromoCode = async function() {
-      if ($scope.isLoggedIn) {
-        $scope.enterPromoCodePopup = $ionicPopup.show({
-          scope: $scope,
-          template: `
-            <label>
-              <input type="text"
-                    style="text-transform: uppercase"
-                    placeholder="PROMOCODE"
-                    ng-model="book.promoCodeEntered">
-              </input>
-            </label>
-            <div class="text-center">
-              <ion-spinner ng-show="book.isVerifying"></ion-spinner>
-            </div>
-            <div class="text-center"> {{book.feedback}}</div>
-          `,
-          title: "Enter Promo Code",
-          buttons: [
-            {
-              text: "Close",
-              onTap: function(e) {
-                $scope.book.feedback = null
-                $scope.book.promoCodeEntered = null
-              },
-            },
-            {
-              text: "Apply",
-              type: "button-positive",
-              onTap: function(e) {
-                e.preventDefault()
-                if ($scope.book.promoCodeIsValid) {
-                  $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
-                  $scope.book.feedback = $scope.book.promoCodeEntered = null
-                  $scope.enterPromoCodePopup.close()
-                }
-              },
-            },
-          ],
-        })
-      } else {
-        await $ionicPopup.alert({
-          title: "You need to log in before enter any promo code",
-        })
-        $scope.login()
-      }
     }
   },
 ]

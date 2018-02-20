@@ -35,9 +35,13 @@ export default [
     replace,
     DevicePromise
   ) {
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     $scope.data = {}
     $scope.hasCordova = Boolean($window.cordova) || false
     $scope.isOnKickstarter = false
+    let isPressed = false
 
     DevicePromise.then(() => {
       if ($scope.hasCordova) {
@@ -47,8 +51,18 @@ export default [
       }
     })
 
-    let isPressed = false
+    // ------------------------------------------------------------------------
+    // Ionic Events
+    // ------------------------------------------------------------------------
+    $scope.$on("$destroy", function() {
+      $scope.faqModal.destroy()
+      $scope.contactUsModal.destroy()
+      $scope.shareReferralModal.destroy()
+    })
 
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
     // Track the login state of the user service
     $scope.$watch(
       function() {
@@ -59,9 +73,25 @@ export default [
       }
     )
 
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
     // Map in the login items
     $scope.logIn = UserService.promptLogIn
     $scope.logOut = UserService.promptLogOut
+
+    // Update telephone is distinct from the update user due to verification
+    $scope.updateTelephone = UserService.promptUpdatePhone
+
+    // Configure modals
+    $scope.faqModal = $ionicModal.fromTemplate(faqModalTemplate, {
+      scope: assetScope("FAQ"),
+    })
+    $scope.showPrivacyPolicy = () => Legalese.showPrivacyPolicy()
+    $scope.showTermsOfUse = () => Legalese.showTermsOfUse()
+    $scope.contactUsModal = $ionicModal.fromTemplate(contactUsModalTemplate, {
+      scope: $scope,
+    })
 
     // Generic event handler to allow user to update their
     // name, email
@@ -96,46 +126,48 @@ export default [
         })
     }
 
-    // Update telephone is distinct from the update user due to verification
-    $scope.updateTelephone = UserService.promptUpdatePhone
+    $scope.addCard = async function() {
+      if (isPressed) return
 
-    // Configure modals
+      try {
+        isPressed = true
+        const stripeToken = await StripeService.promptForToken(null, null, true)
 
-    // Load the pages only when requested.
-    function assetScope(assetName) {
-      const newScope = $scope.$new()
-      newScope.error = newScope.html = null
-      newScope.$on("modal.shown", () => {
-        RequestService.beeline({
-          method: "GET",
-          url: replace(`/assets/${assetName}`),
-        })
-          .then(response => {
-            newScope.html = writer.render(reader.parse(response.data.data))
-            newScope.error = false
-          })
-          .catch(error => {
-            console.error(error)
-            newScope.html = ""
-            newScope.error = error
-          })
-      })
-      return newScope
+        if (!stripeToken) return
+
+        await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
+      } catch (err) {
+        console.error(err)
+        throw new Error(
+          `Error saving credit card details. ${_.get(err, "data.message")}`
+        )
+      } finally {
+        isPressed = false
+        $scope.$digest()
+      }
     }
 
-    $scope.faqModal = $ionicModal.fromTemplate(faqModalTemplate, {
-      scope: assetScope("FAQ"),
-    })
-    $scope.showPrivacyPolicy = () => Legalese.showPrivacyPolicy()
-    $scope.showTermsOfUse = () => Legalese.showTermsOfUse()
-    $scope.contactUsModal = $ionicModal.fromTemplate(contactUsModalTemplate, {
-      scope: $scope,
-    })
-    $scope.$on("$destroy", function() {
-      $scope.faqModal.destroy()
-      $scope.contactUsModal.destroy()
-      $scope.shareReferralModal.destroy()
-    })
+    $scope.changeCard = async function() {
+      if (isPressed) return
+
+      try {
+        isPressed = true
+        $scope.cardDetailPopup.close()
+        const stripeToken = await StripeService.promptForToken(null, null, true)
+
+        if (!stripeToken) return
+
+        await loadingSpinner(UserService.updatePaymentInfo(stripeToken.id))
+      } catch (err) {
+        console.error(err)
+        throw new Error(
+          `Error saving credit card details. ${_.get(err, "data.message")}`
+        )
+      } finally {
+        isPressed = false
+        $scope.$digest()
+      }
+    }
 
     $scope.hasPaymentInfo = function() {
       return _.get($scope.user, "savedPaymentInfo.sources.data.length", 0) > 0
@@ -201,6 +233,14 @@ export default [
       })
     }
 
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+    async function checkIfOnKickstarter() {
+      let response = await KickstarterService.hasBids()
+      return response
+    }
+
     async function removeCard() {
       const response = await $ionicPopup.confirm({
         title: "Remove Payment Method",
@@ -241,52 +281,26 @@ export default [
       }
     }
 
-    async function checkIfOnKickstarter() {
-      let response = await KickstarterService.hasBids()
-      return response
-    }
-
-    $scope.addCard = async function() {
-      if (isPressed) return
-
-      try {
-        isPressed = true
-        const stripeToken = await StripeService.promptForToken(null, null, true)
-
-        if (!stripeToken) return
-
-        await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
-      } catch (err) {
-        console.error(err)
-        throw new Error(
-          `Error saving credit card details. ${_.get(err, "data.message")}`
-        )
-      } finally {
-        isPressed = false
-        $scope.$digest()
-      }
-    }
-
-    $scope.changeCard = async function() {
-      if (isPressed) return
-
-      try {
-        isPressed = true
-        $scope.cardDetailPopup.close()
-        const stripeToken = await StripeService.promptForToken(null, null, true)
-
-        if (!stripeToken) return
-
-        await loadingSpinner(UserService.updatePaymentInfo(stripeToken.id))
-      } catch (err) {
-        console.error(err)
-        throw new Error(
-          `Error saving credit card details. ${_.get(err, "data.message")}`
-        )
-      } finally {
-        isPressed = false
-        $scope.$digest()
-      }
+    // Load the pages only when requested.
+    function assetScope(assetName) {
+      const newScope = $scope.$new()
+      newScope.error = newScope.html = null
+      newScope.$on("modal.shown", () => {
+        RequestService.beeline({
+          method: "GET",
+          url: replace(`/assets/${assetName}`),
+        })
+          .then(response => {
+            newScope.html = writer.render(reader.parse(response.data.data))
+            newScope.error = false
+          })
+          .catch(error => {
+            console.error(error)
+            newScope.html = ""
+            newScope.error = error
+          })
+      })
+      return newScope
     }
   },
 ]

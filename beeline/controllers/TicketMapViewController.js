@@ -17,9 +17,24 @@ export default [
     TicketService,
     MapViewFactory
   ) {
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    let ticketId = $stateParams.ticketId ? Number($stateParams.ticketId) : null
+
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     MapViewFactory.init($scope)
 
-    let ticketId = $stateParams.ticketId ? Number($stateParams.ticketId) : null
+    const recentTimeBound = 2 * 60 * 60000
+    const pingLoop = MapViewFactory.pingLoop($scope, recentTimeBound)
+    const statusLoop = MapViewFactory.statusLoop($scope)
+    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
+
+    // ------------------------------------------------------------------------
+    // Data Loading
+    // ------------------------------------------------------------------------
     if (ticketId) {
       const ticketPromise = TicketService.getTicketById(ticketId)
       const tripPromise = ticketPromise.then(ticket => {
@@ -53,10 +68,5 @@ export default [
         }
       })
     }
-
-    const recentTimeBound = 2 * 60 * 60000
-    const pingLoop = MapViewFactory.pingLoop($scope, recentTimeBound)
-    const statusLoop = MapViewFactory.statusLoop($scope)
-    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
   },
 ]

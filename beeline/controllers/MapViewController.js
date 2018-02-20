@@ -15,25 +15,19 @@ export default [
     MapService,
     MapViewFactory
   ) {
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
 
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     MapViewFactory.init($scope)
 
-    MapService.on("board-stop-selected", stop => {
-      $scope.mapObject.boardStop = stop
-      SharedVariableService.setBoardStop(stop)
-    })
-
-    MapService.on("alight-stop-selected", stop => {
-      $scope.mapObject.alightStop = stop
-      SharedVariableService.setAlightStop(stop)
-    })
-
-    MapService.on("stop-selected", stop => {
-      $scope.mapObject.chosenStop = stop
-      SharedVariableService.setChosenStop(stop)
-    })
-
+    // ------------------------------------------------------------------------
+    // Data Loading
+    // ------------------------------------------------------------------------
     if (routeId) {
       RoutesService.getRoute(routeId).then(response => {
         const route = response
@@ -53,5 +47,23 @@ export default [
         }
       })
     }
+
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
+    MapService.on("board-stop-selected", stop => {
+      $scope.mapObject.boardStop = stop
+      SharedVariableService.setBoardStop(stop)
+    })
+
+    MapService.on("alight-stop-selected", stop => {
+      $scope.mapObject.alightStop = stop
+      SharedVariableService.setAlightStop(stop)
+    })
+
+    MapService.on("stop-selected", stop => {
+      $scope.mapObject.chosenStop = stop
+      SharedVariableService.setChosenStop(stop)
+    })
   },
 ]

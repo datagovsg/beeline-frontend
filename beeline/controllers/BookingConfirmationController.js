@@ -4,6 +4,9 @@ export default [
   "$ionicHistory",
   "$ionicPlatform",
   function($scope, $state, $ionicHistory, $ionicPlatform) {
+    // ------------------------------------------------------------------------
+    // Ionic events
+    // ------------------------------------------------------------------------
     $scope.$on("$ionicView.afterEnter", () => {
       $ionicHistory.clearHistory()
 

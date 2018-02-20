@@ -21,25 +21,19 @@ export default [
     TicketService,
     TripService
   ) {
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
 
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     MapViewFactory.init($scope)
 
-    MapService.on("board-stop-selected", stop => {
-      $scope.mapObject.boardStop = stop
-      SharedVariableService.setBoardStop(stop)
-    })
-
-    MapService.on("alight-stop-selected", stop => {
-      $scope.mapObject.alightStop = stop
-      SharedVariableService.setAlightStop(stop)
-    })
-
-    MapService.on("stop-selected", stop => {
-      $scope.mapObject.chosenStop = stop
-      SharedVariableService.setChosenStop(stop)
-    })
-
+    // ------------------------------------------------------------------------
+    // Data Loading
+    // ------------------------------------------------------------------------
     if (routeId) {
       RoutesService.getRoute(routeId).then(response => {
         const route = response
@@ -60,8 +54,38 @@ export default [
       })
     }
 
+    // ------------------------------------------------------------------------
+    // Ionic Events
+    // ------------------------------------------------------------------------
+    $scope.$on("$destroy", () => {
+      MapService.removeListener("ticketIdIsAvailable", listener)
+    })
+
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
+    MapService.once("ticketIdIsAvailable", listener)
+
+    MapService.on("board-stop-selected", stop => {
+      $scope.mapObject.boardStop = stop
+      SharedVariableService.setBoardStop(stop)
+    })
+
+    MapService.on("alight-stop-selected", stop => {
+      $scope.mapObject.alightStop = stop
+      SharedVariableService.setAlightStop(stop)
+    })
+
+    MapService.on("stop-selected", stop => {
+      $scope.mapObject.chosenStop = stop
+      SharedVariableService.setChosenStop(stop)
+    })
+
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
     // show pings in route-detail map
-    const listener = function(ticketId) {
+    function listener(ticketId) {
       if (ticketId) {
         const ticketPromise = TicketService.getTicketById(ticketId)
         const tripPromise = ticketPromise.then(ticket => {
@@ -100,11 +124,5 @@ export default [
         MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
       }
     }
-
-    MapService.once("ticketIdIsAvailable", listener)
-
-    $scope.$on("$destroy", () => {
-      MapService.removeListener("ticketIdIsAvailable", listener)
-    })
   },
 ]

@@ -20,38 +20,24 @@ export default [
     MapService
   ) {
     // ------------------------------------------------------------------------
-    // Input
+    // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
-    // let routeId = $scope.$parent.routeId
     let type = $stateParams.type
     let stopId = $stateParams.stopId ? Number($stateParams.stopId) : null
     let callback = $stateParams.callback
+
     // ------------------------------------------------------------------------
-    // Model
+    // Data Initialization
     // ------------------------------------------------------------------------
     $scope.data = {
       stops: null, // array of stop objects
       selectedStop: null, // stop object
     }
+
     // ------------------------------------------------------------------------
-    // Hooks
+    // Data Initialization
     // ------------------------------------------------------------------------
-    $scope.selectStop = stop => {
-      $scope.data.selectedStop = stop
-    }
-    $scope.done = () => {
-      if (typeof callback === "function") callback($scope.data.selectedStop)
-      $ionicHistory.goBack()
-    }
-    // ------------------------------------------------------------------------
-    // Initialization
-    // ------------------------------------------------------------------------
-    $ionicLoading.show({
-      template: `<ion-spinner icon='crescent'></ion-spinner>\
-        <br/><small>Loading stop information</small>`,
-      hideOnStateChange: true,
-    })
     RoutesService.getRoute(routeId)
       .then(route => {
         // Load the stops data into the view
@@ -76,6 +62,9 @@ export default [
         })
       })
 
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
     $scope.$watch("data.selectedStop", stop => {
       if (stop) {
         if (type === "pickup") {
@@ -86,5 +75,22 @@ export default [
         }
       }
     })
+
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
+    $ionicLoading.show({
+      template: `<ion-spinner icon='crescent'></ion-spinner>\
+        <br/><small>Loading stop information</small>`,
+      hideOnStateChange: true,
+    })
+
+    $scope.selectStop = stop => {
+      $scope.data.selectedStop = stop
+    }
+    $scope.done = () => {
+      if (typeof callback === "function") callback($scope.data.selectedStop)
+      $ionicHistory.goBack()
+    }
   },
 ]

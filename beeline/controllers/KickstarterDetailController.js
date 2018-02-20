@@ -15,11 +15,19 @@ export default [
     KickstarterService,
     $ionicHistory
   ) {
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     $scope.routePath = []
 
     // Default settings for various info used in the page
     $scope.book = {
-      routeId: null,
+      routeId,
       route: null,
       bid: null,
       calculatedAmount: "",
@@ -30,9 +38,9 @@ export default [
       showHamburger: null,
     }
 
-    // -------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // Ionic Events
-    // -------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     $scope.$on("$ionicView.enter", function() {
       if ($ionicHistory.backView()) {
         $scope.disp.showHamburger = false
@@ -41,8 +49,9 @@ export default [
       }
     })
 
-    $scope.book.routeId = Number($stateParams.routeId)
-
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
     $scope.$watch(
       () => KickstarterService.getCrowdstartById($scope.book.routeId),
       route => {
@@ -57,6 +66,9 @@ export default [
       }
     )
 
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
     $scope.showStops = function() {
       $state.go("tabs.crowdstart-stops", {
         routeId: $scope.book.routeId,

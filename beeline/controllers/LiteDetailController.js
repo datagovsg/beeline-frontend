@@ -27,9 +27,14 @@ export default [
     MapService,
     $state
   ) {
-    let routePromise
-    let subscriptionPromise
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    $scope.book.label = $stateParams.label
 
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     $scope.disp = {
       companyInfo: {},
       hasTrackingData: null,
@@ -48,9 +53,35 @@ export default [
       hasTrips: true,
     }
 
-    // -------------------------------------------------------------------------
-    // Ionic Events
-    // -------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // Data Loading
+    // ------------------------------------------------------------------------
+    let routePromise
+    let subscriptionPromise
+
+    routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label)
+    subscriptionPromise = LiteRouteSubscriptionService.isSubscribed(
+      $scope.book.label
+    )
+
+    subscriptionPromise.then(response => {
+      $scope.book.isSubscribed = response
+    })
+
+    routePromise.then(route => {
+      $scope.book.route = route[$scope.book.label]
+      // get route features
+      RoutesService.getRouteFeatures($scope.book.route.id).then(data => {
+        $scope.disp.features = data
+      })
+      $scope.book.route.trips = _.sortBy($scope.book.route.trips, trip => {
+        return trip.date
+      })
+    })
+
+    // ------------------------------------------------------------------------
+    // Ionic events
+    // ------------------------------------------------------------------------
     $scope.$on("$ionicView.enter", function() {
       if ($ionicHistory.backView()) {
         $scope.disp.showHamburger = false
@@ -89,39 +120,13 @@ export default [
       })
     })
 
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
     $scope.$watch("book.todayTrips", trips => {
       if (!trips) return
       $scope.book.hasTrips = trips.length > 0
     })
-
-    $scope.book.label = $stateParams.label
-
-    routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label)
-    subscriptionPromise = LiteRouteSubscriptionService.isSubscribed(
-      $scope.book.label
-    )
-
-    subscriptionPromise.then(response => {
-      $scope.book.isSubscribed = response
-    })
-
-    routePromise.then(route => {
-      $scope.book.route = route[$scope.book.label]
-      // get route features
-      RoutesService.getRouteFeatures($scope.book.route.id).then(data => {
-        $scope.disp.features = data
-      })
-      $scope.book.route.trips = _.sortBy($scope.book.route.trips, trip => {
-        return trip.date
-      })
-    })
-
-    function sendTripsToMapView() {
-      const todayTrips = $scope.book.todayTrips
-      if (todayTrips && todayTrips.length > 0) {
-        MapService.emit("ping-trips", todayTrips)
-      }
-    }
 
     $scope.$watch("book.todayTrips", sendTripsToMapView)
 
@@ -147,6 +152,9 @@ export default [
       }
     )
 
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
     $scope.login = function() {
       UserService.promptLogIn()
     }
@@ -240,6 +248,16 @@ export default [
         })
       } finally {
         $scope.book.waitingForSubscriptionResult = false
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    function sendTripsToMapView() {
+      const todayTrips = $scope.book.todayTrips
+      if (todayTrips && todayTrips.length > 0) {
+        MapService.emit("ping-trips", todayTrips)
       }
     }
 

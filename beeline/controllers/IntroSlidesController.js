@@ -2,6 +2,9 @@ export default [
   "$scope",
   "$window",
   function($scope, $window) {
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     $scope.options = {
       loop: false,
       effect: "slide",
@@ -17,6 +20,9 @@ export default [
     // if has cordova no need to show first 2 slides in intro
     $scope.data.showHome = !$window.cordova || false
 
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
     $scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
       // only has 1 slide
       if (data.slider.isBeginning && data.slider.isEnd) {
