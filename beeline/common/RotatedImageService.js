@@ -1,4 +1,4 @@
-angular.module("beeline").factory("RotatedImage", function() {
+angular.module("common").factory("RotatedImage", function() {
   const WIDTH = 300
   const HEIGHT = 300
   const canvas = document.createElement("canvas")

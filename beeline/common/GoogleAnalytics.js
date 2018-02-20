@@ -20,9 +20,13 @@
   "ga"
 )
 
-angular.module("beeline").factory("GoogleAnalytics", function() {
-  return function() {
+angular.module("common").factory("GoogleAnalytics", function() {
+  function send() {
     window.ga(...arguments)
+  }
+
+  return {
+    send,
   }
 })
 
@@ -35,7 +39,7 @@ let devicePromise = new Promise((resolve, reject) => {
   }
 })
 
-angular.module("beeline").run([
+angular.module("common").run([
   "$rootScope",
   async function($rootScope) {
     await devicePromise

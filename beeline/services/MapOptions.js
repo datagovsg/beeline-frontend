@@ -2,8 +2,7 @@ import _ from "lodash"
 
 angular.module("beeline").service("MapOptions", [
   "uiGmapGoogleMapApi",
-  "$cordovaGeolocation",
-  function MapOptions(uiGmapGoogleMapApi, $cordovaGeolocation) {
+  function MapOptions(uiGmapGoogleMapApi) {
     let markerOptionsPromise = uiGmapGoogleMapApi.then(googleMaps => {
       return {
         markerOptions: {
@@ -118,33 +117,6 @@ angular.module("beeline").service("MapOptions", [
       })
 
       return mapOptions
-    }
-
-    this.locateMe = function(mapControl) {
-      // promise
-      // FIXME: use navigator.geoLocation
-      $cordovaGeolocation
-        .getCurrentPosition({ timeout: 5000, enableHighAccuracy: true })
-        .then(
-          function(userpos) {
-            if (!mapControl.getGMap) return
-
-            let gmap = mapControl.getGMap()
-
-            gmap.panTo(
-              new google.maps.LatLng(
-                userpos.coords.latitude,
-                userpos.coords.longitude
-              )
-            )
-            setTimeout(function() {
-              gmap.setZoom(17)
-            }, 300)
-          },
-          function(err) {
-            console.error("ERROR - " + err)
-          }
-        )
     }
 
     this.disableMapLinks = function() {

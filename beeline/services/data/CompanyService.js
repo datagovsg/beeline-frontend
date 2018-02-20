@@ -27,7 +27,7 @@ angular.module("beeline").factory("CompanyService", [
       showTerms: function(id) {
         termsScope = $rootScope.$new()
         termsScope.termsModal = $ionicModal.fromTemplate(
-          require("../templates/termsModal.html"),
+          require("../../templates/termsModal.html"),
           {
             scope: termsScope,
           }
