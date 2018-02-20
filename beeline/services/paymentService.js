@@ -9,7 +9,6 @@ angular.module("beeline").factory("PaymentService", [
   "$ionicPopup",
   "$ionicLoading",
   "BookingService",
-  "CreditsService",
   "StripeService",
   "loadingSpinner",
   "TicketService",
@@ -21,7 +20,6 @@ angular.module("beeline").factory("PaymentService", [
     $ionicPopup,
     $ionicLoading,
     BookingService,
-    CreditsService,
     StripeService,
     loadingSpinner,
     TicketService,
@@ -50,9 +48,6 @@ angular.module("beeline").factory("PaymentService", [
         RoutesService.fetchRoutePasses(true)
         RoutesService.fetchRoutePassCount()
         RoutesService.fetchRoutesWithRoutePass()
-
-        CreditsService.fetchReferralCredits(true)
-        CreditsService.fetchUserCredits(true)
       }
     }
 
