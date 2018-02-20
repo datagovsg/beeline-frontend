@@ -1,3 +1,4 @@
+import processingPaymentsTemplate from "../templates/processing-payments.html"
 import assert from "assert"
 import _ from "lodash"
 
@@ -55,6 +56,27 @@ angular.module("beeline").factory("PaymentService", [
       }
     }
 
+    /*
+      Helper function to wrap the UI changes around payment
+    */
+    async function completePaymentWithUI(paymentOptions, book) {
+      try {
+        $ionicLoading.show({
+          template: processingPaymentsTemplate,
+        })
+
+        await completePayment(paymentOptions, book)
+        $state.go("tabs.route-confirmation")
+      } catch (err) {
+        await $ionicPopup.alert({
+          title: "Error processing payment",
+          template: err.data.message,
+        })
+      } finally {
+        $ionicLoading.hide()
+      }
+    }
+
     async function payZeroDollar(book) {
       if (
         await $ionicPopup.confirm({
@@ -63,7 +85,7 @@ angular.module("beeline").factory("PaymentService", [
         })
       ) {
         try {
-          await completePayment(
+          await completePaymentWithUI(
             {
               stripeToken: "this-will-not-be-used",
             },
@@ -90,7 +112,7 @@ angular.module("beeline").factory("PaymentService", [
           return
         }
 
-        await completePayment(
+        await completePaymentWithUI(
           {
             stripeToken: stripeToken.id,
           },
@@ -124,7 +146,7 @@ angular.module("beeline").factory("PaymentService", [
 
         let user = await UserService.getUser()
 
-        await completePayment(
+        await completePaymentWithUI(
           {
             customerId: user.savedPaymentInfo.id,
             sourceId: _.head(user.savedPaymentInfo.sources.data).id,
@@ -140,6 +162,11 @@ angular.module("beeline").factory("PaymentService", [
     }
 
     let instance = {
+      completePayment,
+      completePaymentWithUI,
+      payZeroDollar,
+      payWithoutSavingCard,
+      payWithSavedInfo,
       payForRoutePass: async function(
         route,
         expectedPrice,

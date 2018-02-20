@@ -1,16 +1,13 @@
 import _ from "lodash"
-import processingPaymentsTemplate from "../templates/processing-payments.html"
 
 export default [
   "$document",
   "$scope",
-  "$state",
   "$ionicPopup",
   "BookingService",
   "PaymentService",
   "UserService",
   "RequestService",
-  "$ionicLoading",
   "StripeService",
   "$stateParams",
   "RoutesService",
@@ -22,13 +19,11 @@ export default [
   function(
     $document,
     $scope,
-    $state,
     $ionicPopup,
     BookingService,
     PaymentService,
     UserService,
     RequestService,
-    $ionicLoading,
     StripeService,
     $stateParams,
     RoutesService,
@@ -155,95 +150,31 @@ export default [
     }
 
     $scope.payZeroDollar = async function() {
-      if (
-        await $ionicPopup.confirm({
-          title: "Complete Purchase",
-          template: "Are you sure you want to complete the purchase?",
-        })
-      ) {
-        try {
-          $scope.isPaymentProcessing = true
-
-          await completePaymentWithUI({
-            stripeToken: "this-will-not-be-used",
-          })
-        } finally {
-          $scope.$apply(() => {
-            $scope.isPaymentProcessing = false
-          })
-        }
-      }
+      PaymentService.payZeroDollar($scope.book)
     }
 
     // Prompts for card and processes payment with one time stripe token.
     $scope.payWithoutSavingCard = async function() {
-      try {
-        // disable the button
-        $scope.isPaymentProcessing = true
+      // disable the button
+      $scope.isPaymentProcessing = true
 
-        const stripeToken = await StripeService.promptForToken(
-          null,
-          isFinite($scope.book.price) ? $scope.book.price * 100 : "",
-          null
-        )
+      await PaymentService.payWithoutSavingCard($scope.book)
 
-        if (!stripeToken) {
-          return
-        }
-
-        await completePaymentWithUI({
-          stripeToken: stripeToken.id,
-        })
-      } catch (err) {
-        await $ionicPopup.alert({
-          title: "Error contacting the payment gateway",
-          template: err.data.message,
-        })
-      } finally {
-        $scope.$apply(() => {
-          $scope.isPaymentProcessing = false
-        })
-      }
+      // enable the button
+      $scope.isPaymentProcessing = false
     }
 
     // Processes payment with customer object.
     // If customer object does not exist, prompts for card,
     // creates customer object, and proceeds as usual.
     $scope.payWithSavedInfo = async function() {
-      try {
-        // disable the button
-        $scope.isPaymentProcessing = true
+      // disable the button
+      $scope.isPaymentProcessing = true
 
-        if (!$scope.hasSavedPaymentInfo) {
-          let stripeToken = await StripeService.promptForToken(
-            null,
-            isFinite($scope.book.price) ? $scope.book.price * 100 : "",
-            null
-          )
+      await PaymentService.payWithSavedInfo($scope.book)
 
-          if (!stripeToken) {
-            $scope.isPaymentProcessing = false // re-enable button
-            return
-          }
-
-          await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
-        }
-
-        await completePaymentWithUI({
-          customerId: $scope.user.savedPaymentInfo.id,
-          sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
-        })
-      } catch (err) {
-        $scope.isPaymentProcessing = false // re-enable button
-        await $ionicPopup.alert({
-          title: "Error saving payment method",
-          template: err.data.message,
-        })
-      } finally {
-        $scope.$apply(() => {
-          $scope.isPaymentProcessing = false
-        })
-      }
+      // enable the button
+      $scope.isPaymentProcessing = false
     }
 
     $scope.scrollToPriceCalculator = function() {
@@ -307,24 +238,6 @@ export default [
             $scope.book.isVerifying = null
           }
         }))
-    }
-
-    async function completePaymentWithUI(paymentOptions) {
-      try {
-        $ionicLoading.show({
-          template: processingPaymentsTemplate,
-        })
-
-        await PaymentService.completePayment(paymentOptions, $scope.book)
-        $state.go("tabs.route-confirmation")
-      } catch (err) {
-        await $ionicPopup.alert({
-          title: "Error processing payment",
-          template: err.data.message,
-        })
-      } finally {
-        $ionicLoading.hide()
-      }
     }
 
     $scope.$watch(
