@@ -63,6 +63,7 @@ export default [
       // if 2 requests sent to verify promo code, only the latter matters
       // always need to have this if using debounce with promise
       lastestVerifyPromoCodePromise: null,
+      hasSavedPaymentInfo: null,
     }
     $scope.disp = {
       zeroDollarPurchase: false,
@@ -91,7 +92,7 @@ export default [
       user => {
         $scope.isLoggedIn = Boolean(user)
         $scope.user = user
-        $scope.hasSavedPaymentInfo =
+        $scope.book.hasSavedPaymentInfo =
           _.get($scope.user, "savedPaymentInfo.sources.data.length", 0) > 0
         $scope.book.applyReferralCredits = Boolean(user)
         $scope.book.applyCredits = Boolean(user)
@@ -140,40 +141,13 @@ export default [
     }
 
     $scope.payHandler = async function() {
-      if ($scope.disp.payZeroDollar) {
-        $scope.payZeroDollar()
-      } else if ($scope.disp.savePaymentChecked) {
-        $scope.payWithSavedInfo()
-      } else {
-        $scope.payWithoutSavingCard()
-      }
-    }
-
-    $scope.payZeroDollar = async function() {
-      PaymentService.payZeroDollar($scope.book)
-    }
-
-    // Prompts for card and processes payment with one time stripe token.
-    $scope.payWithoutSavingCard = async function() {
-      // disable the button
       $scope.isPaymentProcessing = true
 
-      await PaymentService.payWithoutSavingCard($scope.book)
+      await PaymentService.payHandler(
+        $scope.book,
+        $scope.disp.savePaymentChecked
+      )
 
-      // enable the button
-      $scope.isPaymentProcessing = false
-    }
-
-    // Processes payment with customer object.
-    // If customer object does not exist, prompts for card,
-    // creates customer object, and proceeds as usual.
-    $scope.payWithSavedInfo = async function() {
-      // disable the button
-      $scope.isPaymentProcessing = true
-
-      await PaymentService.payWithSavedInfo($scope.book)
-
-      // enable the button
       $scope.isPaymentProcessing = false
     }
 

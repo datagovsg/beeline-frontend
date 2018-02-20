@@ -215,13 +215,13 @@ angular.module("beeline").factory("PaymentService", [
         return paymentPromise
       },
 
-      payHandler: function(book, savePaymentChecked) {
+      payHandler: async function(book, savePaymentChecked) {
         if (book.price === 0) {
-          payZeroDollar(book)
+          await payZeroDollar(book)
         } else if (book.hasSavedPaymentInfo || savePaymentChecked) {
-          payWithSavedInfo(book)
+          await payWithSavedInfo(book)
         } else {
-          payWithoutSavingCard(book)
+          await payWithoutSavingCard(book)
         }
       },
     }
