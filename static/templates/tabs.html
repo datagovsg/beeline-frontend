@@ -10,7 +10,7 @@ navigation history that also transitions its views in and out.
     <!-- Main content, usually <ion-nav-view> -->
     <ion-side-menu-content>
       <div class="left-pane">
-        <ion-nav-bar class="bar-light">
+        <ion-nav-bar class="bar-royal">
         </ion-nav-bar>
 
         <ion-nav-view name="menuContent"></ion-nav-view>
@@ -33,9 +33,9 @@ navigation history that also transitions its views in and out.
 
     <!-- Left menu -->
     <ion-side-menu side="left">
-      <header class="bar bar-header bar-royal">
+      <header class="bar bar-header bar-stable">
       </header>
-      <ion-content class="has-header" scroll="false">
+      <ion-content class="has-header">
         <ion-list>
           <!-- <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
             <i class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp; Search Routes
@@ -77,6 +77,7 @@ navigation history that also transitions its views in and out.
           <ion-item menu-close ui-sref="tabs.settings" ui-sref-active="active">
             <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
           </ion-item>
+          <div class="item item-divider"></div>
           <ion-item menu-close ng-if="!data.isLoggedIn" ng-click="login()">
             <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>&nbsp; Log In
           </ion-item>

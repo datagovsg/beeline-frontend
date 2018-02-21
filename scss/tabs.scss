@@ -1,21 +1,10 @@
 #tabs {
   ion-side-menu {
     ion-item {
-      color: $light;
-      background-color: $royal;
-    }
-    .item-content {
-      background-color: $royal;
-    }
-    .item {
-      background-color: $royal;
-      border: none;
+      color: $royal;
     }
     .sub-list {
       padding-left: $item-padding * 1.5
-    }
-    ion-content.scroll-content {
-      background-color: $royal;
     }
   }
 
