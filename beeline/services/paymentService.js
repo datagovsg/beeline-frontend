@@ -1,5 +1,5 @@
-import assert from "assert"
 import processingPaymentsTemplate from "../templates/processing-payments.html"
+import assert from "assert"
 import _ from "lodash"
 
 angular.module("beeline").factory("PaymentService", [
@@ -9,7 +9,6 @@ angular.module("beeline").factory("PaymentService", [
   "$ionicPopup",
   "$ionicLoading",
   "BookingService",
-  "CreditsService",
   "StripeService",
   "loadingSpinner",
   "TicketService",
@@ -21,7 +20,6 @@ angular.module("beeline").factory("PaymentService", [
     $ionicPopup,
     $ionicLoading,
     BookingService,
-    CreditsService,
     StripeService,
     loadingSpinner,
     TicketService,
@@ -31,9 +29,6 @@ angular.module("beeline").factory("PaymentService", [
     // book is booking Object
     async function completePayment(paymentOptions, book) {
       try {
-        $ionicLoading.show({
-          template: processingPaymentsTemplate,
-        })
         let result = await RequestService.beeline({
           method: "POST",
           url: "/transactions/tickets/payment",
@@ -48,24 +43,32 @@ angular.module("beeline").factory("PaymentService", [
         })
 
         assert(result.status == 200)
-
-        $ionicLoading.hide()
-
         TicketService.setShouldRefreshTickets()
+      } finally {
+        RoutesService.fetchRoutePasses(true)
+        RoutesService.fetchRoutePassCount()
+        RoutesService.fetchRoutesWithRoutePass()
+      }
+    }
+
+    /*
+      Helper function to wrap the UI changes around payment
+    */
+    async function completePaymentWithUI(paymentOptions, book) {
+      try {
+        $ionicLoading.show({
+          template: processingPaymentsTemplate,
+        })
+
+        await completePayment(paymentOptions, book)
         $state.go("tabs.route-confirmation")
       } catch (err) {
-        $ionicLoading.hide()
         await $ionicPopup.alert({
           title: "Error processing payment",
           template: err.data.message,
         })
       } finally {
-        RoutesService.fetchRoutePasses(true)
-        RoutesService.fetchRoutePassCount()
-        RoutesService.fetchRoutesWithRoutePass()
-
-        CreditsService.fetchReferralCredits(true)
-        CreditsService.fetchUserCredits(true)
+        $ionicLoading.hide()
       }
     }
 
@@ -77,7 +80,7 @@ angular.module("beeline").factory("PaymentService", [
         })
       ) {
         try {
-          await completePayment(
+          await completePaymentWithUI(
             {
               stripeToken: "this-will-not-be-used",
             },
@@ -104,7 +107,7 @@ angular.module("beeline").factory("PaymentService", [
           return
         }
 
-        await completePayment(
+        await completePaymentWithUI(
           {
             stripeToken: stripeToken.id,
           },
@@ -138,7 +141,7 @@ angular.module("beeline").factory("PaymentService", [
 
         let user = await UserService.getUser()
 
-        await completePayment(
+        await completePaymentWithUI(
           {
             customerId: user.savedPaymentInfo.id,
             sourceId: _.head(user.savedPaymentInfo.sources.data).id,
@@ -154,6 +157,11 @@ angular.module("beeline").factory("PaymentService", [
     }
 
     let instance = {
+      completePayment,
+      completePaymentWithUI,
+      payZeroDollar,
+      payWithoutSavingCard,
+      payWithSavedInfo,
       payForRoutePass: async function(
         route,
         expectedPrice,
@@ -207,13 +215,13 @@ angular.module("beeline").factory("PaymentService", [
         return paymentPromise
       },
 
-      payHandler: function(book, savePaymentChecked) {
+      payHandler: async function(book, savePaymentChecked) {
         if (book.price === 0) {
-          payZeroDollar(book)
+          await payZeroDollar(book)
         } else if (book.hasSavedPaymentInfo || savePaymentChecked) {
-          payWithSavedInfo(book)
+          await payWithSavedInfo(book)
         } else {
-          payWithoutSavingCard(book)
+          await payWithoutSavingCard(book)
         }
       },
     }

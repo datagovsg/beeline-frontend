@@ -84,7 +84,7 @@
       <ion-checkbox
         class="item item-text-wrap"
         ng-model="disp.savePaymentChecked"
-        ng-if="!hasSavedPaymentInfo && !disp.zeroDollarPurchase">
+        ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase">
         Yes, I want to save this payment method for fast checkout in the future.
       </ion-checkbox>
     </section>
@@ -108,14 +108,14 @@
 
     <section ng-if="isLoggedIn && disp.zeroDollarPurchase">
       <button class="button primary-button"
-              ng-click="payZeroDollar()"
+              ng-click="payHandler()"
               ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating">
         Complete purchase
       </button>
     </section>
     <section ng-if="!disp.zeroDollarPurchase">
       <section class="item item-text-wrap"
-               ng-if="isLoggedIn && !hasSavedPaymentInfo">
+               ng-if="isLoggedIn && !book.hasSavedPaymentInfo">
         Please ensure that your credit card is ready for the next step in the booking process.
         <button class="button primary-button"
                 ng-click="payHandler()"
@@ -124,18 +124,18 @@
         </button>
       </section>
       <section class="item item-text-wrap"
-               ng-if="isLoggedIn && hasSavedPaymentInfo">
+               ng-if="isLoggedIn && book.hasSavedPaymentInfo">
         This payment will be charged to your <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
         ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>.
 
         <button class="button primary-button"
-                ng-click="payWithSavedInfo()"
+                ng-click="payHandler()"
                 ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating || book.price===undefined">
           Confirm and Pay
         </button>
         <div class="text-link-div">
           <a ng-class="(!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating) ? 'text-link-disabled' : ''"
-              ng-click="payWithoutSavingCard()">
+              ng-click="payHandler()">
               Use a different card for this payment
           </a>
         </div>

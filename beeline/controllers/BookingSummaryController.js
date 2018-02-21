@@ -1,16 +1,13 @@
-import assert from "assert"
-import processingPaymentsTemplate from "../templates/processing-payments.html"
 import _ from "lodash"
 
 export default [
   "$document",
   "$scope",
-  "$state",
   "$ionicPopup",
   "BookingService",
+  "PaymentService",
   "UserService",
   "RequestService",
-  "$ionicLoading",
   "StripeService",
   "$stateParams",
   "RoutesService",
@@ -22,12 +19,11 @@ export default [
   function(
     $document,
     $scope,
-    $state,
     $ionicPopup,
     BookingService,
+    PaymentService,
     UserService,
     RequestService,
-    $ionicLoading,
     StripeService,
     $stateParams,
     RoutesService,
@@ -67,6 +63,7 @@ export default [
       // if 2 requests sent to verify promo code, only the latter matters
       // always need to have this if using debounce with promise
       lastestVerifyPromoCodePromise: null,
+      hasSavedPaymentInfo: null,
     }
     $scope.disp = {
       zeroDollarPurchase: false,
@@ -95,7 +92,7 @@ export default [
       user => {
         $scope.isLoggedIn = Boolean(user)
         $scope.user = user
-        $scope.hasSavedPaymentInfo =
+        $scope.book.hasSavedPaymentInfo =
           _.get($scope.user, "savedPaymentInfo.sources.data.length", 0) > 0
         $scope.book.applyReferralCredits = Boolean(user)
         $scope.book.applyCredits = Boolean(user)
@@ -144,105 +141,14 @@ export default [
     }
 
     $scope.payHandler = async function() {
-      if ($scope.disp.payZeroDollar) {
-        $scope.payZeroDollar()
-      } else if ($scope.disp.savePaymentChecked) {
-        $scope.payWithSavedInfo()
-      } else {
-        $scope.payWithoutSavingCard()
-      }
-    }
+      $scope.isPaymentProcessing = true
 
-    $scope.payZeroDollar = async function() {
-      if (
-        await $ionicPopup.confirm({
-          title: "Complete Purchase",
-          template: "Are you sure you want to complete the purchase?",
-        })
-      ) {
-        try {
-          $scope.isPaymentProcessing = true
+      await PaymentService.payHandler(
+        $scope.book,
+        $scope.disp.savePaymentChecked
+      )
 
-          await completePayment({
-            stripeToken: "this-will-not-be-used",
-          })
-        } finally {
-          $scope.$apply(() => {
-            $scope.isPaymentProcessing = false
-          })
-        }
-      }
-    }
-
-    // Prompts for card and processes payment with one time stripe token.
-    $scope.payWithoutSavingCard = async function() {
-      try {
-        // disable the button
-        $scope.isPaymentProcessing = true
-
-        const stripeToken = await StripeService.promptForToken(
-          null,
-          isFinite($scope.book.price) ? $scope.book.price * 100 : "",
-          null
-        )
-
-        if (!stripeToken) {
-          return
-        }
-
-        await completePayment({
-          stripeToken: stripeToken.id,
-        })
-      } catch (err) {
-        await $ionicPopup.alert({
-          title: "Error contacting the payment gateway",
-          template: err.data.message,
-        })
-      } finally {
-        $scope.$apply(() => {
-          $scope.isPaymentProcessing = false
-        })
-      }
-    }
-
-    // Processes payment with customer object.
-    // If customer object does not exist, prompts for card,
-    // creates customer object, and proceeds as usual.
-    $scope.payWithSavedInfo = async function() {
-      try {
-        // disable the button
-        $scope.isPaymentProcessing = true
-
-        if (!$scope.hasSavedPaymentInfo) {
-          let stripeToken = await StripeService.promptForToken(
-            null,
-            isFinite($scope.book.price) ? $scope.book.price * 100 : "",
-            null
-          )
-
-          if (!stripeToken) {
-            $scope.isPaymentProcessing = false // re-enable button
-            return
-          }
-
-          await loadingSpinner(UserService.savePaymentInfo(stripeToken.id))
-        }
-
-        await completePayment({
-          customerId: $scope.user.savedPaymentInfo.id,
-          sourceId: _.head($scope.user.savedPaymentInfo.sources.data).id,
-        })
-      } catch (err) {
-        $scope.isPaymentProcessing = false // re-enable button
-        await $ionicPopup.alert({
-          title: "Error saving payment method",
-          template: err.data.message,
-        })
-      } finally {
-        $scope.$apply(() => {
-          $scope.isPaymentProcessing = false
-        })
-      }
+      $scope.isPaymentProcessing = false
     }
 
     $scope.scrollToPriceCalculator = function() {
@@ -254,50 +160,6 @@ export default [
         priceCalculatorPosition.top,
         true
       )
-    }
-
-    // After you have settled the payment mode
-    async function completePayment(paymentOptions) {
-      try {
-        $ionicLoading.show({
-          template: processingPaymentsTemplate,
-        })
-
-        const result = await RequestService.beeline({
-          method: "POST",
-          url: "/transactions/tickets/payment",
-          data: _.defaults(paymentOptions, {
-            trips: BookingService.prepareTrips($scope.book),
-            promoCode: $scope.book.promoCode
-              ? { code: $scope.book.promoCode }
-              : { code: "" },
-            applyRoutePass: Boolean($scope.book.applyRoutePass),
-            applyCredits: $scope.book.applyCredits,
-            applyReferralCredits: $scope.book.applyReferralCredits,
-            expectedPrice: $scope.book.price,
-          }),
-        })
-
-        assert(result.status === 200)
-
-        $ionicLoading.hide()
-
-        TicketService.setShouldRefreshTickets()
-        $state.go("tabs.route-confirmation")
-      } catch (err) {
-        $ionicLoading.hide()
-        await $ionicPopup.alert({
-          title: "Error processing payment",
-          template: err.data.message,
-        })
-      } finally {
-        RoutesService.fetchRoutePasses(true)
-        RoutesService.fetchRoutePassCount()
-        RoutesService.fetchRoutesWithRoutePass()
-
-        CreditsService.fetchReferralCredits(true)
-        CreditsService.fetchUserCredits(true)
-      }
     }
 
     function verifyPromoCode() {
