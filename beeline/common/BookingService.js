@@ -132,9 +132,5 @@ angular.module("common").service("BookingService", [
         .value()
       return [boardStops, alightStops]
     }
-
-    // Sets up booking sessions
-    let session = Date.now()
-    this.newSession = () => ++session
   },
 ])
