@@ -55,7 +55,7 @@ export default [
     RoutesService.getRoute(routeId)
       .then(route => {
         // Load the stops data into the view
-        let [pickups, dropoffs] = BookingService.computeStops(route.trips)
+        let [pickups, dropoffs] = BookingService.getStopsFromTrips(route.trips)
         if (type === "pickup") $scope.data.stops = pickups
         if (type === "dropoff") $scope.data.stops = dropoffs
         if (stopId) {

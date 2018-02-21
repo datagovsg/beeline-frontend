@@ -1,4 +1,3 @@
-import moment from "moment"
 export default [
   "$scope",
   "$state",
@@ -183,7 +182,9 @@ export default [
             route
           )
           // Grab the stop data
-          let [pickups, dropoffs] = BookingService.computeStops(route.trips)
+          let [pickups, dropoffs] = BookingService.getStopsFromTrips(
+            route.trips
+          )
           pickups = new Map(pickups.map(stop => [stop.id, stop]))
           dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]))
           // if pickupStop is updated from 'tabs.route-stops' state

@@ -33,7 +33,7 @@ angular.module("beeline").factory("PaymentService", [
           method: "POST",
           url: "/transactions/tickets/payment",
           data: _.defaults(paymentOptions, {
-            trips: BookingService.prepareTrips(book),
+            trips: BookingService.getTripsFromBooking(book),
             promoCode: book.promoCode ? { code: book.promoCode } : { code: "" },
             applyRoutePass: book.applyRoutePass ? true : false,
             applyCredits: book.applyCredits ? true : false,
