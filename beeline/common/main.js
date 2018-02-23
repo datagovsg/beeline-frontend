@@ -8,5 +8,6 @@ require("./RotatedImageService")
 require("./ServerTimeService")
 require("./SharedVariableService")
 require("./MapService")
+require("./SearchService")
 
 module.exports = common
