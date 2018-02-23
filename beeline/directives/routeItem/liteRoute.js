@@ -3,6 +3,7 @@ angular.module("beeline").directive("liteRoute", function() {
     template: require("./liteRoute.html"),
     scope: {
       route: "<",
+      isSubscribed: "<?",
     },
   }
 })
