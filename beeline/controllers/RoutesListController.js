@@ -74,6 +74,17 @@ export default [
     }
 
     // -------------------------------------------------------------------------
+    // Ionic Events
+    // -------------------------------------------------------------------------
+    $scope.$on("$ionicView.enter", function() {
+      // Refresh routes on enter for my routes in case we did something that
+      // changed my routes e.g. unsubscribing lite route, booking a route
+      if ($ionicHistory.currentStateName() === "tabs.yourRoutes") {
+        $scope.refreshRoutes(true)
+      }
+    })
+
+    // -------------------------------------------------------------------------
     // UI Hooks
     // -------------------------------------------------------------------------
 
