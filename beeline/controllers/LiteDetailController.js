@@ -2,7 +2,7 @@ import _ from "lodash"
 
 export default [
   "$scope",
-  "$state",
+  "$ionicHistory",
   "$stateParams",
   "$ionicPopup",
   "$ionicLoading",
@@ -12,9 +12,10 @@ export default [
   "UserService",
   "loadingSpinner",
   "MapService",
+  "$state",
   function(
     $scope,
-    $state,
+    $ionicHistory,
     $stateParams,
     $ionicPopup,
     $ionicLoading,
@@ -23,12 +24,17 @@ export default [
     LiteRouteSubscriptionService,
     UserService,
     loadingSpinner,
-    MapService
+    MapService,
+    $state
   ) {
+    let routePromise
+    let subscriptionPromise
+
     $scope.disp = {
       companyInfo: {},
       hasTrackingData: null,
       statusMessages: null,
+      showHamburger: null,
     }
 
     // Default settings for various info used in the page
@@ -40,17 +46,53 @@ export default [
       todayTrips: null,
       inServiceWindow: false,
       hasTrips: true,
-      // defined in state tabs.my-lite-routes but not in tabs.lite-detail
-      showSideMenu: $state.current.data && $state.current.data.showSideMenu,
     }
+
+    // -------------------------------------------------------------------------
+    // Ionic Events
+    // -------------------------------------------------------------------------
+    $scope.$on("$ionicView.enter", function() {
+      if ($ionicHistory.backView()) {
+        $scope.disp.showHamburger = false
+      } else {
+        $scope.disp.showHamburger = true
+      }
+    })
+
+    $scope.$on("$ionicView.afterEnter", () => {
+      // Must define leavePromise here because if we define
+      // the handler for $ionicView.beforeLeave in .then(() => {})
+      // the user might have already navigated away from the page, and
+      // the event will not be fired
+      const leavePromise = new Promise(resolve => {
+        $scope.$on("$ionicView.beforeLeave", resolve)
+      })
+
+      sendTripsToMapView()
+
+      const dataPromise = loadingSpinner(
+        Promise.all([routePromise, subscriptionPromise]).then(() => {
+          MapService.emit("startPingLoop")
+
+          const listener = tripInfo => {
+            updateTripInfo(tripInfo)
+          }
+          MapService.on("tripInfo", listener)
+          leavePromise.then(() =>
+            MapService.removeListener("tripInfo", listener)
+          )
+        })
+      )
+
+      Promise.all([dataPromise, leavePromise]).then(() => {
+        MapService.emit("killPingLoop")
+      })
+    })
 
     $scope.$watch("book.todayTrips", trips => {
       if (!trips) return
       $scope.book.hasTrips = trips.length > 0
     })
-
-    let routePromise
-    let subscriptionPromise
 
     $scope.book.label = $stateParams.label
 
@@ -82,36 +124,6 @@ export default [
     }
 
     $scope.$watch("book.todayTrips", sendTripsToMapView)
-
-    $scope.$on("$ionicView.afterEnter", () => {
-      // Must define leavePromise here because if we define
-      // the handler for $ionicView.beforeLeave in .then(() => {})
-      // the user might have already navigated away from the page, and
-      // the event will not be fired
-      const leavePromise = new Promise(resolve => {
-        $scope.$on("$ionicView.beforeLeave", resolve)
-      })
-
-      sendTripsToMapView()
-
-      const dataPromise = loadingSpinner(
-        Promise.all([routePromise, subscriptionPromise]).then(() => {
-          MapService.emit("startPingLoop")
-
-          const listener = tripInfo => {
-            updateTripInfo(tripInfo)
-          }
-          MapService.on("tripInfo", listener)
-          leavePromise.then(() =>
-            MapService.removeListener("tripInfo", listener)
-          )
-        })
-      )
-
-      Promise.all([dataPromise, leavePromise]).then(() => {
-        MapService.emit("killPingLoop")
-      })
-    })
 
     $scope.$watch(
       () => UserService.getUser() && UserService.getUser().id,
@@ -173,7 +185,7 @@ export default [
             `,
             })
             .then(() => {
-              $state.transitionTo("tabs.tickets")
+              $state.transitionTo("tabs.yourRoutes")
             })
         }
       } catch (err) {
@@ -217,14 +229,7 @@ export default [
             `,
             duration: 1000,
           })
-          if (
-            $state.current &&
-            $state.current.name === "tabs.lite-route-tracker"
-          ) {
-            $state.transitionTo("tabs.tickets")
-          } else {
-            $state.transitionTo("tabs.routes")
-          }
+          $ionicHistory.goBack()
         }
       } catch (err) {
         await $ionicLoading.show({

@@ -66,6 +66,8 @@ require("./directives/tripCode/tripCode")
 require("./directives/ticketDetail/ticketDetail")
 require("./directives/companyInfoBroker")
 require("./directives/menuHamburger")
+require("./directives/routesList/routesList")
+require("./directives/routesList/yourRoutesList")
 
 // Data Services
 require("./services/data/CompanyService")

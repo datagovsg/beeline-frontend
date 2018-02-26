@@ -36,42 +36,17 @@ export default [
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Routes Tab
       // ////////////////////////////////////////////////////////////////////////////
-      .state("tabs.my-booking-routes", {
-        url: "/route/:routeId?pickupStopId&dropoffStopId",
-        views: {
-          menuContent: {
-            templateUrl: "templates/route-detail.html",
-            controller: "RouteDetailController",
-          },
-
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "RouteDetailMapViewController",
-          },
-        },
-        data: {
-          showSideMenu: true,
-        },
-      })
-      .state("tabs.my-lite-routes", {
-        url: "/lite/detail/:label",
-        views: {
-          menuContent: {
-            templateUrl: "templates/tab-lite-detail.html",
-            controller: "LiteDetailController",
-          },
-
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "LiteMapViewController",
-          },
-        },
-        data: {
-          showSideMenu: true,
-        },
-      })
       .state("tabs.routes", {
         url: "/routes",
+        views: {
+          menuContent: {
+            templateUrl: "templates/routes-list.html",
+            controller: "RoutesListController",
+          },
+        },
+      })
+      .state("tabs.yourRoutes", {
+        url: "/routes/yourRoutes",
         views: {
           menuContent: {
             templateUrl: "templates/routes-list.html",
@@ -214,15 +189,6 @@ export default [
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Kickstarter Tab
       // ////////////////////////////////////////////////////////////////////////////
-      .state("tabs.crowdstart", {
-        url: "/crowdstart",
-        views: {
-          menuContent: {
-            templateUrl: "templates/kickstarter.html",
-            controller: "KickstarterController",
-          },
-        },
-      })
 
       .state("tabs.crowdstart-recap", {
         url: "/crowdstart/:routeId/recap",
@@ -311,8 +277,12 @@ export default [
       viewedIntroSlidesVersion &&
       viewedIntroSlidesVersion >= introSlidesVersion
     ) {
-      // $urlRouterProvider.otherwise("/tabs")
-      $urlRouterProvider.otherwise("/tabs/routes")
+      // user is logged in
+      if (window.localStorage.sessionToken && window.localStorage.beelineUser) {
+        $urlRouterProvider.otherwise("/tabs/routes/yourRoutes")
+      } else {
+        $urlRouterProvider.otherwise("/tabs/routes")
+      }
     } else {
       window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
       $urlRouterProvider.otherwise("/intro")

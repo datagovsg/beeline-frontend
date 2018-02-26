@@ -282,6 +282,10 @@ angular.module("beeline").service("KickstarterService", [
         return kickstarterRoutesById ? kickstarterRoutesById[routeId] : null
       },
 
+      getKickstarterRoutesById: function() {
+        return kickstarterRoutesById
+      },
+
       // user personal bid information
       getBids: function() {
         return kickstarterSummary

@@ -17,7 +17,7 @@ export default [
   "$ionicPopup",
   "$window",
   "OneMapPlaceService",
-
+  "$ionicHistory",
   function(
     // Angular Tools
     $scope,
@@ -36,8 +36,22 @@ export default [
     $rootScope,
     $ionicPopup,
     $window,
-    OneMapPlaceService
+    OneMapPlaceService,
+    $ionicHistory
   ) {
+    // -------------------------------------------------------------------------
+    // Inputs
+    // -------------------------------------------------------------------------
+
+    $scope.disp = {
+      yourRoutes:
+        $ionicHistory.currentStateName() === "tabs.yourRoutes" ? true : false,
+      title:
+        $ionicHistory.currentStateName() === "tabs.yourRoutes"
+          ? "Your Routes"
+          : "Routes",
+    }
+
     // -------------------------------------------------------------------------
     // State
     // -------------------------------------------------------------------------
@@ -46,25 +60,43 @@ export default [
       placeQuery: null, // The place object used to search
       queryText: "", // The actual text in the box
       // Different types of route data
-      activatedCrowdstartRoutes: [],
-      recentRoutes: [],
+      activatedCrowdstartRoutes: null,
+      backedCrowdstartRoutes: null,
+      recentRoutes: null,
       recentRoutesById: null,
-      liteRoutes: [],
-      routes: [],
-      crowdstartRoutes: [],
+      liteRoutes: null,
+      subscribedLiteRoutes: null,
+      routes: null,
+      crowdstartRoutes: null,
       nextSessionId: null,
       isFiltering: null,
-      routesYouMayLike: [],
+      routesYouMayLike: null,
       routesAvailable: false,
     }
 
+    // -------------------------------------------------------------------------
+    // Ionic Events
+    // -------------------------------------------------------------------------
+    $scope.$on("$ionicView.enter", function() {
+      // Refresh routes on enter for my routes in case we did something that
+      // changed my routes e.g. unsubscribing lite route, booking a route
+      if ($ionicHistory.currentStateName() === "tabs.yourRoutes") {
+        $scope.refreshRoutes(true)
+      }
+    })
+
+    // -------------------------------------------------------------------------
+    // UI Hooks
+    // -------------------------------------------------------------------------
+
     // show legal document update
     // '2017-11-08' is the latest version
-    let notesPopup = null
     if (
       $rootScope.o.APP.NAME == "Beeline" &&
       !window.localStorage.viewedBeelineLegalDocumentVersion
     ) {
+      let notesPopup = null
+
       window.localStorage.viewedBeelineLegalDocumentVersion = "2017-11-08"
       notesPopup = $ionicPopup.show({
         title: "Beeline Notes",
@@ -74,7 +106,15 @@ export default [
           {
             text: "Learn More",
             type: "button-positive",
-            onTap: () => learnMore(),
+            onTap: () => {
+              // display privacy policy and termsOfUse
+              // notesPopup is resolved when it's closed
+              notesPopup.then(() => {
+                Legalese.showPrivacyPolicy().then(() => {
+                  Legalese.showTermsOfUse()
+                })
+              })
+            },
           },
           {
             text: "Ok",
@@ -83,14 +123,46 @@ export default [
       })
     }
 
-    function learnMore() {
-      // notesPopup is resolved when it's closed
-      notesPopup.then(() => {
-        Legalese.showPrivacyPolicy().then(() => {
-          Legalese.showTermsOfUse()
+    // Manually pull the newest data from the server
+    // Report any errors that happen
+    // Note that theres no need to update the scope manually
+    // since this is done by the service watchers
+    $scope.refreshRoutes = function(ignoreCache) {
+      RoutesService.fetchRoutePasses(ignoreCache)
+      RoutesService.fetchRoutes(ignoreCache)
+      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
+      const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
+      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
+        ignoreCache
+      )
+      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(
+        ignoreCache
+      )
+      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
+        ignoreCache
+      )
+      return $q
+        .all([
+          routesPromise,
+          recentRoutesPromise,
+          allLiteRoutesPromise,
+          liteRouteSubscriptionsPromise,
+          crowdstartRoutesPromise,
+        ])
+        .then(() => {
+          $scope.error = null
         })
-      })
+        .catch(() => {
+          $scope.error = true
+        })
+        .then(() => {
+          $scope.$broadcast("scroll.refreshComplete")
+        })
     }
+
+    // -------------------------------------------------------------------------
+    // Watchers
+    // -------------------------------------------------------------------------
 
     function autoComplete() {
       if (!$scope.data.queryText) {
@@ -132,9 +204,6 @@ export default [
       $scope.data.placeQuery = place
       $scope.$digest()
     }
-    // -------------------------------------------------------------------------
-    // UI Hooks
-    // -------------------------------------------------------------------------
 
     let debouncedAutocomplete = _.debounce(autoComplete, 300, {
       leading: false,
@@ -143,50 +212,10 @@ export default [
 
     $scope.$watch("data.queryText", debouncedAutocomplete)
 
-    // Manually pull the newest data from the server
-    // Report any errors that happen
-    // Note that theres no need to update the scope manually
-    // since this is done by the service watchers
-    $scope.refreshRoutes = function(ignoreCache) {
-      RoutesService.fetchRoutePasses(ignoreCache)
-      RoutesService.fetchRoutes(ignoreCache)
-      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
-      const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
-      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
-        ignoreCache
-      )
-      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(
-        ignoreCache
-      )
-      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
-        ignoreCache
-      )
-      return $q
-        .all([
-          routesPromise,
-          recentRoutesPromise,
-          allLiteRoutesPromise,
-          liteRouteSubscriptionsPromise,
-          crowdstartRoutesPromise,
-        ])
-        .then(() => {
-          $scope.error = null
-        })
-        .catch(() => {
-          $scope.error = true
-        })
-        .then(() => {
-          $scope.$broadcast("scroll.refreshComplete")
-        })
-    }
-
     $scope.$watch("data.queryText", queryText => {
       if (queryText.length === 0) $scope.data.isFiltering = true
     })
 
-    // -------------------------------------------------------------------------
-    // Model Hooks
-    // -------------------------------------------------------------------------
     // Kickstarted routes
     $scope.$watchGroup(
       [() => RoutesService.getActivatedKickstarterRoutes(), "data.placeQuery"],
@@ -254,6 +283,20 @@ export default [
             route => !activatedCrowdstartRoutesIds.includes(route.id)
           )
         }
+      }
+    )
+
+    $scope.$watchGroup(
+      [
+        () => KickstarterService.getBids(),
+        () => KickstarterService.getKickstarterRoutesById(),
+      ],
+      ([bids, kickstarterRoutesById]) => {
+        if (!bids || !kickstarterRoutesById) return
+
+        $scope.data.backedCrowdstartRoutes = bids.map(bid => {
+          return KickstarterService.getCrowdstartById(bid.routeId)
+        })
       }
     )
 
@@ -364,6 +407,18 @@ export default [
         // Input validation
         if (!liteRoutes || !subscribed) return
         liteRoutes = Object.values(liteRoutes)
+
+        let subscribedLiteRoutes = _.filter(liteRoutes, route => {
+          return !!subscribed.includes(route.label)
+        })
+        // Sort by label and publish
+        $scope.data.subscribedLiteRoutes = _.sortBy(
+          subscribedLiteRoutes,
+          route => {
+            return parseInt(route.label.slice(1))
+          }
+        )
+
         // Filtering
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
           liteRoutes = SearchService.filterRoutesByPlaceAndText(

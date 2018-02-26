@@ -1,10 +1,7 @@
 <ion-view id="pg_kickstarter_detail" view-title="Crowdstart Route Details"
- can-swipe-back="false" class="kickstarter-detail2 page-with-map" hide-back-button="true">
+ can-swipe-back="false" class="kickstarter-detail2 page-with-map">
  <ion-nav-buttons side="left">
-   <button class="button button-clear back-button"
-      ui-sref="tabs.crowdstart">
-      <i class="icon ion-ios-arrow-back"></i>
-   </button>
+   <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
  </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <route-share is-normal-route="false" route-id="book.routeId"></route-share>
@@ -99,7 +96,7 @@
       <kickstart-info route="book.route" ng-hide="book.route.isExpired && !book.route.isActived"></kickstart-info>
 
       <div class="select-bid item-text-wrap" ng-if="book.route.isExpired">
-          <button class="button primary-button page-bottom " ui-sref="tabs.crowdstart">
+          <button class="button primary-button page-bottom " ui-sref="tabs.routes">
             Back to Main
           </button>
       </div>

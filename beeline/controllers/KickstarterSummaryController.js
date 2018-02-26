@@ -150,7 +150,7 @@ export default [
           ${err && err.data && err.data.message} Please try again later.</div>
           `,
         })
-        $state.go("tabs.crowdstart")
+        $state.go("tabs.routes")
       } finally {
         $scope.waitingForPaymentResult = false
         $scope.$digest()

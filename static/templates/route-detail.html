@@ -1,16 +1,8 @@
-<ion-view class="route-detail page-with-map" hide-back-button="true" ng-init="activeTab = 0">
-  <!-- hide the left and right icon if activeTab===1 -->
-  <!-- to leave only 1 button to click in ticket view -->
-  <ion-nav-buttons side="left">
-    <button class="button button-clear back-button"
-       ui-sref="tabs.routes"
-       ng-if="!data.showSideMenu && activeTab===0">
-       <i class="icon ion-ios-arrow-back"></i>
-    </button>
-    <menu-hamburger ng-if="data.showSideMenu && activeTab===0">
-    </menu-hamburger>
-  </ion-nav-buttons>
+<ion-view class="route-detail page-with-map" ng-init="activeTab = 0">
   <ion-nav-title>{{data.label}}</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
+  </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <route-share is-normal-route="true" route-id="data.routeId" ng-if="activeTab===0"></route-share>
   </ion-nav-buttons>
