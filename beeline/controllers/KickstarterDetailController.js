@@ -6,7 +6,8 @@ export default [
   "$stateParams",
   "BookingService",
   "KickstarterService",
-  function($scope, $state, $stateParams, BookingService, KickstarterService) {
+  "$ionicHistory",
+  function($scope, $state, $stateParams, BookingService, KickstarterService, $ionicHistory) {
     $scope.routePath = []
 
     // Default settings for various info used in the page
@@ -17,6 +18,21 @@ export default [
       calculatedAmount: "",
       bidPrice: null,
     }
+
+    $scope.disp = {
+      showHamburger: null,
+    }
+
+    // -------------------------------------------------------------------------
+    // Ionic Events
+    // -------------------------------------------------------------------------
+    $scope.$on("$ionicView.enter", function() {
+      if ($ionicHistory.backView()) {
+        $scope.disp.showHamburger = false;
+      } else {
+        $scope.disp.showHamburger = true;
+      }
+    })
 
     $scope.book.routeId = Number($stateParams.routeId)
 

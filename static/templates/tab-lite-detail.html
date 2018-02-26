@@ -1,5 +1,8 @@
 <ion-view on-touch="hideTooltip()" class="lite-detail page-with-map"
   view-title="Route Details">
+  <ion-nav-buttons side="left">
+    <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
+  </ion-nav-buttons>
   <ion-content scroll="false">
     <daily-trips-broker trip-label="book.route.label"
                  daily-trips="book.todayTrips">

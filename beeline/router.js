@@ -36,40 +36,6 @@ export default [
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Routes Tab
       // ////////////////////////////////////////////////////////////////////////////
-      .state("tabs.my-booking-routes", {
-        url: "/route/:routeId?pickupStopId&dropoffStopId",
-        views: {
-          menuContent: {
-            templateUrl: "templates/route-detail.html",
-            controller: "RouteDetailController",
-          },
-
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "RouteDetailMapViewController",
-          },
-        },
-        data: {
-          showSideMenu: true,
-        },
-      })
-      .state("tabs.my-lite-routes", {
-        url: "/lite/detail/:label",
-        views: {
-          menuContent: {
-            templateUrl: "templates/tab-lite-detail.html",
-            controller: "LiteDetailController",
-          },
-
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "LiteMapViewController",
-          },
-        },
-        data: {
-          showSideMenu: true,
-        },
-      })
       .state("tabs.routes", {
         url: "/routes",
         views: {
@@ -99,7 +65,7 @@ export default [
           "map-area": {
             templateUrl: "templates/map-view.html",
             controller: "RouteDetailMapViewController",
-          },
+          }
         },
       })
       .state("tabs.route-stops", {
@@ -157,7 +123,7 @@ export default [
             templateUrl: "templates/map-view.html",
             controller: "LiteMapViewController",
           },
-        },
+        }
       })
       .state("tabs.lite-more-info", {
         url: "/lite/more-info/:label/:companyId/",

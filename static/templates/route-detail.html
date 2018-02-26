@@ -1,5 +1,8 @@
 <ion-view class="route-detail page-with-map" ng-init="activeTab = 0">
   <ion-nav-title>{{data.label}}</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
+  </ion-nav-buttons>
   <ion-nav-buttons side="right">
     <route-share is-normal-route="true" route-id="data.routeId" ng-if="activeTab===0"></route-share>
   </ion-nav-buttons>

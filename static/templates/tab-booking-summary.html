@@ -1,18 +1,4 @@
-<ion-view id="pg_summary" view-title="Booking Summary"
-  hide-back-button="true">
-  <ion-nav-buttons side="left">
-    <!-- FIXME: through 'fastCheckout', date is pre-selected as not vistied before -->
-    <button class="button button-clear back-button"
-       ui-sref="tabs.route-dates({
-        boardStop: book.boardStopId,
-        alightStop: book.alightStopId,
-        routeId: book.routeId,
-        sessionId: session.sessionId,
-        selectedDates: book.selectedDates.join(',')
-      })">
-       <i class="icon ion-ios-arrow-back"></i> Dates
-    </button>
-  </ion-nav-buttons>
+<ion-view id="pg_summary" view-title="Booking Summary">
   <ion-nav-buttons side="right">
     <button class="button button-clear"
        ui-sref="tabs.routes">

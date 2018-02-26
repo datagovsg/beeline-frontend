@@ -11,6 +11,7 @@ export default [
   "MapService",
   "TicketService",
   "TripService",
+  "$ionicHistory",
   function(
     $scope,
     $state,
@@ -23,7 +24,8 @@ export default [
     FastCheckoutService,
     MapService,
     TicketService,
-    TripService
+    TripService,
+    $ionicHistory
   ) {
     // ------------------------------------------------------------------------
     // Input
@@ -54,8 +56,6 @@ export default [
       isLoggedIn: null,
       boardStopInvalid: null,
       alightStopInvalid: null,
-      // defined in state tabs.my-booking-routes but not in tabs.route-detail
-      showSideMenu: $state.current.data && $state.current.data.showSideMenu,
       label: null,
       showBooking: null,
       hasNextTripTicket: null,
@@ -64,6 +64,7 @@ export default [
     $scope.disp = {
       isBooking: false,
       ticketTitle: null,
+      showHamburger: null,
     }
 
     $scope.mapObject = {
@@ -75,6 +76,17 @@ export default [
       allRecentPings: [],
       chosenStop: null,
     }
+
+    // -------------------------------------------------------------------------
+    // Ionic Events
+    // -------------------------------------------------------------------------
+    $scope.$on("$ionicView.enter", function() {
+      if ($ionicHistory.backView()) {
+        $scope.disp.showHamburger = false;
+      } else {
+        $scope.disp.showHamburger = true;
+      }
+    })
 
     // ------------------------------------------------------------------------
     // Hooks
