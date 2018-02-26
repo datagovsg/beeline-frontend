@@ -12,6 +12,7 @@ export default [
   "UserService",
   "loadingSpinner",
   "MapService",
+  "$state",
   function(
     $scope,
     $ionicHistory,
@@ -23,7 +24,8 @@ export default [
     LiteRouteSubscriptionService,
     UserService,
     loadingSpinner,
-    MapService
+    MapService,
+    $state
   ) {
     $scope.disp = {
       companyInfo: {},
@@ -171,7 +173,7 @@ export default [
             `,
             })
             .then(() => {
-              $state.transitionTo("tabs.tickets")
+              $state.transitionTo("tabs.yourRoutes")
             })
         }
       } catch (err) {
