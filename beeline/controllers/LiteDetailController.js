@@ -27,7 +27,6 @@ export default [
   ) {
     $scope.disp = {
       companyInfo: {},
-      showTooltip: true,
       hasTrackingData: null,
       statusMessages: null,
     }
@@ -236,12 +235,6 @@ export default [
         })
       } finally {
         $scope.book.waitingForSubscriptionResult = false
-      }
-    }
-
-    $scope.hideTooltip = () => {
-      if ($scope.disp.showTooltip) {
-        $scope.disp.showTooltip = false
       }
     }
 
