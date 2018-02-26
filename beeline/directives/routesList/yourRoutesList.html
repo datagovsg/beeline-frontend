@@ -2,10 +2,15 @@
 <div ng-if="disp.yourRoutes">
   <!-- if you has no routes -->
   <div class="item item-text-wrap no-items"
-      ng-if="data.activatedCrowdstartRoutes.length === 0 &&
+      ng-if="data.activatedCrowdstartRoutes &&
+              data.activatedCrowdstartRoutes.length === 0 &&
+              data.recentRoutes &&
               data.recentRoutes.length === 0 &&
+              data.subscribedLiteRoutes &&
               data.subscribedLiteRoutes.length === 0 &&
+              data.backedCrowdstartRoutes &&
               data.backedCrowdstartRoutes.length === 0 &&
+              data.routesYouMayLike &&
               data.routesYouMayLike.length === 0">
     <img src="./img/bgTickets.svg"></img>
     <h2>No Personal Routes</h2>

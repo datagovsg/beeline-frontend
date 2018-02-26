@@ -59,17 +59,17 @@ export default [
       placeQuery: null, // The place object used to search
       queryText: "", // The actual text in the box
       // Different types of route data
-      activatedCrowdstartRoutes: [],
-      backedCrowdstartRoutes: [],
-      recentRoutes: [],
+      activatedCrowdstartRoutes: null,
+      backedCrowdstartRoutes: null,
+      recentRoutes: null,
       recentRoutesById: null,
-      liteRoutes: [],
-      subscribedLiteRoutes: [],
-      routes: [],
-      crowdstartRoutes: [],
+      liteRoutes: null,
+      subscribedLiteRoutes: null,
+      routes: null,
+      crowdstartRoutes: null,
       nextSessionId: null,
       isFiltering: null,
-      routesYouMayLike: [],
+      routesYouMayLike: null,
       routesAvailable: false,
     }
 
@@ -84,15 +84,6 @@ export default [
       !window.localStorage.viewedBeelineLegalDocumentVersion
     ) {
       let notesPopup = null
-      // display privacy policy and termsOfUse
-      function learnMore() {
-        // notesPopup is resolved when it's closed
-        notesPopup.then(() => {
-          Legalese.showPrivacyPolicy().then(() => {
-            Legalese.showTermsOfUse()
-          })
-        })
-      }
 
       window.localStorage.viewedBeelineLegalDocumentVersion = "2017-11-08"
       notesPopup = $ionicPopup.show({
@@ -103,7 +94,15 @@ export default [
           {
             text: "Learn More",
             type: "button-positive",
-            onTap: () => learnMore(),
+            onTap: () => {
+              // display privacy policy and termsOfUse
+              // notesPopup is resolved when it's closed
+              notesPopup.then(() => {
+                Legalese.showPrivacyPolicy().then(() => {
+                  Legalese.showTermsOfUse()
+                })
+              })
+            },
           },
           {
             text: "Ok",

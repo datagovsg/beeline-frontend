@@ -10,8 +10,8 @@ export default [
 
     let normalRoutesPromise = Promise.resolve(null)
     $scope.tickets = {
-      today: [],
-      soon: [],
+      today: null,
+      soon: null,
     }
 
     // -------------------------------------------------------------------------

@@ -20,7 +20,9 @@
     <!-- if no tickets -->
     <div class="item item-text-wrap no-items"
          ng-if="user &&
+                tickets.today &&
                 tickets.today.length === 0 &&
+                tickets.soon &&
                 tickets.soon.length === 0">
       <div class="item item-text-wrap" ng-if="error">
         <i class="icon ion-alert-circled"></i>
