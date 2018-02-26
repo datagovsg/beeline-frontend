@@ -1,12 +1,5 @@
-<ion-view class="lite-detail page-with-map" view-title="Route Details">
-  <ion-nav-buttons side="left">
-    <button class="button button-clear back-button"
-       ui-sref="tabs.routes"
-       ng-if="!book.showSideMenu">
-       <i class="icon ion-ios-arrow-back"></i>
-    </button>
-    <menu-hamburger ng-if="book.showSideMenu"></menu-hamburger>
-  </ion-nav-buttons>
+<ion-view on-touch="hideTooltip()" class="lite-detail page-with-map"
+  view-title="Route Details">
   <ion-content scroll="false">
     <daily-trips-broker trip-label="book.route.label"
                  daily-trips="book.todayTrips">

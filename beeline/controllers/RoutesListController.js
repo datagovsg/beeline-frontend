@@ -17,7 +17,7 @@ export default [
   "$ionicPopup",
   "$window",
   "OneMapPlaceService",
-
+  "$ionicHistory",
   function(
     // Angular Tools
     $scope,
@@ -36,8 +36,21 @@ export default [
     $rootScope,
     $ionicPopup,
     $window,
-    OneMapPlaceService
+    OneMapPlaceService,
+    $ionicHistory
   ) {
+    // -------------------------------------------------------------------------
+    // Inputs
+    // -------------------------------------------------------------------------
+
+    $scope.disp = {
+      yourRoutes:
+        $ionicHistory.currentStateName() === "tabs.yourRoutes" ? true : false,
+      title:
+        $ionicHistory.currentStateName() === "tabs.yourRoutes"
+          ? "Your Routes"
+          : "Routes",
+    }
     // -------------------------------------------------------------------------
     // State
     // -------------------------------------------------------------------------
@@ -47,9 +60,11 @@ export default [
       queryText: "", // The actual text in the box
       // Different types of route data
       activatedCrowdstartRoutes: [],
+      backedCrowdstartRoutes: [],
       recentRoutes: [],
       recentRoutesById: null,
       liteRoutes: [],
+      subscribedLiteRoutes: [],
       routes: [],
       crowdstartRoutes: [],
       nextSessionId: null,
@@ -58,13 +73,27 @@ export default [
       routesAvailable: false,
     }
 
+    // -------------------------------------------------------------------------
+    // UI Hooks
+    // -------------------------------------------------------------------------
+
     // show legal document update
     // '2017-11-08' is the latest version
-    let notesPopup = null
     if (
       $rootScope.o.APP.NAME == "Beeline" &&
       !window.localStorage.viewedBeelineLegalDocumentVersion
     ) {
+      let notesPopup = null
+      // display privacy policy and termsOfUse
+      function learnMore() {
+        // notesPopup is resolved when it's closed
+        notesPopup.then(() => {
+          Legalese.showPrivacyPolicy().then(() => {
+            Legalese.showTermsOfUse()
+          })
+        })
+      }
+
       window.localStorage.viewedBeelineLegalDocumentVersion = "2017-11-08"
       notesPopup = $ionicPopup.show({
         title: "Beeline Notes",
@@ -83,14 +112,46 @@ export default [
       })
     }
 
-    function learnMore() {
-      // notesPopup is resolved when it's closed
-      notesPopup.then(() => {
-        Legalese.showPrivacyPolicy().then(() => {
-          Legalese.showTermsOfUse()
+    // Manually pull the newest data from the server
+    // Report any errors that happen
+    // Note that theres no need to update the scope manually
+    // since this is done by the service watchers
+    $scope.refreshRoutes = function(ignoreCache) {
+      RoutesService.fetchRoutePasses(ignoreCache)
+      RoutesService.fetchRoutes(ignoreCache)
+      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
+      const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
+      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
+        ignoreCache
+      )
+      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(
+        ignoreCache
+      )
+      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
+        ignoreCache
+      )
+      return $q
+        .all([
+          routesPromise,
+          recentRoutesPromise,
+          allLiteRoutesPromise,
+          liteRouteSubscriptionsPromise,
+          crowdstartRoutesPromise,
+        ])
+        .then(() => {
+          $scope.error = null
         })
-      })
+        .catch(() => {
+          $scope.error = true
+        })
+        .then(() => {
+          $scope.$broadcast("scroll.refreshComplete")
+        })
     }
+
+    // -------------------------------------------------------------------------
+    // Watchers
+    // -------------------------------------------------------------------------
 
     function autoComplete() {
       if (!$scope.data.queryText) {
@@ -132,9 +193,6 @@ export default [
       $scope.data.placeQuery = place
       $scope.$digest()
     }
-    // -------------------------------------------------------------------------
-    // UI Hooks
-    // -------------------------------------------------------------------------
 
     let debouncedAutocomplete = _.debounce(autoComplete, 300, {
       leading: false,
@@ -143,50 +201,10 @@ export default [
 
     $scope.$watch("data.queryText", debouncedAutocomplete)
 
-    // Manually pull the newest data from the server
-    // Report any errors that happen
-    // Note that theres no need to update the scope manually
-    // since this is done by the service watchers
-    $scope.refreshRoutes = function(ignoreCache) {
-      RoutesService.fetchRoutePasses(ignoreCache)
-      RoutesService.fetchRoutes(ignoreCache)
-      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
-      const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
-      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
-        ignoreCache
-      )
-      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(
-        ignoreCache
-      )
-      const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
-        ignoreCache
-      )
-      return $q
-        .all([
-          routesPromise,
-          recentRoutesPromise,
-          allLiteRoutesPromise,
-          liteRouteSubscriptionsPromise,
-          crowdstartRoutesPromise,
-        ])
-        .then(() => {
-          $scope.error = null
-        })
-        .catch(() => {
-          $scope.error = true
-        })
-        .then(() => {
-          $scope.$broadcast("scroll.refreshComplete")
-        })
-    }
-
     $scope.$watch("data.queryText", queryText => {
       if (queryText.length === 0) $scope.data.isFiltering = true
     })
 
-    // -------------------------------------------------------------------------
-    // Model Hooks
-    // -------------------------------------------------------------------------
     // Kickstarted routes
     $scope.$watchGroup(
       [() => RoutesService.getActivatedKickstarterRoutes(), "data.placeQuery"],
@@ -364,6 +382,18 @@ export default [
         // Input validation
         if (!liteRoutes || !subscribed) return
         liteRoutes = Object.values(liteRoutes)
+
+        let subscribedLiteRoutes = _.filter(liteRoutes, route => {
+          return !!subscribed.includes(route.label)
+        })
+        // Sort by label and publish
+        $scope.data.subscribedLiteRoutes = _.sortBy(
+          subscribedLiteRoutes,
+          route => {
+            return parseInt(route.label.slice(1))
+          }
+        )
+
         // Filtering
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
           liteRoutes = SearchService.filterRoutesByPlaceAndText(

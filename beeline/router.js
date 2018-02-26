@@ -79,6 +79,15 @@ export default [
           },
         },
       })
+      .state("tabs.yourRoutes", {
+        url: "/routes/yourRoutes",
+        views: {
+          menuContent: {
+            templateUrl: "templates/routes-list.html",
+            controller: "RoutesListController",
+          },
+        },
+      })
       .state("tabs.route-detail", {
         url: "/route/:routeId?pickupStopId&dropoffStopId",
         views: {
@@ -214,15 +223,6 @@ export default [
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Kickstarter Tab
       // ////////////////////////////////////////////////////////////////////////////
-      .state("tabs.crowdstart", {
-        url: "/crowdstart",
-        views: {
-          menuContent: {
-            templateUrl: "templates/kickstarter.html",
-            controller: "KickstarterController",
-          },
-        },
-      })
 
       .state("tabs.crowdstart-recap", {
         url: "/crowdstart/:routeId/recap",
@@ -311,8 +311,12 @@ export default [
       viewedIntroSlidesVersion &&
       viewedIntroSlidesVersion >= introSlidesVersion
     ) {
-      // $urlRouterProvider.otherwise("/tabs")
-      $urlRouterProvider.otherwise("/tabs/routes")
+      // user is logged in
+      if (window.localStorage.sessionToken && window.localStorage.beelineUser) {
+        $urlRouterProvider.otherwise("/tabs/routes/yourRoutes")
+      } else {
+        $urlRouterProvider.otherwise("/tabs/routes")
+      }
     } else {
       window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
       $urlRouterProvider.otherwise("/intro")

@@ -1,0 +1,40 @@
+<!-- Available Routes Section -->
+<div
+  class="item item-divider"
+  ng-if="data.liteRoutes.length > 0 || data.routes.length > 0"
+>
+  Available Routes
+</div>
+<ion-item
+  ng-repeat="route in data.routes | limitTo:30 track by route.id"
+  ui-sref="tabs.route-detail({ routeId: route.id })"
+  class="item-text-wrap item-icon-right"
+>
+  <regular-route route="route"></regular-route>
+  <i class="icon ion-ios-arrow-right"></i>
+</ion-item>
+
+<!-- Available Lite Routes Section -->
+<ion-item
+  ng-repeat="route in data.liteRoutes | limitTo:10 track by route.id"
+  ui-sref="tabs.lite-detail({ label: route.label })"
+  class="item-icon-right"
+>
+  <lite-route route="route"></lite-route>
+  <i class="icon ion-ios-arrow-right"></i>
+</ion-item>
+
+<!-- Available Crowdstart Routes -->
+<div
+  class="item item-divider"
+  ng-if="data.crowdstartRoutes.length > 0"
+>
+  Crowdstart Routes
+</div>
+<ion-item
+  ng-repeat="route in data.crowdstartRoutes | limitTo:30 track by route.id"
+  class="item-text-wrap item-icon-right"
+  ui-sref="tabs.crowdstart-detail({ routeId: route.id})"
+>
+  <kickstart-route route="route"></kickstart-route>
+</ion-item>
