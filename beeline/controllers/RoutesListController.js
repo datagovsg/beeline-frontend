@@ -285,6 +285,20 @@ export default [
       }
     )
 
+    $scope.$watchGroup(
+      [
+        () => KickstarterService.getBids(),
+        () => KickstarterService.getKickstarterRoutesById(),
+      ],
+      ([bids, kickstarterRoutesById]) => {
+        if (!bids || !kickstarterRoutesById) return
+
+        $scope.data.backedCrowdstartRoutes = bids.map(bid => {
+          return KickstarterService.getCrowdstartById(bid.routeId)
+        })
+      }
+    )
+
     // pull interested routes based on recently booking
     // assumption on 'AM from' and 'PM to' stop as 'home place / target place'
     // search based on target with radius of 500m
