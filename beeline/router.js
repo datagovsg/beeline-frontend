@@ -65,7 +65,7 @@ export default [
           "map-area": {
             templateUrl: "templates/map-view.html",
             controller: "RouteDetailMapViewController",
-          }
+          },
         },
       })
       .state("tabs.route-stops", {
@@ -123,7 +123,7 @@ export default [
             templateUrl: "templates/map-view.html",
             controller: "LiteMapViewController",
           },
-        }
+        },
       })
       .state("tabs.lite-more-info", {
         url: "/lite/more-info/:label/:companyId/",

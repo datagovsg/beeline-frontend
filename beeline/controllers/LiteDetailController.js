@@ -27,7 +27,6 @@ export default [
     MapService,
     $state
   ) {
-
     let routePromise
     let subscriptionPromise
 
@@ -54,9 +53,9 @@ export default [
     // -------------------------------------------------------------------------
     $scope.$on("$ionicView.enter", function() {
       if ($ionicHistory.backView()) {
-        $scope.disp.showHamburger = false;
+        $scope.disp.showHamburger = false
       } else {
-        $scope.disp.showHamburger = true;
+        $scope.disp.showHamburger = true
       }
     })
 
@@ -125,7 +124,6 @@ export default [
     }
 
     $scope.$watch("book.todayTrips", sendTripsToMapView)
-
 
     $scope.$watch(
       () => UserService.getUser() && UserService.getUser().id,

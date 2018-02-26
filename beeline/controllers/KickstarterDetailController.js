@@ -7,7 +7,14 @@ export default [
   "BookingService",
   "KickstarterService",
   "$ionicHistory",
-  function($scope, $state, $stateParams, BookingService, KickstarterService, $ionicHistory) {
+  function(
+    $scope,
+    $state,
+    $stateParams,
+    BookingService,
+    KickstarterService,
+    $ionicHistory
+  ) {
     $scope.routePath = []
 
     // Default settings for various info used in the page
@@ -28,9 +35,9 @@ export default [
     // -------------------------------------------------------------------------
     $scope.$on("$ionicView.enter", function() {
       if ($ionicHistory.backView()) {
-        $scope.disp.showHamburger = false;
+        $scope.disp.showHamburger = false
       } else {
-        $scope.disp.showHamburger = true;
+        $scope.disp.showHamburger = true
       }
     })
 
