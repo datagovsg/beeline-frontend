@@ -2,7 +2,7 @@ import _ from "lodash"
 
 export default [
   "$scope",
-  "$state",
+  "$ionicHistory",
   "$stateParams",
   "$ionicPopup",
   "$ionicLoading",
@@ -14,7 +14,7 @@ export default [
   "MapService",
   function(
     $scope,
-    $state,
+    $ionicHistory,
     $stateParams,
     $ionicPopup,
     $ionicLoading,
@@ -40,8 +40,6 @@ export default [
       todayTrips: null,
       inServiceWindow: false,
       hasTrips: true,
-      // defined in state tabs.my-lite-routes but not in tabs.lite-detail
-      showSideMenu: $state.current.data && $state.current.data.showSideMenu,
     }
 
     $scope.$watch("book.todayTrips", trips => {
@@ -217,14 +215,7 @@ export default [
             `,
             duration: 1000,
           })
-          if (
-            $state.current &&
-            $state.current.name === "tabs.lite-route-tracker"
-          ) {
-            $state.transitionTo("tabs.tickets")
-          } else {
-            $state.transitionTo("tabs.routes")
-          }
+          $ionicHistory.goBack()
         }
       } catch (err) {
         await $ionicLoading.show({
