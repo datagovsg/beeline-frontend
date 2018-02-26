@@ -1,73 +1,90 @@
-<div class="item item-divider" ng-if="data.activatedCrowdstartRoutes.length > 0
-                   || data.recentRoutes.length > 0">
-  Booking Routes
+
+<div ng-if="disp.yourRoutes">
+  <!-- if you has no routes -->
+  <div class="item item-text-wrap no-items"
+      ng-if="data.activatedCrowdstartRoutes.length === 0 &&
+              data.recentRoutes.length === 0 &&
+              data.subscribedLiteRoutes.length === 0 &&
+              data.backedCrowdstartRoutes.length === 0 &&
+              data.routesYouMayLike.length === 0">
+    <img src="./img/bgTickets.svg"></img>
+    <h2>No Personal Routes</h2>
+    <button class="primary-button" ui-sref="tabs.routes">
+      Search For Routes
+    </button>
+  </div>
+
+  <div class="item item-divider" ng-if="data.activatedCrowdstartRoutes.length > 0
+                     || data.recentRoutes.length > 0">
+    Booking Routes
+  </div>
+  <ion-item
+    ng-repeat="route in data.activatedCrowdstartRoutes | limitTo:10 track by route.id"
+    ui-sref="tabs.route-detail({
+      routeId: route.id
+    })"
+    ng-if="data.activatedCrowdstartRoutes.length > 0"
+    class="item-icon-right"
+  >
+    <regular-route route="route"></regular-route>
+    <i class="icon ion-ios-arrow-right"></i>
+  </ion-item>
+  <ion-item
+    ng-repeat="route in data.recentRoutes | limitTo:10 track by route.id"
+    ng-if="data.recentRoutes.length > 0"
+    ui-sref="tabs.route-detail({
+      routeId: route.id,
+      pickupStopId:  route.boardStopStopId,
+      dropoffStopId: route.alightStopStopId,
+    })"
+    class="item-text-wrap item-icon-right"
+  >
+    <regular-route route="route"></regular-route>
+    <i class="icon ion-ios-arrow-right"></i>
+  </ion-item>
+  <div class="item item-divider" ng-if="data.subscribedLiteRoutes.length > 0">
+    Bookmarked Tracking Routes
+  </div>
+  <ion-item
+    ng-repeat="route in data.subscribedLiteRoutes | limitTo:10 track by route.id"
+    ng-if="data.subscribedLiteRoutes.length > 0"
+    ui-sref="tabs.lite-detail({
+      label: route.label
+    })"
+    class="item-text-wrap item-icon-right"
+  >
+    <lite-route route="route"></lite-route>
+    <i class="icon ion-ios-arrow-right"></i>
+  </ion-item>
+  <div
+    class="item item-divider"
+    ng-if="data.backedCrowdstartRoutes.length > 0"
+  >
+    Your Crowdstart Pre-orders
+  </div>
+  <ion-item
+    ng-repeat="route in data.backedCrowdstartRoutes | limitTo:10 track by route.id"
+    ng-if="data.backedCrowdstartRoutes.length > 0"
+    class="item-text-wrap item-icon-right"
+    ui-sref="tabs.crowdstart-recap({ routeId: route.id })">
+    <kickstart-route route="route"></kickstart-route>
+    <i class="icon ion-ios-arrow-right"></i>
+  </ion-item>
+  <!-- Route you may like -->
+  <!-- hide it if search bar is not empty -->
+  <div class="item item-divider" ng-if="data.routesYouMayLike.length > 0">
+    Routes You May Like
+  </div>
+  <!-- hide route item if search bar is not empty -->
+  <ion-item
+    ng-repeat="route in data.routesYouMayLike | limitTo:5 track by route.id"
+    ng-if="data.routesYouMayLike.length > 0 && !data.queryText"
+    ui-sref="tabs.route-detail({
+      routeId: route.id
+    })"
+    class="item-text-wrap item-icon-right"
+  >
+    <regular-route route="route"></regular-route>
+    <i class="icon ion-ios-arrow-right"></i>
+  </ion-item>
 </div>
-<ion-item
-  ng-repeat="route in data.activatedCrowdstartRoutes | limitTo:10 track by route.id"
-  ui-sref="tabs.route-detail({
-    routeId: route.id
-  })"
-  ng-if="data.activatedCrowdstartRoutes.length > 0"
-  class="item-icon-right"
->
-  <regular-route route="route"></regular-route>
-  <i class="icon ion-ios-arrow-right"></i>
-</ion-item>
-<ion-item
-  ng-repeat="route in data.recentRoutes | limitTo:10 track by route.id"
-  ng-if="data.recentRoutes.length > 0"
-  ui-sref="tabs.route-detail({
-    routeId: route.id,
-    pickupStopId:  route.boardStopStopId,
-    dropoffStopId: route.alightStopStopId,
-  })"
-  class="item-text-wrap item-icon-right"
->
-  <regular-route route="route"></regular-route>
-  <i class="icon ion-ios-arrow-right"></i>
-</ion-item>
-<div class="item item-divider" ng-if="data.subscribedLiteRoutes.length > 0">
-  Bookmarked Tracking Routes
-</div>
-<ion-item
-  ng-repeat="route in data.subscribedLiteRoutes | limitTo:10 track by route.id"
-  ng-if="data.subscribedLiteRoutes.length > 0"
-  ui-sref="tabs.lite-detail({
-    label: route.label
-  })"
-  class="item-text-wrap item-icon-right"
->
-  <lite-route route="route"></lite-route>
-  <i class="icon ion-ios-arrow-right"></i>
-</ion-item>
-<div
-  class="item item-divider"
-  ng-if="data.backedCrowdstartRoutes.length > 0"
->
-  Your Crowdstart Pre-orders
-</div>
-<ion-item
-  ng-repeat="route in data.backedCrowdstartRoutes | limitTo:10 track by route.id"
-  ng-if="data.backedCrowdstartRoutes.length > 0"
-  class="item-text-wrap item-icon-right"
-  ui-sref="tabs.crowdstart-recap({ routeId: route.id })">
-  <kickstart-route route="route"></kickstart-route>
-  <i class="icon ion-ios-arrow-right"></i>
-</ion-item>
-<!-- Route you may like -->
-<!-- hide it if search bar is not empty -->
-<div class="item item-divider" ng-if="data.routesYouMayLike.length > 0">
-  Routes You May Like
-</div>
-<!-- hide route item if search bar is not empty -->
-<ion-item
-  ng-repeat="route in data.routesYouMayLike | limitTo:5 track by route.id"
-  ng-if="data.routesYouMayLike.length > 0 && !data.queryText"
-  ui-sref="tabs.route-detail({
-    routeId: route.id
-  })"
-  class="item-text-wrap item-icon-right"
->
-  <regular-route route="route"></regular-route>
-  <i class="icon ion-ios-arrow-right"></i>
-</ion-item>

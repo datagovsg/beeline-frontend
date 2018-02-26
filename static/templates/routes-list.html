@@ -4,7 +4,8 @@
   </ion-nav-buttons>
   <ion-content scroll="false">
     <!-- Search Filter  -->
-    <search-input query-text="data.queryText" is-filtering="data.isFiltering" ph="Search Routes" ng-if="!disp.yourRoutes"></search-input>
+    <search-input query-text="data.queryText" is-filtering="data.isFiltering" ph="Search Routes"
+      ng-if="!disp.yourRoutes"></search-input>
     <!-- Scrollable routes list -->
     <ion-content ng-class="{'routes-scroll': !disp.yourRoutes}">
 
@@ -24,30 +25,12 @@
         <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="!data.routesAvailable">
           <animated-route></animated-route>
         </ion-item>
-
         <!-- Your Routes list -->
-        <div ng-if="disp.yourRoutes">
-          <your-routes-list></your-routes-list>
-        </div>
-
+        <your-routes-list></your-routes-list>
         <!-- Routes list -->
-        <div ng-if="!disp.yourRoutes">
-          <routes-list></routes-list>
-        </div>
+        <routes-list></routes-list>
       </ion-list>
 
-      <powered-by-beeline></powered-by-beeline>
-
-      <!-- No results found message -->
-      <p
-        ng-if="data.routes.length === 0 &&
-              data.liteRoutes.length === 0 &&
-              data.crowdstartRoutes.length === 0 &&
-              data.placeQuery"
-        class="not-found-message text-center"
-      >
-        Sorry, we could not find any routes matching "{{data.queryText}}".
-      </p>
     </ion-content>
 
   </ion-content>

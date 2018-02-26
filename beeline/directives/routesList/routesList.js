@@ -4,6 +4,7 @@ angular.module("beeline").directive("routesList", [
   function() {
     return {
       restrict: "E",
+      replace: "true",
       template: routesListTemplate,
     }
   },
