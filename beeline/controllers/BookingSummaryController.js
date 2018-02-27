@@ -37,6 +37,12 @@ export default [
     // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+    let boardStop = $stateParams.boardStop
+      ? Number($stateParams.boardStop)
+      : null
+    let alightStop = $stateParams.alightStop
+      ? Number($stateParams.alightStop)
+      : null
 
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -45,8 +51,8 @@ export default [
       routeId,
       route: null,
       qty: 1,
-      boardStopId: parseInt($stateParams.boardStop),
-      alightStopId: parseInt($stateParams.alightStop),
+      boardStopId: boardStop,
+      alightStopId: alightStop,
       boardStop: undefined,
       alightStop: undefined,
       price: undefined,
