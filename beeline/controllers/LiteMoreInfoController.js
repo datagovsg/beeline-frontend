@@ -4,14 +4,24 @@ export default [
   "LiteRoutesService",
   "RoutesService",
   function($scope, $stateParams, LiteRoutesService, RoutesService) {
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    $scope.data.companyId = $stateParams.companyId
+    $scope.data.label = $stateParams.label
+
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     // https://github.com/angular/angular.js/wiki/Understanding-Scopes
     $scope.data = {
       companyId: null,
       label: null,
     }
 
-    $scope.data.companyId = $stateParams.companyId
-    $scope.data.label = $stateParams.label
+    // ------------------------------------------------------------------------
+    // Data Loading
+    // ------------------------------------------------------------------------
     LiteRoutesService.fetchLiteRoute($scope.data.label).then(liteRoute => {
       $scope.data.liteRoute = liteRoute[$scope.data.label]
       RoutesService.getRouteFeatures($scope.data.liteRoute.id).then(data => {

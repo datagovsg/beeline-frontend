@@ -4,6 +4,15 @@ export default [
   "$window",
   "KickstarterService",
   function($scope, $stateParams, $window, KickstarterService) {
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+    let showCopy = !$window.cordova || false
+
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     // Default settings for various info used in the page
     $scope.book = {
       routeId: null,
@@ -14,9 +23,15 @@ export default [
       bidPrice: null,
     }
 
-    $scope.book.routeId = Number($stateParams.routeId)
-    $scope.showCopy = !$window.cordova || false
+    $scope.book.routeId = routeId
+    $scope.showCopy = showCopy
 
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
+    /*
+      Set boardStop and alightStop based on info in bid
+     */
     $scope.$watchGroup(
       [
         () => KickstarterService.getCrowdstartById($scope.book.routeId),

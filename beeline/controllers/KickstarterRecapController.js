@@ -21,7 +21,14 @@ export default [
     CompanyService,
     MapOptions
   ) {
-    // Default settings for various info used in the page
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     $scope.book = {
       routeId: null,
       boardStopId: null,
@@ -34,40 +41,25 @@ export default [
       creditTag: null,
     }
 
-    $scope.book.routeId = Number($stateParams.routeId)
-
-    $scope.book.creditTag = "crowdstart-" + $scope.book.routeId
-
+    $scope.book.routeId = routeId
+    $scope.book.creditTag = "crowdstart-" + routeId
     $scope.modalMap = MapOptions.defaultMapOptions()
-
     $scope.modal = $ionicModal.fromTemplate(busStopListTemplate, {
       scope: $scope,
       animation: "slide-in-up",
     })
 
-    $scope.showStops = function() {
-      $scope.modal.show()
-
-      $scope.$watch(
-        () =>
-          $scope.modalMap.control.getGMap && $scope.modalMap.control.getGMap(),
-        function(modalMap) {
-          if (modalMap) {
-            MapOptions.resizePreserveCenter(modalMap)
-            // set modalMap bound
-            $scope.panToStops(modalMap, $scope.busStops)
-          }
-        }
-      )
-    }
-    $scope.close = function() {
-      $scope.modal.hide()
-    }
+    // ------------------------------------------------------------------------
+    // Ionic events
+    // ------------------------------------------------------------------------
     // Cleanup the modal when we're done with it!
     $scope.$on("$destroy", function() {
       $scope.modal.remove()
     })
 
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
     $scope.$watchGroup(
       [
         () => KickstarterService.getCrowdstartById($scope.book.routeId),
@@ -98,6 +90,29 @@ export default [
         $scope.book.passAvailable = (passes || []).length
       }
     )
+
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
+    $scope.showStops = function() {
+      $scope.modal.show()
+
+      $scope.$watch(
+        () =>
+          $scope.modalMap.control.getGMap && $scope.modalMap.control.getGMap(),
+        function(modalMap) {
+          if (modalMap) {
+            MapOptions.resizePreserveCenter(modalMap)
+            // set modalMap bound
+            $scope.panToStops(modalMap, $scope.busStops)
+          }
+        }
+      )
+    }
+
+    $scope.close = function() {
+      $scope.modal.hide()
+    }
 
     $scope.showTerms = async () => {
       if (!$scope.book.route.transportCompanyId) return

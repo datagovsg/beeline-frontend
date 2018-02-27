@@ -20,11 +20,12 @@ export default [
     MapService
   ) {
     // ------------------------------------------------------------------------
-    // Input
+    // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+
     // ------------------------------------------------------------------------
-    // Model
+    // Data Initialization
     // ------------------------------------------------------------------------
     $scope.data = {
       selectedStop: null, // stop object
@@ -33,26 +34,8 @@ export default [
     }
 
     // ------------------------------------------------------------------------
-    // Hooks
+    // Data Loading
     // ------------------------------------------------------------------------
-    $scope.selectStop = stop => {
-      $scope.data.selectedStop = stop
-      MapService.emit("stop-selected", stop)
-    }
-    $scope.done = () => {
-      $state.go("tabs.crowdstart-detail", {
-        routeId: routeId,
-      })
-    }
-
-    // ------------------------------------------------------------------------
-    // Initialization
-    // ------------------------------------------------------------------------
-    $ionicLoading.show({
-      template: `<ion-spinner icon='crescent'></ion-spinner>
-                 <br/><small>Loading stop information</small>`,
-      hideOnStateChange: true,
-    })
     RoutesService.getRoute(routeId)
       .then(route => {
         // Load the stops data into the view
@@ -72,5 +55,25 @@ export default [
           subTitle: error,
         })
       })
+
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
+    $ionicLoading.show({
+      template: `<ion-spinner icon='crescent'></ion-spinner>
+                 <br/><small>Loading stop information</small>`,
+      hideOnStateChange: true,
+    })
+
+    $scope.selectStop = stop => {
+      $scope.data.selectedStop = stop
+      MapService.emit("stop-selected", stop)
+    }
+
+    $scope.done = () => {
+      $state.go("tabs.crowdstart-detail", {
+        routeId: routeId,
+      })
+    }
   },
 ]

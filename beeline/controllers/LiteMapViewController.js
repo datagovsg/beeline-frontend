@@ -17,9 +17,21 @@ export default [
     LiteRoutesService,
     MapViewFactory
   ) {
-    MapViewFactory.init($scope)
-
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
     let routeLabel = $stateParams.label ? $stateParams.label : null
+
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
+    MapViewFactory.init($scope)
+    const statusLoop = MapViewFactory.statusLoop($scope)
+    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
+
+    // ------------------------------------------------------------------------
+    // Data Loading
+    // ------------------------------------------------------------------------
     LiteRoutesService.fetchLiteRoute(routeLabel).then(response => {
       const route = response[routeLabel]
       if (route.path) {
@@ -40,10 +52,13 @@ export default [
       SharedVariableService.setStops(liteTripStops)
     })
 
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
     /**
      * Request driver pings for the given trip
      */
-    const pingLoop = async function() {
+    async function pingLoop() {
       const recentTimeBound = 5 * 60000
       await MapViewFactory.pingLoop($scope, recentTimeBound)()
 
@@ -59,8 +74,5 @@ export default [
       }
       MapService.emit("tripInfo", tripInfo)
     }
-
-    const statusLoop = MapViewFactory.statusLoop($scope)
-    MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
   },
 ]

@@ -3,52 +3,48 @@ import _ from "lodash"
 import tapToSelectMultipleDaysTemplate from "../templates/tap-to-select-multiple-days.html"
 
 export default [
-  "$scope",
-  "UserService",
-  "RoutesService",
-  "$stateParams",
-  "TicketService",
-  "loadingSpinner",
-  "$q",
   "$ionicScrollDelegate",
   "$ionicPopup",
+  "$q",
+  "$scope",
+  "$stateParams",
   "$window",
+  "loadingSpinner",
+  "RoutesService",
+  "TicketService",
+  "UserService",
   function(
-    $scope,
-    UserService,
-    RoutesService,
-    $stateParams,
-    TicketService,
-    loadingSpinner,
-    $q,
     $ionicScrollDelegate,
     $ionicPopup,
-    $window
+    $q,
+    $scope,
+    $stateParams,
+    $window,
+    loadingSpinner,
+    RoutesService,
+    TicketService,
+    UserService
   ) {
-    // always load the tickets and reset pickWholeMonth & selectedDatesMoments
-    // in case of view history
-    // e.g. booking-stop => booking.dates => booking.summary => booking.dates => booking.stop
-    $scope.$on("$ionicView.enter", function() {
-      $scope.book.pickWholeMonth = null
-      $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
-        .split(",")
-        .map(ms => moment(parseInt(ms)))
-      loadTickets()
-    })
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+    let boardStopId = $stateParams.boardStop
+      ? parseInt($stateParams.boardStop)
+      : null
+    let alightStopId = $stateParams.alightStop
+      ? parseInt($stateParams.alightStop)
+      : null
 
-    // Booking session logic.
-    // Defines the set of variables that, when changed, all user inputs
-    // on this page should be cleared.
-    $scope.session = {
-      sessionId: $stateParams.sessionId,
-      userId: null,
-    }
+    // ------------------------------------------------------------------------
+    // Data Initialization
+    // ------------------------------------------------------------------------
     // Data logic;
     $scope.book = {
-      routeId: Number($stateParams.routeId),
+      routeId,
       route: null,
-      boardStopId: parseInt($stateParams.boardStop),
-      alightStopId: parseInt($stateParams.alightStop),
+      boardStopId,
+      alightStopId,
       priceInfo: {},
       selectedDates: [],
       invalidStopDates: [],
@@ -58,6 +54,7 @@ export default [
       creditTag: null,
       pickWholeMonth: null,
     }
+
     // Display Logic;
     $scope.disp = {
       month: moment(),
@@ -74,14 +71,34 @@ export default [
         .map(ms => moment(parseInt(ms))),
     }
 
-    const routePromise = loadRoutes()
+    // ------------------------------------------------------------------------
+    // Data Loading
+    // ------------------------------------------------------------------------
     let multipleDatePopup = null
-
+    const routePromise = loadRoutes()
     const ridesRemainingPromise = RoutesService.fetchRoutePassCount()
     $q.all([routePromise, ridesRemainingPromise]).then(function(values) {
       let ridesRemainingMap = values[1]
-      $scope.book.route.ridesRemaining = ridesRemainingMap[$scope.book.routeId]
+      $scope.book.route.ridesRemaining = ridesRemainingMap[routeId]
     })
+
+    // ------------------------------------------------------------------------
+    // Ionic events
+    // ------------------------------------------------------------------------
+    // always load the tickets and reset pickWholeMonth & selectedDatesMoments
+    // in case of view history
+    // e.g. booking-stop => booking.dates => booking.summary => booking.dates => booking.stop
+    $scope.$on("$ionicView.enter", function() {
+      $scope.book.pickWholeMonth = null
+      $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
+        .split(",")
+        .map(ms => moment(parseInt(ms)))
+      loadTickets()
+    })
+
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
 
     $scope.$watch(
       () => UserService.getUser(),
@@ -156,9 +173,85 @@ export default [
       $ionicScrollDelegate.resize()
     })
 
+    $scope.$watch("book.pickWholeMonth", pickWholeMonth => {
+      // original value
+      if (pickWholeMonth === null) {
+        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
+          .split(",")
+          .map(ms => moment(parseInt(ms)))
+      } else {
+        let wholeMonthDates = getFullMonthDates($scope.disp.month)
+        let allowedInWholeMonth = _.intersectionBy(
+          wholeMonthDates,
+          $scope.disp.daysAllowed,
+          m => m.valueOf()
+        )
+        if (pickWholeMonth) {
+          if ($scope.disp.selectedDatesMoments.length > 0) {
+            $scope.disp.selectedDatesMoments = _.unionBy(
+              $scope.disp.selectedDatesMoments,
+              allowedInWholeMonth,
+              m => m.valueOf()
+            )
+          } else {
+            $scope.disp.selectedDatesMoments = allowedInWholeMonth
+          }
+        } else {
+          // pickWholeMonth == false
+          // try to test the intersectionBy, if the same
+          // length [pickWholeMonth changes from true to false]
+          // do differenceBy otherwise omit
+          let intersection = _.intersectionBy(
+            $scope.disp.selectedDatesMoments,
+            wholeMonthDates,
+            m => m.valueOf()
+          )
+          if (allowedInWholeMonth.length === intersection.length) {
+            $scope.disp.selectedDatesMoments = _.differenceBy(
+              $scope.disp.selectedDatesMoments,
+              wholeMonthDates,
+              m => m.valueOf()
+            )
+          } // else do nothing
+        }
+      }
+    })
+
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
+
+    if (!$window.localStorage.showMultipleDays) {
+      $window.localStorage.showMultipleDays = true
+      showHelpPopup()
+    }
+
+    $scope.logMonthChanged = function(newMonth, oldMonth) {
+      // if wholeMonthDates are all in selectedDatesMoments
+      // mark pickWholeMonth = true , otherwise false
+      let wholeMonthDates = getFullMonthDates(newMonth)
+      let allowedInWholeMonth = _.intersectionBy(
+        wholeMonthDates,
+        $scope.disp.daysAllowed,
+        m => m.valueOf()
+      )
+      let intersection = _.intersectionBy(
+        $scope.disp.selectedDatesMoments,
+        allowedInWholeMonth,
+        m => m.valueOf()
+      )
+      $scope.book.pickWholeMonth =
+        allowedInWholeMonth.length === intersection.length &&
+        allowedInWholeMonth.length > 0
+    }
+
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+
     function loadTickets() {
       const ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId(
-        Number($stateParams.routeId),
+        routeId,
         true
       ).catch(err => null)
 
@@ -170,7 +263,7 @@ export default [
     }
 
     function loadRoutes() {
-      const routePromise = RoutesService.getRoute($scope.book.routeId, true)
+      const routePromise = RoutesService.getRoute(routeId, true)
       return loadingSpinner(
         routePromise.then(route => {
           // Route
@@ -233,74 +326,6 @@ export default [
 
     function closePopup() {
       multipleDatePopup.close()
-    }
-
-    if (!$window.localStorage.showMultipleDays) {
-      $window.localStorage.showMultipleDays = true
-      showHelpPopup()
-    }
-
-    $scope.$watch("book.pickWholeMonth", pickWholeMonth => {
-      // original value
-      if (pickWholeMonth === null) {
-        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
-          .split(",")
-          .map(ms => moment(parseInt(ms)))
-      } else {
-        let wholeMonthDates = getFullMonthDates($scope.disp.month)
-        let allowedInWholeMonth = _.intersectionBy(
-          wholeMonthDates,
-          $scope.disp.daysAllowed,
-          m => m.valueOf()
-        )
-        if (pickWholeMonth) {
-          if ($scope.disp.selectedDatesMoments.length > 0) {
-            $scope.disp.selectedDatesMoments = _.unionBy(
-              $scope.disp.selectedDatesMoments,
-              allowedInWholeMonth,
-              m => m.valueOf()
-            )
-          } else {
-            $scope.disp.selectedDatesMoments = allowedInWholeMonth
-          }
-        } else {
-          // pickWholeMonth == false
-          // try to test the intersectionBy, if the same
-          // length [pickWholeMonth changes from true to false]
-          // do differenceBy otherwise omit
-          let intersection = _.intersectionBy(
-            $scope.disp.selectedDatesMoments,
-            wholeMonthDates,
-            m => m.valueOf()
-          )
-          if (allowedInWholeMonth.length === intersection.length) {
-            $scope.disp.selectedDatesMoments = _.differenceBy(
-              $scope.disp.selectedDatesMoments,
-              wholeMonthDates,
-              m => m.valueOf()
-            )
-          } // else do nothing
-        }
-      }
-    })
-
-    $scope.logMonthChanged = function(newMonth, oldMonth) {
-      // if wholeMonthDates are all in selectedDatesMoments
-      // mark pickWholeMonth = true , otherwise false
-      let wholeMonthDates = getFullMonthDates(newMonth)
-      let allowedInWholeMonth = _.intersectionBy(
-        wholeMonthDates,
-        $scope.disp.daysAllowed,
-        m => m.valueOf()
-      )
-      let intersection = _.intersectionBy(
-        $scope.disp.selectedDatesMoments,
-        allowedInWholeMonth,
-        m => m.valueOf()
-      )
-      $scope.book.pickWholeMonth =
-        allowedInWholeMonth.length === intersection.length &&
-        allowedInWholeMonth.length > 0
     }
 
     // get whole range of dates in the month

@@ -28,7 +28,7 @@ export default [
     $ionicHistory
   ) {
     // ------------------------------------------------------------------------
-    // Input
+    // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
     let pickupStopId = $stateParams.pickupStopId
@@ -39,7 +39,7 @@ export default [
       : null
 
     // ------------------------------------------------------------------------
-    // Model
+    // Data Initialization
     // ------------------------------------------------------------------------
     $scope.data = {
       pickupStop: null,
@@ -89,54 +89,8 @@ export default [
     })
 
     // ------------------------------------------------------------------------
-    // Hooks
+    // Ionic events
     // ------------------------------------------------------------------------
-    $scope.choosePickup = () => {
-      $state.go("tabs.route-stops", {
-        routeId: routeId,
-        type: "pickup",
-        // stopId: $scope.data.pickupStop.id,
-        stopId: pickupStopId,
-        callback: stop => {
-          $scope.data.pickupStop = stop
-        },
-      })
-    }
-
-    $scope.chooseDropoff = () => {
-      $state.go("tabs.route-stops", {
-        routeId: routeId,
-        type: "dropoff",
-        // stopId: $scope.data.dropoffStop.id,
-        stopId: dropoffStopId,
-        callback: stop => {
-          $scope.data.dropoffStop = stop
-        },
-      })
-    }
-
-    function reactivateButton() {
-      $scope.disp.isBooking = false
-    }
-
-    $scope.bookNext = () => {
-      $scope.disp.isBooking = true
-      FastCheckoutService.fastCheckout(
-        routeId,
-        $scope.data.pickupStop.id,
-        $scope.data.dropoffStop.id,
-        [$scope.data.nextTrip.date.getTime()]
-      ).then(reactivateButton, reactivateButton)
-    }
-
-    $scope.buyMore = () => {
-      FastCheckoutService.buyMore(routeId)
-    }
-
-    // ------------------------------------------------------------------------
-    // Initialization
-    // ------------------------------------------------------------------------
-
     // Load the route information
     // Show a loading overlay while we wait
     // force reload when revisit the same route
@@ -223,6 +177,61 @@ export default [
       }
     })
 
+    // ------------------------------------------------------------------------
+    // UI Hooks
+    // ------------------------------------------------------------------------
+    $scope.choosePickup = () => {
+      $state.go("tabs.route-stops", {
+        routeId: routeId,
+        type: "pickup",
+        // stopId: $scope.data.pickupStop.id,
+        stopId: pickupStopId,
+        callback: stop => {
+          $scope.data.pickupStop = stop
+        },
+      })
+    }
+
+    $scope.chooseDropoff = () => {
+      $state.go("tabs.route-stops", {
+        routeId: routeId,
+        type: "dropoff",
+        // stopId: $scope.data.dropoffStop.id,
+        stopId: dropoffStopId,
+        callback: stop => {
+          $scope.data.dropoffStop = stop
+        },
+      })
+    }
+
+    $scope.bookNext = () => {
+      $scope.disp.isBooking = true
+      FastCheckoutService.fastCheckout(
+        routeId,
+        $scope.data.pickupStop.id,
+        $scope.data.dropoffStop.id,
+        [$scope.data.nextTrip.date.getTime()]
+      ).then(reactivateButton, reactivateButton)
+    }
+
+    $scope.buyMore = () => {
+      FastCheckoutService.buyMore(routeId)
+    }
+
+    $scope.toggle = function() {
+      $scope.activeTab = $scope.activeTab === 0 ? 1 : 0
+    }
+
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
+    // re-verify the fastCheckout once user is logged in
+    UserService.userEvents.on("userChanged", () => {
+      FastCheckoutService.verify(routeId).then(response => {
+        $scope.data.nextTrip = response
+      })
+    })
+
     // Get the route credits
     $scope.$watch(
       () => RoutesService.getPassCountForRoute(routeId),
@@ -230,13 +239,6 @@ export default [
         $scope.data.passCount = passCount
       }
     )
-
-    // re-verify the fastCheckout once user is logged in
-    UserService.userEvents.on("userChanged", () => {
-      FastCheckoutService.verify(routeId).then(response => {
-        $scope.data.nextTrip = response
-      })
-    })
 
     $scope.$watch(
       () => UserService.getUser(),
@@ -276,8 +278,11 @@ export default [
       }
     })
 
-    $scope.toggle = function() {
-      $scope.activeTab = $scope.activeTab === 0 ? 1 : 0
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+    function reactivateButton() {
+      $scope.disp.isBooking = false
     }
   },
 ]
