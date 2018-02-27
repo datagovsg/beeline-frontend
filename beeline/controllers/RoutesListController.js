@@ -4,6 +4,7 @@ import { sleep } from "../shared/util"
 export default [
   "$scope",
   "$q",
+  "$state",
   "RoutesService",
   "KickstarterService",
   "LiteRoutesService",
@@ -22,6 +23,7 @@ export default [
     // Angular Tools
     $scope,
     $q,
+    $state,
     // Route Information
     RoutesService,
     KickstarterService,
@@ -435,6 +437,34 @@ export default [
       }
     )
 
+    // If the user is logged in but has nothing to see in
+    let unbind = $scope.$watchGroup(
+      [
+        "data.activatedCrowdstartRoutes",
+        "data.recentRoutes",
+        "data.subscribedLiteRoutes",
+        "data.backedCrowdstartRoutes",
+        "data.routesYouMayLike",
+      ],
+      (
+        [
+          activatedCrowdstartRoutes,
+          recentRoutes,
+          subscribedLiteRoutes,
+          backedCrowdstartRoutes,
+          routesYouMayLike,
+        ]
+      ) => {
+        if (
+          $ionicHistory.currentStateName() === "tabs.yourRoutes" &&
+          !$scope.hasPersonalRoutes()
+        ) {
+          unbind()
+          $state.go("tabs.routes")
+        }
+      }
+    )
+
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -507,6 +537,21 @@ export default [
         .then(() => {
           $scope.$broadcast("scroll.refreshComplete")
         })
+    }
+
+    $scope.hasPersonalRoutes = function() {
+      return !(
+        $scope.data.activatedCrowdstartRoutes &&
+        $scope.data.activatedCrowdstartRoutes.length === 0 &&
+        $scope.data.recentRoutes &&
+        $scope.data.recentRoutes.length === 0 &&
+        $scope.data.subscribedLiteRoutes &&
+        $scope.data.subscribedLiteRoutes.length === 0 &&
+        $scope.data.backedCrowdstartRoutes &&
+        $scope.data.backedCrowdstartRoutes.length === 0 &&
+        $scope.data.routesYouMayLike &&
+        $scope.data.routesYouMayLike.length === 0
+      )
     }
 
     // ------------------------------------------------------------------------
