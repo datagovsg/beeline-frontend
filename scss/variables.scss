@@ -75,8 +75,8 @@ $pickable-day-picked-color: #fff;
 // // Base
 // // -------------------------------
 
-$font-family-sans-serif:          "Lato", '-apple-system', "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !default;
-$font-family-light-sans-serif:    "Lato", '-apple-system', "HelveticaNeue-Light", "Roboto-Light", "Segoe UI-Light", sans-serif-light !default;
+$font-family-sans-serif:          "Muli", '-apple-system', "Helvetica Neue", "Roboto", "Segoe UI", sans-serif !default;
+$font-family-light-sans-serif:    "Muli", '-apple-system', "HelveticaNeue-Light", "Roboto-Light", "Segoe UI-Light", sans-serif-light !default;
 // $font-family-serif:               serif !default;
 // $font-family-monospace:           monospace !default;
 
@@ -93,7 +93,8 @@ $font-size-small:                 13px;
 // $headings-font-family:            $font-family-base !default;
 // $headings-font-weight:            500 !default;
 // $headings-line-height:            1.2 !default;
-$route-item-font-weight-small:          300;
+$route-item-font-weight-bold:          800;
+$route-item-font-weight-small:          400;
 
 
 // $base-background-color:           #fff !default;

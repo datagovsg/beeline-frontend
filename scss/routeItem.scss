@@ -48,6 +48,7 @@ route-item {
   .bus-number {
     margin-right: $padding-small-horizontal;
     display: inline;
+    font-weight: $route-item-font-weight-bold;
   }
 
   .stops {
@@ -94,6 +95,7 @@ route-item {
       .time {
         text-transform: uppercase;
         flex: 0 0 5em;
+        font-weight: $route-item-font-weight-bold;
       }
 
       .road {
@@ -101,6 +103,7 @@ route-item {
         flex: 1 1 auto;
         white-space: initial;
         font-weight: $route-item-font-weight-small;
+        color: $normal-grey;
       }
     }
   }
