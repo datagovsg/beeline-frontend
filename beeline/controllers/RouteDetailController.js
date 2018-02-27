@@ -88,9 +88,6 @@ export default [
       }
     })
 
-    // ------------------------------------------------------------------------
-    // Ionic events
-    // ------------------------------------------------------------------------
     // Load the route information
     // Show a loading overlay while we wait
     // force reload when revisit the same route
@@ -204,18 +201,8 @@ export default [
       })
     }
 
-    $scope.bookNext = () => {
-      $scope.disp.isBooking = true
-      FastCheckoutService.fastCheckout(
-        routeId,
-        $scope.data.pickupStop.id,
-        $scope.data.dropoffStop.id,
-        [$scope.data.nextTrip.date.getTime()]
-      ).then(reactivateButton, reactivateButton)
-    }
-
     $scope.buyMore = () => {
-      FastCheckoutService.buyMore(routeId)
+      FastCheckoutService.buyMoreRoutePasses(routeId)
     }
 
     $scope.toggle = function() {
@@ -277,12 +264,5 @@ export default [
         }
       }
     })
-
-    // ------------------------------------------------------------------------
-    // Helper functions
-    // ------------------------------------------------------------------------
-    function reactivateButton() {
-      $scope.disp.isBooking = false
-    }
   },
 ]

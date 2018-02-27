@@ -85,7 +85,6 @@ require("./services/login")
 
 // Services
 require("./common/BookingService")
-require("./services/bookingSummaryModalService")
 require("./services/fastCheckoutService")
 require("./services/MapOptions")
 require("./services/MapViewFactory")
