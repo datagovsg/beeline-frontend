@@ -7,16 +7,16 @@ export default [
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
-    $scope.data.companyId = $stateParams.companyId
-    $scope.data.label = $stateParams.label
+    let companyId = $stateParams.companyId
+    let label = $stateParams.label
 
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
     // https://github.com/angular/angular.js/wiki/Understanding-Scopes
     $scope.data = {
-      companyId: null,
-      label: null,
+      companyId,
+      label,
     }
 
     // ------------------------------------------------------------------------

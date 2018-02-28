@@ -30,7 +30,7 @@ export default [
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
-    $scope.book.label = $stateParams.label
+    let label = $stateParams.label
 
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -44,7 +44,7 @@ export default [
 
     // Default settings for various info used in the page
     $scope.book = {
-      label: null,
+      label,
       route: null,
       waitingForSubscriptionResult: false,
       isSubscribed: false,

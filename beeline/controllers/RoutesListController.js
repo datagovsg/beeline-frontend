@@ -4,6 +4,7 @@ import { sleep } from "../shared/util"
 export default [
   "$scope",
   "$q",
+  "$state",
   "RoutesService",
   "KickstarterService",
   "LiteRoutesService",
@@ -22,6 +23,7 @@ export default [
     // Angular Tools
     $scope,
     $q,
+    $state,
     // Route Information
     RoutesService,
     KickstarterService,
@@ -329,8 +331,6 @@ export default [
       ([allRoutes, placeQuery]) => {
         // Input validation
         if (!allRoutes) return
-        // hide the animated-route
-        $scope.data.routesAvailable = true
         // Filter routes
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
           allRoutes = SearchService.filterRoutesByPlaceAndText(
@@ -435,6 +435,71 @@ export default [
       }
     )
 
+    let unbindWatchGroup = $scope.$watch(
+      () => $scope.hasPersonalRoutes(),
+      hasPersonalRoutes => {
+        if (
+          $ionicHistory.currentStateName() === "tabs.yourRoutes" &&
+          !hasPersonalRoutes
+        ) {
+          // After redirecting once we can unbind the watcher
+          unbindWatchGroup()
+          $state.go("tabs.routes")
+        }
+      }
+    )
+
+    // Hides the animated loading routes
+    $scope.$watchGroup(
+      [
+        "data.routes",
+        "data.activatedCrowdstartRoutes",
+        "data.backedCrowdstartRoutes",
+        "data.recentRoutes",
+        "data.liteRoutes",
+        "data.subscribedLiteRoutes",
+        "data.crowdstartRoutes",
+        "data.routesYouMayLike",
+      ],
+      (
+        [
+          routes,
+          activatedCrowdstartRoutes,
+          backedCrowdstartRoutes,
+          recentRoutes,
+          liteRoutes,
+          subscribedLiteRoutes,
+          crowdstartRoutes,
+          routesYouMayLike,
+        ]
+      ) => {
+        // true iff some route has been loaded and is non-empty OR
+        // all routes have been loaded and all are empty
+
+        // Your routes
+        if ($ionicHistory.currentStateName() === "tabs.youRoutes") {
+          $scope.data.routesAvailable =
+            (activatedCrowdstartRoutes &&
+              activatedCrowdstartRoutes.length > 0) ||
+            (recentRoutes && recentRoutes.length > 0) ||
+            (subscribedLiteRoutes && subscribedLiteRoutes.length > 0) ||
+            (backedCrowdstartRoutes && backedCrowdstartRoutes.length > 0) ||
+            (routesYouMayLike && routesYouMayLike.length > 0) ||
+            (activatedCrowdstartRoutes &&
+              recentRoutes &&
+              subscribedLiteRoutes &&
+              backedCrowdstartRoutes &&
+              routesYouMayLike)
+        } else {
+          $scope.data.routesAvailable =
+            (routes && routes.length > 0) ||
+            (liteRoutes && liteRoutes.length > 0) ||
+            (crowdstartRoutes && crowdstartRoutes.length > 0) ||
+            (routes && liteRoutes && crowdstartRoutes)
+        }
+      }
+    )
+
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -507,6 +572,21 @@ export default [
         .then(() => {
           $scope.$broadcast("scroll.refreshComplete")
         })
+    }
+
+    $scope.hasPersonalRoutes = function() {
+      return !(
+        $scope.data.activatedCrowdstartRoutes &&
+        $scope.data.activatedCrowdstartRoutes.length === 0 &&
+        $scope.data.recentRoutes &&
+        $scope.data.recentRoutes.length === 0 &&
+        $scope.data.subscribedLiteRoutes &&
+        $scope.data.subscribedLiteRoutes.length === 0 &&
+        $scope.data.backedCrowdstartRoutes &&
+        $scope.data.backedCrowdstartRoutes.length === 0 &&
+        $scope.data.routesYouMayLike &&
+        $scope.data.routesYouMayLike.length === 0
+      )
     }
 
     // ------------------------------------------------------------------------
