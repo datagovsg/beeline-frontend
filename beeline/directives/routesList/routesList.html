@@ -9,20 +9,17 @@
   <ion-item
     ng-repeat="route in data.routes | limitTo:30 track by route.id"
     ui-sref="tabs.route-detail({ routeId: route.id })"
-    class="item-text-wrap item-icon-right"
+    class="item-text-wrap"
   >
     <regular-route route="route"></regular-route>
-    <i class="icon ion-ios-arrow-right"></i>
   </ion-item>
 
   <!-- Available Lite Routes Section -->
   <ion-item
     ng-repeat="route in data.liteRoutes | limitTo:10 track by route.id"
     ui-sref="tabs.lite-detail({ label: route.label })"
-    class="item-icon-right"
   >
     <lite-route route="route"></lite-route>
-    <i class="icon ion-ios-arrow-right"></i>
   </ion-item>
 
   <!-- Available Crowdstart Routes -->
