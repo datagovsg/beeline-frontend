@@ -215,10 +215,13 @@ angular.module("beeline").factory("PaymentService", [
         return paymentPromise
       },
 
-      payHandler: async function(book, savePaymentChecked) {
+      payHandler: async function(book, savePaymentChecked, onetimePayment) {
         if (book.price === 0) {
           await payZeroDollar(book)
-        } else if (book.hasSavedPaymentInfo || savePaymentChecked) {
+        } else if (
+          (book.hasSavedPaymentInfo && !onetimePayment) ||
+          savePaymentChecked
+        ) {
           await payWithSavedInfo(book)
         } else {
           await payWithoutSavingCard(book)

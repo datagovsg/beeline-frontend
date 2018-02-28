@@ -164,14 +164,14 @@ export default [
       $scope.$broadcast("priceCalculator.recomputePrices")
     }
 
-    $scope.payHandler = async function() {
+    $scope.payHandler = async function(onetimePayment) {
+      onetimePayment = onetimePayment ? true : false
       $scope.isPaymentProcessing = true
-
       await PaymentService.payHandler(
         $scope.book,
-        $scope.disp.savePaymentChecked
+        $scope.disp.savePaymentChecked,
+        onetimePayment
       )
-
       $scope.isPaymentProcessing = false
     }
 

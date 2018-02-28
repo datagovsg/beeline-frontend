@@ -121,7 +121,7 @@
         </button>
         <div class="text-link-div">
           <a ng-class="(!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating) ? 'text-link-disabled' : ''"
-              ng-click="payHandler()">
+              ng-click="payHandler(true)">
               Use a different card for this payment
           </a>
         </div>
