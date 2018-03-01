@@ -87,13 +87,6 @@ export default [
       }
     })
 
-    $scope.$on("$ionicView.afterEnter", function() {
-      if ($location.hash()) {
-        $timeout(() => {
-          $anchorScroll()
-        }, 2000)
-      }
-    })
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
@@ -513,6 +506,18 @@ export default [
       }
     )
 
+    // call $anchorScroll only if all data loaded and there is $location.hash()
+    $scope.$watch(
+      () => routesAreLoaded(),
+      loaded => {
+        if (loaded && $location.hash()) {
+          $timeout(() => {
+            $anchorScroll()
+          }, 0)
+        }
+      }
+    )
+
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -644,6 +649,14 @@ export default [
       $scope.data.liteRoutes = null
       $scope.data.placeQuery = place
       $scope.$digest()
+    }
+
+    function routesAreLoaded() {
+      return !!(
+        $scope.data.routes &&
+        $scope.data.liteRoutes &&
+        $scope.data.crowdstartRoutes
+      )
     }
   },
 ]
