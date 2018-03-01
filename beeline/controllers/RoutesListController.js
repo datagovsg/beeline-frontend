@@ -19,6 +19,9 @@ export default [
   "$window",
   "OneMapPlaceService",
   "$ionicHistory",
+  "$location",
+  "$anchorScroll",
+  "$timeout",
   function(
     // Angular Tools
     $scope,
@@ -39,7 +42,10 @@ export default [
     $ionicPopup,
     $window,
     OneMapPlaceService,
-    $ionicHistory
+    $ionicHistory,
+    $location,
+    $anchorScroll,
+    $timeout
   ) {
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -70,7 +76,6 @@ export default [
           ? "Your Routes"
           : "Routes",
     }
-
     // ------------------------------------------------------------------------
     // Ionic events
     // ------------------------------------------------------------------------
@@ -82,9 +87,17 @@ export default [
       }
     })
 
+    $scope.$on("$ionicView.afterEnter", function() {
+      if ($location.hash()) {
+        $timeout(() => {
+          $anchorScroll()
+        }, 2000)
+      }
+    })
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
+
     $scope.$watch(
       "data.queryText",
       _.debounce(autoComplete, 300, {
