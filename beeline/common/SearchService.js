@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { retrievePickupStops, retrieveDropoffStops } from "../shared/util"
 
 angular.module("common").factory("SearchService", function SearchService() {
   // Helper to calculate distance in meters between a pair of coordinates
@@ -23,12 +24,11 @@ angular.module("common").factory("SearchService", function SearchService() {
       return this.filterRoutesByText(routes, string)
     },
 
-    filterRoutesByPlace: function(routes, place) {
-      const maxDistance = 1000 // Arbitrary constant for closeness
-
+    filterRoutesByPickupPlace: function(distance, routes, place) {
+      const maxDistance = distance
       // Check the trips stops of a route to see if any come close
       let filteredRoutes = routes.filter(route => {
-        return _.some(route.trips[0].tripStops, tripStop => {
+        return _.some(retrievePickupStops(route), tripStop => {
           let distance = latlngDistance(
             [
               tripStop.stop.coordinates.coordinates[1],
@@ -41,6 +41,43 @@ angular.module("common").factory("SearchService", function SearchService() {
       })
 
       return filteredRoutes
+    },
+
+    filterRoutesByDropoffPlace: function(distance, routes, place) {
+      const maxDistance = distance
+      // Check the trips stops of a route to see if any come close
+      let filteredRoutes = routes.filter(route => {
+        return _.some(retrieveDropoffStops(route), tripStop => {
+          let distance = latlngDistance(
+            [
+              tripStop.stop.coordinates.coordinates[1],
+              tripStop.stop.coordinates.coordinates[0],
+            ],
+            [place.geometry.location.lat(), place.geometry.location.lng()]
+          )
+          return distance < maxDistance
+        })
+      })
+
+      return filteredRoutes
+    },
+
+    filterRoutesByPlace: function(routes, place) {
+      const maxDistance = 1000 // Arbitrary constant for closeness
+
+      // Check the trips stops of a route to see if any come close
+      let filteredPickupRoutes = this.filterRoutesByPickupPlace(
+        maxDistance,
+        routes,
+        place
+      )
+      let filteredDropoffRoutes = this.filterRoutesByDropoffPlace(
+        maxDistance,
+        routes,
+        place
+      )
+
+      return _.union(filteredPickupRoutes, filteredDropoffRoutes)
     },
 
     filterRoutesByLngLat: function(routes, lnglat) {

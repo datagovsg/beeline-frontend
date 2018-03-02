@@ -99,3 +99,11 @@ export function retriveNextTrip(route) {
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
+
+export function retrievePickupStops(route) {
+  return route.trips[0].tripStops.filter(stop => stop.canBoard)
+}
+
+export function retrieveDropoffStops(route) {
+  return route.trips[0].tripStops.filter(ts => ts.canAlight)
+}
