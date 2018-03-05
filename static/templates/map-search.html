@@ -1,0 +1,16 @@
+<ion-view class="map-search page-with-map" view-title="Map Search">
+  <ion-nav-buttons side="left">
+    <menu-hamburger></menu-hamburger>
+  </ion-nav-buttons>
+  <ion-content scroll="false">
+    <search-input query-text="data.pickup" is-filtering="data.isFiltering" ph="Pick Up Address"></search-input>
+    <search-input query-text="data.dropoff" is-filtering="data.isFiltering" ph="Drop Off Address"></search-input>
+    <button
+      class="button primary-button"
+      on-tap="done()"
+      ng-disabled="!data.pickupPlace || !data.dropoffPlace"
+    >
+      Search
+    </button>
+  </ion-content>
+</ion-view>

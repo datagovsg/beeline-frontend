@@ -1,13 +1,13 @@
-<div ng-if="!disp.yourRoutes && !disp.searchRoutes">
+<div ng-if="disp.searchRoutes">
   <!-- Available Routes Section -->
   <div
     class="item item-divider"
-    ng-if="data.liteRoutes.length > 0 || data.routes.length > 0"
+    ng-if="data.filteredLiteRoutes.length > 0 || data.filteredRoutes.length > 0"
   >
     Available Routes
   </div>
   <ion-item
-    ng-repeat="route in data.routes | limitTo:30 track by route.id"
+    ng-repeat="route in data.filteredRoutes | limitTo:30 track by route.id"
     ui-sref="tabs.route-detail({ routeId: route.id })"
     class="item-text-wrap"
   >
@@ -16,7 +16,7 @@
 
   <!-- Available Lite Routes Section -->
   <ion-item
-    ng-repeat="route in data.liteRoutes | limitTo:10 track by route.id"
+    ng-repeat="route in data.filteredLiteRoutes | limitTo:10 track by route.id"
     ui-sref="tabs.lite-detail({ label: route.label })"
   >
     <lite-route route="route"></lite-route>
@@ -25,12 +25,12 @@
   <!-- Available Crowdstart Routes -->
   <div
     class="item item-divider"
-    ng-if="data.crowdstartRoutes.length > 0"
+    ng-if="data.filteredCrowdstartRoutes.length > 0"
   >
     Crowdstart Routes
   </div>
   <ion-item
-    ng-repeat="route in data.crowdstartRoutes | limitTo:30 track by route.id"
+    ng-repeat="route in data.filteredCrowdstartRoutes | limitTo:30 track by route.id"
     class="item-text-wrap item-icon-right"
     ui-sref="tabs.crowdstart-detail({ routeId: route.id})"
   >
@@ -39,12 +39,11 @@
   <powered-by-beeline></powered-by-beeline>
   <!-- No results found message -->
   <p
-    ng-if="data.routes.length === 0 &&
-          data.liteRoutes.length === 0 &&
-          data.crowdstartRoutes.length === 0 &&
-          data.placeQuery"
+    ng-if="data.filteredRoutes.length === 0 &&
+          data.filteredLiteRoutes.length === 0 &&
+          data.filteredCrowdstartRoutes.length === 0"
     class="not-found-message text-center"
   >
-    Sorry, we could not find any routes matching "{{data.queryText}}".
+    Sorry, we could not find any routes matching.
   </p>
 </div>

@@ -5,13 +5,14 @@
   <ion-content scroll="false">
     <!-- Search Filter  -->
     <search-input query-text="data.queryText" is-filtering="data.isFiltering" ph="Search Routes"
-      ng-if="!disp.yourRoutes"></search-input>
+      ng-if="!disp.yourRoutes && !disp.searchRoutes"></search-input>
     <!-- Scrollable routes list -->
-    <ion-content ng-class="{'routes-scroll': !disp.yourRoutes}">
+    <ion-content ng-class="{'routes-scroll': !disp.yourRoutes && !disp.searchRoutes}">
 
       <ion-refresher
         pulling-text="Pull to refresh..."
         on-refresh="refreshRoutes(true)"
+        ng-if="!disp.searchRoutes"
       ></ion-refresher>
 
       <ion-list>
@@ -27,6 +28,8 @@
         </ion-item>
         <!-- Your Routes list -->
         <your-routes-list></your-routes-list>
+        <!-- Search Result list -->
+        <search-routes-list></search-routes-list>
         <!-- Routes list -->
         <routes-list></routes-list>
       </ion-list>

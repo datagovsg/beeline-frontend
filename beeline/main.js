@@ -68,6 +68,7 @@ require("./directives/companyInfoBroker")
 require("./directives/menuHamburger")
 require("./directives/routesList/routesList")
 require("./directives/routesList/yourRoutesList")
+require("./directives/routesList/searchRoutesList")
 
 // Data Services
 require("./services/data/CompanyService")
@@ -93,6 +94,7 @@ require("./services/purchaseRoutePassService")
 require("./services/StripeService")
 require("./services/PersonalRoutesService")
 require("./services/UserService")
+require("./services/RoutesFilterService")
 
 // //////////////////////////////////////////////////////////////////////////////
 // Angular configuration
@@ -145,6 +147,10 @@ app
   .controller(
     "IntroSlidesController",
     require("./controllers/IntroSlidesController.js").default
+  )
+  .controller(
+    "MapSearchController",
+    require("./controllers/MapSearchController.js").default
   )
   .controller(
     "RoutesListController",

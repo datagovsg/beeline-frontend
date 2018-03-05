@@ -19,6 +19,8 @@ export default [
   "$window",
   "OneMapPlaceService",
   "$ionicHistory",
+  "$stateParams",
+  "RoutesFilterService",
   function(
     // Angular Tools
     $scope,
@@ -39,8 +41,16 @@ export default [
     $ionicPopup,
     $window,
     OneMapPlaceService,
-    $ionicHistory
+    $ionicHistory,
+    $stateParams,
+    RoutesFilterService
   ) {
+    // ------------------------------------------------------------------------
+    // stateParams
+    // ------------------------------------------------------------------------
+    let pickup = $stateParams.pickup
+    let dropoff = $stateParams.dropoff
+
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
@@ -60,15 +70,32 @@ export default [
       isFiltering: null,
       routesYouMayLike: null,
       routesAvailable: false,
+      filteredRoutes: null,
+      filteredCrowdstartRoutes: null,
+      filteredLiteRoutes: null,
     }
 
     $scope.disp = {
       yourRoutes:
         $ionicHistory.currentStateName() === "tabs.yourRoutes" ? true : false,
+      searchRoutes:
+        $ionicHistory.currentStateName() === "tabs.searchRoutes" ? true : false,
       title:
         $ionicHistory.currentStateName() === "tabs.yourRoutes"
           ? "Your Routes"
           : "Routes",
+    }
+
+    if (pickup && dropoff && $scope.disp.searchRoutes) {
+      RoutesFilterService.filterByPickupDropoff(pickup, dropoff).then(
+        results => {
+          ;[
+            $scope.data.filteredRoutes,
+            $scope.data.filteredCrowdstartRoutes,
+            $scope.data.filteredLiteRoutes,
+          ] = results
+        }
+      )
     }
 
     // ------------------------------------------------------------------------

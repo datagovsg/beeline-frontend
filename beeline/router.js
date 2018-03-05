@@ -36,6 +36,19 @@ export default [
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Routes Tab
       // ////////////////////////////////////////////////////////////////////////////
+      .state("tabs.mapSearch", {
+        url: "/search",
+        views: {
+          menuContent: {
+            templateUrl: "templates/map-search.html",
+            controller: "MapSearchController",
+          },
+          "map-area": {
+            templateUrl: "templates/map-view.html",
+            controller: "MapViewController",
+          },
+        },
+      })
       .state("tabs.routes", {
         url: "/routes",
         views: {
@@ -47,6 +60,15 @@ export default [
       })
       .state("tabs.yourRoutes", {
         url: "/routes/yourRoutes",
+        views: {
+          menuContent: {
+            templateUrl: "templates/routes-list.html",
+            controller: "RoutesListController",
+          },
+        },
+      })
+      .state("tabs.searchRoutes", {
+        url: "/routes/result?pickup&dropoff",
         views: {
           menuContent: {
             templateUrl: "templates/routes-list.html",
