@@ -91,7 +91,6 @@ require("./services/MapViewFactory")
 require("./services/paymentService")
 require("./services/purchaseRoutePassService")
 require("./services/StripeService")
-require("./services/PersonalRoutesService")
 require("./services/UserService")
 
 // //////////////////////////////////////////////////////////////////////////////

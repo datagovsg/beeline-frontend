@@ -175,9 +175,16 @@ export default [
       ([bids, kickstarterRoutesById]) => {
         if (!bids || !kickstarterRoutesById) return
 
-        $scope.data.backedCrowdstartRoutes = bids.map(bid => {
-          return KickstarterService.getCrowdstartById(bid.routeId)
-        })
+        $scope.data.backedCrowdstartRoutes = bids
+          .map(bid => {
+            return KickstarterService.getCrowdstartById(bid.routeId)
+          })
+          .filter(
+            route =>
+              (!route.passExpired && route.isActived) ||
+              !route.isExpired ||
+              !route.is7DaysOld
+          )
       }
     )
 
@@ -228,52 +235,6 @@ export default [
           // publish unique routes
           $scope.data.routesYouMayLike = _.uniqBy(placeResults, "id")
         }
-      }
-    )
-
-    // Backed kickstarter routes
-    $scope.$watchGroup(
-      [
-        () => KickstarterService.getCrowdstart(),
-        () => KickstarterService.getBids(),
-        "data.placeQuery",
-      ],
-      ([routes, bids, placeQuery]) => {
-        if (!routes || !bids) return
-
-        // Filter to the routes the user bidded on
-        let biddedRouteIds = bids.map(bid => bid.routeId)
-        routes = routes.filter(route => {
-          return biddedRouteIds.includes(route.id.toString())
-        })
-
-        // don't display it in backed list if the pass expires after 1 month
-        // of 1st trip and don't display it if it's 7 days after expired and
-        // not actived
-        routes = routes.filter(
-          route =>
-            (!route.passExpired && route.isActived) ||
-            !route.isExpired ||
-            !route.is7DaysOld
-        )
-
-        // Filter the routes
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByPlaceAndText(
-            routes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByText(
-            routes,
-            placeQuery.queryText
-          )
-        }
-        // Map to scope once done filtering and sorting
-        $scope.data.biddedCrowdstartRoutes = _.sortBy(routes, route => {
-          return parseInt(route.label.slice(1))
-        })
       }
     )
 
