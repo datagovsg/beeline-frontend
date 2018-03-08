@@ -6,6 +6,6 @@
     flex-direction: column;
     @include desktop { &.has-tabs-top { top: $bar-height + $tabs-height; } }
     top: auto;
-    min-height: 200px;
+    height: 95%;
   }
 }

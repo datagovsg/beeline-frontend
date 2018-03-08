@@ -1,8 +1,44 @@
   <div class="trip-info">
+    <div class="title">
+      Ticket {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}
+    </div>
+    <div class="map">
+      <ui-gmap-google-map
+        ng-if='modalMap.center'
+        center="modalMap.center"
+        pan="true"
+        zoom="modalMap.zoom"
+        bounds="modalMap.bounds"
+        dragging="modalMap.dragging"
+        control="modalMap.control"
+        options="modalMap.options"
+        data-tap-disabled="true"
+      >
+        <my-location></my-location>
+        <map-poly-route route-path="mapObject.routePath"></map-poly-route>
+        <!-- for lite route -->
+        <ui-gmap-marker
+          ng-repeat="stop in mapObject.stops"
+          idKey="stop.id"
+          coords="stop.coordinates"
+          options="stop.canBoard ? modalMap.markerOptions.boardMarker : modalMap.markerOptions.alightMarker"
+        ></ui-gmap-marker>
+        <ui-gmap-marker idkey="'boardstop'"
+                        ng-if="mapObject.boardStop.stop"
+                        coords="mapObject.boardStop.stop.coordinates"
+                        options="modalMap.markerOptions.startMarker"></ui-gmap-marker>
+        <ui-gmap-marker idkey="'alightstop'"
+                        ng-if="mapObject.alightStop.stop"
+                        coords="mapObject.alightStop.stop.coordinates"
+                        options="modalMap.markerOptions.endMarker"></ui-gmap-marker>
+        <map-bus-icon ng-repeat="recentPings in mapObject.allRecentPings track by $index"
+                      idkey="'bus-icon' + $index"
+                      ng-if="recentPings.isRecent"
+                      pings="recentPings.pings"
+                      overlay="$index + 1"></map-bus-icon>
+      </ui-gmap-google-map>
+    </div>
     <div class="item item-text-wrap">
-      <h2>
-        Ticket {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}
-      </h2>
       <div class="service-cancellation" ng-if="disp.tripStatus == 'cancelled'">
         <div class="item item-text-wrap">
           <div class="cancellation-content">
@@ -24,7 +60,7 @@
       </div>
       <div ng-if="disp.tripStatus !== 'cancelled'">
         <div class="row">
-          <route-item>
+          <route-item hide-bus-label="true" hide-description="true">
             <route-item-start-time>
               {{ ticket.boardStop.time  | formatTime:true }}
             </route-item-start-time>

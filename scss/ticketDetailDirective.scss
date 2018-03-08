@@ -1,9 +1,40 @@
+ticket-detail {
+  height: 100%;
+  margin: 5px;
+  border: 2px solid #BFBFBF;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+  .item {
+    margin: 5px;
+    border: none;
+  }
+}
+
 .trip-info {
-  h2 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .title {
     text-align: center;
     text-transform: uppercase;
     color: $royal;
     font-weight: 800;
+    padding-top: $item-padding-base;
+    padding-bottom: $item-padding-base;
+  }
+  .map {
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+
+    ui-gmap-google-map {
+      height: 100% !important;
+    }
+  }
+  h4 {
+    text-transform: uppercase;
+    color: $hint-color;
   }
   .vehicleNo{
     text-transform: uppercase;
@@ -11,11 +42,6 @@
     color: white;
     text-align: center;
   }
-  h4 {
-    text-transform: uppercase;
-    color: $hint-color;
-  }
-
   .trip-code-block {
     background: $royal;
     color: white;
@@ -52,17 +78,5 @@
       text-align: left;
       padding: $padding-base-vertical $padding-base-horizontal;
     }
-  }
-}
-
-ticket-detail {
-  margin: 5px;
-  border: 2px solid #BFBFBF;
-  border-radius: 15px;
-  background-color: white;
-  box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
-  .item {
-    margin: 5px;
-    border: none;
   }
 }
