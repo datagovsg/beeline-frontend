@@ -1,4 +1,4 @@
-<div class="route-overview">
+<div class="route-overview" ng-class="{'hide-route-overview': hideBusLabel && hideDescription}">
   <span class="bus-number" ng-if="!hideBusLabel" ng-transclude="busNumber">
   </span>
   <span class="mini-info" ng-if="!hideDescription" ng-transclude="description">

@@ -1,4 +1,4 @@
-<ion-view class="tickets" view-title="Trips">
+<ion-view class="tickets" view-title="Tickets">
   <ion-nav-buttons side="left">
     <menu-hamburger></menu-hamburger>
   </ion-nav-buttons>
@@ -55,8 +55,9 @@
          class="item item-icon-right"
          ng-repeat="ticket in tickets.today"
          ui-sref="tabs.ticket-detail({ ticketId: ticket.id })">
+        <b>{{ ticket.boardStop.trip.route.label }}</b>
         <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> {{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}
-        <i class="icon ion-ios-arrow-right icon-accessory"></i>
+        <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
       <div ng-if="tickets.soon.length > 0"
            class="item item-divider">Upcoming Trips</div>
@@ -64,8 +65,9 @@
          class="item item-icon-right"
          ng-repeat="ticket in tickets.soon"
          ui-sref="tabs.ticket-detail({ ticketId: ticket.id })">
+         <b>{{ ticket.boardStop.trip.route.label }}</b>
         <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> {{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}
-        <i class="icon ion-ios-arrow-right icon-accessory"></i>
+        <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
     </div>
 
