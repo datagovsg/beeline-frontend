@@ -1,8 +1,8 @@
   <div class="trip-info">
     <div class="item item-text-wrap">
-      <div class="text-center">
-        Ticket for {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}
-      </div>
+      <h2>
+        Ticket {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}
+      </h2>
       <div class="service-cancellation" ng-if="disp.tripStatus == 'cancelled'">
         <div class="item item-text-wrap">
           <div class="cancellation-content">
@@ -24,32 +24,6 @@
       </div>
       <div ng-if="disp.tripStatus !== 'cancelled'">
         <div class="row">
-          <div class="col col-60">
-            <h4>Trip Code </h4>
-            <span ng-if="!tripCode">Not available</span>
-            <trip-code class="trip-code" code="tripCode" ng-if="tripCode"/>
-          </div>
-          <div class="col">
-            <h4>Vehicle No.</h4>
-            <div ng-if="disp.vehicle" class="vehicleNo" ng-bind="disp.vehicle">
-            </div>
-            <div ng-if="!disp.vehicle">
-              Not provided
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col col-60">
-            <h4>Operated By</h4>
-            <span ng-bind="company.name"></span>
-            <a ng-click="showTerms(company.id)"><i class="icon ion-information-circled tnc"></i></a>
-          </div>
-          <div class="col">
-            <h4>Passenger</h4>
-            <div ng-bind="user.name"></div>
-          </div>
-        </div>
-        <div class="row">
           <route-item>
             <route-item-start-time>
               {{ ticket.boardStop.time  | formatTime:true }}
@@ -64,6 +38,38 @@
               {{ ticket.alightStop.stop.description }}, {{ticket.alightStop.stop.road}}
             </route-item-end-location>
           </route-item>
+        </div>
+        <div class="row">
+          <div class="col col-50">
+            <h4>Vehicle</h4>
+            <div ng-if="disp.vehicle" class="vehicleNo" ng-bind="disp.vehicle">
+            </div>
+            <div ng-if="!disp.vehicle">
+              Not provided
+            </div>
+          </div>
+          <div class="col">
+            <h4>Operated By</h4>
+            <!-- <span ng-bind="company.name"></span> -->
+            <span class="icon-span company-logo">
+              <img class="mini-icon" ng-src="{{route.transportCompanyId | miniCompanyLogo}}">
+            </span>
+            <span class="mini-info">
+              {{company.name}}
+            </span>
+            <a ng-click="showTerms(company.id)"><i class="icon ion-information-circled tnc"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="trip-code-block" ng-if="disp.tripStatus !== 'cancelled'">
+      <h5>Trip Code </h5>
+      <div>
+        <div ng-if="!tripCode">
+          Not available
+        </div>
+        <div ng-if="tripCode">
+          <trip-code class="trip-code" code="tripCode"/>
         </div>
       </div>
     </div>

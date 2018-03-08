@@ -1,6 +1,36 @@
 .trip-info {
+  h2 {
+    text-align: center;
+    text-transform: uppercase;
+    color: $royal;
+    font-weight: 800;
+  }
   .vehicleNo{
     text-transform: uppercase;
+    background: $normal-grey;
+    color: white;
+    text-align: center;
+  }
+  h4 {
+    text-transform: uppercase;
+    color: $hint-color;
+  }
+
+  .trip-code-block {
+    background: $royal;
+    color: white;
+    text-align: center;
+    padding-top: $item-padding-base;
+    padding-bottom: $item-padding-base * 2;
+    > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+    h5 {
+      text-transform: uppercase;
+      color: white;
+    }
   }
 }
 
