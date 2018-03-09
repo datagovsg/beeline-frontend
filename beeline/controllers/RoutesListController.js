@@ -19,6 +19,9 @@ export default [
   "$window",
   "OneMapPlaceService",
   "$ionicHistory",
+  "$location",
+  "$anchorScroll",
+  "$timeout",
   function(
     // Angular Tools
     $scope,
@@ -39,7 +42,10 @@ export default [
     $ionicPopup,
     $window,
     OneMapPlaceService,
-    $ionicHistory
+    $ionicHistory,
+    $location,
+    $anchorScroll,
+    $timeout
   ) {
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -70,7 +76,6 @@ export default [
           ? "Your Routes"
           : "Routes",
     }
-
     // ------------------------------------------------------------------------
     // Ionic events
     // ------------------------------------------------------------------------
@@ -85,6 +90,7 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
+
     $scope.$watch(
       "data.queryText",
       _.debounce(autoComplete, 300, {
@@ -461,6 +467,18 @@ export default [
       }
     )
 
+    // call $anchorScroll only if all data loaded and there is $location.hash()
+    $scope.$watch(
+      () => routesAreLoaded(),
+      loaded => {
+        if (loaded && $location.hash()) {
+          $timeout(() => {
+            $anchorScroll()
+          }, 0)
+        }
+      }
+    )
+
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -592,6 +610,14 @@ export default [
       $scope.data.liteRoutes = null
       $scope.data.placeQuery = place
       $scope.$digest()
+    }
+
+    function routesAreLoaded() {
+      return !!(
+        $scope.data.routes &&
+        $scope.data.liteRoutes &&
+        $scope.data.crowdstartRoutes
+      )
     }
   },
 ]
