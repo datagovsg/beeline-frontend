@@ -195,6 +195,7 @@ export default [
 
     $scope.viewTicket = () => {
       $scope.disp.ticketDetailModal.show()
+      $scope.modalFunctions.recenterMap()
     }
 
     // ------------------------------------------------------------------------
@@ -259,6 +260,8 @@ export default [
     function initTicketModal() {
       let scope = $rootScope.$new()
       scope.ticketId = $scope.data.nextTripTicketId
+      scope.functions = {}
+      $scope.modalFunctions = scope.functions
       let modal = $ionicModal.fromTemplate(ticketDetailTemplate, {
         scope: scope,
         animation: "slide-in-up",

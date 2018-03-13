@@ -30,6 +30,7 @@ angular.module("beeline").directive("ticketDetailModal", [
       scope: {
         ticketId: "@",
         modal: "=",
+        functions: "=",
       },
       link: function(scope, element, attributes) {
         // ------------------------------------------------------------------------
@@ -41,17 +42,21 @@ angular.module("beeline").directive("ticketDetailModal", [
           driver: null,
           tripStatus: null,
         }
+
         scope.latestInfo = {
           vehicleId: null,
           driverId: null,
         }
 
         scope.modalMap = MapOptions.defaultMapOptions({
+          zoom: 14,
           busLocation: {
             coordinates: null,
             icon: null,
           },
         })
+
+        scope.modalControl = {}
 
         scope.ticketId = Number(scope.ticketId) || Number($stateParams.ticketId)
 
@@ -215,6 +220,20 @@ angular.module("beeline").directive("ticketDetailModal", [
           MapService.emit("killPingLoop")
           MapService.removeListener("ping", updateIfVehicleOrDriverChanged)
           MapService.removeListener("status", updateStatus)
+        }
+
+        // Called in RouteDetailController
+        // Fixes off centre map
+        scope.functions.recenterMap = function() {
+          let coordinates = scope.ticket.boardStop.stop.coordinates.coordinates
+          // Refresh the center coordinates because the angular digest cycle
+          // messes things up
+          // See this github issue for more details
+          // https://github.com/angular-ui/angular-google-maps/issues/1599
+          scope.modalControl.refresh({
+            latitude: coordinates[1],
+            longitude: coordinates[0],
+          })
         }
       },
     }
