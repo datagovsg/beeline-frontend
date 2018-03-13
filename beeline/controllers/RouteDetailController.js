@@ -1,9 +1,13 @@
+import ticketDetailTemplate from "../templates/ticket-detail-modal.html"
+
 export default [
   "$scope",
   "$state",
   "$stateParams",
   "$ionicLoading",
+  "$ionicModal",
   "$ionicPopup",
+  "$rootScope",
   "UserService",
   "RoutesService",
   "BookingService",
@@ -17,7 +21,9 @@ export default [
     $state,
     $stateParams,
     $ionicLoading,
+    $ionicModal,
     $ionicPopup,
+    $rootScope,
     UserService,
     RoutesService,
     BookingService,
@@ -57,7 +63,6 @@ export default [
       boardStopInvalid: null,
       alightStopInvalid: null,
       label: null,
-      showBooking: null,
       hasNextTripTicket: null,
     }
 
@@ -97,20 +102,6 @@ export default [
         hideOnStateChange: true,
       })
 
-      // show booking after choosing stops even has ticket
-      $scope.$on("$stateChangeSuccess", function(
-        event,
-        toState,
-        toParams,
-        fromState,
-        fromParams
-      ) {
-        if (fromState && fromState.name == "tabs.route-stops") {
-          $scope.data.showBooking = true
-          $scope.activeTab = 0
-        }
-      })
-
       let promises = Promise.all([
         FastCheckoutService.verify(routeId),
         RoutesService.getRoute(routeId),
@@ -119,13 +110,10 @@ export default [
         .then(response => {
           $scope.data.nextTrip = response[0]
           $scope.data.hasNextTripTicket = $scope.data.nextTrip.hasNextTripTicket
-          if ($scope.data.showBooking) {
-            $scope.activeTab = 0
-          } else {
-            $scope.activeTab = $scope.data.hasNextTripTicket ? 1 : 0
-          }
+
           if ($scope.data.hasNextTripTicket) {
             $scope.data.nextTripTicketId = $scope.data.nextTrip.nextTripTicketId
+            $scope.disp.ticketDetailModal = initTicketModal()
             MapService.emit("ticketIdIsAvailable", $scope.data.nextTripTicketId)
             // to inform RouteDetail to start the ping loop
             $scope.$broadcast("enteringMyBookingRoute", {
@@ -205,8 +193,8 @@ export default [
       FastCheckoutService.buyMoreRoutePasses(routeId)
     }
 
-    $scope.toggle = function() {
-      $scope.activeTab = $scope.activeTab === 0 ? 1 : 0
+    $scope.viewTicket = () => {
+      $scope.disp.ticketDetailModal.show()
     }
 
     // ------------------------------------------------------------------------
@@ -264,5 +252,19 @@ export default [
         }
       }
     })
+
+    // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    function initTicketModal() {
+      let scope = $rootScope.$new()
+      scope.ticketId = $scope.data.nextTripTicketId
+      let modal = $ionicModal.fromTemplate(ticketDetailTemplate, {
+        scope: scope,
+        animation: "slide-in-up",
+      })
+      scope.modal = modal
+      return modal
+    }
   },
 ]

@@ -1,28 +1,38 @@
-<ion-view class="route-detail page-with-map" ng-init="activeTab = 0">
+<ion-view class="route-detail page-with-map">
   <ion-nav-title>{{data.label}}</ion-nav-title>
   <ion-nav-buttons side="left">
     <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <route-share is-normal-route="true" route-id="data.routeId" ng-if="activeTab===0"></route-share>
+    <route-share is-normal-route="true" route-id="data.routeId"></route-share>
   </ion-nav-buttons>
-  <ion-content scroll="false">
-    <div ng-show="activeTab==0" class="bookingView">
-      <form name="stopsForm">
-        <div class="rides-remaining" ng-if="data.passCount > 0 || data.routeSupportsRoutePass" >
-            <i class="icon">
-                <img src="img/icon_kickstarter_activebid.svg">
-            </i>
-            <span class="text" ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)">You have {{ data.passCount || 0 }} pass(es) remaining for this route</span> <!-- Use by DD/MM/YY. -->
-            <span class="text" ng-if="!book.isLoggedIn"></span>
-            <span class="buy-more-button"
-              ng-if="data.routeSupportsRoutePass"
-              ng-click="buyMore()">
-              <button class="button button-positive button-small button-outline"><i class="ion-ios-cart"></i>&nbsp;Buy more</button>
-            </span>
-            <span ng-if="!data.routeSupportsRoutePass" class="buy-more-button"></span>
-        </div>
+  <div class="bar bar-subheader popup">
+    <div class="rides-remaining" ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)" >
+        <i class="icon">
+            <img src="img/icon_kickstarter_activebid.svg">
+        </i>
+        <span class="text" ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)">You have {{ data.passCount || 0 }} pass(es) remaining for this route</span> <!-- Use by DD/MM/YY. -->
+        <span class="text" ng-if="!book.isLoggedIn"></span>
+        <span class="buy-more-button"
+          ng-if="data.routeSupportsRoutePass"
+          ng-click="buyMore()">
+          <button class="button button-positive button-small button-outline"><i class="ion-ios-cart"></i>&nbsp;Buy more</button>
+        </span>
+        <span ng-if="!data.routeSupportsRoutePass" class="buy-more-button"></span>
+    </div>
 
+    <div class="ticket-popunder" ng-if="data.hasNextTripTicket">
+      <div class="blank-space">
+      </div>
+      <button class="ticket-target" ng-click="viewTicket()">
+        <i class="ion-pricetag"></i><span class="ticket-text">Today's ticket</span>
+      </button>
+    </div>
+  </div>
+
+  <ion-content scroll="false">
+    <div class="bookingView">
+      <form name="stopsForm">
         <div class="item item-icon-left item-icon-right" on-tap="choosePickup()">
           <i class="icon pickup-stop"></i>
           <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
@@ -48,7 +58,7 @@
         </span>
         <countdown board-time="data.nextTrip && data.nextTrip.boardTime" booking-ends="data.bookingEnds"></countdown>
 
-        <button class="button primary-button" ng-if="!data.hasNextTripTicket" ng-disabled="stopsForm.$invalid || !data.nextTrip.seatsAvailable || data.hasNextTripTicket || disp.isBooking || data.bookingEnds || data.boardStopInvalid || data.alightStopInvalid" ui-sref="tabs.route-summary({
+        <button class="button primary-button"  ng-disabled="stopsForm.$invalid || !data.nextTrip.seatsAvailable || data.hasNextTripTicket || disp.isBooking || data.bookingEnds || data.boardStopInvalid || data.alightStopInvalid" ui-sref="tabs.route-summary({
                   routeId: data.routeId,
                   boardStop: data.pickupStop.id,
                   alightStop: data.dropoffStop.id,
@@ -58,9 +68,6 @@
           <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
         </button>
 
-        <button class="button primary-button" ng-click="toggle()" ng-if="data.hasNextTripTicket">
-           <i class="fa fa-ticket fa-fw" aria-hidden="true"></i>&nbsp; View Ticket
-        </button>
         <span ng-if="data.price">
           $<span ng-bind="data.price"></span> per trip
         </span>
@@ -75,14 +82,5 @@
         </button>
       </div>
     </div>
-    <div ng-show="activeTab===1" class="ticketView">
-      <div class="row">
-        <a class="btn btn-small" ng-click="toggle()">
-          <i class="fa fa-arrow-left"></i> Booking
-        </a>
-        <ticket-detail ticket-id="data.nextTripTicketId" class="col" ng-if="data.nextTripTicketId"></ticket-detail>
-      </div>
-   </div>
-
   </ion-content>
 </ion-view>
