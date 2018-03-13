@@ -1,29 +1,21 @@
 .route-detail {
   @include transparent();
-
-
-  ion-content {
-    display: flex;
+  .popup{
+    height: auto;
+    padding: 0px;
     flex-direction: column;
-    top: auto;
-    margin-bottom: 10px;
-    background-color: transparent!important;
-    // @include desktop { &.has-tabs { top: $bar-height; } }
-    @include desktop { top: $bar-height;  }
-    .booking-info {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      // ion-content background-color is transparent
-      background-color: $stable;
-    }
+    background-color: transparent;
+    align-items: center;
 
     .rides-remaining {
       // ion-content background-color is transparent
       background-color: $stable;
+      -webkit-box-shadow: 0px 2px 4px 0px rgba(199,199,199,1);
+      -moz-box-shadow: 0px 2px 4px 0px rgba(199,199,199,1);
+      box-shadow: 0px 2px 4px 0px rgba(199,199,199,1);
+      z-index: 0; // required for shadow to stack properly
       display: flex;
+      width: 100%;
       padding: 0.5em;
       align-items: center;
       i.icon .buy-more-button{
@@ -38,6 +30,53 @@
         line-height: 1.0;
       }
     }
+
+    .ticket-popunder {
+      width: 80%;
+      text-align: center;
+
+      .blank-space {
+        background-color: white;
+        height: 20px;
+
+        @include desktop { height: 0px; }
+      }
+
+      .ticket-target {
+        width: 100%;
+        background-color: $royal;
+        color: white;
+        padding: 10px;
+        font-size: 20px;
+        -webkit-border-radius: 0px 0px 12px 12px;
+        -moz-border-radius: 0px 0px 12px 12px;
+        border-radius: 0px 0px 12px 12px;
+
+        .ticket-text {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  ion-content {
+    display: flex;
+    flex-direction: column;
+    top: auto;
+    margin-bottom: 10px;
+    background-color: transparent!important;
+    // @include desktop { &.has-tabs { top: $bar-height; } }
+    @include desktop { top: $bar-height + 100px;  }
+    .booking-info {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      // ion-content background-color is transparent
+      background-color: $stable;
+    }
+
     @keyframes slide-in-from-bottom {
       0% {
         transform: translateY(900px);
