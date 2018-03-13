@@ -51,14 +51,14 @@
 
       <div ng-if="tickets.today.length > 0"
            class="item item-divider">Today's Trips</div>
-      <a ng-if="tickets.today.length > 0"
-         class="item item-icon-right"
+      <button ng-if="tickets.today.length > 0"
+         class="item item-icon-right full"
          ng-repeat="ticket in tickets.today"
-         ui-sref="tabs.ticket-detail({ ticketId: ticket.id })">
+         on-tap="popupTicketModal(ticket)">
         <b>{{ ticket.boardStop.trip.route.label }}</b>
-        <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> {{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}
+        <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> <span class="time">{{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
-      </a>
+      </button>
       <div ng-if="tickets.soon.length > 0"
            class="item item-divider">Upcoming Trips</div>
       <a ng-if="tickets.soon.length > 0"
