@@ -8,13 +8,9 @@
 
   <ion-content>
   <div class="trip-info">
-    <div class="map map-area">
-      <div ng-if="modalMap.center && false">
-        {{modalMap.center}}
-        {{modalMap.bounds}}
-      </div>
+    <div class="map map-area" ng-if="modalMap.center">
       <ui-gmap-google-map
-        ng-if="modalMap.center"
+        control="modalControl"
         center="modalMap.center"
         pan="true"
         zoom="modalMap.zoom"
