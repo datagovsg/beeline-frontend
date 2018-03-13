@@ -1,9 +1,20 @@
+import ticketDetailTemplate from "../templates/ticket-detail-modal.html"
+
 export default [
   "$scope",
   "TicketService",
   "UserService",
   "loadingSpinner",
-  function($scope, TicketService, UserService, loadingSpinner) {
+  "$ionicModal",
+  "$rootScope",
+  function(
+    $scope,
+    TicketService,
+    UserService,
+    loadingSpinner,
+    $ionicModal,
+    $rootScope
+  ) {
     // ------------------------------------------------------------------------
     // Data Loading
     // ------------------------------------------------------------------------
@@ -49,6 +60,17 @@ export default [
     // Track the login state of the user service
     $scope.logIn = function() {
       UserService.promptLogIn()
+    }
+
+    $scope.popupTicketModal = function(ticket) {
+      let scope = $rootScope.$new()
+      scope.ticketId = ticket.id
+      let modal = $ionicModal.fromTemplate(ticketDetailTemplate, {
+        scope: scope,
+        animation: "slide-in-up",
+      })
+      scope.modal = modal
+      modal.show()
     }
 
     $scope.refreshTickets = refreshNormalTickets

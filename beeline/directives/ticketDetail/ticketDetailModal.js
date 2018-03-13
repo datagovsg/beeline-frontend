@@ -1,7 +1,7 @@
-import ticketDetailTemplate from "./ticketDetail.html"
+import ticketDetailTemplate from "./ticketDetailModal.html"
 import _ from "lodash"
 
-angular.module("beeline").directive("ticketDetail", [
+angular.module("beeline").directive("ticketDetailModal", [
   "$stateParams",
   "TicketService",
   "CompanyService",
@@ -28,7 +28,8 @@ angular.module("beeline").directive("ticketDetail", [
       restrict: "E",
       template: ticketDetailTemplate,
       scope: {
-        ticketId: "<?",
+        ticketId: "@",
+        modal: "=",
       },
       link: function(scope, element, attributes) {
         // ------------------------------------------------------------------------
