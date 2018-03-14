@@ -31,15 +31,16 @@
   </div>
 
   <ion-content scroll="false">
+    <div class="paddingSubheader" ng-if="data.hasNextTripTicket"></div>
     <div class="bookingView">
-      <form name="stopsForm">
-        <div class="item item-icon-left item-icon-right" on-tap="choosePickup()">
+      <form name="stopsForm" class="stopsSelector">
+        <div class="item item-icon-left item-icon-right boardStopSelector stopSelector" on-tap="choosePickup()">
           <i class="icon pickup-stop"></i>
           <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
           <span ng-model="data.pickupStop" ng-bind="data.pickupStop.description" ng-required="true"></span>
           <i class="icon ion-ios-arrow-right"></i>
         </div>
-        <div class="item item-icon-left item-icon-right" on-tap="chooseDropoff()">
+        <div class="item item-icon-left item-icon-right alightStopSelector stopSelector" on-tap="chooseDropoff()">
           <i class="icon dropoff-stop"></i>
           <span class="placeholder" ng-hide="data.dropoffStop">Select dropoff stop</span>
           <span ng-model="data.dropoffStop" ng-bind="data.dropoffStop.description" ng-required="true"></span>

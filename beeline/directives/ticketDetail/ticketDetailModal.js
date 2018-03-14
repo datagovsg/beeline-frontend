@@ -118,6 +118,7 @@ angular.module("beeline").directive("ticketDetailModal", [
           scope.tripCode = ticket.tripCode
           sentTripToMapView()
           updateLatestInfo(ticket.boardStop.trip.id)
+          updateMapView()
         })
         tripPromise.then(trip => {
           let stops = trip.tripStops.map(ts => {
@@ -222,10 +223,19 @@ angular.module("beeline").directive("ticketDetailModal", [
           MapService.removeListener("status", updateStatus)
         }
 
-        // Called in RouteDetailController
-        // Fixes off centre map
-        scope.functions.recenterMap = function() {
+        function updateMapView() {
           let coordinates = scope.ticket.boardStop.stop.coordinates.coordinates
+          scope.modalMap.center = {
+            latitude: coordinates[1],
+            longitude: coordinates[0],
+          }
+        }
+
+        // Called in RouteDetailController
+        // Fixes off center map
+        scope.functions.recenterMap = function(ticket) {
+          ticket = ticket || scope.ticket
+          let coordinates = ticket.boardStop.stop.coordinates.coordinates
           // Refresh the center coordinates because the angular digest cycle
           // messes things up
           // See this github issue for more details

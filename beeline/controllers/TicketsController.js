@@ -65,6 +65,7 @@ export default [
     $scope.popupTicketModal = function(ticket) {
       let scope = $rootScope.$new()
       scope.ticketId = ticket.id
+      scope.functions = {}
       let modal = $ionicModal.fromTemplate(ticketDetailTemplate, {
         scope: scope,
         animation: "slide-in-up",

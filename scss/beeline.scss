@@ -52,14 +52,12 @@
 }
 
 .icon.pickup-stop {
-  background: url('../img/RoutePairBigStart.svg') center no-repeat transparent;
-  background-size: contain;
+  background: url('../img/icon_pickup.svg') center no-repeat transparent;
   &:before { content: " "; }
 }
 
 .icon.dropoff-stop {
-  background: url('../img/RoutePairBigEnd.svg') center no-repeat transparent;
-  background-size: contain;
+  background: url('../img/icon_drop_off.svg') center no-repeat transparent;
   &:before { content: " "; }
 }
 
@@ -95,10 +93,9 @@ span.placeholder {
   padding: 20px 20px;
   font-size: 16px;
   line-height: 0px;
-  background-color: $energized;
+  background-color: $royal;
   border: 0px;
-  border-bottom: 4px solid $primary-button-shadow;
-  border-radius: 20px;
+  border-radius: 6px;
   box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   color: $primary-button-font;
