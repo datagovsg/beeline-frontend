@@ -7,31 +7,46 @@
     <route-share is-normal-route="true" route-id="data.routeId"></route-share>
   </ion-nav-buttons>
   <div class="bar bar-subheader popup">
+    
     <div class="rides-remaining" ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)" >
-        <i class="icon">
-            <img src="img/icon_kickstarter_activebid.svg">
-        </i>
-        <span class="text" ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)">You have {{ data.passCount || 0 }} pass(es) remaining for this route</span> <!-- Use by DD/MM/YY. -->
-        <span class="text" ng-if="!book.isLoggedIn"></span>
-        <span class="buy-more-button"
-          ng-if="data.routeSupportsRoutePass"
+        <div class="operator popup-left popup-top">
+          <span class="icon-span company-logo">
+            <img class="mini-icon" ng-src="{{data.route.transportCompanyId | miniCompanyLogo}}">
+          </span>
+          {{data.company.name}}
+        </div>
+        <div class="ticket-price popup-right popup-top">
+          <span ng-if="data.price">
+            $<span ng-bind="data.price"></span> per trip
+          </span>
+        </div>
+
+        <div class="route-pass-remaining popup-left">
+          <i class="fas fa-ticket-alt"></i>
+          <span class="text" ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)">{{ data.passCount || 0 }} Route Pass(es)</span> 
+        </div>
+
+        <div class="buy-route-pass popup-right">
+          <span class="buy-more-button"
+          ng-if="data.routeSupportsRoutePass && data.maxDiscount"
           ng-click="buyMore()">
-          <button class="button button-positive button-small button-outline"><i class="ion-ios-cart"></i>&nbsp;Buy more</button>
+          <a><u>Buy Passes to save up to {{data.maxDiscount}}%</u></a>
         </span>
-        <span ng-if="!data.routeSupportsRoutePass" class="buy-more-button"></span>
-    </div>
+        </div>
+      </div>
 
     <div class="ticket-popunder" ng-if="data.hasNextTripTicket">
       <div class="blank-space">
       </div>
       <button class="ticket-target" ng-click="viewTicket()">
-        <i class="ion-pricetag"></i><span class="ticket-text">Today's ticket</span>
+        <i class="fas fa-tag"></i><span class="ticket-text">Today's ticket</span>
       </button>
     </div>
   </div>
 
   <ion-content scroll="false">
-    <div class="paddingSubheader" ng-if="data.hasNextTripTicket"></div>
+    <div class="padding-ticket-subheader" ng-if="data.hasNextTripTicket"></div>
+    <div class="padding-routepass-subheader" ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)"></div>
     <div class="bookingView">
       <form name="stopsForm" class="stopsSelector">
         <div class="item item-icon-left item-icon-right boardStopSelector stopSelector" on-tap="choosePickup()">
@@ -69,9 +84,6 @@
           <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
         </button>
 
-        <span ng-if="data.price">
-          $<span ng-bind="data.price"></span> per trip
-        </span>
         <button class="button button-clear button-royal"
           ui-sref = "tabs.route-dates({
             routeId: data.routeId,

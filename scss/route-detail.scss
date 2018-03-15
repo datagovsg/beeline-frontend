@@ -11,15 +11,33 @@
 
     .rides-remaining {
       // ion-content background-color is transparent
-      background-color: $stable;
-      -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
-      -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
-      box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+      background-color: #fff;
+      color: $hint-color;
+      -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1), inset 0px 1px 1px 1px rgba(0,0,0,0.1);
+      -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1), inset 0px 1px 1px 1px rgba(0,0,0,0.1);
+      box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1), inset 0px 1px 1px 1px rgba(0,0,0,0.1);
       z-index: 0; // required for shadow to stack properly
       display: flex;
       width: 100%;
-      padding: 0.5em;
+      padding: 12px 30px;
       align-items: center;
+      font-size: 12px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .popup-left {
+        width: 40%;
+      }
+
+      .popup-right {
+        width: 60%;
+        text-align: right;
+      }
+
+      .popup-top {
+        margin-bottom: 10px;
+      }
+
       i.icon .buy-more-button{
         flex: 0 0 auto;
 
@@ -30,6 +48,7 @@
       }
       button {
         line-height: 1.0;
+        font-size: 12px;
       }
     }
 
@@ -69,20 +88,22 @@
   ion-content {
     display: flex;
     flex-direction: column;
-    top: auto;
     margin-bottom: 10px;
+    top: auto;
     background-color: transparent!important;
-    // @include desktop { &.has-tabs { top: $bar-height; } }
-    @include desktop { top: $bar-height;  }
+    @include desktop { top: $bar-height; }
 
-    .paddingSubheader {
-      padding-top: 100px;
+    .padding-ticket-subheader {
+      padding-top: 70px;
     }
-    
+
+    .padding-routepass-subheader {
+      padding-top: 60px;
+    }
+
     .bookingView {
       @include desktop {
         background-color: $stable;
-
       }
     }
 
