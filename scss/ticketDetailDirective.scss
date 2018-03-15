@@ -66,6 +66,22 @@ ticket-detail {
     text-transform: uppercase;
     color: $hint-color;
   }
+  .route-item {
+    width: 100%;
+
+    .alight-stop-info {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .stop-desc {
+      font-size: 14px;
+    }
+
+    .stop-road {
+      font-size: 12px;
+    }
+  }
   .vehicleNo{
     text-transform: uppercase;
     background: $normal-grey;
