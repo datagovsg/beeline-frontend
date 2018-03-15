@@ -11,6 +11,7 @@ export default [
   "UserService",
   "RoutesService",
   "BookingService",
+  "CompanyService",
   "FastCheckoutService",
   "MapService",
   "TicketService",
@@ -27,6 +28,7 @@ export default [
     UserService,
     RoutesService,
     BookingService,
+    CompanyService,
     FastCheckoutService,
     MapService,
     TicketService,
@@ -64,6 +66,9 @@ export default [
       alightStopInvalid: null,
       label: null,
       hasNextTripTicket: null,
+      route: null,
+      company: null,
+      maxDiscount: null,
     }
 
     $scope.disp = {
@@ -124,6 +129,19 @@ export default [
             ts => ts.stop.id
           )
           let route = response[1]
+          $scope.data.route = route
+          CompanyService.getCompany(Number(route.transportCompanyId)).then(
+            company => {
+              $scope.data.company = company
+            }
+          )
+          RoutesService.fetchPriceSchedule(routeId).then(priceSchedules => {
+            $scope.data.maxDiscount = Math.max(
+              ...priceSchedules
+                .map(schedule => schedule.discount)
+                .filter(Boolean)
+            )
+          })
           $scope.data.label = route.label
           $ionicLoading.hide()
           // Grab the price data
