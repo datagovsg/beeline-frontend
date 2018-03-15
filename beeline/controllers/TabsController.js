@@ -78,6 +78,9 @@ export default [
           const gmap = $scope.map.control.getGMap()
           google.maps.event.trigger(gmap, "resize")
           gmap.fitBounds(bounds)
+          let zoom = gmap.zoom > 11 ? 11 : gmap.zoom
+          gmap.setZoom(zoom)
+          google.maps.event.trigger(gmap, "zoom_changed")
         }
       }
     })
