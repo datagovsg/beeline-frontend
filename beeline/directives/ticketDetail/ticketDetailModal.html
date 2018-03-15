@@ -95,13 +95,15 @@
           <div class="col">
             <h4>Operated By</h4>
             <!-- <span ng-bind="company.name"></span> -->
-            <span class="icon-span company-logo">
-              <img class="mini-icon" ng-src="{{route.transportCompanyId | miniCompanyLogo}}">
-            </span>
-            <span class="mini-info">
-              {{company.name}}
-            </span>
-            <a ng-click="showTerms(company.id)"><i class="icon ion-information-circled tnc"></i></a>
+            <div class="company-info">
+              <span class="icon-span company-logo">
+                <img class="mini-icon" ng-src="{{route.transportCompanyId | miniCompanyLogo}}">
+              </span>
+              <span class="mini-info">
+                {{company.name}}
+              </span>
+              <a ng-click="showTerms(company.id)"><i class="icon ion-information-circled tnc"></i></a>
+            </div>
           </div>
         </div>
       </div>
