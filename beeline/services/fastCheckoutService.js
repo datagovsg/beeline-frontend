@@ -29,7 +29,7 @@ angular.module("beeline").factory("FastCheckoutService", [
 
     function verify(routeId) {
       return new Promise(async (resolve, reject) => {
-        let route = await RoutesService.getRoute(routeId)
+        let route = await RoutesService.getRoute(routeId, true)
         let nextTrip = retriveNextTrip(route)
         if (nextTrip === null) {
           return reject("There is no next trip")
@@ -43,18 +43,13 @@ angular.module("beeline").factory("FastCheckoutService", [
         let nextTripTicketId = null
         // user has the next trip ticket
         if (UserService.getUser()) {
-          let allTickets = TicketService.getTickets()
-          if (allTickets != null) {
-            let ticketsByRouteId = _.groupBy(
-              allTickets,
-              ticket => ticket.boardStop.trip.routeId
+          let tickets = await TicketService.getTicketsByRouteId(routeId, true)
+          if (tickets != null) {
+            previouslyBookedDays = _.keyBy(tickets, t =>
+              new Date(t.boardStop.trip.date).getTime()
             )
-            if (ticketsByRouteId && ticketsByRouteId[route.id]) {
-              previouslyBookedDays = _.keyBy(ticketsByRouteId[route.id], t =>
-                new Date(t.boardStop.trip.date).getTime()
-              )
-            }
           }
+
           if (previouslyBookedDays) {
             let bookedDays = Object.keys(previouslyBookedDays).map(x => {
               return parseInt(x)

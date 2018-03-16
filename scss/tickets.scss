@@ -1,0 +1,21 @@
+.tickets {
+  .full {
+    width: 100%;
+    text-align: left;
+  }
+
+  .icon-accessory {
+    color: #000;
+  }
+  b {
+    font-size: $font-size-small * 1.5;
+  }
+
+  .date {
+    margin-left: 12px;
+  }
+
+  .time {
+    margin-left:4px;
+  }
+}

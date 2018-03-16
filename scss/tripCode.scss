@@ -21,25 +21,25 @@ trip-code {
   .c0 {
     position: absolute;
     top: 0;
-    left: 0;
+    left: $font-size-base * -3;
     width: $font-size-base * 2;
   }
   .c1 {
     position: absolute;
     top: 0;
-    left: $font-size-base * 2;
+    left: $font-size-base * -1;
     width: $font-size-base * 2;
   }
   .c2 {
     position: absolute;
     top: 0;
-    left: $font-size-base * 4;
+    left:  $font-size-base;
     width: $font-size-base * 2;
   }
   .c3 {
     top: 0;
     position: absolute;
-    left: $font-size-base * 6;
+    left: $font-size-base * 3;
     width: $font-size-base * 2;
   }
 }
