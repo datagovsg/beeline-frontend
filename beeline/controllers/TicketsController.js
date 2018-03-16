@@ -1,4 +1,4 @@
-import ticketDetailTemplate from "../templates/ticket-detail-modal.html"
+import ticketDetailModalTemplate from "../templates/ticket-detail-modal.html"
 
 export default [
   "$scope",
@@ -66,7 +66,7 @@ export default [
       let scope = $rootScope.$new()
       scope.ticketId = ticket.id
       scope.functions = {}
-      let modal = $ionicModal.fromTemplate(ticketDetailTemplate, {
+      let modal = $ionicModal.fromTemplate(ticketDetailModalTemplate, {
         scope: scope,
         animation: "slide-in-up",
       })
