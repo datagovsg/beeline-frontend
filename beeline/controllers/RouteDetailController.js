@@ -1,4 +1,4 @@
-import ticketDetailTemplate from "../templates/ticket-detail-modal.html"
+import ticketDetailModalTemplate from "../templates/ticket-detail-modal.html"
 
 export default [
   "$scope",
@@ -104,12 +104,11 @@ export default [
     $scope.$on("$ionicView.afterEnter", () => {
       $ionicLoading.show({
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-        hideOnStateChange: true,
       })
 
       let promises = Promise.all([
         FastCheckoutService.verify(routeId),
-        RoutesService.getRoute(routeId),
+        RoutesService.getRoute(routeId, true),
       ])
       promises
         .then(response => {
@@ -280,7 +279,7 @@ export default [
       scope.ticketId = $scope.data.nextTripTicketId
       scope.functions = {}
       $scope.modalFunctions = scope.functions
-      let modal = $ionicModal.fromTemplate(ticketDetailTemplate, {
+      let modal = $ionicModal.fromTemplate(ticketDetailModalTemplate, {
         scope: scope,
         animation: "slide-in-up",
       })

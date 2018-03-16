@@ -23,7 +23,7 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/progress-bar";
 @import "scss/kickstarterInfo";
 @import "scss/searchButton";
-@import "scss/ticketDetailDirective";
+@import "scss/ticketDetailModalDirective";
 
 // View specific styles
 @import "scss/tabs";
@@ -54,7 +54,6 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/verify";
 @import "scss/routeItem";
 @import "scss/tickets";
-@import "scss/ticketDetail";
 @import "scss/liteRouteTracker";
 @import "scss/welcome";
 
