@@ -3,6 +3,33 @@
   .account-section {
     text-align: center;
   }
+  .list {
+    .item {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      font-weight: 300;
+      color: #777;
+      .item-note {
+        color: #333;
+      }
+
+      .icon {
+        font-size: 20px;
+      }
+
+      &.item-divider {
+        padding-top: 7px;
+        padding-bottom: 7px;
+        font-weight: 700;
+      }
+    }
+    .compressed-item {
+        .item-content {
+          padding-top: 0px;
+          padding-bottom: 0px;
+        }
+      }
+  }
 }
 /* Style for modals in settings - contact us and FAQ */
 .settings-modal {

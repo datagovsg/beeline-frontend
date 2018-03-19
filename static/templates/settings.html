@@ -45,7 +45,7 @@
         Invite Friends
       </div> -->
       <div class="item item-divider">About {{o.APP.NAME}}</div>
-      <ion-item ui-sref='intro'>Quick Tour</ion-item>
+      <ion-item ui-sref='intro' class="compressed-item">Quick Tour</ion-item>
       <ion-item on-tap="faqModal.show()">FAQ</ion-item>
       <ion-item on-tap="showPrivacyPolicy()">Privacy Policy</ion-item>
       <ion-item on-tap="showTermsOfUse()">Terms of Use</ion-item>
@@ -53,7 +53,6 @@
       <div class="item" ng-show="hasCordova">
         Current Version <span class="item-note">{{data.currentVersion}}</span>
       </div>
-      <powered-by-beeline suggest-hide="true" power-hide="false" built-by-show="true"></powered-by-beeline>
     </div>
 
   </ion-content>
