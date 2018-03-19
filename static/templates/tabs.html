@@ -38,28 +38,23 @@ navigation history that also transitions its views in and out.
     <ion-side-menu side="left">
       <header class="bar bar-header bar-royal">
       </header>
-      <ion-content class="has-header" scroll="false">
-        <ion-list>
-          <!-- <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
-            <i class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp; Search Routes
-          </ion-item> -->
-          <ion-item menu-close ui-sref="tabs.yourRoutes" ui-sref-active="active" ng-if="disp.isLoggedIn">
-            <i class="fa fa-user fa-fw" aria-hidden="true"></i>&nbsp; Your Routes
-          </ion-item>
-          <ion-item menu-close ui-sref="tabs.tickets" ui-sref-active="active">
-            <i class="fa fa-ticket-alt fa-fw" aria-hidden="true"></i>&nbsp; Your Tickets
-          </ion-item>
-          <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
-            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; All Routes
-          </ion-item>
-          <ion-item menu-close ui-sref="tabs.settings" ui-sref-active="active">
-            <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
-          </ion-item>
-          <ion-item menu-close ng-if="!disp.isLoggedIn" ng-click="login()">
-            <i class="fa fa-sign-in-alt fa-fw" aria-hidden="true"></i>&nbsp; Log In
-          </ion-item>
-          <powered-by-beeline suggest-hide="true" power-hide="false" built-by-show="true"></powered-by-beeline>
-        </ion-list>
+      <ion-content class="has-header left-menu-column" scroll="false">
+        <a class="item" menu-close ui-sref="tabs.yourRoutes" ui-sref-active="active" ng-if="disp.isLoggedIn">
+          <i class="fa fa-user fa-fw" aria-hidden="true"></i>&nbsp; Your Routes
+        </a>
+        <a class="item" menu-close ui-sref="tabs.tickets" ui-sref-active="active">
+          <i class="fa fa-ticket-alt fa-fw" aria-hidden="true"></i>&nbsp; Your Tickets
+        </a>
+        <a class="item" menu-close ui-sref="tabs.routes" ui-sref-active="active">
+          <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; All Routes
+        </a>
+        <a class="item" menu-close ui-sref="tabs.settings" ui-sref-active="active">
+          <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
+        </a>
+        <a class="item" menu-close ng-if="!disp.isLoggedIn" ng-click="login()">
+          <i class="fa fa-sign-in-alt fa-fw" aria-hidden="true"></i>&nbsp; Log In
+        </a>
+        <powered-by-beeline class="powered-by-beeline" suggest-hide="true" power-hide="false" built-by-show="true"></powered-by-beeline>
       </ion-content>
     </ion-side-menu>
 
