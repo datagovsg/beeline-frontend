@@ -1,4 +1,4 @@
-<ion-view class="tickets" view-title="Trips">
+<ion-view class="tickets" view-title="Tickets">
   <ion-nav-buttons side="left">
     <menu-hamburger></menu-hamburger>
   </ion-nav-buttons>
@@ -8,7 +8,7 @@
                    ng-if="user">
     </ion-refresher>
 
-    <div class="item item-text-wrap no-tickets" ng-if="!user">
+    <div class="item item-text-wrap no-items" ng-if="!user">
       <img src="./img/bgTickets.svg">
       <h2>You are not logged in</h2>
       <p>Log in to see your upcoming trips!</p>
@@ -18,11 +18,12 @@
     </div>
 
     <!-- if no tickets -->
-    <div class="item item-text-wrap no-tickets"
+    <div class="item item-text-wrap no-items"
          ng-if="user &&
+                tickets.today &&
                 tickets.today.length === 0 &&
-                tickets.soon.length === 0 &&
-                liteRouteSubscriptions.length === 0">
+                tickets.soon &&
+                tickets.soon.length === 0">
       <div class="item item-text-wrap" ng-if="error">
         <i class="icon ion-alert-circled"></i>
         There was a problem fetching your tickets from the server.
@@ -41,8 +42,7 @@
     <div class="list"
          ng-if="user &&
                 tickets.today.length > 0 ||
-                tickets.soon.length > 0 ||
-                liteRouteSubscriptions.length > 0">
+                tickets.soon.length > 0" >
       <div class="item item-text-wrap" ng-if="error">
         <i class="icon ion-alert-circled"></i>
         There was a problem fetching your tickets from the server.
@@ -51,73 +51,23 @@
 
       <div ng-if="tickets.today.length > 0"
            class="item item-divider">Today's Trips</div>
-      <a ng-if="tickets.today.length > 0"
-         class="item item-icon-right"
+      <button ng-if="tickets.today.length > 0"
+         class="item item-icon-right full"
          ng-repeat="ticket in tickets.today"
-         ui-sref="tabs.ticket-detail({ ticketId: ticket.id })">
-        <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> {{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}
-        <i class="icon ion-ios-arrow-right icon-accessory"></i>
-      </a>
+         on-tap="popupTicketModal(ticket)">
+        <b>{{ ticket.boardStop.trip.route.label }}</b>
+        <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> <span class="time">{{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}</span>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </button>
       <div ng-if="tickets.soon.length > 0"
            class="item item-divider">Upcoming Trips</div>
       <a ng-if="tickets.soon.length > 0"
          class="item item-icon-right"
          ng-repeat="ticket in tickets.soon"
-         ui-sref="tabs.ticket-detail({ ticketId: ticket.id })">
+         ui-sref="popupTicketModal(ticket)">
+         <b>{{ ticket.boardStop.trip.route.label }}</b>
         <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> {{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}
-        <i class="icon ion-ios-arrow-right icon-accessory"></i>
-      </a>
-      <div ng-if="liteRouteSubscriptions.length > 0"
-           class="item item-divider">Routes You Are Tracking</div>
-      <a ng-if="liteRouteSubscriptions.length > 0"
-         class="item item-icon-right"
-         ng-repeat="subscription in liteRouteSubscriptions"
-         ui-sref="tabs.lite-route-tracker({ label: subscription.label })">
-        <route-item class="lite lite-tracked">
-          <route-item-bus-number>
-            {{ subscription.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ subscription.liteRoute.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ subscription.liteRoute.startTime | formatTime}}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ subscription.liteRoute.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ subscription.liteRoute.endTime | formatTime}}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ subscription.liteRoute.to }}
-          </route-item-end-location>
-          <route-item-additional-info>
-            <company-info-broker company-id="subscription.liteRoute.transportCompanyId"
-                                  company="companyInfo">
-            </company-info-broker>
-            <div class="icon-and-schedule">
-              <span class="icon-span company-logo">
-                <img class="mini-icon"
-                     ng-src="{{ subscription.liteRoute.transportCompanyId
-                       | miniCompanyLogo }}">
-              </span>
-              <span class="mini-info">
-                {{ companyInfo.name }}
-              </span>
-            </div>
-
-            <div class="icon-and-schedule">
-              <span class="icon-span">
-                <img class="mini-icon" src="img/icon_schedule.svg">
-              </span>
-              <span class="mini-info">
-                {{ subscription.liteRoute.schedule }}
-              </span>
-            </div>
-          </route-item-additional-info>
-        </route-item>
-        <i class="icon ion-ios-arrow-right icon-accessory"></i>
+        <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
     </div>
 

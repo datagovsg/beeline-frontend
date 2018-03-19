@@ -77,7 +77,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "da23f693ef48afbfd2a5469ab8deb9ad"
+    "hash": "a564860fc5717bc216524fa3d354d923"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -85,7 +85,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "d2ba39a6ccf63fab5a84e528428be516"
+    "hash": "b557a815071240943919f15b5c86944d"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -109,7 +109,7 @@
   },
   {
     "file": "grab.html",
-    "hash": "029fd329f06818ea0a2f11feeb01b836"
+    "hash": "3bcdcf1775b3b0d45ed9950a94027f8c"
   },
   {
     "file": "grab/android-chrome-144x144.png",
@@ -368,6 +368,14 @@
     "hash": "21c3539a5957405c2686961fbd699ef7"
   },
   {
+    "file": "img/icon_drop_off.svg",
+    "hash": "c5869a45aa24d1f96ee718f07ebbe7b8"
+  },
+  {
+    "file": "img/Icon_DropoffWShadow.svg",
+    "hash": "7d4465d1ea0a684ec5664bbd923b1b05"
+  },
+  {
     "file": "img/icon_kickstarter_activebid.svg",
     "hash": "113cbc6013124ec8d1a6cf69bf26238d"
   },
@@ -378,6 +386,22 @@
   {
     "file": "img/icon_kickstarter_timeleft.svg",
     "hash": "cd23e1ea1c0e70742678f119e5efd3ea"
+  },
+  {
+    "file": "img/icon_normal.svg",
+    "hash": "bece82174b8c91a8294de98709c91a15"
+  },
+  {
+    "file": "img/Icon_NormalWShadow.svg",
+    "hash": "ffa44fa4e71e8be195d675226dd43959"
+  },
+  {
+    "file": "img/icon_pickup.svg",
+    "hash": "5be7829d89f858b5764fb50dd61fcc9e"
+  },
+  {
+    "file": "img/Icon_PickupWShadow.svg",
+    "hash": "be6405611750417bf05a4957b93cd367"
   },
   {
     "file": "img/icon_schedule.svg",
@@ -438,6 +462,18 @@
   {
     "file": "img/logo.svg",
     "hash": "4b8f229990f1c12b70108c08b7d97860"
+  },
+  {
+    "file": "img/map/Icon_DropoffWShadow.svg",
+    "hash": "7d4465d1ea0a684ec5664bbd923b1b05"
+  },
+  {
+    "file": "img/map/Icon_NormalWShadow.svg",
+    "hash": "ffa44fa4e71e8be195d675226dd43959"
+  },
+  {
+    "file": "img/map/Icon_PickupWShadow.svg",
+    "hash": "be6405611750417bf05a4957b93cd367"
   },
   {
     "file": "img/map/MapRouteDropoffStop@2x.png",
@@ -596,10 +632,6 @@
     "hash": "bae792ee50886793958a08f17dfbac95"
   },
   {
-    "file": "img/sideMenu.gif",
-    "hash": "66f9ef2b80a5a299f158a332deb51466"
-  },
-  {
     "file": "img/TapToSelectMultipleDay.svg",
     "hash": "a9fb1f6ce5ee819124c536d1770052d7"
   },
@@ -625,7 +657,7 @@
   },
   {
     "file": "index.html",
-    "hash": "bd7e463f5676acdee9e4f24fdd81ac4d"
+    "hash": "8ad169bfa28a1d71323aec69faeb2af1"
   },
   {
     "file": "js/ng-cordova.min.js",
@@ -633,11 +665,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "39f7d22ef8eba673ac838e6bc0aa205b"
-  },
-  {
-    "file": "lib/beeline/bundle.js.map",
-    "hash": "c07fb7871126eaff007ff77e28db20ca"
+    "hash": "2e82f79b7295abac868bde6de37ed60d"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -921,7 +949,7 @@
   },
   {
     "file": "templates/booking-history.html",
-    "hash": "50174c77fa49947b052f6f4f6fcaa19e"
+    "hash": "ca2d73abc342b91e378fd8eb03cc7b15"
   },
   {
     "file": "templates/intro-slides.html",
@@ -929,15 +957,15 @@
   },
   {
     "file": "templates/kickstarter-commit.html",
-    "hash": "013508b220de843eb72484c697d7da1e"
+    "hash": "05a06ff93d23726693beb71f22611e96"
   },
   {
     "file": "templates/kickstarter-detail.html",
-    "hash": "f7f26ac76caa6a8e4fc231e61ef75302"
+    "hash": "614a137d966f48a6502cc6ee00d8a3ac"
   },
   {
     "file": "templates/kickstarter-recap.html",
-    "hash": "7d54abff9dceeecc398ba98ff5e33e8c"
+    "hash": "5d95c96d215a392b74b1377ec84ffd33"
   },
   {
     "file": "templates/kickstarter-stops.html",
@@ -945,11 +973,11 @@
   },
   {
     "file": "templates/kickstarter-summary.html",
-    "hash": "08ba08c288185bd698a1c886fa570e00"
+    "hash": "9ee29eb552d53e7e7aa2bf34bb12c7fd"
   },
   {
     "file": "templates/kickstarter.html",
-    "hash": "1496587ee645f175f90e8c201316d266"
+    "hash": "f0b05cec4125e8f9e7e1561a6b902ad5"
   },
   {
     "file": "templates/lite-tracker-more-info.html",
@@ -965,7 +993,7 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "5045a6a4df3b71e788e4e30489251d0e"
+    "hash": "fc336ff99c90ce74aa694b4f320b3ab6"
   },
   {
     "file": "templates/route-stops.html",
@@ -973,11 +1001,11 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "98f3c55a657535b229c2769f8e71a279"
+    "hash": "15996daf9a56f8ef39dbcfffe18bf036"
   },
   {
     "file": "templates/settings.html",
-    "hash": "fd9684db4cfe94c2ad222b9c41ca67ee"
+    "hash": "badd49512debf369acbf792159573611"
   },
   {
     "file": "templates/tab-booking-confirmation.html",
@@ -985,19 +1013,15 @@
   },
   {
     "file": "templates/tab-booking-dates.html",
-    "hash": "73ef0f5332e3394dc5d58841f996c7bb"
-  },
-  {
-    "file": "templates/tab-booking-stops.html",
-    "hash": "de6160691b4afab9f96dab693d7c815b"
+    "hash": "ec9c1c0bb597f342b84e11b16ef89d5d"
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "8d91d0e935796ae46b4b827ffbddb26a"
+    "hash": "7666b5e19599d21ed686117638a45801"
   },
   {
     "file": "templates/tab-lite-detail.html",
-    "hash": "36921b7e4aedb22ff6209f8146eb4a0c"
+    "hash": "26ba7111439ccb2a523058332f19c09e"
   },
   {
     "file": "templates/tab-lite-more-info.html",
@@ -1005,23 +1029,19 @@
   },
   {
     "file": "templates/tab-lite-tracker.html",
-    "hash": "8bc613937373c5159e4b9b941ae2487c"
+    "hash": "914e726ac5d513575bade987a12923db"
   },
   {
     "file": "templates/tabs.html",
-    "hash": "8308df8f8c0129196d9b631dbecbf98c"
+    "hash": "373fadc456c523065536cd585f64ee8c"
   },
   {
     "file": "templates/terms-of-use.html",
     "hash": "322d33e2e275cbd3fe01fe32a52b2023"
   },
   {
-    "file": "templates/ticket-detail.html",
-    "hash": "ba9c7d09b3f8b4dca8f8eaa170bc75ee"
-  },
-  {
     "file": "templates/tickets.html",
-    "hash": "3d0a6bdef8cf923e97100867a79f5b90"
+    "hash": "83a35879d98a1a95825c163c8bd0dd95"
   },
   {
     "file": "templates/welcome.html",

@@ -10,7 +10,10 @@ navigation history that also transitions its views in and out.
     <!-- Main content, usually <ion-nav-view> -->
     <ion-side-menu-content>
       <div class="left-pane">
-        <ion-nav-bar class="bar-royal">
+        <ion-nav-bar class="bar-light">
+          <ion-nav-back-button class="button button-clear back-button">
+            <i class="icon ion-ios-arrow-back"></i>
+          </ion-nav-back-button>
         </ion-nav-bar>
 
         <ion-nav-view name="menuContent"></ion-nav-view>
@@ -33,56 +36,25 @@ navigation history that also transitions its views in and out.
 
     <!-- Left menu -->
     <ion-side-menu side="left">
-      <header class="bar bar-header bar-stable">
+      <header class="bar bar-header bar-royal">
       </header>
-      <ion-content class="has-header">
-        <ion-list>
-          <!-- <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
-            <i class="fa fa-search fa-fw" aria-hidden="true"></i>&nbsp; Search Routes
-          </ion-item> -->
-          <ion-item menu-close ui-sref="tabs.tickets" ui-sref-active="active">
-            <i class="fa fa-ticket fa-fw" aria-hidden="true"></i>&nbsp; Tickets
-          </ion-item>
-          <ion-item menu-close ui-sref="tabs.routes" ui-sref-active="active">
-            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; All Routes
-          </ion-item>
-          <ion-item menu-close ui-sref="tabs.crowdstart" ui-sref-active="active">
-            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; Crowdstart Routes
-          </ion-item>
-          <!--My routes section  -->
-          <h2 class="item item-divider" ng-if="data.myBookingRoutes.length > 0 || data.myLiteRoutes.length > 0">My Routes</h2>
-          <ion-item  class="sub-list" ng-repeat="item in data.myBookingRoutes" menu-close  ng-if="data.myBookingRoutes.length > 0"
-            ui-sref="tabs.my-booking-routes({
-              routeId: item.id,
-              pickupStopId:  item.boardStopStopId,
-              dropoffStopId: item.alightStopStopId,
-            })"
-            ui-sref-active="active">
-            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
-          </ion-item>
-          <ion-item  class="sub-list" ng-repeat="item in data.myActivatedCrowdstartRoutes" menu-close  ng-if="data.myActivatedCrowdstartRoutes.length > 0"
-            ui-sref="tabs.my-booking-routes({
-              routeId: item.id
-            })"
-            ui-sref-active="active">
-            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
-          </ion-item>
-          <ion-item  class="sub-list" ng-repeat="item in data.myLiteRoutes" menu-close  ng-if="data.myLiteRoutes.length > 0"
-            ui-sref="tabs.my-lite-routes({
-              label: item.label
-            })"
-            ui-sref-active="active">
-            <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; {{item.label}}
-          </ion-item>
-          <ion-item menu-close ui-sref="tabs.settings" ui-sref-active="active">
-            <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
-          </ion-item>
-          <div class="item item-divider"></div>
-          <ion-item menu-close ng-if="!data.isLoggedIn" ng-click="login()">
-            <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>&nbsp; Log In
-          </ion-item>
-          <powered-by-beeline suggest-hide="true" power-hide="false" built-by-show="true"></powered-by-beeline>
-        </ion-list>
+      <ion-content class="has-header left-menu-column" scroll="false">
+        <a class="item" menu-close ui-sref="tabs.yourRoutes" ui-sref-active="active" ng-if="disp.isLoggedIn">
+          <i class="fa fa-user fa-fw" aria-hidden="true"></i>&nbsp; Your Routes
+        </a>
+        <a class="item" menu-close ui-sref="tabs.tickets" ui-sref-active="active">
+          <i class="fa fa-ticket-alt fa-fw" aria-hidden="true"></i>&nbsp; Your Tickets
+        </a>
+        <a class="item" menu-close ui-sref="tabs.routes" ui-sref-active="active">
+          <i class="fa fa-bus fa-fw" aria-hidden="true"></i>&nbsp; All Routes
+        </a>
+        <a class="item" menu-close ui-sref="tabs.settings" ui-sref-active="active">
+          <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
+        </a>
+        <a class="item" menu-close ng-if="!disp.isLoggedIn" ng-click="login()">
+          <i class="fa fa-sign-in-alt fa-fw" aria-hidden="true"></i>&nbsp; Log In
+        </a>
+        <powered-by-beeline class="powered-by-beeline" suggest-hide="true" power-hide="false" built-by-show="true"></powered-by-beeline>
       </ion-content>
     </ion-side-menu>
 

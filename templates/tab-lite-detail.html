@@ -1,13 +1,9 @@
-<ion-view on-touch="hideTooltip()" class="lite-detail page-with-map" view-title="Route Details">
+<ion-view on-touch="hideTooltip()" class="lite-detail page-with-map"
+  view-title="Route Details">
   <ion-nav-buttons side="left">
-    <button class="button button-clear back-button"
-       ui-sref="tabs.routes"
-       ng-if="!book.showSideMenu">
-       <i class="icon ion-ios-arrow-back"></i>
-    </button>
-    <menu-hamburger ng-if="book.showSideMenu"></menu-hamburger>
+    <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
   </ion-nav-buttons>
-  <ion-content scroll="false">
+  <ion-content scroll="true">
     <daily-trips-broker trip-label="book.route.label"
                  daily-trips="book.todayTrips">
     </daily-trips-broker>
@@ -33,33 +29,7 @@
           {{disp.statusMessages.trim()}}
         </div>
         <fake-progress-bar max="100" interval="100"></fake-progress-bar>
-        <route-item class="lite item"  ng-class="{'lite-tracked': book.isSubscribed}" hide-additional-info="!disp.showTooltip">
-          <route-item-bus-number>
-            {{ book.route.label }}
-          </route-item-bus-number>
-          <route-item-description>
-            {{ book.route.notes.description }}
-          </route-item-description>
-          <route-item-start-time>
-            {{ book.route.startTime | formatTime:true }}
-          </route-item-start-time>
-          <route-item-start-location>
-            {{ book.route.from }}
-          </route-item-start-location>
-          <route-item-end-time>
-            {{ book.route.endTime  | formatTime:true }}
-          </route-item-end-time>
-          <route-item-end-location>
-            {{ book.route.to }}
-          </route-item-end-location>
-          <route-item-additional-info>
-            <div class="corner-triangle">
-              <a>
-                <span class="tooltiptext"> Tracking Only Route </span>
-              </a>
-            </div>
-          </route-item-additional-info>
-        </route-item>
+        <lite-route class="item" route="book.route" is-subscribed="book.isSubscribed"></lite-route>
       </div>
 
       <company-info-broker company-id="book.route.transportCompanyId"
