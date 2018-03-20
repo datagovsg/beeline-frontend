@@ -1,78 +1,73 @@
-<ion-view id="pg_summary" view-title="Booking Summary">
+<ion-view id="pg_summary" view-title="Review Purchase">
   <ion-nav-buttons side="right">
     <button class="button button-clear"
        ui-sref="tabs.routes">
        <i class="icon ion-ios-close-outline"></i>
     </button>
   </ion-nav-buttons>
-  <ion-content>
+  <ion-content class="booking-summary">
     <ion-refresher pulling-text="Pull to refresh..."
                    on-refresh="refreshPrices()"
                    ng-if="user">
     </ion-refresher>
-    <!-- <div class="item item-text-wrap">
-      Please review the route and bus stop selections you have made for this booking.<br />
-      To change any of the selections, please click its corresponding <b>Edit</b> button.
-    </div> -->
 
     <section class="card">
-      <h3 class="item item-divider">
-        Selected Route
+      <h3 class="item card-title first">
+        Promo Code
       </h3>
-      <route-item class="item" hide-additional-info="true">
-        <route-item-bus-number>
-          {{ book.route.label }}
-        </route-item-bus-number>
-        <route-item-start-time>
-          {{book.boardStop.time | formatTime:true}}
-        </route-item-start-time>
-        <route-item-start-location>
-          <h4>Pick-up at</h4>
-          {{book.boardStop.stop.description}}<br/>
-          {{book.boardStop.stop.road}}<br/>
-          <br/>
-        </route-item-start-location>
-        <route-item-end-time>
-          {{book.alightStop.time | formatTime:true}}
-        </route-item-end-time>
-        <route-item-end-location>
-          <h4>Drop-off at</h4>
-          {{book.alightStop.stop.description}}<br/>
-          {{book.alightStop.stop.road}}<br/>
-          <br/>
-        </route-item-end-location>
-      </route-item>
 
+      <div class="promo-code item">
+        <input type="text"
+              class="button"
+              placeholder="Promo Code"
+              ng-model="book.promoCodeEntered">
+        </input>
+
+        <button class="button primary-button"
+                ng-click="enterPromoCode()">
+          Apply
+        </button>
+      </div>
+      <div class="text-center">
+        <ion-spinner ng-show="book.isVerifying"></ion-spinner>
+      </div>
+      <div class="text-center feedback">{{book.feedback}}</div>
+
+      <div class="item-divider"></div>
     </section>
 
 
     <section class="card">
-      <h3 class="item item-divider">
-        Selected Dates
+      <h3 class="item card-title">
+        Payment
       </h3>
       <price-calculator id="priceCalc" class="item" booking="book" price="book.price">
       </price-calculator>
-      <button class="button button-block button-outline button-royal" ng-hide="book.promoCode"
-              ng-click="promptPromoCode()">
-        Enter Promo Code
-      </button>
+      <div class="item-divider"></div>
     </section>
 
+
     <section class="card">
-      <h3 class="item item-divider">
-        Terms and Conditions of Service
-      </h3>
       <company-tnc company-id="book.route.transportCompanyId"
                    features="book.features"></company-tnc>
-      <ion-checkbox class="item item-text-wrap" ng-model="disp.termsChecked">
-        Yes, I have read and agree to the Terms and Conditions of Service.
-      </ion-checkbox>
-      <ion-checkbox
-        class="item item-text-wrap"
-        ng-model="disp.savePaymentChecked"
-        ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase">
-        Yes, I want to save this payment method for fast checkout in the future.
-      </ion-checkbox>
+
+      <div class="booking-checkbox">
+        <ion-checkbox class="checkbox-text item-text-wrap" ng-model="disp.termsChecked">
+          Yes, I have read and agree to the Booking Policy.
+        </ion-checkbox>
+      </div>
+      <div class="item-divider"></div>
+
+      <div ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase">
+        <div class="booking-checkbox">
+          <ion-checkbox
+            class="checkbox-text item-text-wrap"
+            ng-model="disp.savePaymentChecked">
+            Yes, I want to save this payment method for fast checkout in the future.
+          </ion-checkbox>
+        </div>
+        <div class="item-divider"></div>
+      </div>
     </section>
 
     <section class="item item-text-wrap"

@@ -1,76 +1,13 @@
 <div id="price-calculator">
-  <div><b>{{booking.selectedDates.length}} day(s)</b> were selected.</div>
-  <div class="item-subtitle">Selected Dates </div>
   <div ng-show="isCalculating" class="spinner-block">
     <ion-spinner></ion-spinner>
     Calculating prices...
   </div>
-  <table class="booking-info prices">
-    <thead>
-      <tr ng-if="booking.selectedDates.length != 0">
-        <th>Selected Dates</th>
-        <th>
-          Price per trip
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-if="booking.selectedDates.length == 0">
-        <td colspan="2">Please select your trip dates</td>
-      </tr>
-      <tr ng-if="errorMessage">
-        <td colspan="2" class="text-left">
-          <i class="icon ion-alert-circled padding-right"></i> {{errorMessage}}
-        </td>
-      </tr>
-      <tr ng-if="booking.selectedDates.length > 0" ng-repeat="pinfo in priceInfo.pricesPerTrip">
-        <td>
-          {{pinfo.startDate | date:'dd MMM (EEE)' : 'Z'}}
-          <div ng-if="pinfo.bookingInfo.notes" class="trd ip-notes">
-            <i class="ionicon ion-information-circled"></i> {{pinfo.bookingInfo.notes}}
-          </div>
-        </td>
-        <td>${{pinfo.price | number:2}}</td>
-      </tr>
-    </tbody>
-  </table>
 
-  <table class="booking-info prices" ng-if="booking.selectedDates.length > 0">
-    <tbody>
-      <tr>
-        <th>Total Trips</th>
-        <th>Total Amount</th>
-      </tr>
-      <tr>
-        <td>{{priceInfo.tripCount || 0}}</td>
-        <td>{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="promoCredits" ng-if="( (booking.route.ridesRemaining && booking.route.ridesRemaining > 0) ||
-      (userCredits && userCredits > 0) ||
-      (referralCredits && referralCredits > 0)
-    )">
-    <div class="item-subtitle">Credits and Route Pass</div>
-    <ul class="list">
-      <ion-toggle ng-model="booking.applyRoutePass" toggle-class="toggle-royal" ng-if="booking.route.ridesRemaining && booking.route.ridesRemaining > 0">
-        <span class="text-wrap">Use my Route Pass ({{ booking.route.ridesRemaining }} trips remaining)</span>
-      </ion-toggle>
-      <ion-toggle ng-model="booking.applyReferralCredits" toggle-class="toggle-royal" ng-if="referralCredits && referralCredits > 0">
-        <span class="text-wrap">Use my Welcome Credits ({{ referralCredits || 0 | currency}} remaining)</span>
-      </ion-toggle>
-      <ion-toggle ng-model="booking.applyCredits" toggle-class="toggle-royal" ng-if="userCredits && userCredits > 0">
-        <span class="text-wrap">Use my General Credits ({{ userCredits || 0 | currency}} remaining)</span>
-      </ion-toggle>
-    </ul>
-  </div>
-
-  <div class="item-subtitle">Amount to Pay </div>
   <table class="booking-info calculator" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
-        <td>Total Amount</td>
+        <td>{{booking.selectedDates.length}} Ticket{{ booking.selectedDates.length > 1 ? 's' : '' }}</td>
         <td class="right">{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.routePass && priceInfo.routePass.length > 0">
@@ -95,7 +32,7 @@
         <td class="right">{{(-credits.debit || 0) | currency}}</td>
       </tr>
       <tr>
-        <td class="total-sum" ><b>Total Amount Due</b></td>
+        <td class="total-sum left" ><b>Total</b></td>
         <td class="total-sum right"><b>{{ (priceInfo.totalDue || 0) | currency}}</b></td>
       </tr>
       <!-- FIXME: include vouchers, discounts here -->

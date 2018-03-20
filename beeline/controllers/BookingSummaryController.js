@@ -65,7 +65,6 @@ export default [
       promoCode: null,
       promoCodeEntered: null,
       feedback: null,
-      promoCodeIsValid: null,
       isVerifying: null,
       selectedDates: ($stateParams.selectedDates || "")
         .split(",")
@@ -134,10 +133,17 @@ export default [
       }
     })
 
-    $scope.$watch(
-      "book.promoCodeEntered",
-      _.debounce(verifyPromoCode, 800, { leading: false, trailing: true })
-    )
+    $scope.$watch("book.promoCodeEntered", () => {
+      if ($scope.book.promoCodeEntered && $scope.book.promoCodeEntered != "") {
+        $scope.book.feedback = ""
+      }
+    })
+
+    $scope.$watch("book.promoCode", () => {
+      if (!$scope.book.promoCode) {
+        $scope.book.feedback = ""
+      }
+    })
 
     // ------------------------------------------------------------------------
     // UI Hooks
@@ -186,52 +192,8 @@ export default [
       )
     }
 
-    $scope.promptPromoCode = async function() {
-      if ($scope.isLoggedIn) {
-        $scope.enterPromoCodePopup = $ionicPopup.show({
-          scope: $scope,
-          template: `
-            <label>
-              <input type="text"
-                    style="text-transform: uppercase"
-                    placeholder="PROMOCODE"
-                    ng-model="book.promoCodeEntered">
-              </input>
-            </label>
-            <div class="text-center">
-              <ion-spinner ng-show="book.isVerifying"></ion-spinner>
-            </div>
-            <div class="text-center"> {{book.feedback}}</div>
-          `,
-          title: "Enter Promo Code",
-          buttons: [
-            {
-              text: "Close",
-              onTap: function(e) {
-                $scope.book.feedback = null
-                $scope.book.promoCodeEntered = null
-              },
-            },
-            {
-              text: "Apply",
-              type: "button-positive",
-              onTap: function(e) {
-                e.preventDefault()
-                if ($scope.book.promoCodeIsValid) {
-                  $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
-                  $scope.book.feedback = $scope.book.promoCodeEntered = null
-                  $scope.enterPromoCodePopup.close()
-                }
-              },
-            },
-          ],
-        })
-      } else {
-        await $ionicPopup.alert({
-          title: "You need to log in before enter any promo code",
-        })
-        $scope.login()
-      }
+    $scope.enterPromoCode = function() {
+      verifyPromoCode()
     }
 
     // ------------------------------------------------------------------------
@@ -242,7 +204,7 @@ export default [
         $scope.book.promoCodeEntered === null ||
         !$scope.book.promoCodeEntered
       ) {
-        $scope.book.feedback = $scope.book.promoCodeEntered = $scope.book.promoCodeIsValid = null
+        $scope.book.feedback = $scope.book.promoCodeEntered = null
         $scope.$digest()
         return
       }
@@ -260,7 +222,8 @@ export default [
             $scope.book.lastestVerifyPromoCodePromise
           ) {
             $scope.book.feedback = "Valid"
-            $scope.book.promoCodeIsValid = true
+            $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
+            $scope.book.promoCodeEntered = null
           }
         })
         .catch(error => {
@@ -272,10 +235,10 @@ export default [
           ) {
             if (error.data && error.data.source === "promoCode") {
               $scope.book.feedback = error.data.message || "Invalid"
-              $scope.book.promoCodeIsValid = null
             } else {
               $scope.book.feedback = "Valid"
-              $scope.book.promoCodeIsValid = true
+              $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
+              $scope.book.promoCodeEntered = null
             }
           }
         })
