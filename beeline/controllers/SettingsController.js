@@ -20,6 +20,7 @@ export default [
   "$ionicLoading",
   "replace",
   "DevicePromise",
+  "p",
   function(
     $scope,
     UserService,
@@ -33,7 +34,8 @@ export default [
     loadingSpinner,
     $ionicLoading,
     replace,
-    DevicePromise
+    DevicePromise,
+    p
   ) {
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -43,8 +45,9 @@ export default [
       // For the contact us modal
       feedbackEmail:
         '<a ng-if="o.APP.NAME===\'Beeline\'" href="mailto:feedback@beeline.sg">feedback@beeline.sg</a>',
-      grabUrl:
-        '<a ng-if="o.APP.NAME===\'GrabShuttle\'" href="{{o.CONTACTS.URL}}">{{o.CONTACTS.URL}}</a>',
+      grabUrl: `<a ng-if="o.APP.NAME==='GrabShuttle'" href="${
+        p.CONTACTS.URL
+      }">${p.CONTACTS.URL}</a>`,
     }
     $scope.hasCordova = Boolean($window.cordova) || false
     $scope.isOnKickstarter = false
