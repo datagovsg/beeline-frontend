@@ -39,6 +39,13 @@ export default [
     // Data Initialization
     // ------------------------------------------------------------------------
     $scope.data = {}
+    $scope.contactus = {
+      // For the contact us modal
+      feedbackEmail:
+        '<a ng-if="o.APP.NAME===\'Beeline\'" href="mailto:feedback@beeline.sg">feedback@beeline.sg</a>',
+      grabUrl:
+        '<a ng-if="o.APP.NAME===\'GrabShuttle\'" href="{{o.CONTACTS.URL}}">{{o.CONTACTS.URL}}</a>',
+    }
     $scope.hasCordova = Boolean($window.cordova) || false
     $scope.isOnKickstarter = false
     let isPressed = false

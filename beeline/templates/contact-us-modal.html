@@ -11,8 +11,8 @@
           If you face any issues with the app or have suggestions that can help us improve {{o.APP.NAME}}, please contact us at:
         </p>
         <div ng-show="o.CONTACTS.PHONE">{{o.CONTACTS.PHONE}}</div>
-        <a ng-if="o.APP.NAME==='Beeline'" href="mailto:feedback@beeline.sg">feedback@beeline.sg</a>
-        <a ng-if="o.APP.NAME==='GrabShuttle'" href="{{o.CONTACTS.URL}}">{{o.CONTACTS.URL}}</a>
+        <div beeline-bind-html="contactus.feedbackEmail"></div>
+        <div beeline-bind-html="contactus.grabUrl"></div>
       </div>
     </ion-item>
   </ion-content>
