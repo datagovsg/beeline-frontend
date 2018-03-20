@@ -37,7 +37,6 @@
   >
     <kickstart-route route="route"></kickstart-route>
   </ion-item>
-  <powered-by-beeline></powered-by-beeline>
   <!-- No results found message -->
   <p
     ng-if="data.routes.length === 0 &&
@@ -48,4 +47,8 @@
   >
     Sorry, we could not find any routes matching "{{data.queryText}}".
   </p>
+  <div ng-hide="suggestHide" class="item">
+    Can't find a suitable route?</br>
+    <a href="#" ng-click="openSuggestionLink($event)">Suggest a new route</a>
+  </div>
 </div>

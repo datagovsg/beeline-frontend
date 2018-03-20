@@ -1,13 +1,9 @@
-<div class="item item-text-wrap text-center">
-  <div ng-hide="suggestHide">
-    Can't find a suitable route?</br>
-    <a href="#" ng-click="openSuggestionLink($event)">Suggest a new route</a>
-  </div>
-  <div class="powered-by" ng-hide="powerHide">
+<div class="item item-text-wrap">
+  <div class="section powered-by" ng-hide="powerHide">
     Powered by
     <img src="img/poweredbybeeline.svg" />
   </div>
-  <div class="built-by" ng-show="!transportCompanyId && builtByShow">
+  <div class="section built-by" ng-show="!transportCompanyId && builtByShow">
     <br>
     Built by
     <a href="#" ng-click="openLink($event, 'https://tech.gov.sg')">
