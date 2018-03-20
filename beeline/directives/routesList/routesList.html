@@ -47,4 +47,8 @@
   >
     Sorry, we could not find any routes matching "{{data.queryText}}".
   </p>
+  <div ng-hide="suggestHide" class="item">
+    Can't find a suitable route?</br>
+    <a href="#" ng-click="openSuggestionLink($event)">Suggest a new route</a>
+  </div>
 </div>

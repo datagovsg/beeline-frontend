@@ -10,10 +10,9 @@
         <p>
           If you face any issues with the app or have suggestions that can help us improve {{o.APP.NAME}}, please contact us at:
         </p>
-        <p class="text-center">
-          <div ng-show="o.CONTACTS.PHONE">{{o.CONTACTS.PHONE}}</div>
-          {{o.CONTACTS.EMAIL || "feedback@beeline.sg"}}
-        </p>
+        <div ng-show="o.CONTACTS.PHONE">{{o.CONTACTS.PHONE}}</div>
+        <div ng-if="o.APP.NAME==='Beeline'"><a href="mailto:feedback@beeline.sg">feedback@beeline.sg</a></div>
+        <div ng-if="o.APP.NAME==='GrabShuttle'"><a href="{{o.CONTACTS.URL}}">{{o.CONTACTS.URL}}</a></div>
       </div>
     </ion-item>
   </ion-content>
