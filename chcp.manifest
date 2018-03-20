@@ -77,7 +77,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "a564860fc5717bc216524fa3d354d923"
+    "hash": "be0f9a3d39bcd46707d23997bba06abf"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -85,7 +85,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "b557a815071240943919f15b5c86944d"
+    "hash": "a7b2c314826198dd0d81995be08bd069"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -665,7 +665,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "2e82f79b7295abac868bde6de37ed60d"
+    "hash": "7f0c9e14964079c22bfb2f925b229de9"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -1005,7 +1005,7 @@
   },
   {
     "file": "templates/settings.html",
-    "hash": "badd49512debf369acbf792159573611"
+    "hash": "fd9684db4cfe94c2ad222b9c41ca67ee"
   },
   {
     "file": "templates/tab-booking-confirmation.html",
@@ -1033,7 +1033,7 @@
   },
   {
     "file": "templates/tabs.html",
-    "hash": "373fadc456c523065536cd585f64ee8c"
+    "hash": "8d6027880c4cb5bb64c5155dda510e60"
   },
   {
     "file": "templates/terms-of-use.html",
