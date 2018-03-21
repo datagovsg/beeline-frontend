@@ -13,9 +13,6 @@ export default [
   "BookingService",
   "SearchEventService",
   "RequestService",
-  "Legalese",
-  "$rootScope",
-  "$ionicPopup",
   "$window",
   "OneMapPlaceService",
   "$ionicHistory",
@@ -37,9 +34,6 @@ export default [
     BookingService,
     SearchEventService,
     RequestService,
-    Legalese,
-    $rootScope,
-    $ionicPopup,
     $window,
     OneMapPlaceService,
     $ionicHistory,
@@ -482,40 +476,6 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    // show legal document update
-    // '2017-11-08' is the latest version
-    if (
-      $rootScope.o.APP.NAME == "Beeline" &&
-      !window.localStorage.viewedBeelineLegalDocumentVersion
-    ) {
-      let notesPopup = null
-
-      window.localStorage.viewedBeelineLegalDocumentVersion = "2017-11-08"
-      notesPopup = $ionicPopup.show({
-        title: "Beeline Notes",
-        template:
-          "Beeline <b>Privacy Policy</b> and <b>Terms of Use</b> are updated, please check them out.",
-        buttons: [
-          {
-            text: "Learn More",
-            type: "button-positive",
-            onTap: () => {
-              // display privacy policy and termsOfUse
-              // notesPopup is resolved when it's closed
-              notesPopup.then(() => {
-                Legalese.showPrivacyPolicy().then(() => {
-                  Legalese.showTermsOfUse()
-                })
-              })
-            },
-          },
-          {
-            text: "Ok",
-          },
-        ],
-      })
-    }
-
     // Manually pull the newest data from the server
     // Report any errors that happen
     // Note that theres no need to update the scope manually
