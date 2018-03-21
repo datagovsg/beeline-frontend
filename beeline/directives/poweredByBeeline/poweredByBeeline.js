@@ -1,5 +1,3 @@
-import querystring from "querystring"
-
 angular.module("beeline").directive("poweredByBeeline", [
   "$rootScope",
   "p",
@@ -14,15 +12,6 @@ angular.module("beeline").directive("poweredByBeeline", [
         builtByShow: "<?",
       },
       link: function(scope, elem, attr) {
-        scope.openSuggestionLink = function(event) {
-          event.preventDefault()
-          let appName = $rootScope.o.APP.NAME.replace(/\s/g, "")
-          window.open(
-            "https://www.beeline.sg/suggest.html#" +
-              querystring.stringify({ referrer: appName }),
-            "_system"
-          )
-        }
         scope.openLink = function(event, url) {
           event.preventDefault()
           window.open(url, "_system")
