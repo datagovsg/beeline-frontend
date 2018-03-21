@@ -1,4 +1,4 @@
-<ion-modal-view class="ticket-detail page-with-map">
+<ion-modal-view class="ticket-detail">
 
   <ion-header-bar class="bar-light bar bar-header">
     <h1 class="title">Ticket {{ticket.boardStop.time | date:'d MMM y' : '+0800'}}</h1>
@@ -92,9 +92,8 @@
               Not provided
             </div>
           </div>
-          <div class="col">
+          <div class="col col-50">
             <h4>Operated By</h4>
-            <!-- <span ng-bind="company.name"></span> -->
             <div class="company-info">
               <span class="icon-span company-logo">
                 <img class="mini-icon" ng-src="{{route.transportCompanyId | miniCompanyLogo}}">

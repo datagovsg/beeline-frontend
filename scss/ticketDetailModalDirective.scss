@@ -151,4 +151,11 @@ ticket-detail {
   a {
     margin-left: 8px;
   }
+  .mini-info {
+    // To truncate the company name
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 }
