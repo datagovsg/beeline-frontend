@@ -40,18 +40,12 @@
         <label>
           <ion-checkbox ng-model="book.pickWholeMonth">
             Select whole month
-          </ion-checkbox><!-- 
-          <input type="checkbox" ng-model="book.pickWholeMonth">
-            Select whole month
-          </input> -->
+          </ion-checkbox>
         </label>
       </div>
 
       <div><b>{{book.selectedDates.length}} day(s)</b> selected</div>
 
-    <!-- </div> -->
-
-    <!-- <div class="item"> -->
       <button class="button primary-button button-item" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.route-summary({
                 routeId: book.routeId,
                 boardStop: book.boardStopId,

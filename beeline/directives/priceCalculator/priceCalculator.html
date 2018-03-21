@@ -7,11 +7,11 @@
   <table class="booking-info calculator" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
-        <td>{{booking.selectedDates.length}} Ticket{{ booking.selectedDates.length > 1 ? 's' : '' }}</td>
+        <td>{{booking.selectedDates.length}} Ticket{{ booking.selectedDates.length > 1 ? 's' : '' }}{{booking.price ? ' x ' + (booking.price | currency) : ''}}</td>
         <td class="right">{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.routePass && priceInfo.routePass.length > 0">
-        <td>Route pass - Using {{ ridesUsed }} of {{ booking.route.ridesRemaining}} trips remaining</td>
+        <td>Using {{ ridesUsed }} route pass{{ ridesUsed > 1 ? 'es' : '' }}</td>
         <td class="right">{{totalRoutePassesUsed | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
