@@ -63,7 +63,7 @@ require("./directives/routeItem/routeItem")
 require("./directives/routeShare")
 require("./directives/searchInput")
 require("./directives/tripCode/tripCode")
-require("./directives/ticketDetail/ticketDetail")
+require("./directives/ticketDetailModal/ticketDetailModal")
 require("./directives/companyInfoBroker")
 require("./directives/menuHamburger")
 require("./directives/routesList/routesList")
@@ -178,10 +178,6 @@ app
     require("./controllers/TicketsController.js").default
   )
   .controller(
-    "TicketDetailController",
-    require("./controllers/TicketDetailController.js").default
-  )
-  .controller(
     "BookingHistoryController",
     require("./controllers/BookingHistoryController.js").default
   )
@@ -224,10 +220,6 @@ app
   .controller(
     "LiteMapViewController",
     require("./controllers/LiteMapViewController.js").default
-  )
-  .controller(
-    "TicketMapViewController",
-    require("./controllers/TicketMapViewController.js").default
   )
   .controller(
     "LiteDetailController",
@@ -426,10 +418,6 @@ app
       $templateCache.put(
         "templates/tickets.html",
         require("../www/templates/tickets.html")
-      )
-      $templateCache.put(
-        "templates/ticket-detail.html",
-        require("../www/templates/ticket-detail.html")
       )
       $templateCache.put(
         "templates/tab-booking-dates.html",

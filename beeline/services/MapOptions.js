@@ -8,7 +8,7 @@ angular.module("beeline").service("MapOptions", [
         markerOptions: {
           boardMarker: {
             icon: {
-              url: "img/map/MapRoutePickupStop@2x.png",
+              url: "img/map/Icon_PickupWShadow.svg",
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },
@@ -16,7 +16,7 @@ angular.module("beeline").service("MapOptions", [
           },
           alightMarker: {
             icon: {
-              url: "img/map/MapRouteDropoffStop@2x.png",
+              url: "img/map/Icon_DropoffWShadow.svg",
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },

@@ -148,20 +148,6 @@ export default [
         },
       })
 
-      .state("tabs.ticket-detail", {
-        url: "/tickets/:ticketId",
-        views: {
-          menuContent: {
-            templateUrl: "templates/ticket-detail.html",
-            controller: "TicketDetailController",
-          },
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "TicketMapViewController",
-          },
-        },
-      })
-
       .state("tabs.lite-route-tracker", {
         url: "/tickets/liteRoute/:label",
         views: {

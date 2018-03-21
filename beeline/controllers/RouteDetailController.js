@@ -1,12 +1,17 @@
+import ticketDetailModalTemplate from "../templates/ticket-detail-modal.html"
+
 export default [
   "$scope",
   "$state",
   "$stateParams",
   "$ionicLoading",
+  "$ionicModal",
   "$ionicPopup",
+  "$rootScope",
   "UserService",
   "RoutesService",
   "BookingService",
+  "CompanyService",
   "FastCheckoutService",
   "MapService",
   "TicketService",
@@ -17,10 +22,13 @@ export default [
     $state,
     $stateParams,
     $ionicLoading,
+    $ionicModal,
     $ionicPopup,
+    $rootScope,
     UserService,
     RoutesService,
     BookingService,
+    CompanyService,
     FastCheckoutService,
     MapService,
     TicketService,
@@ -57,8 +65,10 @@ export default [
       boardStopInvalid: null,
       alightStopInvalid: null,
       label: null,
-      showBooking: null,
       hasNextTripTicket: null,
+      route: null,
+      company: null,
+      maxDiscount: null,
     }
 
     $scope.disp = {
@@ -94,38 +104,20 @@ export default [
     $scope.$on("$ionicView.afterEnter", () => {
       $ionicLoading.show({
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-        hideOnStateChange: true,
-      })
-
-      // show booking after choosing stops even has ticket
-      $scope.$on("$stateChangeSuccess", function(
-        event,
-        toState,
-        toParams,
-        fromState,
-        fromParams
-      ) {
-        if (fromState && fromState.name == "tabs.route-stops") {
-          $scope.data.showBooking = true
-          $scope.activeTab = 0
-        }
       })
 
       let promises = Promise.all([
         FastCheckoutService.verify(routeId),
-        RoutesService.getRoute(routeId),
+        RoutesService.getRoute(routeId, true),
       ])
       promises
         .then(response => {
           $scope.data.nextTrip = response[0]
           $scope.data.hasNextTripTicket = $scope.data.nextTrip.hasNextTripTicket
-          if ($scope.data.showBooking) {
-            $scope.activeTab = 0
-          } else {
-            $scope.activeTab = $scope.data.hasNextTripTicket ? 1 : 0
-          }
+
           if ($scope.data.hasNextTripTicket) {
             $scope.data.nextTripTicketId = $scope.data.nextTrip.nextTripTicketId
+            $scope.disp.ticketDetailModal = initTicketModal()
             MapService.emit("ticketIdIsAvailable", $scope.data.nextTripTicketId)
             // to inform RouteDetail to start the ping loop
             $scope.$broadcast("enteringMyBookingRoute", {
@@ -136,6 +128,19 @@ export default [
             ts => ts.stop.id
           )
           let route = response[1]
+          $scope.data.route = route
+          CompanyService.getCompany(Number(route.transportCompanyId)).then(
+            company => {
+              $scope.data.company = company
+            }
+          )
+          RoutesService.fetchPriceSchedule(routeId).then(priceSchedules => {
+            $scope.data.maxDiscount = Math.max(
+              ...priceSchedules
+                .map(schedule => schedule.discount)
+                .filter(Boolean)
+            )
+          })
           $scope.data.label = route.label
           $ionicLoading.hide()
           // Grab the price data
@@ -205,8 +210,9 @@ export default [
       FastCheckoutService.buyMoreRoutePasses(routeId)
     }
 
-    $scope.toggle = function() {
-      $scope.activeTab = $scope.activeTab === 0 ? 1 : 0
+    $scope.viewTicket = () => {
+      $scope.disp.ticketDetailModal.show()
+      $scope.modalFunctions.recenterMap()
     }
 
     // ------------------------------------------------------------------------
@@ -264,5 +270,21 @@ export default [
         }
       }
     })
+
+    // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    function initTicketModal() {
+      let scope = $rootScope.$new()
+      scope.ticketId = $scope.data.nextTripTicketId
+      scope.functions = {}
+      $scope.modalFunctions = scope.functions
+      let modal = $ionicModal.fromTemplate(ticketDetailModalTemplate, {
+        scope: scope,
+        animation: "slide-in-up",
+      })
+      scope.modal = modal
+      return modal
+    }
   },
 ]
