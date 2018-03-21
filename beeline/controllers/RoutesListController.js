@@ -1,10 +1,12 @@
 import _ from "lodash"
 import { sleep } from "../shared/util"
+import querystring from "querystring"
 
 export default [
   "$scope",
   "$q",
   "$state",
+  "$rootScope",
   "RoutesService",
   "KickstarterService",
   "LiteRoutesService",
@@ -24,6 +26,7 @@ export default [
     $scope,
     $q,
     $state,
+    $rootScope,
     // Route Information
     RoutesService,
     KickstarterService,
@@ -525,6 +528,16 @@ export default [
         $scope.data.backedCrowdstartRoutes.length === 0 &&
         $scope.data.routesYouMayLike &&
         $scope.data.routesYouMayLike.length === 0
+      )
+    }
+
+    $scope.openSuggestionLink = function(event) {
+      event.preventDefault()
+      let appName = $rootScope.o.APP.NAME.replace(/\s/g, "")
+      window.open(
+        "https://www.beeline.sg/suggest.html#" +
+          querystring.stringify({ referrer: appName }),
+        "_system"
       )
     }
 
