@@ -221,7 +221,7 @@ export default [
             currentVerifyPromoCodePromise ===
             $scope.book.lastestVerifyPromoCodePromise
           ) {
-            $scope.book.feedback = "Valid"
+            $scope.book.feedback = "" // if valid, no feedback required
             $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
             $scope.book.promoCodeEntered = null
           }
@@ -236,7 +236,7 @@ export default [
             if (error.data && error.data.source === "promoCode") {
               $scope.book.feedback = error.data.message || "Invalid"
             } else {
-              $scope.book.feedback = "Valid"
+              $scope.book.feedback = "" // if valid, no feedback required
               $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
               $scope.book.promoCodeEntered = null
             }

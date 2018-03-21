@@ -17,8 +17,8 @@
     }
 
     .booking-checkbox {
-      padding-top: 20px;
-      padding-bottom: 20px;
+      padding-top: 6px;
+      padding-bottom: 6px;
 
       .checkbox-text {
         padding-left: 50px;
@@ -29,8 +29,13 @@
     }
 
     .booking-policy {
-      color: $royal;
-      text-decoration: underline;
+      border-top: solid 1px $light-grey;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+
+    .notes-list {
+      padding-bottom: 20px;
     }
 
     .bus-logo {
@@ -53,6 +58,7 @@
         -webkit-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
         -moz-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
         box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+        -webkit-appearance: none; // required to get box shadow on ios
         background-color: transparent;
         text-align: left;
         min-height: 40px;

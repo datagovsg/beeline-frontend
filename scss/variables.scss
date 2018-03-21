@@ -45,7 +45,7 @@ $master-width: 300px; // Master-detail view parameters
 // // Colors
 // // -------------------------------
 
-// $light:                           #fff !default;
+$light:                           #fff !default;
 // $stable:                          #f8f8f8 !default;
 // $positive:                        #387ef5 !default;
 // $calm:                            #11c1f3 !default;
@@ -192,7 +192,7 @@ $button-border-radius:            30px;
 // $button-balanced-active-border:   darken($balanced, 10%) !default;
 
 // $button-energized-bg:             $energized !default;
-$button-energized-text:           $dark;
+$button-energized-text:           $light;
 // $button-energized-border:         darken($energized, 5%) !default;
 // $button-energized-active-bg:      darken($energized, 5%) !default;
 // $button-energized-active-border:  darken($energized, 5%) !default;

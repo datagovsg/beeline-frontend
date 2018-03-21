@@ -51,13 +51,13 @@
         <div class="item item-icon-left item-icon-right boardStopSelector stopSelector" on-tap="choosePickup()">
           <i class="icon pickup-stop"></i>
           <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
-          <span ng-model="data.pickupStop" ng-bind="data.pickupStop.description" ng-required="true"></span>
+          <span ng-show="data.pickupStop" ng-model="data.pickupStop" ng-bind="(data.pickupStop.time|formatTime) + ' - ' + data.pickupStop.description" ng-required="true"></span>
           <i class="icon ion-ios-arrow-right arrow-icon"></i>
         </div>
         <div class="item item-icon-left item-icon-right alightStopSelector stopSelector" on-tap="chooseDropoff()">
           <i class="icon dropoff-stop"></i>
           <span class="placeholder" ng-hide="data.dropoffStop">Select dropoff stop</span>
-          <span ng-model="data.dropoffStop" ng-bind="data.dropoffStop.description" ng-required="true"></span>
+          <span ng-show="data.dropoffStop" ng-model="data.dropoffStop" ng-bind="(data.dropoffStop.time|formatTime) + ' - ' + data.dropoffStop.description" ng-required="true"></span>
           <i class="icon ion-ios-arrow-right arrow-icon"></i>
         </div>
       </form>
