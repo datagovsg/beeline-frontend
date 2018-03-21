@@ -7,7 +7,7 @@
   <table class="booking-info calculator" ng-if="booking.selectedDates.length > 0">
     <tbody>
       <tr>
-        <td>{{booking.selectedDates.length}} Ticket{{ booking.selectedDates.length > 1 ? 's' : '' }}{{booking.price ? ' x ' + (booking.price | currency) : ''}}</td>
+        <td>{{booking.selectedDates.length}} Ticket{{ booking.selectedDates.length > 1 ? 's' : '' }}{{pricePerTrip ? ' x $' + pricePerTrip : ''}}</td>
         <td class="right">{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.routePass && priceInfo.routePass.length > 0">

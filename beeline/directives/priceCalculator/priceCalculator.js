@@ -84,6 +84,7 @@ angular.module("beeline").directive("priceCalculator", [
             $scope.priceInfo.pricesPerTrip = BookingService.summarizePrices(
               $scope.booking
             )
+            $scope.pricePerTrip = $scope.priceInfo.pricesPerTrip[0].price
 
             $scope.isCalculating++
             let promise = BookingService.computePriceInfo($scope.booking)
