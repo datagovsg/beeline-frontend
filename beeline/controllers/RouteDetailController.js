@@ -68,7 +68,6 @@ export default [
       hasNextTripTicket: null,
       route: null,
       company: null,
-      maxDiscount: null,
     }
 
     $scope.disp = {
@@ -134,13 +133,7 @@ export default [
               $scope.data.company = company
             }
           )
-          RoutesService.fetchPriceSchedule(routeId).then(priceSchedules => {
-            $scope.data.maxDiscount = Math.max(
-              ...priceSchedules
-                .map(schedule => schedule.discount)
-                .filter(Boolean)
-            )
-          })
+
           $scope.data.label = route.label
           $ionicLoading.hide()
           // Grab the price data
