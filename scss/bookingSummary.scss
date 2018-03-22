@@ -21,9 +21,11 @@
       padding-bottom: 6px;
 
       .checkbox-text {
-        padding-left: 50px;
-        .item-checkbox .checkbox {
-          right: initial;
+        padding-left: 40px;
+        .checkbox {
+          padding-left: 0px;
+          padding-right: 0px;
+          left: 0px;
         }
       }
     }
