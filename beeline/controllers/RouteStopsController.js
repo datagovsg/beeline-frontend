@@ -1,6 +1,7 @@
 export default [
   "$scope",
   "$stateParams",
+  "$timeout",
   "$ionicHistory",
   "$ionicLoading",
   "$ionicPopup",
@@ -11,6 +12,7 @@ export default [
   function(
     $scope,
     $stateParams,
+    $timeout,
     $ionicHistory,
     $ionicLoading,
     $ionicPopup,
@@ -33,11 +35,9 @@ export default [
     $scope.data = {
       stops: null, // array of stop objects
       selectedStop: null, // stop object
+      type, // used for nav-title
     }
 
-    // ------------------------------------------------------------------------
-    // Data Initialization
-    // ------------------------------------------------------------------------
     RoutesService.getRoute(routeId)
       .then(route => {
         // Load the stops data into the view
@@ -51,7 +51,11 @@ export default [
         }
         // Scroll to the selected stop if we have one
         $ionicScrollDelegate.resize()
-        $ionicLoading.hide()
+
+        // Make animation slightly longer
+        $timeout(() => {
+          $ionicLoading.hide()
+        }, 400)
       })
       .catch(error => {
         // On error close out
@@ -82,7 +86,6 @@ export default [
     $ionicLoading.show({
       template: `<ion-spinner icon='crescent'></ion-spinner>\
         <br/><small>Loading stop information</small>`,
-      hideOnStateChange: true,
     })
 
     $scope.selectStop = stop => {
