@@ -7,6 +7,7 @@ trip-code {
   display: block;
   padding-bottom: $item-padding-base*3;
   left: 45px;
+  pointer-events: none;
 
   .ch.shrink {
     // font-size: 80%;

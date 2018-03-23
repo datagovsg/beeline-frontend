@@ -22,11 +22,11 @@ ticket-detail {
   border-radius: 8px;
 
   @media (max-width: 1023px) {
-    height: 98%;
-    min-height: 98%;
+    height: 94%;
+    min-height: 94%;
     width: 96%;
     left: 2%;
-    top: 1%;
+    top: 3%;
   }
 }
 
@@ -110,6 +110,7 @@ ticket-detail {
     background: $normal-grey;
     color: white;
     text-align: center;
+    width: 70%;
   }
   .trip-code-block {
     background: $royal;
