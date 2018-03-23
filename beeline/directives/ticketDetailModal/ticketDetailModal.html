@@ -93,28 +93,14 @@
             </div>
           </div>
           <div class="col col-50">
-            <h4>Operated By</h4>
+            <h4>Trip Code</h4>
             <div class="company-info">
-              <span class="icon-span company-logo">
-                <img class="mini-icon" ng-src="{{route.transportCompanyId | miniCompanyLogo}}">
-              </span>
               <span class="mini-info">
-                {{company.name}}
+                <trip-code class="trip-code" code="tripCode"/>
               </span>
               <a ng-click="showTerms(company.id)"><i class="icon ion-information-circled tnc"></i></a>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="trip-code-block" ng-if="disp.tripStatus !== 'cancelled'">
-      <h5>Trip Code </h5>
-      <div>
-        <div ng-if="!tripCode">
-          Not available
-        </div>
-        <div ng-if="tripCode">
-          <trip-code class="trip-code" code="tripCode"/>
         </div>
       </div>
     </div>
