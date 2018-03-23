@@ -22,11 +22,11 @@ ticket-detail {
   border-radius: 8px;
 
   @media (max-width: 1023px) {
-    height: 90%;
-    min-height: 90%;
-    width: 90%;
-    left: 5%;
-    top: 5%;
+    height: 98%;
+    min-height: 98%;
+    width: 96%;
+    left: 2%;
+    top: 1%;
   }
 }
 
@@ -88,6 +88,10 @@ ticket-detail {
   .route-item {
     width: 100%;
 
+    .stops {
+      margin-top: 0px;
+    }
+
     .alight-stop-info {
       margin-top: 10px;
       margin-bottom: 10px;
@@ -148,14 +152,11 @@ ticket-detail {
 
 .company-info {
   display: flex;
+  padding-top: 6px;
   a {
     margin-left: 8px;
   }
   .mini-info {
-    // To truncate the company name
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    width: 80%;
   }
 }
