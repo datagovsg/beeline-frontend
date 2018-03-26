@@ -58,7 +58,7 @@
     ng-repeat="route in data.backedCrowdstartRoutes | limitTo:10 track by route.id"
     ng-if="data.backedCrowdstartRoutes.length > 0"
     class="item-text-wrap"
-    ui-sref="tabs.crowdstart-recap({ routeId: route.id })">
+    ui-sref="tabs.crowdstart-detail({ routeId: route.id })">
     <kickstart-route route="route"></kickstart-route>
   </ion-item>
   <!-- Route you may like -->

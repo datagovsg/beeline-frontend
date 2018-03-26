@@ -8,6 +8,8 @@ angular.module("beeline").directive("companyTnc", [
       scope: {
         companyId: "=",
         features: "=",
+        operatedHide: "<?",
+        notesHide: "<?",
       },
       link: function(scope, elem, attr) {
         scope.company = {}

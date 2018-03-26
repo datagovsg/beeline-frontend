@@ -8,6 +8,11 @@
   text-transform: uppercase;
   font-size: $font-size-small;
   font-weight: 400;
+  min-height: 8px;
+
+  &.no-text {
+    padding: 0px;
+  }
 }
 
 .scroll-content {
@@ -483,4 +488,8 @@ textarea{
 
 .bar .title {
   text-transform: uppercase;
+}
+
+.float-right {
+  float: right;
 }

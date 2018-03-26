@@ -333,6 +333,24 @@ angular.module("beeline").service("KickstarterService", [
         })
       },
 
+      deleteBid: async function(route) {
+        let user = UserService.getUser()
+        if (!user) return
+
+        let userBids = route.bids.filter(bid => bid.userId === user.id)
+
+        if (!userBids || userBids.length !== 1) return
+
+        let bidId = userBids[0].id
+
+        return RequestService.beeline({
+          method: "DELETE",
+          url: `/crowdstart/routes/${route.id}/bids/${bidId}`,
+        }).then(response => {
+          return response.data
+        })
+      },
+
       getNearbyKickstarterIds: () => {
         return nearbyKickstarterRoutesById
       },

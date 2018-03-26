@@ -328,15 +328,19 @@ export default [
       ([routes, bids, placeQuery]) => {
         if (!routes || !bids) return
 
+        // Filter out the expired routes
+        routes = routes.filter(route => !route.isExpired)
+
         // Filter out the routes the user bidded on
         // These are already shown elsewhere
         let biddedRouteIds = bids.map(bid => bid.routeId)
+
+        // Filter out routes that have already been bidded on
         routes = routes.filter(route => {
-          return !biddedRouteIds.includes(route.id.toString())
+          return !biddedRouteIds.includes(route.id)
         })
-        // Filter out the expired routes
-        routes = routes.filter(route => !route.isExpired)
-        // Filter the routes
+
+        // Filter the routes by search query
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
           routes = SearchService.filterRoutesByPlaceAndText(
             routes,

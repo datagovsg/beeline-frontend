@@ -1,11 +1,40 @@
 
 <div class="kickstarter-info">
+  <div class="kickstart-info-content" ng-hide="contentHide">
+    <p>
+     This route will activate when <strong>{{route.notes.tier[0].pax}} people</strong>
+     pre-order this Route Pass by <strong>{{route.notes.crowdstartExpiry | date:'dd MMM yy' : '+0800'}}</strong>.
+   </p>
+   <p ng-if="!route.daysLeft">This campaign has ended.</p>
+   
+   <p>
+     <strong>If the route is not activated</strong>,
+   </p>
+   <ul>
+     <li>
+       No charges will be made to your card
+     </li>
+   </ul>
+
+   <p>
+     <strong>If route is activated</strong>,
+     <ul >
+       <li>
+         ${{route.notes.noPasses*route.notes.tier[0].price | number: 2}} will be charged to your card
+       </li>
+       <li>
+         You will receive this pass
+       </li>
+     </ul>
+   </p>
+   
+  </div>
+
   <div class="preorder-pass" ng-hide="passHide">
     <div class="route-pass-header">
-      <h3>Route Pass</h3>
+      <h3>{{route.label}} Route Pass</h3>
     </div>
     <div class="route-pass-body">
-      {{route.label}}
 
       <h1>{{route.notes.noPasses}}</h1>
       <h4>trips</h4>
@@ -30,53 +59,11 @@
           </tr>
         </table>
       <p class="pass-condition">
-        If activated, Route Pass will be valid
+        Valid for booking any <strong>{{route.notes.noPasses}} trips</strong> of the activated route till <strong>{{route.trips[0].date | date:'dd MMM yyyy' : 'Z'}}</strong>
       </p>
-      <table>
-        <tr>
-          <td class="label">
-            From
-          </td>
-          <td>
-            <strong>{{route.trips[0].date | date:'dd MMM yyyy' : 'Z'}} ({{route.trips[0].date | date:'EEE' : 'Z'}})</strong>
-          </td>
-        </tr>
-      </table>
-        <p>For any {{route.notes.noPasses}} trips happening in the 1st  month of the activated route. Operates Mon-Fri, except Public Holidays. </p>
       </div>
     </div>
   </div>
-  <div class="kickstart-info-content" ng-hide="contentHide">
-    <p>
-     This route will activate when <strong>{{route.notes.tier[0].pax}} people</strong>
-     pre-order this Route Pass by <strong>{{route.notes.crowdstartExpiry | date:'dd MMM yy' : '+0800'}}</strong>.
-   </p>
-   <p ng-if="!route.daysLeft">This campaign has ended.</p>
-   <p>
-     If route is <strong>activated</strong>,
-     <ul >
-       <li>
-         Beeline will process the payment.
-       </li>
-       <li>
-         You will receive the Route Pass within a week.
-       </li>
-       <li>
-         Use the pass to <strong>book any {{route.notes.noPasses}} trips</strong>
-       </li>
-       <li>
-         Valid for the 1st month of the activated route.
-       </li>
-     </ul>
-   </p>
-   <p>
-     If route is <strong>not activated</strong>,
-   </p>
-   <ul>
-     <li>
-       Payment will not be processed.
-     </li>
-   </ul>
-  </div>
+
   <p ng-if="route.notes.tier[0].count >= route.notes.tier[0].pax && route.daysLeft" ng-hide="preorderHide">You can still pre-order even though enough people has pre-ordered to activate this route.</p>
 </div>

@@ -1,5 +1,5 @@
-<section class="card">
-  <h3 class="item card-title">Operated By:</h3>
+<section class="card" ng-hide="operatedHide">
+  <h3 class="item card-title">Operated By</h3>
 
   <div class="item">
     <div class="row">
@@ -12,10 +12,10 @@
       </div>
     </div>
   </div>
-  <div class="item-divider"></div>
+  <div class="item-divider no-text"></div>
 </section>
 
-<section class="card">
+<section class="card" ng-hide="notesHide">
   <h3 class="item card-title">Important Notes</h3>
   <div class="item item-text-wrap features notes-list" beeline-bind-html="features"></div>
 
@@ -23,5 +23,5 @@
     Booking Policy
     <i class="icon ion-ios-arrow-right"></i>
   </div>
-  <div class="item-divider"></div>
+  <div class="item-divider no-text"></div>
 </section>
