@@ -19,6 +19,11 @@
   </route-item-end-location>
   <route-item-additional-info>
 
+    <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price"
+      pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded"
+      ng-if="!route.isConverted">
+    </progress-bar>
+
     <company-info-broker company-id="route.transportCompanyId"
                           company="companyInfo">
     </company-info-broker>
@@ -53,11 +58,6 @@
           Route starts on {{route.trips[0].date | date:'dd MMM yyyy' : 'Z'}} if activated
         </span>
     </div>
-
-    <progress-bar backer1="route.notes.tier[0].count " price1="route.notes.tier[0].price"
-      pax1="route.notes.tier[0].pax" needed="route.notes.tier[0].moreNeeded"
-      ng-if="!route.isConverted">
-    </progress-bar>
 
     <div class="icon-and-schedule item-text-wrap">
       <span class="icon-span">

@@ -28,6 +28,7 @@ export default [
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
     let bidPrice = $stateParams.bidPrice ? Number($stateParams.bidPrice) : null
+    let bidded = $stateParams.bidded ? Boolean($stateParams.bidded) : null
 
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -50,6 +51,9 @@ export default [
       hasCreditInfo: false,
       brand: null,
       last4Digtis: null,
+    }
+    $scope.disp = {
+      bidded,
     }
 
     $scope.book.routeId = routeId
@@ -97,6 +101,21 @@ export default [
             }
           )
         }
+      }
+    )
+
+    // Figure out if user has bidded on this crowdstart route
+    $scope.$watchGroup(
+      [
+        () => UserService.getUser(),
+        () => KickstarterService.getCrowdstartById($scope.book.routeId),
+      ],
+      ([user, route]) => {
+        if (!user || !route) return
+
+        // Figure out if user has bidded on this crowdstart route
+        let userIds = route.bids.map(bid => bid.userId)
+        $scope.disp.bidded = userIds.includes(user.id)
       }
     )
 
@@ -185,6 +204,53 @@ export default [
         throw new Error(
           `Error saving credit card details. ${_.get(error, "data.message")}`
         )
+      }
+    }
+
+    // Popup to confirm withdrawal from crowdstart
+    $scope.popupWithdraw = async function() {
+      if (!$scope.disp.bidded) {
+        await $ionicPopup.alert({
+          title: "Error withdrawing from route",
+          template: `
+          <div> You do not have an active bid for this route.</div>
+          `,
+        })
+        return
+      }
+
+      const response = await $ionicPopup.confirm({
+        title: "Are you sure you want to withdraw?",
+      })
+
+      if (!response) return
+
+      try {
+        let response = await KickstarterService.deleteBid($scope.book.route)
+
+        // If not withdrawn, means failed
+        if (response.status !== "withdrawn") {
+          await $ionicPopup.alert({
+            title: "Error withdrawing from route",
+            template: `
+            <div> There was an error withdrawing from the route. Please try again later.</div>
+            `,
+          })
+        } else {
+          await $ionicPopup.alert({
+            title:
+              "The pre-order of your route pass has been withdrawn. No charges will be made to your card.",
+          })
+          $state.go("tabs.routes")
+        }
+      } catch (err) {
+        await $ionicPopup.alert({
+          title: "Error withdrawing from route",
+          template: `
+          <div> There was an error withdrawing from the route. \
+          ${err && err.data && err.data.message} Please try again later.</div>
+          `,
+        })
       }
     }
   },

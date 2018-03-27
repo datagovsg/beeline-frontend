@@ -5,6 +5,8 @@ export default [
   "$state",
   "$stateParams",
   "BookingService",
+  "CompanyService",
+  "UserService",
   "KickstarterService",
   "$ionicHistory",
   function(
@@ -12,6 +14,8 @@ export default [
     $state,
     $stateParams,
     BookingService,
+    CompanyService,
+    UserService,
     KickstarterService,
     $ionicHistory
   ) {
@@ -36,6 +40,7 @@ export default [
 
     $scope.disp = {
       showHamburger: null,
+      bidded: null,
     }
 
     // ------------------------------------------------------------------------
@@ -63,6 +68,24 @@ export default [
           $scope.book.alightStops,
         ] = BookingService.getStopsFromTrips($scope.book.route.trips)
         $scope.busStops = $scope.book.boardStops.concat($scope.book.alightStops)
+
+        CompanyService.getCompany(route.transportCompanyId).then(company => {
+          $scope.disp.company = company
+        })
+      }
+    )
+
+    $scope.$watchGroup(
+      [
+        () => UserService.getUser(),
+        () => KickstarterService.getCrowdstartById($scope.book.routeId),
+      ],
+      ([user, route]) => {
+        if (!user || !route) return
+
+        // Figure out if user has bidded on this crowdstart route
+        let userIds = route.bids.map(bid => bid.userId)
+        $scope.disp.bidded = userIds.includes(user.id)
       }
     )
 

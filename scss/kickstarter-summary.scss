@@ -10,19 +10,46 @@
     margin-top: $padding-large-vertical*2;
     margin-bottom: $padding-large-vertical*2;
   }
+  .booking-summary {
+    .card {
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+      .card-title {
+        &.first {
+          -webkit-box-shadow: inset 0px 2px 1px 0px rgba(0,0,0,0.1);
+          -moz-box-shadow: inset 0px 2px 1px 0px rgba(0,0,0,0.1);
+          box-shadow: inset 0px 2px 1px 0px rgba(0,0,0,0.1);
+        }
+      }
+    }
+  }
 
   .booking-info {
-    margin-top: $padding-large-vertical;
-    margin-bottom: $padding-large-vertical*3;
     td {
       text-align: left;
-      &.total-sum{
-        background-color: $table-header-bg;
-        border-top: solid $table-header-border-width $royal !important;
-      }
       &.right{
         text-align: right;
       }
+    }
+  }
+
+  .checkTerms {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .item-no-title {
+    padding-top: 24px;
+  }
+
+  .withdraw-item {
+    padding-top: 24px;
+
+    button {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      min-height: 20px;
     }
   }
 

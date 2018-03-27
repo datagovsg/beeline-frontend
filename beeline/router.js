@@ -215,7 +215,7 @@ export default [
       })
 
       .state("tabs.crowdstart-summary", {
-        url: "/crowdstart/:routeId/summary?bidPrice",
+        url: "/crowdstart/:routeId/summary?bidPrice&bidded",
         views: {
           menuContent: {
             templateUrl: "templates/kickstarter-summary.html",

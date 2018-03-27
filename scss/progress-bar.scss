@@ -1,9 +1,8 @@
 /* variables */
-$progress-bar-height: 8px;
+$progress-bar-height: 6px;
 $progress-bar-border-radius: 10px;
 $milestone-border: $progress-bar-height/1.2;
-$milestone-center: 20px;
-$milestone-size: $milestone-border + $milestone-center;
+$milestone-size: $milestone-border + $progress-bar-height;
 $milestone-offset: $milestone-size/2;
 $start-size: 16px;
 
@@ -21,9 +20,18 @@ $kickstarter-default: lighten($normal-grey,40%);
 .progress-bar {
   display: inline-block;
   width: 90%;
-  margin-top: $padding-large-vertical*3;
+  margin-top: $padding-large-vertical;
   text-align: left;
   margin-left: $start-size/2;
+
+  .backer-numbers {
+    text-align: center;
+    padding-bottom: 10px;
+
+    span {
+      padding-left: 6px;
+    }
+  }
 }
 
 /* bar default */

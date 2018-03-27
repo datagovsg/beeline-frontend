@@ -1,10 +1,4 @@
 <ion-view id="pg_summary" view-title="Review Purchase">
-  <ion-nav-buttons side="right">
-    <button class="button button-clear"
-       ui-sref="tabs.routes">
-       <i class="icon ion-ios-close-outline"></i>
-    </button>
-  </ion-nav-buttons>
   <ion-content class="booking-summary">
     <ion-refresher pulling-text="Pull to refresh..."
                    on-refresh="refreshPrices()"
@@ -33,7 +27,7 @@
       </div>
       <div class="item feedback">{{book.feedback}}</div>
 
-      <div class="item-divider"></div>
+      <div class="item-divider no-text"></div>
     </section>
 
 
@@ -43,7 +37,7 @@
       </h3>
       <price-calculator id="priceCalc" class="item" booking="book" price="book.price">
       </price-calculator>
-      <div class="item-divider"></div>
+      <div class="item-divider no-text"></div>
     </section>
 
 
@@ -56,7 +50,7 @@
           Yes, I have read and agree to the Booking Policy.
         </ion-checkbox>
       </div>
-      <div class="item-divider"></div>
+      <div class="item-divider no-text"></div>
 
       <div ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase">
         <div class="item booking-checkbox">
@@ -66,7 +60,7 @@
             Yes, I want to save this payment method for fast checkout in the future.
           </ion-checkbox>
         </div>
-        <div class="item-divider"></div>
+        <div class="item-divider no-text"></div>
       </div>
     </section>
 
