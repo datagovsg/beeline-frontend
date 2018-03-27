@@ -30,6 +30,18 @@
       <div class="item-divider no-text"></div>
     </section>
 
+    <section class="card" ng-if="(book.route.ridesRemaining && book.route.ridesRemaining > 0)">
+      <div class="item route-pass-use">
+        <h3 class="card-title">
+          Use Route Pass
+        </h3>
+
+        <ion-toggle class="route-pass-toggle" ng-model="book.applyRoutePass" toggle-class="toggle-royal">
+        </ion-toggle>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
 
     <section class="card">
       <h3 class="item card-title">

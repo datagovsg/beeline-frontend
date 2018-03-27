@@ -74,5 +74,17 @@
     .feedback {
       padding-bottom: 20px;
     }
+
+    .route-pass-use {
+      display: flex;
+      justify-content: space-between;
+
+      .route-pass-toggle {
+        overflow: visible;
+        .toggle {
+          top: 18px;
+        }
+      }
+    }
   }
 }
