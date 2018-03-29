@@ -176,7 +176,25 @@ export default [
       UserService.promptLogIn()
     }
 
+    $scope.setSelected = function(index) {
+      $scope.current = index
+    }
+
     $scope.showConfirmationPopup = async function() {
+      let user = await UserService.promptLogIn()
+
+      if (!user) {
+        await $ionicPopup.alert({
+          title: "Login Required",
+          template: `
+            <div class="item item-text-wrap text-center ">
+              <p>You are not logged in. Please login to bookmark this route.</p>
+            </div>
+          `,
+        })
+        return
+      }
+
       const response = await $ionicPopup.confirm({
         title: "Are you sure you want to bookmark this route?",
       })

@@ -1,4 +1,4 @@
-import { formatTime, formatTimeArray } from "../shared/format"
+import { formatTime } from "../shared/format"
 import { SafeInterval } from "../SafeInterval"
 import _ from "lodash"
 
@@ -24,7 +24,7 @@ angular.module("beeline").factory("MapViewFactory", [
 
         scope.formatStopTime = function(input) {
           if (Array.isArray(input)) {
-            return formatTimeArray(input)
+            return ""
           }
           return formatTime(input)
         }

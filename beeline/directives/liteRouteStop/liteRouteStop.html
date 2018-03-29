@@ -1,0 +1,15 @@
+<div class="lite-route-stop">
+  <div class="left">
+    <div class="main">
+      <div class="description">{{ stop.description }}</div>
+      <div class="road">{{ stop.road }}</div>
+    </div>
+    <div ng-if="current === index || (!current && index === 0)" class="secondary">
+      <span class="before">{{ before.join(", ") }},</span>
+      <span ng-if="after && after.length > 0" class="after">{{ after.join(", ") }}</span>
+    </div>
+  </div>
+  <div class="right">
+    <div ng-if="after && after.length > 0">{{ after[0] }}</div>
+  </div>
+</div>

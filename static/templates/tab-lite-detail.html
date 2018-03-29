@@ -3,81 +3,66 @@
   <ion-nav-buttons side="left">
     <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
   </ion-nav-buttons>
+  <div class="map-buttons bar bar-subheader">
+    <div>
+      <button class="button primary-button bookmark-button"
+              ng-click="showConfirmationPopup()"
+              ng-disabled="book.waitingForSubscriptionResult">
+        <i ng-if="!book.isSubscribed" class="far fa-star icon-vertical"></i>
+        <i ng-if="book.isSubscribed" class="fas fa-star icon-vertical"></i>
+        <span>Bookmark</span>
+      </button>
+    </div>
+    <div>
+      <button class="button primary-button more-info-button"
+              ui-sref="tabs.lite-more-info({
+                 companyId: book.route.transportCompanyId,
+                 label: book.route.label})">
+        <i class="fas fa-info-circle icon-vertical"></i>
+        <span>More Info</span>
+      </button>
+    </div>
+  </div>
   <ion-content scroll="true">
+
     <daily-trips-broker trip-label="book.route.label"
                  daily-trip-ids="book.dailyTripIds"
                  in-service-window="book.inServiceWindow">
     </daily-trips-broker>
+
     <form class="stops-form" name="stopsForm">
       <div class="route-info">
-        <div class="item item-icon-left item-text-wrap" ng-if="!book.hasTrips">
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="!book.hasTrips">
           <span class="icon ion-android-alert"></span>
           There is no bus service scheduled for today.
         </div>
-        <div class="item item-icon-left item-text-wrap" ng-if="book.hasTrips && book.inServiceWindow===false">
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="book.hasTrips && book.inServiceWindow===false">
           <span class="icon ion-android-alert"></span>
           The bus service will only be available from {{ book.route.startTime | formatTime}} to {{ book.route.endTime | formatTime}}.
         </div>
-        <div class="item item-icon-left item-text-wrap" ng-if="book.hasTrips && book.inServiceWindow && disp.hasTrackingData === false">
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="book.hasTrips && book.inServiceWindow && disp.hasTrackingData === false">
           <span class="icon ion-android-alert"></span>
           The bus location tracking is not available at the moment.
         </div>
-        <div class="item item-icon-left item-text-wrap" ng-if="disp.statusMessages.trim()">
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="disp.statusMessages.trim()">
           <span class="icon ion-android-alert"></span>
           {{disp.statusMessages.trim()}}
         </div>
-        <fake-progress-bar max="100" interval="100"></fake-progress-bar>
-        <lite-route class="item" route="book.route" is-subscribed="book.isSubscribed"></lite-route>
       </div>
 
       <company-info-broker company-id="book.route.transportCompanyId"
                             company="disp.companyInfo">
       </company-info-broker>
 
-      <div class="lite-form">
-        <div class="item-text-wrap">
-          <div class="item item-icon-right"
-               ui-sref="tabs.lite-more-info({
-                 companyId: book.route.transportCompanyId,
-                 label: book.route.label})">
-            More Information
-            <i class="icon ion-ios-arrow-right"></i>
-          </div>
+      <div class="lite-stops">
+        <div ng-repeat="stop in book.route.stops"
+             class="lite-stop-container"
+             ng-click="setSelected($index)">
+          <div class="selector" ng-class="{ selected: $index === current || (!current && $index === 0)}"></div>
+          <ion-item class="item-text-wrap lite-route-info">
+            <lite-route-stop index="$index" current="current" stop="stop"></lite-route-stop>
+          </ion-item>
         </div>
-
-        <section class="item item-text-wrap"
-                 ng-if="!isLoggedIn">
-          <p class="text-center">
-            You are not logged in. Please enter your mobile number to bookmark this route.
-          </p>
-          <button class="button primary-button"
-                  ng-click="login()">
-            Bookmark Route
-          </button>
-        </section>
-
-        <section class="item item-text-wrap"
-                 ng-if="isLoggedIn && !book.isSubscribed">
-                 <p class="text-center">
-                  By clicking on the button below, you can bookmark this route in your trips list.
-                 </p>
-          <button class="button primary-button"
-                  ng-click="showConfirmationPopup()"
-                  ng-disabled="book.waitingForSubscriptionResult">
-            Bookmark Route
-          </button>
-        </section>
-
-        <section class="item item-text-wrap"
-                 ng-if="isLoggedIn && book.isSubscribed">
-          <button class="button primary-button"
-                  ui-sref="tabs.tickets">
-            View Routes
-          </button>
-          <div class="untrack-link">
-            <a ng-click="promptUntrack()">Unbookmark this route</a>
-          </div>
-        </section>
       </div>
     </form>
   </ion-content>
