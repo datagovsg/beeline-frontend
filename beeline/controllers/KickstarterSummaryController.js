@@ -1,4 +1,5 @@
 import _ from "lodash"
+const moment = require("moment")
 
 export default [
   "$scope",
@@ -67,6 +68,12 @@ export default [
       route => {
         if (!route) return
         $scope.book.route = route
+
+        // Add expiry date to route
+        $scope.book.route.expiryDate = moment($scope.book.route.trips[0].date)
+          .add(1, "months")
+          .format()
+
         // give 1st and last stop as board and alight stop for fake ticket
         $scope.book.boardStopId = _.first(route.trips[0].tripStops).id
         $scope.book.alightStopId = _.last(route.trips[0].tripStops).id
@@ -170,12 +177,13 @@ export default [
           )
         )
         await $ionicPopup.alert({
-          title: "Success",
+          title:
+            "You have successfully joined the crowdstart route. We will inform you once your route is activated.",
         })
         $scope.$apply(() => {
           $scope.book.isBid = true
         })
-        $state.go("tabs.crowdstart-commit", { routeId: $scope.book.routeId })
+        $state.go("tabs.yourRoutes")
       } catch (err) {
         await $ionicPopup.alert({
           title: "Error processing bid",

@@ -2,7 +2,7 @@
 <div class="kickstarter-info">
   <div class="kickstart-info-content" ng-hide="contentHide">
     <p>
-     This route will activate when <strong>{{route.notes.tier[0].pax}} people</strong>
+     Join this crowdstart route by pre-ordering this route pass. This route will activate when <strong>{{route.notes.tier[0].pax}} people</strong>
      pre-order this Route Pass by <strong>{{route.notes.crowdstartExpiry | date:'dd MMM yy' : '+0800'}}</strong>.
    </p>
    <p ng-if="!route.daysLeft">This campaign has ended.</p>
@@ -12,7 +12,7 @@
    </p>
    <ul>
      <li>
-       No charges will be made to your card
+       No charges will be made to your credit card
      </li>
    </ul>
 
@@ -20,7 +20,7 @@
      <strong>If route is activated</strong>,
      <ul >
        <li>
-         ${{route.notes.noPasses*route.notes.tier[0].price | number: 2}} will be charged to your card
+         ${{route.notes.noPasses*route.notes.tier[0].price | number: 2}} will be charged to your credit card
        </li>
        <li>
          You will receive this pass
@@ -59,7 +59,7 @@
           </tr>
         </table>
       <p class="pass-condition">
-        Valid for booking any <strong>{{route.notes.noPasses}} trips</strong> of the activated route till <strong>{{route.trips[0].date | date:'dd MMM yyyy' : 'Z'}}</strong>
+        Valid for booking any <strong>{{route.notes.noPasses}} trips</strong> of the activated route till <strong>{{route.expiryDate | date:'dd MMM yyyy' : 'Z'}}</strong>
       </p>
       </div>
     </div>
