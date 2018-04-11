@@ -33,42 +33,17 @@ angular.module("common").service("BookingService", [
           method: "POST",
           url: "/transactions/tickets/quote",
           data: {
-            // creditTag: booking.applyRoutePass ? booking.creditTag : null,
             trips: trips,
             dryRun: true,
-            promoCode: booking.promoCode
-              ? {
-                  code: booking.promoCode,
-                }
-              : {
-                  code: "", // Allow default promo codes to be used
-                },
-            applyCredits: booking.applyCredits,
-            applyReferralCredits: booking.applyReferralCredits,
+            promoCode: { code: booking.promoCode || "" },
             applyRoutePass: !!booking.applyRoutePass,
+            groupItemsByType: true,
           },
         })
           .then(resp => {
-            // Find the 'payment' entry in the list of transaction itemss
-            let txItems = _.groupBy(resp.data.transactionItems, "itemType")
-            let totalBeforeDiscount = _.reduce(
-              txItems.ticketSale,
-              (sum, n) => {
-                return sum + parseFloat(n.credit)
-              },
-              0
-            )
-
-            // FIXME: include discounts, vouchers
             return {
-              totalDue: txItems.payment[0].debit,
-              tripCount: trips.length,
-              pricesPerTrip: this.summarizePrices(booking),
-              routePass: txItems["routePass"],
-              referralCredits: txItems["referralCredits"],
-              credits: txItems["userCredit"],
-              discounts: txItems.discount,
-              totalBeforeDiscount,
+              ...resp.data.transactionItems,
+              totals: resp.data.totals,
             }
           })
           .then(null, err => {

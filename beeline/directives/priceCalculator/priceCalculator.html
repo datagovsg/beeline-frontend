@@ -8,19 +8,19 @@
     <tbody>
       <tr>
         <td>{{booking.selectedDates.length}} Ticket{{ booking.selectedDates.length > 1 ? 's' : '' }}{{pricePerTrip ? ' x $' + pricePerTrip : ''}}</td>
-        <td class="right">{{(priceInfo.totalBeforeDiscount || 0) | currency}}</td>
+        <td class="right">{{(priceInfo.totals.ticketSale.credit || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.routePass && priceInfo.routePass.length > 0">
         <td>Using {{ ridesUsed }} route pass{{ ridesUsed > 1 ? 'es' : '' }}</td>
-        <td class="right">{{totalRoutePassesUsed | currency}}</td>
+        <td class="right">{{-priceInfo.totals.routePass.debit | currency}}</td>
       </tr>
-      <tr ng-if="priceInfo.discounts && priceInfo.discounts.length > 0" ng-repeat="discount in priceInfo.discounts">
+      <tr ng-if="priceInfo.discount && priceInfo.discount.length > 0" ng-repeat="d in priceInfo.discount">
         <td>
-          {{discount.discount.description}}<span ng-if="booking.promoCode">: {{discount.discount.code}}
+          {{d.discount.description}}<span ng-if="booking.promoCode">: {{d.discount.code}}
           <i class="icon ion-close-circled" ng-click="removePromoCode()"></i></span>
         </td>
         <td class="right">
-          {{(-discount.debit || 0) | currency}}
+          {{(-d.debit || 0) | currency}}
         </td>
       </tr>
       <tr ng-if="priceInfo.referralCredits && priceInfo.referralCredits.length > 0" ng-repeat="referralCredit in priceInfo.referralCredits">
@@ -33,7 +33,7 @@
       </tr>
       <tr>
         <td class="total-sum left" ><b>Total</b></td>
-        <td class="total-sum right"><b>{{ (priceInfo.totalDue || 0) | currency}}</b></td>
+        <td class="total-sum right"><b>{{ (priceInfo.totals.payment.debit || 0) | currency}}</b></td>
       </tr>
       <!-- FIXME: include vouchers, discounts here -->
     </tbody>

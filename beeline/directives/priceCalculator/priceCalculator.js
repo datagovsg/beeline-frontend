@@ -13,14 +13,13 @@ angular.module("beeline").directive("priceCalculator", [
       template: priceCalculatorTemplate,
       scope: {
         booking: "=",
-        price: "=?",
       },
       controller: [
         "$scope",
         function($scope) {
           $scope.isCalculating = 0
 
-          function stopCalculating() {
+          const stopCalculating = function() {
             $scope.isCalculating = Math.max(0, $scope.isCalculating - 1)
             $scope.$emit("priceCalculator.done")
           }
@@ -65,7 +64,9 @@ angular.module("beeline").directive("priceCalculator", [
               })
             }
           )
-
+          /**
+           * Recompute prices whenever relevant inputs change
+           */
           async function recomputePrices() {
             assert($scope.booking.routeId)
             if (!$scope.booking.route) {
@@ -81,10 +82,8 @@ angular.module("beeline").directive("priceCalculator", [
             // This allows the page to resize earlier, so that when
             // users scroll down the bounce works ok.
             $scope.priceInfo = $scope.priceInfo || {}
-            $scope.priceInfo.pricesPerTrip = BookingService.summarizePrices(
-              $scope.booking
-            )
-            $scope.pricePerTrip = $scope.priceInfo.pricesPerTrip[0].price
+            const pricesPerTrip = BookingService.summarizePrices($scope.booking)
+            $scope.pricePerTrip = pricesPerTrip[0].price
 
             $scope.isCalculating++
             let promise = BookingService.computePriceInfo($scope.booking)
@@ -95,22 +94,16 @@ angular.module("beeline").directive("priceCalculator", [
                   return
                 }
                 $scope.priceInfo = priceInfo
-                $scope.price = priceInfo.totalDue
                 $scope.ridesUsed = $scope.booking.applyRoutePass
                   ? Math.min(
                       $scope.booking.route.ridesRemaining,
-                      priceInfo.tripCount
+                      BookingService.getTripsFromBooking($scope.booking).length
                     )
                   : 0
-                $scope.totalRoutePassesUsed = _.sumBy(
-                  $scope.priceInfo.routePass,
-                  x => -parseFloat(x.debit)
-                )
                 $scope.errorMessage = null
               })
               .catch(error => {
                 $scope.priceInfo = {}
-                $scope.price = undefined
                 $scope.errorMessage = error.data.message
               })
               .then(stopCalculating)
