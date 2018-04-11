@@ -24,12 +24,14 @@ function transformRouteData(data) {
       }
     }
 
-    let firstTripStops = route.trips[0].tripStops
-    route.startTime = firstTripStops[0].time
-    route.startRoad = firstTripStops[0].stop.description
-    route.endTime = firstTripStops[firstTripStops.length - 1].time
-    route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description
-    route.tripsByDate = _.keyBy(route.trips, trip => trip.date.getTime())
+    let firstTripStops = _.get(route, "trips[0].tripStops")
+    if (firstTripStops && firstTripStops.length) {
+      route.startTime = firstTripStops[0].time
+      route.startRoad = firstTripStops[0].stop.description
+      route.endTime = firstTripStops[firstTripStops.length - 1].time
+      route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description
+      route.tripsByDate = _.keyBy(route.trips, trip => trip.date.getTime())
+    }
   })
   return data
 }
