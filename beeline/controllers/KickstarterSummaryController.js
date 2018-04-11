@@ -51,7 +51,7 @@ export default [
     $scope.data = {
       hasCreditInfo: false,
       brand: null,
-      last4Digtis: null,
+      last4Digits: null,
     }
     $scope.disp = {
       bidded,
@@ -103,7 +103,7 @@ export default [
 
               if ($scope.data.hasCreditInfo) {
                 $scope.data.brand = paymentInfo.sources.data[0].brand
-                $scope.data.last4Digtis = paymentInfo.sources.data[0].last4
+                $scope.data.last4Digits = paymentInfo.sources.data[0].last4
               }
             }
           )

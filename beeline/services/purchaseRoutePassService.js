@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import routePassTemplate from "../templates/route-pass-modal.html"
 import commonmark from "commonmark"
 import _ from "lodash"
@@ -55,17 +56,11 @@ function ModalService(
       brand: hasSavedPaymentInfo
         ? savedPaymentInfo.sources.data[0].brand
         : null,
-      last4Digtis: hasSavedPaymentInfo
+      last4Digits: hasSavedPaymentInfo
         ? savedPaymentInfo.sources.data[0].last4
         : null,
       isProcessing: null,
     }
-
-    scope.$watch("book.routePassChoice", choice => {
-      if (choice !== null) {
-        scope.book.routePassPrice = scope.book.priceSchedules[choice].totalPrice
-      }
-    })
 
     // Prompts for card and processes payment with one time stripe token.
     scope.payForRoutePass = async function() {

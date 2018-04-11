@@ -13,9 +13,9 @@
         <div class="radios">
           <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.routePassChoice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
             <i class="icon ion-ios-circle-outline not-selected" ng-show="book.routePassChoice !== $index"></i>
-            <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.price | floatRoundUp | number:2}} per trip)</div>
-            <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}} passes (approx. ${{schedule.price | floatRoundUp | number:2}} per trip)
-              <div>save {{schedule.discount}}%</div>
+            <div class="priceDetails" ng-if="schedule.quantity === 1">{{schedule.quantity}} ticket (${{schedule.unitPrice | floatRoundUp | number:2}} per trip)</div>
+            <div class="priceDetails" ng-if="schedule.quantity !== 1">{{schedule.quantity}} passes (approx. ${{schedule.unitPrice | floatRoundUp | number:2}} per trip)
+              <div>save {{schedule.discountPercent}}%</div>
             </div>
           </ion-radio>
         </div>
@@ -58,9 +58,9 @@
           </div>
 
           <div class="buttons">
-            Total: <fancy-price value="book.routePassPrice"></fancy-price>
+            Total: <fancy-price value="book.priceSchedules[book.routePassChoice].price"></fancy-price>
             <p class="text-center" ng-if="book.hasSavedPaymentInfo">
-              This payment will be charged to your <br /><b>{{book.brand}}</b> ending in <b> {{book.last4Digtis}}</b>.
+              This payment will be charged to your <br /><b>{{book.brand}}</b> ending in <b> {{book.last4Digits}}</b>.
             </p>
             <button class="primary-button button" ng-click="proceed()"
                 ng-if="!book.hasSavedPaymentInfo"
