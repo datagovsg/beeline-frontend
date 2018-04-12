@@ -37,6 +37,7 @@ export default [
           qs.stringify({
             page: $scope.page,
             perPage: $scope.perPage,
+            groupItemsByType: true,
           }),
       })
         .then(response => {
@@ -49,40 +50,16 @@ export default [
             $scope.hasMoreData = false
           }
 
-          for (let t of newTransactions) {
-            t.itemsByType = _.groupBy(t.transactionItems, ti => ti.itemType)
-          }
-
           // add route information to ticket sale items and route credit items
           routesPromise.then(() => {
             for (let t of newTransactions) {
-              for (let ticketSaleItem of t.itemsByType.ticketSale || []) {
-                ticketSaleItem.route =
-                  $scope.routesById[
-                    ticketSaleItem.ticketSale.boardStop.trip.routeId
-                  ]
-              }
-              for (let ticketRefundItem of t.itemsByType.ticketRefund || []) {
-                ticketRefundItem.route =
-                  $scope.routesById[
-                    ticketRefundItem.ticketRefund.boardStop.trip.routeId
-                  ]
-              }
-              for (let ticketExpenseItem of t.itemsByType.ticketExpense || []) {
-                ticketExpenseItem.route =
-                  $scope.routesById[
-                    ticketExpenseItem.ticketExpense.boardStop.trip.routeId
-                  ]
-              }
-              for (let routeCreditItem of t.itemsByType.routeCredits || []) {
-                const tag = routeCreditItem.routeCredits.tag
-                routeCreditItem.route =
-                  $scope.routesById[tag.substring(tag.indexOf("-") + 1)]
-              }
-              for (let routePassItem of t.itemsByType.routePass || []) {
-                const tag = routePassItem.routePass.tag
-                routePassItem.route =
-                  $scope.routesById[tag.substring(tag.indexOf("-") + 1)]
+              for (const item of t.itemsByType.deal || []) {
+                const tag = (item.routeCredits || item.routePass || {}).tag
+                const ticket = item.ticketSale || item.ticketRefund || item.ticketExpense
+                const routeId = tag
+                  ? tag.substring(tag.indexOf("-") + 1)
+                  : ticket.boardStop.trip.routeId
+                item.route = $scope.routesById[routeId]
               }
             }
           })

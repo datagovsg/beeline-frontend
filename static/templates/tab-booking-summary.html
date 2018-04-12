@@ -47,7 +47,7 @@
       <h3 class="item card-title">
         Payment
       </h3>
-      <price-calculator id="priceCalc" class="item" booking="book" price="book.price">
+      <price-calculator id="priceCalc" class="item" booking="book">
       </price-calculator>
       <div class="item-divider no-text"></div>
     </section>
@@ -89,7 +89,7 @@
       </div>
     </section>
 
-    <section class="card" 
+    <section class="card"
              ng-if="isLoggedIn && book.hasInvalidDate">
       <div class="item item-text-wrap assertive">
         You have invalid booking dates. Please re-select your dates.

@@ -24,12 +24,14 @@ function transformRouteData(data) {
       }
     }
 
-    let firstTripStops = route.trips[0].tripStops
-    route.startTime = firstTripStops[0].time
-    route.startRoad = firstTripStops[0].stop.description
-    route.endTime = firstTripStops[firstTripStops.length - 1].time
-    route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description
-    route.tripsByDate = _.keyBy(route.trips, trip => trip.date.getTime())
+    let firstTripStops = _.get(route, "trips[0].tripStops")
+    if (firstTripStops && firstTripStops.length) {
+      route.startTime = firstTripStops[0].time
+      route.startRoad = firstTripStops[0].stop.description
+      route.endTime = firstTripStops[firstTripStops.length - 1].time
+      route.endRoad = firstTripStops[firstTripStops.length - 1].stop.description
+      route.tripsByDate = _.keyBy(route.trips, trip => trip.date.getTime())
+    }
   })
   return data
 }
@@ -490,36 +492,11 @@ angular.module("beeline").factory("RoutesService", [
           url: `/routes/${routeId}/price_schedule`,
         })
           .then(function(response) {
-            let priceSchedules = []
-            _.forEach(response.data, (value, key) => {
-              let quantity = parseInt(key)
-              let singleSchedule = null
-              if (quantity === 1) {
-                singleSchedule = {
-                  quantity: 1,
-                  price: parseFloat(value.price),
-                  totalPrice: parseFloat(value.price),
-                }
-              } else {
-                // in case no discount is found
-                let discount = value.discount || 0
-                let price = value.price / quantity
-                let originalPrice = discount + value.price
-                let computedDiscount =
-                  (discount / originalPrice).toFixed(2) * 100
-                singleSchedule = {
-                  quantity: quantity,
-                  price: price,
-                  discount: computedDiscount,
-                  totalPrice: parseFloat(value.price),
-                }
-              }
-              priceSchedules.push(singleSchedule)
-            })
-            // sort the schedules from biggest quantity to 1 ticket
-            priceSchedules = _.sortBy(priceSchedules, function(schedule) {
-              return schedule.quantity
-            }).reverse()
+            let priceSchedules = _(response.data)
+              .values()
+              .sortBy("quantity")
+              .reverse()
+              .value()
             return priceSchedules
           })
           .catch(err => {
