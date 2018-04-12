@@ -1,10 +1,7 @@
 import faqModalTemplate from "../templates/faq-modal.html"
 import contactUsModalTemplate from "../templates/contact-us-modal.html"
-import commonmark from "commonmark"
+import { htmlFrom } from "../shared/util"
 import _ from "lodash"
-
-const reader = new commonmark.Parser({ safe: true })
-const writer = new commonmark.HtmlRenderer({ safe: true })
 
 export default [
   "$scope",
@@ -190,7 +187,7 @@ export default [
 
       try {
         isPressed = true
-        $scope.isOnKickstarter = await checkIfOnKickstarter()
+        $scope.isOnKickstarter = await KickstarterService.hasBids()
       } catch (err) {
         console.error(err)
         await $ionicLoading.show({
@@ -248,11 +245,10 @@ export default [
     // ------------------------------------------------------------------------
     // Helper functions
     // ------------------------------------------------------------------------
-    async function checkIfOnKickstarter() {
-      let response = await KickstarterService.hasBids()
-      return response
-    }
 
+    /**
+     * Remove stripe payment information
+     */
     async function removeCard() {
       const response = await $ionicPopup.confirm({
         title: "Remove Payment Method",
@@ -293,7 +289,12 @@ export default [
       }
     }
 
-    // Load the pages only when requested.
+    /**
+     * Load the html asset pages only when requested.
+     * @param {string} assetName - the name of the asset
+     * @return {Object} a cloned scope which looks up and renders the asset
+     * when a modal is shown
+     */
     function assetScope(assetName) {
       const newScope = $scope.$new()
       newScope.error = newScope.html = null
@@ -303,7 +304,7 @@ export default [
           url: replace(`/assets/${assetName}`),
         })
           .then(response => {
-            newScope.html = writer.render(reader.parse(response.data.data))
+            newScope.html = htmlFrom(response.data.data)
             newScope.error = false
           })
           .catch(error => {
