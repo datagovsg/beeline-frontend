@@ -148,30 +148,6 @@ export default [
         },
       })
 
-      .state("tabs.lite-route-tracker", {
-        url: "/tickets/liteRoute/:label",
-        views: {
-          menuContent: {
-            templateUrl: "templates/tab-lite-tracker.html",
-            controller: "LiteDetailController",
-          },
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "LiteMapViewController",
-          },
-        },
-      })
-
-      .state("tabs.lite-tracker-more-info", {
-        url: "/tickets/liteRoute/:label/:companyId/",
-        views: {
-          menuContent: {
-            templateUrl: "templates/lite-tracker-more-info.html",
-            controller: "LiteMoreInfoController",
-          },
-        },
-      })
-
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Kickstarter Tab
       // ////////////////////////////////////////////////////////////////////////////
