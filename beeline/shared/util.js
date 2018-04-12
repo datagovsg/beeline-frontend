@@ -1,4 +1,18 @@
+/* eslint-disable require-jsdoc */
 import _ from "lodash"
+import commonmark from "commonmark"
+
+const reader = new commonmark.Parser({ safe: true })
+const writer = new commonmark.HtmlRenderer({ safe: true })
+
+/**
+ * Render HTML from Markdown using commonmark
+ * @param {string} markdown the Markdown to render
+ * @return {string} the resulting HTML
+ */
+export function htmlFrom(markdown) {
+  return writer.render(reader.parse(markdown))
+}
 
 let lineSymbol = {
   path: "M 0,-1 0,1",

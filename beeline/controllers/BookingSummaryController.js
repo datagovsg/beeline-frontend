@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { htmlFrom } from "../shared/util"
 
 export default [
   "$document",
@@ -91,10 +92,7 @@ export default [
       $scope.book.alightStop = route.tripsByDate[
         $scope.book.selectedDates[0]
       ].tripStops.filter(ts => $scope.book.alightStopId === ts.stop.id)[0]
-    })
-
-    RoutesService.getRouteFeatures(routeId).then(features => {
-      $scope.book.features = features
+      $scope.book.features = htmlFrom(route.features)
     })
 
     // ------------------------------------------------------------------------

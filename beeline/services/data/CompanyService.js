@@ -1,8 +1,5 @@
 import assert from "assert"
-import commonmark from "commonmark"
-
-let reader = new commonmark.Parser({ safe: true })
-let writer = new commonmark.HtmlRenderer({ safe: true })
+import { htmlFrom } from "../../shared/util"
 
 angular.module("beeline").factory("CompanyService", [
   "RequestService",
@@ -35,7 +32,7 @@ angular.module("beeline").factory("CompanyService", [
 
         this.getCompany(id).then(company => {
           termsScope.company = {
-            termsHTML: writer.render(reader.parse(company.terms)),
+            termsHTML: htmlFrom(company.terms),
           }
           termsScope.termsModal.show()
         })

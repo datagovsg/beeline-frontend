@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 import routePassTemplate from "../templates/route-pass-modal.html"
-import commonmark from "commonmark"
+import { htmlFrom } from "../shared/util"
 import _ from "lodash"
 
 angular.module("beeline").service("purchaseRoutePassService", [
@@ -186,16 +186,12 @@ angular.module("beeline").service("purchaseRoutePassService", [
       })
 
       scope.routePassTerms = {}
-      const reader = new commonmark.Parser({ safe: true })
-      const writer = new commonmark.HtmlRenderer({ safe: true })
       RequestService.beeline({
         method: "GET",
         url: "/assets/routepass-tc",
       })
         .then(response => {
-          scope.routePassTerms.html = writer.render(
-            reader.parse(response.data.data)
-          )
+          scope.routePassTerms.html = htmlFrom(response.data.data)
           scope.routePassTerms.error = undefined
         })
         .catch(error => {

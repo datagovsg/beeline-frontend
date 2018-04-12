@@ -1,10 +1,7 @@
 import faqModalTemplate from "../templates/faq-modal.html"
 import contactUsModalTemplate from "../templates/contact-us-modal.html"
-import commonmark from "commonmark"
+import { htmlFrom } from "../shared/util"
 import _ from "lodash"
-
-const reader = new commonmark.Parser({ safe: true })
-const writer = new commonmark.HtmlRenderer({ safe: true })
 
 export default [
   "$scope",
@@ -307,7 +304,7 @@ export default [
           url: replace(`/assets/${assetName}`),
         })
           .then(response => {
-            newScope.html = writer.render(reader.parse(response.data.data))
+            newScope.html = htmlFrom(response.data.data)
             newScope.error = false
           })
           .catch(error => {
