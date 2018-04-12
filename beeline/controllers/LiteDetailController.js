@@ -1,5 +1,3 @@
-import _ from "lodash"
-
 export default [
   "$scope",
   "$ionicHistory",
@@ -73,9 +71,6 @@ export default [
       // get route features
       RoutesService.getRouteFeatures($scope.book.route.id).then(data => {
         $scope.disp.features = data
-      })
-      $scope.book.route.trips = _.sortBy($scope.book.route.trips, trip => {
-        return trip.date
       })
     })
 
