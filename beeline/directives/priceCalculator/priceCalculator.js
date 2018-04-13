@@ -95,7 +95,7 @@ angular.module("beeline").directive("priceCalculator", [
                   return
                 }
                 $scope.priceInfo = priceInfo
-                $scope.price = priceInfo.price
+                $scope.price = priceInfo.totals.payment.debit
                 $scope.ridesUsed = $scope.booking.applyRoutePass
                   ? Math.min(
                       $scope.booking.route.ridesRemaining,
@@ -106,6 +106,7 @@ angular.module("beeline").directive("priceCalculator", [
               })
               .catch(error => {
                 $scope.priceInfo = {}
+                $scope.price = undefined
                 $scope.errorMessage = error.data.message
               })
               .then(stopCalculating)
