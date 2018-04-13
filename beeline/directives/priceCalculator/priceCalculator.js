@@ -13,6 +13,7 @@ angular.module("beeline").directive("priceCalculator", [
       template: priceCalculatorTemplate,
       scope: {
         booking: "=",
+        price: "=?",
       },
       controller: [
         "$scope",
@@ -94,6 +95,7 @@ angular.module("beeline").directive("priceCalculator", [
                   return
                 }
                 $scope.priceInfo = priceInfo
+                $scope.price = priceInfo.price
                 $scope.ridesUsed = $scope.booking.applyRoutePass
                   ? Math.min(
                       $scope.booking.route.ridesRemaining,
