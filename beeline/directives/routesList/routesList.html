@@ -31,7 +31,7 @@
     Crowdstart Routes
   </div>
   <ion-item
-    ng-repeat="route in data.crowdstartRoutes | limitTo:30 track by route.id"
+    ng-repeat="route in data.crowdstartRoutes | limitTo:30 track by $index"
     class="item-text-wrap"
     ui-sref="tabs.crowdstart-detail({ routeId: route.id})"
   >

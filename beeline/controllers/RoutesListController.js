@@ -353,10 +353,8 @@ export default [
             placeQuery.queryText
           )
         }
-        // Map to scope once done filtering and sorting
-        $scope.data.crowdstartRoutes = _.sortBy(routes, route => {
-          return parseInt(route.label.slice(1))
-        })
+        // Map to scope once done
+        $scope.data.crowdstartRoutes = routes
       }
     )
 
