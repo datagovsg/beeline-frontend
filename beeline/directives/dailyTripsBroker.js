@@ -72,7 +72,7 @@ angular.module("beeline").directive("dailyTripsBroker", [
          * @param {Object} route - the route
          */
         function scheduleServiceWindowChanges(route) {
-          scope.inServiceWindow = null
+          scope.inServiceWindow = false
 
           const now = Date.now()
           const startMillis = new Date(route.startTime).getTime()
