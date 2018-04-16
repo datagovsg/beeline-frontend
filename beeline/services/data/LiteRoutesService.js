@@ -26,7 +26,7 @@ angular.module("beeline").factory("LiteRoutesService", [
     // But limits the amount of data retrieved
     // getRoutes() now returns a list of routes, but with very limited
     // trip data (limited to 5 trips, no path)
-    function fetchLiteRoutes(ignoreCache) {
+    const fetchLiteRoutes = function fetchLiteRoutes(ignoreCache) {
       if (liteRoutesCache && !ignoreCache) {
         return liteRoutesCache
       }
@@ -49,7 +49,10 @@ angular.module("beeline").factory("LiteRoutesService", [
       return liteRoutesPromise
     }
 
-    function fetchLiteRoute(liteRouteLabel, ignoreCache) {
+    const fetchLiteRoute = function fetchLiteRoute(
+      liteRouteLabel,
+      ignoreCache
+    ) {
       assert.equal(typeof liteRouteLabel, "string")
 
       if (!ignoreCache && lastLiteRouteLabel === liteRouteLabel) {

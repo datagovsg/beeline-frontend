@@ -28,6 +28,30 @@ export default [
     $state
   ) {
     // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    /**
+     * Send fake trip objects to MapService, to retrieve pings and statuses
+     */
+    const sendTripsToMapView = function sendTripsToMapView() {
+      const dailyTripIds = $scope.book.dailyTripIds
+      if (dailyTripIds && dailyTripIds.length > 0) {
+        MapService.emit("ping-trips", dailyTripIds.map(id => ({ id })))
+      }
+    }
+
+    /**
+     * Refresh trip information
+     * @param {Object} tripInfo - a payload from MapService, obtained from
+     * the backend
+     */
+    const updateTripInfo = function updateTripInfo(tripInfo) {
+      $scope.disp.hasTrackingData = tripInfo.hasTrackingData
+      $scope.disp.statusMessages = tripInfo.statusMessages
+      $scope.$digest()
+    }
+
+    // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
     let label = $stateParams.label
@@ -242,30 +266,6 @@ export default [
       } finally {
         $scope.book.waitingForSubscriptionResult = false
       }
-    }
-
-    // ------------------------------------------------------------------------
-    // Helper Functions
-    // ------------------------------------------------------------------------
-    /**
-     * Send fake trip objects to MapService, to retrieve pings and statuses
-     */
-    function sendTripsToMapView() {
-      const dailyTripIds = $scope.book.dailyTripIds
-      if (dailyTripIds && dailyTripIds.length > 0) {
-        MapService.emit("ping-trips", dailyTripIds.map(id => ({ id })))
-      }
-    }
-
-    /**
-     * Refresh trip information
-     * @param {Object} tripInfo - a payload from MapService, obtained from
-     * the backend
-     */
-    function updateTripInfo(tripInfo) {
-      $scope.disp.hasTrackingData = tripInfo.hasTrackingData
-      $scope.disp.statusMessages = tripInfo.statusMessages
-      $scope.$digest()
     }
   },
 ]
