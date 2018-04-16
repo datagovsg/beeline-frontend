@@ -3,7 +3,7 @@ import _ from "lodash"
 angular.module("common").factory("SearchService", function SearchService() {
   // Helper to calculate distance in meters between a pair of coordinates
   // faster but less accurate
-  const latlngDistance = function(ll1, ll2) {
+  const latlngDistance = function latlngDistance(ll1, ll2) {
     let rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
     let rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
 
@@ -74,7 +74,7 @@ angular.module("common").factory("SearchService", function SearchService() {
     routeContainsString: function(route, string) {
       if (!string) return true
 
-      const containsIgnoreCase = function(s, t) {
+      const containsIgnoreCase = function containsIgnoreCase(s, t) {
         if (typeof s === "string") {
           // If the search phrase (t) is more than one word, just find t in s
           // Otherwise, split s and see if any words in s start with t
