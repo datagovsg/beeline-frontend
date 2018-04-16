@@ -43,13 +43,8 @@ export default [
             $scope.mapObject.routePath = []
           })
       }
-      const trips = _.sortBy(route.trips, trip => {
-        return trip.date
-      })
-      let nextTrips = trips.filter(trip => trip.date === trips[0].date)
-      const liteTripStops = LiteRoutesService.computeLiteStops(nextTrips)
-      $scope.mapObject.stops = liteTripStops
-      SharedVariableService.setStops(liteTripStops)
+      $scope.mapObject.stops = route.stops
+      SharedVariableService.setStops(route.stops)
     })
 
     // ------------------------------------------------------------------------

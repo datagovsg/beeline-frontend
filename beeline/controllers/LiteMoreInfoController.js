@@ -1,3 +1,5 @@
+import { htmlFrom } from "../shared/util"
+
 export default [
   "$scope",
   "$stateParams",
@@ -9,7 +11,6 @@ export default [
     // ------------------------------------------------------------------------
     let companyId = $stateParams.companyId
     let label = $stateParams.label
-
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
@@ -24,9 +25,7 @@ export default [
     // ------------------------------------------------------------------------
     LiteRoutesService.fetchLiteRoute($scope.data.label).then(liteRoute => {
       $scope.data.liteRoute = liteRoute[$scope.data.label]
-      RoutesService.getRouteFeatures($scope.data.liteRoute.id).then(data => {
-        $scope.data.features = data
-      })
+      $scope.data.features = htmlFrom(liteRoute[$scope.data.label].features)
     })
   },
 ]

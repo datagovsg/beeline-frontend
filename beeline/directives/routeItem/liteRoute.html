@@ -7,13 +7,13 @@
     {{ route.notes.description }}
   </route-item-description>
   <route-item-start-time>
-    {{ route | routeStartTime | formatTime:true }}
+    {{ route.startTime | formatTime:true }}
   </route-item-start-time>
   <route-item-start-location>
     {{ route.from }}
   </route-item-start-location>
   <route-item-end-time>
-    {{ route | routeEndTime | formatTime:true }}
+    {{ route.endTime | formatTime:true }}
   </route-item-end-time>
   <route-item-end-location>
     {{ route.to }}
