@@ -72,6 +72,102 @@ export default [
     }
 
     // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+
+    const loadTickets = function loadTickets() {
+      const ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId(
+        routeId,
+        true
+      ).catch(err => null)
+
+      loadingSpinner(
+        $q.all([ticketsPromise]).then(([tickets]) => {
+          $scope.disp.previouslyBookedDays = tickets || {}
+        })
+      )
+    }
+
+    const loadRoutes = function loadRoutes() {
+      const routePromise = RoutesService.getRoute(routeId, true)
+      return loadingSpinner(
+        routePromise.then(route => {
+          // Route
+          $scope.book.route = route
+          updateCalendar() // updates availabilityDays
+          return route
+        })
+      )
+    }
+
+    const updateCalendar = function updateCalendar() {
+      // ensure cancelled trips are not shown
+      const runningTrips = $scope.book.route.trips.filter(tr => tr.isRunning)
+
+      // discover which month to show. Use UTC timezone
+      $scope.disp.month = moment(
+        _.min(runningTrips.map(t => t.date))
+      ).utcOffset(0)
+
+      // reset
+      $scope.disp.availabilityDays = {}
+
+      // booking window restriction
+      const now = Date.now()
+
+      for (let trip of runningTrips) {
+        // FIXME: disable today if past the booking window
+
+        // Make it available, only if the stop is valid for this trip
+        let stopIds = trip.tripStops
+          .filter(t => t.time.getTime() > now)
+          .map(ts => ts.stop.id)
+        if (
+          stopIds.indexOf($scope.book.boardStopId) === -1 ||
+          stopIds.indexOf($scope.book.alightStopId) === -1
+        ) {
+          continue
+        }
+
+        $scope.disp.availabilityDays[trip.date.getTime()] =
+          trip.availability.seatsAvailable
+      }
+    }
+
+    const showHelpPopup = function showHelpPopup() {
+      multipleDatePopup = $ionicPopup.show({
+        title: "Tap to select multiple days",
+        template: tapToSelectMultipleDaysTemplate,
+        buttons: [
+          {
+            text: "OK",
+            type: "button-positive",
+            onTap: function(e) {
+              closePopup()
+            },
+          },
+        ],
+      })
+    }
+
+    const closePopup = function closePopup() {
+      multipleDatePopup.close()
+    }
+
+    // get whole range of dates in the month
+    const getFullMonthDates = function getFullMonthDates(oneUTCDateInMonth) {
+      // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
+      let endOfMonth = moment(oneUTCDateInMonth).endOf("month")
+      let lastDate = endOfMonth.date()
+      let fullMonthDates = []
+      for (let i = 1; i <= lastDate; i++) {
+        let candidate = moment.utc([endOfMonth.year(), endOfMonth.month(), i])
+        fullMonthDates.push(candidate)
+      }
+      return fullMonthDates
+    }
+
+    // ------------------------------------------------------------------------
     // Data Loading
     // ------------------------------------------------------------------------
     let multipleDatePopup = null
@@ -243,102 +339,6 @@ export default [
       $scope.book.pickWholeMonth =
         allowedInWholeMonth.length === intersection.length &&
         allowedInWholeMonth.length > 0
-    }
-
-    // ------------------------------------------------------------------------
-    // Helper functions
-    // ------------------------------------------------------------------------
-
-    function loadTickets() {
-      const ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId(
-        routeId,
-        true
-      ).catch(err => null)
-
-      loadingSpinner(
-        $q.all([ticketsPromise]).then(([tickets]) => {
-          $scope.disp.previouslyBookedDays = tickets || {}
-        })
-      )
-    }
-
-    function loadRoutes() {
-      const routePromise = RoutesService.getRoute(routeId, true)
-      return loadingSpinner(
-        routePromise.then(route => {
-          // Route
-          $scope.book.route = route
-          updateCalendar() // updates availabilityDays
-          return route
-        })
-      )
-    }
-
-    function updateCalendar() {
-      // ensure cancelled trips are not shown
-      const runningTrips = $scope.book.route.trips.filter(tr => tr.isRunning)
-
-      // discover which month to show. Use UTC timezone
-      $scope.disp.month = moment(
-        _.min(runningTrips.map(t => t.date))
-      ).utcOffset(0)
-
-      // reset
-      $scope.disp.availabilityDays = {}
-
-      // booking window restriction
-      const now = Date.now()
-
-      for (let trip of runningTrips) {
-        // FIXME: disable today if past the booking window
-
-        // Make it available, only if the stop is valid for this trip
-        let stopIds = trip.tripStops
-          .filter(t => t.time.getTime() > now)
-          .map(ts => ts.stop.id)
-        if (
-          stopIds.indexOf($scope.book.boardStopId) === -1 ||
-          stopIds.indexOf($scope.book.alightStopId) === -1
-        ) {
-          continue
-        }
-
-        $scope.disp.availabilityDays[trip.date.getTime()] =
-          trip.availability.seatsAvailable
-      }
-    }
-
-    function showHelpPopup() {
-      multipleDatePopup = $ionicPopup.show({
-        title: "Tap to select multiple days",
-        template: tapToSelectMultipleDaysTemplate,
-        buttons: [
-          {
-            text: "OK",
-            type: "button-positive",
-            onTap: function(e) {
-              closePopup()
-            },
-          },
-        ],
-      })
-    }
-
-    function closePopup() {
-      multipleDatePopup.close()
-    }
-
-    // get whole range of dates in the month
-    function getFullMonthDates(oneUTCDateInMonth) {
-      // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
-      let endOfMonth = moment(oneUTCDateInMonth).endOf("month")
-      let lastDate = endOfMonth.date()
-      let fullMonthDates = []
-      for (let i = 1; i <= lastDate; i++) {
-        let candidate = moment.utc([endOfMonth.year(), endOfMonth.month(), i])
-        fullMonthDates.push(candidate)
-      }
-      return fullMonthDates
     }
   },
 ]
