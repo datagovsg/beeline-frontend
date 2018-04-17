@@ -116,11 +116,29 @@ export default [
       const now = Date.now()
 
       for (let trip of runningTrips) {
-        // FIXME: disable today if past the booking window
+        // Disable today if past the booking window
+        // note that windowSize always < 0
+        const { windowType, windowSize } = trip.bookingInfo || {}
+
+        // firstStop - trip can be booked until windowSize mins
+        // before the first stop arrival time
+
+        // stop - trip can be booked until windowSize mins
+        // before the arrival time at the commuter's chosen stop
+
+        // By default, trip can be booked until just at the arrival time
+        // at the commuter's chosen stop
+
+        const tripStopFilter =
+          windowType === "firstStop"
+            ? t => trip.tripStops[0].time.getTime() + windowSize > now
+            : windowType === "stop"
+              ? t => t.time.getTime() + windowSize > now
+              : t => t.time.getTime() > now
 
         // Make it available, only if the stop is valid for this trip
         let stopIds = trip.tripStops
-          .filter(t => t.time.getTime() > now)
+          .filter(tripStopFilter)
           .map(ts => ts.stop.id)
         if (
           stopIds.indexOf($scope.book.boardStopId) === -1 ||
