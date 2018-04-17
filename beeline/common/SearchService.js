@@ -3,7 +3,7 @@ import _ from "lodash"
 angular.module("common").factory("SearchService", function SearchService() {
   // Helper to calculate distance in meters between a pair of coordinates
   // faster but less accurate
-  function latlngDistance(ll1, ll2) {
+  const latlngDistance = function latlngDistance(ll1, ll2) {
     let rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
     let rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
 
@@ -74,7 +74,7 @@ angular.module("common").factory("SearchService", function SearchService() {
     routeContainsString: function(route, string) {
       if (!string) return true
 
-      function containsIgnoreCase(s, t) {
+      const containsIgnoreCase = function containsIgnoreCase(s, t) {
         if (typeof s === "string") {
           // If the search phrase (t) is more than one word, just find t in s
           // Otherwise, split s and see if any words in s start with t
@@ -94,13 +94,19 @@ angular.module("common").factory("SearchService", function SearchService() {
         containsIgnoreCase(route.notes && route.notes.description, string) ||
         containsIgnoreCase(route.schedule, string) ||
         containsIgnoreCase(route.label, string) ||
-        (route.trips[0] &&
-          (route.trips[0].tripStops.some(ts =>
-            containsIgnoreCase(ts.stop.description, string)
-          ) ||
-            route.trips[0].tripStops.some(ts =>
+        (route.trips &&
+          route.trips[0] &&
+          route.trips[0].tripStops.some(
+            ts =>
+              containsIgnoreCase(ts.stop.description, string) ||
               containsIgnoreCase(ts.stop.road, string)
-            )))
+          )) ||
+        (route.stops &&
+          route.stops.some(
+            s =>
+              containsIgnoreCase(s.description, string) ||
+              containsIgnoreCase(s.road, string)
+          ))
       )
     },
   }

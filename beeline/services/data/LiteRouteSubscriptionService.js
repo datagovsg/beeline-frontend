@@ -24,7 +24,7 @@ angular.module("beeline").factory("LiteRouteSubscriptionService", [
           }
           return (LiteRouteSubscriptionCache = RequestService.beeline({
             method: "GET",
-            url: "/liteRoutes/subscriptions",
+            url: "/routes/lite/subscriptions",
           }).then(response => {
             liteRouteSubscriptionsSummary = response.data.map(
               subs => subs.routeLabel

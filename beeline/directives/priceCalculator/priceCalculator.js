@@ -68,7 +68,7 @@ angular.module("beeline").directive("priceCalculator", [
           /**
            * Recompute prices whenever relevant inputs change
            */
-          async function recomputePrices() {
+          const recomputePrices = async function recomputePrices() {
             assert($scope.booking.routeId)
             if (!$scope.booking.route) {
               $scope.booking.route = await RoutesService.getRoute(

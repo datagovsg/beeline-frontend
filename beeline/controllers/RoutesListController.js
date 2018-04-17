@@ -87,6 +87,46 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
+    const autoComplete = function autoComplete() {
+      if (!$scope.data.queryText) {
+        $scope.data.placeQuery = null
+        $scope.data.isFiltering = false
+        $scope.$digest()
+        return
+      }
+
+      // show the spinner
+      $scope.data.isFiltering = true
+      $scope.$digest()
+
+      // default 'place' object only has 'queryText' but no geometry
+      let place = { queryText: $scope.data.queryText }
+      SearchEventService.emit("search-item", $scope.data.queryText)
+
+      // Reset routes, crowdstartRoutes and liteRoutes here because they are
+      // used to determine whether we do a place query (see watchGroup with
+      // all 3)
+      // If we don't reset, we could end up with the case where the criteria
+      // is applied to the wrong version of them
+      // E.g.
+      // 1. User makes one search. App completely finishes all filtering.
+      // 2. User makes another search.
+      // 3. First time we enter watchgroup for routes + crowdstartRoutes, only
+      //    only one of them has changed. WLOG assume it is routes.
+      // 4. Then routes is filtered from the new search, while crowdstartRoutes
+      //    is filtered from the old search.
+      // 5. Then the check (routes.length + crowdstartRoutes.length +
+      //    liteRoutes.length> 0) is using the wrong version of crowdstartRoutes
+      //    and could result in us doing unnecessary place queries.
+      //
+      // Resetting to null also has the benefit that the check whether we do
+      // place queries is only done once.
+      $scope.data.routes = null
+      $scope.data.crowdstartRoutes = null
+      $scope.data.liteRoutes = null
+      $scope.data.placeQuery = place
+      $scope.$digest()
+    }
 
     $scope.$watch(
       "data.queryText",
@@ -362,7 +402,7 @@ export default [
     $scope.$watchGroup(
       ["data.routes", "data.crowdstartRoutes", "data.liteRoutes"],
       ([routes, crowdstartRoutes, liteRoutes]) => {
-        async function handlePlaceQuery() {
+        const handlePlaceQuery = async function handlePlaceQuery() {
           // Important comments in the autoComplete function
           if (!routes || !crowdstartRoutes || !liteRoutes) return
           // Criteria for making a place query
@@ -388,7 +428,7 @@ export default [
           $scope.$digest()
         }
 
-        async function stopFilteringAfterDelay() {
+        const stopFilteringAfterDelay = async function stopFilteringAfterDelay() {
           await sleep(500)
           $scope.data.isFiltering = false
           $scope.$digest()
@@ -466,6 +506,14 @@ export default [
       }
     )
 
+    const routesAreLoaded = function routesAreLoaded() {
+      return !!(
+        $scope.data.routes &&
+        $scope.data.liteRoutes &&
+        $scope.data.crowdstartRoutes
+      )
+    }
+
     // call $anchorScroll only if all data loaded and there is $location.hash()
     $scope.$watch(
       () => routesAreLoaded(),
@@ -540,58 +588,6 @@ export default [
         "https://www.beeline.sg/suggest.html#" +
           querystring.stringify({ referrer: appName }),
         "_system"
-      )
-    }
-
-    // ------------------------------------------------------------------------
-    // Helper Functions
-    // ------------------------------------------------------------------------
-    function autoComplete() {
-      if (!$scope.data.queryText) {
-        $scope.data.placeQuery = null
-        $scope.data.isFiltering = false
-        $scope.$digest()
-        return
-      }
-
-      // show the spinner
-      $scope.data.isFiltering = true
-      $scope.$digest()
-
-      // default 'place' object only has 'queryText' but no geometry
-      let place = { queryText: $scope.data.queryText }
-      SearchEventService.emit("search-item", $scope.data.queryText)
-
-      // Reset routes, crowdstartRoutes and liteRoutes here because they are
-      // used to determine whether we do a place query (see watchGroup with
-      // all 3)
-      // If we don't reset, we could end up with the case where the criteria
-      // is applied to the wrong version of them
-      // E.g.
-      // 1. User makes one search. App completely finishes all filtering.
-      // 2. User makes another search.
-      // 3. First time we enter watchgroup for routes + crowdstartRoutes, only
-      //    only one of them has changed. WLOG assume it is routes.
-      // 4. Then routes is filtered from the new search, while crowdstartRoutes
-      //    is filtered from the old search.
-      // 5. Then the check (routes.length + crowdstartRoutes.length +
-      //    liteRoutes.length> 0) is using the wrong version of crowdstartRoutes
-      //    and could result in us doing unnecessary place queries.
-      //
-      // Resetting to null also has the benefit that the check whether we do
-      // place queries is only done once.
-      $scope.data.routes = null
-      $scope.data.crowdstartRoutes = null
-      $scope.data.liteRoutes = null
-      $scope.data.placeQuery = place
-      $scope.$digest()
-    }
-
-    function routesAreLoaded() {
-      return !!(
-        $scope.data.routes &&
-        $scope.data.liteRoutes &&
-        $scope.data.crowdstartRoutes
       )
     }
   },

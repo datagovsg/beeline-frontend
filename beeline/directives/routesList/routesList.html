@@ -16,7 +16,7 @@
 
   <!-- Available Lite Routes Section -->
   <ion-item
-    ng-repeat="route in data.liteRoutes | limitTo:10 track by route.id"
+    ng-repeat="route in data.liteRoutes | limitTo:10 track by route.label"
     ui-sref="tabs.lite-detail({ label: route.label })"
   >
     <lite-route route="route"></lite-route>

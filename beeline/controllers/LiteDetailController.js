@@ -1,3 +1,5 @@
+import { htmlFrom } from "../shared/util"
+
 export default [
   "$scope",
   "$ionicHistory",
@@ -26,6 +28,30 @@ export default [
     $state
   ) {
     // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    /**
+     * Send fake trip objects to MapService, to retrieve pings and statuses
+     */
+    const sendTripsToMapView = function sendTripsToMapView() {
+      const dailyTripIds = $scope.book.dailyTripIds
+      if (dailyTripIds && dailyTripIds.length > 0) {
+        MapService.emit("ping-trips", dailyTripIds.map(id => ({ id })))
+      }
+    }
+
+    /**
+     * Refresh trip information
+     * @param {Object} tripInfo - a payload from MapService, obtained from
+     * the backend
+     */
+    const updateTripInfo = function updateTripInfo(tripInfo) {
+      $scope.disp.hasTrackingData = tripInfo.hasTrackingData
+      $scope.disp.statusMessages = tripInfo.statusMessages
+      $scope.$digest()
+    }
+
+    // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
     let label = $stateParams.label
@@ -46,7 +72,7 @@ export default [
       route: null,
       waitingForSubscriptionResult: false,
       isSubscribed: false,
-      todayTrips: null,
+      dailyTripIds: [],
       inServiceWindow: false,
       hasTrips: true,
     }
@@ -68,10 +94,7 @@ export default [
 
     routePromise.then(route => {
       $scope.book.route = route[$scope.book.label]
-      // get route features
-      RoutesService.getRouteFeatures($scope.book.route.id).then(data => {
-        $scope.disp.features = data
-      })
+      $scope.disp.features = htmlFrom(route[$scope.book.label].features)
     })
 
     // ------------------------------------------------------------------------
@@ -118,12 +141,11 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    $scope.$watch("book.todayTrips", trips => {
-      if (!trips) return
-      $scope.book.hasTrips = trips.length > 0
+    $scope.$watch("book.dailyTripIds", tripIds => {
+      $scope.book.hasTrips = tripIds && tripIds.length > 0
     })
 
-    $scope.$watch("book.todayTrips", sendTripsToMapView)
+    $scope.$watch("book.dailyTripIds", sendTripsToMapView)
 
     $scope.$watch(
       () => UserService.getUser() && UserService.getUser().id,
@@ -244,22 +266,6 @@ export default [
       } finally {
         $scope.book.waitingForSubscriptionResult = false
       }
-    }
-
-    // ------------------------------------------------------------------------
-    // Helper Functions
-    // ------------------------------------------------------------------------
-    function sendTripsToMapView() {
-      const todayTrips = $scope.book.todayTrips
-      if (todayTrips && todayTrips.length > 0) {
-        MapService.emit("ping-trips", todayTrips)
-      }
-    }
-
-    function updateTripInfo(tripInfo) {
-      $scope.disp.hasTrackingData = tripInfo.hasTrackingData
-      $scope.disp.statusMessages = tripInfo.statusMessages
-      $scope.$digest()
     }
   },
 ]
