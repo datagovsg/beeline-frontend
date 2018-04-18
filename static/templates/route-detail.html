@@ -70,7 +70,7 @@
         <span ng-if="data.alightStopInvalid">
           The dropoff stop is unavailable.
         </span>
-        <countdown board-time="data.nextTrip && data.nextTrip.boardTime" booking-ends="data.bookingEnds"></countdown>
+        <countdown ng-if="!data.hasNextTripTicket" board-time="data.nextTrip && data.nextTrip.boardTime" booking-ends="data.bookingEnds"></countdown>
 
         <button class="button primary-button book-button"  ng-disabled="stopsForm.$invalid || !data.nextTrip.seatsAvailable || data.hasNextTripTicket || disp.isBooking || data.bookingEnds || data.boardStopInvalid || data.alightStopInvalid" ui-sref="tabs.route-summary({
                   routeId: data.routeId,
