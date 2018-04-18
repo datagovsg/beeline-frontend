@@ -77,7 +77,7 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "be0f9a3d39bcd46707d23997bba06abf"
+    "hash": "b5083b991c80f84ed05c37ae1a5c86f7"
   },
   {
     "file": "css/ionic.app.css.js",
@@ -85,7 +85,7 @@
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "a7b2c314826198dd0d81995be08bd069"
+    "hash": "d0085bb8e1499eb4b789639f672c7293"
   },
   {
     "file": "css/operator-grab.css.js",
@@ -109,7 +109,7 @@
   },
   {
     "file": "grab.html",
-    "hash": "3bcdcf1775b3b0d45ed9950a94027f8c"
+    "hash": "ac2408a8df08810d5685f50a898a4556"
   },
   {
     "file": "grab/android-chrome-144x144.png",
@@ -597,7 +597,7 @@
   },
   {
     "file": "img/poweredbybeeline.svg",
-    "hash": "8ad5a5ca146282efd5e131de12bbdcf0"
+    "hash": "cb8e89a2c6ded9e51ffa33d09f02b7ac"
   },
   {
     "file": "img/RoutePairBigEnd.svg",
@@ -665,7 +665,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "212b3e8a91130009b1edaafdedcb84cb"
+    "hash": "3490b94cce0a0b9c09e31af7f92b9c0c"
   },
   {
     "file": "lib/ionic/css/ionic.css",
@@ -949,7 +949,7 @@
   },
   {
     "file": "templates/booking-history.html",
-    "hash": "ca2d73abc342b91e378fd8eb03cc7b15"
+    "hash": "8e23cfece3944f5bd59c7b2489800e4c"
   },
   {
     "file": "templates/intro-slides.html",
@@ -957,11 +957,11 @@
   },
   {
     "file": "templates/kickstarter-commit.html",
-    "hash": "05a06ff93d23726693beb71f22611e96"
+    "hash": "0911265f881fae8c59d865f6ee2c67cc"
   },
   {
     "file": "templates/kickstarter-detail.html",
-    "hash": "614a137d966f48a6502cc6ee00d8a3ac"
+    "hash": "0f55bec35c082a9ace93308320817685"
   },
   {
     "file": "templates/kickstarter-recap.html",
@@ -973,15 +973,11 @@
   },
   {
     "file": "templates/kickstarter-summary.html",
-    "hash": "9ee29eb552d53e7e7aa2bf34bb12c7fd"
+    "hash": "771b0983c16baa594ee0e548ab5dba37"
   },
   {
     "file": "templates/kickstarter.html",
-    "hash": "f0b05cec4125e8f9e7e1561a6b902ad5"
-  },
-  {
-    "file": "templates/lite-tracker-more-info.html",
-    "hash": "7f2b3b6c79a794ff9b026acb720d27ae"
+    "hash": "b16661dfe3cb2874af703ec82fae1faa"
   },
   {
     "file": "templates/map-view.html",
@@ -993,11 +989,11 @@
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "fc336ff99c90ce74aa694b4f320b3ab6"
+    "hash": "8a78c74c8fd974239208e96276009781"
   },
   {
     "file": "templates/route-stops.html",
-    "hash": "b110f2cbddaade45f29deab5317a0a0a"
+    "hash": "e5586fb3ce2bb1bab88f0ad521189084"
   },
   {
     "file": "templates/routes-list.html",
@@ -1005,35 +1001,31 @@
   },
   {
     "file": "templates/settings.html",
-    "hash": "fd9684db4cfe94c2ad222b9c41ca67ee"
+    "hash": "badd49512debf369acbf792159573611"
   },
   {
     "file": "templates/tab-booking-confirmation.html",
-    "hash": "df99ad526c199aa82826044ff81d3fc4"
+    "hash": "d9574ef9b2bc2a4284079fc1121c1336"
   },
   {
     "file": "templates/tab-booking-dates.html",
-    "hash": "ec9c1c0bb597f342b84e11b16ef89d5d"
+    "hash": "e4c6b3aa6cb5ea379395083acc2931ec"
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "7666b5e19599d21ed686117638a45801"
+    "hash": "b9659c01950086019d2c7c401504d1c7"
   },
   {
     "file": "templates/tab-lite-detail.html",
-    "hash": "26ba7111439ccb2a523058332f19c09e"
+    "hash": "7ca9f9e118d67876ec9653d9bb71c451"
   },
   {
     "file": "templates/tab-lite-more-info.html",
     "hash": "5e7c35367b74b8a83cb1bee6db250c5e"
   },
   {
-    "file": "templates/tab-lite-tracker.html",
-    "hash": "914e726ac5d513575bade987a12923db"
-  },
-  {
     "file": "templates/tabs.html",
-    "hash": "8d6027880c4cb5bb64c5155dda510e60"
+    "hash": "c918355200e362df8e1dc0c6515bc7bd"
   },
   {
     "file": "templates/terms-of-use.html",
@@ -1041,7 +1033,7 @@
   },
   {
     "file": "templates/tickets.html",
-    "hash": "83a35879d98a1a95825c163c8bd0dd95"
+    "hash": "4c47f70c3cbe21b3539bb509e23ecd6c"
   },
   {
     "file": "templates/welcome.html",

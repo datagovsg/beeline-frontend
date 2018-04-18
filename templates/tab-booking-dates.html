@@ -1,10 +1,4 @@
 <ion-view id="pg_bookdate" view-title="Select Dates">
-  <ion-nav-buttons side="right">
-    <button class="button button-clear"
-       ui-sref="tabs.routes">
-       <i class="icon ion-ios-close-outline"></i>
-    </button>
-  </ion-nav-buttons>
 
   <ion-content>
     <multiple-date-picker ng-model="disp.selectedDatesMoments"
@@ -20,44 +14,32 @@
     <div class="datepicker">
       <table class="legend-table">
         <tr>
-          <td class="picker-day exemplar">
+          <td class="picker-day picker-off sold-out exemplar">
             #
           </td>
-          <td class="label">Available</td>
-          <td class="picker-day picker-off exemplar">
-            #
-          </td>
-          <td class="label">Not Available</td>
-        </tr>
-        <tr>
-          <td class="picker-day picker-selected activated exemplar">
-            #
-          </td>
-          <td class="label">Dates Selected</td>
+          <td class="label">Sold out</td>
           <td class="picker-day picker-off previously-booked exemplar">
             #
           </td>
           <td class="label">Your Previous Bookings</td>
         </tr>
         <tr>
-          <td class="picker-day picker-off sold-out examplar">
-            #
-          </td>
-          <td class="label">Sold out</td>
         </tr>
       </table>
-      <div class="labelDiv">
-        <label>
-          <input type="checkbox" ng-model="book.pickWholeMonth">
-            Pick the whole month
-          </input>
-        </label>
-      </div>
     </div>
 
-    <div class="item"><b>{{book.selectedDates.length}} day(s)</b> were selected.</div>
+    <div class="item booking-dates-selected">
 
-    <div class="item">
+      <div class="labelDiv">
+        <label>
+          <ion-checkbox ng-model="book.pickWholeMonth">
+            Select whole month
+          </ion-checkbox>
+        </label>
+      </div>
+
+      <div><b>{{book.selectedDates.length}} day(s)</b> selected</div>
+
       <button class="button primary-button button-item" ng-disabled="book.selectedDates.length == 0" ui-sref="tabs.route-summary({
                 routeId: book.routeId,
                 boardStop: book.boardStopId,

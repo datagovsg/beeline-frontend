@@ -5,12 +5,10 @@
   </ion-nav-buttons>
   <ion-content scroll="true">
     <daily-trips-broker trip-label="book.route.label"
-                 daily-trips="book.todayTrips">
+                 daily-trip-ids="book.dailyTripIds"
+                 in-service-window="book.inServiceWindow">
     </daily-trips-broker>
     <form class="stops-form" name="stopsForm">
-      <in-service-window available-trips="book.todayTrips"
-                         in-service-window="book.inServiceWindow">
-      </in-service-window>
       <div class="route-info">
         <div class="item item-icon-left item-text-wrap" ng-if="!book.hasTrips">
           <span class="icon ion-android-alert"></span>

@@ -66,17 +66,8 @@
               <th>
                 Route
               </th>
-              <td ng-if="transaction.itemsByType.ticketSale" class="item-text-wrap">
-                {{transaction.itemsByType.ticketSale[0].route.label}}: {{transaction.itemsByType.ticketSale[0].route.from}} &mdash; {{transaction.itemsByType.ticketSale[0].route.to}}
-              </td>
-              <td ng-if="transaction.itemsByType.routeCredits" class="item-text-wrap">
-                {{transaction.itemsByType.routeCredits[0].route.label}}: {{transaction.itemsByType.routeCredits[0].route.from}} &mdash; {{transaction.itemsByType.routeCredits[0].route.to}}
-              </td>
-              <td ng-if="transaction.itemsByType.routePass" class="item-text-wrap">
-                {{transaction.itemsByType.routePass[0].route.label}}: {{transaction.itemsByType.routePass[0].route.from}} &mdash; {{transaction.itemsByType.routePass[0].route.to}}
-              </td>
-              <td ng-if="transaction.itemsByType.ticketRefund" class="item-text-wrap">
-                {{transaction.itemsByType.ticketRefund[0].route.label}}: {{transaction.itemsByType.ticketRefund[0].route.from}} &mdash; {{transaction.itemsByType.ticketRefund[0].route.to}}
+              <td ng-if="transaction.itemsByType.deal" class="item-text-wrap">
+                {{transaction.itemsByType.deal[0].route.label}}: {{transaction.itemsByType.deal[0].route.from}} &mdash; {{transaction.itemsByType.deal[0].route.to}}
               </td>
             </tr>
             <tr ng-if="transaction.itemsByType.ticketSale">
