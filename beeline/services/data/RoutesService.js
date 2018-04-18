@@ -12,7 +12,7 @@ import assert from "assert"
  * @return {Object}
  *   the response, with time and locations flattened into it from the trip stops
  */
-function transformRouteData(data) {
+const transformRouteData = function transformRouteData(data) {
   _(data).each(function(route) {
     for (let trip of route.trips) {
       assert.equal(typeof trip.date, "string")
@@ -68,7 +68,7 @@ angular.module("beeline").factory("RoutesService", [
     let routeToRidesRemainingMap
     let routesWithRoutePassPromise
     let routesWithRoutePass
-    let activatedKickstarterRoutes
+    let routesWithRidesRemaining
     let routeToRoutePassTagsPromise = null
     let routeToRoutePassTags = null
 
@@ -385,7 +385,7 @@ angular.module("beeline").factory("RoutesService", [
       // output:
       // - promise containing all routes, modified with ridesRemaining property
       // side effect:
-      // - updates activatedKickstarterRoutes: array containing only those routes with
+      // - updates routesWithRidesRemaining: array containing only those routes with
       // ridesRemaining property
       // - updates routesWithRoutePass: array containing all avaialable routes,
       // modifying those with route credits remaining with a ridesRemaining property
@@ -406,7 +406,7 @@ angular.module("beeline").factory("RoutesService", [
                       : null
                   return clone
                 })
-                activatedKickstarterRoutes = routesWithRoutePass.filter(
+                routesWithRidesRemaining = routesWithRoutePass.filter(
                   route => route.id in routeToRidesRemainingMap
                 )
 
@@ -430,8 +430,8 @@ angular.module("beeline").factory("RoutesService", [
       // Returns array containing only those routes with
       // ridesRemaining property
       // Updated by: fetchRoutesWithRoutePass
-      getActivatedKickstarterRoutes: function() {
-        return activatedKickstarterRoutes
+      getRoutesWithRidesRemaining: function() {
+        return routesWithRidesRemaining
       },
 
       // Returns promise containing a map of all routeId to their corresponding tags

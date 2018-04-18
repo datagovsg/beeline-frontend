@@ -10,16 +10,16 @@
     </button>
   </div>
 
-  <div class="item item-divider" ng-if="data.activatedCrowdstartRoutes.length > 0
+  <div class="item item-divider" ng-if="data.routesWithRidesRemaining.length > 0
                      || data.recentRoutes.length > 0">
     Booking Routes
   </div>
   <ion-item
-    ng-repeat="route in data.activatedCrowdstartRoutes | limitTo:10 track by route.id"
+    ng-repeat="route in data.routesWithRidesRemaining | limitTo:10 track by route.id"
     ui-sref="tabs.route-detail({
       routeId: route.id
     })"
-    ng-if="data.activatedCrowdstartRoutes.length > 0"
+    ng-if="data.routesWithRidesRemaining.length > 0"
   >
     <regular-route route="route"></regular-route>
   </ion-item>

@@ -18,7 +18,7 @@ angular.module("beeline").directive("countdown", [
         let stopTime // so that we can cancel the time updates
 
         // used to update the UI
-        function updateTime() {
+        const updateTime = function updateTime() {
           scope.minsBeforeClose = moment(scope.boardTime).diff(
             moment(Date.now()),
             "minutes"
@@ -29,6 +29,7 @@ angular.module("beeline").directive("countdown", [
           if (bt && !stopTime) {
             scope.bookingEnds = false
             stopTime = $interval(updateTime, 100 * 30)
+            updateTime()
           }
         })
 
