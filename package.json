@@ -102,6 +102,7 @@
   ],
   "scripts": {
     "build": "node scripts/build.js",
+    "build-watch": "node scripts/build.js --watch",
     "clean": "shx rm -rf www/",
     "deploy": "node scripts/deploy.js",
     "dev": "node scripts/dev.js",
@@ -109,6 +110,7 @@
     "install-ios": "ionic cordova platform remove ios && ionic cordova platform add ios",
     "dev-android": "node scripts/dev-android.js",
     "start": "http-server -c-1 www/",
+    "watch": "npm run start & npm run build-watch",
     "lint": "node scripts/lint.js",
     "prettier": "node scripts/prettier.js",
     "prettier-lint": "bash scripts/prettier-lint.sh"
