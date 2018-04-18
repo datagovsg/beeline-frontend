@@ -52,7 +52,7 @@ export default [
       placeQuery: null, // The place object used to search
       queryText: "", // The actual text in the box
       // Different types of route data
-      activatedCrowdstartRoutes: null,
+      routesWithRidesRemaining: null,
       backedCrowdstartRoutes: null,
       recentRoutes: null,
       recentRoutesById: null,
@@ -140,30 +140,6 @@ export default [
       if (queryText.length === 0) $scope.data.isFiltering = true
     })
 
-    // Kickstarted routes
-    $scope.$watchGroup(
-      [() => RoutesService.getActivatedKickstarterRoutes(), "data.placeQuery"],
-      ([routes, placeQuery]) => {
-        // Input validation
-        if (!routes) return
-        // Filtering
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByPlaceAndText(
-            routes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByText(
-            routes,
-            placeQuery.queryText
-          )
-        }
-        // Publish
-        $scope.data.activatedCrowdstartRoutes = routes
-      }
-    )
-
     // Recent routes
     // Need to pull in the "full" data from all routes
     $scope.$watchGroup(
@@ -194,19 +170,34 @@ export default [
       }
     )
 
-    // blend activatedCrowdstartRoutes and recentRoutes
+    // Crowdstarted routes
     $scope.$watchGroup(
-      ["data.activatedCrowdstartRoutes", "data.recentRoutesById"],
-      ([activatedCrowdstartRoutes, recentRoutesById]) => {
-        if (activatedCrowdstartRoutes && recentRoutesById) {
-          let activatedCrowdstartRoutesIds = _.map(
-            activatedCrowdstartRoutes,
-            route => route.id
+      [
+        () => RoutesService.getRoutesWithRidesRemaining(),
+        "data.placeQuery",
+        "data.recentRoutesById",
+      ],
+      ([routes, placeQuery, recentRoutesById]) => {
+        // Input validation
+        if (!routes) return
+        // Filtering
+        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+          routes = SearchService.filterRoutesByPlaceAndText(
+            routes,
+            placeQuery,
+            placeQuery.queryText
           )
-          $scope.data.recentRoutes = $scope.data.recentRoutes.filter(
-            route => !activatedCrowdstartRoutesIds.includes(route.id)
+        } else if (placeQuery && placeQuery.queryText) {
+          routes = SearchService.filterRoutesByText(
+            routes,
+            placeQuery.queryText
           )
         }
+        // Publish
+        const recentRouteIds = Object.keys(recentRoutesById || {})
+        $scope.data.routesWithRidesRemaining = routes.filter(
+          route => !recentRouteIds.map(Number).includes(route.id)
+        )
       }
     )
 
@@ -459,7 +450,7 @@ export default [
     $scope.$watchGroup(
       [
         "data.routes",
-        "data.activatedCrowdstartRoutes",
+        "data.routesWithRidesRemaining",
         "data.backedCrowdstartRoutes",
         "data.recentRoutes",
         "data.liteRoutes",
@@ -470,7 +461,7 @@ export default [
       (
         [
           routes,
-          activatedCrowdstartRoutes,
+          routesWithRidesRemaining,
           backedCrowdstartRoutes,
           recentRoutes,
           liteRoutes,
@@ -485,13 +476,12 @@ export default [
         // Your routes
         if ($ionicHistory.currentStateName() === "tabs.youRoutes") {
           $scope.data.routesAvailable =
-            (activatedCrowdstartRoutes &&
-              activatedCrowdstartRoutes.length > 0) ||
+            (routesWithRidesRemaining && routesWithRidesRemaining.length > 0) ||
             (recentRoutes && recentRoutes.length > 0) ||
             (subscribedLiteRoutes && subscribedLiteRoutes.length > 0) ||
             (backedCrowdstartRoutes && backedCrowdstartRoutes.length > 0) ||
             (routesYouMayLike && routesYouMayLike.length > 0) ||
-            (activatedCrowdstartRoutes &&
+            (routesWithRidesRemaining &&
               recentRoutes &&
               subscribedLiteRoutes &&
               backedCrowdstartRoutes &&
@@ -568,8 +558,8 @@ export default [
 
     $scope.hasPersonalRoutes = function() {
       return !(
-        $scope.data.activatedCrowdstartRoutes &&
-        $scope.data.activatedCrowdstartRoutes.length === 0 &&
+        $scope.data.routesWithRidesRemaining &&
+        $scope.data.routesWithRidesRemaining.length === 0 &&
         $scope.data.recentRoutes &&
         $scope.data.recentRoutes.length === 0 &&
         $scope.data.subscribedLiteRoutes &&
