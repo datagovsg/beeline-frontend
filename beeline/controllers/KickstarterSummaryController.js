@@ -65,7 +65,8 @@ export default [
     // ------------------------------------------------------------------------
     $scope.$watch(
       () => KickstarterService.getCrowdstartById($scope.book.routeId),
-      route => {
+      async routePromise => {
+        const route = await routePromise
         if (!route) return
         $scope.book.route = route
 
@@ -117,7 +118,8 @@ export default [
         () => UserService.getUser(),
         () => KickstarterService.getCrowdstartById($scope.book.routeId),
       ],
-      ([user, route]) => {
+      async ([user, routePromise]) => {
+        const route = await routePromise
         if (!user || !route) return
 
         // Figure out if user has bidded on this crowdstart route

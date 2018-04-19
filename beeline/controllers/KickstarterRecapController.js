@@ -66,7 +66,8 @@ export default [
         () => KickstarterService.getBidInfo($scope.book.routeId),
         () => RoutesService.getRoutePasses($scope.book.creditTag),
       ],
-      ([route, bid, passes]) => {
+      async ([routePromise, bid, passes]) => {
+        const route = await routePromise
         if (!route) return
         $scope.book.route = route
         // Summarizes the stops from trips by comparing their stop location
