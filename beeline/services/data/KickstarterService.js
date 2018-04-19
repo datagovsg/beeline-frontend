@@ -134,27 +134,7 @@ angular.module("beeline").service("KickstarterService", [
     let kickstarterRoutesById = null
     let nearbyKickstarterRoutesById = null
 
-    UserService.userEvents.on("userChanged", () => {
-      fetchBids(true)
-      // to load route credits
-      RoutesService.fetchRoutePassCount(true)
-    })
-
-    // first load
-    // every 1 hour should reload kickstarter information
-    let timeout = new SafeInterval(refresh, 1000 * 60 * 60, 1000 * 60)
-
-    function refresh() {
-      return Promise.all([
-        fetchKickstarterRoutes(true),
-        fetchBids(true),
-        fetchNearbyKickstarterIds(),
-      ])
-    }
-
-    timeout.start()
-
-    function fetchBids(ignoreCache) {
+    const fetchBids = function fetchBids(ignoreCache) {
       if (UserService.getUser()) {
         if (bidsCache && !ignoreCache) return bidsCache
         return (bidsCache = RequestService.beeline({
@@ -178,7 +158,9 @@ angular.module("beeline").service("KickstarterService", [
       }
     }
 
-    function fetchKickstarterRoutes(ignoreCache) {
+    const fetchKickstarterRoutes = function fetchKickstarterRoutes(
+      ignoreCache
+    ) {
       if (kickstarterRoutesCache && !ignoreCache) return kickstarterRoutesCache
       let url = "/crowdstart/status"
       if (p.transportCompanyId) {
@@ -197,7 +179,9 @@ angular.module("beeline").service("KickstarterService", [
       }))
     }
 
-    function getLocationPromise(enableHighAccuracy = false) {
+    const getLocationPromise = function getLocationPromise(
+      enableHighAccuracy = false
+    ) {
       return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
           success => resolve(success),
@@ -207,7 +191,7 @@ angular.module("beeline").service("KickstarterService", [
       })
     }
 
-    async function fetchNearbyKickstarterIds() {
+    const fetchNearbyKickstarterIds = async function fetchNearbyKickstarterIds() {
       let locationOrNull = null
       try {
         await DevicePromise
@@ -273,13 +257,65 @@ angular.module("beeline").service("KickstarterService", [
       })
     }
 
+    UserService.userEvents.on("userChanged", () => {
+      fetchBids(true)
+      // to load route credits
+      RoutesService.fetchRoutePassCount(true)
+    })
+
+    const refresh = function refresh() {
+      return Promise.all([
+        fetchKickstarterRoutes(true),
+        fetchBids(true),
+        fetchNearbyKickstarterIds(),
+      ])
+    }
+
+    // first load
+    // every 1 hour should reload kickstarter information
+    let timeout = new SafeInterval(refresh, 1000 * 60 * 60, 1000 * 60)
+    timeout.start()
+
+    let lastPrivateCrowdstartRouteId
+    let lastPrivateCrowdstartRoutePromise = Promise.resolve({})
+
+    const getPrivateCrowdstartById = function getPrivateCrowdstartById(
+      routeId
+    ) {
+      if (lastPrivateCrowdstartRouteId !== routeId) {
+        lastPrivateCrowdstartRouteId = routeId
+        lastPrivateCrowdstartRoutePromise = Promise.all([
+          RoutesService.getRoute(routeId),
+          RequestService.beeline({
+            method: "GET",
+            url: `/crowdstart/routes/${routeId}/bids`,
+          }).then(response => response.data),
+        ])
+          .then(([route, bids]) => {
+            if (!route || !bids) {
+              return
+            }
+            route.bids = bids
+            transformKickstarterData([route])
+            return route
+          })
+          .catch(console.error)
+      }
+      return lastPrivateCrowdstartRoutePromise
+    }
+
     return {
       // all crowdstart routes
       getCrowdstart: () => kickstarterRoutesList,
       fetchCrowdstart: ignoreCache => fetchKickstarterRoutes(ignoreCache),
 
       getCrowdstartById: function(routeId) {
-        return kickstarterRoutesById ? kickstarterRoutesById[routeId] : null
+        if (!kickstarterRoutesById) {
+          return null
+        }
+        return kickstarterRoutesById[routeId]
+          ? kickstarterRoutesById[routeId]
+          : getPrivateCrowdstartById(routeId)
       },
 
       getKickstarterRoutesById: function() {

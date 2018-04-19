@@ -206,19 +206,18 @@ export default [
         () => KickstarterService.getBids(),
         () => KickstarterService.getKickstarterRoutesById(),
       ],
-      ([bids, kickstarterRoutesById]) => {
+      async ([bids, kickstarterRoutesById]) => {
         if (!bids || !kickstarterRoutesById) return
 
-        $scope.data.backedCrowdstartRoutes = bids
-          .map(bid => {
-            return KickstarterService.getCrowdstartById(bid.routeId)
-          })
-          .filter(
-            route =>
-              (!route.passExpired && route.isActived) ||
-              !route.isExpired ||
-              !route.is7DaysOld
-          )
+        const crowdstarts = await Promise.all(
+          bids.map(bid => KickstarterService.getCrowdstartById(bid.routeId))
+        )
+        $scope.data.backedCrowdstartRoutes = crowdstarts.filter(
+          route =>
+            (!route.passExpired && route.isActived) ||
+            !route.isExpired ||
+            !route.is7DaysOld
+        )
       }
     )
 
