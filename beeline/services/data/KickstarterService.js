@@ -276,13 +276,46 @@ angular.module("beeline").service("KickstarterService", [
     let timeout = new SafeInterval(refresh, 1000 * 60 * 60, 1000 * 60)
     timeout.start()
 
+    let lastPrivateCrowdstartRouteId
+    let lastPrivateCrowdstartRoutePromise = Promise.resolve({})
+
+    const getPrivateCrowdstartById = function getPrivateCrowdstartById(
+      routeId
+    ) {
+      if (lastPrivateCrowdstartRouteId !== routeId) {
+        lastPrivateCrowdstartRouteId = routeId
+        lastPrivateCrowdstartRoutePromise = Promise.all([
+          RoutesService.getRoute(routeId),
+          RequestService.beeline({
+            method: "GET",
+            url: `/crowdstart/routes/${routeId}/bids`,
+          }).then(response => response.data),
+        ])
+          .then(([route, bids]) => {
+            if (!route || !bids) {
+              return
+            }
+            route.bids = bids
+            transformKickstarterData([route])
+            return route
+          })
+          .catch(console.error)
+      }
+      return lastPrivateCrowdstartRoutePromise
+    }
+
     return {
       // all crowdstart routes
       getCrowdstart: () => kickstarterRoutesList,
       fetchCrowdstart: ignoreCache => fetchKickstarterRoutes(ignoreCache),
 
       getCrowdstartById: function(routeId) {
-        return kickstarterRoutesById ? kickstarterRoutesById[routeId] : null
+        if (!kickstarterRoutesById) {
+          return null
+        }
+        return kickstarterRoutesById[routeId]
+          ? kickstarterRoutesById[routeId]
+          : getPrivateCrowdstartById(routeId)
       },
 
       getKickstarterRoutesById: function() {
