@@ -234,7 +234,7 @@ export default [
       })
     })
 
-    // Get the route credits
+    // Get the route passes
     $scope.$watch(
       () => RoutesService.getPassCountForRoute(routeId),
       passCount => {

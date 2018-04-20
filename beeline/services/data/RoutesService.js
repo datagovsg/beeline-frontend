@@ -61,7 +61,7 @@ angular.module("beeline").factory("RoutesService", [
     let lastRouteId = null
     let lastPromise = null
 
-    // For Route Credits
+    // For Route Passes
     let routePassesCache
     let tagToPassesMap
     let routePassCache
@@ -306,7 +306,7 @@ angular.module("beeline").factory("RoutesService", [
       // - tag - String: tag associated with route. optional
       // output:
       // - Object containing all route passes associated with user
-      // - [tag provided] amount of credits specific to the tag
+      // - [tag provided] number of passes specific to the tag
       getRoutePasses: function(tag) {
         if (tag && tagToPassesMap) {
           return tagToPassesMap[tag]
@@ -318,7 +318,6 @@ angular.module("beeline").factory("RoutesService", [
       // Retrieve the amount of rides remaining for a specific route
       // input:
       // - routeId - number: id of route
-      // - creditTag - string: tag associated with route
       // output:
       // - promise containing number of rides remaining on the route pass for specified route
       getRoutePassCount: function() {
@@ -326,7 +325,7 @@ angular.module("beeline").factory("RoutesService", [
       },
 
       // New more abstracted method which differentiates between 0 and null
-      // 0 means user is logged in a no credits found
+      // 0 means user is logged in and no passes found
       // null means not logged in so we don't know
       getPassCountForRoute: function(routeId) {
         if (UserService.getUser()) {
@@ -360,7 +359,7 @@ angular.module("beeline").factory("RoutesService", [
                 let notableTags = _.intersection(route.tags, allRoutePassTags)
                 if (notableTags.length < 1) return
                 else {
-                  // no credit for such route
+                  // no passes for such route
                   // support multiple tags e.g. crowdstart-140, rp-161
                   // calculate the rides left in the route pass
                   notableTags.forEach(function(tag) {
@@ -378,7 +377,7 @@ angular.module("beeline").factory("RoutesService", [
       },
 
       // Generates a list of all routes, modifying those with route
-      // credits remaining with a "ridesRemaining" property
+      // passes remaining with a "ridesRemaining" property
       // input:
       // - ignoreCache: boolean determining if cache should be ignored.
       // carries over to dependencies fetchRoutes and fetchRoutePassCount
@@ -388,7 +387,7 @@ angular.module("beeline").factory("RoutesService", [
       // - updates routesWithRidesRemaining: array containing only those routes with
       // ridesRemaining property
       // - updates routesWithRoutePass: array containing all avaialable routes,
-      // modifying those with route credits remaining with a ridesRemaining property
+      // modifying those with route passes remaining with a ridesRemaining property
       fetchRoutesWithRoutePass: function(ignoreCache) {
         if (ignoreCache || !routesWithRoutePassPromise) {
           return (routesWithRoutePassPromise = $q
@@ -421,7 +420,7 @@ angular.module("beeline").factory("RoutesService", [
       },
 
       // Returns array containing all avaialable routes,
-      // modifying those with route credits remaining with a ridesRemaining property
+      // modifying those with route passes remaining with a ridesRemaining property
       // Updated by: fetchRoutesWithRoutePass
       getRoutesWithRoutePass: function() {
         return routesWithRoutePass
@@ -454,7 +453,7 @@ angular.module("beeline").factory("RoutesService", [
                 let notableTags = _.intersection(route.tags, routePassTags)
                 if (notableTags.length >= 1) {
                   // sort in alphabetical order followed by
-                  // to encourage use of crowdstart credit before rp-
+                  // to encourage use of crowdstart passes before rp-
                   notableTags = _.sortBy(notableTags, function(tag) {
                     return tag
                   })
