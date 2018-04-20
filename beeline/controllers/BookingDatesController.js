@@ -49,9 +49,6 @@ export default [
       selectedDates: [],
       invalidStopDates: [],
       applyRoutePass: false,
-      applyReferralCredits: false,
-      applyCredits: false,
-      creditTag: null,
       pickWholeMonth: null,
     }
 
@@ -213,14 +210,6 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-
-    $scope.$watch(
-      () => UserService.getUser(),
-      user => {
-        $scope.book.applyReferralCredits = Boolean(user)
-        $scope.book.applyCredits = Boolean(user)
-      }
-    )
 
     $scope.$watch(
       /* Don't watch the entire moment objects, just their value */

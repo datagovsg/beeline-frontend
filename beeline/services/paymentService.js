@@ -27,7 +27,10 @@ angular.module("beeline").factory("PaymentService", [
   ) {
     /** After you have settled the payment mode **/
     // book is booking Object
-    const completePayment = async function completePayment(paymentOptions, book) {
+    const completePayment = async function completePayment(
+      paymentOptions,
+      book
+    ) {
       try {
         let result = await RequestService.beeline({
           method: "POST",
@@ -36,8 +39,6 @@ angular.module("beeline").factory("PaymentService", [
             trips: BookingService.getTripsFromBooking(book),
             promoCode: book.promoCode ? { code: book.promoCode } : { code: "" },
             applyRoutePass: book.applyRoutePass ? true : false,
-            applyCredits: book.applyCredits ? true : false,
-            applyReferralCredits: book.applyReferralCredits ? true : false,
             expectedPrice: book.price,
           }),
         })
@@ -54,7 +55,10 @@ angular.module("beeline").factory("PaymentService", [
     /*
       Helper function to wrap the UI changes around payment
     */
-    const completePaymentWithUI = async function completePaymentWithUI(paymentOptions, book) {
+    const completePaymentWithUI = async function completePaymentWithUI(
+      paymentOptions,
+      book
+    ) {
       try {
         $ionicLoading.show({
           template: processingPaymentsTemplate,

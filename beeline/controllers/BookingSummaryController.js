@@ -15,7 +15,6 @@ export default [
   "$ionicScrollDelegate",
   "TicketService",
   "loadingSpinner",
-  "CreditsService",
   "$ionicPosition",
   function(
     $document,
@@ -31,10 +30,8 @@ export default [
     $ionicScrollDelegate,
     TicketService,
     loadingSpinner,
-    CreditsService,
     $ionicPosition
   ) {
-
     // ------------------------------------------------------------------------
     // Helper functions
     // ------------------------------------------------------------------------
@@ -117,9 +114,6 @@ export default [
       hasInvalidDate: false,
       features: null,
       applyRoutePass: false,
-      applyReferralCredits: false,
-      applyCredits: false,
-      creditTag: null,
       promoCode: null,
       promoCodeEntered: null,
       feedback: null,
@@ -162,8 +156,6 @@ export default [
         $scope.user = user
         $scope.book.hasSavedPaymentInfo =
           _.get($scope.user, "savedPaymentInfo.sources.data.length", 0) > 0
-        $scope.book.applyReferralCredits = Boolean(user)
-        $scope.book.applyCredits = Boolean(user)
         if ($scope.isLoggedIn) {
           loadingSpinner($scope.checkValidDate())
         }
@@ -250,6 +242,5 @@ export default [
     $scope.enterPromoCode = function() {
       verifyPromoCode()
     }
-
   },
 ]

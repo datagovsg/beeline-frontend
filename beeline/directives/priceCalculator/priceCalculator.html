@@ -23,14 +23,6 @@
           {{(-d.debit || 0) | currency}}
         </td>
       </tr>
-      <tr ng-if="priceInfo.referralCredits && priceInfo.referralCredits.length > 0" ng-repeat="referralCredit in priceInfo.referralCredits">
-        <td>Welcome Credits (use for up to 50% of the remaining transaction)<br />Using {{ referralCredit.debit || 0 | currency }} of {{ referralCredits || 0 | currency }}</td>
-        <td class="right">{{(-referralCredit.debit || 0) | currency}}</td>
-      </tr>
-      <tr ng-if="priceInfo.credits && priceInfo.credits.length > 0" ng-repeat="credits in priceInfo.credits">
-        <td>Credits - Using {{ credits.debit || 0 | currency }} of {{ userCredits || 0 | currency }} </td>
-        <td class="right">{{(-credits.debit || 0) | currency}}</td>
-      </tr>
       <tr>
         <td class="total-sum left" ><b>Total</b></td>
         <td class="total-sum right"><b>{{ (priceInfo.totals.payment.debit || 0) | currency}}</b></td>
