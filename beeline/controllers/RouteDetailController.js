@@ -36,6 +36,22 @@ export default [
     $ionicHistory
   ) {
     // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    const initTicketModal = function initTicketModal() {
+      let scope = $rootScope.$new()
+      scope.ticketId = $scope.data.nextTripTicketId
+      scope.functions = {}
+      $scope.modalFunctions = scope.functions
+      let modal = $ionicModal.fromTemplate(ticketDetailModalTemplate, {
+        scope: scope,
+        animation: "slide-in-up",
+      })
+      scope.modal = modal
+      return modal
+    }
+
+    // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
@@ -263,21 +279,5 @@ export default [
         }
       }
     })
-
-    // ------------------------------------------------------------------------
-    // Helper Functions
-    // ------------------------------------------------------------------------
-    function initTicketModal() {
-      let scope = $rootScope.$new()
-      scope.ticketId = $scope.data.nextTripTicketId
-      scope.functions = {}
-      $scope.modalFunctions = scope.functions
-      let modal = $ionicModal.fromTemplate(ticketDetailModalTemplate, {
-        scope: scope,
-        animation: "slide-in-up",
-      })
-      scope.modal = modal
-      return modal
-    }
   },
 ]
