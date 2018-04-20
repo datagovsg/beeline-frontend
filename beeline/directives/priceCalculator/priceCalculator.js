@@ -6,8 +6,7 @@ angular.module("beeline").directive("priceCalculator", [
   "BookingService",
   "RoutesService",
   "UserService",
-  "CreditsService",
-  function(BookingService, RoutesService, UserService, CreditsService) {
+  function(BookingService, RoutesService, UserService) {
     return {
       restrict: "E",
       template: priceCalculatorTemplate,
@@ -33,13 +32,6 @@ angular.module("beeline").directive("priceCalculator", [
             () => UserService.getUser(),
             user => {
               $scope.isLoggedIn = !!user
-              CreditsService.fetchUserCredits().then(userCredits => {
-                $scope.userCredits = userCredits
-              })
-
-              CreditsService.fetchReferralCredits().then(referralCredits => {
-                $scope.referralCredits = referralCredits
-              })
 
               // update ridesRemaining when user login at the booking summary page
               RoutesService.fetchRoutePassCount().then(routePassCountMap => {
@@ -120,8 +112,6 @@ angular.module("beeline").directive("priceCalculator", [
               _.pick($scope.booking, [
                 "selectedDates",
                 "applyRoutePass",
-                "applyCredits",
-                "applyReferralCredits",
                 "promoCode",
               ]),
             recomputePrices,

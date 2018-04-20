@@ -70,7 +70,6 @@ require("./directives/routesList/yourRoutesList")
 
 // Data Services
 require("./services/data/CompanyService")
-require("./services/data/CreditsService")
 require("./services/data/KickstarterService")
 require("./services/data/LiteRoutesService")
 require("./services/data/LiteRouteSubscriptionService")

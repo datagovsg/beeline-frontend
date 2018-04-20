@@ -259,7 +259,7 @@ angular.module("beeline").service("KickstarterService", [
 
     UserService.userEvents.on("userChanged", () => {
       fetchBids(true)
-      // to load route credits
+      // to load route passes
       RoutesService.fetchRoutePassCount(true)
     })
 
