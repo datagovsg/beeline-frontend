@@ -27,7 +27,7 @@ angular.module("beeline").factory("PaymentService", [
   ) {
     /** After you have settled the payment mode **/
     // book is booking Object
-    async function completePayment(paymentOptions, book) {
+    const completePayment = async function completePayment(paymentOptions, book) {
       try {
         let result = await RequestService.beeline({
           method: "POST",
@@ -54,7 +54,7 @@ angular.module("beeline").factory("PaymentService", [
     /*
       Helper function to wrap the UI changes around payment
     */
-    async function completePaymentWithUI(paymentOptions, book) {
+    const completePaymentWithUI = async function completePaymentWithUI(paymentOptions, book) {
       try {
         $ionicLoading.show({
           template: processingPaymentsTemplate,
@@ -72,7 +72,7 @@ angular.module("beeline").factory("PaymentService", [
       }
     }
 
-    async function payZeroDollar(book) {
+    const payZeroDollar = async function payZeroDollar(book) {
       if (
         await $ionicPopup.confirm({
           title: "Complete Purchase",
@@ -93,7 +93,7 @@ angular.module("beeline").factory("PaymentService", [
     }
 
     // Prompts for card and processes payment with one time stripe token.
-    async function payWithoutSavingCard(book) {
+    const payWithoutSavingCard = async function payWithoutSavingCard(book) {
       try {
         let stripeToken = await loadingSpinner(
           StripeService.promptForToken(
@@ -123,7 +123,7 @@ angular.module("beeline").factory("PaymentService", [
 
     // Processes payment with customer object. If customer object does not exist,
     // prompts for card, creates customer object, and proceeds as usual.
-    async function payWithSavedInfo(book) {
+    const payWithSavedInfo = async function payWithSavedInfo(book) {
       try {
         if (!book.hasSavedPaymentInfo) {
           let stripeToken = await StripeService.promptForToken(
