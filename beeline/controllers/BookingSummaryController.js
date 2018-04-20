@@ -34,6 +34,63 @@ export default [
     CreditsService,
     $ionicPosition
   ) {
+
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+    const verifyPromoCode = function verifyPromoCode() {
+      if (
+        $scope.book.promoCodeEntered === null ||
+        !$scope.book.promoCodeEntered
+      ) {
+        $scope.book.feedback = $scope.book.promoCodeEntered = null
+        $scope.$digest()
+        return
+      }
+      let bookClone = _.cloneDeep($scope.book)
+      let book = _.assign(bookClone, {
+        promoCode: $scope.book.promoCodeEntered.toUpperCase(),
+      })
+      $scope.book.isVerifying = true
+      const currentVerifyPromoCodePromise = ($scope.book.lastestVerifyPromoCodePromise = BookingService.computePriceInfo(
+        book
+      )
+        .then(priceInfo => {
+          if (
+            currentVerifyPromoCodePromise ===
+            $scope.book.lastestVerifyPromoCodePromise
+          ) {
+            $scope.book.feedback = "" // if valid, no feedback required
+            $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
+            $scope.book.promoCodeEntered = null
+          }
+        })
+        .catch(error => {
+          // still need this check as the latter promise may come back
+          //  earlier than the 1st one
+          if (
+            currentVerifyPromoCodePromise ===
+            $scope.book.lastestVerifyPromoCodePromise
+          ) {
+            if (error.data && error.data.source === "promoCode") {
+              $scope.book.feedback = error.data.message || "Invalid"
+            } else {
+              $scope.book.feedback = "" // if valid, no feedback required
+              $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
+              $scope.book.promoCodeEntered = null
+            }
+          }
+        })
+        .finally(() => {
+          if (
+            currentVerifyPromoCodePromise ===
+            $scope.book.lastestVerifyPromoCodePromise
+          ) {
+            $scope.book.isVerifying = null
+          }
+        }))
+    }
+
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
@@ -194,60 +251,5 @@ export default [
       verifyPromoCode()
     }
 
-    // ------------------------------------------------------------------------
-    // Helper functions
-    // ------------------------------------------------------------------------
-    function verifyPromoCode() {
-      if (
-        $scope.book.promoCodeEntered === null ||
-        !$scope.book.promoCodeEntered
-      ) {
-        $scope.book.feedback = $scope.book.promoCodeEntered = null
-        $scope.$digest()
-        return
-      }
-      let bookClone = _.cloneDeep($scope.book)
-      let book = _.assign(bookClone, {
-        promoCode: $scope.book.promoCodeEntered.toUpperCase(),
-      })
-      $scope.book.isVerifying = true
-      const currentVerifyPromoCodePromise = ($scope.book.lastestVerifyPromoCodePromise = BookingService.computePriceInfo(
-        book
-      )
-        .then(priceInfo => {
-          if (
-            currentVerifyPromoCodePromise ===
-            $scope.book.lastestVerifyPromoCodePromise
-          ) {
-            $scope.book.feedback = "" // if valid, no feedback required
-            $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
-            $scope.book.promoCodeEntered = null
-          }
-        })
-        .catch(error => {
-          // still need this check as the latter promise may come back
-          //  earlier than the 1st one
-          if (
-            currentVerifyPromoCodePromise ===
-            $scope.book.lastestVerifyPromoCodePromise
-          ) {
-            if (error.data && error.data.source === "promoCode") {
-              $scope.book.feedback = error.data.message || "Invalid"
-            } else {
-              $scope.book.feedback = "" // if valid, no feedback required
-              $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
-              $scope.book.promoCodeEntered = null
-            }
-          }
-        })
-        .finally(() => {
-          if (
-            currentVerifyPromoCodePromise ===
-            $scope.book.lastestVerifyPromoCodePromise
-          ) {
-            $scope.book.isVerifying = null
-          }
-        }))
-    }
   },
 ]
