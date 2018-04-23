@@ -184,7 +184,7 @@ angular.module("beeline").factory("PaymentService", [
               method: "POST",
               url: "/transactions/route_passes/payment",
               data: _.defaults(paymentOptions, {
-                creditTag: routePassTagList[0],
+                tag: routePassTagList[0],
                 promoCode: { code: "" },
                 companyId: route.transportCompanyId,
                 expectedPrice: expectedPrice,

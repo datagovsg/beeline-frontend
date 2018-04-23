@@ -38,11 +38,11 @@ export default [
       boardStops: null,
       alightStops: null,
       passAvailable: null,
-      creditTag: null,
+      tag: null,
     }
 
     $scope.book.routeId = routeId
-    $scope.book.creditTag = "crowdstart-" + routeId
+    $scope.book.tag = "crowdstart-" + routeId
     $scope.modalMap = MapOptions.defaultMapOptions()
     $scope.modal = $ionicModal.fromTemplate(busStopListTemplate, {
       scope: $scope,
@@ -64,7 +64,7 @@ export default [
       [
         () => KickstarterService.getCrowdstartById($scope.book.routeId),
         () => KickstarterService.getBidInfo($scope.book.routeId),
-        () => RoutesService.getRoutePasses($scope.book.creditTag),
+        () => RoutesService.getRoutePasses($scope.book.tag),
       ],
       async ([routePromise, bid, passes]) => {
         const route = await routePromise
