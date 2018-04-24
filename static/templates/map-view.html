@@ -12,7 +12,7 @@
                 show="disp.popupStop"
                 closeClick="closeWindow">
   <div class="popUpStopSelect">
-    <b>{{formatStopTime(disp.popupStop.time)}}<br/></b>
+    <b ng-if="!isArray(disp.popupStop.time)">{{formatStopTime(disp.popupStop.time)}}<br/></b>
     {{disp.popupStop.description}}<br/>{{disp.popupStop.road}}<br/>
   </div>
 </ui-gmap-window>

@@ -28,6 +28,8 @@ angular.module("beeline").factory("MapViewFactory", [
           }
           return formatTime(input)
         }
+
+        scope.isArray = angular.isArray
       },
       mapObject: function() {
         return _.assign(
