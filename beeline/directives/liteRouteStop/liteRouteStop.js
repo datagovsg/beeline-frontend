@@ -31,7 +31,7 @@ angular.module("beeline").directive("liteRouteStop", [
   },
 ])
 
-function makeGrid(data, cols) {
+const makeGrid = function makeGrid(data, cols) {
   let grid = []
   let col
   let row = -1
