@@ -1,5 +1,6 @@
 import liteRouteStopTemplate from "./liteRouteStop.html"
 import moment from "moment"
+import _ from "lodash"
 
 angular.module("beeline").directive("liteRouteStop", [
   function() {
@@ -25,23 +26,8 @@ angular.module("beeline").directive("liteRouteStop", [
 
         // Four columns. If changing number of cols, CSS also needs
         // to be changed
-        scope.times = makeGrid(times, 4)
+        scope.times = _.chunk(times, 4)
       },
     }
   },
 ])
-
-const makeGrid = function makeGrid(data, cols) {
-  let grid = []
-  let col
-  let row = -1
-
-  for (let i = 0; i < data.length; i++) {
-    col = i % cols
-    if (col === 0) {
-      grid[++row] = []
-    }
-    grid[row][col] = data[i]
-  }
-  return grid
-}

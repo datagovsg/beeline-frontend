@@ -15,8 +15,8 @@ angular.module("beeline").directive("routeShare", [
                   </button>
                 </div>`,
       scope: {
-        isNormalRoute: "<",
         routeId: "<",
+        routeType: "<",
       },
       link: function(scope, element, attributes) {
         scope.showCopy = !window.cordova || false
@@ -25,10 +25,12 @@ angular.module("beeline").directive("routeShare", [
           $rootScope.o.APP.NAME === "GrabShuttle"
             ? "https://grabshuttle.beeline.sg"
             : "https://app.beeline.sg"
-        if (scope.isNormalRoute) {
+        if (scope.routeType === "normal") {
           scope.shareLink = `${domain}/tabs/route/${scope.routeId}`
-        } else {
+        } else if (scope.routeType === "crowdstart") {
           scope.shareLink = `${domain}/tabs/crowdstart/${scope.routeId}/detail`
+        } else if (scope.routeType === "lite") {
+          scope.shareLink = `${domain}/tabs/lite/detail/${scope.routeId}`
         }
 
         scope.shareAnywhere = function() {

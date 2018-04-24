@@ -1,7 +1,10 @@
 <ion-view on-touch="hideTooltip()" class="lite-detail page-with-map"
-  view-title="Route Details">
+  view-title="{{book.label}}">
   <ion-nav-buttons side="left">
     <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <route-share route-type="'lite'" route-id="book.label"></route-share>
   </ion-nav-buttons>
   <div class="map-buttons bar bar-subheader">
     <div>
@@ -44,11 +47,11 @@
           <span class="icon ion-android-alert"></span>
           There is no bus service scheduled for today.
         </div>
-        <div class="item item-icon-left item-text-wrap route-status" ng-if="book.hasTrips && book.inServiceWindow===false">
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="book.hasTrips && !book.inServiceWindow">
           <span class="icon ion-android-alert"></span>
           The bus service will only be available from {{ book.route.startTime | formatTime}} to {{ book.route.endTime | formatTime}}.
         </div>
-        <div class="item item-icon-left item-text-wrap route-status" ng-if="book.hasTrips && book.inServiceWindow && disp.hasTrackingData === false">
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="book.hasTrips && book.inServiceWindow && !disp.hasTrackingData">
           <span class="icon ion-android-alert"></span>
           The bus location tracking is not available at the moment.
         </div>
@@ -66,7 +69,7 @@
         <div ng-repeat="stop in book.route.stops"
              class="lite-stop-container"
              ng-click="setSelected($index)">
-          <div class="selector" ng-class="{ selected: $index === current || (!current && $index === 0)}"></div>
+          <div class="selector" ng-class="{ selected: $index === (current || 0) }"></div>
           <ion-item class="item-text-wrap lite-route-info">
             <lite-route-stop index="$index" current="current" stop="stop"></lite-route-stop>
           </ion-item>
