@@ -172,16 +172,14 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    $scope.login = function() {
-      UserService.promptLogIn()
-    }
-
     $scope.setSelected = function(index) {
       $scope.current = index
+      let stop = $scope.book.route.stops[index]
+      MapService.emit("stop-selected", stop)
     }
 
     $scope.showConfirmationPopup = async function() {
-      let user = await UserService.promptLogIn()
+      let user = await UserService.loginIfNeeded()
 
       if (!user) {
         await $ionicPopup.alert({
@@ -195,12 +193,16 @@ export default [
         return
       }
 
-      const response = await $ionicPopup.confirm({
-        title: "Are you sure you want to bookmark this route?",
-      })
+      if ($scope.book.isSubscribed) {
+        $scope.promptUntrack()
+      } else {
+        const response = await $ionicPopup.confirm({
+          title: "Are you sure you want to bookmark this route?",
+        })
 
-      if (!response) return
-      $scope.followRoute()
+        if (!response) return
+        $scope.followRoute()
+      }
     }
 
     $scope.followRoute = async function() {

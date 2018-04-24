@@ -157,9 +157,16 @@
       align-items: center;
       justify-content: center;
 
-      .icon-vertical {
-        font-size: 18px;
-        margin-bottom: 5px;
+      .icon-container {
+        line-height: 0px;
+        .icon-vertical {
+          font-size: 18px;
+          margin-bottom: 5px;
+
+          &.solid {
+            color: $energized;
+          }
+        }
       }
 
       span {

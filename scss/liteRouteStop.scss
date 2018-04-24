@@ -21,6 +21,15 @@
         line-height: normal;
       }
 
+      .row {
+        .col {
+          width: 25%;
+          flex: unset;
+          padding: 0px;
+        }
+      }
+
+
       .before {
         color: #BBB;
       }

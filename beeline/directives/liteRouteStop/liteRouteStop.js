@@ -22,7 +22,26 @@ angular.module("beeline").directive("liteRouteStop", [
         scope.after = times
           .filter(time => time >= scope.currentTime)
           .map(time => time.format("h:mm a"))
+
+        // Four columns. If changing number of cols, CSS also needs
+        // to be changed
+        scope.times = makeGrid(times, 4)
       },
     }
   },
 ])
+
+function makeGrid(data, cols) {
+  let grid = []
+  let col
+  let row = -1
+
+  for (let i = 0; i < data.length; i++) {
+    col = i % cols
+    if (col === 0) {
+      grid[++row] = []
+    }
+    grid[row][col] = data[i]
+  }
+  return grid
+}

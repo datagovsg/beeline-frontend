@@ -5,8 +5,13 @@
       <div class="road">{{ stop.road }}</div>
     </div>
     <div ng-if="current === index || (!current && index === 0)" class="secondary">
-      <span class="before">{{ before.join(", ") }},</span>
-      <span ng-if="after && after.length > 0" class="after">{{ after.join(", ") }}</span>
+
+      <div class="row" ng-repeat="row in times">
+        <div ng-class="{ before: item < currentTime }" class="col" ng-repeat="item in row">
+          {{ item.format("h:mm a") }}
+        </div>
+      </div>
+
     </div>
   </div>
   <div class="right">

@@ -8,8 +8,14 @@
       <button class="button primary-button bookmark-button"
               ng-click="showConfirmationPopup()"
               ng-disabled="book.waitingForSubscriptionResult">
-        <i ng-if="!book.isSubscribed" class="far fa-star icon-vertical"></i>
-        <i ng-if="book.isSubscribed" class="fas fa-star icon-vertical"></i>
+
+        <!-- Can't put ng-if on <i></i> because of how font awesome works -->
+        <div class="icon-container" ng-if="!book.isSubscribed">
+          <i class="far fa-star icon-vertical"></i>
+        </div>
+        <div class="icon-container" ng-if="book.isSubscribed">
+          <i class="fas fa-star icon-vertical solid"></i>
+        </div>
         <span>Bookmark</span>
       </button>
     </div>
@@ -18,7 +24,9 @@
               ui-sref="tabs.lite-more-info({
                  companyId: book.route.transportCompanyId,
                  label: book.route.label})">
-        <i class="fas fa-info-circle icon-vertical"></i>
+        <div class="icon-container">
+          <i class="fas fa-info-circle icon-vertical"></i>
+        </div>
         <span>More Info</span>
       </button>
     </div>

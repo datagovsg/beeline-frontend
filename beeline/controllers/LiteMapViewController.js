@@ -69,5 +69,13 @@ export default [
       $scope.mapObject.stops = route.stops
       SharedVariableService.setStops(route.stops)
     })
+
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
+    MapService.on("stop-selected", stop => {
+      $scope.mapObject.chosenStop = stop
+      SharedVariableService.setChosenStop(stop)
+    })
   },
 ]
