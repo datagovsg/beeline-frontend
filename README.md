@@ -1,11 +1,11 @@
 # Getting started
 Beeline is built using the Ionic Framework, so install ionic CLI tools:
 
-    `npm install -g ionic`
+    npm install -g ionic
 
-Install dependencies 
- 
-    `npm install`
+Install dependencies
+
+    npm install
 
 ## Android development
 Install [Android Studio](https://developer.android.com/studio/index.html)  
@@ -24,7 +24,7 @@ Open `platforms/ios/Beeline.xcodeproj` in Xcode
 
 Select target platform to run (e.g. iPhone 6) and run it
 
-# Building 
+# Building
 
 `npm run build` for a single development build
 
@@ -36,13 +36,13 @@ Select target platform to run (e.g. iPhone 6) and run it
 
 `npm run deploy` to deploy the app to staging/production environments
 
-# Pushing 
-``` 
-$ cd build 
-$ git add . 
-$ git commit -m 'Deployment on 14 Jul 2016' 
-$ git push 
-``` 
+# Pushing
+```
+$ cd build
+$ git add .
+$ git commit -m 'Deployment on 14 Jul 2016'
+$ git push
+```
 
 # Folder Structure
 - beeline: Main program code source code to be compiled by webpack
