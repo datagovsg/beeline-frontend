@@ -18,6 +18,22 @@ export default [
     loadingSpinner
   ) {
     // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    const panToStop = function panToStop(stop, setZoom) {
+      if ($scope.map.control.getGMap) {
+        const gmap = $scope.map.control.getGMap()
+        gmap.panTo({
+          lat: stop.coordinates.coordinates[1],
+          lng: stop.coordinates.coordinates[0],
+        })
+        if (setZoom) {
+          gmap.setZoom(15)
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
     $scope.map = MapOptions.defaultMapOptions({
@@ -115,21 +131,5 @@ export default [
     // UI Hooks
     // ------------------------------------------------------------------------
     $scope.login = UserService.promptLogIn
-
-    // ------------------------------------------------------------------------
-    // Helper Functions
-    // ------------------------------------------------------------------------
-    function panToStop(stop, setZoom) {
-      if ($scope.map.control.getGMap) {
-        const gmap = $scope.map.control.getGMap()
-        gmap.panTo({
-          lat: stop.coordinates.coordinates[1],
-          lng: stop.coordinates.coordinates[0],
-        })
-        if (setZoom) {
-          gmap.setZoom(17)
-        }
-      }
-    }
   },
 ]

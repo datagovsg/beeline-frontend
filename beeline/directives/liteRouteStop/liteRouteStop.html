@@ -1,0 +1,20 @@
+<div class="lite-route-stop">
+  <div class="left">
+    <div class="main">
+      <div class="description">{{ stop.description }}</div>
+      <div class="road">{{ stop.road }}</div>
+    </div>
+    <div ng-if="current === index || (!current && index === 0)" class="secondary">
+
+      <div class="row" ng-repeat="row in times">
+        <div ng-class="{ before: item < currentTime }" class="col" ng-repeat="item in row">
+          {{ item.format("h:mm a") }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="right">
+    <div ng-if="after && after.length > 0">{{ after[0] }}</div>
+  </div>
+</div>

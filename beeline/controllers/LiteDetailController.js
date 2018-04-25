@@ -172,17 +172,37 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    $scope.login = function() {
-      UserService.promptLogIn()
+    $scope.setSelected = function(index) {
+      $scope.current = index
+      let stop = $scope.book.route.stops[index]
+      MapService.emit("stop-selected", stop)
     }
 
     $scope.showConfirmationPopup = async function() {
-      const response = await $ionicPopup.confirm({
-        title: "Are you sure you want to bookmark this route?",
-      })
+      let user = await UserService.loginIfNeeded()
 
-      if (!response) return
-      $scope.followRoute()
+      if (!user) {
+        await $ionicPopup.alert({
+          title: "Login Required",
+          template: `
+            <div class="item item-text-wrap text-center ">
+              <p>You are not logged in. Please login to bookmark this route.</p>
+            </div>
+          `,
+        })
+        return
+      }
+
+      if ($scope.book.isSubscribed) {
+        $scope.promptUntrack()
+      } else {
+        const response = await $ionicPopup.confirm({
+          title: "Are you sure you want to bookmark this route?",
+        })
+
+        if (!response) return
+        $scope.followRoute()
+      }
     }
 
     $scope.followRoute = async function() {

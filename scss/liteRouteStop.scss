@@ -1,0 +1,48 @@
+.lite-route-stop {
+  display: flex;
+
+  .left {
+    width: 80%;
+    font-size: 12px;
+
+    .main {
+      .description {
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .road {
+
+      }
+    }
+
+    .secondary {
+      span {
+        line-height: normal;
+      }
+
+      .row {
+        .col {
+          width: 22%;
+          flex: unset;
+          padding: 0px;
+        }
+      }
+
+
+      .before {
+        color: #BBB;
+      }
+
+      .after {
+
+      }
+    }
+  }
+
+  .right {
+    width: 20%;
+    text-align: right;
+    font-weight: 700;
+  }
+}
