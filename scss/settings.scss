@@ -44,7 +44,7 @@
 }
 /* Style for the legal modals in settings - Terms of Use and Privacy Policy */
 .legal {
-  padding: $content-padding*4 $content-padding*3;
+  padding: $content-padding $content-padding*3;
 
   h1{
     font-size: $font-size-large*1.5;
@@ -62,18 +62,35 @@
   }
   ol {
     list-style-type: decimal;
+    counter-reset: item;
   }
   ul{
     list-style-type: disc;
     list-style-position: inside;
   }
+  span.subHeader {
+    font-weight: bold;
+  }
   ol, ul {
     padding-top: $padding-large-vertical;
     padding-left: $padding-large-horizontal;
     padding-bottom: $padding-large-vertical;
+    li:before {
+      content: counters(item, ".") ". ";
+      counter-increment: item
+    }
     li {
-      padding-top: $line-height-computed;
-      padding-left: $padding-large-horizontal;
+      display: block;
+      font-weight: bold;
+      li {
+        text-indent: -2em;
+        padding-left: 18px;
+        font-weight: normal;
+        li {
+          padding-left: 0px;
+          text-indent: -2.5em;
+        }
+      }
     }
   }
 }
