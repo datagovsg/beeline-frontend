@@ -66,17 +66,16 @@ angular.module("beeline").service("purchaseRoutePassService", [
       scope.payForRoutePass = async function() {
         try {
           let paymentPromise
-          let expectedPrice =
-            scope.book.priceSchedules[scope.book.routePassChoice].totalPrice
-          let passValue =
-            route.trips[0].price *
-            scope.book.priceSchedules[scope.book.routePassChoice].quantity
+          let {
+            totalPrice: expectedPrice,
+            quantity,
+          } = scope.book.priceSchedules[scope.book.routePassChoice]
           // if user has credit card saved
           if (hasSavedPaymentInfo) {
             paymentPromise = PaymentService.payForRoutePass(
               route,
               expectedPrice,
-              passValue,
+              quantity,
               {
                 customerId: savedPaymentInfo.id,
                 sourceId: _.head(savedPaymentInfo.sources.data).id,
@@ -106,7 +105,7 @@ angular.module("beeline").service("purchaseRoutePassService", [
               paymentPromise = PaymentService.payForRoutePass(
                 route,
                 expectedPrice,
-                passValue,
+                quantity,
                 {
                   customerId: user.savedPaymentInfo.id,
                   sourceId: _.head(user.savedPaymentInfo.sources.data).id,
@@ -116,7 +115,7 @@ angular.module("beeline").service("purchaseRoutePassService", [
               paymentPromise = PaymentService.payForRoutePass(
                 route,
                 expectedPrice,
-                passValue,
+                quantity,
                 {
                   stripeToken: stripeToken.id,
                 }
