@@ -4,7 +4,7 @@
   ng-repeat="stop in mapObject.stops"
   idKey="stop.id"
   coords="stop.coordinates"
-  options="stop.canBoard ? map.markerOptions.boardMarker : map.markerOptions.alightMarker"
+  options="stop.canBoard ? (stop.canAlight ? map.markerOptions.normalMarker : map.markerOptions.boardMarker) : map.markerOptions.alightMarker"
   click="applyTapBoard(stop)"
 ></ui-gmap-marker>
 <ui-gmap-window ng-if="disp.popupStop"
