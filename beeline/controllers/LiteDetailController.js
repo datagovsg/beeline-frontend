@@ -1,4 +1,5 @@
 import { htmlFrom } from "../shared/util"
+import _ from "lodash"
 
 export default [
   "$scope",
@@ -97,6 +98,14 @@ export default [
 
     routePromise.then(route => {
       $scope.book.route = route[$scope.book.label]
+
+      // Sort the stops by the first departure time
+      $scope.book.route.stops = _.orderBy(
+        $scope.book.route.stops,
+        ["time[0]"],
+        ["asc"]
+      )
+
       $scope.disp.features = htmlFrom(route[$scope.book.label].features)
     })
 
