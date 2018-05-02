@@ -28,11 +28,9 @@ angular.module("beeline").directive("liteRouteStop", [
         // to be changed
         scope.times = _.chunk(times, 4)
 
-        if (scope.stop.canBoard && scope.stop.canAlight) {
-          scope.stopTypeText = "Pick up and drop off"
-        } else if (scope.stop.canBoard) {
+        if (scope.stop.canBoard && !scope.stop.canAlight) {
           scope.stopTypeText = "Pick up only"
-        } else if (scope.stop.canAlight) {
+        } else if (!scope.stop.canBoard && scope.stop.canAlight) {
           scope.stopTypeText = "Drop off only"
         }
       },
