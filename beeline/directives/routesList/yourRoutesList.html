@@ -39,7 +39,7 @@
     Bookmarked Tracking Routes
   </div>
   <ion-item
-    ng-repeat="route in data.subscribedLiteRoutes | limitTo:10 track by route.id"
+    ng-repeat="route in data.subscribedLiteRoutes | limitTo:10 track by route.label"
     ng-if="data.subscribedLiteRoutes.length > 0"
     ui-sref="tabs.lite-detail({
       label: route.label
