@@ -62,68 +62,61 @@ angular.module("beeline").service("purchaseRoutePassService", [
         }
       })
 
-      // Prompts for card and processes payment with one time stripe token.
-      scope.payForRoutePass = async function() {
-        try {
-          let paymentPromise
-          let {
-            totalPrice: expectedPrice,
-            quantity,
-          } = scope.book.priceSchedules[scope.book.routePassChoice]
-          // if user has credit card saved
-          if (hasSavedPaymentInfo) {
-            paymentPromise = PaymentService.payForRoutePass(
-              route,
-              expectedPrice,
-              quantity,
-              {
-                customerId: savedPaymentInfo.id,
-                sourceId: _.head(savedPaymentInfo.sources.data).id,
-              }
+      const retrievePaymentInfo = async function retrievePaymentInfo() {
+        let paymentInfo
+        // if user has credit card saved
+        if (hasSavedPaymentInfo) {
+          paymentInfo = {
+            customerId: savedPaymentInfo.id,
+            sourceId: _.head(savedPaymentInfo.sources.data).id,
+          }
+        } else {
+          const stripeToken = await loadingSpinner(
+            StripeService.promptForToken(
+              null,
+              isFinite(scope.book.routePassPrice)
+                ? scope.book.routePassPrice * 100
+                : "",
+              null
             )
-          } else {
-            let stripeToken = await loadingSpinner(
-              StripeService.promptForToken(
-                null,
-                isFinite(scope.book.routePassPrice)
-                  ? scope.book.routePassPrice * 100
-                  : "",
-                null
-              )
-            )
+          )
 
-            if (!stripeToken) {
-              paymentPromise = new Promise((resolve, reject) => {
-                return reject("no Stripe Token")
-              })
-            }
-
+          if (stripeToken) {
             // saves payment info if doesn't exist
             if (scope.book.savePaymentChecked) {
               await UserService.savePaymentInfo(stripeToken.id)
-              let user = await UserService.getUser()
-              paymentPromise = PaymentService.payForRoutePass(
-                route,
-                expectedPrice,
-                quantity,
-                {
-                  customerId: user.savedPaymentInfo.id,
-                  sourceId: _.head(user.savedPaymentInfo.sources.data).id,
-                }
-              )
+              const user = await UserService.getUser()
+              paymentInfo = {
+                customerId: user.savedPaymentInfo.id,
+                sourceId: _.head(user.savedPaymentInfo.sources.data).id,
+              }
             } else {
-              paymentPromise = PaymentService.payForRoutePass(
+              paymentInfo = { stripeToken: stripeToken.id }
+            }
+          }
+        }
+        return paymentInfo
+      }
+
+      // Prompts for card and processes payment with one time stripe token.
+      scope.payForRoutePass = async function() {
+        try {
+          const paymentInfo = await retrievePaymentInfo()
+          const {
+            totalPrice: expectedPrice,
+            quantity,
+          } = scope.book.priceSchedules[scope.book.routePassChoice]
+
+          return paymentInfo
+            ? new Promise((resolve, reject) => {
+                return reject("No payment information available")
+              })
+            : PaymentService.payForRoutePass(
                 route,
                 expectedPrice,
                 quantity,
-                {
-                  stripeToken: stripeToken.id,
-                }
+                paymentInfo
               )
-            }
-
-            return paymentPromise
-          }
         } catch (err) {
           console.error(err)
           return new Promise((resolve, reject) => {
