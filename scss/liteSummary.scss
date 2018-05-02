@@ -84,7 +84,7 @@
     flex-direction: column;
     top: auto;
     @include desktop { top: $bar-height; }
-    max-height: 350px;
+    max-height: 35%;
 
 // TODO: leave the lite-form at the bottom or float on the map in mobile version
     .route-info {
