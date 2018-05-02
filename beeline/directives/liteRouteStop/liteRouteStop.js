@@ -17,12 +17,8 @@ angular.module("beeline").directive("liteRouteStop", [
         let times = scope.stop.time.map(time => {
           return moment(time)
         })
-        scope.before = times
-          .filter(time => time < scope.currentTime)
-          .map(time => time.format("h:mm a"))
-        scope.after = times
-          .filter(time => time >= scope.currentTime)
-          .map(time => time.format("h:mm a"))
+
+        scope.after = times.filter(time => time >= scope.currentTime)
 
         // Four columns. If changing number of cols, CSS also needs
         // to be changed
