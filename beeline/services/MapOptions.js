@@ -6,6 +6,14 @@ angular.module("beeline").service("MapOptions", [
     let markerOptionsPromise = uiGmapGoogleMapApi.then(googleMaps => {
       return {
         markerOptions: {
+          normalMarker: {
+            icon: {
+              url: "img/map/Icon_NormalWShadow.svg",
+              scaledSize: new googleMaps.Size(26, 25),
+              anchor: new googleMaps.Point(13, 13),
+            },
+            zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+          },
           boardMarker: {
             icon: {
               url: "img/map/Icon_PickupWShadow.svg",
