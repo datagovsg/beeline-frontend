@@ -47,7 +47,12 @@
           <span class="icon ion-android-alert"></span>
           {{disp.statusMessages.trim()}}
         </div>
-        <div class="item item-icon-left item-text-wrap route-status" ng-if="!disp.statusMessages.trim() && !book.hasTrips">
+        <!-- 
+          IMPORTANT NOTE:
+          We want to check specifically if hasTrips is false. If hasTrips is
+          null, it means that we haven't been able to compute hasTrips yet.
+         -->
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="!disp.statusMessages.trim() && book.hasTrips !== null && book.hasTrips === false">
           <span class="icon ion-android-alert"></span>
           There is no bus service scheduled for today.
         </div>
