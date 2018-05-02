@@ -77,6 +77,9 @@ export default [
       hasTrips: true,
     }
 
+    // Open the first bus stop by default
+    $scope.current = 0
+
     // ------------------------------------------------------------------------
     // Data Loading
     // ------------------------------------------------------------------------
@@ -173,6 +176,11 @@ export default [
     // UI Hooks
     // ------------------------------------------------------------------------
     $scope.setSelected = function(index) {
+      // If selecting the currently selected item, collapse all
+      if (index === $scope.current) {
+        $scope.current = null
+        return
+      }
       $scope.current = index
       let stop = $scope.book.route.stops[index]
       MapService.emit("stop-selected", stop)

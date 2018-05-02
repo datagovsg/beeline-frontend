@@ -69,7 +69,7 @@
         <div ng-repeat="stop in book.route.stops"
              class="lite-stop-container"
              ng-click="setSelected($index)">
-          <div class="selector" ng-class="{ selected: $index === (current || 0) }"></div>
+          <div class="selector" ng-class="{ selected: $index === current }"></div>
           <ion-item class="item-text-wrap lite-route-info">
             <lite-route-stop index="$index" current="current" stop="stop"></lite-route-stop>
           </ion-item>
