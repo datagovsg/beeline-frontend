@@ -3,6 +3,10 @@
     <div class="main">
       <div class="description">{{ stop.description }}</div>
       <div class="road">{{ stop.road }}</div>
+      <div class="stop-type" ng-class="{ board: stop.canBoard }">
+        <i class="fas fa-circle"></i>
+        {{ stopTypeText }}
+      </div>
     </div>
     <div ng-if="current === index" class="secondary">
 
