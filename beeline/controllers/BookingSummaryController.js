@@ -195,10 +195,16 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    $scope.login = function() {
-      $scope.isPreviewCalculating = true
-      UserService.promptLogIn()
-      $scope.scrollToPriceCalculator()
+    $scope.login = async function() {
+      let user = await UserService.promptLogIn()
+
+      if (user) {
+        // Recalculate prices because user might be whitelisted OR have route
+        // passes
+        $scope.isPreviewCalculating = true
+        $scope.refreshPrices()
+        $scope.scrollToPriceCalculator()
+      }
     }
 
     $scope.checkValidDate = async function() {
@@ -230,8 +236,9 @@ export default [
 
     $scope.scrollToPriceCalculator = function() {
       const priceCalculatorPosition = $ionicPosition.position(
-        angular.element($document.getElementById("priceCalc"))
+        angular.element($document[0].getElementById("priceCalc"))
       )
+
       $ionicScrollDelegate.scrollTo(
         priceCalculatorPosition.left,
         priceCalculatorPosition.top,
