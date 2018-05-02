@@ -43,21 +43,21 @@
 
     <form class="stops-form" name="stopsForm">
       <div class="route-info">
-        <div class="item item-icon-left item-text-wrap route-status" ng-if="!book.hasTrips">
-          <span class="icon ion-android-alert"></span>
-          There is no bus service scheduled for today.
-        </div>
-        <div class="item item-icon-left item-text-wrap route-status" ng-if="book.hasTrips && !book.inServiceWindow">
-          <span class="icon ion-android-alert"></span>
-          The bus service will only be available from {{ book.route.startTime | formatTime}} to {{ book.route.endTime | formatTime}}.
-        </div>
-        <div class="item item-icon-left item-text-wrap route-status" ng-if="book.hasTrips && book.inServiceWindow && !disp.hasTrackingData">
-          <span class="icon ion-android-alert"></span>
-          The bus location tracking is not available at the moment.
-        </div>
         <div class="item item-icon-left item-text-wrap route-status" ng-if="disp.statusMessages.trim()">
           <span class="icon ion-android-alert"></span>
           {{disp.statusMessages.trim()}}
+        </div>
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="!disp.statusMessages.trim() && !book.hasTrips">
+          <span class="icon ion-android-alert"></span>
+          There is no bus service scheduled for today.
+        </div>
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="!disp.statusMessages.trim() && book.hasTrips && !book.inServiceWindow">
+          <span class="icon ion-android-alert"></span>
+          The bus service will only be available on {{ book.route.schedule }} from {{ book.route.startTime | formatTime}} to {{ book.route.endTime | formatTime}}.
+        </div>
+        <div class="item item-icon-left item-text-wrap route-status" ng-if="!disp.statusMessages.trim() && book.hasTrips && book.inServiceWindow && disp.hasTrackingData !== null && !disp.hasTrackingData">
+          <span class="icon ion-android-alert"></span>
+          The bus location tracking is not available at the moment.
         </div>
       </div>
 
@@ -66,10 +66,10 @@
       </company-info-broker>
 
       <div class="lite-stops">
-        <div ng-repeat="stop in book.route.stops"
+        <div ng-repeat="stop in book.route.stops | orderBy:'time[0]' "
              class="lite-stop-container"
              ng-click="setSelected($index)">
-          <div class="selector" ng-class="{ selected: $index === (current || 0) }"></div>
+          <div class="selector" ng-class="{ selected: $index === current }"></div>
           <ion-item class="item-text-wrap lite-route-info">
             <lite-route-stop index="$index" current="current" stop="stop"></lite-route-stop>
           </ion-item>

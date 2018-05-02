@@ -3,8 +3,12 @@
     <div class="main">
       <div class="description">{{ stop.description }}</div>
       <div class="road">{{ stop.road }}</div>
+      <div class="stop-type" ng-class="{ board: stop.canBoard }">
+        <i class="fas fa-circle"></i>
+        {{ stopTypeText }}
+      </div>
     </div>
-    <div ng-if="current === index || (!current && index === 0)" class="secondary">
+    <div ng-if="current === index" class="secondary">
 
       <div class="row" ng-repeat="row in times">
         <div ng-class="{ before: item < currentTime }" class="col" ng-repeat="item in row">

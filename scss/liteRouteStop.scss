@@ -14,6 +14,19 @@
       .road {
 
       }
+
+      .stop-type {
+        color: rgb(253, 123, 125);
+
+        &.board {
+          color: rgb(25, 170, 110);
+        }
+
+        .fa-circle {
+          font-size: 10px;
+          margin-right: 4px;
+        }
+      }
     }
 
     .secondary {
