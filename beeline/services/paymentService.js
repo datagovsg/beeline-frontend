@@ -169,7 +169,7 @@ angular.module("beeline").factory("PaymentService", [
       payForRoutePass: async function(
         route,
         expectedPrice,
-        passValue,
+        quantity,
         paymentOptions
       ) {
         let paymentPromise
@@ -187,8 +187,8 @@ angular.module("beeline").factory("PaymentService", [
                 tag: routePassTagList[0],
                 promoCode: { code: "" },
                 companyId: route.transportCompanyId,
-                expectedPrice: expectedPrice,
-                value: passValue,
+                expectedPrice,
+                quantity,
               }),
             })
           )
