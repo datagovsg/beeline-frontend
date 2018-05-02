@@ -93,7 +93,7 @@ route-item {
       display: flex;
 
       .time {
-        text-transform: uppercase;
+        text-transform: lowercase;
         flex: 0 0 5em;
         font-weight: $route-item-font-weight-bold;
       }
