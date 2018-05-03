@@ -12,7 +12,7 @@
 
       <div class="row" ng-repeat="row in times">
         <div ng-class="{ before: item < currentTime, current: item === after[0] }" class="col" ng-repeat="item in row">
-          {{ item.format("h:mm a") }}
+          {{ item.tz("Asia/Singapore").format("h:mm a") }}
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import liteRouteStopTemplate from "./liteRouteStop.html"
-import moment from "moment"
+import moment from "moment-timezone"
 import _ from "lodash"
 
 angular.module("beeline").directive("liteRouteStop", [
