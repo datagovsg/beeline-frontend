@@ -11,6 +11,9 @@
       background-color: $royal;
       border: none;
     }
+    .item:active {
+      background-color: darken($royal, 10%);
+    }
     .sub-list {
       padding-left: $item-padding * 1.5
     }
