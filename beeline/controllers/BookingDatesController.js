@@ -3,10 +3,12 @@ import _ from "lodash"
 import tapToSelectMultipleDaysTemplate from "../templates/tap-to-select-multiple-days.html"
 
 export default [
+  "$ionicHistory",
   "$ionicScrollDelegate",
   "$ionicPopup",
   "$q",
   "$scope",
+  "$state",
   "$stateParams",
   "$window",
   "loadingSpinner",
@@ -14,10 +16,12 @@ export default [
   "TicketService",
   "UserService",
   function(
+    $ionicHistory,
     $ionicScrollDelegate,
     $ionicPopup,
     $q,
     $scope,
+    $state,
     $stateParams,
     $window,
     loadingSpinner,
@@ -65,6 +69,7 @@ export default [
       daysAllowed: [],
       selectedDatesMoments: ($stateParams.selectedDates || "")
         .split(",")
+        .filter(ms => !isNaN(parseInt(ms)))
         .map(ms => moment(parseInt(ms))),
     }
 
@@ -203,8 +208,28 @@ export default [
       $scope.book.pickWholeMonth = null
       $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
         .split(",")
+        .filter(ms => !isNaN(parseInt(ms)))
         .map(ms => moment(parseInt(ms)))
       loadTickets()
+    })
+
+    $scope.$on("$ionicView.beforeLeave", function() {
+      /* Correct flow should be booking-stop => booking.dates =>
+       * select dates => booking.summary => booking.dates (with dates selected)
+       * => booking-stop
+       *
+       * This ensures that we remove the view with no stops from history
+       *
+       * The conditional is because beforeLeave fires multiple times and we are
+       * only interested in the time when the two consecutive states are
+       * route-dates.
+       */
+      if (
+        $ionicHistory.currentView().stateName === "tabs.route-dates" &&
+        $ionicHistory.backView().stateName === "tabs.route-dates"
+      ) {
+        $ionicHistory.removeBackView()
+      }
     })
 
     // ------------------------------------------------------------------------
@@ -220,6 +245,18 @@ export default [
         // Need to convert to UTC
         $scope.book.selectedDates = $scope.disp.selectedDatesMoments.map(m =>
           m.valueOf()
+        )
+
+        // Push the selected dates to the URL as params.
+        // To support better link sharing and back button behaviour
+        $state.go(
+          ".",
+          {
+            selectedDates: $scope.book.selectedDates.join(","),
+          },
+          {
+            notify: false,
+          }
         )
       },
       true
@@ -281,6 +318,7 @@ export default [
       if (pickWholeMonth === null) {
         $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
           .split(",")
+          .filter(ms => !isNaN(parseInt(ms)))
           .map(ms => moment(parseInt(ms)))
       } else {
         let wholeMonthDates = getFullMonthDates($scope.disp.month)
