@@ -108,15 +108,15 @@ angular.module("beeline").service("purchaseRoutePassService", [
           } = scope.book.priceSchedules[scope.book.routePassChoice]
 
           return paymentInfo
-            ? new Promise((resolve, reject) => {
-                return reject("No payment information available")
-              })
-            : PaymentService.payForRoutePass(
+            ? PaymentService.payForRoutePass(
                 route,
                 expectedPrice,
                 quantity,
                 paymentInfo
               )
+            : new Promise((resolve, reject) => {
+                return reject("No payment information available")
+              })
         } catch (err) {
           console.error(err)
           return new Promise((resolve, reject) => {
