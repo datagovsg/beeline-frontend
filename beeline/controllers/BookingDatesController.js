@@ -247,8 +247,21 @@ export default [
           m.valueOf()
         )
 
-        // Push the selected dates to the URL as params.
-        // To support better link sharing and back button behaviour
+        /* Push the selected dates to the URL as params.
+         * To support better link sharing and back button behaviour
+         *
+         * Options object
+         * notify: false is to ensure that the page does not reload
+         * location: "replace" is to ensure that the ionicHistory matches
+         *    browser history
+         *
+         * location:"replace" replaces the old URL with the updated URL with
+         * the updated selectedDate param in the URL. However, this only
+         * updates the browser history and not the ionicHistory. This means
+         * that the browser back button works as intended, but the ionic back
+         * button does not. To fix behaviour for the ionic back button,
+         * see the code in $scope.$on("$ionicView.beforeLeave").
+         */
         $state.go(
           ".",
           {
@@ -256,6 +269,7 @@ export default [
           },
           {
             notify: false,
+            location: "replace",
           }
         )
       },
