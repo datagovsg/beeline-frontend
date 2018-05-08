@@ -331,7 +331,11 @@ app
         }
         if (window.StatusBar) {
           // org.apache.cordova.statusbar required
-          StatusBar.styleLightContent()
+          if (device.platform === "Android") {
+            StatusBar.styleLightContent()
+          } else if (device.platform === "iOS") {
+            StatusBar.styleDefault()
+          }
         }
       })
     },
