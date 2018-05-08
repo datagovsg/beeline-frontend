@@ -5,26 +5,6 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const InlineEnviromentVariablesPlugin = require("inline-environment-variables-webpack-plugin")
 
 const prefix = process.env.BUILD_PREFIX || "www"
-// const prefix = 'www'
-
-const DEFAULT_BACKEND_URL = "https://api.beeline.sg"
-const BACKEND_URL_NOT_SET_MESSAGE = `
-BACKEND_URL environment variable not set. Defaulting to ${DEFAULT_BACKEND_URL}
-`
-if (typeof process.env.BACKEND_URL === "undefined") {
-  console.log(BACKEND_URL_NOT_SET_MESSAGE)
-  process.env.BACKEND_URL = DEFAULT_BACKEND_URL
-}
-
-const DEFAULT_TRACKING_URL = "https://tracking.beeline.sg"
-const TRACKING_URL_NOT_SET_MESSAGE = `
-TRACKING_URL environment variable not set. Defaulting to ${DEFAULT_TRACKING_URL}
-`
-if (typeof process.env.TRACKING_URL === "undefined") {
-  console.log(TRACKING_URL_NOT_SET_MESSAGE)
-  process.env.TRACKING_URL = DEFAULT_TRACKING_URL
-}
-
 
 const INLINED_ENVIRONMENT_VARIABLES = ["BACKEND_URL", "TRACKING_URL"]
 

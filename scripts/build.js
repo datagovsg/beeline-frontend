@@ -20,6 +20,10 @@ TRACKING_URL environment variable not set. Defaulting to ${DEFAULT_TRACKING_URL}
 const BUILD_COMPLETED_MESSAGE = "Beeline frontend build process complete"
 const PRODUCTION_BUILD_MESSAGE = `
 Starting production build. Remove the --production flag for development builds
+
+Using $BACKEND_URL = ${DEFAULT_BACKEND_URL}
+
+Using $TRACKING_URL = ${DEFAULT_TRACKING_URL}
 `
 const NON_PRODUCTION_BUILD_MESSAGE = `
 Starting development build. Use the --production flag for production builds
@@ -43,6 +47,8 @@ if (watch) shell.exec(
 // Build switching based on production or non production
 if (production) {
   console.log(PRODUCTION_BUILD_MESSAGE)
+  process.env.BACKEND_URL = DEFAULT_BACKEND_URL
+  process.env.TRACKING_URL = DEFAULT_TRACKING_URL
   shell.exec("webpack -p")
   shell.exec("cordova-hcp build www/")
   shell.exec("touch www/.nojekyll")

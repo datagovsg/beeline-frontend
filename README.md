@@ -9,7 +9,24 @@ Install dependencies
 
 ## Android development
 Install [Android Studio](https://developer.android.com/studio/index.html)  
-Run `npm run install-android`
+
+Run `npm run deploy-android` to build an unsigned apk. Then run the following two commands to sign and zipalign the apk respectively.
+
+```bash
+jarsigner -verbose \
+          -sigalg SHA1withRSA \
+          -digestalg SHA1 \
+          -keystore {{YOUR_KEYSTORE}}.keystore \
+          platforms/android/build/outputs/apk/android-release-unsigned.apk \
+          {{YOUR_KEYSTORE_ALIAS}}
+
+# https://developer.android.com/studio/command-line/zipalign.html
+zipalign -v 4 \
+    platforms/android/build/outputs/apk/android-release-unsigned.apk \
+    platforms/android/build/outputs/apk/{{YOUR_APK_NAME}}.apk
+```
+
+NOTE: `zipalign` is part of the Android SDK. You will be able to find the binary at `{{ANDROID_SDK_DIRECTORY}}/build-tools/{{VERSION_NUMBER}}/zipalign`
 
 ## iOS development
 NOTE: Cordova 7.x is not supported until nordnet/cordova-hot-code-push-local-dev-addon#20 merged. This is why in `package.json` we set the cordova version to `^6.5.0`.
