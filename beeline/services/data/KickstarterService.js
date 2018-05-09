@@ -357,7 +357,7 @@ angular.module("beeline").service("KickstarterService", [
             price: bidPrice,
           },
         }).then(response => {
-          updateAfterBid(kickstarterRoutesById[route.id], bidPrice)
+          updateAfterBid(route, bidPrice)
           kickstarterSummary = kickstarterSummary.concat([
             {
               routeId: route.id,
