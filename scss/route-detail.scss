@@ -36,6 +36,7 @@
       .popup-right {
         width: 60%;
         text-align: right;
+        margin-left: auto; // for when user not logged in, floats text to right
 
         &.popup-top {
           width: 30%;

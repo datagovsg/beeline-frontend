@@ -193,9 +193,6 @@ angular.module("beeline").factory("PaymentService", [
             })
           )
           paymentPromise = new Promise(async (resolve, reject) => {
-            await $ionicPopup.alert({
-              title: "Success",
-            })
             return resolve("routePassPurchaseDone")
           })
         } catch (err) {

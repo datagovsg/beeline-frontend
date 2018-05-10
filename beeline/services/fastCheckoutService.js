@@ -82,30 +82,6 @@ angular.module("beeline").factory("FastCheckoutService", [
     return {
       verify,
       routeQualifiedForRoutePass,
-      buyMoreRoutePasses: function(routeId) {
-        return new Promise(async (resolve, reject) => {
-          try {
-            let user = await UserService.loginIfNeeded()
-            let hasSavedPaymentInfo =
-              _.get(user, "savedPaymentInfo.sources.data.length", 0) > 0
-            let paymentInfo = hasSavedPaymentInfo
-              ? _.get(user, "savedPaymentInfo")
-              : null
-            let route = await RoutesService.getRoute(routeId)
-            await purchaseRoutePassService.show(
-              true,
-              route,
-              routeId,
-              hasSavedPaymentInfo,
-              paymentInfo
-            )
-            return resolve("success")
-          } catch (err) {
-            console.error(err)
-            return reject("failed")
-          }
-        })
-      },
     }
   },
 ])

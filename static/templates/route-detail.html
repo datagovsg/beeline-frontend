@@ -26,7 +26,7 @@
           <span class="text" ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)">{{ data.passCount || 0 }} Route Pass(es)</span> 
         </div>
 
-        <div ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)" class="buy-route-pass popup-right">
+        <div ng-if="(data.passCount > 0 || data.routeSupportsRoutePass)" class="buy-route-pass popup-right">
           <span class="buy-more-button"
           ng-if="data.routeSupportsRoutePass"
           ng-click="buyMore()">
