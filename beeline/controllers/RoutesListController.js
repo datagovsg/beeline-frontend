@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { sleep } from "../shared/util"
 import querystring from "querystring"
+import moment from "moment"
 
 export default [
   "$scope",
@@ -241,7 +242,7 @@ export default [
               )
 
               let stopId =
-                route.schedule && route.schedule.slice(0, 2) === "AM"
+                route.startTime && moment(route.startTime).format("A") === "AM"
                   ? route.boardStopStopId
                   : route.alightStopStopId
 
