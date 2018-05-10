@@ -130,23 +130,29 @@ ticket-detail {
   }
 }
 
-.service-cancellation {
-  flex: 1 1 auto;
-  .cancellation-content {
-    margin: $padding-large-vertical 0;
-    text-align: center;
-    h2 {
-      color: $normal-grey;
+.cancellation-item {
+  height: 100%;
+  .service-cancellation {
+    .item {
+      border: 0px;
+    }
+    .cancellation-content {
+      margin: $padding-large-vertical 0;
       text-align: center;
-      font-weight: bold;
-      padding: $item-padding-base 0;
-    }
-    img {
-      padding: $line-height-computed 0;
-    }
-    p {
-      text-align: left;
-      padding: $padding-base-vertical $padding-base-horizontal;
+      h2 {
+        color: $normal-grey;
+        text-align: center;
+        font-weight: bold;
+        padding: $item-padding-base 0;
+        font-size: 24px;
+      }
+      img {
+        padding: $line-height-computed 0;
+      }
+      p {
+        text-align: left;
+        padding: $padding-base-vertical $padding-base-horizontal;
+      }
     }
   }
 }

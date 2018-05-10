@@ -8,7 +8,7 @@
 
   <ion-content scroll="true">
   <div class="trip-info">
-    <div class="map map-area" ng-if="modalMap.center">
+    <div class="map map-area" ng-if="modalMap.center && disp.tripStatus !== 'cancelled'">
       <ui-gmap-google-map
         control="modalControl"
         center="modalMap.center"
@@ -44,27 +44,25 @@
                       overlay="$index + 1"></map-bus-icon>
       </ui-gmap-google-map>
     </div>
-    <div class="item item-text-wrap">
-      <div class="service-cancellation" ng-if="disp.tripStatus == 'cancelled'">
+
+    <div class="item item-text-wrap cancellation-item" ng-if="disp.tripStatus === 'cancelled'">
+      <div class="service-cancellation">
         <div class="item item-text-wrap">
           <div class="cancellation-content">
-            <h2>Service is Cancelled</h2>
+            <h2>Today's trip is cancelled</h2>
             <img src="img/TicketCancelledTrip.svg" />
-            <!-- <i class="icon ion-alert-circled"></i> -->
-            <p>Today's trip has been cancelled. Sorry for the inconvenience caused. </p>
+
+            <p>We are very sorry for the inconvenience caused. Please make alternative transport arrangements.</p>
             <p>
-              Please make alternative transport arrangements.
-              <strong>{{company.name}}</strong> will contact you and refund today's fare.
-            </p>
-            <p>
-              For enquiries, please contact
-              <strong>{{company.email}}</strong>
-              <strong ng-if="company.contactNo">(Tel: {{company.contactNo}})</strong>
+              <strong>{{company.name}}</strong> will contact you about the refund of this trip.
             </p>
           </div>
         </div>
       </div>
-      <div ng-if="disp.tripStatus !== 'cancelled'">
+    </div>    
+
+    <div class="item item-text-wrap" ng-if="disp.tripStatus !== 'cancelled'">
+      <div>
         <div class="row">
           <route-item hide-bus-label="true" hide-description="true" class="route-item">
             <route-item-start-time>
