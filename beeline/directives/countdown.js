@@ -21,7 +21,8 @@ angular.module("beeline").directive("countdown", [
         const updateTime = function updateTime() {
           scope.minsBeforeClose = moment(scope.boardTime).diff(
             moment(Date.now()),
-            "minutes"
+            "minutes",
+            true
           )
         }
 
