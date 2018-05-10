@@ -12,20 +12,49 @@
           <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.routePassChoice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
             <i class="icon ion-ios-circle-outline not-selected" ng-show="book.routePassChoice !== $index"></i>
             
-              <div class="left">
-                <div class="schedule-info">
-                  {{schedule.quantity}} trips
+            <div class="left">
+              <div class="schedule-info">
+                {{schedule.quantity}} passes
+              </div>
+            </div>
+
+            <div class="right">
+              <div class="schedule-price original-price">
+                <div class="price">
+                  <div id="dollar">$</div> <div id="number">{{book.originalPriceSchedule.unitPrice | floatRoundUp | number:2}}</div>
                 </div>
               </div>
+
               <div class="schedule-price">
                 <div class="price">
                   <div id="dollar">$</div> <div id="number">{{schedule.unitPrice | floatRoundUp | number:2}}</div>
                 </div>
-                <div id="trip">per trip</div>
+                <div id="trip">per pass</div>
               </div>
+            </div>
           </ion-radio>
+        </div>
 
-          <div class="total">
+        <div ng-if="!book.priceSchedules" class="spinner text-center">
+          <ion-spinner icon="ios"></ion-spinner>
+        </div>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <section class="card">
+      <h3 class="item card-title">
+        Payment
+      </h3>
+      <div class="item item-text-wrap">
+        <div ng-if="book.priceSchedules" class="payment">
+
+          <div class="price-calc">
+            <div>{{book.selectedPriceSchedule.quantity}} Route Passes x ${{ book.selectedPriceSchedule.unitPrice | floatRoundUp | number: 2 }}</div>
+            <div>${{ book.routePassPrice | number: 2 }}</div>
+          </div>
+
+          <div class="total price-calc">
             <div class="total-text">Total</div>
             <div class="total-price">${{ book.routePassPrice | number: 2 }}</div>
           </div>

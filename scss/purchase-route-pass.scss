@@ -22,6 +22,32 @@
     }
   }
 
+  .payment{
+    .price-calc {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .total {
+      border-top: 1px solid lightgray;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      margin-top: 10px;
+
+      .total-text {
+        font-size: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .total-price {
+        font-size: 30px;
+        font-weight: 700;
+      }
+    }
+
+  }
+
   .radios {
     padding-bottom: 16px;
 
@@ -53,6 +79,8 @@
         padding-left: 44px;
         padding-right: 0px;
         /* extend content space, override ionic default since the checkmark is no longer on the right */
+        padding-top: 5px;
+        padding-bottom: 5px;
 
         .left {
           display: flex;
@@ -69,23 +97,39 @@
           }
         }
 
-        .schedule-price {
-          .price {
-            display: flex;
-            font-weight: 700;
+        .right {
+          display: flex;
+          .original-price {
+            .price {
+              color: darkgray;
+              background-color: transparent;
 
-            #dollar {
-              margin-top: auto;
-              margin-bottom: auto;
-            }
-            #number {
-              font-size: 28px;
-              line-height: 1;
+              // Diagonal strikethrough for the original price
+              background-image: -webkit-gradient(linear, 19.1% -7.9%, 81% 107.9%, color-stop(0, #fff), color-stop(.47, #fff), color-stop(.47, darkgray), color-stop(.53, darkgray), color-stop(.53, #fff), color-stop(1, #fff));
+              background-image: -webkit-repeating-linear-gradient(287deg, #fff 0%, #fff 47%, darkgray 47%, darkgray 53%, #fff 53%, #fff 100%);
+              background-image: repeating-linear-gradient(163deg, #fff 0%, #fff 47%, darkgray 47%, darkgray 53%, #fff 53%, #fff 100%);
+              background-image: -ms-repeating-linear-gradient(287deg, #fff 0%, #fff 47%, darkgray 47%, darkgray 53%, #fff 53%, #fff 100%); 
             }
           }
-          #trip {
-            font-size: 12px;
-            float: right;
+          .schedule-price {
+            margin-left: 12px;
+            .price {
+              display: flex;
+              font-weight: 700;
+
+              #dollar {
+                margin-top: auto;
+                margin-bottom: auto;
+              }
+              #number {
+                font-size: 28px;
+                line-height: 1;
+              }
+            }
+            #trip {
+              font-size: 12px;
+              float: right;
+            }
           }
         }
       }
@@ -93,25 +137,6 @@
 
     .priceDetails{
       padding-left: $item_padding_base*4;
-    }
-
-    .total {
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid lightgray;
-      padding-top: 16px;
-      margin-top: 10px;
-
-      .total-text {
-        font-size: 20px;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-
-      .total-price {
-        font-size: 30px;
-        font-weight: 700;
-      }
     }
   }
 

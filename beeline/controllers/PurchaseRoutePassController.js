@@ -107,6 +107,8 @@ export default [
       last4Digits: null,
       user: UserService.getUser(),
       isProcessing: null,
+      selectedPriceSchedule: null,
+      originalPriceSchedule: null,
     }
 
     $scope.data = {
@@ -121,6 +123,10 @@ export default [
 
     RoutesService.fetchPriceSchedule(routeId).then(response => {
       // Filter out the schedule with only one pass
+      $scope.book.originalPriceSchedule = _.filter(
+        response,
+        schedule => schedule.quantity === 1
+      )[0]
       response = _.filter(response, schedule => schedule.quantity !== 1)
       $scope.book.priceSchedules = _.sortBy(response, ["unitPrice"])
       $scope.book.routePassChoice = 0
@@ -187,6 +193,7 @@ export default [
     $scope.$watch("book.routePassChoice", choice => {
       if (choice !== null) {
         $scope.book.routePassPrice = $scope.book.priceSchedules[choice].price
+        $scope.book.selectedPriceSchedule = $scope.book.priceSchedules[choice]
       }
     })
 
