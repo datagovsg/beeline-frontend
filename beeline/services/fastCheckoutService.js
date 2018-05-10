@@ -14,7 +14,9 @@ angular.module("beeline").factory("FastCheckoutService", [
     TicketService,
     $ionicLoading
   ) {
-    function routeQualifiedForRoutePass(route) {
+    const routeQualifiedForRoutePass = function routeQualifiedForRoutePass(
+      route
+    ) {
       if (route && route.tags) {
         let rpList = route.tags.filter(tag => tag.includes("rp-"))
         return (
@@ -27,7 +29,7 @@ angular.module("beeline").factory("FastCheckoutService", [
       }
     }
 
-    function verify(routeId) {
+    const verify = function verify(routeId) {
       return new Promise(async (resolve, reject) => {
         let route = await RoutesService.getRoute(routeId, true)
         let nextTrip = retriveNextTrip(route)
