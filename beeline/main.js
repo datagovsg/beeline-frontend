@@ -228,6 +228,10 @@ app
     "KickstarterStopsController",
     require("./controllers/KickstarterStopsController.js").default
   )
+  .controller(
+    "PurchaseRoutePassController",
+    require("./controllers/PurchaseRoutePassController.js").default
+  )
   .config(configureRoutes)
   .config([
     "$locationProvider",

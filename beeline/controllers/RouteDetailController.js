@@ -216,7 +216,9 @@ export default [
     }
 
     $scope.buyMore = () => {
-      FastCheckoutService.buyMoreRoutePasses(routeId)
+      $state.go("tabs.purchase-route-pass", {
+        routeId,
+      })
     }
 
     $scope.viewTicket = () => {

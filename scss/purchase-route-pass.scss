@@ -1,0 +1,128 @@
+// Styles for tab-purchase-route-pass.html
+
+.purchase-route-pass {
+
+  // Spinner div for async loading of information
+  .spinner {
+    padding: 20px;
+  }
+
+  // Styles for checkboxes. Legacy name because copy pasted from bookingSummary
+  .booking-checkbox {
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+    .checkbox-text {
+      padding-left: 40px;
+      .checkbox {
+        padding-left: 0px;
+        padding-right: 0px;
+        left: 0px;
+      }
+    }
+  }
+
+  .radios {
+    padding-bottom: 16px;
+
+    .item-radio{
+      padding: 0px;
+
+      .radio-icon {
+        color: $royal;
+        font-size: $radio-font-size;
+        left: 0px;
+        padding: 0px;
+      }
+      .not-selected{
+        color: $hint-color;
+        font-size: $radio-font-size;
+        left: 0px;
+        padding: 0px; /*follow radio-icon padding*/
+      }
+
+      // Remove selection background colour
+      input:checked + .radio-content > .item-content {
+        background: transparent;
+      }
+
+      .item-content{
+        background: transparent;
+        display: flex;
+        justify-content: space-between;
+        padding-left: 44px;
+        padding-right: 0px;
+        /* extend content space, override ionic default since the checkmark is no longer on the right */
+
+        .left {
+          display: flex;
+
+          #checkbox-filler {
+            margin-top: auto;
+            margin-bottom: auto;
+          }
+
+          .schedule-info {
+            font-weight: 600;
+            margin-top: auto;
+            margin-bottom: auto;
+          }
+        }
+
+        .schedule-price {
+          .price {
+            display: flex;
+            font-weight: 700;
+
+            #dollar {
+              margin-top: auto;
+              margin-bottom: auto;
+            }
+            #number {
+              font-size: 28px;
+              line-height: 1;
+            }
+          }
+          #trip {
+            font-size: 12px;
+            float: right;
+          }
+        }
+      }
+    }
+
+    .priceDetails{
+      padding-left: $item_padding_base*4;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid lightgray;
+      padding-top: 16px;
+      margin-top: 10px;
+
+      .total-text {
+        font-size: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .total-price {
+        font-size: 30px;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .check-terms {
+    .tnc {
+      padding: 0px 10px 20px 10px;
+    }
+  }
+
+  .warning-text {
+    text-align: center;
+  }
+
+}

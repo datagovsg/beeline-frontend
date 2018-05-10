@@ -135,6 +135,16 @@ export default [
         },
       })
 
+      .state("tabs.purchase-route-pass", {
+        url: "/routePass/:routeId/",
+        views: {
+          menuContent: {
+            templateUrl: "templates/tab-purchase-route-pass.html",
+            controller: "PurchaseRoutePassController",
+          },
+        },
+      })
+
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Tickets Tab
       // ////////////////////////////////////////////////////////////////////////////
