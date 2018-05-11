@@ -13,15 +13,7 @@
   >
     <regular-route route="route"></regular-route>
   </ion-item>
-
-  <!-- Available Lite Routes Section -->
-  <ion-item
-    ng-repeat="route in data.liteRoutes | limitTo:10 track by route.label"
-    ui-sref="tabs.lite-detail({ label: route.label })"
-  >
-    <lite-route route="route"></lite-route>
-  </ion-item>
-
+  
   <!-- Available Crowdstart Routes -->
   <div
     class="item item-divider"
@@ -37,6 +29,22 @@
   >
     <kickstart-route route="route"></kickstart-route>
   </ion-item>
+
+  <!-- Available Lite Routes Section -->
+  <div
+    class="item item-divider"
+    ng-if="data.liteRoutes.length > 0"
+    id="crowdstart"
+  >
+    Tracking Routes
+  </div>
+  <ion-item
+    ng-repeat="route in data.liteRoutes | limitTo:10 track by route.label"
+    ui-sref="tabs.lite-detail({ label: route.label })"
+  >
+    <lite-route route="route"></lite-route>
+  </ion-item>
+
   <!-- No results found message -->
   <p
     ng-if="data.routes.length === 0 &&
