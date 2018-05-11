@@ -1,5 +1,5 @@
 <div ng-if="!disp.yourRoutes">
-  <!-- Available Routes Section -->
+  <!-- START: Available Routes Section -->
   <div
     class="item item-divider"
     ng-if="data.liteRoutes.length > 0 || data.routes.length > 0"
@@ -13,16 +13,9 @@
   >
     <regular-route route="route"></regular-route>
   </ion-item>
-
-  <!-- Available Lite Routes Section -->
-  <ion-item
-    ng-repeat="route in data.liteRoutes | limitTo:10 track by route.label"
-    ui-sref="tabs.lite-detail({ label: route.label })"
-  >
-    <lite-route route="route"></lite-route>
-  </ion-item>
-
-  <!-- Available Crowdstart Routes -->
+  <!-- END: Available Routes Section -->
+  
+  <!-- START: Available Crowdstart Routes -->
   <div
     class="item item-divider"
     ng-if="data.crowdstartRoutes.length > 0"
@@ -37,6 +30,23 @@
   >
     <kickstart-route route="route"></kickstart-route>
   </ion-item>
+  <!-- END: Available Crowdstart Section -->
+
+  <!-- START: Available Lite Routes Section -->
+  <div
+    class="item item-divider"
+    ng-if="data.liteRoutes.length > 0"
+  >
+    Tracking Routes
+  </div>
+  <ion-item
+    ng-repeat="route in data.liteRoutes | limitTo:10 track by route.label"
+    ui-sref="tabs.lite-detail({ label: route.label })"
+  >
+    <lite-route route="route"></lite-route>
+  </ion-item>
+  <!-- END: Available Lite Routes Section -->
+  
   <!-- No results found message -->
   <p
     ng-if="data.routes.length === 0 &&
