@@ -10,7 +10,8 @@ angular.module("beeline").directive("countdown", [
       },
       template: `
       <div>
-        <span ng-if="minsBeforeClose && minsBeforeClose <= 30 && minsBeforeClose > 0" class="notes">Booking for the next trip closes in {{minsBeforeClose}} mins.</span>
+        <span ng-if="minsBeforeClose && minsBeforeClose <= 30 && minsBeforeClose >=1 0" class="notes">Booking for the next trip closes in {{minsBeforeClose | number: 0}} mins.</span>
+        <span ng-if="minsBeforeClose && 0 < minsBeforeClose < 1">Booking for the next trip closes in less than 1 minute.</span>
         <span ng-if="bookingEnds" class="notes" >Booking for the next trip has ended.</span>
       </div>
       `,
