@@ -10,9 +10,10 @@
     </button>
   </div>
 
+  <!-- START: Recently Booked Routes Section -->
   <div class="item item-divider" ng-if="data.routesWithRidesRemaining.length > 0
                      || data.recentRoutes.length > 0">
-    Booking Routes
+    Your Recently Booked Routes
   </div>
   <ion-item
     ng-repeat="route in data.routesWithRidesRemaining | limitTo:10 track by route.id"
@@ -35,19 +36,9 @@
   >
     <regular-route route="route"></regular-route>
   </ion-item>
-  <div class="item item-divider" ng-if="data.subscribedLiteRoutes.length > 0">
-    Bookmarked Tracking Routes
-  </div>
-  <ion-item
-    ng-repeat="route in data.subscribedLiteRoutes | limitTo:10 track by route.label"
-    ng-if="data.subscribedLiteRoutes.length > 0"
-    ui-sref="tabs.lite-detail({
-      label: route.label
-    })"
-    class="item-text-wrap"
-  >
-    <lite-route route="route"></lite-route>
-  </ion-item>
+  <!-- END: Recently Booked Routes Section -->
+
+  <!-- START: Crowdstart Routes Section -->
   <div
     class="item item-divider"
     ng-if="data.backedCrowdstartRoutes.length > 0"
@@ -61,7 +52,25 @@
     ui-sref="tabs.crowdstart-detail({ routeId: route.id })">
     <kickstart-route route="route"></kickstart-route>
   </ion-item>
-  <!-- Route you may like -->
+  <!-- END: Crowdstart Routes Section -->
+
+  <!-- START: Bookmarked Tracking Routes Section -->
+  <div class="item item-divider" ng-if="data.subscribedLiteRoutes.length > 0">
+    Your Bookmarked Tracking Routes
+  </div>
+  <ion-item
+    ng-repeat="route in data.subscribedLiteRoutes | limitTo:10 track by route.label"
+    ng-if="data.subscribedLiteRoutes.length > 0"
+    ui-sref="tabs.lite-detail({
+      label: route.label
+    })"
+    class="item-text-wrap"
+  >
+    <lite-route route="route"></lite-route>
+  </ion-item>
+  <!-- END: Bookmarked Tracking Routes Section -->
+
+  <!-- START: Routes you may like -->
   <!-- hide it if search bar is not empty -->
   <div class="item item-divider" ng-if="data.routesYouMayLike.length > 0">
     Routes You May Like
@@ -77,4 +86,6 @@
   >
     <regular-route route="route"></regular-route>
   </ion-item>
+  <!-- END: Routes you may like -->
+
 </div>
