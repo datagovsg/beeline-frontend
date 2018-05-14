@@ -46,6 +46,35 @@ export default [
     $timeout
   ) {
     // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+    const addExpiryToRoute = function addExpiryToRoute(
+      route,
+      routePassTags,
+      routePassExpiries
+    ) {
+      let expiries = {}
+      if (!routePassTags[route.id]) {
+        return route
+      }
+
+      for (let tag of routePassTags[route.id]) {
+        _.assign(expiries, routePassExpiries[tag])
+      }
+      let dates = Object.keys(expiries).map(date => {
+        return moment(date)
+      })
+
+      dates.sort()
+
+      // Get the closest expiry date
+      // Add one day because the route pass expires at the end of the day
+      route.expiry = dates[0].add(1, "days").diff(moment(), "days")
+
+      return route
+    }
+
+    // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
     // Explicitly declare/initialize of scope variables we use
@@ -330,7 +359,8 @@ export default [
       ],
       ([allRoutes, routePassTags, routePassExpiries, placeQuery]) => {
         // Input validation
-        if (!allRoutes || !routePassTags || !routePassExpiries) return
+        if (!allRoutes) return
+
         // Filter routes
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
           allRoutes = SearchService.filterRoutesByPlaceAndText(
@@ -345,30 +375,20 @@ export default [
           )
         }
         // Sort the routes by the time of day
-        $scope.data.routes = _.sortBy(allRoutes, "label", route => {
+        let routes = _.sortBy(allRoutes, "label", route => {
           const firstTripStop = _.get(route, "trips[0].tripStops[0]")
           const midnightOfTrip = new Date(firstTripStop.time.getTime())
           midnightOfTrip.setHours(0, 0, 0, 0)
           return firstTripStop.time.getTime() - midnightOfTrip.getTime()
         })
 
-        $scope.data.routes = $scope.data.routes.map(route => {
-          let expiries = {}
-          for (let tag of routePassTags[route.id]) {
-            _.assign(expiries, routePassExpiries[tag])
-          }
-          let dates = Object.keys(expiries).map(date => {
-            return moment(date)
+        if (!routePassExpiries || !routePassTags) {
+          $scope.data.routes = routes
+        } else {
+          $scope.data.routes = routes.map(route => {
+            return addExpiryToRoute(route, routePassTags, routePassExpiries)
           })
-
-          dates.sort()
-
-          // Get the closest expiry date
-          // Add one day because the route pass expires at the end of the day
-          route.expiry = dates[0].add(1, "days").diff(moment(), "days")
-
-          return route
-        })
+        }
       }
     )
 
