@@ -71,12 +71,16 @@ angular.module("beeline").factory("RoutesService", [
     let routesWithRidesRemaining
     let routeToRoutePassTagsPromise = null
     let routeToRoutePassTags = null
+    let routePassExpiriesPromise = null
+    let routePassExpiries = null
 
     UserService.userEvents.on("userChanged", () => {
       instance.fetchRecentRoutes(true)
       instance.fetchRoutePasses(true)
       instance.fetchRoutesWithRoutePass()
       instance.fetchRecentRoutes(true)
+      instance.fetchRoutePassExpiries(true)
+      instance.fetchRoutePassTags(true)
     })
 
     let instance = {
@@ -483,6 +487,26 @@ angular.module("beeline").factory("RoutesService", [
         } else {
           return routeToRoutePassTags
         }
+      },
+
+      fetchRoutePassExpiries: async function(ignoreCache) {
+        if (!ignoreCache && routePassExpiriesPromise) {
+          return routePassExpiriesPromise
+        }
+
+        routePassExpiriesPromise = RequestService.beeline({
+          method: "GET",
+          url: `/route_passes/expiries`,
+        }).then(response => {
+          routePassExpiries = response.data
+          return response.data
+        })
+
+        return routePassExpiriesPromise
+      },
+
+      getRoutePassExpiries: function() {
+        return routePassExpiries
       },
 
       fetchPriceSchedule: function(routeId) {
