@@ -29,8 +29,6 @@
           <span class="text route-pass-button"
                 ng-if="data.passCount > 1"
                 ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Passes</u></a></span>
-          <span class="text"
-                ng-if="data.passCount === 0">{{ data.passCount || 0 }} Route Passes</span>
         </div>
 
         <div ng-if="(data.passCount > 0 || data.routeSupportsRoutePass)" class="buy-route-pass popup-right">
