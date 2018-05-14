@@ -47,9 +47,14 @@
         margin-bottom: 4px;
       }
 
+      // Make touch target larger
+      .route-pass-button {
+        padding-top: 20px;
+        padding-bottom: 12px;
+      }
+
       i.icon .buy-more-button{
         flex: 0 0 auto;
-
       }
       .text {
         flex: 1 1 auto;
