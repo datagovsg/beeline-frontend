@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { sleep } from "../shared/util"
 import querystring from "querystring"
-import moment from "moment"
+import moment from "moment-timezone"
 
 export default [
   "$scope",
@@ -322,10 +322,15 @@ export default [
     // Normal routes
     // Sort them by start time
     $scope.$watchGroup(
-      [() => RoutesService.getRoutesWithRoutePass(), "data.placeQuery"],
-      ([allRoutes, placeQuery]) => {
+      [
+        () => RoutesService.getRoutesWithRoutePass(),
+        () => RoutesService.getRoutePassTags(),
+        () => RoutesService.getRoutePassExpiries(),
+        "data.placeQuery",
+      ],
+      ([allRoutes, routePassTags, routePassExpiries, placeQuery]) => {
         // Input validation
-        if (!allRoutes) return
+        if (!allRoutes || !routePassTags || !routePassExpiries) return
         // Filter routes
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
           allRoutes = SearchService.filterRoutesByPlaceAndText(
@@ -345,6 +350,24 @@ export default [
           const midnightOfTrip = new Date(firstTripStop.time.getTime())
           midnightOfTrip.setHours(0, 0, 0, 0)
           return firstTripStop.time.getTime() - midnightOfTrip.getTime()
+        })
+
+        $scope.data.routes = $scope.data.routes.map(route => {
+          let expiries = {}
+          for (let tag of routePassTags[route.id]) {
+            _.assign(expiries, routePassExpiries[tag])
+          }
+          let dates = Object.keys(expiries).map(date => {
+            return moment(date)
+          })
+
+          dates.sort()
+
+          // Get the closest expiry date
+          // Add one day because the route pass expires at the end of the day
+          route.expiry = dates[0].add(1, "days").diff(moment(), "days")
+
+          return route
         })
       }
     )

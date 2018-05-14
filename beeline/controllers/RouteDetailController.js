@@ -1,4 +1,5 @@
 import ticketDetailModalTemplate from "../templates/ticket-detail-modal.html"
+import expiryModalTemplate from "../templates/route-pass-expiry-modal.html"
 
 export default [
   "$scope",
@@ -51,6 +52,19 @@ export default [
       return modal
     }
 
+    const initExpiryModal = function initExpiryModal() {
+      let scope = $rootScope.$new()
+      scope.routeId = $scope.data.routeId
+
+      let modal = $ionicModal.fromTemplate(expiryModalTemplate, {
+        scope,
+        animation: "slide-in-up",
+      })
+
+      scope.modal = modal
+      return modal
+    }
+
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
@@ -90,6 +104,8 @@ export default [
       isBooking: false,
       ticketTitle: null,
       showHamburger: null,
+      routePassExpiryModal: null,
+      ticketDetailModal: null,
     }
 
     $scope.mapObject = {
@@ -144,6 +160,7 @@ export default [
           )
           let route = response[1]
           $scope.data.route = route
+          $scope.disp.routePassExpiryModal = initExpiryModal()
           CompanyService.getCompany(Number(route.transportCompanyId)).then(
             company => {
               $scope.data.company = company
@@ -219,6 +236,10 @@ export default [
       $state.go("tabs.purchase-route-pass", {
         routeId,
       })
+    }
+
+    $scope.popupRoutePassExpiry = () => {
+      $scope.disp.routePassExpiryModal.show()
     }
 
     $scope.viewTicket = () => {

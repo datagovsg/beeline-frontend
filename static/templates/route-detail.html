@@ -23,7 +23,9 @@
 
         <div ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)" class="route-pass-remaining popup-left">
           <i class="fas fa-ticket-alt"></i>
-          <span class="text" ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)">{{ data.passCount || 0 }} Route Pass(es)</span> 
+          <span class="text"
+                ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)"
+                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Pass(es)</u></a></span> 
         </div>
 
         <div ng-if="(data.passCount > 0 || data.routeSupportsRoutePass)" class="buy-route-pass popup-right">
