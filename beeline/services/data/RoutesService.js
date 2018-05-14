@@ -490,19 +490,23 @@ angular.module("beeline").factory("RoutesService", [
       },
 
       fetchRoutePassExpiries: async function(ignoreCache) {
-        if (!ignoreCache && routePassExpiriesPromise) {
+        if (UserService.getUser()) {
+          if (!ignoreCache && routePassExpiriesPromise) {
+            return routePassExpiriesPromise
+          }
+
+          routePassExpiriesPromise = RequestService.beeline({
+            method: "GET",
+            url: `/route_passes/expiries`,
+          }).then(response => {
+            routePassExpiries = response.data
+            return response.data
+          })
+
           return routePassExpiriesPromise
+        } else {
+          return Promise.resolve({})
         }
-
-        routePassExpiriesPromise = RequestService.beeline({
-          method: "GET",
-          url: `/route_passes/expiries`,
-        }).then(response => {
-          routePassExpiries = response.data
-          return response.data
-        })
-
-        return routePassExpiriesPromise
       },
 
       getRoutePassExpiries: function() {
