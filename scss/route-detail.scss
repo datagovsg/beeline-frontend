@@ -26,7 +26,7 @@
       justify-content: space-between;
 
       .popup-left {
-        width: 40%;
+        width: 50%;
 
         &.popup-top {
           width: 70%;
@@ -34,7 +34,7 @@
       }
 
       .popup-right {
-        width: 60%;
+        width: 50%;
         text-align: right;
         margin-left: auto; // for when user not logged in, floats text to right
 

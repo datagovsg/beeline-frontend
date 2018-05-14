@@ -1,0 +1,29 @@
+<ion-modal-view class="route-pass-expiry-modal">
+
+  <ion-header-bar class="bar-light bar bar-header">
+    <h1 class="title">Route Pass Expiry</h1>
+    <button class="button button-clear icon ion-ios-close-outline" ng-click="modal.hide()">
+    </button>
+  </ion-header-bar>
+
+  <ion-content scroll="true">
+    <div class="expiry-info">
+      <div class="row header">
+        <div class="col qty-col">
+          # of passes
+        </div>
+        <div class="col exp-on-col">
+          Expiry date
+        </div>
+      </div>
+      <div ng-repeat="info in expiryInfo" class="row">
+        <div class="col qty-col">
+          {{ info.qty }}
+        </div>
+        <div class="col exp-on-col">
+          {{ info.expiresOn.format("DD MMM YY") }} ({{ info.expiresIn }} day{{ info.expiresIn > 1 ? "s" : "" }} left)
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>
