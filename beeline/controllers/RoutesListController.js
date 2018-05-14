@@ -351,13 +351,8 @@ export default [
     // Normal routes
     // Sort them by start time
     $scope.$watchGroup(
-      [
-        () => RoutesService.getRoutesWithRoutePass(),
-        () => RoutesService.getRoutePassTags(),
-        () => RoutesService.getRoutePassExpiries(),
-        "data.placeQuery",
-      ],
-      ([allRoutes, routePassTags, routePassExpiries, placeQuery]) => {
+      [() => RoutesService.getRoutesWithRoutePass(), "data.placeQuery"],
+      ([allRoutes, placeQuery]) => {
         // Input validation
         if (!allRoutes) return
 
@@ -375,20 +370,12 @@ export default [
           )
         }
         // Sort the routes by the time of day
-        let routes = _.sortBy(allRoutes, "label", route => {
+        $scope.data.routes = _.sortBy(allRoutes, "label", route => {
           const firstTripStop = _.get(route, "trips[0].tripStops[0]")
           const midnightOfTrip = new Date(firstTripStop.time.getTime())
           midnightOfTrip.setHours(0, 0, 0, 0)
           return firstTripStop.time.getTime() - midnightOfTrip.getTime()
         })
-
-        if (!routePassExpiries || !routePassTags) {
-          $scope.data.routes = routes
-        } else {
-          $scope.data.routes = routes.map(route => {
-            return addExpiryToRoute(route, routePassTags, routePassExpiries)
-          })
-        }
       }
     )
 
@@ -555,6 +542,68 @@ export default [
           $timeout(() => {
             $anchorScroll()
           }, 0)
+        }
+      }
+    )
+
+    // Add expiry to routes
+    $scope.$watchGroup(
+      [
+        () => RoutesService.getRoutePassTags(),
+        () => RoutesService.getRoutePassExpiries(),
+        "data.routes",
+        "data.routesWithRidesRemaining",
+        "data.recentRoutes",
+        "data.routesYouMayLike",
+      ],
+      (
+        [
+          routePassTags,
+          routePassExpiries,
+          routes,
+          routesWithRidesRemaining,
+          recentRoutes,
+          routesYouMayLike,
+        ]
+      ) => {
+        // Input validation
+        if (
+          !routePassTags ||
+          !routePassExpiries ||
+          !routes ||
+          !routesWithRidesRemaining ||
+          !recentRoutes ||
+          !routesYouMayLike
+        )
+          return
+
+        let [
+          routesExp,
+          routesWithRidesRemainingExp,
+          recentRoutesExp,
+          routesYouMayLikeExp,
+        ] = [
+          routes,
+          routesWithRidesRemaining,
+          recentRoutes,
+          routesYouMayLike,
+        ].map(routes => {
+          return routes.map(route => {
+            return addExpiryToRoute(route, routePassTags, routePassExpiries)
+          })
+        })
+
+        if (!_.isEqual(routes, routesExp)) {
+          $scope.data.routes = routesExp
+        }
+        if (!_.isEqual(routesWithRidesRemaining, routesWithRidesRemainingExp)) {
+          $scope.data.routesWithRidesRemaining = routesWithRidesRemainingExp
+        }
+        if (!_.isEqual(recentRoutes, recentRoutesExp)) {
+          $scope.data.recentRoutes = recentRoutesExp
+        }
+        if (!_.isEqual(routesYouMayLike, routesYouMayLikeExp)) {
+          $scope.data.routesYouMayLike = routesYouMayLikeExp
         }
       }
     )
