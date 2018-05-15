@@ -11,7 +11,7 @@
         <td class="right">{{(priceInfo.totals.ticketSale.credit || 0) | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.routePass && priceInfo.routePass.length > 0">
-        <td>Using {{ ridesUsed }} route pass{{ ridesUsed > 1 ? 'es' : '' }}</td>
+        <td>Using {{ ridesUsed }} pass{{ ridesUsed > 1 ? 'es' : '' }}</td>
         <td class="right">{{-priceInfo.totals.routePass.debit | currency}}</td>
       </tr>
       <tr ng-if="priceInfo.discount && priceInfo.discount.length > 0" ng-repeat="d in priceInfo.discount">
