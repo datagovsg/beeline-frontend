@@ -33,7 +33,10 @@ angular.module("beeline").directive("routePassExpiryModal", [
 
             for (let expiryDate of Object.keys(expiries)) {
               let expiresOn = moment(expiryDate)
-              let expiresIn = expiresOn.add(1, "days").diff(moment(), "days")
+              let expiresIn = expiresOn
+                .clone()
+                .add(1, "days")
+                .diff(moment(), "days")
 
               expiryInfo.push({
                 expiresIn,

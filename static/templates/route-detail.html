@@ -21,15 +21,18 @@
           </span>
         </div>
 
-        <div ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)" class="route-pass-remaining popup-left">
+        <div ng-if="data.isLoggedIn && data.passCount > 0" class="route-pass-remaining popup-left">
           <i class="fas fa-ticket-alt"></i>
-          <span class="text"
-                ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)"
-                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Pass(es)</u></a></span> 
+          <span class="text route-pass-button"
+                ng-if="data.passCount === 1"
+                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Pass</u></a></span> 
+          <span class="text route-pass-button"
+                ng-if="data.passCount > 1"
+                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Passes</u></a></span>
         </div>
 
         <div ng-if="(data.passCount > 0 || data.routeSupportsRoutePass)" class="buy-route-pass popup-right">
-          <span class="buy-more-button"
+          <span class="route-pass-button"
           ng-if="data.routeSupportsRoutePass"
           ng-click="buyMore()">
           <a><u>Buy Passes to save more</u></a>
