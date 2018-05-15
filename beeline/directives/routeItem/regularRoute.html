@@ -45,10 +45,10 @@
         <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
       </span>
       <span class="mini-info important" ng-if="route.expiry && route.expiry > 0">
-        You have {{ route.ridesRemaining }} route pass{{ route.ridesRemaining > 1 ? "(es)" : "" }} (expires in {{ route.expiry }} day{{ route.expiry > 1 ? "s" : "" }})
+        You have {{ route.ridesRemaining }} pass{{ route.ridesRemaining > 1 ? "es" : "" }} (expires in {{ route.expiry }} day{{ route.expiry > 1 ? "s" : "" }})
       </span>
       <span class="mini-info important" ng-if="route.expiry === 0">
-        You have {{ route.ridesRemaining }} route pass{{ route.ridesRemaining > 1 ? "(es)" : "" }} (expires today)
+        You have {{ route.ridesRemaining }} pass{{ route.ridesRemaining > 1 ? "es" : "" }} (expires today)
       </span>
     </div>
   </route-item-additional-info>
