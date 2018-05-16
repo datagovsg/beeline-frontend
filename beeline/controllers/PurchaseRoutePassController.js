@@ -184,11 +184,8 @@ export default [
       }
     })
 
-    UserService.userEvents.on("userChanged", () => {
-      $scope.book.user = UserService.getUser()
-
-      if ($scope.book.user) {
-        let user = $scope.book.user
+    $scope.$watch("book.user", user => {
+      if (user) {
         let hasSavedPaymentInfo =
           _.get(user, "savedPaymentInfo.sources.data.length", 0) > 0
         $scope.book.hasSavedPaymentInfo = hasSavedPaymentInfo
@@ -203,6 +200,10 @@ export default [
           ? savedPaymentInfo.sources.data[0].last4
           : null
       }
+    })
+
+    UserService.userEvents.on("userChanged", () => {
+      $scope.book.user = UserService.getUser()
     })
   },
 ]
