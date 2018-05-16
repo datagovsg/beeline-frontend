@@ -150,20 +150,7 @@ export default [
     // ------------------------------------------------------------------------
     $scope.login = async function() {
       // Prompt login
-      let user = await UserService.loginIfNeeded()
-      let hasSavedPaymentInfo =
-        _.get(user, "savedPaymentInfo.sources.data.length", 0) > 0
-      $scope.book.hasSavedPaymentInfo = hasSavedPaymentInfo
-      let savedPaymentInfo = $scope.book.hasSavedPaymentInfo
-        ? _.get(user, "savedPaymentInfo")
-        : null
-      $scope.book.savedPaymentInfo = savedPaymentInfo
-      $scope.book.brand = hasSavedPaymentInfo
-        ? savedPaymentInfo.sources.data[0].brand
-        : null
-      $scope.book.last4Digits = hasSavedPaymentInfo
-        ? savedPaymentInfo.sources.data[0].last4
-        : null
+      await UserService.loginIfNeeded()
     }
 
     $scope.proceed = async function() {
@@ -199,6 +186,23 @@ export default [
 
     UserService.userEvents.on("userChanged", () => {
       $scope.book.user = UserService.getUser()
+
+      if ($scope.book.user) {
+        let user = $scope.book.user
+        let hasSavedPaymentInfo =
+          _.get(user, "savedPaymentInfo.sources.data.length", 0) > 0
+        $scope.book.hasSavedPaymentInfo = hasSavedPaymentInfo
+        let savedPaymentInfo = $scope.book.hasSavedPaymentInfo
+          ? _.get(user, "savedPaymentInfo")
+          : null
+        $scope.book.savedPaymentInfo = savedPaymentInfo
+        $scope.book.brand = hasSavedPaymentInfo
+          ? savedPaymentInfo.sources.data[0].brand
+          : null
+        $scope.book.last4Digits = hasSavedPaymentInfo
+          ? savedPaymentInfo.sources.data[0].last4
+          : null
+      }
     })
   },
 ]
