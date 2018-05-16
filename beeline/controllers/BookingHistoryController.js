@@ -1,5 +1,6 @@
 import qs from "querystring"
 import _ from "lodash"
+import moment from "moment"
 
 export default [
   "$scope",
@@ -7,11 +8,27 @@ export default [
   "RoutesService",
   function($scope, RequestService, RoutesService) {
     // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+    const reset = function reset() {
+      _.assign($scope, {
+        hasMoreData: true,
+        page: 1,
+        perPage: 20,
+        transactions: null,
+      })
+    }
+
+    const calcTotal = function calcTotal(payments) {
+      return Math.abs(
+        payments.map(payment => payment.debitF).reduce((acc, val) => acc + val)
+      )
+    }
+
+    // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
-    let routesPromise
     let inFlight = false
-    $scope.routesById = {}
 
     // ------------------------------------------------------------------------
     // Ionic events
@@ -50,47 +67,67 @@ export default [
             $scope.hasMoreData = false
           }
 
-          // add route information to ticket sale items and route credit items
-          routesPromise.then(() => {
-            for (let t of newTransactions) {
-              for (const item of t.itemsByType.deal || []) {
-                const tag = (item.routeCredits || item.routePass || {}).tag
-                const ticket = item.ticketSale || item.ticketRefund || item.ticketExpense
-                const routeId = tag
-                  ? tag.substring(tag.indexOf("-") + 1)
-                  : ticket.boardStop.trip.routeId
-                item.route = $scope.routesById[routeId]
-              }
-            }
-          })
-
           $scope.transactions = $scope.transactions || []
           $scope.transactions = $scope.transactions.concat(newTransactions)
+
+          $scope.transactions = $scope.transactions.map(txn => {
+            // Set txn itemDetail - 5 types of txns
+            // 1. Ticket sale
+            // 2. Ticket refund
+            // 3. Route pass sale
+            // 4. Route pass refund
+            // 5. Crowdstart conversion
+            if (txn.itemsByType.ticketSale || txn.itemsByType.ticketRefund) {
+              txn.itemDetail =
+                txn.itemsByType.deal.length +
+                " ticket" +
+                (txn.itemsByType.deal.length > 1 ? "s" : "") +
+                " - " +
+                txn.itemsByType.deal
+                  .map(dealItem =>
+                    moment(dealItem.dealItem.boardStop.trip.date)
+                  )
+                  .sort((a, b) => a - b)
+                  .map(date => date.format("DD MMM"))
+                  .join(", ")
+              txn.route = txn.itemsByType.deal[0].dealItem.boardStop.trip.route
+              if (txn.itemsByType.ticketSale) {
+                txn.paid = true
+                txn.totalAmount = calcTotal(txn.itemsByType.payment)
+              } else {
+                txn.paid = false
+                txn.totalAmount = calcTotal(txn.itemsByType.deal)
+              }
+            } else if (txn.type === "routePassPurchase") {
+              txn.itemDetail = txn.itemsByType.deal.length + " route passes"
+              txn.paid = true
+              txn.totalAmount = calcTotal(txn.itemsByType.payment)
+              txn.route = txn.itemsByType.deal[0].dealItem.route
+            } else if (
+              txn.type === "refundPayment" &&
+              txn.itemsByType.routePass
+            ) {
+              txn.itemDetail = "1 route pass"
+              txn.paid = false
+              txn.totalAmount = calcTotal(txn.itemsByType.deal)
+              txn.route = txn.itemsByType.deal[0].dealItem.route
+            } else if (txn.type === "conversion") {
+              txn.itemDetail =
+                "Activate crowdstart route with " +
+                txn.itemsByType.routePass.length +
+                " route passes"
+              txn.paid = true
+              txn.totalAmount = calcTotal(txn.itemsByType.payment)
+              txn.route = txn.itemsByType.deal[0].dealItem.route
+            }
+
+            return txn
+          })
           $scope.$broadcast("scroll.infiniteScrollComplete")
         })
         .then(null, error => {
           inFlight = false
         })
-    }
-
-    // ------------------------------------------------------------------------
-    // Helper functions
-    // ------------------------------------------------------------------------
-    function reset() {
-      _.assign($scope, {
-        hasMoreData: true,
-        page: 1,
-        perPage: 20,
-        transactions: null,
-      })
-
-      routesPromise = RoutesService.fetchRoutes(true, {
-        endDate: Date.now() + 14 * 24 * 60 * 60 * 1000,
-        startDate: Date.now() - 365 * 24 * 60 * 60 * 1000,
-        tags: "[]",
-      }).then(routes => {
-        $scope.routesById = _.keyBy(routes, r => r.id)
-      })
     }
   },
 ]

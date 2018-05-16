@@ -3,6 +3,7 @@
 import {
   formatDate,
   formatDateMMMdd,
+  formatDateddMMMYYYY,
   formatTime,
   formatTimeArray,
   formatUTCDate,
@@ -99,6 +100,7 @@ require("./services/UserService")
 app
   .filter("formatDate", () => formatDate)
   .filter("formatDateMMMdd", () => formatDateMMMdd)
+  .filter("formatDateddMMMYYYY", () => formatDateddMMMYYYY)
   .filter("formatUTCDate", () => formatUTCDate)
   .filter("formatTime", () => formatTime)
   .filter("formatTimeArray", () => formatTimeArray)

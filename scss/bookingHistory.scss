@@ -2,6 +2,65 @@
   .item-note {
     font-size: $font-size-small;
   }
+
+  .item {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .transaction-header {
+    .table-cell {
+      font-weight: 700;
+    }
+  }
+
+  .transaction-details {
+    padding-bottom: 24px;
+    padding-top: 0px;
+  }
+
+  .transaction-row {
+    display: flex;
+    border-bottom: 1px solid #E6E6E6;
+    font-size: 13px;
+
+    // Should match what's in th
+    .col-left {
+      width: 30%;
+      max-width: 90px;
+      min-width: 85px;
+      color: darkgray;
+      font-weight: 600;
+
+      .transaction-button {
+        text-align: center;
+        border-radius: 4px;
+        
+        &.balanced {
+          $paid-color: rgb(147, 239, 167);
+          background: $paid-color;
+          color: darken($paid-color, 50%);
+          border: 1px solid darken($paid-color, 50%);
+        }
+
+        // TODO: add colour for refund
+        &.refund {
+          $refund-color: rgb(195, 238, 254);
+          background: $refund-color;
+          color: darken($refund-color, 50%);
+          border: 1px solid darken($refund-color, 50%);
+        }
+      }
+    }
+
+    .table-cell {
+      padding: $table-cell-padding;
+    }
+
+    .transaction-cost {
+      margin-left: auto;
+    }
+  }
 }
 
 
