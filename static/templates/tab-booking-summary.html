@@ -97,7 +97,7 @@
             <div class="warning-text" ng-if="isLoggedIn && !book.hasInvalidDate && disp.termsChecked && !book.hasSavedPaymentInfo">
               Please ensure that your credit card is ready for the next step in the booking process.
             </div>
-            <button class="primary-button button" ng-click="proceed()"
+            <button class="primary-button button" ng-click="payHandler()"
                     ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating || book.price===undefined">
               <span ng-if="!book.hasSavedPaymentInfo">Complete purchase</span>
               <span ng-if="book.hasSavedPaymentInfo">Confirm and Pay</span>
