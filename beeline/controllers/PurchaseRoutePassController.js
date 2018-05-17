@@ -27,10 +27,12 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
-    const retrievePaymentInfo = async function retrievePaymentInfo() {
+    const retrievePaymentInfo = async function retrievePaymentInfo(
+      oneTimePayment
+    ) {
       let paymentInfo
       // if user has credit card saved
-      if ($scope.book.hasSavedPaymentInfo) {
+      if ($scope.book.hasSavedPaymentInfo && !oneTimePayment) {
         paymentInfo = {
           customerId: $scope.book.savedPaymentInfo.id,
           sourceId: _.head($scope.book.savedPaymentInfo.sources.data).id,
@@ -63,9 +65,9 @@ export default [
       return paymentInfo
     }
 
-    const payForRoutePass = async function payForRoutePass() {
+    const payForRoutePass = async function payForRoutePass(oneTimePayment) {
       try {
-        const paymentInfo = await retrievePaymentInfo()
+        const paymentInfo = await retrievePaymentInfo(oneTimePayment)
         const {
           totalPrice: expectedPrice,
           quantity,
@@ -153,9 +155,9 @@ export default [
       await UserService.loginIfNeeded()
     }
 
-    $scope.proceed = async function() {
+    $scope.proceed = async function(oneTimePayment) {
       $scope.book.isProcessing = true
-      loadingSpinner(payForRoutePass()).then(
+      loadingSpinner(payForRoutePass(oneTimePayment)).then(
         async () => {
           $scope.book.isProcessing = false
           await $ionicPopup.alert({

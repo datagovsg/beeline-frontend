@@ -232,6 +232,7 @@ export default [
         onetimePayment
       )
       $scope.isPaymentProcessing = false
+      $scope.$digest()
     }
 
     $scope.scrollToPriceCalculator = function() {
