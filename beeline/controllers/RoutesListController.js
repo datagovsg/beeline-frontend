@@ -117,7 +117,7 @@ export default [
     // Watchers
     // ------------------------------------------------------------------------
     const autoComplete = function autoComplete() {
-      if (!$scope.data.queryText) {
+      if (!$scope.data.queryText || $scope.data.queryText.length < 3) {
         $scope.data.placeQuery = null
         $scope.data.isFiltering = false
         $scope.$digest()
