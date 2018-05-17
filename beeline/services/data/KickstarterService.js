@@ -377,11 +377,9 @@ angular.module("beeline").service("KickstarterService", [
 
         if (!userBids || userBids.length !== 1) return
 
-        let bidId = userBids[0].id
-
         return RequestService.beeline({
           method: "DELETE",
-          url: `/crowdstart/routes/${route.id}/bids/${bidId}`,
+          url: `/crowdstart/routes/${route.id}/bids`,
         }).then(response => {
           return response.data
         })

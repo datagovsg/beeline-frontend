@@ -107,11 +107,10 @@ export default [
     // Ionic events
     // ------------------------------------------------------------------------
     $scope.$on("$ionicView.enter", function() {
-      // Refresh routes on enter for my routes in case we did something that
-      // changed my routes e.g. unsubscribing lite route, booking a route
-      if ($ionicHistory.currentStateName() === "tabs.yourRoutes") {
-        $scope.refreshRoutes(true)
-      }
+      // Refresh routes on enter for routes in case we did something that
+      // changed my routes e.g. unsubscribing lite route, booking a route,
+      // withdrawing from crowdstart
+      $scope.refreshRoutes(true)
     })
 
     // ------------------------------------------------------------------------
@@ -629,6 +628,7 @@ export default [
       const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
         ignoreCache
       )
+      const bidsPromise = KickstarterService.fetchBids(ignoreCache)
       return $q
         .all([
           routesPromise,
@@ -636,6 +636,7 @@ export default [
           allLiteRoutesPromise,
           liteRouteSubscriptionsPromise,
           crowdstartRoutesPromise,
+          bidsPromise,
         ])
         .then(() => {
           $scope.error = null
