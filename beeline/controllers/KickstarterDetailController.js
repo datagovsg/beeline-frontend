@@ -20,6 +20,17 @@ export default [
     $ionicHistory
   ) {
     // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+    const updateBidded = async function updateBidded([user, routePromise]) {
+      const route = await routePromise
+      if (!user || !route) return
+
+      // Figure out if user has bidded on this crowdstart route
+      let userIds = route.bids.map(bid => bid.userId)
+      $scope.disp.bidded = userIds.includes(user.id)
+    }
+    // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
@@ -52,6 +63,11 @@ export default [
     })
 
     $scope.$on("$ionicView.enter", function() {
+      // For re-computing bidded correctly when re-entering the page
+      updateBidded([
+        UserService.getUser(),
+        KickstarterService.getCrowdstartById($scope.book.routeId),
+      ])
       if ($ionicHistory.backView()) {
         $scope.disp.showHamburger = false
       } else {
@@ -86,14 +102,7 @@ export default [
         () => UserService.getUser(),
         () => KickstarterService.getCrowdstartById($scope.book.routeId),
       ],
-      async ([user, routePromise]) => {
-        const route = await routePromise
-        if (!user || !route) return
-
-        // Figure out if user has bidded on this crowdstart route
-        let userIds = route.bids.map(bid => bid.userId)
-        $scope.disp.bidded = userIds.includes(user.id)
-      }
+      updateBidded
     )
 
     // ------------------------------------------------------------------------
