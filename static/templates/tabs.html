@@ -9,29 +9,32 @@ navigation history that also transitions its views in and out.
 
     <!-- Main content, usually <ion-nav-view> -->
     <ion-side-menu-content>
-      <div class="left-pane">
-        <ion-nav-bar class="bar-light">
-          <ion-nav-back-button class="button button-clear back-button">
-            <i class="icon ion-ios-arrow-back"></i>
-          </ion-nav-back-button>
-        </ion-nav-bar>
+      <div ng-if="isMenuOpen()" class="left-pane touch-disabled"></div>
+      <div>
+        <div class="left-pane">
+          <ion-nav-bar class="bar-light">
+            <ion-nav-back-button class="button button-clear back-button">
+              <i class="icon ion-ios-arrow-back"></i>
+            </ion-nav-back-button>
+          </ion-nav-bar>
 
-        <ion-nav-view name="menuContent"></ion-nav-view>
+          <ion-nav-view name="menuContent"></ion-nav-view>
+        </div>
+
+        <ui-gmap-google-map
+          center="map.center"
+          pan="true"
+          zoom="map.zoom"
+          bounds="map.bounds"
+          dragging="map.dragging"
+          control="map.control"
+          options="map.options"
+          data-tap-disabled="true"
+        >
+            <my-location></my-location>
+            <ui-view name="map-area"></ui-view>
+        </ui-gmap-google-map>
       </div>
-
-      <ui-gmap-google-map
-        center="map.center"
-        pan="true"
-        zoom="map.zoom"
-        bounds="map.bounds"
-        dragging="map.dragging"
-        control="map.control"
-        options="map.options"
-        data-tap-disabled="true"
-      >
-          <my-location></my-location>
-          <ui-view name="map-area"></ui-view>
-      </ui-gmap-google-map>
     </ion-side-menu-content>
 
     <!-- Left menu -->
