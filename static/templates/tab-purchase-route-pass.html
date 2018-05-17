@@ -1,4 +1,4 @@
-<ion-view view-title="Buy Pass">
+<ion-view view-title="Buy Route Pass">
   <ion-content class="purchase-route-pass">
 
     <section class="card">
@@ -50,7 +50,7 @@
         <div ng-if="book.priceSchedules" class="payment">
 
           <div class="price-calc">
-            <div>{{book.selectedPriceSchedule.quantity}} Passes x ${{ book.selectedPriceSchedule.unitPrice | floatRoundUp | number: 2 }}</div>
+            <div>{{book.selectedPriceSchedule.quantity}} Route Passes x ${{ book.selectedPriceSchedule.unitPrice | floatRoundUp | number: 2 }}</div>
             <div>${{ book.routePassPrice | number: 2 }}</div>
           </div>
 
@@ -148,7 +148,7 @@
           <!-- LOGIN BUTTON -->
           <div ng-if="!book.user">
             <div class="warning-text">
-              Please log in to purchase pass
+              Please log in to purchase route pass
             </div>
             <button class="primary-button button" ng-click="login()"
                     ng-if="!book.user">

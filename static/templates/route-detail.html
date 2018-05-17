@@ -25,10 +25,10 @@
           <i class="fas fa-ticket-alt"></i>
           <span class="text route-pass-button"
                 ng-if="data.passCount === 1"
-                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Pass</u></a></span> 
+                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Pass</u></a></span> 
           <span class="text route-pass-button"
                 ng-if="data.passCount > 1"
-                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Passes</u></a></span>
+                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Passes</u></a></span>
         </div>
 
         <div ng-if="(data.passCount > 0 || data.routeSupportsRoutePass)" class="buy-route-pass popup-right">
