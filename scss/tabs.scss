@@ -47,6 +47,16 @@
     }
   }
 
+  .touch-disabled {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    background: rgba(0,0,0,0.5);
+  }
+
   ui-gmap-google-map {
     height: 80%;
     width: 100%;

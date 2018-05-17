@@ -2,6 +2,7 @@ import _ from "lodash"
 
 export default [
   "$scope",
+  "$ionicSideMenuDelegate",
   "MapOptions",
   "SharedVariableService",
   "uiGmapGoogleMapApi",
@@ -10,6 +11,7 @@ export default [
   "loadingSpinner",
   function(
     $scope,
+    $ionicSideMenuDelegate,
     MapOptions,
     SharedVariableService,
     uiGmapGoogleMapApi,
@@ -126,6 +128,12 @@ export default [
         panToStop(stop.stop)
       }
     })
+
+    // Watcher for side menu opening event
+    // See https://forum.ionicframework.com/t/side-menu-event-listener/3793/7 for more details
+    $scope.isMenuOpen = $ionicSideMenuDelegate.isOpen.bind(
+      $ionicSideMenuDelegate
+    )
 
     // ------------------------------------------------------------------------
     // UI Hooks
