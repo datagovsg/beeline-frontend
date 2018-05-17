@@ -99,7 +99,7 @@
       <div class="item-divider no-text"></div>
     </section>
 
-    <section class="card">
+    <section class="card" ng-if="!book.hasSavedPaymentInfo">
       <div class="item item-text-wrap">
         <div class="booking-checkbox">
           <ion-checkbox class="checkbox-text item-text-wrap" ng-model="book.savePaymentChecked">
@@ -122,11 +122,27 @@
             <div class="warning-text" ng-if="!book.acceptPolicy || book.isProcessing || book.routePassChoice === null">
               Please accept the terms and conditions before purchasing
             </div>
+            <div class="warning-text" ng-if="!(!book.acceptPolicy || book.isProcessing || book.routePassChoice === null) && book.hasSavedPaymentInfo">
+              This payment will be charged to your <b>{{book.brand}}</b>
+              ending in <b>{{book.last4Digits}}</b>.
+            </div>
+            <div class="warning-text" ng-if="!(!book.acceptPolicy || book.isProcessing || book.routePassChoice === null) && !book.hasSavedPaymentInfo">
+              Please ensure that your credit card is ready for the next step in the booking process.
+            </div>
+
             <button class="primary-button button" ng-click="proceed()"
                     ng-disabled="!book.acceptPolicy || book.isProcessing || book.routePassChoice === null">
               <span ng-if="!book.hasSavedPaymentInfo">Proceed</span>
               <span ng-if="book.hasSavedPaymentInfo">Confirm and Pay</span>
             </button>
+
+            <div class="text-link-div">
+              <a ng-class="(!book.acceptPolicy || book.isProcessing) ? 'text-link-disabled' : ''"
+                  ng-click="proceed(true)">
+                  Use a different card for this payment
+              </a>
+            </div>
+
           </div>
 
           <!-- LOGIN BUTTON -->
