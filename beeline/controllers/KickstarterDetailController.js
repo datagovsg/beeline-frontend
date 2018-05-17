@@ -46,6 +46,11 @@ export default [
     // ------------------------------------------------------------------------
     // Ionic Events
     // ------------------------------------------------------------------------
+    $scope.$on("$ionicView.beforeLeave", function() {
+      // to make the join crowdstart button not flash when the page loads
+      $scope.disp.bidded = null
+    })
+
     $scope.$on("$ionicView.enter", function() {
       if ($ionicHistory.backView()) {
         $scope.disp.showHamburger = false

@@ -84,12 +84,17 @@
     </ion-item>
 
     <div class="item item-text-wrap text-center">
-      <button class="button primary-button " ng-disabled="disp.bidded" ui-sref="tabs.crowdstart-summary({
+
+      <button class="button primary-button " ng-if="disp.bidded === false" ui-sref="tabs.crowdstart-summary({
                       routeId: book.routeId,
                       bidPrice: book.bidOptions[0].price
                     })">
                     Join Crowdstart
       </button>
+
+      <div ng-if="disp.bidded === true" class="assertive">
+        <i class="fas fa-user"></i> You've joined this crowdstart route.
+      </div>
 
       <button class="button button-clear button-royal view-info-button"
         ui-sref = "tabs.crowdstart-summary({
