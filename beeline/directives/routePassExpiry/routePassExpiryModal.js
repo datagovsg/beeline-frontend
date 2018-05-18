@@ -25,6 +25,7 @@ angular.module("beeline").directive("routePassExpiryModal", [
 
             let tags = routePassTags[scope.routeId]
             let expiries = {}
+            if (!tags) return
             for (let tag of tags) {
               _.assign(expiries, routePassExpiries[tag])
             }

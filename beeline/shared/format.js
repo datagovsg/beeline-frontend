@@ -1,3 +1,5 @@
+/* eslint-disable func-style */
+
 export function twoPad(s, len, ch) {
   len = len || 2
   ch = ch || "0"
@@ -45,6 +47,17 @@ export function formatDateMMMdd(date) {
     date = new Date(date)
   }
   return monthNames[date.getMonth()] + " " + twoPad(date.getDate())
+}
+
+export function formatDateddMMMYYYY(date, prePadding) {
+  let monthNames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(",")
+
+  if (!date) return ""
+  if (typeof date == "string" || typeof date == "number") {
+    date = new Date(date)
+  }
+  let day = prePadding ? twoPad(date.getDate()) : date.getDate()
+  return day + " " + monthNames[date.getMonth()] + " " + date.getFullYear()
 }
 
 export function formatUTCDate(date) {
