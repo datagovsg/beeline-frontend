@@ -55,6 +55,12 @@
     width: 100%;
     z-index: 10;
     background: rgba(0,0,0,0.5);
+
+    @include desktop {
+      background: transparent;
+      pointer-events: none;
+      
+    }
   }
 
   ui-gmap-google-map {
