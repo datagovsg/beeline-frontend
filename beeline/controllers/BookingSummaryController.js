@@ -44,6 +44,11 @@ export default [
         $scope.$digest()
         return
       }
+      if ($scope.book.price === 0) {
+        $scope.book.feedback =
+          "Sorry, no promo code can be applied because there is nothing to pay for"
+        return
+      }
       let bookClone = _.cloneDeep($scope.book)
       let book = _.assign(bookClone, {
         promoCode: $scope.book.promoCodeEntered.toUpperCase(),
