@@ -53,13 +53,12 @@
     left: 0;
     height: 100%;
     width: 100%;
-    z-index: 10;
+    z-index: 2147483647; // maximum value to make sure everything is covered
     background: rgba(0,0,0,0.5);
 
     @include desktop {
       background: transparent;
       pointer-events: none;
-      
     }
   }
 
