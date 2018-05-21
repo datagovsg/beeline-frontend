@@ -14,7 +14,7 @@
         <td>Using {{ ridesUsed }} route pass{{ ridesUsed > 1 ? 'es' : '' }}</td>
         <td class="right">{{-priceInfo.totals.routePass.debit | currency}}</td>
       </tr>
-      <tr ng-if="priceInfo.discount && priceInfo.discount.length > 0" ng-repeat="d in priceInfo.discount">
+      <tr ng-if="priceInfo.discount && priceInfo.discount.length > 0 && d.discount.description !== 'Transaction fee absorbed'" ng-repeat="d in priceInfo.discount">
         <td>
           {{d.discount.description}}<span ng-if="booking.promoCode">: {{d.discount.code}}
           <i class="icon ion-close-circled" ng-click="removePromoCode()"></i></span>
