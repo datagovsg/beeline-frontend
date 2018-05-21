@@ -34,6 +34,85 @@ angular.module("beeline").directive("ticketDetailModal", [
       },
       link: function(scope, element, attributes) {
         // ------------------------------------------------------------------------
+        // Helper Functions
+        // ------------------------------------------------------------------------
+
+        const updateLatestInfo = id =>
+          TripService.latestInfo(Number(id)).then(info => {
+            scope.disp = {
+              vehicle:
+                info &&
+                info.trip &&
+                info.trip.vehicle &&
+                info.trip.vehicle.vehicleNumber,
+              driver:
+                info && info.trip && info.trip.driver && info.trip.driver.name,
+            }
+            scope.latestInfo = {
+              vehicleId:
+                info && info.trip && info.trip.vehicle && info.trip.vehicle.id,
+              driverId:
+                info && info.trip && info.trip.driver && info.trip.driver.id,
+            }
+          })
+
+        const sentTripToMapView = () => {
+          const trip = scope.trip
+          if (trip) {
+            MapService.emit("ping-trips", [trip])
+            MapService.emit("startPingLoop")
+            MapService.on("ping", updateIfVehicleOrDriverChanged)
+            MapService.on("status", updateStatus)
+          }
+        }
+
+        const updateIfVehicleOrDriverChanged = ping => {
+          if (
+            scope.latestInfo.vehicleId !== ping.vehicleId ||
+            scope.latestInfo.driverId !== ping.driverId
+          ) {
+            updateLatestInfo(ping.tripId)
+          }
+        }
+
+        const updateStatus = status => {
+          scope.disp.tripStatus = status.status
+        }
+
+        const deregister = function() {
+          MapService.emit("killPingLoop")
+          MapService.removeListener("ping", updateIfVehicleOrDriverChanged)
+          MapService.removeListener("status", updateStatus)
+        }
+
+        const updateMapView = function updateMapView() {
+          let coordinates = scope.ticket.boardStop.stop.coordinates.coordinates
+          scope.modalMap.center = {
+            latitude: coordinates[1],
+            longitude: coordinates[0],
+          }
+        }
+
+        // Called in RouteDetailController
+        // Fixes off center map
+        scope.functions.recenterMap = function(ticket) {
+          ticketPromise.then(tkt => {
+            ticket = ticket || tkt
+            let coordinates = ticket.boardStop.stop.coordinates.coordinates
+            // Refresh the center coordinates because the angular digest cycle
+            // messes things up
+            // See this github issue for more details
+            // https://github.com/angular-ui/angular-google-maps/issues/1599
+            gmapIsReady.then(() => {
+              scope.modalControl.refresh({
+                latitude: coordinates[1],
+                longitude: coordinates[0],
+              })
+            })
+          })
+        }
+
+        // ------------------------------------------------------------------------
         // Data Initialization
         // ------------------------------------------------------------------------
 
@@ -154,6 +233,11 @@ angular.module("beeline").directive("ticketDetailModal", [
           CompanyService.showTerms(companyId)
         }
 
+        scope.closeModal = () => {
+          deregister()
+          scope.modal.hide()
+        }
+
         // ------------------------------------------------------------------------
         // Event handlers
         // ------------------------------------------------------------------------
@@ -177,81 +261,6 @@ angular.module("beeline").directive("ticketDetailModal", [
         scope.$on("enteringMyBookingRoute", (event, args) => {
           sentTripToMapView()
         })
-
-        // ------------------------------------------------------------------------
-        // Helper Functions
-        // ------------------------------------------------------------------------
-
-        const updateLatestInfo = id =>
-          TripService.latestInfo(Number(id)).then(info => {
-            scope.disp = {
-              vehicle:
-                info &&
-                info.trip &&
-                info.trip.vehicle &&
-                info.trip.vehicle.vehicleNumber,
-              driver:
-                info && info.trip && info.trip.driver && info.trip.driver.name,
-            }
-            scope.latestInfo = {
-              vehicleId:
-                info && info.trip && info.trip.vehicle && info.trip.vehicle.id,
-              driverId:
-                info && info.trip && info.trip.driver && info.trip.driver.id,
-            }
-          })
-
-        const sentTripToMapView = () => {
-          const trip = scope.trip
-          if (trip) {
-            MapService.emit("ping-trips", [trip])
-            MapService.emit("startPingLoop")
-            MapService.on("ping", updateIfVehicleOrDriverChanged)
-            MapService.on("status", updateStatus)
-          }
-        }
-
-        const updateIfVehicleOrDriverChanged = ping => {
-          if (
-            scope.latestInfo.vehicleId !== ping.vehicleId ||
-            scope.latestInfo.driverId !== ping.driverId
-          ) {
-            updateLatestInfo(ping.tripId)
-          }
-        }
-
-        const updateStatus = status => {
-          scope.disp.tripStatus = status.status
-        }
-
-        const deregister = function() {
-          MapService.emit("killPingLoop")
-          MapService.removeListener("ping", updateIfVehicleOrDriverChanged)
-          MapService.removeListener("status", updateStatus)
-        }
-
-        function updateMapView() {
-          let coordinates = scope.ticket.boardStop.stop.coordinates.coordinates
-          scope.modalMap.center = {
-            latitude: coordinates[1],
-            longitude: coordinates[0],
-          }
-        }
-
-        // Called in RouteDetailController
-        // Fixes off center map
-        scope.functions.recenterMap = function(ticket) {
-          ticket = ticket || scope.ticket
-          let coordinates = ticket.boardStop.stop.coordinates.coordinates
-          // Refresh the center coordinates because the angular digest cycle
-          // messes things up
-          // See this github issue for more details
-          // https://github.com/angular-ui/angular-google-maps/issues/1599
-          scope.modalControl.refresh({
-            latitude: coordinates[1],
-            longitude: coordinates[0],
-          })
-        }
       },
     }
   },

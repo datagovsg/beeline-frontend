@@ -148,7 +148,6 @@ export default [
 
           if ($scope.data.hasNextTripTicket) {
             $scope.data.nextTripTicketId = $scope.data.nextTrip.nextTripTicketId
-            $scope.disp.ticketDetailModal = initTicketModal()
             MapService.emit("ticketIdIsAvailable", $scope.data.nextTripTicketId)
             // to inform RouteDetail to start the ping loop
             $scope.$broadcast("enteringMyBookingRoute", {
@@ -243,6 +242,7 @@ export default [
     }
 
     $scope.viewTicket = () => {
+      $scope.disp.ticketDetailModal = initTicketModal()
       $scope.disp.ticketDetailModal.show()
       $scope.modalFunctions.recenterMap()
     }
