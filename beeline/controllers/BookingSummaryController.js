@@ -191,9 +191,7 @@ export default [
     })
 
     $scope.$watch("book.promoCodeEntered", () => {
-      if ($scope.book.promoCodeEntered && $scope.book.promoCodeEntered != "") {
-        $scope.book.feedback = ""
-      }
+      $scope.book.feedback = ""
     })
 
     $scope.$watch("book.promoCode", () => {
