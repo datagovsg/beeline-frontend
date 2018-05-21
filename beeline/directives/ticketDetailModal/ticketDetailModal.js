@@ -90,6 +90,13 @@ angular.module("beeline").directive("ticketDetailModal", [
           }
         })
 
+        Promise.all([gmapIsReady, uiGmapGoogleMapApi]).then(
+          ([ignore, googleMaps]) => {
+            const gmap = scope.map.control.getGMap()
+            google.maps.event.trigger(gmap, "resize")
+          }
+        )
+
         MapViewFactory.init(scope)
 
         const recentTimeBound = 2 * 60 * 60000
