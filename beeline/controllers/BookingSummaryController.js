@@ -197,6 +197,12 @@ export default [
       }
     })
 
+    $scope.$watch("book.applyRoutePass", () => {
+      // Remove promo code every time we toggle apply route pass
+      $scope.book.promoCodeEntered = null
+      $scope.book.promoCode = null
+    })
+
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
