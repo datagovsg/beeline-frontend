@@ -44,6 +44,11 @@ export default [
         $scope.$digest()
         return
       }
+      if ($scope.book.promoCode !== null) {
+        $scope.book.feedback =
+          "Sorry, only one promo code can be applied at one time. Please remove the promo code below to proceed"
+        return
+      }
       if ($scope.book.price === 0) {
         $scope.book.feedback =
           "Sorry, no promo code can be applied because there is nothing to pay for"
