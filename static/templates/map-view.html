@@ -27,7 +27,7 @@
 <ui-gmap-marker ng-if="mapObject.chosenStop"
                 idkey="'selectedStopPin'"
                 coords="mapObject.chosenStop.coordinates"
-                options="mapObject.chosenStop.canBoard ? map.markerOptions.startMarker : map.markerOptions.endMarker">
+                options="mapObject.chosenStop.canBoard ? (mapObject.chosenStop.canAlight ? map.markerOptions.normalPinMarker : map.markerOptions.startMarker) : map.markerOptions.endMarker">
 </ui-gmap-marker>
 <map-bus-icon ng-repeat="recentPings in mapObject.allRecentPings track by $index"
               idkey="'bus-icon' + $index"

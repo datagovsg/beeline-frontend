@@ -46,6 +46,14 @@ angular.module("beeline").service("MapOptions", [
             },
             zIndex: google.maps.Marker.MAX_ZINDEX + 2,
           },
+          normalPinMarker: {
+            icon: {
+              url: "img/map/SelectedPinNormal@2x.png",
+              scaledSize: new googleMaps.Size(34, 46),
+              anchor: new googleMaps.Point(17, 41),
+            },
+            zIndex: google.maps.Marker.MAX_ZINDEX + 2,
+          },
         },
         pathOptions: {
           routePath: {
