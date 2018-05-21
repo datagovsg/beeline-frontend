@@ -157,7 +157,7 @@ angular.module("beeline").factory("UserService", [
     // ////////////////////////////////////////////////////////////////////////////
     // UI methods
     // ////////////////////////////////////////////////////////////////////////////
-    let verifiedPrompt = function(options) {
+    let verifiedPrompt = function(options, hideCancel) {
       let promptScope = $rootScope.$new(true)
       promptScope.form = {
         verifiedPromptForm: {},
@@ -166,23 +166,27 @@ angular.module("beeline").factory("UserService", [
         inputs: options.inputs || [],
         bodyText: options.bodyText || "",
       }
+      let buttons = [
+        {
+          text: "OK",
+          type: "button-positive",
+          onTap: function(e) {
+            if (promptScope.form.verifiedPromptForm.$valid) {
+              return promptScope.data
+            }
+            e.preventDefault()
+          },
+        },
+      ]
+      if (!hideCancel) {
+        buttons.unshift({ text: "Cancel" })
+      }
       _.defaultsDeep(options, {
         template: verifiedPromptTemplate,
         title: "",
         subTitle: "",
         scope: promptScope,
-        buttons: [
-          {
-            text: "OK",
-            type: "button-positive",
-            onTap: function(e) {
-              if (promptScope.form.verifiedPromptForm.$valid) {
-                return promptScope.data
-              }
-              e.preventDefault()
-            },
-          },
-        ],
+        buttons,
       })
       return $ionicPopup.show(options)
     }
@@ -274,27 +278,30 @@ angular.module("beeline").factory("UserService", [
       }
 
       try {
-        let accountResponse = await verifiedPrompt({
-          title: "Account Details",
-          bodyText:
-            "Welcome! This looks like your first login. Please complete the account setup.",
-          inputs: [
-            {
-              type: "text",
-              name: "name",
-              pattern: VALID_USER_NAME,
-              inputPlaceHolder: "Name",
-              errorMsg: "Please provide a name with 3 or more characters.",
-            },
-            {
-              type: "email",
-              name: "email",
-              inputPlaceHolder: "name@example.com",
-              errorMsg:
-                "Email address does not appear to be in the correct format. Please provide a valid email address.",
-            },
-          ],
-        })
+        let accountResponse = await verifiedPrompt(
+          {
+            title: "Account Details",
+            bodyText:
+              "Welcome! This looks like your first login. Please complete the account setup.",
+            inputs: [
+              {
+                type: "text",
+                name: "name",
+                pattern: VALID_USER_NAME,
+                inputPlaceHolder: "Name",
+                errorMsg: "Please provide a name with 3 or more characters.",
+              },
+              {
+                type: "email",
+                name: "email",
+                inputPlaceHolder: "name@example.com",
+                errorMsg:
+                  "Email address does not appear to be in the correct format. Please provide a valid email address.",
+              },
+            ],
+          },
+          true
+        )
         if (!accountResponse) {
           logOut()
           $rootScope.$digest()
