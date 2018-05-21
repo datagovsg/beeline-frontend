@@ -172,7 +172,6 @@ angular.module("beeline").factory("UserService", [
         subTitle: "",
         scope: promptScope,
         buttons: [
-          { text: "Cancel" },
           {
             text: "OK",
             type: "button-positive",
