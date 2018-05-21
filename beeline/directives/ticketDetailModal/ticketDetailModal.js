@@ -154,6 +154,11 @@ angular.module("beeline").directive("ticketDetailModal", [
           CompanyService.showTerms(companyId)
         }
 
+        scope.closeModal = () => {
+          deregister()
+          scope.modal.hide()
+        }
+
         // ------------------------------------------------------------------------
         // Event handlers
         // ------------------------------------------------------------------------
@@ -241,15 +246,19 @@ angular.module("beeline").directive("ticketDetailModal", [
         // Called in RouteDetailController
         // Fixes off center map
         scope.functions.recenterMap = function(ticket) {
-          ticket = ticket || scope.ticket
-          let coordinates = ticket.boardStop.stop.coordinates.coordinates
-          // Refresh the center coordinates because the angular digest cycle
-          // messes things up
-          // See this github issue for more details
-          // https://github.com/angular-ui/angular-google-maps/issues/1599
-          scope.modalControl.refresh({
-            latitude: coordinates[1],
-            longitude: coordinates[0],
+          ticketPromise.then(tkt => {
+            ticket = ticket || tkt
+            let coordinates = ticket.boardStop.stop.coordinates.coordinates
+            // Refresh the center coordinates because the angular digest cycle
+            // messes things up
+            // See this github issue for more details
+            // https://github.com/angular-ui/angular-google-maps/issues/1599
+            gmapIsReady.then(() => {
+              scope.modalControl.refresh({
+                latitude: coordinates[1],
+                longitude: coordinates[0],
+              })
+            })
           })
         }
       },
