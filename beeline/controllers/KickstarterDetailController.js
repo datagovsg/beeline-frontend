@@ -24,7 +24,11 @@ export default [
     // ------------------------------------------------------------------------
     const updateBidded = async function updateBidded([user, routePromise]) {
       const route = await routePromise
-      if (!user || !route) return
+      if (!route) return
+
+      if (!user) {
+        $scope.disp.bidded = false
+      }
 
       // Figure out if user has bidded on this crowdstart route
       let userIds = route.bids.map(bid => bid.userId)
