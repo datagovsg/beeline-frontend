@@ -56,6 +56,7 @@ angular.module("beeline").factory("RoutesService", [
     let activeRoutes
     let recentRoutesCache
     let recentRoutes
+    let privateRoutes
 
     // For single routes
     let lastRouteId = null
@@ -81,6 +82,7 @@ angular.module("beeline").factory("RoutesService", [
       instance.fetchRecentRoutes(true)
       instance.fetchRoutePassExpiries(true)
       instance.fetchRoutePassTags(true)
+      instance.fetchPrivateRoutes(true)
     })
 
     let instance = {
@@ -170,7 +172,12 @@ angular.module("beeline").factory("RoutesService", [
               r.trips[0].tripStops.length >= 2
           )
           transformRouteData(routes)
-          activeRoutes = routes
+
+          // If options is null/undefined or an empty object, save routes
+          // into activeRoutes
+          if (_.isNil(options) || _.isEqual(options, {})) {
+            activeRoutes = routes
+          }
           return routes
         })
 
@@ -181,6 +188,19 @@ angular.module("beeline").factory("RoutesService", [
         }
 
         return routesPromise
+      },
+
+      getPrivateRoutes: function() {
+        return privateRoutes
+      },
+
+      fetchPrivateRoutes: function(ignoreCache) {
+        return this.fetchRoutes(ignoreCache, {
+          tags: JSON.stringify(["crowdstart-private"]),
+        }).then(routes => {
+          privateRoutes = routes
+          return routes
+        })
       },
 
       /**

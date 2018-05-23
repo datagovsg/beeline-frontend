@@ -175,14 +175,16 @@ export default [
       [
         () => RoutesService.getRecentRoutes(),
         () => RoutesService.getRoutesWithRoutePass(),
+        () => RoutesService.getPrivateRoutes(),
       ],
-      ([recentRoutes, allRoutes]) => {
+      ([recentRoutes, allRoutes, privateRoutes]) => {
         // If we cant find route data here then proceed with empty
         // This allows it to organically "clear" any state
-        if (!recentRoutes || !allRoutes) return
+        if (!recentRoutes || !allRoutes || !privateRoutes) return
 
         // "Fill in" the recent routes with the all routes data
         let allRoutesById = _.keyBy(allRoutes, "id")
+        let privateRoutesById = _.keyBy(privateRoutes, "id")
         $scope.data.recentRoutes = recentRoutes
           .map(recentRoute => {
             return _.assign(
@@ -190,7 +192,7 @@ export default [
                 alightStopStopId: recentRoute.alightStopStopId,
                 boardStopStopId: recentRoute.boardStopStopId,
               },
-              allRoutesById[recentRoute.id]
+              allRoutesById[recentRoute.id] || privateRoutesById[recentRoute.id]
             )
             // Clean out "junk" routes which may be old/obsolete
           })
