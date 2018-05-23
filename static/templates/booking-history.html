@@ -9,8 +9,8 @@
         <!-- TRANSACTION HEADER -->
         <div class="item item-divider transaction-header transaction-row">
           <div class="col-left item-note table-cell">
-            <div ng-if="transaction.paid" class="balanced transaction-button">Paid</div>
-            <div ng-if="!transaction.paid" class="refund transaction-button">Refund</div>
+            <div ng-if="transaction.type !== 'refundPayment'" class="balanced transaction-button">Paid</div>
+            <div ng-if="transaction.type === 'refundPayment'" class="refund transaction-button">Refund</div>
           </div>
           <div class="table-cell transaction-number">Txn #{{transaction.id}}</div>
           <div class="table-cell transaction-cost" ng-if="transaction.totalAmount">${{ transaction.totalAmount | number: 2 }}</div>
