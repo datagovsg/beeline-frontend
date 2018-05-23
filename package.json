@@ -107,6 +107,7 @@
     "clean": "shx rm -rf www/",
     "deploy": "node scripts/deploy.js",
     "deploy-android": "node scripts/deploy-android.js",
+    "deploy-ios": "node scripts/deploy-ios.js",
     "dev": "node scripts/dev.js",
     "install-android": "ionic cordova platform remove android && ionic cordova platform add android",
     "install-ios": "ionic cordova platform remove ios && ionic cordova platform add ios",
