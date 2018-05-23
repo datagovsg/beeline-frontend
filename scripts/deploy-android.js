@@ -11,7 +11,18 @@ const shell = require("shelljs")
 // https://github.com/shelljs/shelljs/pull/802
 shell.config.fatal = true
 
-console.log("Starting to build apk for Android development")
+console.log(`
+
+===============================================================================
+Starting to build apk for Android development
+
+===============================================================================
+`)
+
+
+// Set this to make ionic not use interactive prompts
+// See https://github.com/ionic-team/ionic-cli/issues/2517#issuecomment-323254114
+shell.exec("export CI=TRAVIS")
 
 // build for production into www directory
 shell.exec("npm run build -- --production")
