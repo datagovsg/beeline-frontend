@@ -7,7 +7,7 @@
   </div>
   <!-- hide route item if search bar is not empty -->
   <ion-item
-    ng-repeat="route in data.routesYouMayLike | limitTo:5 track by route.id"
+    ng-repeat="route in data.routesYouMayLike | limitTo:10 track by route.id"
     ng-if="data.routesYouMayLike.length > 0 && !data.placeQuery"
     ui-sref="tabs.route-detail({
       routeId: route.id
@@ -26,7 +26,7 @@
     Available Routes
   </div>
   <ion-item
-    ng-repeat="route in data.routes | limitTo:30 track by route.id"
+    ng-repeat="route in data.routes | limitTo:20 track by route.id"
     ui-sref="tabs.route-detail({ routeId: route.id })"
     class="item-text-wrap"
   >
