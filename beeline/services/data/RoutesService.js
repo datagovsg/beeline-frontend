@@ -69,6 +69,9 @@ angular.module("beeline").factory("RoutesService", [
     let routeToRidesRemainingMap
     let routesWithRoutePassPromise
     let routesWithRoutePass
+    let privateRoutesWithRoutePass
+    let privateRoutesWithRoutePassPromise
+    let privateRoutesWithRidesRemaining
     let routesWithRidesRemaining
     let routeToRoutePassTagsPromise = null
     let routeToRoutePassTags = null
@@ -83,6 +86,7 @@ angular.module("beeline").factory("RoutesService", [
       instance.fetchRoutePassExpiries(true)
       instance.fetchRoutePassTags(true)
       instance.fetchPrivateRoutes(true)
+      instance.fetchPrivateRoutesWithRoutePass(true)
     })
 
     let instance = {
@@ -370,16 +374,22 @@ angular.module("beeline").factory("RoutesService", [
         if (ignoreCache || !routePassCache) {
           let allRoutesPromise = this.fetchRoutes(ignoreCache)
           let allRoutePassesPromise = this.fetchRoutePasses(ignoreCache)
+          let allPrivateRoutesPromise = this.fetchPrivateRoutes(ignoreCache)
 
           routePassCache = $q
-            .all([allRoutesPromise, allRoutePassesPromise])
+            .all([
+              allRoutesPromise,
+              allRoutePassesPromise,
+              allPrivateRoutesPromise,
+            ])
             .then(function(values) {
               let allRoutes = values[0]
               let allRoutePasses = values[1]
+              let allPrivateRoutes = values[2]
               let allRoutePassTags = _.keys(allRoutePasses)
               routeToRidesRemainingMap = {}
 
-              allRoutes.forEach(function(route) {
+              allRoutes.concat(allPrivateRoutes).forEach(function(route) {
                 let notableTags = _.intersection(route.tags, allRoutePassTags)
                 if (notableTags.length < 1) return
                 else {
@@ -443,6 +453,37 @@ angular.module("beeline").factory("RoutesService", [
         return routesWithRoutePassPromise
       },
 
+      fetchPrivateRoutesWithRoutePass: function(ignoreCache) {
+        if (ignoreCache || !privateRoutesWithRoutePassPromise) {
+          return (routesWithRoutePassPromise = $q
+            .all([
+              this.fetchPrivateRoutes(ignoreCache),
+              this.fetchRoutePassCount(ignoreCache),
+            ])
+            .then(([allRoutes, routeToRidesRemainingMap]) => {
+              if (routeToRidesRemainingMap) {
+                privateRoutesWithRoutePass = allRoutes.map(route => {
+                  let clone = _.clone(route)
+                  clone.ridesRemaining =
+                    route.id in routeToRidesRemainingMap
+                      ? routeToRidesRemainingMap[route.id]
+                      : null
+                  return clone
+                })
+                privateRoutesWithRidesRemaining = privateRoutesWithRoutePass.filter(
+                  route => route.id in routeToRidesRemainingMap
+                )
+
+                return routesWithRoutePass
+              } else {
+                return (routesWithRoutePass = allRoutes)
+              }
+            }))
+        }
+
+        return privateRoutesWithRoutePassPromise
+      },
+
       // Returns array containing all avaialable routes,
       // modifying those with route passes remaining with a ridesRemaining property
       // Updated by: fetchRoutesWithRoutePass
@@ -450,11 +491,19 @@ angular.module("beeline").factory("RoutesService", [
         return routesWithRoutePass
       },
 
+      getPrivateRoutesWithRoutePass: function() {
+        return privateRoutesWithRoutePass
+      },
+
       // Returns array containing only those routes with
       // ridesRemaining property
       // Updated by: fetchRoutesWithRoutePass
       getRoutesWithRidesRemaining: function() {
         return routesWithRidesRemaining
+      },
+
+      getPrivateRoutesWithRidesRemaining: function() {
+        return privateRoutesWithRidesRemaining
       },
 
       // Returns promise containing a map of all routeId to their corresponding tags
@@ -466,13 +515,14 @@ angular.module("beeline").factory("RoutesService", [
 
         let routesPromise = this.fetchRoutesWithRoutePass()
         let routePassesPromise = this.fetchRoutePasses()
+        let privateRoutesPromise = this.fetchPrivateRoutes()
 
         return (routeToRoutePassTagsPromise = $q
-          .all([routesPromise, routePassesPromise])
-          .then(([routes, routePasses]) => {
+          .all([routesPromise, routePassesPromise, privateRoutesPromise])
+          .then(([routes, routePasses, privateRoutes]) => {
             if (routePasses) {
               routeToRoutePassTags = {}
-              routes.forEach(route => {
+              routes.concat(privateRoutes).forEach(route => {
                 let routePassTags = _.keys(routePasses)
                 let notableTags = _.intersection(route.tags, routePassTags)
                 if (notableTags.length >= 1) {
