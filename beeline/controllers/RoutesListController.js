@@ -175,30 +175,28 @@ export default [
       [
         () => RoutesService.getRecentRoutes(),
         () => RoutesService.getRoutesWithRoutePass(),
+        () => RoutesService.getPrivateRoutes(),
       ],
-      async ([recentRoutes, allRoutes]) => {
+      ([recentRoutes, allRoutes, privateRoutes]) => {
         // If we cant find route data here then proceed with empty
         // This allows it to organically "clear" any state
-        if (!recentRoutes || !allRoutes) return
+        if (!recentRoutes || !allRoutes || !privateRoutes) return
 
         // "Fill in" the recent routes with the all routes data
         let allRoutesById = _.keyBy(allRoutes, "id")
-
-        $scope.data.recentRoutes = await Promise.all(
-          recentRoutes.map(async recentRoute => {
-            let route = allRoutesById[recentRoute.id]
-            if (!route) {
-              route = await RoutesService.getRoute(recentRoute.id)
-            }
+        let privateRoutesById = _.keyBy(privateRoutes, "id")
+        $scope.data.recentRoutes = recentRoutes
+          .map(recentRoute => {
             return _.assign(
               {
                 alightStopStopId: recentRoute.alightStopStopId,
                 boardStopStopId: recentRoute.boardStopStopId,
               },
-              route
+              allRoutesById[recentRoute.id] || privateRoutesById[recentRoute.id]
             )
+            // Clean out "junk" routes which may be old/obsolete
           })
-        )
+          .filter(route => route && route.id !== undefined)
         $scope.data.recentRoutesById = _.keyBy($scope.data.recentRoutes, "id")
       }
     )
