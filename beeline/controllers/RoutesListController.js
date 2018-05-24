@@ -175,7 +175,7 @@ export default [
       [
         () => RoutesService.getRecentRoutes(),
         () => RoutesService.getRoutesWithRoutePass(),
-        () => RoutesService.getPrivateRoutes(),
+        () => RoutesService.getPrivateRoutesWithRoutePass(),
       ],
       ([recentRoutes, allRoutes, privateRoutes]) => {
         // If we cant find route data here then proceed with empty
