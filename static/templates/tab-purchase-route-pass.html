@@ -111,7 +111,7 @@
     </section>
 
     <section class="card">
-      <div class="item item-text-wrap">
+      <div class="item item-text-wrap item-no-title">
         <div class="buttons">
           <!-- BUY TICKET BUTTON -->
           <!-- Note that book.routePassChoice === null is not the same as
@@ -148,7 +148,7 @@
           <!-- LOGIN BUTTON -->
           <div ng-if="!book.user">
             <div class="warning-text">
-              Please log in to purchase route pass
+              Please log in to proceed
             </div>
             <button class="primary-button button" ng-click="login()"
                     ng-if="!book.user">
