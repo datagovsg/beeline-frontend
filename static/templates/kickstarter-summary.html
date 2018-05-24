@@ -65,47 +65,46 @@
       <div class="item-divider no-text"></div>
     </section>
 
-    <section class="card" ng-if="!isLoggedIn" ng-if="!disp.bidded">
-      <div class="item item-text-wrap" ng-if="!isLoggedIn">
-        <p class="text-center">
-          You are not logged in. Please enter your mobile number to complete pre-order.
-        </p>
+    <!-- BUTTONS SECTION -->
+    <section class="card">
+      <div class="item item-text-wrap item-no-title">
+        <div class="buttons">
+          <!-- BUY TICKET BUTTON -->
+          <div ng-if="isLoggedIn">
+            <div class="warning-text" ng-if="!book.acceptPolicy">
+              Please accept the terms and conditions before purchasing
+            </div>
+            <div class="warning-text" ng-if="book.acceptPolicy && !data.hasCreditInfo">
+              Please add your card details for future payment when the route activates.
+            </div>
+            <div class="warning-text" ng-if="book.acceptPolicy && data.hasCreditInfo">
+              This payment will be charged to your <br /><b>{{data.brand}}</b> ending in <b> {{data.last4Digits}}</b> if route is activated.
+            </div>
 
-        <button class="button primary-button" ng-click="login()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-          Log In
-        </button>
-      </div>
-      <div class="item-divider no-text"></div>
-    </section>
+            <button class="button primary-button"
+                    ng-click="createBid()"
+                    ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
+              <span ng-if="data.hasCreditInfo">Pre-order Route Pass</span>
+              <span ng-if="!data.hasCreditInfo">Confirm Pre-order</span>
+            </button>
+            <div class="text-link-div">
+              <a ng-click="updateSavingCard()" ng-class="!book.acceptPolicy ? 'text-link-disabled' : ''" ng-if="!waitingForPaymentResult">
+               Use a different card for this payment</a>
+            </div>
+          </div>
 
-    <section class="card" ng-if="isLoggedIn && !book.isBid && !disp.bidded">
-      <div class="item item-text-wrap text-center item-no-title" ng-if="isLoggedIn && !book.isBid">
+          <!-- LOGIN BUTTON -->
+          <div ng-if="!isLoggedIn">
+            <div class="warning-text">
+              Please log in to proceed
+            </div>
 
-        <div ng-if="!data.hasCreditInfo">
-          <p class="text-center">
-            Please add your card details for future payment when the route activates.
-          </p>
-          <!-- will be prompted to add card -->
-          <button class="button primary-button" ng-click="createBid()" ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-            Confirm Pre-order
-          </button>
-        </div>
-        <div ng-if="data.hasCreditInfo">
-          <p class="text-center">
-            This payment will be charged to your <br /><b>{{data.brand}}</b> ending in <b> {{data.last4Digits}}</b> if route is activated.
-          </p>
-          <button class="button primary-button"
-                  ng-click="createBid()"
-                  ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
-            Pre-order Route Pass
-          </button>
-          <div class="text-link-div">
-            <a ng-click="updateSavingCard()" ng-if="book.acceptPolicy && !waitingForPaymentResult">
-             Use a different card for this payment</a>
+            <button class="button primary-button" ng-click="login()" ng-disabled="waitingForPaymentResult">
+              Log In
+            </button>
           </div>
         </div>
       </div>
-      <div class="item-divider no-text"></div>
     </section>
   </ion-content>
 </ion-view>
