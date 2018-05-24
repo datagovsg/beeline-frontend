@@ -70,22 +70,4 @@
   </ion-item>
   <!-- END: Bookmarked Tracking Routes Section -->
 
-  <!-- START: Routes you may like -->
-  <!-- hide it if search bar is not empty -->
-  <div class="item item-divider" ng-if="data.routesYouMayLike.length > 0">
-    Routes You May Like
-  </div>
-  <!-- hide route item if search bar is not empty -->
-  <ion-item
-    ng-repeat="route in data.routesYouMayLike | limitTo:5 track by route.id"
-    ng-if="data.routesYouMayLike.length > 0 && !data.queryText"
-    ui-sref="tabs.route-detail({
-      routeId: route.id
-    })"
-    class="item-text-wrap"
-  >
-    <regular-route route="route"></regular-route>
-  </ion-item>
-  <!-- END: Routes you may like -->
-
 </div>
