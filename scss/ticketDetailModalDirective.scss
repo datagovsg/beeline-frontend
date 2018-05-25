@@ -19,13 +19,9 @@ ticket-detail {
 }
 
 .ticket-detail {
-  border-radius: 8px;
-
   @media (max-width: 1023px) {
     height: 94%;
     min-height: 94%;
-    width: 96%;
-    left: 2%;
     top: 3%;
   }
 }
