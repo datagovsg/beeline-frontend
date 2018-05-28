@@ -497,3 +497,15 @@ textarea{
 .float-right {
   float: right;
 }
+
+.modal {
+  border-radius: 8px;
+
+  @media (max-width: 1023px) {
+    width: 96%;
+    left: 2%;
+    height: 94%;
+    min-height: 94%;
+    top: 3%;
+  }
+}

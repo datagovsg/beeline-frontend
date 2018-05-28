@@ -1,4 +1,4 @@
-// this is found in kickstarter-detail, kickstarter-summary, kickstarter-recap.
+// this is found in kickstarter-detail, kickstarter-summary
 // information will show and hide accordingly
 // passHide hides the pass in summary page
 // preorderHide hides the info about asking user to "preorder", takes effect in recap page

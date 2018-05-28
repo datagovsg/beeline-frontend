@@ -162,16 +162,6 @@ export default [
       // Main interface, Kickstarter Tab
       // ////////////////////////////////////////////////////////////////////////////
 
-      .state("tabs.crowdstart-recap", {
-        url: "/crowdstart/:routeId/recap",
-        views: {
-          menuContent: {
-            templateUrl: "templates/kickstarter-recap.html",
-            controller: "KickstarterRecapController",
-          },
-        },
-      })
-
       .state("tabs.crowdstart-detail", {
         url: "/crowdstart/:routeId/detail",
         views: {
