@@ -69,6 +69,7 @@ angular.module("beeline").factory("MapViewFactory", [
           MapService.once("killPingLoop", () => {
             scope.timeout.stop()
             scope.statusTimeout.stop()
+            scope.mapObject.allRecentPings = []
           })
         })
 
