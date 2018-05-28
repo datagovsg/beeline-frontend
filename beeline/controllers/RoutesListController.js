@@ -101,7 +101,7 @@ export default [
       title:
         $ionicHistory.currentStateName() === "tabs.yourRoutes"
           ? "Your Routes"
-          : "All Routes",
+          : "Search Routes",
     }
     // ------------------------------------------------------------------------
     // Ionic events
