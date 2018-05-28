@@ -4,13 +4,11 @@ import _ from "lodash"
 angular.module("beeline").factory("FastCheckoutService", [
   "RoutesService",
   "UserService",
-  "purchaseRoutePassService",
   "TicketService",
   "$ionicLoading",
   function fastCheckoutService(
     RoutesService,
     UserService,
-    purchaseRoutePassService,
     TicketService,
     $ionicLoading
   ) {

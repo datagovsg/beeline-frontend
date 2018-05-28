@@ -90,7 +90,6 @@ require("./services/fastCheckoutService")
 require("./services/MapOptions")
 require("./services/MapViewFactory")
 require("./services/paymentService")
-require("./services/purchaseRoutePassService")
 require("./services/StripeService")
 require("./services/UserService")
 
@@ -202,10 +201,6 @@ app
   .controller(
     "KickstarterCommitController",
     require("./controllers/KickstarterCommitController.js").default
-  )
-  .controller(
-    "KickstarterRecapController",
-    require("./controllers/KickstarterRecapController.js").default
   )
   .controller(
     "TabsController",
