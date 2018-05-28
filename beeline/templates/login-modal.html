@@ -4,9 +4,9 @@
     <button class="button button-clear icon ion-ios-close-outline" ng-click="modal.hide()">
     </button>
   </ion-header-bar>
-  <ion-content ng-form="form.validation" scroll="false">
+  <ion-content ng-form="form.validation" scroll="true" class="modal-content">
     <div class="item item-text-wrap loginContent">
-      <div class="list list-inset">
+      <div>
         <p>
           Please enter your telephone number.
         </p>
@@ -19,8 +19,8 @@
           The phone no. you provide does not appear to be in the correct format. Please provide a valid 8-digit phone no. starting with the number 8 or 9.
         </div>
         <div class="checkTerms">
-            Please read {{o.APP.NAME}}'s <a ng-click="showPrivacyPolicy()">Privacy Policy</a> and <a ng-click="showTermsOfUse()">Terms of Use</a>.
-          <ion-checkbox ng-model="acceptPolicy" ng-required="true">I read and agree to the above terms and would like to proceed using {{o.APP.NAME}}.
+            {{o.APP.NAME}}'s <a ng-click="showTermsOfUse()">Terms of Use</a> and <a ng-click="showPrivacyPolicy()">Privacy Policy</a>.
+          <ion-checkbox ng-model="acceptPolicy" ng-required="true">I agree to {{o.APP.NAME}}'s Terms of Use and Privacy Policy.
           </ion-checkbox>
         </div>
 

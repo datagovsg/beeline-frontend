@@ -1,6 +1,9 @@
 .loginContent{
+  padding-top: 0px;
+  height: 100%;
+  border: none;
   p{
-    margin: $content-padding 0px;
+    margin: 0 0 $content-padding 0;
   }
   .loginTel{
     .telPrefix{
@@ -10,12 +13,11 @@
   }
   .buttons {
     text-align: center;
-    margin-bottom: $content-padding*3;
+    margin-top: 0px;
   }
 }
 .checkTerms{
-  margin-top: $content-padding*3;
-  margin-bottom: $content-padding*2;
+  margin-top: $content-padding;
   padding: $item-padding-small;
   a{
     text-decoration: underline;
@@ -24,10 +26,14 @@
     border: none;
     padding: 0;
     padding-left: $content-padding*4;
-    margin: $content-padding 0;
+    margin: $content-padding 0 0 0;
     .checkbox{
       position: absolute;
       left:-8px; /*undo ionic default*/
     }
   }
+}
+
+.modal-content {
+  background: transparent;
 }
