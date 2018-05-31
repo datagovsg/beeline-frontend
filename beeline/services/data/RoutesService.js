@@ -389,7 +389,8 @@ angular.module("beeline").factory("RoutesService", [
               let allRoutePassTags = _.keys(allRoutePasses)
               routeToRidesRemainingMap = {}
 
-              allRoutes.concat(allPrivateRoutes).forEach(function(route) {
+              const routes = _.uniqBy(allRoutes.concat(allPrivateRoutes), "id")
+              routes.forEach(function(route) {
                 let notableTags = _.intersection(route.tags, allRoutePassTags)
                 if (notableTags.length < 1) return
                 else {
