@@ -199,10 +199,6 @@ app
     require("./controllers/KickstarterSummaryController.js").default
   )
   .controller(
-    "KickstarterCommitController",
-    require("./controllers/KickstarterCommitController.js").default
-  )
-  .controller(
     "TabsController",
     require("./controllers/TabsController.js").default
   )
