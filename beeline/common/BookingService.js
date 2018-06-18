@@ -34,7 +34,6 @@ angular.module("common").service("BookingService", [
           url: "/transactions/tickets/quote",
           data: {
             trips: trips,
-            dryRun: true,
             promoCode: { code: booking.promoCode || "" },
             applyRoutePass: !!booking.applyRoutePass,
             groupItemsByType: true,
