@@ -48,22 +48,6 @@
     overflow: visible;
     position: relative;
 
-    .locate-button {
-      position: absolute;
-      bottom: 2.5*$content-padding;
-      right: 2.5*$content-padding;
-
-      &.fadeable {
-        z-index: 50;
-        opacity: 0.1;
-        transition: opacity 0.1s linear;
-
-        &:hover {
-          opacity: 1.0;
-          transition: opacity 0.1s linear;
-        }
-      }
-    }
     .announcement {
       /* flex: 0 0 50px; */
       position: absolute;
