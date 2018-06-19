@@ -1,0 +1,24 @@
+
+.search-div {
+  $search-height: $bar-height;
+  background: $light-grey;
+  .search {
+    height: $search-height;
+    border: 5px solid $light-grey;
+    border-radius: 12px;
+    input {
+      // HACK: re-left aligning overriding our previous ionic override
+      text-align: left !important;
+      padding-left: 0;
+    }
+    .icon {
+      // Scaled and moved to taste
+      font-size: 2em;
+      padding-right: 1.5 * $content-padding;
+    }
+  }
+
+  ion-spinner {
+    margin-right: 5px;
+  }
+}
