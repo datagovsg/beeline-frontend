@@ -15,12 +15,12 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/validation";
 
 // Directive styles
-@import "scss/priceCalculator";
-@import "scss/tripCode";
+@import "scss/price-calculator";
+@import "scss/trip-code";
 @import "scss/progress-bar";
-@import "scss/kickstarterInfo";
-@import "scss/ticketDetailModalDirective";
-@import "scss/routePassExpiryModal";
+@import "scss/kickstarter-info";
+@import "scss/ticket-detail-modal-directive";
+@import "scss/route-pass-expiry-modal";
 @import "scss/search-input";
 
 // View specific styles
@@ -30,9 +30,9 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/route-detail";
 @import "scss/route-stops";
 @import "scss/settings";
-@import "scss/bookingDates";
-@import "scss/bookingConfirmation";
-@import "scss/bookingHistory";
+@import "scss/booking-dates";
+@import "scss/booking-confirmation";
+@import "scss/booking-history";
 @import "scss/lite-detail";
 @import "scss/kickstarter-list";
 @import "scss/kickstarter-detail";
@@ -40,10 +40,10 @@ $ionicons-font-path: "../lib/ionic/fonts";
 
 //Not cleaned up styles
 @import "scss/login";
-@import "scss/routeItem";
-@import "scss/liteRouteStop";
+@import "scss/route-item";
+@import "scss/lite-route-stop";
 @import "scss/tickets";
-@import "scss/bookingSummary";
+@import "scss/booking-summary";
 @import "scss/purchase-route-pass";
 
-@import "scss/animatedRoute";
+@import "scss/animated-route";
