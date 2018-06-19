@@ -292,7 +292,7 @@ input[type="color"] {
   padding-bottom: $padding-large-vertical*3;
 }
 
-textarea{
+textarea {
   border: 1px solid lighten($hint-color, 30%);
 }
 
@@ -303,6 +303,7 @@ textarea{
   font-size: $font-size-base;
   line-height: inherit;
 }
+
 .button.button-disabled {
   background-color: $light-grey;
   color: #a2a2a2;
@@ -312,10 +313,12 @@ textarea{
   text-align: center;
   margin: 1em;
   color: $royal;
+
   a {
     text-decoration: underline;
   }
 }
+
 .text-link-disabled {
   color: $hint-color;
   text-decoration: underline;
@@ -326,6 +329,7 @@ textarea{
   min-height: 4em;
   height: 20vw;
   max-height: 10em;
+
   img {
     padding: 1px;
     max-width: 100%;
@@ -343,73 +347,6 @@ textarea{
   }
 }
 
-.left-menu-column {
-  display: flex;
-  flex-direction: column;
-
-  a {
-    color: white;
-  }
-
-  .powered-by-beeline {
-    margin-top: auto;
-
-    .item{
-      // Override the default item font-size
-      font-size: $font-size-x-small !important;
-    }
-
-    .section{
-      display: block;
-      text-align: left;
-      color: white;
-      img{
-        display: block;
-        margin: $padding-small-vertical auto $padding-small-vertical 0px;
-        width: 100px;
-        height: auto;
-      }
-    }
-
-    .powered-by {
-      margin-top: $padding-large-vertical*2;
-    }
-
-    .built-by{
-      margin-bottom: $padding-large-vertical*2;
-      .developer-list {
-        width: 80%;
-        margin: $padding-small-vertical auto $padding-small-vertical 0px;
-        line-height: normal;
-      }
-    }
-  }
-}
-
-.search-div {
-  $search-height: $bar-height;
-  background: $light-grey;
-  .search {
-    height: $search-height;
-    border: 5px solid $light-grey;
-    border-radius: 12px;
-    input {
-      // HACK: re-left aligning overriding our previous ionic override
-      text-align: left !important;
-      padding-left: 0;
-    }
-    .icon {
-      // Scaled and moved to taste
-      font-size: 2em;
-      padding-right: 1.5 * $content-padding;
-    }
-  }
-
-  ion-spinner {
-    margin-right: 5px;
-  }
-}
-
 // no tickets or no personal routes
 .no-items.item {
   @include display-flex;
@@ -422,13 +359,16 @@ textarea{
   height: 100%;
   width: 100%;
   text-align: center;
+
   h2 {
     margin-top: 30px;
   }
+
   p {
     margin-top: 5px;
     max-width: 18em;
   }
+
   .primary-button {
     margin-top: 20px;
   }
@@ -442,6 +382,7 @@ textarea{
   float: right;
 }
 
+// Styles for inset modal
 .modal {
   border-radius: 8px;
 

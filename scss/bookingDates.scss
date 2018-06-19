@@ -1,3 +1,13 @@
+$picker-notes-bg: #000;
+$picker-header-bg: #fff;
+$empty-day-background: white;
+$picker-day-today: #000;
+$non-pickable-day-background: white;
+$non-pickable-day-color: #bbb;
+$pickable-day-non-picked-background: white;
+$pickable-day-picked-background: $royal;
+$pickable-day-non-picked-color: #000;
+$pickable-day-picked-color: #fff;
 
 .multiple-date-picker {
   user-select: none;

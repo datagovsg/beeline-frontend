@@ -31,43 +31,25 @@ $popUpStopSelectMinHeight: 100px !default;
 
 $radio-font-size:30px !default;
 
-$route-item-triangle-height:50px !default;
-
 $master-width: 300px; // Master-detail view parameters
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ionic variables to be overriden
 ////////////////////////////////////////////////////////////////////////////////
+
 // // Colors
 // // -------------------------------
 
 $light:                           #fff !default;
-// $stable:                          #f8f8f8 !default;
-// $positive:                        #387ef5 !default;
-// $calm:                            #11c1f3 !default;
+$stable:                          #f8f8f8 !default;
 $balanced:                        #07a289 !default;
 $energized:                       #ffe76e !default;
 $assertive:                       #ff6c6a !default;
 $royal:                           #4b3863 !default;
 $dark:                            #444 !default;
-$positive:  $royal !default; /* override default buttons for dialog boxes */
-$calm: $royal !default;
 
-
-//datepicker variables in bookingDates.scss
-
-$picker-notes-bg: #000;
-$picker-header-bg: #fff;
-$empty-day-background: white;
-$picker-day-today: #000;
-$non-pickable-day-background: white;
-$non-pickable-day-color: #bbb;
-$pickable-day-non-picked-background: white;
-$pickable-day-non-picked-color: #000;
-$pickable-day-picked-background: $royal;
-$pickable-day-picked-color: #fff;
-
-$modal-inset-mode-break-point:    0px;  // @media min-width
+$positive:                        $royal !default; /* override default buttons for dialog boxes */
+$calm:                            $royal !default;
 
 
 // // Base
@@ -92,9 +74,6 @@ $font-size-x-small:                 10px;
 // $headings-font-family:            $font-family-base !default;
 // $headings-font-weight:            500 !default;
 // $headings-line-height:            1.2 !default;
-$route-item-font-weight-bold:          800;
-$route-item-font-weight-small:          400;
-
 
 // $base-background-color:           #fff !default;
 // $base-color:                      #000 !default;
@@ -624,7 +603,7 @@ $input-color-placeholder:         $hint-color;
 // $modal-backdrop-bg-active:        #000 !default;
 // $modal-backdrop-bg-inactive:      rgba(0,0,0,0) !default;
 
-// $modal-inset-mode-break-point:    680px !default;  // @media min-width
+$modal-inset-mode-break-point:    0px;  // always use inset mode
 // $modal-inset-mode-top:            20% !default;
 // $modal-inset-mode-right:          20% !default;
 // $modal-inset-mode-bottom:         20% !default;
