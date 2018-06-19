@@ -15,14 +15,10 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/validation";
 
 // Directive styles
-@import "scss/login-item";
-@import "scss/fancyPrice";
 @import "scss/priceCalculator";
-@import "scss/startEndStops";
 @import "scss/tripCode";
 @import "scss/progress-bar";
 @import "scss/kickstarterInfo";
-@import "scss/searchButton";
 @import "scss/ticketDetailModalDirective";
 @import "scss/routePassExpiryModal";
 
@@ -38,7 +34,6 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/bookingDates";
 @import "scss/bookingConfirmation";
 @import "scss/bookingHistory";
-@import "scss/summary";
 @import "scss/mainMenu";
 @import "scss/lite-detail";
 @import "scss/kickstarter-list";

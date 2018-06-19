@@ -1,12 +1,6 @@
 price-calculator {
   .booking-info {
     width: 100%;
-    /* for 2 column  */
-    &.prices {
-      td {
-        width: 50%;
-      }
-    }
 
     &.calculator{
       td{
@@ -22,32 +16,18 @@ price-calculator {
     th {
       white-space: normal;
     }
-
   }
-
 
   .spinner-block {
-    background: $light;
-    position: absolute;
     text-align: center;
-    padding: 2em 0;
-    width: 100%;
-    left: 0;
-    top: auto;
 
     .spinner {
-      display: block;
+      margin-right: 4px;
+
       svg {
-        height: 20vmin;
-        width: 20vmin;
+        height: 20px;
+        width: 20px;
       }
     }
-  }
-  .item-subtitle {
-    margin-top: $padding-large-vertical*2;
-  }
-
-  .text-wrap {
-    white-space: normal
   }
 }
