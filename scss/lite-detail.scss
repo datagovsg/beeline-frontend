@@ -7,7 +7,7 @@
     @include desktop { top: $bar-height; }
     max-height: 35%;
 
-// TODO: leave the lite-form at the bottom or float on the map in mobile version
+    // TODO: leave the lite-form at the bottom or float on the map in mobile version
     .route-info {
 
       .route-status {

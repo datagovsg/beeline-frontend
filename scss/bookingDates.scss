@@ -1,11 +1,3 @@
-.item {
-  &.datepickerIntro{
-      text-align: center;
-      color: $hint-color;
-      border-bottom: none;
-      padding: $padding_large_vertical 0px 0px 0px;
-  }
-}
 
 .multiple-date-picker {
   user-select: none;
@@ -87,10 +79,6 @@
 
 //legend stuff
 #pg_bookdate {
-  multiple-date-picker {
-    margin: 0;
-    display: block;
-  }
 
   .button {
     margin-top: $content-padding*2;
