@@ -85,40 +85,7 @@ span.placeholder {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: clip ellipsis;
-}
 
-// Hide the google maps boilerplate annotations
-.gmnoprint,
-.gm-style-cc,
-.gm-style>div:last-child {
-  display:none;
-}
-
-.card {
-  margin: 0px;
-  padding: 0px;
-
-  .item {
-    border: none;
-    padding: 8px 30px;
-  }
-
-  .card-title {
-    color: $royal;
-    padding-top: 20px;
-    padding-bottom: 10px;
-    font-size: 20px;
-    text-transform: uppercase;
-    font-weight: 700;
-
-  }
-}
-
-.warning-text {
-  text-align: center;
-}
-
-.primary-button {
   padding: 20px 20px;
   font-size: 16px;
   line-height: 0px;
@@ -156,6 +123,36 @@ span.placeholder {
   &.page-bottom {
     margin-bottom: 20px;
   }
+}
+
+// Hide the google maps boilerplate annotations
+.gmnoprint,
+.gm-style-cc,
+.gm-style>div:last-child {
+  display:none;
+}
+
+.card {
+  margin: 0px;
+  padding: 0px;
+
+  .item {
+    border: none;
+    padding: 8px 30px;
+  }
+
+  .card-title {
+    color: $royal;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+}
+
+.warning-text {
+  text-align: center;
 }
 
 /* referenced by kickstarter, price calculator and selected dates  */
@@ -197,35 +194,6 @@ table.booking-info {
       padding-left: 0px;
     }
   }
-
-
-}
-
-.bus-number {
-  display: inline;
-  text-align: center;
-  font-size: $font-size-large;
-  font-weight: normal;
-  border-radius: $border-radius-large;
-}
-
-.locate-button {
-  width: 60px;
-  height: 59px;
-  background: transparent url('../img/MapButtonLocateMe.svg') center center no-repeat;
-  background-size: 60px 59px;
-  border-radius: 30px;
-  cursor: pointer;
-  box-shadow: 0px 2px rgba(0,0,0,0.4);
-
-  &.activated {
-    transform: translateY(2px);
-    opacity: 0.8;
-  }
-}
-
-.tabs-sub {
-  height: $tabs-height-short;
 }
 
 // Font-size overrides
@@ -238,7 +206,6 @@ table.booking-info {
 
 // popup overrides
 // -------------------------------
-
 
 .popup-title {
   padding: 10px 20px 10px;
@@ -319,10 +286,10 @@ input[type="color"] {
 }
 
 .item-subtitle {
-    color: $hint-color;
-    font-size: $font-size-large;
-    padding-top:  $padding-large-vertical*2;
-    padding-bottom: $padding-large-vertical*3;
+  color: $hint-color;
+  font-size: $font-size-large;
+  padding-top:  $padding-large-vertical*2;
+  padding-bottom: $padding-large-vertical*3;
 }
 
 textarea{
@@ -373,29 +340,6 @@ textarea{
   ul {
     list-style: disc;
     padding-left: $content-padding*2;
-  }
-}
-
-// Style for the T&C section of route pass modals
-.check-terms {
-  .tnc {
-    ol {
-      list-style-type: disc;
-      padding-left: $padding-large-horizontal;
-    }
-  }
-}
-
-.share-box{
-  margin-top: $padding-large-vertical;
-  margin-bottom: $padding-large-vertical;
-
-  textarea {
-    width: 100%;
-    padding: $padding-large-vertical;
-    margin: 0 auto;
-    margin-top: $padding-large-vertical*2;
-    background: $light-grey;
   }
 }
 

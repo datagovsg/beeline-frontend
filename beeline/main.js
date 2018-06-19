@@ -42,7 +42,6 @@ require("ngclipboard")
 require("./directives/beelineBindHtml")
 require("./directives/companyTnc/companyTnc")
 require("./directives/countdown")
-require("./directives/crowdstartShare")
 require("./directives/dailyTripsBroker")
 require("./directives/extA")
 require("./directives/fakeProgressBar")
@@ -197,10 +196,6 @@ app
   .controller(
     "KickstarterSummaryController",
     require("./controllers/KickstarterSummaryController.js").default
-  )
-  .controller(
-    "KickstarterCommitController",
-    require("./controllers/KickstarterCommitController.js").default
   )
   .controller(
     "TabsController",

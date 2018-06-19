@@ -200,16 +200,6 @@ export default [
         },
       })
 
-      .state("tabs.crowdstart-commit", {
-        url: "/crowdstart/:routeId/commit",
-        views: {
-          menuContent: {
-            templateUrl: "templates/kickstarter-commit.html",
-            controller: "KickstarterCommitController",
-          },
-        },
-      })
-
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Settings Tab
       // ////////////////////////////////////////////////////////////////////////////

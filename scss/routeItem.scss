@@ -49,6 +49,9 @@ route-item {
     margin-right: $padding-small-horizontal;
     display: inline;
     font-weight: $route-item-font-weight-bold;
+    text-align: center;
+    font-size: $font-size-large;
+    border-radius: $border-radius-large;
   }
 
   .stops {

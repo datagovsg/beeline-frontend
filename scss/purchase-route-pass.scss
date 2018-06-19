@@ -143,6 +143,10 @@
   .check-terms {
     .tnc {
       padding: 0px 10px 20px 10px;
+      ol {
+        list-style-type: disc;
+        padding-left: $padding-large-horizontal;
+      }
     }
   }
 
