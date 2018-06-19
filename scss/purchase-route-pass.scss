@@ -22,7 +22,7 @@
     }
   }
 
-  .payment{
+  .payment {
     .price-calc {
       display: flex;
       justify-content: space-between;
@@ -60,7 +60,7 @@
         left: 0px;
         padding: 0px;
       }
-      .not-selected{
+      .not-selected {
         color: $hint-color;
         font-size: $radio-font-size;
         left: 0px;
@@ -72,7 +72,7 @@
         background: transparent;
       }
 
-      .item-content{
+      .item-content {
         background: transparent;
         display: flex;
         justify-content: space-between;
@@ -84,11 +84,6 @@
 
         .left {
           display: flex;
-
-          #checkbox-filler {
-            margin-top: auto;
-            margin-bottom: auto;
-          }
 
           .schedule-info {
             font-weight: 600;
