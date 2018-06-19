@@ -292,7 +292,7 @@ input[type="color"] {
   padding-bottom: $padding-large-vertical*3;
 }
 
-textarea{
+textarea {
   border: 1px solid lighten($hint-color, 30%);
 }
 
@@ -303,6 +303,7 @@ textarea{
   font-size: $font-size-base;
   line-height: inherit;
 }
+
 .button.button-disabled {
   background-color: $light-grey;
   color: #a2a2a2;
@@ -312,10 +313,12 @@ textarea{
   text-align: center;
   margin: 1em;
   color: $royal;
+
   a {
     text-decoration: underline;
   }
 }
+
 .text-link-disabled {
   color: $hint-color;
   text-decoration: underline;
@@ -326,6 +329,7 @@ textarea{
   min-height: 4em;
   height: 20vw;
   max-height: 10em;
+
   img {
     padding: 1px;
     max-width: 100%;
@@ -422,13 +426,16 @@ textarea{
   height: 100%;
   width: 100%;
   text-align: center;
+
   h2 {
     margin-top: 30px;
   }
+
   p {
     margin-top: 5px;
     max-width: 18em;
   }
+
   .primary-button {
     margin-top: 20px;
   }
@@ -442,6 +449,7 @@ textarea{
   float: right;
 }
 
+// Styles for inset modal
 .modal {
   border-radius: 8px;
 
