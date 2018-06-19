@@ -8,7 +8,7 @@
 
         <!-- TRANSACTION HEADER -->
         <div class="item item-divider transaction-header transaction-row">
-          <div class="col-left item-note table-cell">
+          <div class="col-left transaction-status table-cell">
             <div ng-if="transaction.type !== 'refundPayment'" class="balanced transaction-button">Paid</div>
             <div ng-if="transaction.type === 'refundPayment'" class="refund transaction-button">Refund</div>
           </div>
