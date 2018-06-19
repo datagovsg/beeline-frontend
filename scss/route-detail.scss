@@ -183,22 +183,7 @@
         transform: translateY(0);
       }
     }
-
-    .ticketView.ng-hide-remove {
-      animation-duration: 0.5s;
-      animation-fill-mode: backwards;
-      animation-name: slide-in-from-bottom;
-    }
-
-    .ticketView .row .btn.btn-small {
-      position: absolute;
-      left: 30px;
-      top: 20px;
-      z-index: 3;
-    }
-
   }
-
 }
 
 
