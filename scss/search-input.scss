@@ -13,12 +13,12 @@
     }
     .icon {
       // Scaled and moved to taste
-      font-size: 2em;
+      font-size: $font-size-base * 2;
       padding-right: 1.5 * $content-padding;
     }
   }
 
   ion-spinner {
-    margin-right: 5px;
+    margin-right: $padding-x-small-horizontal;
   }
 }
