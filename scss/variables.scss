@@ -15,6 +15,9 @@ $hint-color: #888 !default;
 $light-grey: #eee !default;
 $normal-grey: #666 !default;
 
+$padding-base: 10px;
+$padding-x-small-horizontal: 5px;
+
 $item-padding-base: 10px !default;
 $item-padding-small: 5px !default;
 
@@ -29,7 +32,8 @@ $stopMarkerRightMargin: 0.5em !default;
 $popUpStopSelectMinWidth: 250px !default;
 $popUpStopSelectMinHeight: 100px !default;
 
-$radio-font-size:30px !default;
+$font-size-x-large: 30px;
+$radio-font-size: $font-size-x-large !default;
 
 $master-width: 300px; // Master-detail view parameters
 
