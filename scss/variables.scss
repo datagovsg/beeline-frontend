@@ -17,6 +17,9 @@ $hint-color: #888 !default;
 $light-grey: #eee !default;
 $normal-grey: #666 !default;
 
+$alight-color: rgb(253, 123, 125);
+$pickup-color: rgb(25, 170, 110);
+
 // Padding/Margin
 // ----------------------------------------------------------------------------
 $padding-x-small-horizontal: 5px;
@@ -32,6 +35,8 @@ $radio-font-size: $font-size-x-large !default;
 $font-weight-normal: 400;
 $font-weight-medium: 600;
 $font-weight-bold: 700;
+
+$fa-font-size: 10px;
 
 // Table Cell
 // ----------------------------------------------------------------------------
@@ -82,7 +87,8 @@ $font-family-light-sans-serif:    "Muli", '-apple-system', "HelveticaNeue-Light"
 $font-size-base:                  15px;
 // $font-size-large:                 18px !default;
 $font-size-small:                 13px;
-$font-size-x-small:                 10px;
+$font-size-x-small:               12px;
+$font-size-x-x-small:             10px;
 
 // $line-height-base:                1.428571429 !default; // 20/14
 // $line-height-computed:            floor($font-size-base * $line-height-base) !default; // ~20px

@@ -3,24 +3,24 @@
 
   .left {
     width: 80%;
-    font-size: 12px;
+    font-size: $font-size-x-small;
 
     .main {
       .description {
-        font-weight: 700;
-        font-size: 14px;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-base;
       }
 
       .stop-type {
-        color: rgb(253, 123, 125);
+        color: $alight-color;
 
         &.board {
-          color: rgb(25, 170, 110);
+          color: $pickup-color;
         }
 
         .fa-circle {
-          font-size: 10px;
-          margin-right: 4px;
+          font-size: $fa-font-size;
+          margin-right: $padding-x-small-horizontal;
         }
       }
     }
@@ -52,6 +52,6 @@
   .right {
     width: 20%;
     text-align: right;
-    font-weight: 700;
+    font-weight: $font-weight-bold;
   }
 }
