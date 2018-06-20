@@ -289,28 +289,23 @@ export default [
         for (let time of Object.keys($scope.disp.availabilityDays)) {
           time = parseInt(time)
           let timeMoment = moment(time).utcOffset(0)
-          let trip = $scope.book.route.tripsByDate[time]
-          let annotation = trip.bookingInfo && trip.bookingInfo.notes && " "
           if (time in $scope.disp.previouslyBookedDays) {
             $scope.disp.highlightDays.push({
               date: timeMoment,
               css: "previously-booked",
               selectable: false,
-              annotation: annotation,
             })
           } else if ($scope.disp.availabilityDays[time] <= 0) {
             $scope.disp.highlightDays.push({
               date: timeMoment,
               css: "sold-out",
               selectable: false,
-              annotation: annotation,
             })
           } else {
             $scope.disp.highlightDays.push({
               date: timeMoment,
               css: "",
               selectable: true,
-              annotation: annotation,
             })
             $scope.disp.daysAllowed.push(timeMoment)
           }

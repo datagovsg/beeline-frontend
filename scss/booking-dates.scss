@@ -29,7 +29,7 @@ $pickable-day-picked-color: #fff;
 
   .picker-navigate {
     width: 16.66%;
-    font-size: 2em;
+    font-size: $font-size-base * 2;
 
     &:hover {
       cursor: pointer;
@@ -44,7 +44,7 @@ $pickable-day-picked-color: #fff;
     div {
       width: 14.28%;
       display: inline-block;
-      padding-bottom: 5px;
+      padding-bottom: $padding-small-vertical;
       border-bottom: 1px solid #ddd;
     }
   }
@@ -58,7 +58,7 @@ $pickable-day-picked-color: #fff;
 
 .picker-day,
 .picker-top-row {
-  padding: 10px 0;
+  padding: $padding-large-vertical 0;
 }
 
 .picker-day {
@@ -114,8 +114,8 @@ $pickable-day-picked-color: #fff;
     }
     .label {
       text-align: left;
-      padding-right: 1em;
-      padding-left: 10px;
+      padding-right: $padding-base-horizontal;
+      padding-left: $padding-small-horizontal;
       font-size: $font-size-small;
     }
   }
@@ -123,47 +123,33 @@ $pickable-day-picked-color: #fff;
   // Legend
   .datepicker {
     background-color: $empty-day-background;
-    padding-top: 12px;
-    padding-bottom: 1em;
+    padding-top: $padding-large-vertical;
+    padding-bottom: $padding-large-vertical;
   }
 
   .booking-dates-selected {
     text-align: center;
-    padding: 12px;
+    padding: $padding-large-vertical;
 
     button {
-      margin-top: 12px;
+      margin-top: $padding-large-vertical;
     }
 
     .labelDiv {
       display: flex;
       align-items: center;
       justify-content:center;
-      margin-bottom: 60px;
+      margin-bottom: $padding-large-vertical * 3;
 
       label {
         border: unset;
 
         &.item {
-          padding-top: 8px;
-          padding-bottom: 8px;
-          padding-left: 50px;
+          padding-top: $padding-base-vertical;
+          padding-bottom: $padding-base-vertical;
+          padding-left: 50px; // for styling ionic checkbox
         }
       }
-    }
-  }
-
-  .picker-day {
-    position: relative;
-
-    .annotation {
-      width: 0px;
-      height: 0px;
-      border-top: solid 1em $picker-notes-bg;
-      border-left: solid 1em transparent;
-      position: absolute;
-      top: 0;
-      right: 0;
     }
   }
 }
