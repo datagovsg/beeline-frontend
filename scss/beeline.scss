@@ -7,7 +7,7 @@
 .item-divider {
   text-transform: uppercase;
   font-size: $font-size-small;
-  font-weight: 400;
+  font-weight: $font-weight-normal;
   min-height: 8px;
 
   &.no-text {
@@ -160,7 +160,7 @@ span.placeholder {
 table.booking-info {
   width: 100%;
   th {
-    font-weight: normal;
+    font-weight: $font-weight-normal;
     background-color: $table-header-bg;
     color: $royal;
     padding: $table-cell-padding;
@@ -208,15 +208,15 @@ table.booking-info {
 // -------------------------------
 
 .popup-title {
-  padding: 10px 20px 10px;
+  padding: $padding-large-vertical $padding-large-horizontal;
   font-size: $font-size-large;
-  font-weight: normal;
+  font-weight: $font-weight-normal;
   color: $royal;
 }
 
 .popup-sub-title {
   margin-bottom: 20px;
-  padding: 0 10px;
+  padding: 0 $padding-small-horizontal;
   font-size: $font-size-base;
   line-height: $line-height-base;
 }
@@ -386,11 +386,14 @@ textarea {
 .modal {
   border-radius: 8px;
 
+  $modal-inset-margin-horizontal: 2%;
+  $modal-inset-margin-vertical: 3%;
+
   @media (max-width: 1023px) {
-    width: 96%;
-    left: 2%;
-    height: 94%;
-    min-height: 94%;
-    top: 3%;
+    width: (100% - (2 * $modal-inset-margin-horizontal));
+    left: $modal-inset-margin-horizontal;
+    height: (100% - (2 * $modal-inset-margin-vertical));
+    min-height: (100% - (2 * $modal-inset-margin-vertical));
+    top: $modal-inset-margin-vertical;
   }
 }
