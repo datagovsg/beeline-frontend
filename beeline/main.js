@@ -184,10 +184,6 @@ app
     require("./controllers/LiteMoreInfoController.js").default
   )
   .controller(
-    "KickstarterController",
-    require("./controllers/KickstarterController.js").default
-  )
-  .controller(
     "KickstarterDetailController",
     require("./controllers/KickstarterDetailController.js").default
   )
