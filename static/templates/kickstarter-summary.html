@@ -1,4 +1,4 @@
-<ion-view id="pg_kickstarter_summary" view-title="Join Crowdstart" hide-back-button="false" can-swipe-back="false">
+<ion-view id="crowdstart-summary" view-title="Join Crowdstart" hide-back-button="false" can-swipe-back="false">
 
   <ion-content class="has-header kickstarter-summary">
 
@@ -56,7 +56,7 @@
 
     <section class="card" ng-if="!disp.bidded">
       <div class="item item-text-wrap" ng-if="!isLoggedIn || !book.isBid">
-        <div class="checkTerms">
+        <div class="check-terms">
           <ion-checkbox ng-model="book.acceptPolicy">
             Yes, I have read and agree to the above terms.
           </ion-checkbox>
