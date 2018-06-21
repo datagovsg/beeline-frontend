@@ -8,14 +8,14 @@
     color: #000;
   }
   b {
-    font-size: $font-size-small * 1.5;
+    font-size: $font-size-large;
   }
 
   .date {
-    margin-left: 12px;
+    margin-left: $padding-base-horizontal;
   }
 
   .time {
-    margin-left:4px;
+    margin-left: $padding-x-small-horizontal;
   }
 }
