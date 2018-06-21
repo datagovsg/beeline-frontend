@@ -4,33 +4,32 @@
   }
 
   .item {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: $padding-base-horizontal;
+    padding-right: $padding-base-horizontal;
   }
 
   .transaction-header {
     .table-cell {
-      font-weight: 700;
+      font-weight: $font-weight-bold;
     }
   }
 
   .transaction-details {
-    padding-bottom: 24px;
+    padding-bottom: $padding-large-vertical;
     padding-top: 0px;
   }
 
   .transaction-row {
     display: flex;
-    border-bottom: 1px solid #E6E6E6;
-    font-size: 13px;
+    border-bottom: 1px solid lighten($light-grey, 20%);
+    font-size: $font-size-small;
 
-    // Should match what's in th
     .col-left {
       width: 30%;
       max-width: 90px;
       min-width: 85px;
-      color: darkgray;
-      font-weight: 600;
+      color: $light-grey;
+      font-weight: $font-weight-medium;
 
       .transaction-button {
         text-align: center;
@@ -60,27 +59,5 @@
     .transaction-cost {
       margin-left: auto;
     }
-  }
-}
-
-
-table.booking-history {
-  width: 100%;
-  font-size: $font-size-small ;
-  th {
-    font-weight: bold;
-    text-align: left;
-    color: $royal;
-    padding: $table-cell-padding;
-    border-bottom: $table-cell-border-width solid $light-grey;
-    white-space: nowrap;
-    width: 15%;
-  }
-
-  td {
-    padding: $table-cell-padding;
-    text-align: left;
-    border-bottom: $table-cell-border-width solid $light-grey;
-    vertical-align: top;
   }
 }
