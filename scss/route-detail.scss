@@ -19,9 +19,9 @@
       z-index: 0; // required for shadow to stack properly
       display: flex;
       width: 100%;
-      padding: 12px 30px;
+      padding: $padding-large-vertical $padding-large-horizontal;
       align-items: center;
-      font-size: 12px;
+      font-size: $font-size-x-small;
       flex-wrap: wrap;
       justify-content: space-between;
 
@@ -44,7 +44,7 @@
       }
 
       .popup-top {
-        margin-bottom: 4px;
+        margin-bottom: $padding-small-vertical;
       }
 
       // Make touch target larger
@@ -80,15 +80,15 @@
         width: 100%;
         background-color: $royal;
         color: white;
-        padding: 6px;
-        font-size: 16px;
+        padding: $padding-base-vertical;
+        font-size: $font-size-base;
         -webkit-border-radius: 0px 0px 12px 12px;
         -moz-border-radius: 0px 0px 12px 12px;
         border-radius: 0px 0px 12px 12px;
         border: 0px;
 
         .ticket-text {
-          margin-left: 10px;
+          margin-left: $padding-small-horizontal;
         }
       }
     }
@@ -112,15 +112,13 @@
         padding-top: 60px;
       }
 
-      .bookingView {
+      .booking-view {
         padding-top: 40px;
         background-color: $stable;
       }
     }
 
-
-
-    .stopsSelector {
+    .stops-selector {
       width: 90%;
       margin: auto;
       position: relative;
@@ -130,21 +128,21 @@
       -moz-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
       box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
 
-      .stopSelector {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        font-size: 14px;
+      .stop-selector {
+        padding-top: $padding-large-vertical;
+        padding-bottom: $padding-large-vertical;
+        font-size: $font-size-small;
 
         .arrow-icon {
-          font-size: 20px;
+          font-size: $font-size-small * 2;
         }
       }
 
-      .boardStopSelector {
+      .board-stop-selector {
         border-radius: 6px 6px 0px 0px;
       }
 
-      .alightStopSelector {
+      .alight-stop-selector {
         border-radius: 0px 0px 6px 6px;
       }
     }
@@ -158,16 +156,15 @@
       // ion-content background-color is transparent
       background-color: $stable;
       padding-top: 50px;
-      font-size: 14px;
 
       span {
-        margin-top: 5px;
-        margin-bottom: 10px;
+        margin-top: $padding-base-vertical;
+        margin-bottom: $padding-large-vertical;
       }
 
       .book-button {
-        margin-top: 2px;
-        margin-bottom: 2px;
+        margin-top: 0px;
+        margin-bottom: 0px;
       }
 
       .advance-button {
