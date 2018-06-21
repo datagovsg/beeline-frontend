@@ -5,22 +5,22 @@
   }
   .list {
     .item {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      font-weight: 300;
-      color: #777;
+      padding-top: $padding-large-vertical;
+      padding-bottom: $padding-large-vertical;
+      font-weight: $font-weight-light;
+      color: $light-grey;
       .item-note {
-        color: #333;
+        color: $base-color;
       }
 
       .icon {
-        font-size: 20px;
+        font-size: $font-size-base * 2;
       }
 
       &.item-divider {
-        padding-top: 7px;
-        padding-bottom: 7px;
-        font-weight: 700;
+        padding-top: $padding-base-vertical;
+        padding-bottom: $padding-base-vertical;
+        font-weight: $font-weight-bold;
       }
     }
     .compressed-item {
