@@ -22,7 +22,7 @@ price-calculator {
     text-align: center;
 
     .spinner {
-      margin-right: 4px;
+      margin-right: $padding-x-small-horizontal;
 
       svg {
         height: 20px;

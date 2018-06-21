@@ -1,4 +1,5 @@
 
+// Dark background for modals
 .modal-backdrop-bg {
   background-color: #000;
   opacity: 0.8;
@@ -9,18 +10,8 @@
   flex-direction: column;
   height: 100%;
 
-  .title {
-    text-align: center;
-    text-transform: uppercase;
-    color: $royal;
-    font-weight: 800;
-    padding-top: $item-padding-base;
-    padding-bottom: $item-padding-base;
-  }
-
   .map {
-    flex-grow: 1;
-    width: 100%;
+    flex: 1;
     position: relative;
 
     ui-gmap-google-map {
@@ -70,26 +61,24 @@
       margin-top: 0px;
     }
 
-    .alight-stop-info {
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-
     .stop-desc {
-      font-size: 14px;
+      font-size: $font-size-base;
     }
 
     .stop-road {
-      font-size: 12px;
+      font-size: $font-size-small;
     }
   }
 
-  .vehicleNo{
+  .vehicle-no {
     text-transform: uppercase;
     background: $normal-grey;
     color: white;
-    text-align: center;
-    width: 70%;
+
+    // make it look like a vehicle licence plate
+    width: fit-content;
+    padding-left: $item-padding-base;
+    padding-right: $item-padding-base;
   }
 
   .trip-code-block {
@@ -124,7 +113,7 @@
         text-align: center;
         font-weight: bold;
         padding: $item-padding-base 0;
-        font-size: 24px;
+        font-size: $font-size-x-large;
       }
       img {
         padding: $line-height-computed 0;
@@ -139,11 +128,11 @@
 
 .company-info {
   display: flex;
-  padding-top: 6px;
   a {
-    margin-left: 8px;
+    padding-left: $padding-x-small-horizontal;
   }
   .mini-info {
+    padding-top: $padding-small-vertical;
     width: 80%;
   }
 }

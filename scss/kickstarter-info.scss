@@ -20,7 +20,7 @@
 }
 
 .preorder-pass {
-  width: 280px;
+  max-width: 280px;
   height: auto;
   border-radius: 5px;
   background: $light;
@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  margin-top: $padding-large-vertical ;
+  margin-top: $padding-large-vertical;
   margin-bottom: $padding-large-vertical*3 ;
   box-shadow: 1px 1px 10px darken($light-grey,40%);
 
@@ -42,30 +42,28 @@
     background-color: $royal;
     text-align: center;
     height: 50px;
-    h3{
-      font-size: 1.2em;
+    h3 {
+      font-size: $font-size-large;
       padding: 0;
       margin: 0;
-      margin-top: 1em;
+      margin-top: $font-size-base;
       color: $light;
       text-transform: uppercase;
     }
   }
 
   .route-pass-body {
-    padding: $padding-large-vertical*2 $padding-large-vertical*2;
-    padding-bottom: $padding-large-vertical*3;
-    padding-top: 4px;
+    padding: $padding-small-vertical $padding-base-horizontal*2 $padding-large-vertical*3;
 
     h1 {
-      font-size: 5em;
+      font-size: $font-size-x-large*2;
       padding: 0;
       margin: 0;
       color: $royal;
     }
 
     h4 {
-      font-size: 1em;
+      font-size: $font-size-base;
       margin-bottom: $padding-large-vertical*2;
       color: $normal-grey;
       text-transform: uppercase;

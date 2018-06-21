@@ -1,7 +1,7 @@
 
-$route-item-font-weight-bold:          800;
-$route-item-font-weight-small:          400;
-$route-item-triangle-height:50px !default;
+$route-item-font-weight-bold: 800;
+$route-item-font-weight-small: 400;
+$route-item-triangle-height: 50px !default;
 
 /* ----- General styling for route information listings ----- */
 route-item {
@@ -62,8 +62,7 @@ route-item {
     display: block;
     /* Determines the amount of vertical spacing
        between the .bus-number and the stops */
-    margin-top: 0.8em;
-    margin-bottom: 0.2em;
+    margin-top: $font-size-base * 0.8;
     position: relative;
     flex: 1 1 auto;
 

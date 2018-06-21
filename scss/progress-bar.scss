@@ -22,7 +22,7 @@ $kickstarter-default: lighten($normal-grey,40%);
     padding-bottom: 10px;
 
     span {
-      padding-left: 6px;
+      padding-left: $padding-x-small-horizontal;
     }
   }
 }

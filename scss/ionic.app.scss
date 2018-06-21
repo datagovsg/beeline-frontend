@@ -15,35 +15,34 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/validation";
 
 // Directive styles
-@import "scss/price-calculator";
-@import "scss/trip-code";
-@import "scss/progress-bar";
+@import "scss/animated-route";
 @import "scss/kickstarter-info";
-@import "scss/ticket-detail-modal-directive";
+@import "scss/lite-route-stop";
+@import "scss/price-calculator";
+@import "scss/progress-bar";
+@import "scss/route-item";
 @import "scss/route-pass-expiry-modal";
 @import "scss/search-input";
+@import "scss/ticket-detail-modal-directive";
+@import "scss/trip-code";
 
 // View specific styles
-@import "scss/tabs";
+@import "scss/booking-confirmation";
+@import "scss/booking-dates";
+@import "scss/booking-history";
+@import "scss/booking-summary";
 @import "scss/intro-slides";
-@import "scss/routes-list";
+@import "scss/kickstarter-detail";
+@import "scss/kickstarter-list";
+@import "scss/kickstarter-summary";
+@import "scss/lite-detail";
+@import "scss/purchase-route-pass";
 @import "scss/route-detail";
+@import "scss/routes-list";
 @import "scss/route-stops";
 @import "scss/settings";
-@import "scss/booking-dates";
-@import "scss/booking-confirmation";
-@import "scss/booking-history";
-@import "scss/lite-detail";
-@import "scss/kickstarter-list";
-@import "scss/kickstarter-detail";
-@import "scss/kickstarter-summary";
-
-//Not cleaned up styles
-@import "scss/login";
-@import "scss/route-item";
-@import "scss/lite-route-stop";
+@import "scss/tabs";
 @import "scss/tickets";
-@import "scss/booking-summary";
-@import "scss/purchase-route-pass";
 
-@import "scss/animated-route";
+// Modal styles
+@import "scss/login";
