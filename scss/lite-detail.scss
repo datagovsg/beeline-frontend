@@ -9,20 +9,18 @@
 
     // TODO: leave the lite-form at the bottom or float on the map in mobile version
     .route-info {
-
       .route-status {
-        padding-top: 4px;
-        padding-bottom: 4px;
+        padding-top: $padding-small-vertical;
+        padding-bottom: $padding-small-vertical;
         color: $assertive;
         padding-left: 36px;
-        font-size: 14px;
+        font-size: $font-size-small;
 
         .icon {
           font-size: 18px;
           left: 0px;
         }
       }
-
     }
 
     .lite-stops {
@@ -43,19 +41,6 @@
           width: 98%;
           border-left: 0px;
         }
-      }
-    }
-
-
-    .lite-form {
-
-    }
-
-    .untrack-link{
-      text-align: center;
-      margin: 1em;
-      a{
-        text-decoration: underline;
       }
     }
   }
@@ -82,7 +67,7 @@
         line-height: 0px;
         .icon-vertical {
           font-size: 18px;
-          margin-bottom: 5px;
+          margin-bottom: $padding-small-vertical;
 
           &.solid {
             color: $energized;
@@ -91,7 +76,7 @@
       }
 
       span {
-        font-size: 11px;
+        font-size: $font-size-x-x-small;
         line-height: normal;
       }
 
