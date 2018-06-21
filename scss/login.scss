@@ -1,12 +1,12 @@
-.loginContent{
-  padding: 20px;
+.login-content {
+  padding: $padding-large-horizontal;
   height: 100%;
   border: none;
-  p{
+  p {
     margin: 0 0 $content-padding 0;
   }
-  .loginTel{
-    .telPrefix{
+  .login-tel {
+    .tel-prefix {
       margin-left: $item-padding-small;
       white-space: nowrap;
     }
@@ -16,18 +16,19 @@
     margin-top: 0px;
   }
 }
-.check-terms{
+
+.check-terms {
   margin-top: $content-padding;
   padding: $item-padding-small;
   a{
     text-decoration: underline;
   }
-  .item.item-checkbox{
+  .item.item-checkbox {
     border: none;
     padding: 0;
-    padding-left: $content-padding*4;
+    padding-left: $content-padding * 4;
     margin: $content-padding 0 0 0;
-    .checkbox{
+    .checkbox {
       position: absolute;
       left:-8px; /*undo ionic default*/
     }
