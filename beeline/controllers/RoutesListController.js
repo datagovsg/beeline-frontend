@@ -205,12 +205,17 @@ export default [
     $scope.$watchGroup(
       [
         () => RoutesService.getRoutesWithRidesRemaining(),
+        () => RoutesService.getPrivateRoutesWithRidesRemaining(),
         "data.placeQuery",
         "data.recentRoutesById",
       ],
-      ([routes, placeQuery, recentRoutesById]) => {
+      ([routes, privateRoutes, placeQuery, recentRoutesById]) => {
         // Input validation
-        if (!routes) return
+        if (!routes || !privateRoutes) return
+
+        // Merge public and private routes
+        routes = _.concat(routes, privateRoutes)
+
         // Filtering
         if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
           routes = SearchService.filterRoutesByPlaceAndText(
