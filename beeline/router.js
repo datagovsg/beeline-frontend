@@ -195,7 +195,7 @@ export default [
         views: {
           menuContent: {
             templateUrl: "templates/crowdstart-summary.html",
-            controller: "KickstarterSummaryController",
+            controller: "CrowdstartSummaryController",
           },
         },
       })

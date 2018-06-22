@@ -188,8 +188,8 @@ app
     require("./controllers/CrowdstartDetailController.js").default
   )
   .controller(
-    "KickstarterSummaryController",
-    require("./controllers/KickstarterSummaryController.js").default
+    "CrowdstartSummaryController",
+    require("./controllers/CrowdstartSummaryController.js").default
   )
   .controller(
     "TabsController",
