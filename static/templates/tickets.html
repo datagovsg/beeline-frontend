@@ -66,7 +66,7 @@
          ng-repeat="ticket in tickets.soon"
          on-tap="popupTicketModal(ticket)">
          <b>{{ ticket.boardStop.trip.route.label }}</b>
-        <span class="date">{{ ticket.boardStop.time | date:'EEE, d MMM y' : '+0800' }}</span> {{ ticket.boardStop.time | date:'h:mm a' : '+0800' | lowercase }}
+        <span class="date">{{ ticket.boardStop.time | date:'EEE, d MMM y' : '+0800' }}</span> <span class="time">{{ ticket.boardStop.time | date:'h:mm a' : '+0800' | lowercase }}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
     </div>

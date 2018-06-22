@@ -7,17 +7,17 @@
     height: 100%;
     width: 100%;
     .row {
-      margin-top: 20px;
-      margin-bottom: 20px;
+      margin-top: $padding-large-vertical * 2;
+      margin-bottom: $padding-large-vertical * 2;
       .success-image {
         text-align: center;
       }
       .success-text {
-        padding-left: 5%;
+        padding-left: $padding-base-horizontal;
       }
     }
     .button {
-      margin-top: 10%;
+      margin-top: $padding-large-vertical * 3;
     }
   }
 }

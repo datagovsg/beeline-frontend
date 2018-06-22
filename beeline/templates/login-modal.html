@@ -5,20 +5,20 @@
     </button>
   </ion-header-bar>
   <ion-content ng-form="form.validation" scroll="true" class="modal-content">
-    <div class="item item-text-wrap loginContent">
+    <div class="item item-text-wrap login-content">
       <div>
         <p>
           Please enter your telephone number.
         </p>
-        <label class="item item-input loginTel">
-          <i class="icon ion-ios-telephone placeholder-icon"></i><span class="telPrefix">+65</span>
+        <label class="item item-input login-tel">
+          <i class="icon ion-ios-telephone placeholder-icon"></i><span class="tel-prefix">+65</span>
           <input ng-model="data.telephone" name="telephone" ng-required="true" ng-pattern="phonePattern" placeholder="91234567" type="tel">
         </label>
         <div class="has-error" ng-show="form.validation.telephone.$invalid
                   && form.validation.telephone.$dirty">
           The phone no. you provide does not appear to be in the correct format. Please provide a valid 8-digit phone no. starting with the number 8 or 9.
         </div>
-        <div class="checkTerms">
+        <div class="check-terms">
             {{o.APP.NAME}}'s <a ng-click="showTermsOfUse()">Terms of Use</a> and <a ng-click="showPrivacyPolicy()">Privacy Policy</a>.
           <ion-checkbox ng-model="acceptPolicy" ng-required="true">I agree to {{o.APP.NAME}}'s Terms of Use and Privacy Policy.
           </ion-checkbox>

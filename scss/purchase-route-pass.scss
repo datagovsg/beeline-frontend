@@ -1,7 +1,5 @@
 // Styles for tab-purchase-route-pass.html
-
 .purchase-route-pass {
-
   // Spinner div for async loading of information
   .spinner {
     padding: 20px;
@@ -9,8 +7,8 @@
 
   // Styles for checkboxes. Legacy name because copy pasted from bookingSummary
   .booking-checkbox {
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: $padding-base-vertical;
+    padding-bottom: $padding-base-vertical;
 
     .checkbox-text {
       padding-left: 40px;
@@ -32,24 +30,24 @@
       border-top: 1px solid lightgray;
       padding-top: 16px;
       padding-bottom: 16px;
-      margin-top: 10px;
+      margin-top: $padding-base-vertical;
 
       .total-text {
         font-size: 20px;
-        font-weight: 600;
+        font-weight: $font-weight-medium;
         text-transform: uppercase;
       }
 
       .total-price {
         font-size: 30px;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
       }
     }
 
   }
 
   .radios {
-    padding-bottom: 16px;
+    padding-bottom: $padding-base-vertical;
 
     .item-radio{
       padding: 0px;
@@ -107,10 +105,10 @@
             }
           }
           .schedule-price {
-            margin-left: 12px;
+            margin-left: $padding-base-horizontal;
             .price {
               display: flex;
-              font-weight: 700;
+              font-weight: $font-weight-bold;
 
               #dollar {
                 margin-top: auto;
@@ -122,7 +120,7 @@
               }
             }
             #trip {
-              font-size: 12px;
+              font-size: $font-size-x-small;
               float: right;
             }
           }
@@ -132,13 +130,14 @@
   }
 
   .check-terms {
+    margin-top: 0px;
+    margin-bottom: $padding-base-vertical;
+    padding: 0;
     .tnc {
-      padding: 0px 10px 20px 10px;
       ol {
         list-style-type: disc;
         padding-left: $padding-large-horizontal;
       }
     }
   }
-
 }

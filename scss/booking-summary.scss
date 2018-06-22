@@ -1,5 +1,4 @@
 .booking-summary {
-
   .card {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -13,8 +12,8 @@
     }
 
     .booking-checkbox {
-      padding-top: 6px;
-      padding-bottom: 6px;
+      padding-top: $padding-base-vertical;
+      padding-bottom: $padding-base-vertical;
 
       .checkbox-text {
         padding-left: 40px;
@@ -28,12 +27,15 @@
 
     .booking-policy {
       border-top: solid 1px $light-grey;
-      padding-top: 14px;
-      padding-bottom: 14px;
+
+      // Padding for "button" should be roughly one line height
+      padding-top: $font-size-base;
+      padding-bottom: $font-size-base;
     }
 
     .notes-list {
-      padding-bottom: 20px;
+      // Padding should be roughly one line height
+      padding-bottom: $font-size-base;
     }
 
     .bus-logo {
@@ -73,7 +75,8 @@
     }
 
     .feedback {
-      padding-bottom: 20px;
+      // Padding should be one line height
+      padding-bottom: $font-size-base;
     }
 
     .route-pass-use {

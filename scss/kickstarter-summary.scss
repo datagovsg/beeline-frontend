@@ -1,15 +1,4 @@
-#pg_kickstarter_summary {
-  table {
-    width: 100%;
-  }
-  .bar-subheader{
-    height: auto;
-  }
-
-  .button{
-    margin-top: $padding-large-vertical*2;
-    margin-bottom: $padding-large-vertical*2;
-  }
+#crowdstart-summary {
   .booking-summary {
     .card {
       -webkit-box-shadow: none;
@@ -34,27 +23,20 @@
     }
   }
 
-  .checkTerms {
+  .check-terms {
     margin-top: 0px;
     margin-bottom: 0px;
   }
 
   .item-no-title {
-    padding-top: 24px;
+    padding-top: $font-size-base;
   }
 
   .withdraw-item {
-    padding-top: 24px;
+    padding-top: $font-size-base;
 
     .fa-user {
-      margin-right: 5px;
-    }
-
-    button {
-      margin-top: 0px;
-      margin-bottom: 0px;
-      min-height: 20px;
+      margin-right: $padding-x-small-horizontal;
     }
   }
-
 }
