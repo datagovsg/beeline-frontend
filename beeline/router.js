@@ -194,7 +194,7 @@ export default [
         url: "/crowdstart/:routeId/summary?bidPrice&bidded",
         views: {
           menuContent: {
-            templateUrl: "templates/kickstarter-summary.html",
+            templateUrl: "templates/crowdstart-summary.html",
             controller: "KickstarterSummaryController",
           },
         },
