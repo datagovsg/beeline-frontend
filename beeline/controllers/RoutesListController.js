@@ -9,7 +9,7 @@ export default [
   "$state",
   "$rootScope",
   "RoutesService",
-  "KickstarterService",
+  "CrowdstartService",
   "LiteRoutesService",
   "LiteRouteSubscriptionService",
   "SearchService",
@@ -30,7 +30,7 @@ export default [
     $rootScope,
     // Route Information
     RoutesService,
-    KickstarterService,
+    CrowdstartService,
     LiteRoutesService,
     // Misc
     LiteRouteSubscriptionService,
@@ -239,14 +239,14 @@ export default [
 
     $scope.$watchGroup(
       [
-        () => KickstarterService.getBids(),
-        () => KickstarterService.getKickstarterRoutesById(),
+        () => CrowdstartService.getBids(),
+        () => CrowdstartService.getKickstarterRoutesById(),
       ],
       async ([bids, kickstarterRoutesById]) => {
         if (!bids || !kickstarterRoutesById) return
 
         const crowdstarts = await Promise.all(
-          bids.map(bid => KickstarterService.getCrowdstartById(bid.routeId))
+          bids.map(bid => CrowdstartService.getCrowdstartById(bid.routeId))
         )
         $scope.data.backedCrowdstartRoutes = crowdstarts.filter(
           route =>
@@ -388,8 +388,8 @@ export default [
     // Unactivated kickstarter routes
     $scope.$watchGroup(
       [
-        () => KickstarterService.getCrowdstart(),
-        () => KickstarterService.getBids(),
+        () => CrowdstartService.getCrowdstart(),
+        () => CrowdstartService.getBids(),
         "data.placeQuery",
       ],
       ([routes, bids, placeQuery]) => {
@@ -629,13 +629,13 @@ export default [
       const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
         ignoreCache
       )
-      const crowdstartRoutesPromise = KickstarterService.fetchCrowdstart(
+      const crowdstartRoutesPromise = CrowdstartService.fetchCrowdstart(
         ignoreCache
       )
       const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
         ignoreCache
       )
-      const bidsPromise = KickstarterService.fetchBids(ignoreCache)
+      const bidsPromise = CrowdstartService.fetchBids(ignoreCache)
       return $q
         .all([
           routesPromise,

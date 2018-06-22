@@ -70,7 +70,7 @@ require("./directives/routesList/yourRoutesList")
 
 // Data Services
 require("./services/data/CompanyService")
-require("./services/data/KickstarterService")
+require("./services/data/CrowdstartService")
 require("./services/data/LiteRoutesService")
 require("./services/data/LiteRouteSubscriptionService")
 require("./services/data/RoutesService")
@@ -376,20 +376,20 @@ app
   ])
   .run([
     "RoutesService",
-    "KickstarterService",
+    "CrowdstartService",
     "LiteRoutesService",
     "TicketService",
     function(
       RoutesService,
-      KickstarterService,
+      CrowdstartService,
       LiteRoutesService,
       TicketService
     ) {
       // Pre-fetch the routes
       RoutesService.fetchRoutes()
       RoutesService.fetchRecentRoutes()
-      KickstarterService.fetchCrowdstart()
-      KickstarterService.fetchBids()
+      CrowdstartService.fetchCrowdstart()
+      CrowdstartService.fetchBids()
       LiteRoutesService.fetchLiteRoutes()
       TicketService.fetchTickets()
     },

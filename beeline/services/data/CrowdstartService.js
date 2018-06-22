@@ -111,14 +111,14 @@ let updateAfterBid = function(route, price) {
   updateStatus(route)
 }
 
-angular.module("beeline").service("KickstarterService", [
+angular.module("beeline").service("CrowdstartService", [
   "UserService",
   "RequestService",
   "$q",
   "RoutesService",
   "p",
   "DevicePromise",
-  function KickstarterService(
+  function CrowdstartService(
     UserService,
     RequestService,
     $q,

@@ -8,7 +8,7 @@ export default [
   "UserService",
   "RequestService",
   "StripeService",
-  "KickstarterService",
+  "CrowdstartService",
   "$ionicModal",
   "$ionicPopup",
   "$window",
@@ -23,7 +23,7 @@ export default [
     UserService,
     RequestService,
     StripeService,
-    KickstarterService,
+    CrowdstartService,
     $ionicModal,
     $ionicPopup,
     $window,
@@ -34,6 +34,80 @@ export default [
     DevicePromise,
     p
   ) {
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+
+    /**
+     * Remove stripe payment information
+     */
+    const removeCard = async function removeCard() {
+      const response = await $ionicPopup.confirm({
+        title: "Remove Payment Method",
+        scope: $scope,
+        template: `
+        <div class="item item-text-wrap text-center">
+            Are you sure you want to delete this payment method?
+        </div>
+        <div class="item item-text-wrap text-center">
+            <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in \
+            <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
+        </div>
+        `,
+      })
+
+      if (!response) return
+
+      try {
+        await loadingSpinner(UserService.removePaymentInfo())
+
+        await $ionicLoading.show({
+          template: `
+          <div>Payment method has been deleted!</div>
+          `,
+          duration: 1500,
+        })
+      } catch (err) {
+        console.error(err)
+        await $ionicLoading.show({
+          template: `
+          <div> Failed to delete payment method. \
+          ${err && err.data && err.data.message} Please try again later.</div>
+          `,
+          duration: 3500,
+        })
+      } finally {
+        $scope.$digest()
+      }
+    }
+
+    /**
+     * Load the html asset pages only when requested.
+     * @param {string} assetName - the name of the asset
+     * @return {Object} a cloned scope which looks up and renders the asset
+     * when a modal is shown
+     */
+    const assetScope = function assetScope(assetName) {
+      const newScope = $scope.$new()
+      newScope.error = newScope.html = null
+      newScope.$on("modal.shown", () => {
+        RequestService.beeline({
+          method: "GET",
+          url: replace(`/assets/${assetName}`),
+        })
+          .then(response => {
+            newScope.html = htmlFrom(response.data.data)
+            newScope.error = false
+          })
+          .catch(error => {
+            console.error(error)
+            newScope.html = ""
+            newScope.error = error
+          })
+      })
+      return newScope
+    }
+
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
@@ -187,7 +261,7 @@ export default [
 
       try {
         isPressed = true
-        $scope.isOnKickstarter = await KickstarterService.hasBids()
+        $scope.isOnKickstarter = await CrowdstartService.hasBids()
       } catch (err) {
         console.error(err)
         await $ionicLoading.show({
@@ -240,80 +314,6 @@ export default [
           },
         ],
       })
-    }
-
-    // ------------------------------------------------------------------------
-    // Helper functions
-    // ------------------------------------------------------------------------
-
-    /**
-     * Remove stripe payment information
-     */
-    async function removeCard() {
-      const response = await $ionicPopup.confirm({
-        title: "Remove Payment Method",
-        scope: $scope,
-        template: `
-        <div class="item item-text-wrap text-center">
-            Are you sure you want to delete this payment method?
-        </div>
-        <div class="item item-text-wrap text-center">
-            <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in \
-            <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
-        </div>
-        `,
-      })
-
-      if (!response) return
-
-      try {
-        await loadingSpinner(UserService.removePaymentInfo())
-
-        await $ionicLoading.show({
-          template: `
-          <div>Payment method has been deleted!</div>
-          `,
-          duration: 1500,
-        })
-      } catch (err) {
-        console.error(err)
-        await $ionicLoading.show({
-          template: `
-          <div> Failed to delete payment method. \
-          ${err && err.data && err.data.message} Please try again later.</div>
-          `,
-          duration: 3500,
-        })
-      } finally {
-        $scope.$digest()
-      }
-    }
-
-    /**
-     * Load the html asset pages only when requested.
-     * @param {string} assetName - the name of the asset
-     * @return {Object} a cloned scope which looks up and renders the asset
-     * when a modal is shown
-     */
-    function assetScope(assetName) {
-      const newScope = $scope.$new()
-      newScope.error = newScope.html = null
-      newScope.$on("modal.shown", () => {
-        RequestService.beeline({
-          method: "GET",
-          url: replace(`/assets/${assetName}`),
-        })
-          .then(response => {
-            newScope.html = htmlFrom(response.data.data)
-            newScope.error = false
-          })
-          .catch(error => {
-            console.error(error)
-            newScope.html = ""
-            newScope.error = error
-          })
-      })
-      return newScope
     }
   },
 ]
