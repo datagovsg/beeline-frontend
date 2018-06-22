@@ -181,7 +181,7 @@ export default [
         views: {
           menuContent: {
             templateUrl: "templates/crowdstart-stops.html",
-            controller: "KickstarterStopsController",
+            controller: "CrowdstartStopsController",
           },
           "map-area": {
             templateUrl: "templates/map-view.html",

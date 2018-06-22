@@ -212,8 +212,8 @@ app
     require("./controllers/LiteDetailController.js").default
   )
   .controller(
-    "KickstarterStopsController",
-    require("./controllers/KickstarterStopsController.js").default
+    "CrowdstartStopsController",
+    require("./controllers/CrowdstartStopsController.js").default
   )
   .controller(
     "PurchaseRoutePassController",
