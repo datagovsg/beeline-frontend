@@ -180,7 +180,7 @@ export default [
         url: "/crowdstart/:routeId/stops",
         views: {
           menuContent: {
-            templateUrl: "templates/kickstarter-stops.html",
+            templateUrl: "templates/crowdstart-stops.html",
             controller: "KickstarterStopsController",
           },
           "map-area": {
