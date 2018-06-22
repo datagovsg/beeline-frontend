@@ -159,15 +159,15 @@ export default [
       })
 
       // ////////////////////////////////////////////////////////////////////////////
-      // Main interface, Kickstarter Tab
+      // Main interface, Crowdstart Tab
       // ////////////////////////////////////////////////////////////////////////////
 
       .state("tabs.crowdstart-detail", {
         url: "/crowdstart/:routeId/detail",
         views: {
           menuContent: {
-            templateUrl: "templates/kickstarter-detail.html",
-            controller: "KickstarterDetailController",
+            templateUrl: "templates/crowdstart-detail.html",
+            controller: "CrowdstartDetailController",
           },
           "map-area": {
             templateUrl: "templates/map-view.html",
