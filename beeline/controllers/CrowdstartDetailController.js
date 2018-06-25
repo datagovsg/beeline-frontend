@@ -7,7 +7,7 @@ export default [
   "BookingService",
   "CompanyService",
   "UserService",
-  "KickstarterService",
+  "CrowdstartService",
   "$ionicHistory",
   function(
     $scope,
@@ -16,7 +16,7 @@ export default [
     BookingService,
     CompanyService,
     UserService,
-    KickstarterService,
+    CrowdstartService,
     $ionicHistory
   ) {
     // ------------------------------------------------------------------------
@@ -70,7 +70,7 @@ export default [
       // For re-computing bidded correctly when re-entering the page
       updateBidded([
         UserService.getUser(),
-        KickstarterService.getCrowdstartById($scope.book.routeId),
+        CrowdstartService.getCrowdstartById($scope.book.routeId),
       ])
       if ($ionicHistory.backView()) {
         $scope.disp.showHamburger = false
@@ -83,7 +83,7 @@ export default [
     // Watchers
     // ------------------------------------------------------------------------
     $scope.$watch(
-      () => KickstarterService.getCrowdstartById($scope.book.routeId),
+      () => CrowdstartService.getCrowdstartById($scope.book.routeId),
       async routePromise => {
         const route = await routePromise
         if (!route) return
@@ -104,7 +104,7 @@ export default [
     $scope.$watchGroup(
       [
         () => UserService.getUser(),
-        () => KickstarterService.getCrowdstartById($scope.book.routeId),
+        () => CrowdstartService.getCrowdstartById($scope.book.routeId),
       ],
       updateBidded
     )

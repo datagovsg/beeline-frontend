@@ -8,7 +8,7 @@ export default [
   "UserService",
   "RequestService",
   "StripeService",
-  "KickstarterService",
+  "CrowdstartService",
   "$ionicModal",
   "$ionicPopup",
   "$window",
@@ -23,7 +23,7 @@ export default [
     UserService,
     RequestService,
     StripeService,
-    KickstarterService,
+    CrowdstartService,
     $ionicModal,
     $ionicPopup,
     $window,
@@ -34,6 +34,80 @@ export default [
     DevicePromise,
     p
   ) {
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+
+    /**
+     * Remove stripe payment information
+     */
+    const removeCard = async function removeCard() {
+      const response = await $ionicPopup.confirm({
+        title: "Remove Payment Method",
+        scope: $scope,
+        template: `
+        <div class="item item-text-wrap text-center">
+            Are you sure you want to delete this payment method?
+        </div>
+        <div class="item item-text-wrap text-center">
+            <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in \
+            <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
+        </div>
+        `,
+      })
+
+      if (!response) return
+
+      try {
+        await loadingSpinner(UserService.removePaymentInfo())
+
+        await $ionicLoading.show({
+          template: `
+          <div>Payment method has been deleted!</div>
+          `,
+          duration: 1500,
+        })
+      } catch (err) {
+        console.error(err)
+        await $ionicLoading.show({
+          template: `
+          <div> Failed to delete payment method. \
+          ${err && err.data && err.data.message} Please try again later.</div>
+          `,
+          duration: 3500,
+        })
+      } finally {
+        $scope.$digest()
+      }
+    }
+
+    /**
+     * Load the html asset pages only when requested.
+     * @param {string} assetName - the name of the asset
+     * @return {Object} a cloned scope which looks up and renders the asset
+     * when a modal is shown
+     */
+    const assetScope = function assetScope(assetName) {
+      const newScope = $scope.$new()
+      newScope.error = newScope.html = null
+      newScope.$on("modal.shown", () => {
+        RequestService.beeline({
+          method: "GET",
+          url: replace(`/assets/${assetName}`),
+        })
+          .then(response => {
+            newScope.html = htmlFrom(response.data.data)
+            newScope.error = false
+          })
+          .catch(error => {
+            console.error(error)
+            newScope.html = ""
+            newScope.error = error
+          })
+      })
+      return newScope
+    }
+
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
@@ -49,7 +123,7 @@ export default [
         : "",
     }
     $scope.hasCordova = Boolean($window.cordova) || false
-    $scope.isOnKickstarter = false
+    $scope.isOnCrowdstart = false
     let isPressed = false
 
     DevicePromise.then(() => {
@@ -187,7 +261,7 @@ export default [
 
       try {
         isPressed = true
-        $scope.isOnKickstarter = await KickstarterService.hasBids()
+        $scope.isOnCrowdstart = await CrowdstartService.hasBids()
       } catch (err) {
         console.error(err)
         await $ionicLoading.show({
@@ -218,7 +292,7 @@ export default [
               </button>
             </div>
           </div>
-          <div class="item item-text-wrap text-center" ng-if="isOnKickstarter">
+          <div class="item item-text-wrap text-center" ng-if="isOnCrowdstart">
             You cannot remove this card unless the Crowdstart route you back \
             expires.
           </div>
@@ -227,11 +301,9 @@ export default [
           { text: "Cancel" },
           {
             text: "Remove",
-            type: $scope.isOnKickstarter
-              ? "button-disabled"
-              : "button-positive",
+            type: $scope.isOnCrowdstart ? "button-disabled" : "button-positive",
             onTap: function(e) {
-              if ($scope.isOnKickstarter) {
+              if ($scope.isOnCrowdstart) {
                 e.preventDefault()
               } else {
                 removeCard()
@@ -240,80 +312,6 @@ export default [
           },
         ],
       })
-    }
-
-    // ------------------------------------------------------------------------
-    // Helper functions
-    // ------------------------------------------------------------------------
-
-    /**
-     * Remove stripe payment information
-     */
-    async function removeCard() {
-      const response = await $ionicPopup.confirm({
-        title: "Remove Payment Method",
-        scope: $scope,
-        template: `
-        <div class="item item-text-wrap text-center">
-            Are you sure you want to delete this payment method?
-        </div>
-        <div class="item item-text-wrap text-center">
-            <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in \
-            <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>
-        </div>
-        `,
-      })
-
-      if (!response) return
-
-      try {
-        await loadingSpinner(UserService.removePaymentInfo())
-
-        await $ionicLoading.show({
-          template: `
-          <div>Payment method has been deleted!</div>
-          `,
-          duration: 1500,
-        })
-      } catch (err) {
-        console.error(err)
-        await $ionicLoading.show({
-          template: `
-          <div> Failed to delete payment method. \
-          ${err && err.data && err.data.message} Please try again later.</div>
-          `,
-          duration: 3500,
-        })
-      } finally {
-        $scope.$digest()
-      }
-    }
-
-    /**
-     * Load the html asset pages only when requested.
-     * @param {string} assetName - the name of the asset
-     * @return {Object} a cloned scope which looks up and renders the asset
-     * when a modal is shown
-     */
-    function assetScope(assetName) {
-      const newScope = $scope.$new()
-      newScope.error = newScope.html = null
-      newScope.$on("modal.shown", () => {
-        RequestService.beeline({
-          method: "GET",
-          url: replace(`/assets/${assetName}`),
-        })
-          .then(response => {
-            newScope.html = htmlFrom(response.data.data)
-            newScope.error = false
-          })
-          .catch(error => {
-            console.error(error)
-            newScope.html = ""
-            newScope.error = error
-          })
-      })
-      return newScope
     }
   },
 ]

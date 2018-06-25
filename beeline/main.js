@@ -54,7 +54,7 @@ require("./directives/poweredByBeeline/poweredByBeeline")
 require("./directives/priceCalculator/priceCalculator")
 require("./directives/progressBar/progressBar")
 require("./directives/routeItem/animatedRoute")
-require("./directives/routeItem/kickstartRoute")
+require("./directives/routeItem/crowdstartRoute")
 require("./directives/routeItem/liteRoute")
 require("./directives/routeItem/regularRoute")
 require("./directives/routeItem/routeItem")
@@ -70,7 +70,7 @@ require("./directives/routesList/yourRoutesList")
 
 // Data Services
 require("./services/data/CompanyService")
-require("./services/data/KickstarterService")
+require("./services/data/CrowdstartService")
 require("./services/data/LiteRoutesService")
 require("./services/data/LiteRouteSubscriptionService")
 require("./services/data/RoutesService")
@@ -184,12 +184,12 @@ app
     require("./controllers/LiteMoreInfoController.js").default
   )
   .controller(
-    "KickstarterDetailController",
-    require("./controllers/KickstarterDetailController.js").default
+    "CrowdstartDetailController",
+    require("./controllers/CrowdstartDetailController.js").default
   )
   .controller(
-    "KickstarterSummaryController",
-    require("./controllers/KickstarterSummaryController.js").default
+    "CrowdstartSummaryController",
+    require("./controllers/CrowdstartSummaryController.js").default
   )
   .controller(
     "TabsController",
@@ -212,8 +212,8 @@ app
     require("./controllers/LiteDetailController.js").default
   )
   .controller(
-    "KickstarterStopsController",
-    require("./controllers/KickstarterStopsController.js").default
+    "CrowdstartStopsController",
+    require("./controllers/CrowdstartStopsController.js").default
   )
   .controller(
     "PurchaseRoutePassController",
@@ -246,7 +246,7 @@ app
       $ionicConfigProvider.tabs.style("standard")
       $ionicConfigProvider.navBar.alignTitle("center")
       $ionicConfigProvider.scrolling.jsScrolling(false)
-      // kickstart-summary use default history stack
+      // crowdstart-summary use default history stack
       $ionicConfigProvider.backButton.previousTitleText(false).text(" ")
     },
   ])
@@ -376,20 +376,20 @@ app
   ])
   .run([
     "RoutesService",
-    "KickstarterService",
+    "CrowdstartService",
     "LiteRoutesService",
     "TicketService",
     function(
       RoutesService,
-      KickstarterService,
+      CrowdstartService,
       LiteRoutesService,
       TicketService
     ) {
       // Pre-fetch the routes
       RoutesService.fetchRoutes()
       RoutesService.fetchRecentRoutes()
-      KickstarterService.fetchCrowdstart()
-      KickstarterService.fetchBids()
+      CrowdstartService.fetchCrowdstart()
+      CrowdstartService.fetchBids()
       LiteRoutesService.fetchLiteRoutes()
       TicketService.fetchTickets()
     },

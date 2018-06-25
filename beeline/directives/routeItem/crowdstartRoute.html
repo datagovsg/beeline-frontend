@@ -38,7 +38,7 @@
 
     <div class="icon-and-schedule">
       <span class="icon-span">
-          <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
+          <img class="mini-icon" src="img/icon_crowdstart_timeleft.svg">
         </span>
       <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
           Campaign ends in {{route.daysLeft}} days
@@ -61,7 +61,7 @@
 
     <div class="icon-and-schedule item-text-wrap">
       <span class="icon-span">
-          <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+          <img class="mini-icon" src="img/icon_crowdstart_status.svg">
         </span>
       <span class="mini-info">
           {{route.status}}
@@ -69,7 +69,7 @@
     </div>
     <div class="icon-and-schedule" ng-if="bids[route.id]">
       <span class="icon-span">
-        <img class="mini-icon" src="img/icon_kickstarter_activebid.svg">
+        <img class="mini-icon" src="img/icon_crowdstart_activebid.svg">
       </span>
       <span class="mini-info">
           You pre-ordered a Route Pass for {{route.notes.noPasses}} trips.

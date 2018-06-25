@@ -9,7 +9,7 @@ export default [
   "loadingSpinner",
   "UserService",
   "$ionicPopup",
-  "KickstarterService",
+  "CrowdstartService",
   "CompanyService",
   "StripeService",
   function(
@@ -20,7 +20,7 @@ export default [
     loadingSpinner,
     UserService,
     $ionicPopup,
-    KickstarterService,
+    CrowdstartService,
     CompanyService,
     StripeService
   ) {
@@ -64,7 +64,7 @@ export default [
     // Watchers
     // ------------------------------------------------------------------------
     $scope.$watch(
-      () => KickstarterService.getCrowdstartById($scope.book.routeId),
+      () => CrowdstartService.getCrowdstartById($scope.book.routeId),
       async routePromise => {
         const route = await routePromise
         if (!route) return
@@ -116,7 +116,7 @@ export default [
     $scope.$watchGroup(
       [
         () => UserService.getUser(),
-        () => KickstarterService.getCrowdstartById($scope.book.routeId),
+        () => CrowdstartService.getCrowdstartById($scope.book.routeId),
       ],
       async ([user, routePromise]) => {
         const route = await routePromise
@@ -171,7 +171,7 @@ export default [
       try {
         const bidPrice = $scope.priceInfo.bidPrice
         await loadingSpinner(
-          KickstarterService.createBid(
+          CrowdstartService.createBid(
             $scope.book.route,
             $scope.book.boardStopId,
             $scope.book.alightStopId,
@@ -236,7 +236,7 @@ export default [
       if (!response) return
 
       try {
-        let response = await KickstarterService.deleteBid($scope.book.route)
+        let response = await CrowdstartService.deleteBid($scope.book.route)
 
         // If not withdrawn, means failed
         if (response.status !== "withdrawn") {

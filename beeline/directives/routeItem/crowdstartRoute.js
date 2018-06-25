@@ -1,8 +1,8 @@
-angular.module("beeline").directive("kickstartRoute", [
-  "KickstarterService",
-  function(KickstarterService) {
+angular.module("beeline").directive("crowdstartRoute", [
+  "CrowdstartService",
+  function(CrowdstartService) {
     return {
-      template: require("./kickstartRoute.html"),
+      template: require("./crowdstartRoute.html"),
       scope: {
         route: "<",
       },
@@ -11,7 +11,7 @@ angular.module("beeline").directive("kickstartRoute", [
         function($scope) {
           $scope.bids = {}
           $scope.$watch(
-            () => KickstarterService.getBids(),
+            () => CrowdstartService.getBids(),
             bids => ($scope.bids = bids)
           )
         },

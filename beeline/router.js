@@ -159,15 +159,15 @@ export default [
       })
 
       // ////////////////////////////////////////////////////////////////////////////
-      // Main interface, Kickstarter Tab
+      // Main interface, Crowdstart Tab
       // ////////////////////////////////////////////////////////////////////////////
 
       .state("tabs.crowdstart-detail", {
         url: "/crowdstart/:routeId/detail",
         views: {
           menuContent: {
-            templateUrl: "templates/kickstarter-detail.html",
-            controller: "KickstarterDetailController",
+            templateUrl: "templates/crowdstart-detail.html",
+            controller: "CrowdstartDetailController",
           },
           "map-area": {
             templateUrl: "templates/map-view.html",
@@ -181,7 +181,7 @@ export default [
         views: {
           menuContent: {
             templateUrl: "templates/crowdstart-stops.html",
-            controller: "KickstarterStopsController",
+            controller: "CrowdstartStopsController",
           },
           "map-area": {
             templateUrl: "templates/map-view.html",
@@ -194,8 +194,8 @@ export default [
         url: "/crowdstart/:routeId/summary?bidPrice&bidded",
         views: {
           menuContent: {
-            templateUrl: "templates/kickstarter-summary.html",
-            controller: "KickstarterSummaryController",
+            templateUrl: "templates/crowdstart-summary.html",
+            controller: "CrowdstartSummaryController",
           },
         },
       })
