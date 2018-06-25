@@ -21,7 +21,7 @@
 
     <div class="item item-icon-left item-text-wrap" ng-if="book.route.isExpired">
         <i class="icon activebid">
-            <img src="img/icon_kickstarter_status.svg">
+            <img src="img/icon_crowdstart_status.svg">
         </i>
         Campaign has expired.
         <span ng-if="book.route.isActived">Route is activated.</span>
@@ -44,7 +44,7 @@
 
       <div class="icon-and-schedule">
         <span class="icon-span">
-          <img class="mini-icon" src="img/icon_kickstarter_timeleft.svg">
+          <img class="mini-icon" src="img/icon_crowdstart_timeleft.svg">
         </span>
         <span class="mini-info" ng-if="book.route">
           {{ book.route.schedule }}
@@ -68,7 +68,7 @@
 
       <div class="icon-and-schedule">
         <span class="icon-span">
-          <img class="mini-icon" src="img/icon_kickstarter_status.svg">
+          <img class="mini-icon" src="img/icon_crowdstart_status.svg">
         </span>
         <span class="mini-info">
           Trips start on {{book.route.trips[0].date | date:'dd MMM yyyy' : 'Z'}} if crowdstarted
