@@ -6,8 +6,8 @@ $milestone-size: $milestone-border + $progress-bar-height;
 $milestone-offset: $milestone-size/2;
 $start-size: 16px;
 
-$kickstarter-price-high: $royal;
-$kickstarter-default: lighten($normal-grey,40%);
+$crowdstart-price-high: $royal;
+$crowdstart-default: lighten($normal-grey,40%);
 
 /* progress bar container */
 .progress-bar {
@@ -31,7 +31,7 @@ $kickstarter-default: lighten($normal-grey,40%);
 .bar-default {
   width: 100%;
   height: $progress-bar-height;
-  background: $kickstarter-default;
+  background: $crowdstart-default;
   border-radius: $progress-bar-border-radius;
   display: flex;
   flex-direction: row;
@@ -53,7 +53,7 @@ $kickstarter-default: lighten($normal-grey,40%);
   .milestone-outline {
     width: $milestone-size;
     height: $milestone-size;
-    background: $kickstarter-default;
+    background: $crowdstart-default;
     border-radius: 100%;
     display: flex;
     align-items: center;
@@ -85,7 +85,7 @@ $kickstarter-default: lighten($normal-grey,40%);
 .backer-high {
   position:absolute;
   left:0;
-  background: $kickstarter-price-high;
+  background: $crowdstart-price-high;
   height: $progress-bar-height;
   border-radius: $progress-bar-border-radius;
   float: left;

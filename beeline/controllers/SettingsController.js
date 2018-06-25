@@ -123,7 +123,7 @@ export default [
         : "",
     }
     $scope.hasCordova = Boolean($window.cordova) || false
-    $scope.isOnKickstarter = false
+    $scope.isOnCrowdstart = false
     let isPressed = false
 
     DevicePromise.then(() => {
@@ -261,7 +261,7 @@ export default [
 
       try {
         isPressed = true
-        $scope.isOnKickstarter = await CrowdstartService.hasBids()
+        $scope.isOnCrowdstart = await CrowdstartService.hasBids()
       } catch (err) {
         console.error(err)
         await $ionicLoading.show({
@@ -292,7 +292,7 @@ export default [
               </button>
             </div>
           </div>
-          <div class="item item-text-wrap text-center" ng-if="isOnKickstarter">
+          <div class="item item-text-wrap text-center" ng-if="isOnCrowdstart">
             You cannot remove this card unless the Crowdstart route you back \
             expires.
           </div>
@@ -301,11 +301,9 @@ export default [
           { text: "Cancel" },
           {
             text: "Remove",
-            type: $scope.isOnKickstarter
-              ? "button-disabled"
-              : "button-positive",
+            type: $scope.isOnCrowdstart ? "button-disabled" : "button-positive",
             onTap: function(e) {
-              if ($scope.isOnKickstarter) {
+              if ($scope.isOnCrowdstart) {
                 e.preventDefault()
               } else {
                 removeCard()

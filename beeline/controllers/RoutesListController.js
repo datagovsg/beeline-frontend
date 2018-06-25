@@ -240,10 +240,10 @@ export default [
     $scope.$watchGroup(
       [
         () => CrowdstartService.getBids(),
-        () => CrowdstartService.getKickstarterRoutesById(),
+        () => CrowdstartService.getCrowdstartRoutesById(),
       ],
-      async ([bids, kickstarterRoutesById]) => {
-        if (!bids || !kickstarterRoutesById) return
+      async ([bids, crowdstartRoutesById]) => {
+        if (!bids || !crowdstartRoutesById) return
 
         const crowdstarts = await Promise.all(
           bids.map(bid => CrowdstartService.getCrowdstartById(bid.routeId))
@@ -385,7 +385,7 @@ export default [
       }
     )
 
-    // Unactivated kickstarter routes
+    // Unactivated crowdstart routes
     $scope.$watchGroup(
       [
         () => CrowdstartService.getCrowdstart(),

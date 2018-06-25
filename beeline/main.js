@@ -54,7 +54,7 @@ require("./directives/poweredByBeeline/poweredByBeeline")
 require("./directives/priceCalculator/priceCalculator")
 require("./directives/progressBar/progressBar")
 require("./directives/routeItem/animatedRoute")
-require("./directives/routeItem/kickstartRoute")
+require("./directives/routeItem/crowdstartRoute")
 require("./directives/routeItem/liteRoute")
 require("./directives/routeItem/regularRoute")
 require("./directives/routeItem/routeItem")
@@ -246,7 +246,7 @@ app
       $ionicConfigProvider.tabs.style("standard")
       $ionicConfigProvider.navBar.alignTitle("center")
       $ionicConfigProvider.scrolling.jsScrolling(false)
-      // kickstart-summary use default history stack
+      // crowdstart-summary use default history stack
       $ionicConfigProvider.backButton.previousTitleText(false).text(" ")
     },
   ])

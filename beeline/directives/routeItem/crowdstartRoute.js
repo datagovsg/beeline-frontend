@@ -1,8 +1,8 @@
-angular.module("beeline").directive("kickstartRoute", [
+angular.module("beeline").directive("crowdstartRoute", [
   "CrowdstartService",
   function(CrowdstartService) {
     return {
-      template: require("./kickstartRoute.html"),
+      template: require("./crowdstartRoute.html"),
       scope: {
         route: "<",
       },

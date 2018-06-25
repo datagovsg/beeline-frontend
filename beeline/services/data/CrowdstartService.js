@@ -2,13 +2,13 @@ import querystring from "querystring"
 import _ from "lodash"
 import { SafeInterval } from "../../SafeInterval"
 
-let transformKickstarterData = function(kickstarterRoutes) {
-  if (!kickstarterRoutes) return null
-  for (let kickstarter of kickstarterRoutes) {
-    kickstarter.isActived = false
-    if (kickstarter.bids && kickstarter.bids.length > 0) {
-      let bidsByTier = _.groupBy(kickstarter.bids, x => x.priceF)
-      kickstarter.notes.tier.map(tier => {
+let transformCrowdstartData = function(crowdstartRoutes) {
+  if (!crowdstartRoutes) return null
+  for (let crowdstart of crowdstartRoutes) {
+    crowdstart.isActived = false
+    if (crowdstart.bids && crowdstart.bids.length > 0) {
+      let bidsByTier = _.groupBy(crowdstart.bids, x => x.priceF)
+      crowdstart.notes.tier.map(tier => {
         let countCommitted = bidsByTier[tier.price]
           ? bidsByTier[tier.price].length
           : 0
@@ -18,69 +18,69 @@ let transformKickstarterData = function(kickstarterRoutes) {
         })
       })
     } else {
-      kickstarter.notes.tier.map(tier => {
+      crowdstart.notes.tier.map(tier => {
         _.assign(tier, { count: 0, moreNeeded: tier.pax })
       })
     }
     // order tiers in price desc order
-    kickstarter.notes.tier = _.orderBy(
-      kickstarter.notes.tier,
+    crowdstart.notes.tier = _.orderBy(
+      crowdstart.notes.tier,
       x => x.price,
       "desc"
     )
     // if sb. commit $8, also commit $5
-    // kickstarter.notes.tier[1].count += kickstarter.notes.tier[0].count;
-    kickstarter.isActived = kickstarter.notes.tier[0].moreNeeded == 0
+    // crowdstart.notes.tier[1].count += crowdstart.notes.tier[0].count;
+    crowdstart.isActived = crowdstart.notes.tier[0].moreNeeded == 0
 
-    kickstarter.isExpired = false
-    kickstarter.is7DaysOld = false
+    crowdstart.isExpired = false
+    crowdstart.is7DaysOld = false
 
     let now = new Date().getTime()
-    if (kickstarter.notes && kickstarter.notes.crowdstartExpiry) {
-      let expiryTime = new Date(kickstarter.notes.crowdstartExpiry).getTime()
+    if (crowdstart.notes && crowdstart.notes.crowdstartExpiry) {
+      let expiryTime = new Date(crowdstart.notes.crowdstartExpiry).getTime()
       if (now >= expiryTime) {
-        kickstarter.isExpired = true
+        crowdstart.isExpired = true
         if (now - expiryTime >= 7 * 1000 * 60 * 60 * 24) {
-          kickstarter.is7DaysOld = true
+          crowdstart.is7DaysOld = true
         }
       } else {
         let day = 1000 * 60 * 60 * 24
-        kickstarter.daysLeft = Math.ceil((expiryTime - now) / day)
+        crowdstart.daysLeft = Math.ceil((expiryTime - now) / day)
       }
     }
 
     // isSuccess / isFailure
-    kickstarter.isFailed = kickstarter.tags.indexOf("failed") != -1
-    kickstarter.isSuccess = kickstarter.tags.indexOf("success") != -1
-    kickstarter.isConverted = kickstarter.isFailed || kickstarter.isSuccess
+    crowdstart.isFailed = crowdstart.tags.indexOf("failed") != -1
+    crowdstart.isSuccess = crowdstart.tags.indexOf("success") != -1
+    crowdstart.isConverted = crowdstart.isFailed || crowdstart.isSuccess
 
     // filter only isRunning trips
     // sort trips date in ascending order
-    kickstarter.trips = _(kickstarter.trips)
+    crowdstart.trips = _(crowdstart.trips)
       .filter(x => x.isRunning)
       .orderBy(x => x.date)
       .value()
     // sort tripStops time in ascending order
-    _.forEach(kickstarter.trips, function(trip) {
+    _.forEach(crowdstart.trips, function(trip) {
       trip.tripStops = _.orderBy(trip.tripStops, stop => stop.time)
     })
 
     // calculate the pass expiry date
-    kickstarter.passExpired = false
-    let firstTripDate = new Date(kickstarter.trips[0].date)
+    crowdstart.passExpired = false
+    let firstTripDate = new Date(crowdstart.trips[0].date)
     let passExpiryTime = new Date(
       firstTripDate.getFullYear(),
       firstTripDate.getMonth() + 1,
       firstTripDate.getDate()
     ).getTime()
-    kickstarter.passExpired = now >= passExpiryTime
-    updateStatus(kickstarter)
+    crowdstart.passExpired = now >= passExpiryTime
+    updateStatus(crowdstart)
   }
-  return kickstarterRoutes
+  return crowdstartRoutes
 }
 
 let updateStatus = function(route) {
-  // status of kickstarter
+  // status of crowdstart
   route.status = ""
   if (route.notes.tier[0].moreNeeded == 0) {
     route.status =
@@ -126,13 +126,13 @@ angular.module("beeline").service("CrowdstartService", [
     p,
     DevicePromise
   ) {
-    let kickstarterRoutesCache
+    let crowdstartRoutesCache
     let bidsCache
-    let kickstarterSummary = null
+    let crowdstartSummary = null
     let bidsById = null
-    let kickstarterRoutesList = null
-    let kickstarterRoutesById = null
-    let nearbyKickstarterRoutesById = null
+    let crowdstartRoutesList = null
+    let crowdstartRoutesById = null
+    let nearbyCrowdstartRoutesById = null
 
     const fetchBids = function fetchBids(ignoreCache) {
       if (UserService.getUser()) {
@@ -141,41 +141,38 @@ angular.module("beeline").service("CrowdstartService", [
           method: "GET",
           url: "/crowdstart/bids",
         }).then(response => {
-          // kickstarterSummary = response.data;
-          kickstarterSummary = response.data.map(bid => {
+          crowdstartSummary = response.data.map(bid => {
             return {
               routeId: bid.routeId,
               bidPrice: bid.priceF,
               status: bid.status,
             }
           })
-          bidsById = _.keyBy(kickstarterSummary, r => r.routeId)
-          return kickstarterSummary
+          bidsById = _.keyBy(crowdstartSummary, r => r.routeId)
+          return crowdstartSummary
         }))
       } else {
-        kickstarterSummary = []
-        return $q.resolve(kickstarterSummary)
+        crowdstartSummary = []
+        return $q.resolve(crowdstartSummary)
       }
     }
 
-    const fetchKickstarterRoutes = function fetchKickstarterRoutes(
-      ignoreCache
-    ) {
-      if (kickstarterRoutesCache && !ignoreCache) return kickstarterRoutesCache
+    const fetchCrowdstartRoutes = function fetchCrowdstartRoutes(ignoreCache) {
+      if (crowdstartRoutesCache && !ignoreCache) return crowdstartRoutesCache
       let url = "/crowdstart/status"
       if (p.transportCompanyId) {
         url +=
           "?" +
           querystring.stringify({ transportCompanyId: p.transportCompanyId })
       }
-      return (kickstarterRoutesCache = RequestService.beeline({
+      return (crowdstartRoutesCache = RequestService.beeline({
         method: "GET",
         url: url,
       }).then(response => {
-        // return expired kickstarter too
-        kickstarterRoutesList = transformKickstarterData(response.data)
-        kickstarterRoutesById = _.keyBy(kickstarterRoutesList, "id")
-        return kickstarterRoutesList
+        // return expired crowdstart too
+        crowdstartRoutesList = transformCrowdstartData(response.data)
+        crowdstartRoutesById = _.keyBy(crowdstartRoutesList, "id")
+        return crowdstartRoutesList
       }))
     }
 
@@ -191,16 +188,16 @@ angular.module("beeline").service("CrowdstartService", [
       })
     }
 
-    const fetchNearbyKickstarterIds = async function fetchNearbyKickstarterIds() {
+    const fetchNearbyCrowdstartIds = async function fetchNearbyCrowdstartIds() {
       let locationOrNull = null
       try {
         await DevicePromise
         locationOrNull = await getLocationPromise(false)
       } catch (err) {
         // Location not found -- suppress error
-        nearbyKickstarterRoutesById = nearbyKickstarterRoutesById || null
+        nearbyCrowdstartRoutesById = nearbyCrowdstartRoutesById || null
         return new Promise((resolve, reject) => {
-          resolve(nearbyKickstarterRoutesById)
+          resolve(nearbyCrowdstartRoutesById)
         })
       }
 
@@ -250,7 +247,7 @@ angular.module("beeline").service("CrowdstartService", [
       })
       return Promise.all([nearbyPromise, nearbyReversePromise]).then(values => {
         let [np, nvp] = values
-        return (nearbyKickstarterRoutesById = _(np.data.concat(nvp.data))
+        return (nearbyCrowdstartRoutesById = _(np.data.concat(nvp.data))
           .map(r => r.id)
           .uniq()
           .value())
@@ -265,14 +262,14 @@ angular.module("beeline").service("CrowdstartService", [
 
     const refresh = function refresh() {
       return Promise.all([
-        fetchKickstarterRoutes(true),
+        fetchCrowdstartRoutes(true),
         fetchBids(true),
-        fetchNearbyKickstarterIds(),
+        fetchNearbyCrowdstartIds(),
       ])
     }
 
     // first load
-    // every 1 hour should reload kickstarter information
+    // every 1 hour should reload crowdstart information
     let timeout = new SafeInterval(refresh, 1000 * 60 * 60, 1000 * 60)
     timeout.start()
 
@@ -296,7 +293,7 @@ angular.module("beeline").service("CrowdstartService", [
               return
             }
             route.bids = bids
-            transformKickstarterData([route])
+            transformCrowdstartData([route])
             return route
           })
           .catch(console.error)
@@ -306,25 +303,25 @@ angular.module("beeline").service("CrowdstartService", [
 
     return {
       // all crowdstart routes
-      getCrowdstart: () => kickstarterRoutesList,
-      fetchCrowdstart: ignoreCache => fetchKickstarterRoutes(ignoreCache),
+      getCrowdstart: () => crowdstartRoutesList,
+      fetchCrowdstart: ignoreCache => fetchCrowdstartRoutes(ignoreCache),
 
       getCrowdstartById: function(routeId) {
-        if (!kickstarterRoutesById) {
+        if (!crowdstartRoutesById) {
           return null
         }
-        return kickstarterRoutesById[routeId]
-          ? kickstarterRoutesById[routeId]
+        return crowdstartRoutesById[routeId]
+          ? crowdstartRoutesById[routeId]
           : getPrivateCrowdstartById(routeId)
       },
 
-      getKickstarterRoutesById: function() {
-        return kickstarterRoutesById
+      getCrowdstartRoutesById: function() {
+        return crowdstartRoutesById
       },
 
       // user personal bid information
       getBids: function() {
-        return kickstarterSummary
+        return crowdstartSummary
       },
       fetchBids: ignoreCache => fetchBids(ignoreCache),
 
@@ -333,8 +330,8 @@ angular.module("beeline").service("CrowdstartService", [
       },
 
       getBidInfo: function(routeId) {
-        return kickstarterSummary
-          ? kickstarterSummary.find(x => x.routeId == routeId)
+        return crowdstartSummary
+          ? crowdstartSummary.find(x => x.routeId == routeId)
           : null
       },
 
@@ -342,9 +339,9 @@ angular.module("beeline").service("CrowdstartService", [
       hasBids: function() {
         return bidsCache.then(() => {
           return (
-            kickstarterSummary &&
-            kickstarterSummary.length > 0 &&
-            kickstarterSummary.find(x => x.status === "bidded")
+            crowdstartSummary &&
+            crowdstartSummary.length > 0 &&
+            crowdstartSummary.find(x => x.status === "bidded")
           )
         })
       },
@@ -358,7 +355,7 @@ angular.module("beeline").service("CrowdstartService", [
           },
         }).then(response => {
           updateAfterBid(route, bidPrice)
-          kickstarterSummary = kickstarterSummary.concat([
+          crowdstartSummary = crowdstartSummary.concat([
             {
               routeId: route.id,
               bidPrice: bidPrice,
@@ -385,11 +382,11 @@ angular.module("beeline").service("CrowdstartService", [
         })
       },
 
-      getNearbyKickstarterIds: () => {
-        return nearbyKickstarterRoutesById
+      getNearbyCrowdstartIds: () => {
+        return nearbyCrowdstartRoutesById
       },
 
-      fetchNearbyKickstarterIds: fetchNearbyKickstarterIds,
+      fetchNearbyCrowdstartIds,
     }
   },
 ])
