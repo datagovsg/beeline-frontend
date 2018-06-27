@@ -1,7 +1,6 @@
 /* eslint no-console: 0 */
 const path = require("path")
 const assert = require("assert")
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const InlineEnviromentVariablesPlugin = require("inline-environment-variables-webpack-plugin")
 
 const prefix = process.env.BUILD_PREFIX || "www"
@@ -60,42 +59,6 @@ module.exports = function(env) {
         // so we don't have to load it again
         angular: 'angular',
       },
-    },
-
-    // CSS Config
-    {
-      entry: {
-        "ionic.app": "./scss/ionic.app.scss",
-        "operator-grab": "./scss/operator-grab.scss",
-      },
-      module: {
-        rules: [
-          {
-            test: /\.scss$/,
-            use: ExtractTextPlugin.extract({
-              use: [
-                {
-                  loader: "css-loader",
-                  options: { url: false, minimize: true },
-                },
-                { loader: "sass-loader" },
-              ],
-            }),
-          },
-        ],
-      },
-      // This output is entirely superfluous.
-      // We are abusing Webpack so that it will compile the SCSS
-      // What it means is that you can load the style sheet by
-      // both <script src="....XXX.css.js"></script>
-      // and also by <link href="....XXX.css" />
-      output: {
-        path: path.resolve(prefix, `css`),
-        filename: "[name].css.js",
-        pathinfo: env.production ? false : true,
-      },
-      // The actual css output we care about
-      plugins: [new ExtractTextPlugin("[name].css")],
     },
   ]
 }

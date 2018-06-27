@@ -50,6 +50,7 @@ if (production) {
   process.env.BACKEND_URL = DEFAULT_BACKEND_URL
   process.env.TRACKING_URL = DEFAULT_TRACKING_URL
   shell.exec("webpack -p")
+  shell.exec("npm run build-scss")
   shell.exec("cordova-hcp build www/")
   shell.exec("touch www/.nojekyll")
 } else {
