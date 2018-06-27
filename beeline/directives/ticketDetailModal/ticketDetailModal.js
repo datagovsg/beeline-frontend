@@ -45,8 +45,6 @@ angular.module("beeline").directive("ticketDetailModal", [
                 info.trip &&
                 info.trip.vehicle &&
                 info.trip.vehicle.vehicleNumber,
-              driver:
-                info && info.trip && info.trip.driver && info.trip.driver.name,
             }
             scope.latestInfo = {
               vehicleId:
@@ -76,7 +74,7 @@ angular.module("beeline").directive("ticketDetailModal", [
         }
 
         const updateStatus = status => {
-          scope.disp.tripStatus = status.status
+          scope.disp.tripStatus = status
         }
 
         const deregister = function() {

@@ -36,15 +36,6 @@ angular.module("beeline").factory("TripService", [
           timeout: 10000,
         }).then(response => response.data)
       },
-
-      statuses: function(id) {
-        assert(typeof id === "number")
-        return RequestService.beeline({
-          method: "GET",
-          url: `/trips/${id}/statuses?limit=5`,
-          timeout: 10000,
-        }).then(response => response.data)
-      },
     }
   },
 ])
