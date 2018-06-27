@@ -37,39 +37,28 @@ angular.module("beeline").directive("ticketDetailModal", [
         // Helper Functions
         // ------------------------------------------------------------------------
 
-        const updateLatestInfo = id =>
-          TripService.latestInfo(Number(id)).then(info => {
+        const updateVehicleInfo = id => {
+          TripService.getTripData(Number(id), true).then(trip => {
+            scope.vehicleId = trip.vehicleId
             scope.disp = {
-              vehicle:
-                info &&
-                info.trip &&
-                info.trip.vehicle &&
-                info.trip.vehicle.vehicleNumber,
-            }
-            scope.latestInfo = {
-              vehicleId:
-                info && info.trip && info.trip.vehicle && info.trip.vehicle.id,
-              driverId:
-                info && info.trip && info.trip.driver && info.trip.driver.id,
+              vehicle: trip && trip.vehicle && trip.vehicle.vehicleNumber,
             }
           })
+        }
 
         const sentTripToMapView = () => {
           const trip = scope.trip
           if (trip) {
             MapService.emit("ping-trips", [trip])
             MapService.emit("startPingLoop")
-            MapService.on("ping", updateIfVehicleOrDriverChanged)
+            MapService.on("ping", updateIfVehicleChanged)
             MapService.on("status", updateStatus)
           }
         }
 
-        const updateIfVehicleOrDriverChanged = ping => {
-          if (
-            scope.latestInfo.vehicleId !== ping.vehicleId ||
-            scope.latestInfo.driverId !== ping.driverId
-          ) {
-            updateLatestInfo(ping.tripId)
+        const updateIfVehicleChanged = ping => {
+          if (scope.vehicleId !== ping.vehicleId) {
+            updateVehicleInfo(ping.tripId)
           }
         }
 
@@ -79,7 +68,7 @@ angular.module("beeline").directive("ticketDetailModal", [
 
         const deregister = function() {
           MapService.emit("killPingLoop")
-          MapService.removeListener("ping", updateIfVehicleOrDriverChanged)
+          MapService.removeListener("ping", updateIfVehicleChanged)
           MapService.removeListener("status", updateStatus)
         }
 
@@ -116,14 +105,10 @@ angular.module("beeline").directive("ticketDetailModal", [
 
         scope.disp = {
           vehicle: null,
-          driver: null,
           tripStatus: null,
         }
 
-        scope.latestInfo = {
-          vehicleId: null,
-          driverId: null,
-        }
+        scope.vehicleId = null
 
         scope.modalMap = MapOptions.defaultMapOptions({
           zoom: 14,
@@ -201,7 +186,7 @@ angular.module("beeline").directive("ticketDetailModal", [
           scope.trip = ticket.boardStop.trip
           scope.tripCode = ticket.tripCode
           sentTripToMapView()
-          updateLatestInfo(ticket.boardStop.trip.id)
+          updateVehicleInfo(ticket.boardStop.trip.id)
           updateMapView()
         })
         tripPromise.then(trip => {
