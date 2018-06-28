@@ -3,6 +3,32 @@
     font-size: $font-size-small;
   }
 
+  .tabs {
+    position: unset;
+
+    .tab-title {
+      font-size: $font-size-base;
+    }
+  }
+
+  .tab-content {
+    // Margin-top hack to get the ion content to work nicely with tabs bar
+    // Additional 2px to show the selected tab line
+    margin-top: $tabs-height + 2px;
+  }
+
+  .feedback-message {
+    padding-top: $padding-large-vertical * 3;
+    padding-bottom: $padding-large-vertical;
+
+    text-align: center;
+    color: $normal-grey;
+
+    .fa-credit-card {
+      font-size: $font-size-base * 2;
+    }
+  }
+
   .item {
     padding-left: $padding-base-horizontal;
     padding-right: $padding-base-horizontal;
