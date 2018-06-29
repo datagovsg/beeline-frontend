@@ -41,7 +41,7 @@ angular.module("beeline").directive("ticketDetailModal", [
           TripService.getTripData(Number(id), true).then(trip => {
             scope.vehicleId = trip.vehicleId
             scope.disp = {
-              vehicle: trip && trip.vehicle && trip.vehicle.vehicleNumber,
+              vehicle: _.get(trip, "vehicle.vehicleNumber"),
             }
           })
         }
