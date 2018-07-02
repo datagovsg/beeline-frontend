@@ -17,7 +17,7 @@
     margin-top: $tabs-height + 2px;
   }
 
-  .feedback-message {
+  .feedback {
     padding-top: $padding-large-vertical * 3;
     padding-bottom: $padding-large-vertical;
 
@@ -25,7 +25,11 @@
     color: $normal-grey;
 
     .fa-credit-card {
-      font-size: $font-size-base * 2;
+      font-size: $font-size-base * 3;
+    }
+
+    .message {
+      margin-top: $padding-base-vertical;
     }
   }
 
