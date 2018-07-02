@@ -14,7 +14,7 @@ export default [
       _.assign($scope, {
         hasMoreData: true,
         page: 1,
-        perPage: 20,
+        perPage: 80,
         transactions: null,
       })
     }
@@ -29,6 +29,8 @@ export default [
     // Data Initialization
     // ------------------------------------------------------------------------
     let inFlight = false
+
+    $scope.activeTab = "payments"
 
     // ------------------------------------------------------------------------
     // Ionic events
@@ -128,6 +130,25 @@ export default [
         .then(null, error => {
           inFlight = false
         })
+    }
+
+    $scope.setActiveTab = function(tapped) {
+      $scope.activeTab = tapped
+    }
+
+    $scope.tabMatches = function(transaction) {
+      let activeTab = $scope.activeTab
+      return (
+        (transaction.type === "refundPayment" && activeTab === "refunds") ||
+        (transaction.type !== "refundPayment" && activeTab === "payments")
+      )
+    }
+
+    $scope.hasResults = function() {
+      return (
+        $scope.transactions &&
+        $scope.transactions.filter($scope.tabMatches).length === 0
+      )
     }
   },
 ]
