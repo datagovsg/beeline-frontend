@@ -8,7 +8,7 @@
 
   <ion-content scroll="true">
   <div class="trip-info">
-    <div class="map map-area" ng-if="modalMap.center && disp.tripStatus !== 'cancelled'">
+    <div class="map map-area" ng-if="modalMap.center && disp.tripStatus !== 'cancelled' && disp.tripStatus !== 'void'">
       <ui-gmap-google-map
         control="modalControl"
         center="modalMap.center"
@@ -45,7 +45,7 @@
       </ui-gmap-google-map>
     </div>
 
-    <div class="item item-text-wrap cancellation-item" ng-if="disp.tripStatus === 'cancelled'">
+    <div class="item item-text-wrap cancellation-item" ng-if="disp.tripStatus === 'cancelled' || disp.tripStatus === 'void'">
       <div class="service-cancellation">
         <div class="item item-text-wrap">
           <div class="cancellation-content">
@@ -61,7 +61,7 @@
       </div>
     </div>    
 
-    <div class="item item-text-wrap" ng-if="disp.tripStatus !== 'cancelled'">
+    <div class="item item-text-wrap" ng-if="disp.tripStatus !== 'cancelled' && disp.tripStatus !== 'void'">
       <div>
         <div class="row">
           <route-item hide-bus-label="true" hide-description="true" class="route-item">
