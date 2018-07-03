@@ -182,6 +182,7 @@ angular.module("beeline").directive("ticketDetailModal", [
           scope.mapObject.alightStop = ticket.alightStop
           scope.ticket = ticket
           scope.trip = ticket.boardStop.trip
+          scope.disp.tripStatus = scope.trip.status
           scope.tripCode = ticket.tripCode
           sentTripToMapView()
           updateVehicleInfo(ticket.boardStop.trip.id)
