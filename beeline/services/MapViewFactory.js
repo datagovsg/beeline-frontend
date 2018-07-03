@@ -122,11 +122,13 @@ angular.module("beeline").factory("MapViewFactory", [
 
           await Promise.all(
             scope.mapObject.pingTrips.map((trip, index) => {
-              return TripService.statuses(trip.id).then(statuses => {
-                const status = _.get(statuses, "[0]", null)
+              return TripService.getTripData(trip.id).then(trip => {
+                if (!trip) return
+
+                const status = trip.status
                 scope.mapObject.statusMessages[index] = _.get(
-                  status,
-                  "message",
+                  trip.messages,
+                  "[0].message",
                   null
                 )
 

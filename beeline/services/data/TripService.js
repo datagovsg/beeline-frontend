@@ -4,11 +4,14 @@ angular.module("beeline").factory("TripService", [
   "RequestService",
   function TripService(RequestService) {
     return {
-      getTripData: function(id) {
+      getTripData: function(id, includeVehicle) {
         assert(typeof id === "number")
         return RequestService.beeline({
           method: "GET",
           url: "/trips/" + id,
+          params: {
+            includeVehicle,
+          },
         }).then(function(response) {
           return response.data
         })
@@ -26,24 +29,6 @@ angular.module("beeline").factory("TripService", [
           }
           return response.data
         })
-      },
-
-      latestInfo: function(id) {
-        assert(typeof id === "number")
-        return RequestService.beeline({
-          method: "GET",
-          url: `/trips/${id}/latest_info`,
-          timeout: 10000,
-        }).then(response => response.data)
-      },
-
-      statuses: function(id) {
-        assert(typeof id === "number")
-        return RequestService.beeline({
-          method: "GET",
-          url: `/trips/${id}/statuses?limit=5`,
-          timeout: 10000,
-        }).then(response => response.data)
       },
     }
   },
