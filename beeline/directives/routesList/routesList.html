@@ -9,14 +9,17 @@
   <ion-item
     ng-repeat="route in data.routesYouMayLike | limitTo:20 track by route.id"
     ng-if="data.routesYouMayLike.length > 0 && !data.placeQuery"
-    ui-sref="tabs.route-detail({
-      routeId: route.id
-    })"
     class="item-text-wrap"
   >
-    <regular-route route="route" ng-if="!route.tags.includes('crowdstart') && !route.tags.includes('lite')"></regular-route>
-    <crowdstart-route route="route" ng-if="route.tags.includes('crowdstart')"></crowdstart-route>
-    <lite-route route="route" ng-if="route.tags.includes('lite')"></lite-route>
+    <regular-route route="route" ng-if="!route.tags.includes('crowdstart') && !route.tags.includes('lite')" ui-sref="tabs.route-detail({
+      routeId: route.id
+    })"></regular-route>
+    <crowdstart-route route="route" ng-if="route.tags.includes('crowdstart')" ui-sref="tabs.crowdstart-detail({
+      routeId: route.id
+    })"></crowdstart-route>
+    <lite-route route="route" ng-if="route.tags.includes('lite')" ui-sref="tabs.lite-detail({
+      label: route.label
+    })"></lite-route>
   </ion-item>
   <!-- END: Routes you may like -->
 
