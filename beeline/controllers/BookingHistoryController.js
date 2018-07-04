@@ -125,7 +125,6 @@ export default [
 
             return txn
           })
-          $scope.$broadcast("scroll.infiniteScrollComplete")
         })
         .then(null, error => {
           inFlight = false

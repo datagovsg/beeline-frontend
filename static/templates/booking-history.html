@@ -16,7 +16,7 @@
 
     <ion-content class="tab-content">
       <ion-list>
-        <div class="card" ng-repeat="transaction in transactions track by transaction.id" ng-if="tabMatches(transaction)">
+        <div class="card" ng-repeat="transaction in transactions track by transaction.id" ng-if="tabMatches(transaction) && transaction.totalAmount > 0">
 
           <!-- TRANSACTION HEADER -->
           <div class="item item-divider transaction-header transaction-row">
