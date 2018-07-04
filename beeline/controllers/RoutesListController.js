@@ -262,19 +262,9 @@ export default [
     // search based on target with radius of 500m
     // reset to null if user use search bar
     $scope.$watchGroup(
-      [
-        "data.recentRoutesById",
-        "data.routes",
-        "data.liteRoutes",
-        "data.crowdstartRoutes",
-      ],
-      async ([recentRoutesById, routes, liteRoutes, crowdstartRoutes]) => {
-        if (recentRoutesById && routes && liteRoutes && crowdstartRoutes) {
-          // set id for lite routes so that we can publish unique routes
-          // (see end of this function)
-          liteRoutes.map(route => {
-            route.id = route.routeIds
-          })
+      ["data.recentRoutesById", "data.routes"],
+      async ([recentRoutesById, routes]) => {
+        if (recentRoutesById && routes) {
           let placeResults = []
           for (let id in recentRoutesById) {
             // https://eslint.org/docs/rules/guard-for-in
@@ -301,29 +291,16 @@ export default [
               }
 
               let results = SearchService.filterRoutesByLngLat(
-                _.concat(routes, crowdstartRoutes),
-                lnglat,
-                500
+                $scope.data.routes,
+                lnglat
               )
-              let filteredLiteRoutes = SearchService.filterRoutesByLngLat(
-                liteRoutes,
-                lnglat,
-                2000
-              )
-              placeResults = _.concat(placeResults, results, filteredLiteRoutes)
+              placeResults = _.concat(placeResults, results)
             }
           }
-
           // filter recently booked route ids
           _.remove(placeResults, x => {
             return recentRoutesById[x.id]
           })
-
-          placeResults = await SearchService.sortRoutes(
-            $scope.data.recentRoutes,
-            placeResults
-          )
-
           // publish unique routes
           $scope.data.routesYouMayLike = _.uniqBy(placeResults, "id")
         }
