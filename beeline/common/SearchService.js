@@ -85,7 +85,7 @@ angular.module("common").factory("SearchService", [
         return filteredRoutes
       },
 
-      filterRoutesByLngLat: function(routes, lnglat, maxDistance = 500) {
+      filterRoutesByLngLat: function(routes, lnglat, maxDistance) {
         // Check the trips stops of a route to see if any come close
         let filteredRoutes = routes.filter(route => {
           let tripStops = getTripStopsFrom(route)

@@ -302,7 +302,8 @@ export default [
 
               let results = SearchService.filterRoutesByLngLat(
                 _.concat(routes, crowdstartRoutes),
-                lnglat
+                lnglat,
+                500
               )
               let filteredLiteRoutes = SearchService.filterRoutesByLngLat(
                 liteRoutes,
