@@ -17,25 +17,29 @@
   </div>
   <ion-item
     ng-repeat="route in data.routesWithRidesRemaining | limitTo:10 track by route.id"
-    ui-sref="tabs.route-detail({
-      routeId: route.id
-    })"
     class="item-text-wrap"
     ng-if="data.routesWithRidesRemaining.length > 0"
   >
-    <regular-route route="route"></regular-route>
+    <regular-route
+      route="route"
+      ui-sref="tabs.route-detail({
+        routeId: route.id
+      })">
+    </regular-route>
   </ion-item>
   <ion-item
     ng-repeat="route in data.recentRoutes | limitTo:10 track by route.id"
     ng-if="data.recentRoutes.length > 0"
-    ui-sref="tabs.route-detail({
-      routeId: route.id,
-      pickupStopId:  route.boardStopStopId,
-      dropoffStopId: route.alightStopStopId,
-    })"
     class="item-text-wrap"
   >
-    <regular-route route="route"></regular-route>
+    <regular-route
+      route="route"
+      ui-sref="tabs.route-detail({
+        routeId: route.id,
+        pickupStopId:  route.boardStopStopId,
+        dropoffStopId: route.alightStopStopId,
+      })">
+    </regular-route>
   </ion-item>
   <!-- END: Recently Booked Routes Section -->
 
@@ -49,9 +53,11 @@
   <ion-item
     ng-repeat="route in data.backedCrowdstartRoutes | limitTo:10 track by route.id"
     ng-if="data.backedCrowdstartRoutes.length > 0"
-    class="item-text-wrap"
-    ui-sref="tabs.crowdstart-detail({ routeId: route.id })">
-    <crowdstart-route route="route"></crowdstart-route>
+    class="item-text-wrap">
+    <crowdstart-route
+      route="route"
+      ui-sref="tabs.crowdstart-detail({ routeId: route.id })">
+    </crowdstart-route>
   </ion-item>
   <!-- END: Crowdstart Routes Section -->
 
@@ -62,12 +68,13 @@
   <ion-item
     ng-repeat="route in data.subscribedLiteRoutes | limitTo:10 track by route.label"
     ng-if="data.subscribedLiteRoutes.length > 0"
-    ui-sref="tabs.lite-detail({
-      label: route.label
-    })"
     class="item-text-wrap"
   >
-    <lite-route route="route"></lite-route>
+    <lite-route route="route"
+      ui-sref="tabs.lite-detail({
+        label: route.label
+      })">
+    </lite-route>
   </ion-item>
   <!-- END: Bookmarked Tracking Routes Section -->
 
