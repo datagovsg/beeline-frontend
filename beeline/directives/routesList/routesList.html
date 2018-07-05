@@ -11,15 +11,21 @@
     ng-if="data.routesYouMayLike.length > 0 && !data.placeQuery"
     class="item-text-wrap"
   >
-    <regular-route route="route" ng-if="!route.tags.includes('crowdstart') && !route.tags.includes('lite')" ui-sref="tabs.route-detail({
-      routeId: route.id
-    })"></regular-route>
-    <crowdstart-route route="route" ng-if="route.tags.includes('crowdstart')" ui-sref="tabs.crowdstart-detail({
-      routeId: route.id
-    })"></crowdstart-route>
-    <lite-route route="route" ng-if="route.tags.includes('lite')" ui-sref="tabs.lite-detail({
-      label: route.label
-    })"></lite-route>
+    <regular-route
+      route="route"
+      ng-if="!route.tags.includes('crowdstart') && !route.tags.includes('lite')" 
+      ui-sref="tabs.route-detail({ routeId: route.id})">    
+    </regular-route>
+    <crowdstart-route
+      route="route"
+      ng-if="route.tags.includes('crowdstart')"
+      ui-sref="tabs.crowdstart-detail({ routeId: route.id })">
+    </crowdstart-route>
+    <lite-route
+      route="route"
+      ng-if="route.tags.includes('lite')"
+      ui-sref="tabs.lite-detail({ label: route.label })">
+    </lite-route>
   </ion-item>
   <!-- END: Routes you may like -->
 
@@ -32,10 +38,12 @@
   </div>
   <ion-item
     ng-repeat="route in data.routes | limitTo:20 track by route.id"
-    ui-sref="tabs.route-detail({ routeId: route.id })"
     class="item-text-wrap"
   >
-    <regular-route route="route"></regular-route>
+    <regular-route
+      route="route"
+      ui-sref="tabs.route-detail({ routeId: route.id })">
+    </regular-route>
   </ion-item>
   <!-- END: Available Routes Section -->
   
@@ -50,9 +58,11 @@
   <ion-item
     ng-repeat="route in data.crowdstartRoutes | limitTo:30 track by $index"
     class="item-text-wrap"
-    ui-sref="tabs.crowdstart-detail({ routeId: route.id})"
   >
-    <crowdstart-route route="route"></crowdstart-route>
+    <crowdstart-route
+      route="route"
+      ui-sref="tabs.crowdstart-detail({ routeId: route.id})">
+    </crowdstart-route>
   </ion-item>
   <!-- END: Available Crowdstart Section -->
 
@@ -65,9 +75,12 @@
   </div>
   <ion-item
     ng-repeat="route in data.liteRoutes | limitTo:10 track by route.label"
-    ui-sref="tabs.lite-detail({ label: route.label })"
+    class="item-text-wrap"
   >
-    <lite-route route="route"></lite-route>
+    <lite-route
+      route="route"
+      ui-sref="tabs.lite-detail({ label: route.label })">
+    </lite-route>
   </ion-item>
   <!-- END: Available Lite Routes Section -->
   
