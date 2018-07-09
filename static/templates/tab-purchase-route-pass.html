@@ -99,7 +99,7 @@
       <div class="item-divider no-text"></div>
     </section>
 
-    <section class="card" ng-if="!book.hasSavedPaymentInfo">
+    <section class="card" ng-if="!book.hasSavedPaymentInfo && book.user">
       <div class="item item-text-wrap">
         <div class="booking-checkbox">
           <ion-checkbox class="checkbox-text item-text-wrap" ng-model="book.savePaymentChecked">

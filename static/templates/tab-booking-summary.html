@@ -64,7 +64,7 @@
       </div>
       <div class="item-divider no-text"></div>
 
-      <div ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase">
+      <div ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase && isLoggedIn">
         <div class="item booking-checkbox">
           <ion-checkbox
             class="checkbox-text item-text-wrap"
