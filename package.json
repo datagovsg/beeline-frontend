@@ -37,6 +37,7 @@
   "devDependencies": {
     "@ionic/cli-plugin-cordova": "1.6.2",
     "@ionic/cli-plugin-ionic1": "2.1.1",
+    "@opengovsg/eslint-config-opengovsg": "^1.0.0",
     "babel-core": "^6.5.2",
     "babel-eslint": "^8.0.2",
     "babel-loader": "^7.1.2",
