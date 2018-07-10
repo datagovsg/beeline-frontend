@@ -1,10 +1,10 @@
-import yourRoutesListTemplate from "./yourRoutesList.html"
+import yourRoutesListTemplate from './yourRoutesList.html'
 
-angular.module("beeline").directive("yourRoutesList", [
-  function() {
+angular.module('beeline').directive('yourRoutesList', [
+  function () {
     return {
-      restrict: "E",
-      replace: "true",
+      restrict: 'E',
+      replace: 'true',
       template: yourRoutesListTemplate,
     }
   },

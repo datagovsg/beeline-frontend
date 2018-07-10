@@ -1,15 +1,15 @@
-import _ from "lodash"
+import _ from 'lodash'
 
 export default [
-  "$scope",
-  "$ionicSideMenuDelegate",
-  "MapOptions",
-  "SharedVariableService",
-  "uiGmapGoogleMapApi",
-  "UserService",
-  "$state",
-  "loadingSpinner",
-  function(
+  '$scope',
+  '$ionicSideMenuDelegate',
+  'MapOptions',
+  'SharedVariableService',
+  'uiGmapGoogleMapApi',
+  'UserService',
+  '$state',
+  'loadingSpinner',
+  function (
     $scope,
     $ionicSideMenuDelegate,
     MapOptions,
@@ -22,7 +22,7 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
-    const panToStop = function panToStop(stop, setZoom) {
+    const panToStop = function panToStop (stop, setZoom) {
       if ($scope.map.control.getGMap) {
         const gmap = $scope.map.control.getGMap()
         gmap.panTo({
@@ -57,7 +57,7 @@ export default [
     // Resolved when the map is initialized
     const gmapIsReady = new Promise((resolve, reject) => {
       let resolved = false
-      $scope.$watch("map.control.getGMap", function() {
+      $scope.$watch('map.control.getGMap', function () {
         if ($scope.map.control.getGMap) {
           if (!resolved) {
             resolved = true
@@ -89,16 +89,16 @@ export default [
       }
     )
 
-    $scope.$watch("mapObject.stops", stops => {
+    $scope.$watch('mapObject.stops', stops => {
       if (stops && stops.length > 0) {
         const bounds = MapOptions.formBounds(stops)
         if ($scope.map.control.getGMap) {
           const gmap = $scope.map.control.getGMap()
-          google.maps.event.trigger(gmap, "resize")
+          google.maps.event.trigger(gmap, 'resize')
           gmap.fitBounds(bounds)
           let zoom = gmap.zoom > 11 ? 11 : gmap.zoom
           gmap.setZoom(zoom)
-          google.maps.event.trigger(gmap, "zoom_changed")
+          google.maps.event.trigger(gmap, 'zoom_changed')
         }
       }
     })
@@ -111,19 +111,19 @@ export default [
       true
     )
 
-    $scope.$watch("mapObject.chosenStop", stop => {
+    $scope.$watch('mapObject.chosenStop', stop => {
       if (stop) {
         panToStop(stop, true)
       }
     })
 
-    $scope.$watch("mapObject.boardStop", stop => {
+    $scope.$watch('mapObject.boardStop', stop => {
       if (stop) {
         panToStop(stop.stop)
       }
     })
 
-    $scope.$watch("mapObject.alightStop", stop => {
+    $scope.$watch('mapObject.alightStop', stop => {
       if (stop) {
         panToStop(stop.stop)
       }

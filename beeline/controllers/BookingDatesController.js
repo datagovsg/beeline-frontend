@@ -1,21 +1,21 @@
-const moment = require("moment")
-import _ from "lodash"
-import tapToSelectMultipleDaysTemplate from "../templates/tap-to-select-multiple-days.html"
+import _ from 'lodash'
+import tapToSelectMultipleDaysTemplate from '../templates/tap-to-select-multiple-days.html'
+const moment = require('moment')
 
 export default [
-  "$ionicHistory",
-  "$ionicScrollDelegate",
-  "$ionicPopup",
-  "$q",
-  "$scope",
-  "$state",
-  "$stateParams",
-  "$window",
-  "loadingSpinner",
-  "RoutesService",
-  "TicketService",
-  "UserService",
-  function(
+  '$ionicHistory',
+  '$ionicScrollDelegate',
+  '$ionicPopup',
+  '$q',
+  '$scope',
+  '$state',
+  '$stateParams',
+  '$window',
+  'loadingSpinner',
+  'RoutesService',
+  'TicketService',
+  'UserService',
+  function (
     $ionicHistory,
     $ionicScrollDelegate,
     $ionicPopup,
@@ -67,8 +67,8 @@ export default [
       previouslyBookedDays: undefined,
       highlightDays: [],
       daysAllowed: [],
-      selectedDatesMoments: ($stateParams.selectedDates || "")
-        .split(",")
+      selectedDatesMoments: ($stateParams.selectedDates || '')
+        .split(',')
         .filter(ms => !isNaN(parseInt(ms)))
         .map(ms => moment(parseInt(ms))),
     }
@@ -77,7 +77,7 @@ export default [
     // Helper functions
     // ------------------------------------------------------------------------
 
-    const loadTickets = function loadTickets() {
+    const loadTickets = function loadTickets () {
       const ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId(
         routeId,
         true
@@ -90,7 +90,7 @@ export default [
       )
     }
 
-    const loadRoutes = function loadRoutes() {
+    const loadRoutes = function loadRoutes () {
       const routePromise = RoutesService.getRoute(routeId, true)
       return loadingSpinner(
         routePromise.then(route => {
@@ -102,7 +102,7 @@ export default [
       )
     }
 
-    const updateCalendar = function updateCalendar() {
+    const updateCalendar = function updateCalendar () {
       // ensure cancelled trips are not shown
       const runningTrips = $scope.book.route.trips.filter(tr => tr.isRunning)
 
@@ -132,9 +132,9 @@ export default [
         // at the commuter's chosen stop
 
         const tripStopFilter =
-          windowType === "firstStop"
+          windowType === 'firstStop'
             ? t => trip.tripStops[0].time.getTime() + windowSize > now
-            : windowType === "stop"
+            : windowType === 'stop'
               ? t => t.time.getTime() + windowSize > now
               : t => t.time.getTime() > now
 
@@ -154,15 +154,15 @@ export default [
       }
     }
 
-    const showHelpPopup = function showHelpPopup() {
+    const showHelpPopup = function showHelpPopup () {
       multipleDatePopup = $ionicPopup.show({
-        title: "Tap to select multiple days",
+        title: 'Tap to select multiple days',
         template: tapToSelectMultipleDaysTemplate,
         buttons: [
           {
-            text: "OK",
-            type: "button-positive",
-            onTap: function(e) {
+            text: 'OK',
+            type: 'button-positive',
+            onTap: function (e) {
               closePopup()
             },
           },
@@ -170,14 +170,14 @@ export default [
       })
     }
 
-    const closePopup = function closePopup() {
+    const closePopup = function closePopup () {
       multipleDatePopup.close()
     }
 
     // get whole range of dates in the month
-    const getFullMonthDates = function getFullMonthDates(oneUTCDateInMonth) {
+    const getFullMonthDates = function getFullMonthDates (oneUTCDateInMonth) {
       // Tue Aug 23 2444 08:00:00 GMT+0800 (SGT)
-      let endOfMonth = moment(oneUTCDateInMonth).endOf("month")
+      let endOfMonth = moment(oneUTCDateInMonth).endOf('month')
       let lastDate = endOfMonth.date()
       let fullMonthDates = []
       for (let i = 1; i <= lastDate; i++) {
@@ -193,7 +193,7 @@ export default [
     let multipleDatePopup = null
     const routePromise = loadRoutes()
     const ridesRemainingPromise = RoutesService.fetchRoutePassCount()
-    $q.all([routePromise, ridesRemainingPromise]).then(function(values) {
+    $q.all([routePromise, ridesRemainingPromise]).then(function (values) {
       let ridesRemainingMap = values[1]
       $scope.book.route.ridesRemaining = ridesRemainingMap[routeId]
     })
@@ -204,16 +204,16 @@ export default [
     // always load the tickets and reset pickWholeMonth & selectedDatesMoments
     // in case of view history
     // e.g. booking-stop => booking.dates => booking.summary => booking.dates => booking.stop
-    $scope.$on("$ionicView.enter", function() {
+    $scope.$on('$ionicView.enter', function () {
       $scope.book.pickWholeMonth = null
-      $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
-        .split(",")
+      $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '')
+        .split(',')
         .filter(ms => !isNaN(parseInt(ms)))
         .map(ms => moment(parseInt(ms)))
       loadTickets()
     })
 
-    $scope.$on("$ionicView.beforeLeave", function() {
+    $scope.$on('$ionicView.beforeLeave', function () {
       /* Correct flow should be booking-stop => booking.dates =>
        * select dates => booking.summary => booking.dates (with dates selected)
        * => booking-stop
@@ -225,8 +225,8 @@ export default [
        * route-dates.
        */
       if (
-        $ionicHistory.currentView().stateName === "tabs.route-dates" &&
-        $ionicHistory.backView().stateName === "tabs.route-dates"
+        $ionicHistory.currentView().stateName === 'tabs.route-dates' &&
+        $ionicHistory.backView().stateName === 'tabs.route-dates'
       ) {
         $ionicHistory.removeBackView()
       }
@@ -263,13 +263,13 @@ export default [
          * see the code in $scope.$on("$ionicView.beforeLeave").
          */
         $state.go(
-          ".",
+          '.',
           {
-            selectedDates: $scope.book.selectedDates.join(","),
+            selectedDates: $scope.book.selectedDates.join(','),
           },
           {
             notify: false,
-            location: "replace",
+            location: 'replace',
           }
         )
       },
@@ -277,7 +277,7 @@ export default [
     )
 
     $scope.$watchGroup(
-      ["disp.availabilityDays", "disp.previouslyBookedDays"],
+      ['disp.availabilityDays', 'disp.previouslyBookedDays'],
       ([availabilityDays, previouslyBookedDays]) => {
         $scope.disp.highlightDays = []
         $scope.disp.daysAllowed = []
@@ -292,19 +292,19 @@ export default [
           if (time in $scope.disp.previouslyBookedDays) {
             $scope.disp.highlightDays.push({
               date: timeMoment,
-              css: "previously-booked",
+              css: 'previously-booked',
               selectable: false,
             })
           } else if ($scope.disp.availabilityDays[time] <= 0) {
             $scope.disp.highlightDays.push({
               date: timeMoment,
-              css: "sold-out",
+              css: 'sold-out',
               selectable: false,
             })
           } else {
             $scope.disp.highlightDays.push({
               date: timeMoment,
-              css: "",
+              css: '',
               selectable: true,
             })
             $scope.disp.daysAllowed.push(timeMoment)
@@ -318,15 +318,15 @@ export default [
       }
     )
 
-    $scope.$on("priceCalculator.done", () => {
+    $scope.$on('priceCalculator.done', () => {
       $ionicScrollDelegate.resize()
     })
 
-    $scope.$watch("book.pickWholeMonth", pickWholeMonth => {
+    $scope.$watch('book.pickWholeMonth', pickWholeMonth => {
       // original value
       if (pickWholeMonth === null) {
-        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || "")
-          .split(",")
+        $scope.disp.selectedDatesMoments = ($stateParams.selectedDates || '')
+          .split(',')
           .filter(ms => !isNaN(parseInt(ms)))
           .map(ms => moment(parseInt(ms)))
       } else {
@@ -376,7 +376,7 @@ export default [
       showHelpPopup()
     }
 
-    $scope.logMonthChanged = function(newMonth, oldMonth) {
+    $scope.logMonthChanged = function (newMonth, oldMonth) {
       // if wholeMonthDates are all in selectedDatesMoments
       // mark pickWholeMonth = true , otherwise false
       let wholeMonthDates = getFullMonthDates(newMonth)

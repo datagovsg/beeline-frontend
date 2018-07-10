@@ -1,7 +1,7 @@
 /* eslint-disable angular/window-service */
 
 // Version follows '[date] comment' format
-const introSlidesVersion = "2017-02-20"
+const introSlidesVersion = '2017-02-20'
 
 /**
   * The other parameters we define is
@@ -13,134 +13,134 @@ const introSlidesVersion = "2017-02-20"
 **/
 
 export default [
-  "$stateProvider",
-  "$urlRouterProvider",
-  function($stateProvider, $urlRouterProvider) {
+  '$stateProvider',
+  '$urlRouterProvider',
+  function ($stateProvider, $urlRouterProvider) {
     $stateProvider
 
       // ////////////////////////////////////////////////////////////////////////////
       // Introductory slides
       // ////////////////////////////////////////////////////////////////////////////
-      .state("intro", {
-        url: "/intro",
-        templateUrl: "templates/intro-slides.html",
-        controller: "IntroSlidesController",
+      .state('intro', {
+        url: '/intro',
+        templateUrl: 'templates/intro-slides.html',
+        controller: 'IntroSlidesController',
       })
 
-      .state("tabs", {
-        url: "/tabs",
-        templateUrl: "templates/tabs.html",
-        controller: "TabsController",
+      .state('tabs', {
+        url: '/tabs',
+        templateUrl: 'templates/tabs.html',
+        controller: 'TabsController',
       })
 
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Routes Tab
       // ////////////////////////////////////////////////////////////////////////////
-      .state("tabs.routes", {
-        url: "/routes",
+      .state('tabs.routes', {
+        url: '/routes',
         views: {
           menuContent: {
-            templateUrl: "templates/routes-list.html",
-            controller: "RoutesListController",
+            templateUrl: 'templates/routes-list.html',
+            controller: 'RoutesListController',
           },
         },
       })
-      .state("tabs.yourRoutes", {
-        url: "/routes/yourRoutes",
+      .state('tabs.yourRoutes', {
+        url: '/routes/yourRoutes',
         views: {
           menuContent: {
-            templateUrl: "templates/routes-list.html",
-            controller: "RoutesListController",
+            templateUrl: 'templates/routes-list.html',
+            controller: 'RoutesListController',
           },
         },
       })
-      .state("tabs.route-detail", {
-        url: "/route/:routeId?pickupStopId&dropoffStopId",
+      .state('tabs.route-detail', {
+        url: '/route/:routeId?pickupStopId&dropoffStopId',
         views: {
           menuContent: {
-            templateUrl: "templates/route-detail.html",
-            controller: "RouteDetailController",
+            templateUrl: 'templates/route-detail.html',
+            controller: 'RouteDetailController',
           },
 
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "RouteDetailMapViewController",
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'RouteDetailMapViewController',
           },
         },
       })
-      .state("tabs.route-stops", {
-        url: "/route/:routeId/stops?type&stopId",
+      .state('tabs.route-stops', {
+        url: '/route/:routeId/stops?type&stopId',
         views: {
           menuContent: {
-            templateUrl: "templates/route-stops.html",
-            controller: "RouteStopsController",
+            templateUrl: 'templates/route-stops.html',
+            controller: 'RouteStopsController',
           },
 
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "MapViewController",
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'MapViewController',
           },
         },
         params: { callback: null },
       })
-      .state("tabs.route-dates", {
-        url: "/route/:routeId/dates?boardStop&alightStop&selectedDates",
+      .state('tabs.route-dates', {
+        url: '/route/:routeId/dates?boardStop&alightStop&selectedDates',
         views: {
           menuContent: {
-            templateUrl: "templates/tab-booking-dates.html",
-            controller: "BookingDatesController",
+            templateUrl: 'templates/tab-booking-dates.html',
+            controller: 'BookingDatesController',
           },
         },
       })
-      .state("tabs.route-summary", {
+      .state('tabs.route-summary', {
         url:
-          "/route/:routeId/summary?boardStop&alightStop&selectedDates&promoCode",
+          '/route/:routeId/summary?boardStop&alightStop&selectedDates&promoCode',
         views: {
           menuContent: {
-            templateUrl: "templates/tab-booking-summary.html",
-            controller: "BookingSummaryController",
+            templateUrl: 'templates/tab-booking-summary.html',
+            controller: 'BookingSummaryController',
           },
         },
       })
-      .state("tabs.route-confirmation", {
-        url: "/route/confirmation",
+      .state('tabs.route-confirmation', {
+        url: '/route/confirmation',
         views: {
           menuContent: {
-            templateUrl: "templates/tab-booking-confirmation.html",
-            controller: "BookingConfirmationController",
+            templateUrl: 'templates/tab-booking-confirmation.html',
+            controller: 'BookingConfirmationController',
           },
         },
       })
-      .state("tabs.lite-detail", {
-        url: "/lite/detail/:label",
+      .state('tabs.lite-detail', {
+        url: '/lite/detail/:label',
         views: {
           menuContent: {
-            templateUrl: "templates/tab-lite-detail.html",
-            controller: "LiteDetailController",
+            templateUrl: 'templates/tab-lite-detail.html',
+            controller: 'LiteDetailController',
           },
 
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "LiteMapViewController",
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'LiteMapViewController',
           },
         },
       })
-      .state("tabs.lite-more-info", {
-        url: "/lite/more-info/:label/:companyId/",
+      .state('tabs.lite-more-info', {
+        url: '/lite/more-info/:label/:companyId/',
         views: {
           menuContent: {
-            templateUrl: "templates/tab-lite-more-info.html",
-            controller: "LiteMoreInfoController",
+            templateUrl: 'templates/tab-lite-more-info.html',
+            controller: 'LiteMoreInfoController',
           },
         },
       })
 
-      .state("tabs.purchase-route-pass", {
-        url: "/routePass/:routeId/",
+      .state('tabs.purchase-route-pass', {
+        url: '/routePass/:routeId/',
         views: {
           menuContent: {
-            templateUrl: "templates/tab-purchase-route-pass.html",
-            controller: "PurchaseRoutePassController",
+            templateUrl: 'templates/tab-purchase-route-pass.html',
+            controller: 'PurchaseRoutePassController',
           },
         },
       })
@@ -148,12 +148,12 @@ export default [
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Tickets Tab
       // ////////////////////////////////////////////////////////////////////////////
-      .state("tabs.tickets", {
-        url: "/tickets",
+      .state('tabs.tickets', {
+        url: '/tickets',
         views: {
           menuContent: {
-            templateUrl: "templates/tickets.html",
-            controller: "TicketsController",
+            templateUrl: 'templates/tickets.html',
+            controller: 'TicketsController',
           },
         },
       })
@@ -162,40 +162,40 @@ export default [
       // Main interface, Crowdstart Tab
       // ////////////////////////////////////////////////////////////////////////////
 
-      .state("tabs.crowdstart-detail", {
-        url: "/crowdstart/:routeId/detail",
+      .state('tabs.crowdstart-detail', {
+        url: '/crowdstart/:routeId/detail',
         views: {
           menuContent: {
-            templateUrl: "templates/crowdstart-detail.html",
-            controller: "CrowdstartDetailController",
+            templateUrl: 'templates/crowdstart-detail.html',
+            controller: 'CrowdstartDetailController',
           },
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "MapViewController",
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'MapViewController',
           },
         },
       })
 
-      .state("tabs.crowdstart-stops", {
-        url: "/crowdstart/:routeId/stops",
+      .state('tabs.crowdstart-stops', {
+        url: '/crowdstart/:routeId/stops',
         views: {
           menuContent: {
-            templateUrl: "templates/crowdstart-stops.html",
-            controller: "CrowdstartStopsController",
+            templateUrl: 'templates/crowdstart-stops.html',
+            controller: 'CrowdstartStopsController',
           },
-          "map-area": {
-            templateUrl: "templates/map-view.html",
-            controller: "MapViewController",
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'MapViewController',
           },
         },
       })
 
-      .state("tabs.crowdstart-summary", {
-        url: "/crowdstart/:routeId/summary?bidPrice&bidded",
+      .state('tabs.crowdstart-summary', {
+        url: '/crowdstart/:routeId/summary?bidPrice&bidded',
         views: {
           menuContent: {
-            templateUrl: "templates/crowdstart-summary.html",
-            controller: "CrowdstartSummaryController",
+            templateUrl: 'templates/crowdstart-summary.html',
+            controller: 'CrowdstartSummaryController',
           },
         },
       })
@@ -203,21 +203,21 @@ export default [
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Settings Tab
       // ////////////////////////////////////////////////////////////////////////////
-      .state("tabs.settings", {
-        url: "/settings",
+      .state('tabs.settings', {
+        url: '/settings',
         views: {
           menuContent: {
-            templateUrl: "templates/settings.html",
-            controller: "SettingsController",
+            templateUrl: 'templates/settings.html',
+            controller: 'SettingsController',
           },
         },
       })
-      .state("tabs.booking-history", {
-        url: "/settings/booking-history",
+      .state('tabs.booking-history', {
+        url: '/settings/booking-history',
         views: {
           menuContent: {
-            templateUrl: "templates/booking-history.html",
-            controller: "BookingHistoryController",
+            templateUrl: 'templates/booking-history.html',
+            controller: 'BookingHistoryController',
           },
         },
       })
@@ -231,13 +231,13 @@ export default [
     ) {
       // user is logged in
       if (window.localStorage.sessionToken && window.localStorage.beelineUser) {
-        $urlRouterProvider.otherwise("/tabs/routes/yourRoutes")
+        $urlRouterProvider.otherwise('/tabs/routes/yourRoutes')
       } else {
-        $urlRouterProvider.otherwise("/tabs/routes")
+        $urlRouterProvider.otherwise('/tabs/routes')
       }
     } else {
       window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
-      $urlRouterProvider.otherwise("/intro")
+      $urlRouterProvider.otherwise('/intro')
     }
   },
 ]

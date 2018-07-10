@@ -1,11 +1,11 @@
-angular.module("beeline").directive("mapBusIcon", [
-  "RotatedImage",
-  function(RotatedImage) {
-    const busIconImage = new RotatedImage("./img/busTop-small.png")
+angular.module('beeline').directive('mapBusIcon', [
+  'RotatedImage',
+  function (RotatedImage) {
+    const busIconImage = new RotatedImage('./img/busTop-small.png')
 
     return {
       replace: false,
-      restrict: "E",
+      restrict: 'E',
       template: `
       <ui-gmap-marker ng-if="icon"
                       coords="coordinates"
@@ -13,13 +13,13 @@ angular.module("beeline").directive("mapBusIcon", [
                       icon="icon"></ui-gmap-marker>
       `,
       scope: {
-        pings: "<",
-        idkey: "<",
-        overlay: "<",
+        pings: '<',
+        idkey: '<',
+        overlay: '<',
       },
       controller: [
-        "$scope",
-        function($scope) {
+        '$scope',
+        function ($scope) {
           $scope.bearing = null
           $scope.busIcon = null
           $scope.icon = null
@@ -40,8 +40,8 @@ angular.module("beeline").directive("mapBusIcon", [
 
           $scope.$watchGroup(
             [
-              "pings",
-              () => typeof google !== "undefined" && busIconImage.loaded,
+              'pings',
+              () => typeof google !== 'undefined' && busIconImage.loaded,
             ],
             ([pings, gapi]) => {
               // Do not update if google maps is not loaded (we need Size and Point)
@@ -54,7 +54,7 @@ angular.module("beeline").directive("mapBusIcon", [
                 $scope.bearing !== null &&
                 Math.abs($scope.bearing - bearing) < 0.1
                   ? $scope.busIcon
-                  : busIconImage.rotate(bearing, $scope.overlay || "")
+                  : busIconImage.rotate(bearing, $scope.overlay || '')
 
               $scope.busIcon = busIcon
               $scope.icon = {
@@ -72,7 +72,7 @@ angular.module("beeline").directive("mapBusIcon", [
       ],
     }
 
-    function bearingFromPings(pings) {
+    function bearingFromPings (pings) {
       if (pings.length < 2) {
         return 0.75 * 2 * Math.PI // DEFAULT - 270°
       }
@@ -89,7 +89,7 @@ angular.module("beeline").directive("mapBusIcon", [
       }
     }
 
-    function lngLatDistance(ll1, ll2) {
+    function lngLatDistance (ll1, ll2) {
       let rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
       let rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
 
@@ -100,7 +100,7 @@ angular.module("beeline").directive("mapBusIcon", [
       return dist
     }
 
-    function bearingFromLngLats(ll1, ll2) {
+    function bearingFromLngLats (ll1, ll2) {
       let rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
       let rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
 

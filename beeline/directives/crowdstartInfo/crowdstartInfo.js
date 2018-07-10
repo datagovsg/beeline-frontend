@@ -3,16 +3,16 @@
 // passHide hides the pass in summary page
 // preorderHide hides the info about asking user to "preorder", takes effect in recap page
 
-angular.module("beeline").directive("crowdstartInfo", function() {
+angular.module('beeline').directive('crowdstartInfo', function () {
   return {
-    template: require("./crowdstartInfo.html"),
-    restrict: "E",
+    template: require('./crowdstartInfo.html'),
+    restrict: 'E',
     replace: false,
     scope: {
-      route: "<",
-      passHide: "<?",
-      preorderHide: "<?",
-      contentHide: "<?",
+      route: '<',
+      passHide: '<?',
+      preorderHide: '<?',
+      contentHide: '<?',
     },
   }
 })

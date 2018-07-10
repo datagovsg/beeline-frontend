@@ -1,19 +1,19 @@
-import expiryModalTemplate from "./routePassExpiryModal.html"
-import _ from "lodash"
-import moment from "moment"
+import expiryModalTemplate from './routePassExpiryModal.html'
+import _ from 'lodash'
+import moment from 'moment'
 
-angular.module("beeline").directive("routePassExpiryModal", [
-  "$stateParams",
-  "RoutesService",
-  function($stateParams, RoutesService) {
+angular.module('beeline').directive('routePassExpiryModal', [
+  '$stateParams',
+  'RoutesService',
+  function ($stateParams, RoutesService) {
     return {
-      restrict: "E",
+      restrict: 'E',
       template: expiryModalTemplate,
       scope: {
-        routeId: "@",
-        modal: "=",
+        routeId: '@',
+        modal: '=',
       },
-      link: function(scope, element, attributes) {
+      link: function (scope, element, attributes) {
         scope.$watchGroup(
           [
             () => RoutesService.getRoutePassTags(),
@@ -36,8 +36,8 @@ angular.module("beeline").directive("routePassExpiryModal", [
               let expiresOn = moment(expiryDate)
               let expiresIn = expiresOn
                 .clone()
-                .add(1, "days")
-                .diff(moment(), "days")
+                .add(1, 'days')
+                .diff(moment(), 'days')
 
               expiryInfo.push({
                 expiresIn,

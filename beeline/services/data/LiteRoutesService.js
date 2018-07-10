@@ -4,15 +4,15 @@
 // retrieve lists of trips running for certain lite route on certain date
 // driver pings for list of trips running for this route
 // subscriptions for certain lite route ( this may go to tickets service)
-import querystring from "querystring"
-import moment from "moment"
-import assert from "assert"
+import querystring from 'querystring'
+import moment from 'moment'
+import assert from 'assert'
 
-angular.module("beeline").factory("LiteRoutesService", [
-  "RequestService",
-  "LiteRouteSubscriptionService",
-  "p",
-  function LiteRoutesService(RequestService, LiteRouteSubscriptionService, p) {
+angular.module('beeline').factory('LiteRoutesService', [
+  'RequestService',
+  'LiteRouteSubscriptionService',
+  'p',
+  function LiteRoutesService (RequestService, LiteRouteSubscriptionService, p) {
     let liteRoutesCache
 
     // For single lite route
@@ -26,7 +26,7 @@ angular.module("beeline").factory("LiteRoutesService", [
     // But limits the amount of data retrieved
     // getRoutes() now returns a list of routes, but with very limited
     // trip data (limited to 5 trips, no path)
-    const fetchLiteRoutes = function fetchLiteRoutes(ignoreCache) {
+    const fetchLiteRoutes = function fetchLiteRoutes (ignoreCache) {
       if (liteRoutesCache && !ignoreCache) {
         return liteRoutesCache
       }
@@ -36,8 +36,8 @@ angular.module("beeline").factory("LiteRoutesService", [
         : {}
 
       let liteRoutesPromise = RequestService.beeline({
-        method: "GET",
-        url: "/routes/lite?" + querystring.stringify(finalOptions),
+        method: 'GET',
+        url: '/routes/lite?' + querystring.stringify(finalOptions),
       }).then(response => {
         liteRoutes = response.data
         return liteRoutes
@@ -49,11 +49,11 @@ angular.module("beeline").factory("LiteRoutesService", [
       return liteRoutesPromise
     }
 
-    const fetchLiteRoute = function fetchLiteRoute(
+    const fetchLiteRoute = function fetchLiteRoute (
       liteRouteLabel,
       ignoreCache
     ) {
-      assert.equal(typeof liteRouteLabel, "string")
+      assert.equal(typeof liteRouteLabel, 'string')
 
       if (!ignoreCache && lastLiteRouteLabel === liteRouteLabel) {
         return lastLiteRoutePromise
@@ -61,12 +61,12 @@ angular.module("beeline").factory("LiteRoutesService", [
 
       lastLiteRouteLabel = liteRouteLabel
       return (lastLiteRoutePromise = RequestService.beeline({
-        method: "GET",
+        method: 'GET',
         url:
-          "/routes/lite?" +
+          '/routes/lite?' +
           querystring.stringify({
             label: liteRouteLabel,
-            startDate: moment().format("YYYY-MM-DD"),
+            startDate: moment().format('YYYY-MM-DD'),
             includePath: true,
           }),
       })
@@ -79,14 +79,14 @@ angular.module("beeline").factory("LiteRoutesService", [
     return {
       fetchLiteRoutes,
       fetchLiteRoute,
-      getLiteRoutes: function() {
+      getLiteRoutes: function () {
         return liteRoutes
       },
-      subscribeLiteRoute: function(liteRouteLabel) {
+      subscribeLiteRoute: function (liteRouteLabel) {
         let subscribePromise = RequestService.beeline({
-          method: "POST",
+          method: 'POST',
           url: `/routes/lite/${liteRouteLabel}/subscription`,
-        }).then(function(response) {
+        }).then(function (response) {
           shouldRefreshLiteTickets = true
           if (response.data) {
             LiteRouteSubscriptionService.getSubscriptionSummary().push(
@@ -99,11 +99,11 @@ angular.module("beeline").factory("LiteRoutesService", [
         })
         return subscribePromise
       },
-      unsubscribeLiteRoute: function(liteRouteLabel) {
+      unsubscribeLiteRoute: function (liteRouteLabel) {
         let unsubscribePromise = RequestService.beeline({
-          method: "DELETE",
+          method: 'DELETE',
           url: `/routes/lite/${liteRouteLabel}/subscription`,
-        }).then(function(response) {
+        }).then(function (response) {
           shouldRefreshLiteTickets = true
           if (response.data) {
             let index = LiteRouteSubscriptionService.getSubscriptionSummary().indexOf(
@@ -120,11 +120,11 @@ angular.module("beeline").factory("LiteRoutesService", [
         })
         return unsubscribePromise
       },
-      getShouldRefreshLiteTickets: function() {
+      getShouldRefreshLiteTickets: function () {
         return shouldRefreshLiteTickets
       },
 
-      clearShouldRefreshLiteTickets: function() {
+      clearShouldRefreshLiteTickets: function () {
         shouldRefreshLiteTickets = false
       },
     }

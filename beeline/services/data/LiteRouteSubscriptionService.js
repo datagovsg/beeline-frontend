@@ -1,30 +1,30 @@
-import assert from "assert"
+import assert from 'assert'
 
-angular.module("beeline").factory("LiteRouteSubscriptionService", [
-  "UserService",
-  "RequestService",
-  "$q",
-  function LiteRouteSubscriptionService(UserService, RequestService, $q) {
+angular.module('beeline').factory('LiteRouteSubscriptionService', [
+  'UserService',
+  'RequestService',
+  '$q',
+  function LiteRouteSubscriptionService (UserService, RequestService, $q) {
     let LiteRouteSubscriptionCache = null
     let liteRouteSubscriptionsSummary = []
 
-    UserService.userEvents.on("userChanged", () => {
+    UserService.userEvents.on('userChanged', () => {
       instance.getSubscriptions(true)
     })
 
     let instance = {
-      getSubscriptionSummary: function() {
+      getSubscriptionSummary: function () {
         return liteRouteSubscriptionsSummary
       },
 
-      getSubscriptions: function(ignoreCache) {
+      getSubscriptions: function (ignoreCache) {
         if (UserService.getUser()) {
           if (LiteRouteSubscriptionCache && !ignoreCache) {
             return liteRouteSubscriptionsSummary
           }
           return (LiteRouteSubscriptionCache = RequestService.beeline({
-            method: "GET",
-            url: "/routes/lite/subscriptions",
+            method: 'GET',
+            url: '/routes/lite/subscriptions',
           }).then(response => {
             liteRouteSubscriptionsSummary = response.data.map(
               subs => subs.routeLabel
@@ -37,7 +37,7 @@ angular.module("beeline").factory("LiteRouteSubscriptionService", [
         }
       },
 
-      isSubscribed: async function(label, ignoreCache) {
+      isSubscribed: async function (label, ignoreCache) {
         let subscriptions = await this.getSubscriptions(ignoreCache)
         assert(subscriptions)
 

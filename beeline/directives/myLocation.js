@@ -1,6 +1,6 @@
-angular.module("beeline").directive("myLocation", [
-  "uiGmapGoogleMapApi",
-  function(uiGmapGoogleMapApi) {
+angular.module('beeline').directive('myLocation', [
+  'uiGmapGoogleMapApi',
+  function (uiGmapGoogleMapApi) {
     return {
       template: `
   <ui-gmap-circle ng-if="coords" idkey="idkey1" center="coords" radius="radius"
@@ -10,19 +10,19 @@ angular.module("beeline").directive("myLocation", [
       `,
 
       scope: true,
-      link(scope, elem, attr) {
+      link (scope, elem, attr) {
         scope.coords = null // Null until location is available
         scope.markerOptions = {
           zIndex: 2,
         }
         scope.accuracyOptions = {
           stroke: {
-            color: "#3E82F7",
+            color: '#3E82F7',
             opacity: 0.4,
             weight: 1,
           },
           fill: {
-            color: "#3E82F7",
+            color: '#3E82F7',
             opacity: 0.2,
           },
           options: {},
@@ -33,7 +33,7 @@ angular.module("beeline").directive("myLocation", [
 
         uiGmapGoogleMapApi.then(googleMaps => {
           scope.markerOptions.icon = {
-            url: "img/userLocation.svg",
+            url: 'img/userLocation.svg',
             anchor: new googleMaps.Point(6, 6),
           }
 
@@ -55,7 +55,7 @@ angular.module("beeline").directive("myLocation", [
             }
           )
 
-          scope.$on("destroy", () => {
+          scope.$on('destroy', () => {
             navigator.geolocation.clearWatch(watch)
           })
         })

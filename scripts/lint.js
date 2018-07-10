@@ -1,4 +1,4 @@
-const shell = require("shelljs")
+const shell = require('shelljs')
 shell.exec('printf "Linting the following JS files in this branch:\n\n"', {
   async: false,
 })

@@ -1,14 +1,14 @@
-import assert from "assert"
+import assert from 'assert'
 
 export class SafeInterval {
-  constructor(fn, interval, retryTimeout) {
+  constructor (fn, interval, retryTimeout) {
     this.isRunning = false
     this.timeout = null
 
     retryTimeout = retryTimeout || interval
 
     // fn returns a Promise
-    this.loop = function() {
+    this.loop = function () {
       this.timeout = null
 
       let promise = (this.currentPromise = fn())
@@ -28,14 +28,14 @@ export class SafeInterval {
     }.bind(this)
   }
 
-  stop() {
+  stop () {
     this.isRunning = false
     if (this.timeout !== null) {
       clearTimeout(this.timeout)
     }
   }
 
-  start() {
+  start () {
     if (this.isRunning) return
     this.isRunning = true
     this.loop()

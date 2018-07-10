@@ -1,4 +1,4 @@
-import assert from "assert"
+import assert from 'assert'
 
 /**
  * A scheduler used to trigger a Promise both immediately and at the given time
@@ -10,12 +10,12 @@ export class SafeScheduler {
    * @param {Function} fn - a 0-arg callback returning a Promise
    * @param {Number} millis - a timestamp representing when fn should be called again
    */
-  constructor(fn, millis) {
+  constructor (fn, millis) {
     this.isRunning = false
     this.timeout = null
 
     // fn returns a Promise
-    this.loop = function() {
+    this.loop = function () {
       this.timeout = null
 
       fn()
@@ -35,7 +35,7 @@ export class SafeScheduler {
   /**
    * Stops the scheduler from triggering
    */
-  stop() {
+  stop () {
     this.isRunning = false
     if (this.timeout !== null) {
       clearTimeout(this.timeout)
@@ -45,7 +45,7 @@ export class SafeScheduler {
   /**
    * Starts the scheduler, which will trigger at the given time
    */
-  start() {
+  start () {
     assert(!this.isRunning)
     this.isRunning = true
     this.loop()

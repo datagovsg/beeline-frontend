@@ -1,10 +1,10 @@
-import { timeSinceMidnight } from "../shared/format"
-import _ from "lodash"
+import { timeSinceMidnight } from '../shared/format'
+import _ from 'lodash'
 
-angular.module("common").service("BookingService", [
-  "RequestService",
-  function BookingService(RequestService) {
-    this.getTripsFromBooking = function(booking) {
+angular.module('common').service('BookingService', [
+  'RequestService',
+  function BookingService (RequestService) {
+    this.getTripsFromBooking = function (booking) {
       return booking.selectedDates.map(dt => {
         return {
           tripId: booking.route.tripsByDate[dt].id,
@@ -21,7 +21,7 @@ angular.module("common").service("BookingService", [
     /* If a booking has selectedDates array, then it
       checks the prices.
     */
-    this.computePriceInfo = function(booking) {
+    this.computePriceInfo = function (booking) {
       if (!booking.selectedDates || booking.selectedDates.length == 0) {
         return Promise.resolve({
           total: 0,
@@ -30,11 +30,11 @@ angular.module("common").service("BookingService", [
         let trips = this.getTripsFromBooking(booking)
 
         let rv = RequestService.beeline({
-          method: "POST",
-          url: "/transactions/tickets/quote",
+          method: 'POST',
+          url: '/transactions/tickets/quote',
           data: {
             trips: trips,
-            promoCode: { code: booking.promoCode || "" },
+            promoCode: { code: booking.promoCode || '' },
             applyRoutePass: !!booking.applyRoutePass,
             groupItemsByType: true,
           },
@@ -54,7 +54,7 @@ angular.module("common").service("BookingService", [
       }
     }
 
-    this.summarizePrices = function(booking) {
+    this.summarizePrices = function (booking) {
       if (!booking.selectedDates) {
         return []
       }
@@ -72,7 +72,7 @@ angular.module("common").service("BookingService", [
       })
     }
 
-    this.getStopsFromTrips = function(trips) {
+    this.getStopsFromTrips = function (trips) {
       let tripStops = _.flatten(trips.map(trip => trip.tripStops))
       let uniqueStops = _.uniqBy(tripStops, ts => ts.stop.id)
 

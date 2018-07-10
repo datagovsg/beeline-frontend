@@ -1,24 +1,24 @@
-import ticketDetailModalTemplate from "../templates/ticket-detail-modal.html"
-import expiryModalTemplate from "../templates/route-pass-expiry-modal.html"
+import ticketDetailModalTemplate from '../templates/ticket-detail-modal.html'
+import expiryModalTemplate from '../templates/route-pass-expiry-modal.html'
 
 export default [
-  "$scope",
-  "$state",
-  "$stateParams",
-  "$ionicLoading",
-  "$ionicModal",
-  "$ionicPopup",
-  "$rootScope",
-  "UserService",
-  "RoutesService",
-  "BookingService",
-  "CompanyService",
-  "FastCheckoutService",
-  "MapService",
-  "TicketService",
-  "TripService",
-  "$ionicHistory",
-  function(
+  '$scope',
+  '$state',
+  '$stateParams',
+  '$ionicLoading',
+  '$ionicModal',
+  '$ionicPopup',
+  '$rootScope',
+  'UserService',
+  'RoutesService',
+  'BookingService',
+  'CompanyService',
+  'FastCheckoutService',
+  'MapService',
+  'TicketService',
+  'TripService',
+  '$ionicHistory',
+  function (
     $scope,
     $state,
     $stateParams,
@@ -39,26 +39,26 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
-    const initTicketModal = function initTicketModal() {
+    const initTicketModal = function initTicketModal () {
       let scope = $rootScope.$new()
       scope.ticketId = $scope.data.nextTripTicketId
       scope.functions = {}
       $scope.modalFunctions = scope.functions
       let modal = $ionicModal.fromTemplate(ticketDetailModalTemplate, {
         scope: scope,
-        animation: "slide-in-up",
+        animation: 'slide-in-up',
       })
       scope.modal = modal
       return modal
     }
 
-    const initExpiryModal = function initExpiryModal() {
+    const initExpiryModal = function initExpiryModal () {
       let scope = $rootScope.$new()
       scope.routeId = $scope.data.routeId
 
       let modal = $ionicModal.fromTemplate(expiryModalTemplate, {
         scope,
-        animation: "slide-in-up",
+        animation: 'slide-in-up',
       })
 
       scope.modal = modal
@@ -121,7 +121,7 @@ export default [
     // -------------------------------------------------------------------------
     // Ionic Events
     // -------------------------------------------------------------------------
-    $scope.$on("$ionicView.enter", function() {
+    $scope.$on('$ionicView.enter', function () {
       if ($ionicHistory.backView()) {
         $scope.disp.showHamburger = false
       } else {
@@ -132,7 +132,7 @@ export default [
     // Load the route information
     // Show a loading overlay while we wait
     // force reload when revisit the same route
-    $scope.$on("$ionicView.afterEnter", () => {
+    $scope.$on('$ionicView.afterEnter', () => {
       $ionicLoading.show({
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
       })
@@ -148,9 +148,9 @@ export default [
 
           if ($scope.data.hasNextTripTicket) {
             $scope.data.nextTripTicketId = $scope.data.nextTrip.nextTripTicketId
-            MapService.emit("ticketIdIsAvailable", $scope.data.nextTripTicketId)
+            MapService.emit('ticketIdIsAvailable', $scope.data.nextTripTicketId)
             // to inform RouteDetail to start the ping loop
-            $scope.$broadcast("enteringMyBookingRoute", {
+            $scope.$broadcast('enteringMyBookingRoute', {
               ticketId: $scope.data.nextTripTicketId,
             })
           }
@@ -181,10 +181,12 @@ export default [
           pickups = new Map(pickups.map(stop => [stop.id, stop]))
           dropoffs = new Map(dropoffs.map(stop => [stop.id, stop]))
           // if pickupStop is updated from 'tabs.route-stops' state
-          if (!$scope.data.pickupStop && pickupStopId)
+          if (!$scope.data.pickupStop && pickupStopId) {
             $scope.data.pickupStop = pickups.get(pickupStopId)
-          if (!$scope.data.dropoffStop && dropoffStopId)
+          }
+          if (!$scope.data.dropoffStop && dropoffStopId) {
             $scope.data.dropoffStop = dropoffs.get(dropoffStopId)
+          }
         })
         .catch(error => {
           $ionicLoading.hide()
@@ -196,9 +198,9 @@ export default [
     })
 
     // to inform ticketDetail.js to kill ping loop and deregister
-    $scope.$on("$ionicView.leave", () => {
+    $scope.$on('$ionicView.leave', () => {
       if ($scope.data.nextTripTicketId) {
-        $scope.$broadcast("leavingMyBookingRoute", {
+        $scope.$broadcast('leavingMyBookingRoute', {
           ticketId: $scope.data.nextTripTicketId,
         })
       }
@@ -208,9 +210,9 @@ export default [
     // UI Hooks
     // ------------------------------------------------------------------------
     $scope.choosePickup = () => {
-      $state.go("tabs.route-stops", {
+      $state.go('tabs.route-stops', {
         routeId: routeId,
-        type: "pickup",
+        type: 'pickup',
         // stopId: $scope.data.pickupStop.id,
         stopId: pickupStopId,
         callback: stop => {
@@ -220,9 +222,9 @@ export default [
     }
 
     $scope.chooseDropoff = () => {
-      $state.go("tabs.route-stops", {
+      $state.go('tabs.route-stops', {
         routeId: routeId,
-        type: "dropoff",
+        type: 'dropoff',
         // stopId: $scope.data.dropoffStop.id,
         stopId: dropoffStopId,
         callback: stop => {
@@ -232,7 +234,7 @@ export default [
     }
 
     $scope.buyMore = () => {
-      $state.go("tabs.purchase-route-pass", {
+      $state.go('tabs.purchase-route-pass', {
         routeId,
       })
     }
@@ -251,7 +253,7 @@ export default [
     // Watchers
     // ------------------------------------------------------------------------
     // re-verify the fastCheckout once user is logged in
-    UserService.userEvents.on("userChanged", () => {
+    UserService.userEvents.on('userChanged', () => {
       FastCheckoutService.verify(routeId).then(response => {
         $scope.data.nextTrip = response
       })
@@ -268,16 +270,16 @@ export default [
     $scope.$watch(
       () => UserService.getUser(),
       user => {
-        $scope.data.isLoggedIn = user ? true : false
+        $scope.data.isLoggedIn = !!user
         if (user) {
           $scope.data.user = user
         }
       }
     )
 
-    $scope.$watch("data.pickupStop", ps => {
+    $scope.$watch('data.pickupStop', ps => {
       if (ps) {
-        MapService.emit("board-stop-selected", { stop: ps })
+        MapService.emit('board-stop-selected', { stop: ps })
         if (
           $scope.data.nextTripStopIds &&
           $scope.data.nextTripStopIds.indexOf(ps.id) === -1
@@ -289,9 +291,9 @@ export default [
       }
     })
 
-    $scope.$watch("data.dropoffStop", ds => {
+    $scope.$watch('data.dropoffStop', ds => {
       if (ds) {
-        MapService.emit("alight-stop-selected", { stop: ds })
+        MapService.emit('alight-stop-selected', { stop: ds })
         if (
           $scope.data.nextTripStopIds &&
           $scope.data.nextTripStopIds.indexOf(ds.id) === -1

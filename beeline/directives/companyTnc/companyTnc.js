@@ -1,20 +1,20 @@
-angular.module("beeline").directive("companyTnc", [
-  "CompanyService",
-  "$q",
-  function companyTnc(CompanyService, $q) {
+angular.module('beeline').directive('companyTnc', [
+  'CompanyService',
+  '$q',
+  function companyTnc (CompanyService, $q) {
     return {
-      template: require("./companyTnc.html"),
+      template: require('./companyTnc.html'),
       replace: false,
       scope: {
-        companyId: "=",
-        features: "=",
-        operatedHide: "<?",
-        notesHide: "<?",
+        companyId: '=',
+        features: '=',
+        operatedHide: '<?',
+        notesHide: '<?',
       },
-      link: function(scope, elem, attr) {
+      link: function (scope, elem, attr) {
         scope.company = {}
 
-        scope.$watch("companyId", function() {
+        scope.$watch('companyId', function () {
           if (!scope.companyId) {
             scope.company = null
             return
@@ -22,7 +22,7 @@ angular.module("beeline").directive("companyTnc", [
 
           CompanyService.getCompany(scope.companyId).then(company => {
             scope.company = company
-            scope.$emit("companyTnc.done")
+            scope.$emit('companyTnc.done')
             return company
           })
         })

@@ -1,26 +1,26 @@
-import { SafeScheduler } from "../SafeScheduler"
+import { SafeScheduler } from '../SafeScheduler'
 
 // since it's broker, we allow 2-way binding for now and
 // view update the data model which controll relies on
-angular.module("beeline").directive("dailyTripsBroker", [
-  "LiteRoutesService",
-  "$timeout",
-  function(LiteRoutesService, $timeout) {
+angular.module('beeline').directive('dailyTripsBroker', [
+  'LiteRoutesService',
+  '$timeout',
+  function (LiteRoutesService, $timeout) {
     return {
       replace: true,
-      restrict: "E",
-      template: "",
+      restrict: 'E',
+      template: '',
       scope: {
-        tripLabel: "<",
-        dailyTripIds: "=",
-        inServiceWindow: "=",
+        tripLabel: '<',
+        dailyTripIds: '=',
+        inServiceWindow: '=',
       },
-      link: function(scope, element, attributes) {
+      link: function (scope, element, attributes) {
         let timeout
 
         scope.dailyTripIds = null
 
-        scope.$watch("tripLabel", label => {
+        scope.$watch('tripLabel', label => {
           if (timeout) timeout.stop()
 
           if (!label) {
@@ -31,7 +31,7 @@ angular.module("beeline").directive("dailyTripsBroker", [
            * Schedules the changing of scope.inServiceWindow
            * @param {Object} route - the route
            */
-          const scheduleServiceWindowChanges = function scheduleServiceWindowChanges(
+          const scheduleServiceWindowChanges = function scheduleServiceWindowChanges (
             route
           ) {
             scope.inServiceWindow = false
@@ -62,7 +62,7 @@ angular.module("beeline").directive("dailyTripsBroker", [
               scope.serviceBegin = scheduleStateChange(true, startMillis)
               scope.serviceBegin.start()
 
-              scope.$on("$destroy", () => {
+              scope.$on('$destroy', () => {
                 if (scope.serviceBegin) scope.serviceBegin.stop()
               })
             }
@@ -71,7 +71,7 @@ angular.module("beeline").directive("dailyTripsBroker", [
               scope.serviceEnd = scheduleStateChange(false, endMillis)
               scope.serviceEnd.start()
 
-              scope.$on("$destroy", () => {
+              scope.$on('$destroy', () => {
                 if (scope.serviceEnd) scope.serviceEnd.stop()
               })
             }
@@ -83,7 +83,7 @@ angular.module("beeline").directive("dailyTripsBroker", [
            * @return {Promise} the promise fetching the route and
            * extracting the relevant information
            */
-          const grabTrips = function grabTrips(label) {
+          const grabTrips = function grabTrips (label) {
             return LiteRoutesService.fetchLiteRoute(label, true).then(
               response => {
                 let route = response[scope.tripLabel]
@@ -99,7 +99,7 @@ angular.module("beeline").directive("dailyTripsBroker", [
           timeout.start()
         })
 
-        scope.$on("$destroy", () => {
+        scope.$on('$destroy', () => {
           if (timeout) timeout.stop()
         })
       },

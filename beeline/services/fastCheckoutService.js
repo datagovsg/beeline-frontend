@@ -1,22 +1,22 @@
-import { retriveNextTrip } from "../shared/util"
-import _ from "lodash"
+import { retriveNextTrip } from '../shared/util'
+import _ from 'lodash'
 
-angular.module("beeline").factory("FastCheckoutService", [
-  "RoutesService",
-  "UserService",
-  "TicketService",
-  "$ionicLoading",
-  function fastCheckoutService(
+angular.module('beeline').factory('FastCheckoutService', [
+  'RoutesService',
+  'UserService',
+  'TicketService',
+  '$ionicLoading',
+  function fastCheckoutService (
     RoutesService,
     UserService,
     TicketService,
     $ionicLoading
   ) {
-    const routeQualifiedForRoutePass = function routeQualifiedForRoutePass(
+    const routeQualifiedForRoutePass = function routeQualifiedForRoutePass (
       route
     ) {
       if (route && route.tags) {
-        let rpList = route.tags.filter(tag => tag.includes("rp-"))
+        let rpList = route.tags.filter(tag => tag.includes('rp-'))
         return (
           rpList &&
           rpList.length === 1 &&
@@ -27,12 +27,12 @@ angular.module("beeline").factory("FastCheckoutService", [
       }
     }
 
-    const verify = function verify(routeId) {
+    const verify = function verify (routeId) {
       return new Promise(async (resolve, reject) => {
         let route = await RoutesService.getRoute(routeId, true)
         let nextTrip = retriveNextTrip(route)
         if (nextTrip === null) {
-          return reject("There is no next trip")
+          return reject('There is no next trip')
         }
         let seatsAvailable =
           nextTrip &&
@@ -73,7 +73,7 @@ angular.module("beeline").factory("FastCheckoutService", [
         })
         if (hasNextTripTicket === true || seatsAvailable === false) {
           nextTrip.errorMessage =
-            "Next Trip is not available or user already purchased"
+            'Next Trip is not available or user already purchased'
         }
         return resolve(nextTrip)
       })

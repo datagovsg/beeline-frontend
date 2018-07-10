@@ -1,12 +1,12 @@
-import _ from "lodash"
-import assert from "assert"
-import querystring from "querystring"
+import _ from 'lodash'
+import assert from 'assert'
+import querystring from 'querystring'
 
-angular.module("beeline").factory("TicketService", [
-  "UserService",
-  "RequestService",
-  "p",
-  function TicketService(UserService, RequestService, p) {
+angular.module('beeline').factory('TicketService', [
+  'UserService',
+  'RequestService',
+  'p',
+  function TicketService (UserService, RequestService, p) {
     let ticketsCache = null
     let allTickets = null
     let ticketsByRouteId = null
@@ -15,20 +15,20 @@ angular.module("beeline").factory("TicketService", [
     // set to false once getCategorizedTickets is called
     let shouldRefreshTickets = false
 
-    UserService.userEvents.on("userChanged", () => {
+    UserService.userEvents.on('userChanged', () => {
       fetchTickets(true)
     })
 
-    function fetchTickets(ignoreCache) {
+    function fetchTickets (ignoreCache) {
       if (ticketsCache && !ignoreCache) return ticketsCache
-      let url = "/tickets"
+      let url = '/tickets'
       if (p.transportCompanyId) {
         url +=
-          "?" +
+          '?' +
           querystring.stringify({ transportCompanyId: p.transportCompanyId })
       }
       return (ticketsCache = RequestService.beeline({
-        method: "GET",
+        method: 'GET',
         url: url,
       }).then(response => {
         ticketsByRouteId = _.groupBy(
@@ -40,27 +40,27 @@ angular.module("beeline").factory("TicketService", [
     }
 
     return {
-      getShouldRefreshTickets: function() {
+      getShouldRefreshTickets: function () {
         return shouldRefreshTickets
       },
 
-      setShouldRefreshTickets: function() {
+      setShouldRefreshTickets: function () {
         shouldRefreshTickets = true
       },
 
       fetchTickets: fetchTickets,
 
-      getTickets: function() {
+      getTickets: function () {
         return allTickets
       },
 
-      getTicketsByRouteId(rid, ignoreCache) {
+      getTicketsByRouteId (rid, ignoreCache) {
         return this.fetchTickets(ignoreCache).then(() => {
           return ticketsByRouteId[rid]
         })
       },
 
-      fetchPreviouslyBookedDaysByRouteId: function(rid, ignoreCache) {
+      fetchPreviouslyBookedDaysByRouteId: function (rid, ignoreCache) {
         return this.getTicketsByRouteId(rid, ignoreCache).then(tickets => {
           let dates =
             _.keyBy(tickets, t => new Date(t.boardStop.trip.date).getTime()) ||
@@ -69,28 +69,28 @@ angular.module("beeline").factory("TicketService", [
         })
       },
 
-      getTicketById: function(id, ignoreCache) {
-        assert.equal(typeof id, "number")
-        return this.fetchTickets(ignoreCache).then(function(tickets) {
+      getTicketById: function (id, ignoreCache) {
+        assert.equal(typeof id, 'number')
+        return this.fetchTickets(ignoreCache).then(function (tickets) {
           return _.find(tickets, { id: id })
         })
       },
 
-      getCategorizedTickets: function(ignoreCache) {
+      getCategorizedTickets: function (ignoreCache) {
         shouldRefreshTickets = false
-        return this.fetchTickets(ignoreCache).then(function(tickets) {
+        return this.fetchTickets(ignoreCache).then(function (tickets) {
           let now = new Date()
           let lastMidnight = now.setHours(0, 0, 0, 0)
           let nextMidnight = now.setHours(24, 0, 0, 0)
           let categorizedTickets = {}
-          categorizedTickets.today = tickets.filter(function(ticket) {
+          categorizedTickets.today = tickets.filter(function (ticket) {
             return (
               ticket.boardStop !== null &&
               Date.parse(ticket.boardStop.time) >= lastMidnight &&
               Date.parse(ticket.boardStop.time) < nextMidnight
             )
           })
-          categorizedTickets.afterToday = tickets.filter(function(ticket) {
+          categorizedTickets.afterToday = tickets.filter(function (ticket) {
             return (
               ticket.boardStop !== null &&
               Date.parse(ticket.boardStop.time) >= nextMidnight
@@ -100,7 +100,7 @@ angular.module("beeline").factory("TicketService", [
         })
       },
 
-      hasNextTripTicket: function(routeId, nextTripDateInMills) {
+      hasNextTripTicket: function (routeId, nextTripDateInMills) {
         return this.fetchPreviouslyBookedDaysByRouteId(routeId).then(dates => {
           return dates && _.includes(dates, nextTripDateInMills)
         })

@@ -1,11 +1,11 @@
-import loginModalTemplate from "../templates/login-modal.html"
+import loginModalTemplate from '../templates/login-modal.html'
 const VALID_PHONE_REGEX = /^[8-9]{1}[0-9]{7}$|^########$/
 
-angular.module("beeline").service("LoginDialog", [
-  "$rootScope",
-  "$ionicModal",
-  "Legalese",
-  function LoginDialog($rootScope, $ionicModal, Legalese) {
+angular.module('beeline').service('LoginDialog', [
+  '$rootScope',
+  '$ionicModal',
+  'Legalese',
+  function LoginDialog ($rootScope, $ionicModal, Legalese) {
     this.show = () => {
       let scope = $rootScope.$new()
       let loginModal = $ionicModal.fromTemplate(loginModalTemplate, {
@@ -20,12 +20,12 @@ angular.module("beeline").service("LoginDialog", [
       scope.data = {}
       scope.form = {}
 
-      function cleanup() {
+      function cleanup () {
         loginModal.remove()
       }
 
       let loginPromise = new Promise((resolve, reject) => {
-        scope.$on("modal.hidden", () => {
+        scope.$on('modal.hidden', () => {
           if (scope.reject) {
             scope.reject(null)
           }

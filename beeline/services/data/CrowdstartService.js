@@ -1,8 +1,8 @@
-import querystring from "querystring"
-import _ from "lodash"
-import { SafeInterval } from "../../SafeInterval"
+import querystring from 'querystring'
+import _ from 'lodash'
+import { SafeInterval } from '../../SafeInterval'
 
-let transformCrowdstartData = function(crowdstartRoutes) {
+let transformCrowdstartData = function (crowdstartRoutes) {
   if (!crowdstartRoutes) return null
   for (let crowdstart of crowdstartRoutes) {
     crowdstart.isActived = false
@@ -26,7 +26,7 @@ let transformCrowdstartData = function(crowdstartRoutes) {
     crowdstart.notes.tier = _.orderBy(
       crowdstart.notes.tier,
       x => x.price,
-      "desc"
+      'desc'
     )
     // if sb. commit $8, also commit $5
     // crowdstart.notes.tier[1].count += crowdstart.notes.tier[0].count;
@@ -50,8 +50,8 @@ let transformCrowdstartData = function(crowdstartRoutes) {
     }
 
     // isSuccess / isFailure
-    crowdstart.isFailed = crowdstart.tags.indexOf("failed") != -1
-    crowdstart.isSuccess = crowdstart.tags.indexOf("success") != -1
+    crowdstart.isFailed = crowdstart.tags.indexOf('failed') != -1
+    crowdstart.isSuccess = crowdstart.tags.indexOf('success') != -1
     crowdstart.isConverted = crowdstart.isFailed || crowdstart.isSuccess
 
     // filter only isRunning trips
@@ -61,7 +61,7 @@ let transformCrowdstartData = function(crowdstartRoutes) {
       .orderBy(x => x.date)
       .value()
     // sort tripStops time in ascending order
-    _.forEach(crowdstart.trips, function(trip) {
+    _.forEach(crowdstart.trips, function (trip) {
       trip.tripStops = _.orderBy(trip.tripStops, stop => stop.time)
     })
 
@@ -79,29 +79,29 @@ let transformCrowdstartData = function(crowdstartRoutes) {
   return crowdstartRoutes
 }
 
-let updateStatus = function(route) {
+let updateStatus = function (route) {
   // status of crowdstart
-  route.status = ""
+  route.status = ''
   if (route.notes.tier[0].moreNeeded == 0) {
     route.status =
-      "Yay! Route is activated at $" +
+      'Yay! Route is activated at $' +
       route.notes.tier[0].price.toFixed(2) +
-      " per trip."
+      ' per trip.'
   } else if (!route.isExpired) {
     route.status =
       route.notes.tier[0].moreNeeded +
-      " more pax to activate the route at $" +
+      ' more pax to activate the route at $' +
       route.notes.tier[0].price.toFixed(2) +
-      " per trip."
+      ' per trip.'
   } else if (route.isSuccess) {
     route.status =
-      "Campaign was successful! Check out the running routes for more info"
+      'Campaign was successful! Check out the running routes for more info'
   } else {
-    route.status = "Campaign has expired and the route is not activated."
+    route.status = 'Campaign has expired and the route is not activated.'
   }
 }
 
-let updateAfterBid = function(route, price) {
+let updateAfterBid = function (route, price) {
   route.notes.tier[0].count = route.notes.tier[0].count + 1
   route.notes.tier[0].moreNeeded = Math.max(
     route.notes.tier[0].moreNeeded - 1,
@@ -111,14 +111,14 @@ let updateAfterBid = function(route, price) {
   updateStatus(route)
 }
 
-angular.module("beeline").service("CrowdstartService", [
-  "UserService",
-  "RequestService",
-  "$q",
-  "RoutesService",
-  "p",
-  "DevicePromise",
-  function CrowdstartService(
+angular.module('beeline').service('CrowdstartService', [
+  'UserService',
+  'RequestService',
+  '$q',
+  'RoutesService',
+  'p',
+  'DevicePromise',
+  function CrowdstartService (
     UserService,
     RequestService,
     $q,
@@ -134,12 +134,12 @@ angular.module("beeline").service("CrowdstartService", [
     let crowdstartRoutesById = null
     let nearbyCrowdstartRoutesById = null
 
-    const fetchBids = function fetchBids(ignoreCache) {
+    const fetchBids = function fetchBids (ignoreCache) {
       if (UserService.getUser()) {
         if (bidsCache && !ignoreCache) return bidsCache
         return (bidsCache = RequestService.beeline({
-          method: "GET",
-          url: "/crowdstart/bids",
+          method: 'GET',
+          url: '/crowdstart/bids',
         }).then(response => {
           crowdstartSummary = response.data.map(bid => {
             return {
@@ -157,26 +157,26 @@ angular.module("beeline").service("CrowdstartService", [
       }
     }
 
-    const fetchCrowdstartRoutes = function fetchCrowdstartRoutes(ignoreCache) {
+    const fetchCrowdstartRoutes = function fetchCrowdstartRoutes (ignoreCache) {
       if (crowdstartRoutesCache && !ignoreCache) return crowdstartRoutesCache
-      let url = "/crowdstart/status"
+      let url = '/crowdstart/status'
       if (p.transportCompanyId) {
         url +=
-          "?" +
+          '?' +
           querystring.stringify({ transportCompanyId: p.transportCompanyId })
       }
       return (crowdstartRoutesCache = RequestService.beeline({
-        method: "GET",
+        method: 'GET',
         url: url,
       }).then(response => {
         // return expired crowdstart too
         crowdstartRoutesList = transformCrowdstartData(response.data)
-        crowdstartRoutesById = _.keyBy(crowdstartRoutesList, "id")
+        crowdstartRoutesById = _.keyBy(crowdstartRoutesList, 'id')
         return crowdstartRoutesList
       }))
     }
 
-    const getLocationPromise = function getLocationPromise(
+    const getLocationPromise = function getLocationPromise (
       enableHighAccuracy = false
     ) {
       return new Promise((resolve, reject) => {
@@ -188,7 +188,7 @@ angular.module("beeline").service("CrowdstartService", [
       })
     }
 
-    const fetchNearbyCrowdstartIds = async function fetchNearbyCrowdstartIds() {
+    const fetchNearbyCrowdstartIds = async function fetchNearbyCrowdstartIds () {
       let locationOrNull = null
       try {
         await DevicePromise
@@ -207,15 +207,15 @@ angular.module("beeline").service("CrowdstartService", [
       }
 
       let nearbyPromise = RequestService.beeline({
-        method: "GET",
+        method: 'GET',
         url:
-          "/routes/search_by_latlon?" +
+          '/routes/search_by_latlon?' +
           querystring.stringify(
             _.assign(
               {
                 maxDistance: 2000,
                 startTime: Date.now(),
-                tags: JSON.stringify(["crowdstart"]),
+                tags: JSON.stringify(['crowdstart']),
                 startLat: coords.latitude,
                 startLng: coords.longitude,
               },
@@ -227,15 +227,15 @@ angular.module("beeline").service("CrowdstartService", [
       })
 
       let nearbyReversePromise = RequestService.beeline({
-        method: "GET",
+        method: 'GET',
         url:
-          "/routes/search_by_latlon?" +
+          '/routes/search_by_latlon?' +
           querystring.stringify(
             _.assign(
               {
                 maxDistance: 2000,
                 startTime: Date.now(),
-                tags: JSON.stringify(["crowdstart"]),
+                tags: JSON.stringify(['crowdstart']),
                 endLat: coords.latitude,
                 endLng: coords.longitude,
               },
@@ -254,13 +254,13 @@ angular.module("beeline").service("CrowdstartService", [
       })
     }
 
-    UserService.userEvents.on("userChanged", () => {
+    UserService.userEvents.on('userChanged', () => {
       fetchBids(true)
       // to load route passes
       RoutesService.fetchRoutePassCount(true)
     })
 
-    const refresh = function refresh() {
+    const refresh = function refresh () {
       return Promise.all([
         fetchCrowdstartRoutes(true),
         fetchBids(true),
@@ -276,7 +276,7 @@ angular.module("beeline").service("CrowdstartService", [
     let lastPrivateCrowdstartRouteId
     let lastPrivateCrowdstartRoutePromise = Promise.resolve({})
 
-    const getPrivateCrowdstartById = function getPrivateCrowdstartById(
+    const getPrivateCrowdstartById = function getPrivateCrowdstartById (
       routeId
     ) {
       if (lastPrivateCrowdstartRouteId !== routeId) {
@@ -284,7 +284,7 @@ angular.module("beeline").service("CrowdstartService", [
         lastPrivateCrowdstartRoutePromise = Promise.all([
           RoutesService.getRoute(routeId),
           RequestService.beeline({
-            method: "GET",
+            method: 'GET',
             url: `/crowdstart/routes/${routeId}/bids`,
           }).then(response => response.data),
         ])
@@ -306,7 +306,7 @@ angular.module("beeline").service("CrowdstartService", [
       getCrowdstart: () => crowdstartRoutesList,
       fetchCrowdstart: ignoreCache => fetchCrowdstartRoutes(ignoreCache),
 
-      getCrowdstartById: function(routeId) {
+      getCrowdstartById: function (routeId) {
         if (!crowdstartRoutesById) {
           return null
         }
@@ -315,40 +315,40 @@ angular.module("beeline").service("CrowdstartService", [
           : getPrivateCrowdstartById(routeId)
       },
 
-      getCrowdstartRoutesById: function() {
+      getCrowdstartRoutesById: function () {
         return crowdstartRoutesById
       },
 
       // user personal bid information
-      getBids: function() {
+      getBids: function () {
         return crowdstartSummary
       },
       fetchBids: ignoreCache => fetchBids(ignoreCache),
 
-      isBid: function(routeId) {
-        return bidsById && bidsById[routeId] ? true : false
+      isBid: function (routeId) {
+        return !!(bidsById && bidsById[routeId])
       },
 
-      getBidInfo: function(routeId) {
+      getBidInfo: function (routeId) {
         return crowdstartSummary
           ? crowdstartSummary.find(x => x.routeId == routeId)
           : null
       },
 
       // need to return a promise
-      hasBids: function() {
+      hasBids: function () {
         return bidsCache.then(() => {
           return (
             crowdstartSummary &&
             crowdstartSummary.length > 0 &&
-            crowdstartSummary.find(x => x.status === "bidded")
+            crowdstartSummary.find(x => x.status === 'bidded')
           )
         })
       },
 
-      createBid: function(route, boardStopId, alightStopId, bidPrice) {
+      createBid: function (route, boardStopId, alightStopId, bidPrice) {
         return RequestService.beeline({
-          method: "POST",
+          method: 'POST',
           url: `/crowdstart/routes/${route.id}/bids`,
           data: {
             price: bidPrice,
@@ -359,14 +359,14 @@ angular.module("beeline").service("CrowdstartService", [
             {
               routeId: route.id,
               bidPrice: bidPrice,
-              status: "bidded",
+              status: 'bidded',
             },
           ])
           return response.data
         })
       },
 
-      deleteBid: async function(route) {
+      deleteBid: async function (route) {
         let user = UserService.getUser()
         if (!user) return
 
@@ -375,7 +375,7 @@ angular.module("beeline").service("CrowdstartService", [
         if (!userBids || userBids.length !== 1) return
 
         return RequestService.beeline({
-          method: "DELETE",
+          method: 'DELETE',
           url: `/crowdstart/routes/${route.id}/bids`,
         }).then(response => {
           return response.data

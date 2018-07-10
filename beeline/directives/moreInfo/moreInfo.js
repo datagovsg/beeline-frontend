@@ -1,11 +1,11 @@
-angular.module("beeline").directive("moreInfo", function() {
+angular.module('beeline').directive('moreInfo', function () {
   return {
-    template: require("./moreInfo.html"),
+    template: require('./moreInfo.html'),
     replace: false,
     scope: {
-      companyId: "<",
-      features: "<",
+      companyId: '<',
+      features: '<',
     },
-    link: function(scope, elem, attr) {},
+    link: function (scope, elem, attr) {},
   }
 })

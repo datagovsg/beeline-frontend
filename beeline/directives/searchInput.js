@@ -1,9 +1,9 @@
-angular.module("beeline").directive("searchInput", function() {
+angular.module('beeline').directive('searchInput', function () {
   return {
     scope: {
-      queryText: "=",
-      ph: "@",
-      isFiltering: "<",
+      queryText: '=',
+      ph: '@',
+      isFiltering: '<',
     },
     template: `
       <div class="search-div">
@@ -24,14 +24,14 @@ angular.module("beeline").directive("searchInput", function() {
         </label>
       </div>
     `,
-    link(scope, elem, attr) {
-      scope.$watch("searchText", qt => {
-        if (qt || qt === "") {
+    link (scope, elem, attr) {
+      scope.$watch('searchText', qt => {
+        if (qt || qt === '') {
           scope.queryText = qt.trim()
         }
       })
-      scope.keypress = function(e) {
-        if (e.key === "Enter") {
+      scope.keypress = function (e) {
+        if (e.key === 'Enter') {
           e.target.blur()
         }
       }

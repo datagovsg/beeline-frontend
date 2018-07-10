@@ -1,12 +1,12 @@
-import moment from "moment"
+import moment from 'moment'
 
-angular.module("beeline").directive("countdown", [
-  "$interval",
-  function($interval) {
+angular.module('beeline').directive('countdown', [
+  '$interval',
+  function ($interval) {
     return {
       scope: {
-        boardTime: "<",
-        bookingEnds: "=",
+        boardTime: '<',
+        bookingEnds: '=',
       },
       template: `
       <div>
@@ -15,19 +15,19 @@ angular.module("beeline").directive("countdown", [
         <span ng-if="bookingEnds" class="notes" >Booking for the next trip has ended.</span>
       </div>
       `,
-      link(scope, elem, attr) {
+      link (scope, elem, attr) {
         let stopTime // so that we can cancel the time updates
 
         // used to update the UI
-        const updateTime = function updateTime() {
+        const updateTime = function updateTime () {
           scope.minsBeforeClose = moment(scope.boardTime).diff(
             moment(Date.now()),
-            "minutes",
+            'minutes',
             true
           )
         }
 
-        scope.$watch("boardTime", bt => {
+        scope.$watch('boardTime', bt => {
           if (bt && !stopTime) {
             scope.bookingEnds = false
             stopTime = $interval(updateTime, 100 * 30)
@@ -36,7 +36,7 @@ angular.module("beeline").directive("countdown", [
         })
 
         // watch the expression, and update the UI on change.
-        scope.$watch("minsBeforeClose", function(value) {
+        scope.$watch('minsBeforeClose', function (value) {
           if (value <= 0) {
             scope.bookingEnds = true
             $interval.cancel(stopTime)
@@ -45,7 +45,7 @@ angular.module("beeline").directive("countdown", [
 
         // listen on DOM destroy (removal) event, and cancel the next UI update
         // to prevent updating time after the DOM element was removed.
-        scope.$on("$destroy", function() {
+        scope.$on('$destroy', function () {
           $interval.cancel(stopTime)
         })
       },

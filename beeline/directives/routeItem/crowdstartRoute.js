@@ -1,14 +1,14 @@
-angular.module("beeline").directive("crowdstartRoute", [
-  "CrowdstartService",
-  function(CrowdstartService) {
+angular.module('beeline').directive('crowdstartRoute', [
+  'CrowdstartService',
+  function (CrowdstartService) {
     return {
-      template: require("./crowdstartRoute.html"),
+      template: require('./crowdstartRoute.html'),
       scope: {
-        route: "<",
+        route: '<',
       },
       controller: [
-        "$scope",
-        function($scope) {
+        '$scope',
+        function ($scope) {
           $scope.bids = {}
           $scope.$watch(
             () => CrowdstartService.getBids(),

@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 ;(function(i, s, o, g, r, a, m) {
-  i["GoogleAnalyticsObject"] = r
+  i['GoogleAnalyticsObject'] = r
   ;(i[r] =
     i[r] ||
     function() {
@@ -15,12 +15,12 @@
 })(
   window,
   document,
-  "script",
-  "https://www.google-analytics.com/analytics.js",
-  "ga"
+  'script',
+  'https://www.google-analytics.com/analytics.js',
+  'ga'
 )
 
-angular.module("common").factory("GoogleAnalytics", function() {
+angular.module('common').factory('GoogleAnalytics', function() {
   function send() {
     window.ga(...arguments)
   }
@@ -32,61 +32,61 @@ angular.module("common").factory("GoogleAnalytics", function() {
 
 let devicePromise = new Promise((resolve, reject) => {
   if (window.cordova) {
-    document.addEventListener("deviceready", resolve, false)
+    document.addEventListener('deviceready', resolve, false)
   } else {
-    console.warn("No cordova detected")
+    console.warn('No cordova detected')
     resolve()
   }
 })
 
-angular.module("common").run([
-  "$rootScope",
+angular.module('common').run([
+  '$rootScope',
   async function($rootScope) {
     await devicePromise
 
     if (window.cordova) {
-      const GA_LOCAL_STORAGE_KEY = "ga:clientId"
+      const GA_LOCAL_STORAGE_KEY = 'ga:clientId'
       // Set up cordova to use localstorage over cookies (file:/// doesn't
       // support cookies)
-      ga("create", "UA-79537959-1", {
-        storage: "none",
+      ga('create', 'UA-79537959-1', {
+        storage: 'none',
         clientId: localStorage.getItem(GA_LOCAL_STORAGE_KEY),
       })
       ga(tracker => {
-        localStorage.setItem(GA_LOCAL_STORAGE_KEY, tracker.get("clientId"))
+        localStorage.setItem(GA_LOCAL_STORAGE_KEY, tracker.get('clientId'))
       })
 
       // We have a file:/// URL, but tell GA to ignore it
-      ga("set", "checkProtocolTask", null)
+      ga('set', 'checkProtocolTask', null)
     } else {
-      ga("create", "UA-79537959-1", "auto")
+      ga('create', 'UA-79537959-1', 'auto')
     }
     // The first page view
-    ga("send", "pageview", {
+    ga('send', 'pageview', {
       page: window.location.hash.substr(1),
     })
 
-    $rootScope.$on("$stateChangeSuccess", (evt, state) => {
-      ga("send", "pageview", {
+    $rootScope.$on('$stateChangeSuccess', (evt, state) => {
+      ga('send', 'pageview', {
         page: window.location.hash.substr(1),
       })
     })
 
     if (window.cordova) {
       window.cordova.getAppVersion.getVersionNumber().then(version => {
-        ga("set", "appVersion", version)
+        ga('set', 'appVersion', version)
       })
       window.cordova.getAppVersion.getAppName().then(appName => {
-        ga("set", "appName", appName)
+        ga('set', 'appName', appName)
       })
     } else {
-      ga("set", "appVersion", window.location.origin)
-      ga("set", "appName", "Beeline Web")
+      ga('set', 'appVersion', window.location.origin)
+      ga('set', 'appName', 'Beeline Web')
     }
     // send app launch event to track number of google map instance launch
-    ga("send", "event", {
-      eventCategory: "app launch",
-      eventAction: "launch",
+    ga('send', 'event', {
+      eventCategory: 'app launch',
+      eventAction: 'launch',
     })
   },
 ])

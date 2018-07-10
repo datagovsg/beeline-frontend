@@ -1,11 +1,11 @@
-import { htmlFrom } from "../shared/util"
+import { htmlFrom } from '../shared/util'
 
 export default [
-  "$scope",
-  "$stateParams",
-  "LiteRoutesService",
-  "RoutesService",
-  function($scope, $stateParams, LiteRoutesService, RoutesService) {
+  '$scope',
+  '$stateParams',
+  'LiteRoutesService',
+  'RoutesService',
+  function ($scope, $stateParams, LiteRoutesService, RoutesService) {
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------

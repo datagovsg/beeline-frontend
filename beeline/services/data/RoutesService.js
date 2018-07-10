@@ -1,6 +1,6 @@
-import querystring from "querystring"
-import _ from "lodash"
-import assert from "assert"
+import querystring from 'querystring'
+import _ from 'lodash'
+import assert from 'assert'
 
 /**
  * Adapter function to convert what we get from the server into what we want
@@ -12,19 +12,19 @@ import assert from "assert"
  * @return {Object}
  *   the response, with time and locations flattened into it from the trip stops
  */
-const transformRouteData = function transformRouteData(data) {
-  _(data).each(function(route) {
+const transformRouteData = function transformRouteData (data) {
+  _(data).each(function (route) {
     for (let trip of route.trips) {
-      assert.equal(typeof trip.date, "string")
+      assert.equal(typeof trip.date, 'string')
       trip.date = new Date(trip.date)
 
       for (let tripStop of trip.tripStops) {
-        assert.equal(typeof tripStop.time, "string")
+        assert.equal(typeof tripStop.time, 'string')
         tripStop.time = new Date(tripStop.time)
       }
     }
 
-    let firstTripStops = _.get(route, "trips[0].tripStops")
+    let firstTripStops = _.get(route, 'trips[0].tripStops')
     if (firstTripStops && firstTripStops.length) {
       route.startTime = firstTripStops[0].time
       route.startRoad = firstTripStops[0].stop.description
@@ -36,14 +36,14 @@ const transformRouteData = function transformRouteData(data) {
   return data
 }
 
-angular.module("beeline").factory("RoutesService", [
-  "$http",
-  "UserService",
-  "RequestService",
-  "uiGmapGoogleMapApi",
-  "$q",
-  "p",
-  function RoutesService(
+angular.module('beeline').factory('RoutesService', [
+  '$http',
+  'UserService',
+  'RequestService',
+  'uiGmapGoogleMapApi',
+  '$q',
+  'p',
+  function RoutesService (
     $http,
     UserService,
     RequestService,
@@ -78,7 +78,7 @@ angular.module("beeline").factory("RoutesService", [
     let routePassExpiriesPromise = null
     let routePassExpiries = null
 
-    UserService.userEvents.on("userChanged", () => {
+    UserService.userEvents.on('userChanged', () => {
       instance.fetchRecentRoutes(true)
       instance.fetchRoutePasses(true)
       instance.fetchRoutesWithRoutePass()
@@ -93,8 +93,8 @@ angular.module("beeline").factory("RoutesService", [
       // Retrive the data on a single route, but pulls a lot more data
       // Pulls all the trips plus the route path
       // getRoute() will return the heavier stuff (all trips, availability, path)
-      getRoute: function(routeId, ignoreCache, options) {
-        assert.equal(typeof routeId, "number")
+      getRoute: function (routeId, ignoreCache, options) {
+        assert.equal(typeof routeId, 'number')
 
         if (!ignoreCache && !options && lastRouteId === routeId) {
           return lastPromise
@@ -113,10 +113,10 @@ angular.module("beeline").factory("RoutesService", [
 
         lastRouteId = routeId
         return (lastPromise = RequestService.beeline({
-          method: "GET",
+          method: 'GET',
           url: `/routes/${routeId}?${querystring.stringify(finalOptions)}`,
         })
-          .then(function(response) {
+          .then(function (response) {
             transformRouteData([response.data])
             return response.data
           })
@@ -126,7 +126,7 @@ angular.module("beeline").factory("RoutesService", [
       },
 
       // Returns list of all routes
-      getRoutes: function() {
+      getRoutes: function () {
         return activeRoutes
       },
 
@@ -135,10 +135,10 @@ angular.module("beeline").factory("RoutesService", [
       // getRoutes() now returns a list of routes, but with very limited
       // trip data (limited to 5 trips, no path)
       // Return promise with all routes
-      fetchRoutes: function(ignoreCache, options) {
+      fetchRoutes: function (ignoreCache, options) {
         if (routesCache && !ignoreCache && !options) return routesCache
 
-        let url = "/routes?"
+        let url = '/routes?'
 
         // Start at midnight to avoid cut trips in the middle
         // FIXME: use date-based search instead
@@ -151,7 +151,7 @@ angular.module("beeline").factory("RoutesService", [
             includeTrips: true,
             limitTrips: 5,
             includePath: false,
-            tags: JSON.stringify(["public"]),
+            tags: JSON.stringify(['public']),
           },
           options,
           p.transportCompanyId
@@ -162,9 +162,9 @@ angular.module("beeline").factory("RoutesService", [
         url += querystring.stringify(finalOptions)
 
         let routesPromise = RequestService.beeline({
-          method: "GET",
+          method: 'GET',
           url: url,
-        }).then(function(response) {
+        }).then(function (response) {
           // Checking that we have trips,
           // and that these trips have at least two stops,
           // so that users of it don't choke on trips[0]
@@ -194,13 +194,13 @@ angular.module("beeline").factory("RoutesService", [
         return routesPromise
       },
 
-      getPrivateRoutes: function() {
+      getPrivateRoutes: function () {
         return privateRoutes
       },
 
-      fetchPrivateRoutes: function(ignoreCache) {
+      fetchPrivateRoutes: function (ignoreCache) {
         return this.fetchRoutes(ignoreCache, {
-          tags: JSON.stringify(["private"]),
+          tags: JSON.stringify(['private']),
         }).then(routes => {
           privateRoutes = routes
           return routes
@@ -223,12 +223,12 @@ angular.module("beeline").factory("RoutesService", [
                   before this time
       @return {Promise}
       **/
-      searchRoutes: function(search) {
+      searchRoutes: function (search) {
         // return Promise object
         return RequestService.beeline({
-          method: "GET",
+          method: 'GET',
           url:
-            "/routes/search_by_latlon?" +
+            '/routes/search_by_latlon?' +
             querystring.stringify({
               startLat: search.startLat,
               startLng: search.startLng,
@@ -237,22 +237,22 @@ angular.module("beeline").factory("RoutesService", [
               arrivalTime: search.arrivalTime,
               startTime: search.startTime,
               endTime: search.endTime,
-              tags: JSON.stringify(["public"]),
+              tags: JSON.stringify(['public']),
             }),
-        }).then(function(response) {
+        }).then(function (response) {
           return transformRouteData(response.data)
         })
       },
 
       // Retrieves the recent routes for a user
       // If not logged in then just returns an empty array
-      fetchRecentRoutes: function(ignoreCache) {
+      fetchRecentRoutes: function (ignoreCache) {
         if (UserService.getUser()) {
           if (recentRoutesCache && !ignoreCache) return recentRoutesCache
           return (recentRoutesCache = RequestService.beeline({
-            method: "GET",
-            url: "/routes/recent?limit=10",
-          }).then(function(response) {
+            method: 'GET',
+            url: '/routes/recent?limit=10',
+          }).then(function (response) {
             recentRoutes = response.data
             return recentRoutes
           }))
@@ -263,25 +263,25 @@ angular.module("beeline").factory("RoutesService", [
         }
       },
 
-      getRecentRoutes: function() {
+      getRecentRoutes: function () {
         return recentRoutes
       },
 
       // TODO: make a directive, otherwise literoute need to inject this routeservice
-      decodeRoutePath: function(path) {
-        assert.strictEqual(typeof path, "string")
+      decodeRoutePath: function (path) {
+        assert.strictEqual(typeof path, 'string')
         return uiGmapGoogleMapApi.then(googleMaps => {
           // Array of LatLng objects
           return googleMaps.geometry.encoding.decodePath(path)
         })
       },
 
-      getRouteFeatures: function(routeId) {
+      getRouteFeatures: function (routeId) {
         return RequestService.beeline({
-          method: "GET",
+          method: 'GET',
           url: `/routes/${routeId}/features`,
         })
-          .then(function(response) {
+          .then(function (response) {
             return response.data
           })
           .catch(err => {
@@ -290,14 +290,14 @@ angular.module("beeline").factory("RoutesService", [
       },
 
       // Return an array of regions covered by a given array of routes
-      getUniqueRegionsFromRoutes: function(routes) {
+      getUniqueRegionsFromRoutes: function (routes) {
         return _(routes)
-          .map(function(route) {
+          .map(function (route) {
             return route.regions
           })
           .flatten()
-          .uniqBy("id")
-          .sortBy("name")
+          .uniqBy('id')
+          .sortBy('name')
           .value()
       },
 
@@ -307,7 +307,7 @@ angular.module("beeline").factory("RoutesService", [
       // - ignoreCache - boolean
       // output:
       // - Promise containing all route passes associated with user
-      fetchRoutePasses: function(ignoreCache) {
+      fetchRoutePasses: function (ignoreCache) {
         if (!ignoreCache && routePassesCache) {
           return routePassesCache
         }
@@ -321,8 +321,8 @@ angular.module("beeline").factory("RoutesService", [
           return (routePassesCache = Promise.resolve((tagToPassesMap = null)))
         } else {
           return (routePassesCache = RequestService.beeline({
-            method: "GET",
-            url: "/route_passes",
+            method: 'GET',
+            url: '/route_passes',
           }).then(response => {
             return (tagToPassesMap = response.data)
           }))
@@ -335,7 +335,7 @@ angular.module("beeline").factory("RoutesService", [
       // output:
       // - Object containing all route passes associated with user
       // - [tag provided] number of passes specific to the tag
-      getRoutePasses: function(tag) {
+      getRoutePasses: function (tag) {
         if (tag && tagToPassesMap) {
           return tagToPassesMap[tag]
         } else {
@@ -348,18 +348,18 @@ angular.module("beeline").factory("RoutesService", [
       // - routeId - number: id of route
       // output:
       // - promise containing number of rides remaining on the route pass for specified route
-      getRoutePassCount: function() {
+      getRoutePassCount: function () {
         return routeToRidesRemainingMap
       },
 
       // New more abstracted method which differentiates between 0 and null
       // 0 means user is logged in and no passes found
       // null means not logged in so we don't know
-      getPassCountForRoute: function(routeId) {
+      getPassCountForRoute: function (routeId) {
         if (UserService.getUser()) {
           if (!routeToRidesRemainingMap) return null
           let ridesRemaining = routeToRidesRemainingMap[routeId]
-          return ridesRemaining ? ridesRemaining : 0
+          return ridesRemaining || 0
         } else {
           return null
         }
@@ -370,7 +370,7 @@ angular.module("beeline").factory("RoutesService", [
       // - ignoreCache - boolean to determine if cache should be ignored
       // output:
       // - promise containing a map of routeId to Rides Remaining
-      fetchRoutePassCount: function(ignoreCache) {
+      fetchRoutePassCount: function (ignoreCache) {
         if (ignoreCache || !routePassCache) {
           let allRoutesPromise = this.fetchRoutes(ignoreCache)
           let allRoutePassesPromise = this.fetchRoutePasses(ignoreCache)
@@ -382,22 +382,22 @@ angular.module("beeline").factory("RoutesService", [
               allRoutePassesPromise,
               allPrivateRoutesPromise,
             ])
-            .then(function(values) {
+            .then(function (values) {
               let allRoutes = values[0]
               let allRoutePasses = values[1]
               let allPrivateRoutes = values[2]
               let allRoutePassTags = _.keys(allRoutePasses)
               routeToRidesRemainingMap = {}
 
-              const routes = _.uniqBy(allRoutes.concat(allPrivateRoutes), "id")
-              routes.forEach(function(route) {
+              const routes = _.uniqBy(allRoutes.concat(allPrivateRoutes), 'id')
+              routes.forEach(function (route) {
                 let notableTags = _.intersection(route.tags, allRoutePassTags)
                 if (notableTags.length < 1) return
                 else {
                   // no passes for such route
                   // support multiple tags e.g. crowdstart-140, rp-161
                   // calculate the rides left in the route pass
-                  notableTags.forEach(function(tag) {
+                  notableTags.forEach(function (tag) {
                     let passesAvailable = allRoutePasses[tag]
                     routeToRidesRemainingMap[route.id] =
                       (routeToRidesRemainingMap[route.id] || 0) +
@@ -423,7 +423,7 @@ angular.module("beeline").factory("RoutesService", [
       // ridesRemaining property
       // - updates routesWithRoutePass: array containing all avaialable routes,
       // modifying those with route passes remaining with a ridesRemaining property
-      fetchRoutesWithRoutePass: function(ignoreCache) {
+      fetchRoutesWithRoutePass: function (ignoreCache) {
         if (ignoreCache || !routesWithRoutePassPromise) {
           return (routesWithRoutePassPromise = $q
             .all([
@@ -454,7 +454,7 @@ angular.module("beeline").factory("RoutesService", [
         return routesWithRoutePassPromise
       },
 
-      fetchPrivateRoutesWithRoutePass: function(ignoreCache) {
+      fetchPrivateRoutesWithRoutePass: function (ignoreCache) {
         if (ignoreCache || !privateRoutesWithRoutePassPromise) {
           return (routesWithRoutePassPromise = $q
             .all([
@@ -488,28 +488,28 @@ angular.module("beeline").factory("RoutesService", [
       // Returns array containing all avaialable routes,
       // modifying those with route passes remaining with a ridesRemaining property
       // Updated by: fetchRoutesWithRoutePass
-      getRoutesWithRoutePass: function() {
+      getRoutesWithRoutePass: function () {
         return routesWithRoutePass
       },
 
-      getPrivateRoutesWithRoutePass: function() {
+      getPrivateRoutesWithRoutePass: function () {
         return privateRoutesWithRoutePass
       },
 
       // Returns array containing only those routes with
       // ridesRemaining property
       // Updated by: fetchRoutesWithRoutePass
-      getRoutesWithRidesRemaining: function() {
+      getRoutesWithRidesRemaining: function () {
         return routesWithRidesRemaining
       },
 
-      getPrivateRoutesWithRidesRemaining: function() {
+      getPrivateRoutesWithRidesRemaining: function () {
         return privateRoutesWithRidesRemaining
       },
 
       // Returns promise containing a map of all routeId to their corresponding tags
       // based on the route passes available to a user
-      fetchRoutePassTags: function(ignoreCache) {
+      fetchRoutePassTags: function (ignoreCache) {
         if (!ignoreCache && routeToRoutePassTagsPromise) {
           return routeToRoutePassTagsPromise
         }
@@ -529,7 +529,7 @@ angular.module("beeline").factory("RoutesService", [
                 if (notableTags.length >= 1) {
                   // sort in alphabetical order followed by
                   // to encourage use of crowdstart passes before rp-
-                  notableTags = _.sortBy(notableTags, function(tag) {
+                  notableTags = _.sortBy(notableTags, function (tag) {
                     return tag
                   })
                   // filter out no balance tag
@@ -552,7 +552,7 @@ angular.module("beeline").factory("RoutesService", [
       // Returns the route pass tag matched to a route if routeId is given
       // Otherwise, returns a map of all routeId to their corresponding tags
       // based on the route passes available to a user
-      getRoutePassTags: function(routeId) {
+      getRoutePassTags: function (routeId) {
         if (routeId && routeToRoutePassTags) {
           return routeToRoutePassTags[routeId]
         } else {
@@ -560,14 +560,14 @@ angular.module("beeline").factory("RoutesService", [
         }
       },
 
-      fetchRoutePassExpiries: async function(ignoreCache) {
+      fetchRoutePassExpiries: async function (ignoreCache) {
         if (UserService.getUser()) {
           if (!ignoreCache && routePassExpiriesPromise) {
             return routePassExpiriesPromise
           }
 
           routePassExpiriesPromise = RequestService.beeline({
-            method: "GET",
+            method: 'GET',
             url: `/route_passes/expiries`,
           }).then(response => {
             routePassExpiries = response.data
@@ -580,19 +580,19 @@ angular.module("beeline").factory("RoutesService", [
         }
       },
 
-      getRoutePassExpiries: function() {
+      getRoutePassExpiries: function () {
         return routePassExpiries
       },
 
-      fetchPriceSchedule: function(routeId) {
+      fetchPriceSchedule: function (routeId) {
         return RequestService.beeline({
-          method: "GET",
+          method: 'GET',
           url: `/routes/${routeId}/price_schedule`,
         })
-          .then(function(response) {
+          .then(function (response) {
             let priceSchedules = _(response.data)
               .values()
-              .sortBy("quantity")
+              .sortBy('quantity')
               .reverse()
               .value()
             return priceSchedules

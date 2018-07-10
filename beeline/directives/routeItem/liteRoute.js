@@ -1,9 +1,9 @@
-angular.module("beeline").directive("liteRoute", function() {
+angular.module('beeline').directive('liteRoute', function () {
   return {
-    template: require("./liteRoute.html"),
+    template: require('./liteRoute.html'),
     scope: {
-      route: "<",
-      isSubscribed: "<?",
+      route: '<',
+      isSubscribed: '<?',
     },
   }
 })
