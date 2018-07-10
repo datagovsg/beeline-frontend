@@ -1,23 +1,8 @@
 {
   "parser": "babel-eslint",
-  "extends": [
-    "eslint:recommended",
-    "google",
-    "prettier"
-  ],
+  "extends": "@opengovsg/eslint-config-opengovsg",
   "env": {
-    "browser": true,
-    "node": true,
-    "es6": true
-  },
-  "rules": {
-    "func-style": ["error", "expression", { "allowArrowFunctions": true }],
-    "no-unused-vars": ["error"],
-    "semi": ["error", "never"],
-    "comma-dangle": ["error", "always-multiline"],
-    "radix": ["error", "as-needed"],
-    "require-jsdoc": ["warn"],
-    "no-console": ["error", {"allow": ["warn", "error"]}]
+    "browser": true
   },
   "globals": {
     "angular": true,
