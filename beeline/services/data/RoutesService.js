@@ -392,8 +392,7 @@ angular.module('beeline').factory('RoutesService', [
               const routes = _.uniqBy(allRoutes.concat(allPrivateRoutes), 'id')
               routes.forEach(function (route) {
                 let notableTags = _.intersection(route.tags, allRoutePassTags)
-                if (notableTags.length < 1) return
-                else {
+                if (notableTags.length >= 1) {
                   // no passes for such route
                   // support multiple tags e.g. crowdstart-140, rp-161
                   // calculate the rides left in the route pass

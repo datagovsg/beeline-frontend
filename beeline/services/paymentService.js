@@ -43,7 +43,7 @@ angular.module('beeline').factory('PaymentService', [
           }),
         })
 
-        assert(result.status == 200)
+        assert(result.status === 200)
         TicketService.setShouldRefreshTickets()
       } finally {
         RoutesService.fetchRoutePasses(true)
@@ -206,7 +206,7 @@ angular.module('beeline').factory('PaymentService', [
                 err.data.message} Please try again later.</div>
               `,
             })
-            return reject('routePassError')
+            return reject(new Error('routePassError'))
           })
         } finally {
           RoutesService.fetchRoutePasses(true)

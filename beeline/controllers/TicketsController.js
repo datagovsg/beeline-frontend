@@ -88,6 +88,7 @@ export default [
         })
         .catch(error => {
           $scope.error = true
+          console.error(error)
         })
         .finally(() => {
           $scope.$broadcast('scroll.refreshComplete')

@@ -234,7 +234,7 @@ angular.module('beeline').directive('ticketDetailModal', [
           if (
             args.ticketId &&
             scope.ticket &&
-            scope.ticket.id == args.ticketId
+            scope.ticket.id === args.ticketId
           ) {
             deregister()
           }

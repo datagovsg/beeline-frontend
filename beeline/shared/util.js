@@ -96,9 +96,7 @@ export function retriveNextTrip (route) {
       boardTime = sortedTripStopsInTime[0].time.getTime()
     }
     // the trip end time
-    lastStopTime = sortedTripStopsInTime[
-      sortedTripStopsInTime.length - 1
-    ].time.getTime()
+    lastStopTime = sortedTripStopsInTime[sortedTripStopsInTime.length - 1].time.getTime()
     // check seat is available
     if (now < boardTime || (now >= boardTime && now <= lastStopTime)) {
       nextTrip = trip

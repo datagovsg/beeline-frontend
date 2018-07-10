@@ -49,6 +49,7 @@ angular.module('beeline').directive('myLocation', [
             error => {
               scope.coords = null
               scope.$digest()
+              console.error(error)
             },
             {
               enableHighAccuracy: false,

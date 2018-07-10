@@ -81,12 +81,12 @@ export default [
             paymentInfo
           )
           : new Promise((resolve, reject) => {
-            return reject('No payment information available')
+            return reject(new Error('No payment information available'))
           })
       } catch (err) {
         console.error(err)
         return new Promise((resolve, reject) => {
-          return reject('routePassError')
+          return reject(new Error('routePassError'))
         })
       }
     }

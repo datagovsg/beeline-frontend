@@ -83,7 +83,7 @@ angular.module('beeline').directive('priceCalculator', [
               .then(priceInfo => {
                 // Check to ensure that the order of
                 // replies don't affect the result
-                if (promise != latestRequest) {
+                if (promise !== latestRequest) {
                   return
                 }
                 $scope.priceInfo = priceInfo

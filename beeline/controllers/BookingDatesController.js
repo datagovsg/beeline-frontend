@@ -81,7 +81,7 @@ export default [
       const ticketsPromise = TicketService.fetchPreviouslyBookedDaysByRouteId(
         routeId,
         true
-      ).catch(err => null)
+      ).catch(err => console.error(err))
 
       loadingSpinner(
         $q.all([ticketsPromise]).then(([tickets]) => {

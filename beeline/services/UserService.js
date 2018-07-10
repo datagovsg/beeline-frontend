@@ -146,7 +146,7 @@ angular.module('beeline').factory('UserService', [
           return true
         },
         function (error) {
-          if (error.status == 403 || error.status == 401) {
+          if (error.status === 403 || error.status === 401) {
             logOut()
             return false
           }

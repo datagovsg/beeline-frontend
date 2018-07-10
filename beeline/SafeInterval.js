@@ -1,5 +1,3 @@
-import assert from 'assert'
-
 export class SafeInterval {
   constructor (fn, interval, retryTimeout) {
     this.isRunning = false
@@ -15,13 +13,13 @@ export class SafeInterval {
 
       this.currentPromise
         .then(() => {
-          if (promise == this.currentPromise && this.isRunning) {
+          if (promise === this.currentPromise && this.isRunning) {
             this.timeout = setTimeout(this.loop, interval)
           }
         })
         .catch(err => {
-          console.log(err)
-          if (promise == this.currentPromise && this.isRunning) {
+          console.error(err)
+          if (promise === this.currentPromise && this.isRunning) {
             this.timeout = setTimeout(this.loop, retryTimeout)
           }
         })

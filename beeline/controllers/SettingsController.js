@@ -130,6 +130,7 @@ export default [
       if ($scope.hasCordova) {
         chcp.getVersionInfo((error, data) => {
           $scope.data.currentVersion = data.currentWebVersion || null
+          console.error(error)
         })
       }
     })

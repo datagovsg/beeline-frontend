@@ -9,10 +9,10 @@ angular.module('common').service('BookingService', [
         return {
           tripId: booking.route.tripsByDate[dt].id,
           boardStopId: booking.route.tripsByDate[dt].tripStops.filter(
-            ts => booking.boardStopId == ts.stop.id
+            ts => booking.boardStopId === ts.stop.id
           )[0].id,
           alightStopId: booking.route.tripsByDate[dt].tripStops.filter(
-            ts => booking.alightStopId == ts.stop.id
+            ts => booking.alightStopId === ts.stop.id
           )[0].id,
         }
       })
@@ -22,7 +22,7 @@ angular.module('common').service('BookingService', [
       checks the prices.
     */
     this.computePriceInfo = function (booking) {
-      if (!booking.selectedDates || booking.selectedDates.length == 0) {
+      if (!booking.selectedDates || booking.selectedDates.length === 0) {
         return Promise.resolve({
           total: 0,
         })

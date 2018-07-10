@@ -158,7 +158,7 @@ angular.module('beeline').service('MapOptions', [
     }
 
     this.formBounds = function (stops) {
-      if (stops.length == 0) {
+      if (stops.length === 0) {
         return
       }
       let bounds = new google.maps.LatLngBounds()

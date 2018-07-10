@@ -128,6 +128,7 @@ export default [
         })
         .then(null, error => {
           inFlight = false
+          console.error(error)
         })
     }
 

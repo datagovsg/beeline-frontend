@@ -147,12 +147,8 @@ export default [
     // ------------------------------------------------------------------------
     RoutesService.getRoute(routeId).then(route => {
       $scope.book.route = route
-      $scope.book.boardStop = route.tripsByDate[
-        $scope.book.selectedDates[0]
-      ].tripStops.filter(ts => $scope.book.boardStopId === ts.stop.id)[0]
-      $scope.book.alightStop = route.tripsByDate[
-        $scope.book.selectedDates[0]
-      ].tripStops.filter(ts => $scope.book.alightStopId === ts.stop.id)[0]
+      $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]].tripStops.filter(ts => $scope.book.boardStopId === ts.stop.id)[0]
+      $scope.book.alightStop = route.tripsByDate[$scope.book.selectedDates[0]].tripStops.filter(ts => $scope.book.alightStopId === ts.stop.id)[0]
       $scope.book.features = htmlFrom(route.features)
     })
 

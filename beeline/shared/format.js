@@ -100,8 +100,7 @@ export function formatTime (date, prePadding) {
 }
 
 export function formatTimeArray (timeArray) {
-  if (timeArray.length == 0) return
-  else {
+  if (timeArray.length !== 0) {
     return timeArray.map(x => formatTime(x, true)).join(', ')
   }
 }
@@ -120,10 +119,10 @@ export function formatHHMMampm (t) {
     h = h.toString()
   }
 
-  if (h.toString().length == 1) {
+  if (h.toString().length === 1) {
     h = '0' + h.toString()
   }
-  if (m.toString().length == 1) {
+  if (m.toString().length === 1) {
     m = '0' + m.toString()
   }
 

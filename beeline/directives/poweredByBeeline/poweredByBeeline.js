@@ -18,7 +18,7 @@ angular.module('beeline').directive('poweredByBeeline', [
         }
         scope.powerHide = scope.powerHide
           ? scope.powerHide
-          : $rootScope.o.APP.NAME == 'Beeline'
+          : $rootScope.o.APP.NAME === 'Beeline'
         scope.transportCompanyId = p.transportCompanyId
       },
     }

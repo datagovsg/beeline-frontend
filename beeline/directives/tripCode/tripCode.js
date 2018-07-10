@@ -23,6 +23,7 @@ angular.module('beeline').directive('tripCode', function () {
       }
       scope.$on('$destroy', () => (exit = true))
       ;(async function () {
+        /* eslint-disable no-unmodified-loop-condition */
         while (!exit) {
           for (let i = 0; i < 4 && !exit; i++) {
             let charElem = elem[0].querySelector(`.c${i}`)
@@ -36,6 +37,7 @@ angular.module('beeline').directive('tripCode', function () {
             await delay(250)
           }
         }
+        /* eslint-enable no-unmodified-loop-condition */
       })().then(null, console.error)
     },
   }

@@ -32,7 +32,7 @@ angular.module('beeline').factory('FastCheckoutService', [
         let route = await RoutesService.getRoute(routeId, true)
         let nextTrip = retriveNextTrip(route)
         if (nextTrip === null) {
-          return reject('There is no next trip')
+          return reject(new Error('There is no next trip'))
         }
         let seatsAvailable =
           nextTrip &&

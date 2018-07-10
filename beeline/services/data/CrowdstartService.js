@@ -30,7 +30,7 @@ let transformCrowdstartData = function (crowdstartRoutes) {
     )
     // if sb. commit $8, also commit $5
     // crowdstart.notes.tier[1].count += crowdstart.notes.tier[0].count;
-    crowdstart.isActived = crowdstart.notes.tier[0].moreNeeded == 0
+    crowdstart.isActived = crowdstart.notes.tier[0].moreNeeded === 0
 
     crowdstart.isExpired = false
     crowdstart.is7DaysOld = false
@@ -50,8 +50,8 @@ let transformCrowdstartData = function (crowdstartRoutes) {
     }
 
     // isSuccess / isFailure
-    crowdstart.isFailed = crowdstart.tags.indexOf('failed') != -1
-    crowdstart.isSuccess = crowdstart.tags.indexOf('success') != -1
+    crowdstart.isFailed = crowdstart.tags.indexOf('failed') !== -1
+    crowdstart.isSuccess = crowdstart.tags.indexOf('success') !== -1
     crowdstart.isConverted = crowdstart.isFailed || crowdstart.isSuccess
 
     // filter only isRunning trips
@@ -82,7 +82,7 @@ let transformCrowdstartData = function (crowdstartRoutes) {
 let updateStatus = function (route) {
   // status of crowdstart
   route.status = ''
-  if (route.notes.tier[0].moreNeeded == 0) {
+  if (route.notes.tier[0].moreNeeded === 0) {
     route.status =
       'Yay! Route is activated at $' +
       route.notes.tier[0].price.toFixed(2) +
@@ -107,7 +107,7 @@ let updateAfterBid = function (route, price) {
     route.notes.tier[0].moreNeeded - 1,
     0
   )
-  route.isActived = route.notes.tier[0].moreNeeded == 0
+  route.isActived = route.notes.tier[0].moreNeeded === 0
   updateStatus(route)
 }
 
@@ -331,7 +331,7 @@ angular.module('beeline').service('CrowdstartService', [
 
       getBidInfo: function (routeId) {
         return crowdstartSummary
-          ? crowdstartSummary.find(x => x.routeId == routeId)
+          ? crowdstartSummary.find(x => x.routeId === routeId)
           : null
       },
 
