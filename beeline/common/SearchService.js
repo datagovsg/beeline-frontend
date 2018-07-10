@@ -35,7 +35,16 @@ angular.module("common").factory("SearchService", [
         )
       )
       return stopsNearRoute
-        .map(({ recency }) => recency)
+        .map(stop => {
+          stop.distance = Math.min(
+            ...tripStops.map(tripStop => stopDistance(tripStop, stop.lnglat))
+          )
+          return stop
+        })
+        .map(
+          ({ recency, distance }) =>
+            recency * (maxDistance - distance) / maxDistance
+        )
         .reduce((a, b) => a + b, 0)
     }
 
