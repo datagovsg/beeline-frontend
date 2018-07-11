@@ -1,22 +1,22 @@
-import _ from "lodash"
-import { htmlFrom } from "../shared/util"
+import _ from 'lodash'
+import { htmlFrom } from '../shared/util'
 
 export default [
-  "$document",
-  "$scope",
-  "$ionicPopup",
-  "BookingService",
-  "PaymentService",
-  "UserService",
-  "RequestService",
-  "StripeService",
-  "$stateParams",
-  "RoutesService",
-  "$ionicScrollDelegate",
-  "TicketService",
-  "loadingSpinner",
-  "$ionicPosition",
-  function(
+  '$document',
+  '$scope',
+  '$ionicPopup',
+  'BookingService',
+  'PaymentService',
+  'UserService',
+  'RequestService',
+  'StripeService',
+  '$stateParams',
+  'RoutesService',
+  '$ionicScrollDelegate',
+  'TicketService',
+  'loadingSpinner',
+  '$ionicPosition',
+  function (
     $document,
     $scope,
     $ionicPopup,
@@ -35,7 +35,7 @@ export default [
     // ------------------------------------------------------------------------
     // Helper functions
     // ------------------------------------------------------------------------
-    const verifyPromoCode = function verifyPromoCode() {
+    const verifyPromoCode = function verifyPromoCode () {
       if (
         $scope.book.promoCodeEntered === null ||
         !$scope.book.promoCodeEntered
@@ -46,12 +46,12 @@ export default [
       }
       if ($scope.book.promoCode !== null) {
         $scope.book.feedback =
-          "Sorry, only one promo code can be applied at one time. Please remove the promo code below to proceed"
+          'Sorry, only one promo code can be applied at one time. Please remove the promo code below to proceed'
         return
       }
       if ($scope.book.price === 0) {
         $scope.book.feedback =
-          "Sorry, no promo code can be applied because there is nothing to pay for"
+          'Sorry, no promo code can be applied because there is nothing to pay for'
         return
       }
       let bookClone = _.cloneDeep($scope.book)
@@ -67,7 +67,7 @@ export default [
             currentVerifyPromoCodePromise ===
             $scope.book.lastestVerifyPromoCodePromise
           ) {
-            $scope.book.feedback = "" // if valid, no feedback required
+            $scope.book.feedback = '' // if valid, no feedback required
             $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
             $scope.book.promoCodeEntered = null
           }
@@ -79,10 +79,10 @@ export default [
             currentVerifyPromoCodePromise ===
             $scope.book.lastestVerifyPromoCodePromise
           ) {
-            if (error.data && error.data.source === "promoCode") {
-              $scope.book.feedback = error.data.message || "Invalid"
+            if (error.data && error.data.source === 'promoCode') {
+              $scope.book.feedback = error.data.message || 'Invalid'
             } else {
-              $scope.book.feedback = "" // if valid, no feedback required
+              $scope.book.feedback = '' // if valid, no feedback required
               $scope.book.promoCode = $scope.book.promoCodeEntered.toUpperCase()
               $scope.book.promoCodeEntered = null
             }
@@ -128,8 +128,8 @@ export default [
       promoCodeEntered: null,
       feedback: null,
       isVerifying: null,
-      selectedDates: ($stateParams.selectedDates || "")
-        .split(",")
+      selectedDates: ($stateParams.selectedDates || '')
+        .split(',')
         .map(s => parseInt(s)),
       // if 2 requests sent to verify promo code, only the latter matters
       // always need to have this if using debounce with promise
@@ -147,12 +147,8 @@ export default [
     // ------------------------------------------------------------------------
     RoutesService.getRoute(routeId).then(route => {
       $scope.book.route = route
-      $scope.book.boardStop = route.tripsByDate[
-        $scope.book.selectedDates[0]
-      ].tripStops.filter(ts => $scope.book.boardStopId === ts.stop.id)[0]
-      $scope.book.alightStop = route.tripsByDate[
-        $scope.book.selectedDates[0]
-      ].tripStops.filter(ts => $scope.book.alightStopId === ts.stop.id)[0]
+      $scope.book.boardStop = route.tripsByDate[$scope.book.selectedDates[0]].tripStops.filter(ts => $scope.book.boardStopId === ts.stop.id)[0]
+      $scope.book.alightStop = route.tripsByDate[$scope.book.selectedDates[0]].tripStops.filter(ts => $scope.book.alightStopId === ts.stop.id)[0]
       $scope.book.features = htmlFrom(route.features)
     })
 
@@ -165,24 +161,24 @@ export default [
         $scope.isLoggedIn = Boolean(user)
         $scope.user = user
         $scope.book.hasSavedPaymentInfo =
-          _.get($scope.user, "savedPaymentInfo.sources.data.length", 0) > 0
+          _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
         if ($scope.isLoggedIn) {
           loadingSpinner($scope.checkValidDate())
         }
       }
     )
 
-    $scope.$on("priceCalculator.done", () => {
+    $scope.$on('priceCalculator.done', () => {
       $ionicScrollDelegate.resize()
       $scope.isPreviewCalculating = false
-      $scope.$broadcast("scroll.refreshComplete")
+      $scope.$broadcast('scroll.refreshComplete')
     })
 
-    $scope.$on("companyTnc.done", () => {
+    $scope.$on('companyTnc.done', () => {
       $ionicScrollDelegate.resize()
     })
 
-    $scope.$watch("book.price", price => {
+    $scope.$watch('book.price', price => {
       if (parseFloat(price) === 0) {
         $scope.disp.zeroDollarPurchase = true
       } else {
@@ -190,17 +186,17 @@ export default [
       }
     })
 
-    $scope.$watch("book.promoCodeEntered", () => {
-      $scope.book.feedback = ""
+    $scope.$watch('book.promoCodeEntered', () => {
+      $scope.book.feedback = ''
     })
 
-    $scope.$watch("book.promoCode", () => {
+    $scope.$watch('book.promoCode', () => {
       if (!$scope.book.promoCode) {
-        $scope.book.feedback = ""
+        $scope.book.feedback = ''
       }
     })
 
-    $scope.$watch("book.applyRoutePass", () => {
+    $scope.$watch('book.applyRoutePass', () => {
       // Remove promo code every time we toggle apply route pass
       $scope.book.promoCodeEntered = null
       $scope.book.promoCode = null
@@ -209,7 +205,7 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    $scope.login = async function() {
+    $scope.login = async function () {
       let user = await UserService.promptLogIn()
 
       if (user) {
@@ -221,7 +217,7 @@ export default [
       }
     }
 
-    $scope.checkValidDate = async function() {
+    $scope.checkValidDate = async function () {
       const previouslyBookedDays = await TicketService.fetchPreviouslyBookedDaysByRouteId(
         routeId,
         true
@@ -233,12 +229,12 @@ export default [
       $scope.book.hasInvalidDate = selectedAndInvalid.length > 0
     }
 
-    $scope.refreshPrices = function() {
-      $scope.$broadcast("priceCalculator.recomputePrices")
+    $scope.refreshPrices = function () {
+      $scope.$broadcast('priceCalculator.recomputePrices')
     }
 
-    $scope.payHandler = async function(onetimePayment) {
-      onetimePayment = onetimePayment ? true : false
+    $scope.payHandler = async function (onetimePayment) {
+      onetimePayment = !!onetimePayment
       $scope.isPaymentProcessing = true
       await PaymentService.payHandler(
         $scope.book,
@@ -249,9 +245,9 @@ export default [
       $scope.$digest()
     }
 
-    $scope.scrollToPriceCalculator = function() {
+    $scope.scrollToPriceCalculator = function () {
       const priceCalculatorPosition = $ionicPosition.position(
-        angular.element($document[0].getElementById("priceCalc"))
+        angular.element($document[0].getElementById('priceCalc'))
       )
 
       $ionicScrollDelegate.scrollTo(
@@ -261,7 +257,7 @@ export default [
       )
     }
 
-    $scope.enterPromoCode = function() {
+    $scope.enterPromoCode = function () {
       verifyPromoCode()
     }
   },

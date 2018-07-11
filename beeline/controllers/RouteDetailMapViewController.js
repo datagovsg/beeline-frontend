@@ -1,16 +1,16 @@
-import _ from "lodash"
+import _ from 'lodash'
 
 export default [
-  "$scope",
-  "SharedVariableService",
-  "$stateParams",
-  "BookingService",
-  "RoutesService",
-  "MapService",
-  "MapViewFactory",
-  "TicketService",
-  "TripService",
-  function(
+  '$scope',
+  'SharedVariableService',
+  '$stateParams',
+  'BookingService',
+  'RoutesService',
+  'MapService',
+  'MapViewFactory',
+  'TicketService',
+  'TripService',
+  function (
     $scope,
     SharedVariableService,
     $stateParams,
@@ -57,26 +57,26 @@ export default [
     // ------------------------------------------------------------------------
     // Ionic Events
     // ------------------------------------------------------------------------
-    $scope.$on("$destroy", () => {
-      MapService.removeListener("ticketIdIsAvailable", listener)
+    $scope.$on('$destroy', () => {
+      MapService.removeListener('ticketIdIsAvailable', listener)
     })
 
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    MapService.once("ticketIdIsAvailable", listener)
+    MapService.once('ticketIdIsAvailable', listener)
 
-    MapService.on("board-stop-selected", stop => {
+    MapService.on('board-stop-selected', stop => {
       $scope.mapObject.boardStop = stop
       SharedVariableService.setBoardStop(stop)
     })
 
-    MapService.on("alight-stop-selected", stop => {
+    MapService.on('alight-stop-selected', stop => {
       $scope.mapObject.alightStop = stop
       SharedVariableService.setAlightStop(stop)
     })
 
-    MapService.on("stop-selected", stop => {
+    MapService.on('stop-selected', stop => {
       $scope.mapObject.chosenStop = stop
       SharedVariableService.setChosenStop(stop)
     })
@@ -85,7 +85,7 @@ export default [
     // Helper functions
     // ------------------------------------------------------------------------
     // show pings in route-detail map
-    function listener(ticketId) {
+    function listener (ticketId) {
       if (ticketId) {
         const ticketPromise = TicketService.getTicketById(ticketId)
         const tripPromise = ticketPromise.then(ticket => {

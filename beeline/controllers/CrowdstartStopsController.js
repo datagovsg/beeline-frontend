@@ -1,14 +1,14 @@
 export default [
-  "$scope",
-  "$state",
-  "$stateParams",
-  "$ionicLoading",
-  "$ionicPopup",
-  "$ionicScrollDelegate",
-  "RoutesService",
-  "BookingService",
-  "MapService",
-  function(
+  '$scope',
+  '$state',
+  '$stateParams',
+  '$ionicLoading',
+  '$ionicPopup',
+  '$ionicScrollDelegate',
+  'RoutesService',
+  'BookingService',
+  'MapService',
+  function (
     $scope,
     $state,
     $stateParams,
@@ -67,11 +67,11 @@ export default [
 
     $scope.selectStop = stop => {
       $scope.data.selectedStop = stop
-      MapService.emit("stop-selected", stop)
+      MapService.emit('stop-selected', stop)
     }
 
     $scope.done = () => {
-      $state.go("tabs.crowdstart-detail", {
+      $state.go('tabs.crowdstart-detail', {
         routeId: routeId,
       })
     }

@@ -37,7 +37,7 @@
   "devDependencies": {
     "@ionic/cli-plugin-cordova": "1.6.2",
     "@ionic/cli-plugin-ionic1": "2.1.1",
-    "@opengovsg/eslint-config-opengovsg": "^1.0.4",
+    "@opengovsg/eslint-config-opengovsg": "^1.0.5",
     "babel-core": "^6.5.2",
     "babel-eslint": "^8.0.2",
     "babel-loader": "^7.1.2",
@@ -66,6 +66,7 @@
     "inquirer": "^4.0.0",
     "ionic": "^3.5.0",
     "json-loader": "^0.5.4",
+    "lint-staged": "^7.2.0",
     "node-sass": "^4.5.3",
     "pre-commit": "^1.2.2",
     "prettier": "1.8.2",
@@ -118,9 +119,7 @@
     "start": "http-server -c-1 www/",
     "watch": "npm run start & npm run build-watch",
     "watch-scss": "npm run build-scss && node-sass --watch --output www/css scss/ionic.app.scss & node-sass --watch --output www/css scss/operator-grab.scss",
-    "lint": "node scripts/lint.js",
-    "prettier": "node scripts/prettier.js",
-    "prettier-lint": "bash scripts/prettier-lint.sh"
+    "lint": "lint-staged"
   },
   "author": "Government Technology Agency of Singapore (https://www.tech.gov.sg)",
   "license": "Apache-2.0",
@@ -162,6 +161,12 @@
     ]
   },
   "pre-commit": [
-    "prettier-lint"
-  ]
+    "lint"
+  ],
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
 }

@@ -1,14 +1,14 @@
-import _ from "lodash"
+import _ from 'lodash'
 
 export default [
-  "$scope",
-  "SharedVariableService",
-  "$stateParams",
-  "RoutesService",
-  "MapService",
-  "LiteRoutesService",
-  "MapViewFactory",
-  function(
+  '$scope',
+  'SharedVariableService',
+  '$stateParams',
+  'RoutesService',
+  'MapService',
+  'LiteRoutesService',
+  'MapViewFactory',
+  function (
     $scope,
     SharedVariableService,
     $stateParams,
@@ -23,7 +23,7 @@ export default [
     /**
      * Request driver pings for the given trip
      */
-    const pingLoop = async function pingLoop() {
+    const pingLoop = async function pingLoop () {
       const recentTimeBound = 5 * 60000
       await MapViewFactory.pingLoop($scope, recentTimeBound)()
 
@@ -31,13 +31,13 @@ export default [
       // isRecent could be undefined(no pings) or false (pings are out-dated)
       $scope.hasTrackingData = _.any(
         $scope.mapObject.allRecentPings,
-        "isRecent"
+        'isRecent'
       )
       let tripInfo = {
         hasTrackingData: $scope.hasTrackingData,
-        statusMessages: $scope.mapObject.statusMessages.join(" "),
+        statusMessages: $scope.mapObject.statusMessages.join(' '),
       }
-      MapService.emit("tripInfo", tripInfo)
+      MapService.emit('tripInfo', tripInfo)
     }
 
     // ------------------------------------------------------------------------
@@ -73,7 +73,7 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    MapService.on("stop-selected", stop => {
+    MapService.on('stop-selected', stop => {
       $scope.mapObject.chosenStop = stop
       SharedVariableService.setChosenStop(stop)
     })

@@ -1,19 +1,19 @@
-import processingPaymentsTemplate from "../templates/processing-payments.html"
-import assert from "assert"
-import _ from "lodash"
+import processingPaymentsTemplate from '../templates/processing-payments.html'
+import assert from 'assert'
+import _ from 'lodash'
 
-angular.module("beeline").factory("PaymentService", [
-  "UserService",
-  "RequestService",
-  "RoutesService",
-  "$ionicPopup",
-  "$ionicLoading",
-  "BookingService",
-  "StripeService",
-  "loadingSpinner",
-  "TicketService",
-  "$state",
-  function paymentService(
+angular.module('beeline').factory('PaymentService', [
+  'UserService',
+  'RequestService',
+  'RoutesService',
+  '$ionicPopup',
+  '$ionicLoading',
+  'BookingService',
+  'StripeService',
+  'loadingSpinner',
+  'TicketService',
+  '$state',
+  function paymentService (
     UserService,
     RequestService,
     RoutesService,
@@ -27,23 +27,23 @@ angular.module("beeline").factory("PaymentService", [
   ) {
     /** After you have settled the payment mode **/
     // book is booking Object
-    const completePayment = async function completePayment(
+    const completePayment = async function completePayment (
       paymentOptions,
       book
     ) {
       try {
         let result = await RequestService.beeline({
-          method: "POST",
-          url: "/transactions/tickets/payment",
+          method: 'POST',
+          url: '/transactions/tickets/payment',
           data: _.defaults(paymentOptions, {
             trips: BookingService.getTripsFromBooking(book),
-            promoCode: book.promoCode ? { code: book.promoCode } : { code: "" },
-            applyRoutePass: book.applyRoutePass ? true : false,
+            promoCode: book.promoCode ? { code: book.promoCode } : { code: '' },
+            applyRoutePass: !!book.applyRoutePass,
             expectedPrice: book.price,
           }),
         })
 
-        assert(result.status == 200)
+        assert(result.status === 200)
         TicketService.setShouldRefreshTickets()
       } finally {
         RoutesService.fetchRoutePasses(true)
@@ -55,7 +55,7 @@ angular.module("beeline").factory("PaymentService", [
     /*
       Helper function to wrap the UI changes around payment
     */
-    const completePaymentWithUI = async function completePaymentWithUI(
+    const completePaymentWithUI = async function completePaymentWithUI (
       paymentOptions,
       book
     ) {
@@ -65,10 +65,10 @@ angular.module("beeline").factory("PaymentService", [
         })
 
         await completePayment(paymentOptions, book)
-        $state.go("tabs.route-confirmation")
+        $state.go('tabs.route-confirmation')
       } catch (err) {
         await $ionicPopup.alert({
-          title: "Error processing payment",
+          title: 'Error processing payment',
           template: err.data.message,
         })
       } finally {
@@ -76,17 +76,17 @@ angular.module("beeline").factory("PaymentService", [
       }
     }
 
-    const payZeroDollar = async function payZeroDollar(book) {
+    const payZeroDollar = async function payZeroDollar (book) {
       if (
         await $ionicPopup.confirm({
-          title: "Complete Purchase",
-          template: "Are you sure you want to complete the purchase?",
+          title: 'Complete Purchase',
+          template: 'Are you sure you want to complete the purchase?',
         })
       ) {
         try {
           await completePaymentWithUI(
             {
-              stripeToken: "this-will-not-be-used",
+              stripeToken: 'this-will-not-be-used',
             },
             book
           )
@@ -97,12 +97,12 @@ angular.module("beeline").factory("PaymentService", [
     }
 
     // Prompts for card and processes payment with one time stripe token.
-    const payWithoutSavingCard = async function payWithoutSavingCard(book) {
+    const payWithoutSavingCard = async function payWithoutSavingCard (book) {
       try {
         let stripeToken = await loadingSpinner(
           StripeService.promptForToken(
             null,
-            isFinite(book.price) ? book.price * 100 : "",
+            isFinite(book.price) ? book.price * 100 : '',
             null
           )
         )
@@ -119,7 +119,7 @@ angular.module("beeline").factory("PaymentService", [
         )
       } catch (err) {
         await $ionicPopup.alert({
-          title: "Error contacting the payment gateway",
+          title: 'Error contacting the payment gateway',
           template: (err.data && err.data.message) || err,
         })
       }
@@ -127,12 +127,12 @@ angular.module("beeline").factory("PaymentService", [
 
     // Processes payment with customer object. If customer object does not exist,
     // prompts for card, creates customer object, and proceeds as usual.
-    const payWithSavedInfo = async function payWithSavedInfo(book) {
+    const payWithSavedInfo = async function payWithSavedInfo (book) {
       try {
         if (!book.hasSavedPaymentInfo) {
           let stripeToken = await StripeService.promptForToken(
             null,
-            isFinite(book.price) ? book.price * 100 : "",
+            isFinite(book.price) ? book.price * 100 : '',
             null
           )
 
@@ -154,7 +154,7 @@ angular.module("beeline").factory("PaymentService", [
         )
       } catch (err) {
         await $ionicPopup.alert({
-          title: "Error saving payment method",
+          title: 'Error saving payment method',
           template: err.data.message,
         })
       }
@@ -166,7 +166,7 @@ angular.module("beeline").factory("PaymentService", [
       payZeroDollar,
       payWithoutSavingCard,
       payWithSavedInfo,
-      payForRoutePass: async function(
+      payForRoutePass: async function (
         route,
         expectedPrice,
         quantity,
@@ -175,17 +175,17 @@ angular.module("beeline").factory("PaymentService", [
         let paymentPromise
         try {
           let routePassTagList = route.tags.filter(tag => {
-            return tag.includes("rp-")
+            return tag.includes('rp-')
           })
           // assert there is no more than 1 rp- tag
           assert(routePassTagList.length === 1)
           await loadingSpinner(
             RequestService.beeline({
-              method: "POST",
-              url: "/transactions/route_passes/payment",
+              method: 'POST',
+              url: '/transactions/route_passes/payment',
               data: _.defaults(paymentOptions, {
                 tag: routePassTagList[0],
-                promoCode: { code: "" },
+                promoCode: { code: '' },
                 companyId: route.transportCompanyId,
                 expectedPrice,
                 quantity,
@@ -193,12 +193,12 @@ angular.module("beeline").factory("PaymentService", [
             })
           )
           paymentPromise = new Promise(async (resolve, reject) => {
-            return resolve("routePassPurchaseDone")
+            return resolve('routePassPurchaseDone')
           })
         } catch (err) {
           paymentPromise = new Promise(async (resolve, reject) => {
             await $ionicPopup.alert({
-              title: "Error processing payment",
+              title: 'Error processing payment',
               template: `
               <div> There was an error creating the payment. \
               ${err &&
@@ -206,7 +206,7 @@ angular.module("beeline").factory("PaymentService", [
                 err.data.message} Please try again later.</div>
               `,
             })
-            return reject("routePassError")
+            return reject(new Error('routePassError'))
           })
         } finally {
           RoutesService.fetchRoutePasses(true)
@@ -216,7 +216,7 @@ angular.module("beeline").factory("PaymentService", [
         return paymentPromise
       },
 
-      payHandler: async function(book, savePaymentChecked, onetimePayment) {
+      payHandler: async function (book, savePaymentChecked, onetimePayment) {
         if (book.price === 0) {
           await payZeroDollar(book)
         } else if (

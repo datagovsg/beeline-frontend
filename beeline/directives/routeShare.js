@@ -1,11 +1,11 @@
-angular.module("beeline").directive("routeShare", [
-  "$cordovaSocialSharing",
-  "$ionicPopup",
-  "$rootScope",
-  function($cordovaSocialSharing, $ionicPopup, $rootScope) {
+angular.module('beeline').directive('routeShare', [
+  '$cordovaSocialSharing',
+  '$ionicPopup',
+  '$rootScope',
+  function ($cordovaSocialSharing, $ionicPopup, $rootScope) {
     return {
       replace: true,
-      restrict: "E",
+      restrict: 'E',
       template: `<div>
                   <button class="button button-clear" ng-click="shareAnywhere()" ng-if="!showCopy">
                     <i class="fa fa-share-alt"></i>
@@ -15,31 +15,31 @@ angular.module("beeline").directive("routeShare", [
                   </button>
                 </div>`,
       scope: {
-        routeId: "<",
-        routeType: "<",
+        routeId: '<',
+        routeType: '<',
       },
-      link: function(scope, element, attributes) {
+      link: function (scope, element, attributes) {
         scope.showCopy = !window.cordova || false
 
         const domain =
-          $rootScope.o.APP.NAME === "GrabShuttle"
-            ? "https://grabshuttle.beeline.sg"
-            : "https://app.beeline.sg"
-        if (scope.routeType === "normal") {
+          $rootScope.o.APP.NAME === 'GrabShuttle'
+            ? 'https://grabshuttle.beeline.sg'
+            : 'https://app.beeline.sg'
+        if (scope.routeType === 'normal') {
           scope.shareLink = `${domain}/tabs/route/${scope.routeId}`
-        } else if (scope.routeType === "crowdstart") {
+        } else if (scope.routeType === 'crowdstart') {
           scope.shareLink = `${domain}/tabs/crowdstart/${scope.routeId}/detail`
-        } else if (scope.routeType === "lite") {
+        } else if (scope.routeType === 'lite') {
           scope.shareLink = `${domain}/tabs/lite/detail/${scope.routeId}`
         }
 
-        scope.shareAnywhere = function() {
+        scope.shareAnywhere = function () {
           $cordovaSocialSharing.share(scope.shareLink)
         }
 
-        scope.feedback = function() {
+        scope.feedback = function () {
           $ionicPopup.alert({
-            title: "URL is copied to clipboard",
+            title: 'URL is copied to clipboard',
           })
         }
       },

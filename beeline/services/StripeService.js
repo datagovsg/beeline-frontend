@@ -1,10 +1,10 @@
-angular.module("beeline").factory("StripeService", [
-  "UserService",
-  "RequestService",
-  "$ionicPopup",
-  "$ionicPlatform",
-  "$rootScope",
-  function StripeService(
+angular.module('beeline').factory('StripeService', [
+  'UserService',
+  'RequestService',
+  '$ionicPopup',
+  '$ionicPlatform',
+  '$rootScope',
+  function StripeService (
     UserService,
     RequestService,
     $ionicPopup,
@@ -12,26 +12,26 @@ angular.module("beeline").factory("StripeService", [
     $rootScope
   ) {
     let stripeKeyPromise = RequestService.beeline({
-      url: "/stripe-key",
-      method: "GET",
+      url: '/stripe-key',
+      method: 'GET',
     }).then(response => {
       Stripe.setPublishableKey(response.data.publicKey)
       return response.data.publicKey
     })
 
-    function tokenFromStripeCheckout(description, amount, isAddPayment) {
+    function tokenFromStripeCheckout (description, amount, isAddPayment) {
       return stripeKeyPromise.then(stripeKey => {
         return new Promise((resolve, reject) => {
           let deregister
           let handler = StripeCheckout.configure({
             key: stripeKey,
-            locale: "auto",
+            locale: 'auto',
             // allowRememberMe: false,
-            token: function(token) {
+            token: function (token) {
               deregister()
               resolve(token)
             },
-            closed: function() {
+            closed: function () {
               deregister()
               resolve(null)
             },
@@ -46,16 +46,16 @@ angular.module("beeline").factory("StripeService", [
             description: description,
             amount: Math.round(amount),
             allowRememberMe: false,
-            currency: "SGD",
+            currency: 'SGD',
             email: UserService.getUser().email,
             // panelLabel: "Add Card Details",
           }
 
           if (isAddPayment) {
             handlerOptions = {
-              name: "Add Card Details",
+              name: 'Add Card Details',
               description: description,
-              panelLabel: "Add Card",
+              panelLabel: 'Add Card',
               allowRememberMe: false,
               email: UserService.getUser().email,
             }
@@ -67,7 +67,7 @@ angular.module("beeline").factory("StripeService", [
     }
 
     return {
-      async promptForToken(description, amount, isAddPayment) {
+      async promptForToken (description, amount, isAddPayment) {
         let tokenPromise
 
         if (StripeCheckout) {

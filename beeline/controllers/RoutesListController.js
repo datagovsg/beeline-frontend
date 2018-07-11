@@ -1,28 +1,28 @@
-import _ from "lodash"
-import { sleep } from "../shared/util"
-import querystring from "querystring"
-import moment from "moment-timezone"
+import _ from 'lodash'
+import { sleep } from '../shared/util'
+import querystring from 'querystring'
+import moment from 'moment-timezone'
 
 export default [
-  "$scope",
-  "$q",
-  "$state",
-  "$rootScope",
-  "RoutesService",
-  "CrowdstartService",
-  "LiteRoutesService",
-  "LiteRouteSubscriptionService",
-  "SearchService",
-  "BookingService",
-  "SearchEventService",
-  "RequestService",
-  "$window",
-  "OneMapPlaceService",
-  "$ionicHistory",
-  "$location",
-  "$anchorScroll",
-  "$timeout",
-  function(
+  '$scope',
+  '$q',
+  '$state',
+  '$rootScope',
+  'RoutesService',
+  'CrowdstartService',
+  'LiteRoutesService',
+  'LiteRouteSubscriptionService',
+  'SearchService',
+  'BookingService',
+  'SearchEventService',
+  'RequestService',
+  '$window',
+  'OneMapPlaceService',
+  '$ionicHistory',
+  '$location',
+  '$anchorScroll',
+  '$timeout',
+  function (
     // Angular Tools
     $scope,
     $q,
@@ -48,7 +48,7 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
-    const addExpiryToRoute = function addExpiryToRoute(
+    const addExpiryToRoute = function addExpiryToRoute (
       route,
       routePassTags,
       routePassExpiries
@@ -69,7 +69,7 @@ export default [
 
       // Get the closest expiry date
       // Add one day because the route pass expires at the end of the day
-      route.expiry = dates[0].add(1, "days").diff(moment(), "days")
+      route.expiry = dates[0].add(1, 'days').diff(moment(), 'days')
 
       return route
     }
@@ -80,7 +80,7 @@ export default [
     // Explicitly declare/initialize of scope variables we use
     $scope.data = {
       placeQuery: null, // The place object used to search
-      queryText: "", // The actual text in the box
+      queryText: '', // The actual text in the box
       // Different types of route data
       routesWithRidesRemaining: null,
       backedCrowdstartRoutes: null,
@@ -96,17 +96,16 @@ export default [
     }
 
     $scope.disp = {
-      yourRoutes:
-        $ionicHistory.currentStateName() === "tabs.yourRoutes" ? true : false,
+      yourRoutes: $ionicHistory.currentStateName() === 'tabs.yourRoutes',
       title:
-        $ionicHistory.currentStateName() === "tabs.yourRoutes"
-          ? "Your Routes"
-          : "Search Routes",
+        $ionicHistory.currentStateName() === 'tabs.yourRoutes'
+          ? 'Your Routes'
+          : 'Search Routes',
     }
     // ------------------------------------------------------------------------
     // Ionic events
     // ------------------------------------------------------------------------
-    $scope.$on("$ionicView.enter", function() {
+    $scope.$on('$ionicView.enter', function () {
       // Refresh routes on enter for routes in case we did something that
       // changed my routes e.g. unsubscribing lite route, booking a route,
       // withdrawing from crowdstart
@@ -116,7 +115,7 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    const autoComplete = function autoComplete() {
+    const autoComplete = function autoComplete () {
       if (!$scope.data.queryText || $scope.data.queryText.length < 3) {
         $scope.data.placeQuery = null
         $scope.data.isFiltering = false
@@ -130,7 +129,7 @@ export default [
 
       // default 'place' object only has 'queryText' but no geometry
       let place = { queryText: $scope.data.queryText }
-      SearchEventService.emit("search-item", $scope.data.queryText)
+      SearchEventService.emit('search-item', $scope.data.queryText)
 
       // Reset routes, crowdstartRoutes and liteRoutes here because they are
       // used to determine whether we do a place query (see watchGroup with
@@ -158,14 +157,14 @@ export default [
     }
 
     $scope.$watch(
-      "data.queryText",
+      'data.queryText',
       _.debounce(autoComplete, 300, {
         leading: false,
         trailing: true,
       })
     )
 
-    $scope.$watch("data.queryText", queryText => {
+    $scope.$watch('data.queryText', queryText => {
       if (queryText.length === 0) $scope.data.isFiltering = true
     })
 
@@ -183,8 +182,8 @@ export default [
         if (!recentRoutes || !allRoutes || !privateRoutes) return
 
         // "Fill in" the recent routes with the all routes data
-        let allRoutesById = _.keyBy(allRoutes, "id")
-        let privateRoutesById = _.keyBy(privateRoutes, "id")
+        let allRoutesById = _.keyBy(allRoutes, 'id')
+        let privateRoutesById = _.keyBy(privateRoutes, 'id')
         $scope.data.recentRoutes = recentRoutes
           .map(recentRoute => {
             return _.assign(
@@ -197,7 +196,7 @@ export default [
             // Clean out "junk" routes which may be old/obsolete
           })
           .filter(route => route && route.id !== undefined)
-        $scope.data.recentRoutesById = _.keyBy($scope.data.recentRoutes, "id")
+        $scope.data.recentRoutesById = _.keyBy($scope.data.recentRoutes, 'id')
       }
     )
 
@@ -206,8 +205,8 @@ export default [
       [
         () => RoutesService.getRoutesWithRidesRemaining(),
         () => RoutesService.getPrivateRoutesWithRidesRemaining(),
-        "data.placeQuery",
-        "data.recentRoutesById",
+        'data.placeQuery',
+        'data.recentRoutesById',
       ],
       ([routes, privateRoutes, placeQuery, recentRoutesById]) => {
         // Input validation
@@ -263,10 +262,10 @@ export default [
     // reset to null if user use search bar
     $scope.$watchGroup(
       [
-        "data.recentRoutesById",
-        "data.routes",
-        "data.liteRoutes",
-        "data.crowdstartRoutes",
+        'data.recentRoutesById',
+        'data.routes',
+        'data.liteRoutes',
+        'data.crowdstartRoutes',
       ],
       async ([recentRoutesById, routes, liteRoutes, crowdstartRoutes]) => {
         if (recentRoutesById && routes && liteRoutes && crowdstartRoutes) {
@@ -287,7 +286,7 @@ export default [
               )
 
               let stopId =
-                route.startTime && moment(route.startTime).format("A") === "AM"
+                route.startTime && moment(route.startTime).format('A') === 'AM'
                   ? route.boardStopStopId
                   : route.alightStopStopId
 
@@ -295,8 +294,8 @@ export default [
                 lnglat = tripStopsByKey[stopId].stop.coordinates.coordinates
               } else {
                 lnglat = await RequestService.beeline({
-                  method: "GET",
-                  url: "/stops/" + stopId,
+                  method: 'GET',
+                  url: '/stops/' + stopId,
                 }).then(response => response.data.coordinates.coordinates)
               }
 
@@ -325,7 +324,7 @@ export default [
           )
 
           // publish unique routes
-          $scope.data.routesYouMayLike = _.uniqBy(placeResults, "id")
+          $scope.data.routesYouMayLike = _.uniqBy(placeResults, 'id')
         }
       }
     )
@@ -335,7 +334,7 @@ export default [
       [
         () => LiteRoutesService.getLiteRoutes(),
         () => LiteRouteSubscriptionService.getSubscriptionSummary(),
-        "data.placeQuery",
+        'data.placeQuery',
       ],
       ([liteRoutes, subscribed, placeQuery]) => {
         // Input validation
@@ -380,7 +379,7 @@ export default [
     // Normal routes
     // Sort them by start time
     $scope.$watchGroup(
-      [() => RoutesService.getRoutesWithRoutePass(), "data.placeQuery"],
+      [() => RoutesService.getRoutesWithRoutePass(), 'data.placeQuery'],
       ([allRoutes, placeQuery]) => {
         // Input validation
         if (!allRoutes) return
@@ -399,8 +398,8 @@ export default [
           )
         }
         // Sort the routes by the time of day
-        $scope.data.routes = _.sortBy(allRoutes, "label", route => {
-          const firstTripStop = _.get(route, "trips[0].tripStops[0]")
+        $scope.data.routes = _.sortBy(allRoutes, 'label', route => {
+          const firstTripStop = _.get(route, 'trips[0].tripStops[0]')
           const midnightOfTrip = new Date(firstTripStop.time.getTime())
           midnightOfTrip.setHours(0, 0, 0, 0)
           return firstTripStop.time.getTime() - midnightOfTrip.getTime()
@@ -413,7 +412,7 @@ export default [
       [
         () => CrowdstartService.getCrowdstart(),
         () => CrowdstartService.getBids(),
-        "data.placeQuery",
+        'data.placeQuery',
       ],
       ([routes, bids, placeQuery]) => {
         if (!routes || !bids) return
@@ -450,9 +449,9 @@ export default [
 
     // Deciding whether to do a place query
     $scope.$watchGroup(
-      ["data.routes", "data.crowdstartRoutes", "data.liteRoutes"],
+      ['data.routes', 'data.crowdstartRoutes', 'data.liteRoutes'],
       ([routes, crowdstartRoutes, liteRoutes]) => {
-        const handlePlaceQuery = async function handlePlaceQuery() {
+        const handlePlaceQuery = async function handlePlaceQuery () {
           // Important comments in the autoComplete function
           if (!routes || !crowdstartRoutes || !liteRoutes) return
           // Criteria for making a place query
@@ -478,7 +477,7 @@ export default [
           $scope.$digest()
         }
 
-        const stopFilteringAfterDelay = async function stopFilteringAfterDelay() {
+        const stopFilteringAfterDelay = async function stopFilteringAfterDelay () {
           await sleep(500)
           $scope.data.isFiltering = false
           $scope.$digest()
@@ -495,12 +494,12 @@ export default [
       () => $scope.hasPersonalRoutes(),
       hasPersonalRoutes => {
         if (
-          $ionicHistory.currentStateName() === "tabs.yourRoutes" &&
+          $ionicHistory.currentStateName() === 'tabs.yourRoutes' &&
           !hasPersonalRoutes
         ) {
           // After redirecting once we can unbind the watcher
           unbindWatchGroup()
-          $state.go("tabs.routes")
+          $state.go('tabs.routes')
         }
       }
     )
@@ -508,14 +507,14 @@ export default [
     // Hides the animated loading routes
     $scope.$watchGroup(
       [
-        "data.routes",
-        "data.routesWithRidesRemaining",
-        "data.backedCrowdstartRoutes",
-        "data.recentRoutes",
-        "data.liteRoutes",
-        "data.subscribedLiteRoutes",
-        "data.crowdstartRoutes",
-        "data.routesYouMayLike",
+        'data.routes',
+        'data.routesWithRidesRemaining',
+        'data.backedCrowdstartRoutes',
+        'data.recentRoutes',
+        'data.liteRoutes',
+        'data.subscribedLiteRoutes',
+        'data.crowdstartRoutes',
+        'data.routesYouMayLike',
       ],
       (
         [
@@ -533,7 +532,7 @@ export default [
         // all routes have been loaded and all are empty
 
         // Your routes
-        if ($ionicHistory.currentStateName() === "tabs.youRoutes") {
+        if ($ionicHistory.currentStateName() === 'tabs.youRoutes') {
           $scope.data.routesAvailable =
             (routesWithRidesRemaining && routesWithRidesRemaining.length > 0) ||
             (recentRoutes && recentRoutes.length > 0) ||
@@ -555,7 +554,7 @@ export default [
       }
     )
 
-    const routesAreLoaded = function routesAreLoaded() {
+    const routesAreLoaded = function routesAreLoaded () {
       return !!(
         $scope.data.routes &&
         $scope.data.liteRoutes &&
@@ -580,10 +579,10 @@ export default [
       [
         () => RoutesService.getRoutePassTags(),
         () => RoutesService.getRoutePassExpiries(),
-        "data.routes",
-        "data.routesWithRidesRemaining",
-        "data.recentRoutes",
-        "data.routesYouMayLike",
+        'data.routes',
+        'data.routesWithRidesRemaining',
+        'data.recentRoutes',
+        'data.routesYouMayLike',
       ],
       (
         [
@@ -603,8 +602,9 @@ export default [
           !routesWithRidesRemaining ||
           !recentRoutes ||
           !routesYouMayLike
-        )
+        ) {
           return
+        }
 
         let [
           routesExp,
@@ -644,7 +644,7 @@ export default [
     // Report any errors that happen
     // Note that theres no need to update the scope manually
     // since this is done by the service watchers
-    $scope.refreshRoutes = function(ignoreCache) {
+    $scope.refreshRoutes = function (ignoreCache) {
       RoutesService.fetchRoutePasses(ignoreCache)
       RoutesService.fetchRoutes(ignoreCache)
       const routesPromise = RoutesService.fetchRoutesWithRoutePass()
@@ -675,11 +675,11 @@ export default [
           $scope.error = true
         })
         .then(() => {
-          $scope.$broadcast("scroll.refreshComplete")
+          $scope.$broadcast('scroll.refreshComplete')
         })
     }
 
-    $scope.hasPersonalRoutes = function() {
+    $scope.hasPersonalRoutes = function () {
       return !(
         $scope.data.routesWithRidesRemaining &&
         $scope.data.routesWithRidesRemaining.length === 0 &&
@@ -694,13 +694,13 @@ export default [
       )
     }
 
-    $scope.openSuggestionLink = function(event) {
+    $scope.openSuggestionLink = function (event) {
       event.preventDefault()
-      let appName = $rootScope.o.APP.NAME.replace(/\s/g, "")
+      let appName = $rootScope.o.APP.NAME.replace(/\s/g, '')
       window.open(
-        "https://www.beeline.sg/suggest.html#" +
+        'https://www.beeline.sg/suggest.html#' +
           querystring.stringify({ referrer: appName }),
-        "_system"
+        '_system'
       )
     }
   },

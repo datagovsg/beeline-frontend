@@ -1,18 +1,18 @@
-import _ from "lodash"
-import { htmlFrom } from "../shared/util"
+import _ from 'lodash'
+import { htmlFrom } from '../shared/util'
 
 export default [
-  "$ionicHistory",
-  "$ionicPopup",
-  "$scope",
-  "$stateParams",
-  "loadingSpinner",
-  "PaymentService",
-  "RequestService",
-  "RoutesService",
-  "StripeService",
-  "UserService",
-  function(
+  '$ionicHistory',
+  '$ionicPopup',
+  '$scope',
+  '$stateParams',
+  'loadingSpinner',
+  'PaymentService',
+  'RequestService',
+  'RoutesService',
+  'StripeService',
+  'UserService',
+  function (
     $ionicHistory,
     $ionicPopup,
     $scope,
@@ -27,7 +27,7 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
-    const retrievePaymentInfo = async function retrievePaymentInfo(
+    const retrievePaymentInfo = async function retrievePaymentInfo (
       oneTimePayment
     ) {
       let paymentInfo
@@ -43,7 +43,7 @@ export default [
             null,
             isFinite($scope.book.routePassPrice)
               ? $scope.book.routePassPrice * 100
-              : "",
+              : '',
             null
           )
         )
@@ -65,7 +65,7 @@ export default [
       return paymentInfo
     }
 
-    const payForRoutePass = async function payForRoutePass(oneTimePayment) {
+    const payForRoutePass = async function payForRoutePass (oneTimePayment) {
       try {
         const paymentInfo = await retrievePaymentInfo(oneTimePayment)
         const {
@@ -75,18 +75,18 @@ export default [
 
         return paymentInfo
           ? PaymentService.payForRoutePass(
-              $scope.data.route,
-              expectedPrice,
-              quantity,
-              paymentInfo
-            )
+            $scope.data.route,
+            expectedPrice,
+            quantity,
+            paymentInfo
+          )
           : new Promise((resolve, reject) => {
-              return reject("No payment information available")
-            })
+            return reject(new Error('No payment information available'))
+          })
       } catch (err) {
         console.error(err)
         return new Promise((resolve, reject) => {
-          return reject("routePassError")
+          return reject(new Error('routePassError'))
         })
       }
     }
@@ -130,13 +130,13 @@ export default [
         schedule => schedule.quantity === 1
       )[0]
       response = _.filter(response, schedule => schedule.quantity !== 1)
-      $scope.book.priceSchedules = _.sortBy(response, ["unitPrice"])
+      $scope.book.priceSchedules = _.sortBy(response, ['unitPrice'])
       $scope.book.routePassChoice = 0
     })
 
     RequestService.beeline({
-      method: "GET",
-      url: "/assets/routepass-tc",
+      method: 'GET',
+      url: '/assets/routepass-tc',
     })
       .then(response => {
         $scope.routePassTerms.html = htmlFrom(response.data.data)
@@ -150,28 +150,28 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    $scope.login = async function() {
+    $scope.login = async function () {
       // Prompt login
       await UserService.loginIfNeeded()
     }
 
-    $scope.proceed = async function(oneTimePayment) {
+    $scope.proceed = async function (oneTimePayment) {
       $scope.book.isProcessing = true
       loadingSpinner(payForRoutePass(oneTimePayment)).then(
         async () => {
           $scope.book.isProcessing = false
           await $ionicPopup.alert({
-            title: "Route pass purchase successful!",
+            title: 'Route pass purchase successful!',
           })
           $ionicHistory.goBack()
-          return "Payment Done"
+          return 'Payment Done'
         },
         async () => {
           $scope.book.isProcessing = false
           await $ionicPopup.alert({
-            title: "Route pass purchase unsuccessful",
+            title: 'Route pass purchase unsuccessful',
           })
-          return "Payment Failed"
+          return 'Payment Failed'
         }
       )
     }
@@ -179,20 +179,20 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    $scope.$watch("book.routePassChoice", choice => {
+    $scope.$watch('book.routePassChoice', choice => {
       if (choice !== null) {
         $scope.book.routePassPrice = $scope.book.priceSchedules[choice].price
         $scope.book.selectedPriceSchedule = $scope.book.priceSchedules[choice]
       }
     })
 
-    $scope.$watch("book.user", user => {
+    $scope.$watch('book.user', user => {
       if (user) {
         let hasSavedPaymentInfo =
-          _.get(user, "savedPaymentInfo.sources.data.length", 0) > 0
+          _.get(user, 'savedPaymentInfo.sources.data.length', 0) > 0
         $scope.book.hasSavedPaymentInfo = hasSavedPaymentInfo
         let savedPaymentInfo = $scope.book.hasSavedPaymentInfo
-          ? _.get(user, "savedPaymentInfo")
+          ? _.get(user, 'savedPaymentInfo')
           : null
         $scope.book.savedPaymentInfo = savedPaymentInfo
         $scope.book.brand = hasSavedPaymentInfo
@@ -204,7 +204,7 @@ export default [
       }
     })
 
-    UserService.userEvents.on("userChanged", () => {
+    UserService.userEvents.on('userChanged', () => {
       $scope.book.user = UserService.getUser()
     })
   },

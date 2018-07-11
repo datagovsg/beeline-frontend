@@ -1,14 +1,14 @@
-import _ from "lodash"
+import _ from 'lodash'
 
-angular.module("beeline").service("MapOptions", [
-  "uiGmapGoogleMapApi",
-  function MapOptions(uiGmapGoogleMapApi) {
+angular.module('beeline').service('MapOptions', [
+  'uiGmapGoogleMapApi',
+  function MapOptions (uiGmapGoogleMapApi) {
     let markerOptionsPromise = uiGmapGoogleMapApi.then(googleMaps => {
       return {
         markerOptions: {
           normalMarker: {
             icon: {
-              url: "img/map/Icon_NormalWShadow.svg",
+              url: 'img/map/Icon_NormalWShadow.svg',
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },
@@ -16,7 +16,7 @@ angular.module("beeline").service("MapOptions", [
           },
           boardMarker: {
             icon: {
-              url: "img/map/Icon_PickupWShadow.svg",
+              url: 'img/map/Icon_PickupWShadow.svg',
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },
@@ -24,7 +24,7 @@ angular.module("beeline").service("MapOptions", [
           },
           alightMarker: {
             icon: {
-              url: "img/map/Icon_DropoffWShadow.svg",
+              url: 'img/map/Icon_DropoffWShadow.svg',
               scaledSize: new googleMaps.Size(26, 25),
               anchor: new googleMaps.Point(13, 13),
             },
@@ -32,7 +32,7 @@ angular.module("beeline").service("MapOptions", [
           },
           startMarker: {
             icon: {
-              url: "img/map/SelectedPinStart@2x.png",
+              url: 'img/map/SelectedPinStart@2x.png',
               scaledSize: new googleMaps.Size(34, 46),
               anchor: new googleMaps.Point(17, 41),
             },
@@ -40,7 +40,7 @@ angular.module("beeline").service("MapOptions", [
           },
           endMarker: {
             icon: {
-              url: "img/map/SelectedPinStop@2x.png",
+              url: 'img/map/SelectedPinStop@2x.png',
               scaledSize: new googleMaps.Size(34, 46),
               anchor: new googleMaps.Point(17, 41),
             },
@@ -48,7 +48,7 @@ angular.module("beeline").service("MapOptions", [
           },
           normalPinMarker: {
             icon: {
-              url: "img/map/SelectedPinNormal@2x.png",
+              url: 'img/map/SelectedPinNormal@2x.png',
               scaledSize: new googleMaps.Size(34, 46),
               anchor: new googleMaps.Point(17, 41),
             },
@@ -57,17 +57,17 @@ angular.module("beeline").service("MapOptions", [
         },
         pathOptions: {
           routePath: {
-            color: "#4b3863",
+            color: '#4b3863',
             weight: 3.0,
             opacity: 0.7,
           },
           crowdstartPath: {
-            color: "#AAAAAA",
+            color: '#AAAAAA',
             weight: 3.0,
             opacity: 0.4,
           },
           actualPath: {
-            color: "#000000",
+            color: '#000000',
             weight: 3.0,
             opacity: 1.0,
           },
@@ -83,7 +83,7 @@ angular.module("beeline").service("MapOptions", [
       }
     })
 
-    this.defaultMapOptions = function(options) {
+    this.defaultMapOptions = function (options) {
       let mapOptions = _.assign(
         {
           center: { latitude: 1.370244, longitude: 103.823315 },
@@ -104,16 +104,16 @@ angular.module("beeline").service("MapOptions", [
             disableDefaultUI: true,
             styles: [
               {
-                featureType: "poi",
+                featureType: 'poi',
                 stylers: [
                   {
-                    visibility: "off",
+                    visibility: 'off',
                   },
                 ],
               },
             ],
             draggable: true,
-            gestureHandling: "greedy",
+            gestureHandling: 'greedy',
           },
           markerOptions: {
             alightMarker: {},
@@ -135,30 +135,30 @@ angular.module("beeline").service("MapOptions", [
       return mapOptions
     }
 
-    this.disableMapLinks = function() {
-      setTimeout(function() {
+    this.disableMapLinks = function () {
+      setTimeout(function () {
         let anchorElems = document.querySelectorAll(
-          "ui-gmap-google-map a[href]"
+          'ui-gmap-google-map a[href]'
         )
 
         for (let i = 0; i < anchorElems.length; i++) {
           let anchorElem = anchorElems[i]
-          if (!anchorElem.dataset["clickDisabled"]) {
-            anchorElem.addEventListener("click", e => e.preventDefault())
-            anchorElem.dataset["clickDisabled"] = true
+          if (!anchorElem.dataset['clickDisabled']) {
+            anchorElem.addEventListener('click', e => e.preventDefault())
+            anchorElem.dataset['clickDisabled'] = true
           }
         }
       }, 300)
     }
 
-    this.resizePreserveCenter = function(map) {
+    this.resizePreserveCenter = function (map) {
       let oldCenter = map.getCenter()
-      google.maps.event.trigger(map, "resize")
+      google.maps.event.trigger(map, 'resize')
       map.setCenter(oldCenter)
     }
 
-    this.formBounds = function(stops) {
-      if (stops.length == 0) {
+    this.formBounds = function (stops) {
+      if (stops.length === 0) {
         return
       }
       let bounds = new google.maps.LatLngBounds()

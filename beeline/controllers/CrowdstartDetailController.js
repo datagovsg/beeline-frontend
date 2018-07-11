@@ -1,15 +1,15 @@
-import _ from "lodash"
+import _ from 'lodash'
 
 export default [
-  "$scope",
-  "$state",
-  "$stateParams",
-  "BookingService",
-  "CompanyService",
-  "UserService",
-  "CrowdstartService",
-  "$ionicHistory",
-  function(
+  '$scope',
+  '$state',
+  '$stateParams',
+  'BookingService',
+  'CompanyService',
+  'UserService',
+  'CrowdstartService',
+  '$ionicHistory',
+  function (
     $scope,
     $state,
     $stateParams,
@@ -22,7 +22,7 @@ export default [
     // ------------------------------------------------------------------------
     // Helper functions
     // ------------------------------------------------------------------------
-    const updateBidded = async function updateBidded([user, routePromise]) {
+    const updateBidded = async function updateBidded ([user, routePromise]) {
       const route = await routePromise
       if (!route) return
 
@@ -49,7 +49,7 @@ export default [
       routeId,
       route: null,
       bid: null,
-      calculatedAmount: "",
+      calculatedAmount: '',
       bidPrice: null,
     }
 
@@ -61,12 +61,12 @@ export default [
     // ------------------------------------------------------------------------
     // Ionic Events
     // ------------------------------------------------------------------------
-    $scope.$on("$ionicView.beforeLeave", function() {
+    $scope.$on('$ionicView.beforeLeave', function () {
       // to make the join crowdstart button not flash when the page loads
       $scope.disp.bidded = null
     })
 
-    $scope.$on("$ionicView.enter", function() {
+    $scope.$on('$ionicView.enter', function () {
       // For re-computing bidded correctly when re-entering the page
       updateBidded([
         UserService.getUser(),
@@ -112,14 +112,14 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    $scope.showStops = function() {
-      $state.go("tabs.crowdstart-stops", {
+    $scope.showStops = function () {
+      $state.go('tabs.crowdstart-stops', {
         routeId: $scope.book.routeId,
       })
     }
 
-    $scope.updateSelection = function(position, tiers, price) {
-      _.forEach(tiers, function(tier, index) {
+    $scope.updateSelection = function (position, tiers, price) {
+      _.forEach(tiers, function (tier, index) {
         if (position === index) {
           $scope.book.bidPrice = $scope.book.bidPrice === price ? null : price
         }

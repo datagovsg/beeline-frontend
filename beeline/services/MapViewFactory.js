@@ -1,37 +1,37 @@
-import { formatTime } from "../shared/format"
-import { SafeInterval } from "../SafeInterval"
-import _ from "lodash"
+import { formatTime } from '../shared/format'
+import { SafeInterval } from '../SafeInterval'
+import _ from 'lodash'
 
-angular.module("beeline").factory("MapViewFactory", [
-  "MapService",
-  "TripService",
-  "ServerTime",
-  function MapViewFactory(MapService, TripService, ServerTime) {
+angular.module('beeline').factory('MapViewFactory', [
+  'MapService',
+  'TripService',
+  'ServerTime',
+  function MapViewFactory (MapService, TripService, ServerTime) {
     return {
-      init: function(scope) {
+      init: function (scope) {
         scope.mapObject = this.mapObject()
 
         scope.disp = this.disp()
 
-        scope.closeWindow = function() {
+        scope.closeWindow = function () {
           scope.disp.popupStop = null
         }
 
-        scope.applyTapBoard = function(stop) {
+        scope.applyTapBoard = function (stop) {
           scope.disp.popupStop = stop
           scope.$digest()
         }
 
-        scope.formatStopTime = function(input) {
+        scope.formatStopTime = function (input) {
           if (Array.isArray(input)) {
-            return ""
+            return ''
           }
           return formatTime(input)
         }
 
         scope.isArray = angular.isArray
       },
-      mapObject: function() {
+      mapObject: function () {
         return _.assign(
           {},
           {
@@ -46,27 +46,27 @@ angular.module("beeline").factory("MapViewFactory", [
           }
         )
       },
-      disp: function() {
+      disp: function () {
         return {
           popupStop: null,
           routeMessage: null,
         }
       },
-      setupPingLoops: function(scope, pingLoop, statusLoop) {
+      setupPingLoops: function (scope, pingLoop, statusLoop) {
         // fetch driver pings every 4s and statuses every 60s
         scope.timeout = new SafeInterval(pingLoop, 4000, 1000)
         scope.statusTimeout = new SafeInterval(statusLoop, 60000, 1000)
 
-        MapService.once("ping-trips", trips => {
+        MapService.once('ping-trips', trips => {
           scope.mapObject.pingTrips = trips
         })
 
-        MapService.once("startPingLoop", () => {
+        MapService.once('startPingLoop', () => {
           scope.timeout.start()
           scope.statusTimeout.start()
           // register this once startPingLoop is fired so to avoid race condition
           // ("killPingLoop is fired before startPingLoop")
-          MapService.once("killPingLoop", () => {
+          MapService.once('killPingLoop', () => {
             scope.timeout.stop()
             scope.statusTimeout.stop()
             scope.mapObject.allRecentPings = []
@@ -74,15 +74,15 @@ angular.module("beeline").factory("MapViewFactory", [
         })
 
         // load icons and path earlier by restart timeout on watching trips
-        scope.$watchCollection("mapObject.pingTrips", pt => {
+        scope.$watchCollection('mapObject.pingTrips', pt => {
           if (pt) {
             scope.timeout.stop()
             scope.timeout.start()
           }
         })
       },
-      pingLoop: function(scope, recentTimeBound) {
-        return async function() {
+      pingLoop: function (scope, recentTimeBound) {
+        return async function () {
           if (!scope.mapObject.pingTrips) return
 
           // if scope.mapObject.allRecentPings doesn't exist yet, initialize
@@ -102,15 +102,15 @@ angular.module("beeline").factory("MapViewFactory", [
                     pings,
                     isRecent: now - ping.time.getTime() < recentTimeBound,
                   }
-                  MapService.emit("ping", ping)
+                  MapService.emit('ping', ping)
                 }
               })
             })
           )
         }
       },
-      statusLoop: function(scope) {
-        return async function() {
+      statusLoop: function (scope) {
+        return async function () {
           if (!scope.mapObject.pingTrips) return
 
           // if scope.mapObject.statusMessages doesn't exist yet, initialize
@@ -128,12 +128,12 @@ angular.module("beeline").factory("MapViewFactory", [
                 const status = trip.status
                 scope.mapObject.statusMessages[index] = _.get(
                   trip.messages,
-                  "[0].message",
+                  '[0].message',
                   null
                 )
 
                 if (status) {
-                  MapService.emit("status", status)
+                  MapService.emit('status', status)
                 }
               })
             })

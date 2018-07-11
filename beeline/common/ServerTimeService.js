@@ -1,8 +1,8 @@
-angular.module("common").factory("ServerTime", [
-  "$http",
-  function($http) {
+angular.module('common').factory('ServerTime', [
+  '$http',
+  function ($http) {
     class ServerTime {
-      sync() {
+      sync () {
         return new Promise(resolve => {
           if (this.localServerTimeDiff) {
             resolve()
@@ -12,14 +12,14 @@ angular.module("common").factory("ServerTime", [
         })
       }
 
-      getTime() {
+      getTime () {
         return (
           Date.now() +
           parseInt(this.localServerTimeDiff ? this.localServerTimeDiff : 0)
         )
       }
 
-      _syncTime() {
+      _syncTime () {
         const startTime = new Date()
         const handler = headers => {
           let timeDiff =
@@ -30,8 +30,8 @@ angular.module("common").factory("ServerTime", [
         // https://www.codeproject.com/Articles/790220/Accurate-time-in-JavaScript
         // return $http({url: "http://www.googleapis.com", method: 'GET'})
         return $http({
-          url: "https://api.beeline.sg/user",
-          method: "GET",
+          url: 'https://api.beeline.sg/user',
+          method: 'GET',
         }).then(
           response => handler(response.headers()),
           error => handler(error.headers())

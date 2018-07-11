@@ -1,19 +1,19 @@
-import progressBar from "./progressBar.html"
+import progressBar from './progressBar.html'
 
-angular.module("beeline").directive("progressBar", [
-  function() {
+angular.module('beeline').directive('progressBar', [
+  function () {
     return {
-      restrict: "E",
+      restrict: 'E',
       template: progressBar,
       scope: {
-        backer1: "<",
-        pax1: "<",
-        price1: "<",
-        detail: "<",
-        needed: "<",
+        backer1: '<',
+        pax1: '<',
+        price1: '<',
+        detail: '<',
+        needed: '<',
       },
-      link: function(scope, elem, attr) {
-        scope.$watchGroup(["backer1", "pax1"], () => {
+      link: function (scope, elem, attr) {
+        scope.$watchGroup(['backer1', 'pax1'], () => {
           scope.percentage = Math.min(scope.backer1 / scope.pax1, 1)
         })
       },

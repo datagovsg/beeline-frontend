@@ -1,15 +1,15 @@
 export default [
-  "$scope",
-  "$stateParams",
-  "$timeout",
-  "$ionicHistory",
-  "$ionicLoading",
-  "$ionicPopup",
-  "$ionicScrollDelegate",
-  "RoutesService",
-  "BookingService",
-  "MapService",
-  function(
+  '$scope',
+  '$stateParams',
+  '$timeout',
+  '$ionicHistory',
+  '$ionicLoading',
+  '$ionicPopup',
+  '$ionicScrollDelegate',
+  'RoutesService',
+  'BookingService',
+  'MapService',
+  function (
     $scope,
     $stateParams,
     $timeout,
@@ -42,8 +42,8 @@ export default [
       .then(route => {
         // Load the stops data into the view
         let [pickups, dropoffs] = BookingService.getStopsFromTrips(route.trips)
-        if (type === "pickup") $scope.data.stops = pickups
-        if (type === "dropoff") $scope.data.stops = dropoffs
+        if (type === 'pickup') $scope.data.stops = pickups
+        if (type === 'dropoff') $scope.data.stops = dropoffs
         if (stopId) {
           $scope.data.selectedStop = $scope.data.stops.find(
             stop => stop.id === stopId
@@ -69,13 +69,13 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    $scope.$watch("data.selectedStop", stop => {
+    $scope.$watch('data.selectedStop', stop => {
       if (stop) {
-        if (type === "pickup") {
-          MapService.emit("board-stop-selected", { stop: stop })
+        if (type === 'pickup') {
+          MapService.emit('board-stop-selected', { stop: stop })
         }
-        if (type === "dropoff") {
-          MapService.emit("alight-stop-selected", { stop: stop })
+        if (type === 'dropoff') {
+          MapService.emit('alight-stop-selected', { stop: stop })
         }
       }
     })
@@ -92,7 +92,7 @@ export default [
       $scope.data.selectedStop = stop
     }
     $scope.done = () => {
-      if (typeof callback === "function") callback($scope.data.selectedStop)
+      if (typeof callback === 'function') callback($scope.data.selectedStop)
       $ionicHistory.goBack()
     }
   },

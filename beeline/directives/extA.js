@@ -1,4 +1,4 @@
-angular.module("beeline").directive("extA", function() {
+angular.module('beeline').directive('extA', function () {
   return {
     template: `
         <a href="{{href}}" ng-transclude
@@ -6,16 +6,16 @@ angular.module("beeline").directive("extA", function() {
         </a>
       `,
     scope: {
-      href: "@",
+      href: '@',
     },
     transclude: true,
-    restrict: "E",
+    restrict: 'E',
     controller: [
-      "$scope",
-      function($scope) {
-        $scope.openLink = function($event) {
+      '$scope',
+      function ($scope) {
+        $scope.openLink = function ($event) {
           $event.preventDefault()
-          window.open($scope.href, "_system")
+          window.open($scope.href, '_system')
         }
       },
     ],

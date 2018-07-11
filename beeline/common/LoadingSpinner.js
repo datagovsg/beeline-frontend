@@ -1,5 +1,5 @@
-import loadingTemplate from "../templates/loading.html"
-import assert from "assert"
+import loadingTemplate from '../templates/loading.html'
+import assert from 'assert'
 
 /*
 
@@ -19,27 +19,27 @@ try {
 }
 
 */
-angular.module("common").factory("loadingSpinner", [
-  "$ionicLoading",
-  function($ionicLoading) {
+angular.module('common').factory('loadingSpinner', [
+  '$ionicLoading',
+  function ($ionicLoading) {
     /* Number of promises being watched by loading spinner */
     let count = 0
 
-    function hide() {
+    function hide () {
       count = Math.max(0, count - 1)
       if (count === 0) {
         $ionicLoading.hide()
       }
     }
-    function show() {
+    function show () {
       if (count === 0) {
         $ionicLoading.show({ template: loadingTemplate })
       }
       count = count + 1
     }
 
-    return function(p) {
-      assert.strictEqual(typeof p.then, "function")
+    return function (p) {
+      assert.strictEqual(typeof p.then, 'function')
       show()
 
       p.then(hide, err => {

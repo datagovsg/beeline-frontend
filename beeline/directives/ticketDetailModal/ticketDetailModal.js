@@ -1,18 +1,18 @@
-import ticketDetailModalTemplate from "./ticketDetailModal.html"
-import _ from "lodash"
+import ticketDetailModalTemplate from './ticketDetailModal.html'
+import _ from 'lodash'
 
-angular.module("beeline").directive("ticketDetailModal", [
-  "$stateParams",
-  "TicketService",
-  "CompanyService",
-  "TripService",
-  "UserService",
-  "RoutesService",
-  "MapService",
-  "MapOptions",
-  "uiGmapGoogleMapApi",
-  "MapViewFactory",
-  function(
+angular.module('beeline').directive('ticketDetailModal', [
+  '$stateParams',
+  'TicketService',
+  'CompanyService',
+  'TripService',
+  'UserService',
+  'RoutesService',
+  'MapService',
+  'MapOptions',
+  'uiGmapGoogleMapApi',
+  'MapViewFactory',
+  function (
     $stateParams,
     TicketService,
     CompanyService,
@@ -25,14 +25,14 @@ angular.module("beeline").directive("ticketDetailModal", [
     MapViewFactory
   ) {
     return {
-      restrict: "E",
+      restrict: 'E',
       template: ticketDetailModalTemplate,
       scope: {
-        ticketId: "@",
-        modal: "=",
-        functions: "=",
+        ticketId: '@',
+        modal: '=',
+        functions: '=',
       },
-      link: function(scope, element, attributes) {
+      link: function (scope, element, attributes) {
         // ------------------------------------------------------------------------
         // Helper Functions
         // ------------------------------------------------------------------------
@@ -40,17 +40,17 @@ angular.module("beeline").directive("ticketDetailModal", [
         const updateVehicleInfo = id => {
           TripService.getTripData(Number(id), true).then(trip => {
             scope.vehicleId = trip.vehicleId
-            scope.disp.vehicle = _.get(trip, "vehicle.vehicleNumber")
+            scope.disp.vehicle = _.get(trip, 'vehicle.vehicleNumber')
           })
         }
 
         const sentTripToMapView = () => {
           const trip = scope.trip
           if (trip) {
-            MapService.emit("ping-trips", [trip])
-            MapService.emit("startPingLoop")
-            MapService.on("ping", updateIfVehicleChanged)
-            MapService.on("status", updateStatus)
+            MapService.emit('ping-trips', [trip])
+            MapService.emit('startPingLoop')
+            MapService.on('ping', updateIfVehicleChanged)
+            MapService.on('status', updateStatus)
           }
         }
 
@@ -64,13 +64,13 @@ angular.module("beeline").directive("ticketDetailModal", [
           scope.disp.tripStatus = status
         }
 
-        const deregister = function() {
-          MapService.emit("killPingLoop")
-          MapService.removeListener("ping", updateIfVehicleChanged)
-          MapService.removeListener("status", updateStatus)
+        const deregister = function () {
+          MapService.emit('killPingLoop')
+          MapService.removeListener('ping', updateIfVehicleChanged)
+          MapService.removeListener('status', updateStatus)
         }
 
-        const updateMapView = function updateMapView() {
+        const updateMapView = function updateMapView () {
           let coordinates = scope.ticket.boardStop.stop.coordinates.coordinates
           scope.modalMap.center = {
             latitude: coordinates[1],
@@ -80,7 +80,7 @@ angular.module("beeline").directive("ticketDetailModal", [
 
         // Called in RouteDetailController
         // Fixes off center map
-        scope.functions.recenterMap = function(ticket) {
+        scope.functions.recenterMap = function (ticket) {
           ticketPromise.then(tkt => {
             ticket = ticket || tkt
             let coordinates = ticket.boardStop.stop.coordinates.coordinates
@@ -128,7 +128,7 @@ angular.module("beeline").directive("ticketDetailModal", [
         // Resolved when the map is initialized
         const gmapIsReady = new Promise((resolve, reject) => {
           let resolved = false
-          scope.$watch("modalMap.control.getGMap", function() {
+          scope.$watch('modalMap.control.getGMap', function () {
             if (scope.modalMap.control.getGMap) {
               if (!resolved) {
                 resolved = true
@@ -153,7 +153,7 @@ angular.module("beeline").directive("ticketDetailModal", [
         Promise.all([gmapIsReady, uiGmapGoogleMapApi]).then(
           ([ignore, googleMaps]) => {
             const gmap = scope.map.control.getGMap()
-            google.maps.event.trigger(gmap, "resize")
+            google.maps.event.trigger(gmap, 'resize')
           }
         )
 
@@ -225,22 +225,22 @@ angular.module("beeline").directive("ticketDetailModal", [
         // ------------------------------------------------------------------------
 
         // when leaving tabs.route-detail or tabs.ticket-detail
-        scope.$on("$destroy", () => {
+        scope.$on('$destroy', () => {
           deregister()
         })
 
         // when leaving tabs.my-booking-routes or tabs.route-detail
-        scope.$on("leavingMyBookingRoute", (event, args) => {
+        scope.$on('leavingMyBookingRoute', (event, args) => {
           if (
             args.ticketId &&
             scope.ticket &&
-            scope.ticket.id == args.ticketId
+            scope.ticket.id === args.ticketId
           ) {
             deregister()
           }
         })
 
-        scope.$on("enteringMyBookingRoute", (event, args) => {
+        scope.$on('enteringMyBookingRoute', (event, args) => {
           sentTripToMapView()
         })
       },

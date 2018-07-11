@@ -1,4 +1,4 @@
-angular.module("beeline").directive("menuHamburger", function() {
+angular.module('beeline').directive('menuHamburger', function () {
   return {
     replace: false,
     template: `

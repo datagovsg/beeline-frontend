@@ -1,13 +1,13 @@
-import ticketDetailModalTemplate from "../templates/ticket-detail-modal.html"
+import ticketDetailModalTemplate from '../templates/ticket-detail-modal.html'
 
 export default [
-  "$scope",
-  "TicketService",
-  "UserService",
-  "loadingSpinner",
-  "$ionicModal",
-  "$rootScope",
-  function(
+  '$scope',
+  'TicketService',
+  'UserService',
+  'loadingSpinner',
+  '$ionicModal',
+  '$rootScope',
+  function (
     $scope,
     TicketService,
     UserService,
@@ -27,7 +27,7 @@ export default [
     // ------------------------------------------------------------------------
     // Ionic events
     // ------------------------------------------------------------------------
-    $scope.$on("$ionicView.afterEnter", () => {
+    $scope.$on('$ionicView.afterEnter', () => {
       loadingSpinner(normalRoutesPromise)
     })
 
@@ -58,17 +58,17 @@ export default [
     // UI Hooks
     // ------------------------------------------------------------------------
     // Track the login state of the user service
-    $scope.logIn = function() {
+    $scope.logIn = function () {
       UserService.promptLogIn()
     }
 
-    $scope.popupTicketModal = function(ticket) {
+    $scope.popupTicketModal = function (ticket) {
       let scope = $rootScope.$new()
       scope.ticketId = ticket.id
       scope.functions = {}
       let modal = $ionicModal.fromTemplate(ticketDetailModalTemplate, {
         scope: scope,
-        animation: "slide-in-up",
+        animation: 'slide-in-up',
       })
       scope.modal = modal
       modal.show()
@@ -79,7 +79,7 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
-    function refreshNormalTickets(ignoreCache) {
+    function refreshNormalTickets (ignoreCache) {
       return TicketService.getCategorizedTickets(ignoreCache)
         .then(categorizedTickets => {
           $scope.tickets.today = categorizedTickets.today
@@ -88,9 +88,10 @@ export default [
         })
         .catch(error => {
           $scope.error = true
+          console.error(error)
         })
         .finally(() => {
-          $scope.$broadcast("scroll.refreshComplete")
+          $scope.$broadcast('scroll.refreshComplete')
         })
     }
   },

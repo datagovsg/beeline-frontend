@@ -1,18 +1,18 @@
-import _ from "lodash"
-const moment = require("moment")
+import _ from 'lodash'
+const moment = require('moment')
 
 export default [
-  "$scope",
-  "$state",
-  "$stateParams",
-  "$timeout",
-  "loadingSpinner",
-  "UserService",
-  "$ionicPopup",
-  "CrowdstartService",
-  "CompanyService",
-  "StripeService",
-  function(
+  '$scope',
+  '$state',
+  '$stateParams',
+  '$timeout',
+  'loadingSpinner',
+  'UserService',
+  '$ionicPopup',
+  'CrowdstartService',
+  'CompanyService',
+  'StripeService',
+  function (
     $scope,
     $state,
     $stateParams,
@@ -72,7 +72,7 @@ export default [
 
         // Add expiry date to route
         $scope.book.route.expiryDate = moment($scope.book.route.trips[0].date)
-          .add(1, "months")
+          .add(1, 'months')
           .format()
 
         // give 1st and last stop as board and alight stop for fake ticket
@@ -81,7 +81,7 @@ export default [
         $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
         $scope.priceInfo.totalDue =
           $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount
-        $scope.$watch("priceInfo.bidPrice", price => {
+        $scope.$watch('priceInfo.bidPrice', price => {
           $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
           $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount
         })
@@ -136,11 +136,11 @@ export default [
       await CompanyService.showTerms($scope.book.route.transportCompanyId)
     }
 
-    $scope.login = function() {
+    $scope.login = function () {
       UserService.promptLogIn()
     }
 
-    $scope.createBid = async function() {
+    $scope.createBid = async function () {
       try {
         // disable the button
         $scope.waitingForPaymentResult = true
@@ -159,7 +159,7 @@ export default [
       } catch (err) {
         console.error(err)
         throw new Error(
-          `Error saving credit card details. ${_.get(err, "data.message")}`
+          `Error saving credit card details. ${_.get(err, 'data.message')}`
         )
       } finally {
         $scope.waitingForPaymentResult = false
@@ -180,21 +180,21 @@ export default [
         )
         await $ionicPopup.alert({
           title:
-            "You have successfully joined the crowdstart route. We will inform you once your route is activated.",
+            'You have successfully joined the crowdstart route. We will inform you once your route is activated.',
         })
         $scope.$apply(() => {
           $scope.book.isBid = true
         })
-        $state.go("tabs.yourRoutes")
+        $state.go('tabs.yourRoutes')
       } catch (err) {
         await $ionicPopup.alert({
-          title: "Error processing bid",
+          title: 'Error processing bid',
           template: `
           <div> There was an error creating the bid. \
           ${err && err.data && err.data.message} Please try again later.</div>
           `,
         })
-        $state.go("tabs.routes")
+        $state.go('tabs.routes')
       } finally {
         $scope.waitingForPaymentResult = false
         $scope.$digest()
@@ -202,7 +202,7 @@ export default [
     }
 
     // update the saving card info then place bid
-    $scope.updateSavingCard = async function() {
+    $scope.updateSavingCard = async function () {
       try {
         const stripeToken = await StripeService.promptForToken(null, null, true)
 
@@ -212,16 +212,16 @@ export default [
       } catch (error) {
         console.error(error)
         throw new Error(
-          `Error saving credit card details. ${_.get(error, "data.message")}`
+          `Error saving credit card details. ${_.get(error, 'data.message')}`
         )
       }
     }
 
     // Popup to confirm withdrawal from crowdstart
-    $scope.popupWithdraw = async function() {
+    $scope.popupWithdraw = async function () {
       if (!$scope.disp.bidded) {
         await $ionicPopup.alert({
-          title: "Error withdrawing from route",
+          title: 'Error withdrawing from route',
           template: `
           <div> You do not have an active bid for this route.</div>
           `,
@@ -230,7 +230,7 @@ export default [
       }
 
       const response = await $ionicPopup.confirm({
-        title: "Are you sure you want to withdraw?",
+        title: 'Are you sure you want to withdraw?',
       })
 
       if (!response) return
@@ -239,9 +239,9 @@ export default [
         let response = await CrowdstartService.deleteBid($scope.book.route)
 
         // If not withdrawn, means failed
-        if (response.status !== "withdrawn") {
+        if (response.status !== 'withdrawn') {
           await $ionicPopup.alert({
-            title: "Error withdrawing from route",
+            title: 'Error withdrawing from route',
             template: `
             <div> There was an error withdrawing from the route. Please try again later.</div>
             `,
@@ -249,13 +249,13 @@ export default [
         } else {
           await $ionicPopup.alert({
             title:
-              "The pre-order of your route pass has been withdrawn. No charges will be made to your card.",
+              'The pre-order of your route pass has been withdrawn. No charges will be made to your card.',
           })
-          $state.go("tabs.routes")
+          $state.go('tabs.routes')
         }
       } catch (err) {
         await $ionicPopup.alert({
-          title: "Error withdrawing from route",
+          title: 'Error withdrawing from route',
           template: `
           <div> There was an error withdrawing from the route. \
           ${err && err.data && err.data.message} Please try again later.</div>

@@ -1,11 +1,11 @@
-import _ from "lodash"
+import _ from 'lodash'
 
-angular.module("common").factory("SearchService", [
-  "RequestService",
-  function SearchService(RequestService) {
+angular.module('common').factory('SearchService', [
+  'RequestService',
+  function SearchService (RequestService) {
     // Helper to calculate distance in meters between a pair of coordinates
     // faster but less accurate
-    const latlngDistance = function latlngDistance(ll1, ll2) {
+    const latlngDistance = function latlngDistance (ll1, ll2) {
       let rr1 = [ll1[0] / 180 * Math.PI, ll1[1] / 180 * Math.PI]
       let rr2 = [ll2[0] / 180 * Math.PI, ll2[1] / 180 * Math.PI]
 
@@ -16,8 +16,8 @@ angular.module("common").factory("SearchService", [
       return dist
     }
 
-    const stopDistance = function stopDistance(tripStop, lnglat) {
-      let stop = _.get(tripStop, "stop", tripStop)
+    const stopDistance = function stopDistance (tripStop, lnglat) {
+      let stop = _.get(tripStop, 'stop', tripStop)
       let distance = latlngDistance(
         [stop.coordinates.coordinates[1], stop.coordinates.coordinates[0]],
         [lnglat[1], lnglat[0]]
@@ -25,7 +25,7 @@ angular.module("common").factory("SearchService", [
       return distance
     }
 
-    const routeSimilarity = function routeSimilarity(route, stops) {
+    const routeSimilarity = function routeSimilarity (route, stops) {
       let tripStops = getTripStopsFrom(route)
       let maxDistance = 2000
       let stopsNearRoute = stops.filter(({ lnglat }) =>
@@ -48,17 +48,17 @@ angular.module("common").factory("SearchService", [
         .reduce((a, b) => a + b, 0)
     }
 
-    const scoreRoute = function scoreRoute(stops) {
+    const scoreRoute = function scoreRoute (stops) {
       return route => {
         route.score = routeSimilarity(route, stops)
         return route
       }
     }
 
-    const getTripStopsFrom = function getTripStopsFrom(route) {
+    const getTripStopsFrom = function getTripStopsFrom (route) {
       if (route.trips) {
         // For normal and crowdstart routes
-        return _.get(route, "trips[0].tripStops", [])
+        return _.get(route, 'trips[0].tripStops', [])
       } else if (route.stops) {
         // For lite routes
         return route.stops
@@ -66,15 +66,15 @@ angular.module("common").factory("SearchService", [
     }
 
     return {
-      filterRoutesByText: function(routes, string) {
+      filterRoutesByText: function (routes, string) {
         return routes.filter(route => this.routeContainsString(route, string))
       },
 
-      filterRoutes: function(routes, regionId, string) {
+      filterRoutes: function (routes, regionId, string) {
         return this.filterRoutesByText(routes, string)
       },
 
-      filterRoutesByPlace: function(routes, place) {
+      filterRoutesByPlace: function (routes, place) {
         const maxDistance = 1000 // Arbitrary constant for closeness
 
         // Check the trips stops of a route to see if any come close
@@ -94,7 +94,7 @@ angular.module("common").factory("SearchService", [
         return filteredRoutes
       },
 
-      filterRoutesByLngLat: function(routes, lnglat, maxDistance) {
+      filterRoutesByLngLat: function (routes, lnglat, maxDistance) {
         // Check the trips stops of a route to see if any come close
         let filteredRoutes = routes.filter(route => {
           let tripStops = getTripStopsFrom(route)
@@ -107,22 +107,22 @@ angular.module("common").factory("SearchService", [
         return filteredRoutes
       },
 
-      filterRoutesByPlaceAndText: function(routes, place, text) {
+      filterRoutesByPlaceAndText: function (routes, place, text) {
         let placeResults = this.filterRoutesByPlace(routes, place)
         let textResults = this.filterRoutesByText(routes, text)
-        return _.unionBy(placeResults, textResults, "id")
+        return _.unionBy(placeResults, textResults, 'id')
       },
 
       // Input: a Route and a string
       // Output: True if route metatdata contains the string
-      routeContainsString: function(route, string) {
+      routeContainsString: function (route, string) {
         if (!string) return true
 
-        const containsIgnoreCase = function containsIgnoreCase(s, t) {
-          if (typeof s === "string") {
+        const containsIgnoreCase = function containsIgnoreCase (s, t) {
+          if (typeof s === 'string') {
             // If the search phrase (t) is more than one word, just find t in s
             // Otherwise, split s and see if any words in s start with t
-            if (t.split(" ").length > 1) {
+            if (t.split(' ').length > 1) {
               return s.toUpperCase().includes(t.toUpperCase())
             } else {
               // Split on non-alphanumeric chars
@@ -154,7 +154,7 @@ angular.module("common").factory("SearchService", [
         )
       },
 
-      sortRoutes: async function(recentRoutes, routes) {
+      sortRoutes: async function (recentRoutes, routes) {
         // Simple heuristic to sort routesYouMayLike based on recentRoutes
         // Should favour routes most like recentRoutes
         let stops = []
@@ -172,8 +172,8 @@ angular.module("common").factory("SearchService", [
               lnglat = tripStopsByKey[stopId].stop.coordinates.coordinates
             } else {
               lnglat = await RequestService.beeline({
-                method: "GET",
-                url: "/stops/" + stopId,
+                method: 'GET',
+                url: '/stops/' + stopId,
               }).then(response => response.data.coordinates.coordinates)
             }
 
@@ -186,7 +186,7 @@ angular.module("common").factory("SearchService", [
           }
         }
 
-        return _.orderBy(_.map(routes, scoreRoute(stops)), ["score"], ["desc"])
+        return _.orderBy(_.map(routes, scoreRoute(stops)), ['score'], ['desc'])
       },
     }
   },

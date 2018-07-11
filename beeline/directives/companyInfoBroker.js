@@ -1,15 +1,15 @@
-angular.module("beeline").directive("companyInfoBroker", [
-  "CompanyService",
-  function(CompanyService) {
+angular.module('beeline').directive('companyInfoBroker', [
+  'CompanyService',
+  function (CompanyService) {
     return {
       replace: true,
-      template: "",
+      template: '',
       scope: {
-        companyId: "<",
-        company: "=",
+        companyId: '<',
+        company: '=',
       },
-      link: function(scope, element, attributes) {
-        scope.$watch("companyId", function(companyId) {
+      link: function (scope, element, attributes) {
+        scope.$watch('companyId', function (companyId) {
           if (!companyId) {
             scope.company = {}
             return

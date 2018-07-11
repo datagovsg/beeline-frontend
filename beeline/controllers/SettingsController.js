@@ -1,24 +1,24 @@
-import faqModalTemplate from "../templates/faq-modal.html"
-import contactUsModalTemplate from "../templates/contact-us-modal.html"
-import { htmlFrom } from "../shared/util"
-import _ from "lodash"
+import faqModalTemplate from '../templates/faq-modal.html'
+import contactUsModalTemplate from '../templates/contact-us-modal.html'
+import { htmlFrom } from '../shared/util'
+import _ from 'lodash'
 
 export default [
-  "$scope",
-  "UserService",
-  "RequestService",
-  "StripeService",
-  "CrowdstartService",
-  "$ionicModal",
-  "$ionicPopup",
-  "$window",
-  "Legalese",
-  "loadingSpinner",
-  "$ionicLoading",
-  "replace",
-  "DevicePromise",
-  "p",
-  function(
+  '$scope',
+  'UserService',
+  'RequestService',
+  'StripeService',
+  'CrowdstartService',
+  '$ionicModal',
+  '$ionicPopup',
+  '$window',
+  'Legalese',
+  'loadingSpinner',
+  '$ionicLoading',
+  'replace',
+  'DevicePromise',
+  'p',
+  function (
     $scope,
     UserService,
     RequestService,
@@ -41,9 +41,9 @@ export default [
     /**
      * Remove stripe payment information
      */
-    const removeCard = async function removeCard() {
+    const removeCard = async function removeCard () {
       const response = await $ionicPopup.confirm({
-        title: "Remove Payment Method",
+        title: 'Remove Payment Method',
         scope: $scope,
         template: `
         <div class="item item-text-wrap text-center">
@@ -87,12 +87,12 @@ export default [
      * @return {Object} a cloned scope which looks up and renders the asset
      * when a modal is shown
      */
-    const assetScope = function assetScope(assetName) {
+    const assetScope = function assetScope (assetName) {
       const newScope = $scope.$new()
       newScope.error = newScope.html = null
-      newScope.$on("modal.shown", () => {
+      newScope.$on('modal.shown', () => {
         RequestService.beeline({
-          method: "GET",
+          method: 'GET',
           url: replace(`/assets/${assetName}`),
         })
           .then(response => {
@@ -101,7 +101,7 @@ export default [
           })
           .catch(error => {
             console.error(error)
-            newScope.html = ""
+            newScope.html = ''
             newScope.error = error
           })
       })
@@ -118,9 +118,9 @@ export default [
         '<a ng-if="o.APP.NAME===\'Beeline\'" href="mailto:feedback@beeline.sg">feedback@beeline.sg</a>',
       grabUrl: p.CONTACTS
         ? `<a ng-if="o.APP.NAME==='GrabShuttle'" href="${p.CONTACTS.URL}">${
-            p.CONTACTS.URL
-          }</a>`
-        : "",
+          p.CONTACTS.URL
+        }</a>`
+        : '',
     }
     $scope.hasCordova = Boolean($window.cordova) || false
     $scope.isOnCrowdstart = false
@@ -130,6 +130,7 @@ export default [
       if ($scope.hasCordova) {
         chcp.getVersionInfo((error, data) => {
           $scope.data.currentVersion = data.currentWebVersion || null
+          console.error(error)
         })
       }
     })
@@ -137,7 +138,7 @@ export default [
     // ------------------------------------------------------------------------
     // Ionic Events
     // ------------------------------------------------------------------------
-    $scope.$on("$destroy", function() {
+    $scope.$on('$destroy', function () {
       $scope.faqModal.destroy()
       $scope.contactUsModal.destroy()
       $scope.shareReferralModal.destroy()
@@ -148,10 +149,10 @@ export default [
     // ------------------------------------------------------------------------
     // Track the login state of the user service
     $scope.$watch(
-      function() {
+      function () {
         return UserService.getUser()
       },
-      function(newUser) {
+      function (newUser) {
         $scope.user = newUser
       }
     )
@@ -168,7 +169,7 @@ export default [
 
     // Configure modals
     $scope.faqModal = $ionicModal.fromTemplate(faqModalTemplate, {
-      scope: assetScope("FAQ"),
+      scope: assetScope('FAQ'),
     })
     $scope.showPrivacyPolicy = () => Legalese.showPrivacyPolicy()
     $scope.showTermsOfUse = () => Legalese.showTermsOfUse()
@@ -179,27 +180,27 @@ export default [
     // Generic event handler to allow user to update their
     // name, email
     // FIXME: Get Yixin to review the user info update flow.
-    $scope.updateUserInfo = function(field) {
+    $scope.updateUserInfo = function (field) {
       return UserService.promptUpdateUserInfo(field)
     }
 
-    $scope.verifyEmail = function() {
+    $scope.verifyEmail = function () {
       const alertScope = $scope.$new()
 
       return UserService.sendEmailVerification()
         .then(() => {
           return $ionicPopup.alert({
-            title: "Email Verification Sent",
+            title: 'Email Verification Sent',
             template: `We have sent an email verification to {{user.email}}.
           Please check your inbox for further instructions`,
             scope: $scope,
           })
         })
         .catch(err => {
-          _.assign(alertScope, { message: _.get(err, "data.message") })
+          _.assign(alertScope, { message: _.get(err, 'data.message') })
 
           return $ionicPopup.alert({
-            title: "Email Verification Failed",
+            title: 'Email Verification Failed',
             template: `There was a problem sending the email verification: {{message}}`,
             scope: alertScope,
           })
@@ -209,7 +210,7 @@ export default [
         })
     }
 
-    $scope.addCard = async function() {
+    $scope.addCard = async function () {
       if (isPressed) return
 
       try {
@@ -222,7 +223,7 @@ export default [
       } catch (err) {
         console.error(err)
         throw new Error(
-          `Error saving credit card details. ${_.get(err, "data.message")}`
+          `Error saving credit card details. ${_.get(err, 'data.message')}`
         )
       } finally {
         isPressed = false
@@ -230,7 +231,7 @@ export default [
       }
     }
 
-    $scope.changeCard = async function() {
+    $scope.changeCard = async function () {
       if (isPressed) return
 
       try {
@@ -244,7 +245,7 @@ export default [
       } catch (err) {
         console.error(err)
         throw new Error(
-          `Error saving credit card details. ${_.get(err, "data.message")}`
+          `Error saving credit card details. ${_.get(err, 'data.message')}`
         )
       } finally {
         isPressed = false
@@ -252,11 +253,11 @@ export default [
       }
     }
 
-    $scope.hasPaymentInfo = function() {
-      return _.get($scope.user, "savedPaymentInfo.sources.data.length", 0) > 0
+    $scope.hasPaymentInfo = function () {
+      return _.get($scope.user, 'savedPaymentInfo.sources.data.length', 0) > 0
     }
 
-    $scope.promptChangeOrRemoveCard = async function() {
+    $scope.promptChangeOrRemoveCard = async function () {
       if (isPressed) return
 
       try {
@@ -277,7 +278,7 @@ export default [
       }
 
       $scope.cardDetailPopup = $ionicPopup.show({
-        title: "Payment Method",
+        title: 'Payment Method',
         scope: $scope,
         template: `
           <div class="item item-text-wrap text-center">
@@ -298,11 +299,11 @@ export default [
           </div>
         `,
         buttons: [
-          { text: "Cancel" },
+          { text: 'Cancel' },
           {
-            text: "Remove",
-            type: $scope.isOnCrowdstart ? "button-disabled" : "button-positive",
-            onTap: function(e) {
+            text: 'Remove',
+            type: $scope.isOnCrowdstart ? 'button-disabled' : 'button-positive',
+            onTap: function (e) {
               if ($scope.isOnCrowdstart) {
                 e.preventDefault()
               } else {

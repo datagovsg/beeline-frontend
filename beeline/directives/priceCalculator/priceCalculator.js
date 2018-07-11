@@ -1,30 +1,30 @@
-import priceCalculatorTemplate from "./priceCalculator.html"
-import assert from "assert"
-import _ from "lodash"
+import priceCalculatorTemplate from './priceCalculator.html'
+import assert from 'assert'
+import _ from 'lodash'
 
-angular.module("beeline").directive("priceCalculator", [
-  "BookingService",
-  "RoutesService",
-  "UserService",
-  function(BookingService, RoutesService, UserService) {
+angular.module('beeline').directive('priceCalculator', [
+  'BookingService',
+  'RoutesService',
+  'UserService',
+  function (BookingService, RoutesService, UserService) {
     return {
-      restrict: "E",
+      restrict: 'E',
       template: priceCalculatorTemplate,
       scope: {
-        booking: "=",
-        price: "=?",
+        booking: '=',
+        price: '=?',
       },
       controller: [
-        "$scope",
-        function($scope) {
+        '$scope',
+        function ($scope) {
           $scope.isCalculating = 0
 
-          const stopCalculating = function() {
+          const stopCalculating = function () {
             $scope.isCalculating = Math.max(0, $scope.isCalculating - 1)
-            $scope.$emit("priceCalculator.done")
+            $scope.$emit('priceCalculator.done')
           }
 
-          $scope.updatePromoCode = function(promoCode) {
+          $scope.updatePromoCode = function (promoCode) {
             $scope.booking.promoCode = promoCode
           }
 
@@ -60,7 +60,7 @@ angular.module("beeline").directive("priceCalculator", [
           /**
            * Recompute prices whenever relevant inputs change
            */
-          const recomputePrices = async function recomputePrices() {
+          const recomputePrices = async function recomputePrices () {
             assert($scope.booking.routeId)
             if (!$scope.booking.route) {
               $scope.booking.route = await RoutesService.getRoute(
@@ -83,16 +83,16 @@ angular.module("beeline").directive("priceCalculator", [
               .then(priceInfo => {
                 // Check to ensure that the order of
                 // replies don't affect the result
-                if (promise != latestRequest) {
+                if (promise !== latestRequest) {
                   return
                 }
                 $scope.priceInfo = priceInfo
                 $scope.price = priceInfo.totals.payment.debit
                 $scope.ridesUsed = $scope.booking.applyRoutePass
                   ? Math.min(
-                      $scope.booking.route.ridesRemaining,
-                      BookingService.getTripsFromBooking($scope.booking).length
-                    )
+                    $scope.booking.route.ridesRemaining,
+                    BookingService.getTripsFromBooking($scope.booking).length
+                  )
                   : 0
                 $scope.errorMessage = null
               })
@@ -110,17 +110,17 @@ angular.module("beeline").directive("priceCalculator", [
           $scope.$watch(
             () =>
               _.pick($scope.booking, [
-                "selectedDates",
-                "applyRoutePass",
-                "promoCode",
+                'selectedDates',
+                'applyRoutePass',
+                'promoCode',
               ]),
             recomputePrices,
             true
           )
 
-          $scope.$on("priceCalculator.recomputePrices", recomputePrices)
+          $scope.$on('priceCalculator.recomputePrices', recomputePrices)
 
-          $scope.removePromoCode = function() {
+          $scope.removePromoCode = function () {
             $scope.booking.promoCode = null
           }
         },

@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
-import _ from "lodash"
-import commonmark from "commonmark"
+import _ from 'lodash'
+import commonmark from 'commonmark'
 
 const reader = new commonmark.Parser({ safe: true })
 const writer = new commonmark.HtmlRenderer({ safe: true })
@@ -10,12 +10,12 @@ const writer = new commonmark.HtmlRenderer({ safe: true })
  * @param {string} markdown the Markdown to render
  * @return {string} the resulting HTML
  */
-export function htmlFrom(markdown) {
+export function htmlFrom (markdown) {
   return writer.render(reader.parse(markdown))
 }
 
 let lineSymbol = {
-  path: "M 0,-1 0,1",
+  path: 'M 0,-1 0,1',
   strokeOpacity: 1,
   scale: 4,
 }
@@ -25,16 +25,16 @@ let lineIcons = {
   icons: [
     {
       icon: lineSymbol,
-      offset: "0",
-      repeat: "20px",
+      offset: '0',
+      repeat: '20px',
     },
   ],
 }
-export function dashedLineIcons() {
+export function dashedLineIcons () {
   return lineIcons
 }
 
-export function defaultMapOptions(options) {
+export function defaultMapOptions (options) {
   return _.assign(
     {
       center: { latitude: 1.370244, longitude: 103.823315 },
@@ -55,10 +55,10 @@ export function defaultMapOptions(options) {
         disableDefaultUI: true,
         styles: [
           {
-            featureType: "poi",
+            featureType: 'poi',
             stylers: [
               {
-                visibility: "off",
+                visibility: 'off',
               },
             ],
           },
@@ -72,20 +72,20 @@ export function defaultMapOptions(options) {
   )
 }
 
-export function retriveNextTrip(route) {
+export function retriveNextTrip (route) {
   // compare current date with nearest date trip's 1st board stop time
   let sortedRunningTripInDates = _.sortBy(
     route.trips.filter(tr => tr.isRunning),
-    "date"
+    'date'
   )
   let now = Date.now()
   let nextTrip = null
   for (let trip of sortedRunningTripInDates) {
-    let sortedTripStopsInTime = _.sortBy(trip.tripStops, "time")
+    let sortedTripStopsInTime = _.sortBy(trip.tripStops, 'time')
     let boardTime = null
     let lastStopTime = null
     if (trip.bookingInfo.windowSize && trip.bookingInfo.windowType) {
-      if (trip.bookingInfo.windowType === "firstStop") {
+      if (trip.bookingInfo.windowType === 'firstStop') {
         boardTime =
           sortedTripStopsInTime[0].time.getTime() + trip.bookingInfo.windowSize
       }
@@ -96,9 +96,7 @@ export function retriveNextTrip(route) {
       boardTime = sortedTripStopsInTime[0].time.getTime()
     }
     // the trip end time
-    lastStopTime = sortedTripStopsInTime[
-      sortedTripStopsInTime.length - 1
-    ].time.getTime()
+    lastStopTime = sortedTripStopsInTime[sortedTripStopsInTime.length - 1].time.getTime()
     // check seat is available
     if (now < boardTime || (now >= boardTime && now <= lastStopTime)) {
       nextTrip = trip
@@ -110,6 +108,6 @@ export function retriveNextTrip(route) {
   return nextTrip
 }
 
-export function sleep(ms) {
+export function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }

@@ -1,8 +1,8 @@
-angular.module("beeline").directive("regularRoute", function() {
+angular.module('beeline').directive('regularRoute', function () {
   return {
-    template: require("./regularRoute.html"),
+    template: require('./regularRoute.html'),
     scope: {
-      route: "<",
+      route: '<',
     },
   }
 })

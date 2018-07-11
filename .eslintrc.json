@@ -1,6 +1,8 @@
 {
   "parser": "babel-eslint",
-  "extends": "@opengovsg/eslint-config-opengovsg",
+  "extends": [
+    "@opengovsg/eslint-config-opengovsg"
+  ],
   "env": {
     "browser": true
   },
