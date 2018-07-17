@@ -75,18 +75,13 @@ angular.module('common').factory('SearchService', [
       },
 
       filterRoutesByPlace: function (routes, place) {
+        let lnglat = [place.geometry.location.lng(), place.geometry.location.lat()]
         const maxDistance = 1000 // Arbitrary constant for closeness
 
         // Check the trips stops of a route to see if any come close
         let filteredRoutes = routes.filter(route => {
-          return _.some(route.trips[0].tripStops, tripStop => {
-            let distance = latlngDistance(
-              [
-                tripStop.stop.coordinates.coordinates[1],
-                tripStop.stop.coordinates.coordinates[0],
-              ],
-              [place.geometry.location.lat(), place.geometry.location.lng()]
-            )
+          return _.some(getTripStopsFrom(route), tripStop => {
+            let distance = stopDistance(tripStop, lnglat)
             return distance < maxDistance
           })
         })

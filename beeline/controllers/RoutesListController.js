@@ -131,29 +131,21 @@ export default [
       let place = { queryText: $scope.data.queryText }
       SearchEventService.emit('search-item', $scope.data.queryText)
 
-      // Reset routes, crowdstartRoutes and liteRoutes here because they are
-      // used to determine whether we do a place query (see watchGroup with
-      // all 3)
-      // If we don't reset, we could end up with the case where the criteria
-      // is applied to the wrong version of them
-      // E.g.
-      // 1. User makes one search. App completely finishes all filtering.
-      // 2. User makes another search.
-      // 3. First time we enter watchgroup for routes + crowdstartRoutes, only
-      //    only one of them has changed. WLOG assume it is routes.
-      // 4. Then routes is filtered from the new search, while crowdstartRoutes
-      //    is filtered from the old search.
-      // 5. Then the check (routes.length + crowdstartRoutes.length +
-      //    liteRoutes.length> 0) is using the wrong version of crowdstartRoutes
-      //    and could result in us doing unnecessary place queries.
-      //
-      // Resetting to null also has the benefit that the check whether we do
-      // place queries is only done once.
-      $scope.data.routes = null
-      $scope.data.crowdstartRoutes = null
-      $scope.data.liteRoutes = null
       $scope.data.placeQuery = place
       $scope.$digest()
+
+      OneMapPlaceService.handleQuery(
+        $scope.data.queryText
+      ).then(place => {
+        if (!place) return
+
+        $scope.data.placeQuery = place
+        $scope.$digest()
+      }).then(async () => {
+        await sleep(500)
+        $scope.data.isFiltering = false
+        $scope.$digest()
+      })
     }
 
     $scope.$watch(
@@ -215,19 +207,6 @@ export default [
         // Merge public and private routes
         routes = _.concat(routes, privateRoutes)
 
-        // Filtering
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByPlaceAndText(
-            routes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByText(
-            routes,
-            placeQuery.queryText
-          )
-        }
         // Publish
         const recentRouteIds = Object.keys(recentRoutesById || {})
         $scope.data.routesWithRidesRemaining = routes.filter(
@@ -352,19 +331,6 @@ export default [
           }
         )
 
-        // Filtering
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          liteRoutes = SearchService.filterRoutesByPlaceAndText(
-            liteRoutes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          liteRoutes = SearchService.filterRoutesByText(
-            liteRoutes,
-            placeQuery.queryText
-          )
-        }
         // Add the subscription information
         _.forEach(liteRoutes, liteRoute => {
           liteRoute.isSubscribed = Boolean(subscribed.includes(liteRoute.label))
@@ -384,19 +350,6 @@ export default [
         // Input validation
         if (!allRoutes) return
 
-        // Filter routes
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          allRoutes = SearchService.filterRoutesByPlaceAndText(
-            allRoutes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          allRoutes = SearchService.filterRoutesByText(
-            allRoutes,
-            placeQuery.queryText
-          )
-        }
         // Sort the routes by the time of day
         $scope.data.routes = _.sortBy(allRoutes, 'label', route => {
           const firstTripStop = _.get(route, 'trips[0].tripStops[0]')
@@ -429,64 +382,8 @@ export default [
           return !biddedRouteIds.includes(route.id)
         })
 
-        // Filter the routes by search query
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByPlaceAndText(
-            routes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByText(
-            routes,
-            placeQuery.queryText
-          )
-        }
         // Map to scope once done
         $scope.data.crowdstartRoutes = routes
-      }
-    )
-
-    // Deciding whether to do a place query
-    $scope.$watchGroup(
-      ['data.routes', 'data.crowdstartRoutes', 'data.liteRoutes'],
-      ([routes, crowdstartRoutes, liteRoutes]) => {
-        const handlePlaceQuery = async function handlePlaceQuery () {
-          // Important comments in the autoComplete function
-          if (!routes || !crowdstartRoutes || !liteRoutes) return
-          // Criteria for making a place query
-          if (routes.length + crowdstartRoutes.length + liteRoutes.length > 0) {
-            return
-          }
-
-          let placeQuery = $scope.data.placeQuery
-          if (!placeQuery) return
-
-          // If placeQuery.geometry exists then we've already made a place query
-          if (placeQuery.geometry) return
-
-          let place = await OneMapPlaceService.handleQuery(
-            $scope.data.queryText
-          )
-
-          // If place is null, setting placeQuery to place will cause the whole
-          // list to be displayed
-          if (!place) return
-
-          $scope.data.placeQuery = place
-          $scope.$digest()
-        }
-
-        const stopFilteringAfterDelay = async function stopFilteringAfterDelay () {
-          await sleep(500)
-          $scope.data.isFiltering = false
-          $scope.$digest()
-        }
-
-        handlePlaceQuery().then(
-          stopFilteringAfterDelay,
-          stopFilteringAfterDelay
-        )
       }
     )
 
@@ -633,6 +530,68 @@ export default [
         }
         if (!_.isEqual(routesYouMayLike, routesYouMayLikeExp)) {
           $scope.data.routesYouMayLike = routesYouMayLikeExp
+        }
+      }
+    )
+
+    // Text search
+    $scope.$watchGroup(
+      [
+        'data.placeQuery',
+        'data.routes',
+        'data.liteRoutes',
+        'data.crowdstartRoutes',
+        'data.routesWithRidesRemaining',
+      ],
+      (
+        [
+          placeQuery,
+          routes,
+          liteRoutes,
+          crowdstartRoutes,
+          routesWithRidesRemaining,
+        ]
+      ) => {
+        if (!placeQuery || !routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
+
+        let [
+          fRoutes,
+          fLiteRoutes,
+          fCrowdstartRoutes,
+          fRoutesWithRidesRemaining,
+        ] = [
+          routes,
+          liteRoutes,
+          crowdstartRoutes,
+          routesWithRidesRemaining,
+        ].map(routes => {
+          // Filtering
+          if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+            routes = SearchService.filterRoutesByPlaceAndText(
+              routes,
+              placeQuery,
+              placeQuery.queryText
+            )
+          } else if (placeQuery && placeQuery.queryText) {
+            routes = SearchService.filterRoutesByText(
+              routes,
+              placeQuery.queryText
+            )
+          }
+          return routes
+        })
+
+        if (!_.isEqual(routes, fRoutes)) {
+          $scope.data.routes = fRoutes
+        }
+        if (!_.isEqual(liteRoutes, fLiteRoutes)) {
+          $scope.data.liteRoutes = fLiteRoutes
+        }
+        if (!_.isEqual(crowdstartRoutes, fCrowdstartRoutes)) {
+          $scope.data.crowdstartRoutes = fCrowdstartRoutes
+        }
+        if (!_.isEqual(routesWithRidesRemaining, fRoutesWithRidesRemaining)) {
+          $scope.data.routesWithRidesRemaining = fRoutesWithRidesRemaining
         }
       }
     )
