@@ -225,6 +225,10 @@ app
     'PurchaseRoutePassController',
     require('./controllers/PurchaseRoutePassController.js').default
   )
+  .controller(
+    'YourSuggestionsController',
+    require('./controllers/YourSuggestionsController.js').default
+  )
   .config(configureRoutes)
   .config([
     '$locationProvider',

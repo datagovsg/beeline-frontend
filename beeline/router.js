@@ -222,6 +222,16 @@ export default [
         },
       })
 
+      .state('tabs.your-suggestions', {
+        url: '/your-suggestions',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/your-suggestions.html',
+            controller: 'YourSuggestionsController',
+          },
+        },
+      })
+
     let viewedIntroSlidesVersion =
       window.localStorage.viewedBeelineSlidesVersion
     // if none of the above states are matched, use this as the fallback
