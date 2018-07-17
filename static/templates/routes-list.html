@@ -3,11 +3,29 @@
     <menu-hamburger></menu-hamburger>
   </ion-nav-buttons>
   <ion-content scroll="false">
-    <!-- Search Filter  -->
-    <search-input query-text="data.queryText" is-filtering="data.isFiltering" ph="Search"
-      ng-if="!disp.yourRoutes"></search-input>
+    <div class="search-container">
+
+      <div class="search-inputs shadow">
+        <!-- Search Filter  -->
+        <search-input ng-show="!disp.searchFromTo" query-text="data.queryText" is-filtering="data.isFiltering" ph="Search"
+          ng-if="!disp.yourRoutes"></search-input>
+
+        <div ng-show="disp.searchFromTo">
+          <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar"></location-search>
+          <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar"></location-search> 
+        </div>
+      </div>
+
+      <div class="search-toggle">
+        <button class="primary-button button" ng-click="toggleSearch()"> 
+        <!-- <button class="primary-button button" ng-click="disp.searchFromTo = !disp.searchFromTo">  -->
+          <i class="fas fa-search"></i>
+      </button>
+      </div>
+
+    </div>
     <!-- Scrollable routes list -->
-    <ion-content ng-class="{'routes-scroll': !disp.yourRoutes}">
+    <ion-content ng-class="{'from-to': disp.searchFromTo, 'one-search': !disp.searchFromTo}">
 
       <ion-refresher
         pulling-text="Pull to refresh..."

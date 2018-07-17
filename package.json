@@ -6,6 +6,8 @@
     "node": "7.8.x"
   },
   "dependencies": {
+    "angucomplete-alt": "^3.0.0",
+    "angucomplete-ie8": "^0.1.2",
     "angular-google-maps": "^2.4.1",
     "angular-simple-logger": "^0.1.7",
     "clipboard": "^1.5.15",
