@@ -97,7 +97,6 @@
   ion-content {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
     top: auto;
     background-color: transparent!important;
 
@@ -169,6 +168,7 @@
 
       .advance-button {
         min-height: 40px;
+        margin-bottom: $padding-large-vertical;
       }
     }
 

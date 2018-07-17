@@ -1,0 +1,44 @@
+<ion-view view-title="Suggest A Route"
+ can-swipe-back="false" class="suggest-route page-with-map">
+ <ion-nav-title>Suggest a Route</ion-nav-title>
+ <ion-nav-buttons side="left">
+   <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
+ </ion-nav-buttons>
+
+  <ion-content scroll="false" class="has-header">
+
+    <div class="form-inputs">
+      <div class="search-bars shadow selection-box">
+        <location-search query-location="data.pickUpLocation" ph="Pick Up - Enter location" icon="pickup" class="pickup-location-bar"></location-search>
+        <location-search query-location="data.dropOffLocation" ph="Drop Off - Enter location" icon="dropoff" class="dropoff-location-bar"></location-search>
+      </div>
+
+      <div class="shadow selection-box">
+        <div class="list">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Arrive at
+            </div>
+            <select ng-model="data.selectedTimeIndex">
+              <option value="" disabled selected hidden>Time at destination</option>
+              <option ng-repeat="t in disp.times" value="{{$index}}">{{ t.format('h:mm a') }}</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="day-of-week shadow selection-box">
+        <div ng-repeat="day in data.days" class="day-selector">
+            <label for="checkbox">{{day.text}}</label>
+            <input type="checkbox" ng-model="day.enabled" class="checkbox">
+        </div>
+      </div>
+    </div>
+
+    <div class="submit">
+      <button class="primary-button button" ng-click="submit()" ng-disabled="!data.selectedTimeIndex || !data.pickUpLocation || !data.dropOffLocation">
+        Submit
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

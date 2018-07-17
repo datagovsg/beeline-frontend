@@ -222,6 +222,23 @@ export default [
         },
       })
 
+      // ////////////////////////////////////////////////////////////////////////////
+      // Main interface, Settings Tab
+      // ////////////////////////////////////////////////////////////////////////////
+      .state('tabs.suggest-route', {
+        url: '/suggest-route',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/suggest-route.html',
+            controller: 'SuggestRouteController',
+          },
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'MapViewController',
+          },
+        },
+      })
+
     let viewedIntroSlidesVersion =
       window.localStorage.viewedBeelineSlidesVersion
     // if none of the above states are matched, use this as the fallback
