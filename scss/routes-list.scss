@@ -1,9 +1,17 @@
-.routes-view {
-  $search-height: $bar-height;
+$search-bar-radius: 6px;
 
-  .routes-scroll {
+.routes-view {
+  $search-height: 48px;
+  $search-v-padding: 10px;
+
+  .from-to {
     // Margin-top hack to get the ion content to work nicely with search bar
-    margin-top: $search-height;
+    margin-top: $search-v-padding * 2 + $search-height * 2;
+  }
+
+  .one-search {
+   // Margin-top hack to get the ion content to work nicely with search bar
+    margin-top: $search-v-padding * 2 + $search-height; 
   }
 
   .list {
@@ -16,5 +24,51 @@
 
   route-item {
     width: 90%;
+  }
+
+  .shadow {
+    border-radius: $search-bar-radius;
+    -webkit-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+  }
+
+  .search-container {
+    padding: $search-v-padding 20px;
+    display: flex;
+    justify-content: space-between;
+    background: white;
+
+    .search-div {
+      border-radius: $search-bar-radius;
+    }
+
+    .search-inputs {
+      margin: auto;
+      flex-grow: 1;
+
+      .pickup-location-bar {
+        .location-search {
+          border-radius: $search-bar-radius $search-bar-radius 0px 0px;
+        }
+      }
+
+      .dropoff-location-bar {
+        .location-search {
+          border-radius: 0px 0px $search-bar-radius $search-bar-radius;
+        }
+      }
+    }
+
+    .search-toggle {
+      display: flex;
+      margin-left: 10px;
+
+      button {
+        margin-top: auto;
+        margin-bottom: auto;
+        padding: 10px;
+      }
+    }
   }
 }

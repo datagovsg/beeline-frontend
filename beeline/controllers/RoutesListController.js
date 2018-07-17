@@ -93,6 +93,8 @@ export default [
       isFiltering: null,
       routesYouMayLike: null,
       routesAvailable: false,
+      pickUpLocation: null,
+      dropOffLocation: null,
     }
 
     $scope.disp = {
@@ -101,6 +103,7 @@ export default [
         $ionicHistory.currentStateName() === 'tabs.yourRoutes'
           ? 'Your Routes'
           : 'Search Routes',
+      searchFromTo: true,
     }
     // ------------------------------------------------------------------------
     // Ionic events
@@ -661,6 +664,10 @@ export default [
           querystring.stringify({ referrer: appName }),
         '_system'
       )
+    }
+
+    $scope.toggleSearch = function () {
+      $scope.disp.searchFromTo = !$scope.disp.searchFromTo
     }
   },
 ]

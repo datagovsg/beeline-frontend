@@ -1,0 +1,40 @@
+.location-search {
+  &.item {
+    padding-top: $padding-base-vertical;
+    padding-bottom: $padding-base-vertical;
+    z-index: unset;
+    overflow: unset;
+  }
+
+  &.item-icon-left {
+    padding-left: 40px;
+  }
+
+  input {
+    width: 100%;
+    text-transform: capitalize;
+  }
+
+  .angucomplete-searching {
+    background: white;
+  }
+
+  .angucomplete-dropdown {
+    overflow-y: auto;
+    max-height: 200px; // your preference
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+
+  .angucomplete-title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-transform: capitalize;
+    font-size: $font-size-small;
+  }
+
+  .highlight {
+    font-weight: $font-weight-bold;
+  }
+}
