@@ -1,4 +1,7 @@
 .location-search {
+  display: flex;
+  justify-content: space-between;
+
   &.item {
     padding-top: $padding-base-vertical;
     padding-bottom: $padding-base-vertical;
@@ -13,6 +16,11 @@
   input {
     width: 100%;
     text-transform: capitalize;
+  }
+
+  .input-bar {
+    flex-grow: 1;
+    margin-right: $padding-base-horizontal;
   }
 
   .angucomplete-searching {
@@ -36,5 +44,14 @@
 
   .highlight {
     font-weight: $font-weight-bold;
+  }
+
+  .ion-android-close {
+    // margin-right: $padding-x-small-horizontal;
+    display: flex;
+    &::before {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
   }
 }

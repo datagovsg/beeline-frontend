@@ -11,6 +11,7 @@ angular.module('beeline').directive('locationSearch', function () {
         <i class="icon pickup-stop" ng-if="icon === 'pickup'"></i>
         <i class="icon dropoff-stop" ng-if="icon === 'dropoff'"></i>
         <div angucomplete-alt
+          class="input-bar"
           placeholder="{{ph}}"
           pause="500"
           selected-object="selectedLocation"
@@ -23,6 +24,11 @@ angular.module('beeline').directive('locationSearch', function () {
           match-class="highlight"
           remote-url-response-formatter="formatResponse">
         </div>
+        <i
+          ng-show="!!selectedLocation"
+          class="ion-android-close"
+          on-tap="clearInput()"
+        ></i>
       </div>
     `,
     link (scope, elem, attr) {
@@ -37,6 +43,10 @@ angular.module('beeline').directive('locationSearch', function () {
         })
 
         return response
+      }
+
+      scope.clearInput = () => {
+        scope.$broadcast('angucomplete-alt:clearInput')
       }
     },
   }

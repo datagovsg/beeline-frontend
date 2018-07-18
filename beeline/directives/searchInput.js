@@ -16,10 +16,9 @@ angular.module('beeline').directive('searchInput', function () {
         />
         <ion-spinner ng-show="isFiltering"></ion-spinner>
         <i
-          ng-show="!isFiltering"
+          ng-show="!isFiltering && searchText.length > 0"
           class="ion-android-close"
           on-tap="searchText = ''"
-          ng-show="searchText.length > 0"
         ></i>
       </div>
     `,
