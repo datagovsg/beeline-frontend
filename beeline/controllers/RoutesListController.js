@@ -202,8 +202,11 @@ export default [
         () => RoutesService.getPrivateRoutesWithRidesRemaining(),
         'data.placeQuery',
         'data.recentRoutesById',
+        'data.pickUpLocation',
+        'data.dropOffLocation',
+        'disp.searchFromTo',
       ],
-      ([routes, privateRoutes, placeQuery, recentRoutesById]) => {
+      ([routes, privateRoutes, placeQuery, recentRoutesById, pickUpLocation, dropOffLocation, searchFromTo]) => {
         // Input validation
         if (!routes || !privateRoutes) return
 
@@ -317,8 +320,11 @@ export default [
         () => LiteRoutesService.getLiteRoutes(),
         () => LiteRouteSubscriptionService.getSubscriptionSummary(),
         'data.placeQuery',
+        'data.pickUpLocation',
+        'data.dropOffLocation',
+        'disp.searchFromTo',
       ],
-      ([liteRoutes, subscribed, placeQuery]) => {
+      ([liteRoutes, subscribed, placeQuery, pickUpLocation, dropOffLocation, searchFromTo]) => {
         // Input validation
         if (!liteRoutes || !subscribed) return
         liteRoutes = Object.values(liteRoutes)
@@ -348,8 +354,14 @@ export default [
     // Normal routes
     // Sort them by start time
     $scope.$watchGroup(
-      [() => RoutesService.getRoutesWithRoutePass(), 'data.placeQuery'],
-      ([allRoutes, placeQuery]) => {
+      [
+        () => RoutesService.getRoutesWithRoutePass(),
+        'data.placeQuery',
+        'data.pickUpLocation',
+        'data.dropOffLocation',
+        'disp.searchFromTo',
+      ],
+      ([allRoutes, placeQuery, pickUpLocation, dropOffLocation, searchFromTo]) => {
         // Input validation
         if (!allRoutes) return
 
@@ -369,8 +381,11 @@ export default [
         () => CrowdstartService.getCrowdstart(),
         () => CrowdstartService.getBids(),
         'data.placeQuery',
+        'data.pickUpLocation',
+        'data.dropOffLocation',
+        'disp.searchFromTo',
       ],
-      ([routes, bids, placeQuery]) => {
+      ([routes, bids, placeQuery, pickUpLocation, dropOffLocation, searchFromTo]) => {
         if (!routes || !bids) return
 
         // Filter out the expired routes
@@ -555,7 +570,7 @@ export default [
           routesWithRidesRemaining,
         ]
       ) => {
-        if (!placeQuery || !routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
+        if ($scope.disp.searchFromTo || !placeQuery || !routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
 
         let [
           fRoutes,
@@ -583,6 +598,75 @@ export default [
           }
           return routes
         })
+
+        if (!_.isEqual(routes, fRoutes)) {
+          $scope.data.routes = fRoutes
+        }
+        if (!_.isEqual(liteRoutes, fLiteRoutes)) {
+          $scope.data.liteRoutes = fLiteRoutes
+        }
+        if (!_.isEqual(crowdstartRoutes, fCrowdstartRoutes)) {
+          $scope.data.crowdstartRoutes = fCrowdstartRoutes
+        }
+        if (!_.isEqual(routesWithRidesRemaining, fRoutesWithRidesRemaining)) {
+          $scope.data.routesWithRidesRemaining = fRoutesWithRidesRemaining
+        }
+      }
+    )
+
+    // From-to search
+    $scope.$watchGroup(
+      [
+        'data.pickUpLocation',
+        'data.dropOffLocation',
+        'data.routes',
+        'data.liteRoutes',
+        'data.crowdstartRoutes',
+        'data.routesWithRidesRemaining',
+      ],
+      (
+        [
+          pickUpLocation,
+          dropOffLocation,
+          routes,
+          liteRoutes,
+          crowdstartRoutes,
+          routesWithRidesRemaining,
+        ]
+      ) => {
+        if (!$scope.disp.searchFromTo || (!pickUpLocation && !dropOffLocation) || !routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
+
+        let maxDistance = 2000
+        let pickUpLngLat = pickUpLocation ? [
+          parseFloat(pickUpLocation.originalObject.LONGITUDE),
+          parseFloat(pickUpLocation.originalObject.LATITUDE),
+        ] : null
+        let dropOffLngLat = dropOffLocation ? [
+          parseFloat(dropOffLocation.originalObject.LONGITUDE),
+          parseFloat(dropOffLocation.originalObject.LATITUDE),
+        ] : null
+
+        const filterRoutes = routes => {
+          if (pickUpLocation) {
+            routes = SearchService.filterRoutesByLngLatAndType(routes, pickUpLngLat, 'board', maxDistance)
+          }
+          if (dropOffLocation) {
+            routes = SearchService.filterRoutesByLngLatAndType(routes, dropOffLngLat, 'alight', maxDistance)
+          }
+          return routes
+        }
+
+        let [
+          fRoutes,
+          fLiteRoutes,
+          fCrowdstartRoutes,
+          fRoutesWithRidesRemaining,
+        ] = [
+          routes,
+          liteRoutes,
+          crowdstartRoutes,
+          routesWithRidesRemaining,
+        ].map(filterRoutes)
 
         if (!_.isEqual(routes, fRoutes)) {
           $scope.data.routes = fRoutes

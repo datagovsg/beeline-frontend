@@ -102,6 +102,19 @@ angular.module('common').factory('SearchService', [
         return filteredRoutes
       },
 
+      filterRoutesByLngLatAndType: function (routes, lnglat, type, maxDistance) {
+        // Check the trips stops of a route to see if any come close
+        let filteredRoutes = routes.filter(route => {
+          let tripStops = getTripStopsFrom(route)
+          return _.some(tripStops, tripStop => {
+            let distance = stopDistance(tripStop, lnglat)
+            return (distance < maxDistance && ((type === 'alight' && tripStop.canAlight) || (type === 'board' && tripStop.canBoard)))
+          })
+        })
+
+        return filteredRoutes
+      },
+
       filterRoutesByPlaceAndText: function (routes, place, text) {
         let placeResults = this.filterRoutesByPlace(routes, place)
         let textResults = this.filterRoutesByText(routes, text)
