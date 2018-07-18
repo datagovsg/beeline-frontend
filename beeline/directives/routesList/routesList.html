@@ -32,12 +32,12 @@
   <!-- START: Available Routes Section -->
   <div
     class="item item-divider"
-    ng-if="data.liteRoutes.length > 0 || data.routes.length > 0"
+    ng-if="disp.liteRoutes.length > 0 || disp.routes.length > 0"
   >
     Available Routes
   </div>
   <ion-item
-    ng-repeat="route in data.routes | limitTo:20 track by route.id"
+    ng-repeat="route in disp.routes | limitTo:20 track by route.id"
     class="item-text-wrap"
   >
     <regular-route
@@ -50,13 +50,13 @@
   <!-- START: Available Crowdstart Routes -->
   <div
     class="item item-divider"
-    ng-if="data.crowdstartRoutes.length > 0"
+    ng-if="disp.crowdstartRoutes.length > 0"
     id="crowdstart"
   >
     Crowdstart Routes
   </div>
   <ion-item
-    ng-repeat="route in data.crowdstartRoutes | limitTo:30 track by $index"
+    ng-repeat="route in disp.crowdstartRoutes | limitTo:30 track by $index"
     class="item-text-wrap"
   >
     <crowdstart-route
@@ -69,12 +69,12 @@
   <!-- START: Available Lite Routes Section -->
   <div
     class="item item-divider"
-    ng-if="data.liteRoutes.length > 0"
+    ng-if="disp.liteRoutes.length > 0"
   >
     Tracking Routes
   </div>
   <ion-item
-    ng-repeat="route in data.liteRoutes | limitTo:10 track by route.label"
+    ng-repeat="route in disp.liteRoutes | limitTo:10 track by route.label"
     class="item-text-wrap"
   >
     <lite-route
@@ -87,8 +87,8 @@
   <!-- No results found message -->
   <p
     ng-if="data.routes.length === 0 &&
-          data.liteRoutes.length === 0 &&
-          data.crowdstartRoutes.length === 0 &&
+          disp.liteRoutes.length === 0 &&
+          disp.crowdstartRoutes.length === 0 &&
           (data.placeQuery && !disp.searchFromTo || data.pickUpLocation && disp.searchFromTo || data.dropOffLocation && disp.searchFromTo)"
     class="text-center"
   >

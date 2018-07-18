@@ -104,7 +104,12 @@ export default [
           ? 'Your Routes'
           : 'Search Routes',
       searchFromTo: true,
+      routes: null,
+      liteRoutes: null,
+      crowdstartRoutes: null,
+      routesWithRidesRemaining: null,
     }
+
     // ------------------------------------------------------------------------
     // Ionic events
     // ------------------------------------------------------------------------
@@ -200,13 +205,9 @@ export default [
       [
         () => RoutesService.getRoutesWithRidesRemaining(),
         () => RoutesService.getPrivateRoutesWithRidesRemaining(),
-        'data.placeQuery',
         'data.recentRoutesById',
-        'data.pickUpLocation',
-        'data.dropOffLocation',
-        'disp.searchFromTo',
       ],
-      ([routes, privateRoutes, placeQuery, recentRoutesById, pickUpLocation, dropOffLocation, searchFromTo]) => {
+      ([routes, privateRoutes, recentRoutesById]) => {
         // Input validation
         if (!routes || !privateRoutes) return
 
@@ -218,6 +219,9 @@ export default [
         $scope.data.routesWithRidesRemaining = routes.filter(
           route => !recentRouteIds.map(Number).includes(route.id)
         )
+
+        // Publish shallow copy to disp.routesWithRidesRemaining
+        $scope.disp.routesWithRidesRemaining = _.clone($scope.data.routesWithRidesRemaining)
       }
     )
 
@@ -319,12 +323,8 @@ export default [
       [
         () => LiteRoutesService.getLiteRoutes(),
         () => LiteRouteSubscriptionService.getSubscriptionSummary(),
-        'data.placeQuery',
-        'data.pickUpLocation',
-        'data.dropOffLocation',
-        'disp.searchFromTo',
       ],
-      ([liteRoutes, subscribed, placeQuery, pickUpLocation, dropOffLocation, searchFromTo]) => {
+      ([liteRoutes, subscribed]) => {
         // Input validation
         if (!liteRoutes || !subscribed) return
         liteRoutes = Object.values(liteRoutes)
@@ -348,6 +348,9 @@ export default [
         $scope.data.liteRoutes = _.sortBy(liteRoutes, route => {
           return parseInt(route.label.slice(1))
         })
+
+        // Publish shallow copy to disp.liteRoutes
+        $scope.disp.liteRoutes = _.clone($scope.data.liteRoutes)
       }
     )
 
@@ -356,12 +359,8 @@ export default [
     $scope.$watchGroup(
       [
         () => RoutesService.getRoutesWithRoutePass(),
-        'data.placeQuery',
-        'data.pickUpLocation',
-        'data.dropOffLocation',
-        'disp.searchFromTo',
       ],
-      ([allRoutes, placeQuery, pickUpLocation, dropOffLocation, searchFromTo]) => {
+      ([allRoutes]) => {
         // Input validation
         if (!allRoutes) return
 
@@ -372,6 +371,9 @@ export default [
           midnightOfTrip.setHours(0, 0, 0, 0)
           return firstTripStop.time.getTime() - midnightOfTrip.getTime()
         })
+
+        // publish shallow copy to disp.routes
+        $scope.disp.routes = _.clone($scope.data.routes)
       }
     )
 
@@ -380,12 +382,8 @@ export default [
       [
         () => CrowdstartService.getCrowdstart(),
         () => CrowdstartService.getBids(),
-        'data.placeQuery',
-        'data.pickUpLocation',
-        'data.dropOffLocation',
-        'disp.searchFromTo',
       ],
-      ([routes, bids, placeQuery, pickUpLocation, dropOffLocation, searchFromTo]) => {
+      ([routes, bids]) => {
         if (!routes || !bids) return
 
         // Filter out the expired routes
@@ -402,6 +400,9 @@ export default [
 
         // Map to scope once done
         $scope.data.crowdstartRoutes = routes
+
+        // Publish shallow copy to disp.crowdstartRoutes
+        $scope.disp.crowdstartRoutes = _.clone(routes)
       }
     )
 
@@ -552,14 +553,37 @@ export default [
       }
     )
 
+    // Reset disp.xxx when search terms have changed
+    $scope.$watchGroup(
+      [
+        'data.placeQuery',
+        'data.pickUpLocation',
+        'data.dropOffLocation',
+        'disp.searchFromTo',
+      ],
+      (
+        [
+          placeQuery,
+          pickUpLocation,
+          dropOffLocation,
+          searchFromTo,
+        ]
+      ) => {
+        $scope.disp.routes = _.clone($scope.data.routes)
+        $scope.disp.liteRoutes = _.clone($scope.data.liteRoutes)
+        $scope.disp.crowdstartRoutes = _.clone($scope.data.crowdstartRoutes)
+        $scope.disp.routesWithRidesRemaining = _.clone($scope.data.routesWithRidesRemaining)
+      }
+    )
+
     // Text search
     $scope.$watchGroup(
       [
         'data.placeQuery',
-        'data.routes',
-        'data.liteRoutes',
-        'data.crowdstartRoutes',
-        'data.routesWithRidesRemaining',
+        'disp.routes',
+        'disp.liteRoutes',
+        'disp.crowdstartRoutes',
+        'disp.routesWithRidesRemaining',
       ],
       (
         [
@@ -600,16 +624,16 @@ export default [
         })
 
         if (!_.isEqual(routes, fRoutes)) {
-          $scope.data.routes = fRoutes
+          $scope.disp.routes = fRoutes
         }
         if (!_.isEqual(liteRoutes, fLiteRoutes)) {
-          $scope.data.liteRoutes = fLiteRoutes
+          $scope.disp.liteRoutes = fLiteRoutes
         }
         if (!_.isEqual(crowdstartRoutes, fCrowdstartRoutes)) {
-          $scope.data.crowdstartRoutes = fCrowdstartRoutes
+          $scope.disp.crowdstartRoutes = fCrowdstartRoutes
         }
         if (!_.isEqual(routesWithRidesRemaining, fRoutesWithRidesRemaining)) {
-          $scope.data.routesWithRidesRemaining = fRoutesWithRidesRemaining
+          $scope.disp.routesWithRidesRemaining = fRoutesWithRidesRemaining
         }
       }
     )
@@ -619,10 +643,10 @@ export default [
       [
         'data.pickUpLocation',
         'data.dropOffLocation',
-        'data.routes',
-        'data.liteRoutes',
-        'data.crowdstartRoutes',
-        'data.routesWithRidesRemaining',
+        'disp.routes',
+        'disp.liteRoutes',
+        'disp.crowdstartRoutes',
+        'disp.routesWithRidesRemaining',
       ],
       (
         [
@@ -669,16 +693,16 @@ export default [
         ].map(filterRoutes)
 
         if (!_.isEqual(routes, fRoutes)) {
-          $scope.data.routes = fRoutes
+          $scope.disp.routes = fRoutes
         }
         if (!_.isEqual(liteRoutes, fLiteRoutes)) {
-          $scope.data.liteRoutes = fLiteRoutes
+          $scope.disp.liteRoutes = fLiteRoutes
         }
         if (!_.isEqual(crowdstartRoutes, fCrowdstartRoutes)) {
-          $scope.data.crowdstartRoutes = fCrowdstartRoutes
+          $scope.disp.crowdstartRoutes = fCrowdstartRoutes
         }
         if (!_.isEqual(routesWithRidesRemaining, fRoutesWithRidesRemaining)) {
-          $scope.data.routesWithRidesRemaining = fRoutesWithRidesRemaining
+          $scope.disp.routesWithRidesRemaining = fRoutesWithRidesRemaining
         }
       }
     )
