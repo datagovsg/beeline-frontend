@@ -159,6 +159,29 @@ export default [
       })
 
       // ////////////////////////////////////////////////////////////////////////////
+      // Main interface, Suggestions Tab
+      // ////////////////////////////////////////////////////////////////////////////
+      .state('tabs.your-suggestions', {
+        url: '/your-suggestions',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/your-suggestions.html',
+            controller: 'YourSuggestionsController',
+          },
+        },
+      })
+
+      .state('tabs.your-suggestions-detail', {
+        url: '/your-suggestions/1',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/your-suggestions-detail.html',
+            // controller: 'PurchaseRoutePassController',
+          },
+        },
+      })
+
+      // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Crowdstart Tab
       // ////////////////////////////////////////////////////////////////////////////
 
@@ -218,16 +241,6 @@ export default [
           menuContent: {
             templateUrl: 'templates/booking-history.html',
             controller: 'BookingHistoryController',
-          },
-        },
-      })
-
-      .state('tabs.your-suggestions', {
-        url: '/your-suggestions',
-        views: {
-          menuContent: {
-            templateUrl: 'templates/your-suggestions.html',
-            controller: 'YourSuggestionsController',
           },
         },
       })

@@ -1,3 +1,115 @@
-.your-suggestions {
-  
+suggestion-item {
+  display: flex;
+
+  .left {
+    flex: auto;
+  }
+  .day-badge {
+    display: flex;
+    flex-direction: row;
+
+    div {
+      background: $royal;
+      color: $light;
+      font-size: $font-size-x-x-small;
+      margin-right: 5px;
+      width: 15px;
+      height: 15px;
+      text-align: center;
+      border-radius: 2px;
+      vertical-align: middle;
+      line-height: 15px;
+      font-weight: $font-weight-bold;
+    }
+  }
+  .stops {
+    display: block;
+    /* Determines the amount of vertical spacing
+        between the .bus-number and the stops */
+    margin-top: $font-size-base * 0.8;
+    position: relative;
+    flex: 1 1 auto;
+
+    .stop-icon {
+      /* this value depends on the width of the image -- leaving as a constant */
+      flex: 0 0 auto;
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      margin-top: $font-size-base / 2;
+      margin-right: $font-size-base / 2;
+    }
+
+    .start .stop-icon {
+      background: #00C4A5;
+      /*
+        we want line to be:
+            - the height of .start (=> height: 100%),
+            - displace the left of the line to the middle of the circle
+                the image is 10x10 hence left: 4px (to account for width=2px)
+            - .start is inline, so it's height = $line-height-computed.
+              Image is centered vertically => top = $line-height-computed / 2
+              N.B. overflow must be "visible" on .start for this to work
+            - positioned relative to the stop icon => .start { position: relative }
+      */
+    }
+    .end .stop-icon {
+      background: #FF6C6A;
+    }
+
+    .start, .end {
+      line-height: $line-height-base;
+      position: relative;
+      white-space: normal;
+      display: flex;
+
+      .road {
+        text-transform: capitalize;
+        flex: 1 1 auto;
+        white-space: initial;
+        font-weight: $route-item-font-weight-small;
+        color: $normal-grey;
+      }
+    }
+
+    .end {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .icon-and-schedule {
+    margin-top: 0.5em;
+    font-weight: $route-item-font-weight-small;
+
+    & + .icon-and-schedule {
+      margin-top: 0em;
+    }
+  }
+
+  .right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-transform: uppercase;
+
+    .value {
+      font-size: 40px;
+      line-height: 40px;
+      font-weight: $font-weight-bold;
+    }
+    .suggestions {
+      color: $light-grey;
+      font-size: $font-size-x-small;
+    }
+  }
+}
+
+.header {
+  font-size: 20px;
+  line-height: 45px;
+  font-weight: $font-weight-medium;
+  color: $royal;
+  text-transform: uppercase;
 }

@@ -4,5 +4,15 @@
   </ion-nav-buttons>
   <ion-content>
 
+    <div class="item item-divider">Your Suggestions</div>
+
+    <ion-item ng-repeat="item in data.suggestions" class="item-text-wrap">
+      <suggestion-item ui-sref="tabs.your-suggestions-detail"></suggestion-item>
+    </ion-item>
+
+    <button class="primary-button" ui-sref="tabs.your-suggestions-detail">
+      Create new suggestion
+    </button>
+
   </ion-content>
 </ion-view>

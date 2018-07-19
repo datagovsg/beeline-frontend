@@ -73,6 +73,7 @@ require('./directives/companyInfoBroker')
 require('./directives/menuHamburger')
 require('./directives/routesList/routesList')
 require('./directives/routesList/yourRoutesList')
+require('./directives/suggestionItem/suggestionItem')
 
 // Data Services
 require('./services/data/CompanyService')
@@ -245,7 +246,7 @@ app
         base.setAttribute('href', '/')
         const [head] = window.document.getElementsByTagName('head')
         head.appendChild(base)
-        $locationProvider.html5Mode({ enabled: true })
+        // $locationProvider.html5Mode({ enabled: true })
       }
     },
   ])
