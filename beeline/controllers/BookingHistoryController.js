@@ -61,13 +61,15 @@ export default [
       })
         .then(response => {
           inFlight = false
-          const newTransactions = response.data.transactions
+          let newTransactions = response.data.transactions
 
           if (newTransactions.length === $scope.perPage) {
             $scope.page++
           } else {
             $scope.hasMoreData = false
           }
+
+          newTransactions = newTransactions.filter(txn => txn.committed)
 
           $scope.transactions = $scope.transactions || []
           $scope.transactions = $scope.transactions.concat(newTransactions)
