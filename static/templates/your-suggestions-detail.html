@@ -1,6 +1,9 @@
 <ion-view class="your-suggestions" view-title="Your Suggestions">
     <ion-nav-buttons side="right">
-        <button class="button button-icon icon ion-android-close"></button>
+        <button 
+          ui-sref="tabs.your-suggestions" 
+          class="button button-icon icon ion-android-close">
+        </button>
     </ion-nav-buttons>
     <ion-content>
 
@@ -12,6 +15,10 @@
         <crowdstart-route
           route="{label: '123'}">
       </ion-item>
+
+      <div class="delete">
+        <span on-tap="popupDeleteConfirmation()">Delete Suggestion</span>
+      </div>
   
     </ion-content>
   </ion-view>

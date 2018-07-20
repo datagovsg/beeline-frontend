@@ -176,7 +176,7 @@ export default [
         views: {
           menuContent: {
             templateUrl: 'templates/your-suggestions-detail.html',
-            // controller: 'PurchaseRoutePassController',
+            controller: 'YourSuggestionsController',
           },
         },
       })

@@ -1,8 +1,10 @@
 export default [
   '$scope',
+  '$ionicPopup',
   function (
     // Angular Tools
     $scope,
+    $ionicPopup
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
@@ -26,5 +28,10 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
+    $scope.popupDeleteConfirmation = function () {
+      $ionicPopup.confirm({
+        title: 'Are you sure you want to delete the suggestions?',
+      })
+    }
   },
 ]
