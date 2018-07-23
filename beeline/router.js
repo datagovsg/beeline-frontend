@@ -181,6 +181,16 @@ export default [
         },
       })
 
+      .state('tabs.create-new-suggestion', {
+        url: '/your-suggestions/create',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/create-new-suggestion.html',
+            controller: 'YourSuggestionsController',
+          },
+        },
+      })
+
       // ////////////////////////////////////////////////////////////////////////////
       // Main interface, Crowdstart Tab
       // ////////////////////////////////////////////////////////////////////////////

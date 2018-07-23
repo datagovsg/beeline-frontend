@@ -1,0 +1,56 @@
+<ion-view class="your-suggestions" view-title="Suggest a route">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+            ui-sref="tabs.lite-detail({
+              label: data.label,
+            })"
+            class="item-icon-right">
+       <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content scroll="false">
+
+    <ui-gmap-google-map
+      center="map.center"
+      pan="true"
+      zoom="map.zoom"
+      bounds="map.bounds"
+      dragging="map.dragging"
+      control="map.control"
+      options="map.options"
+      data-tap-disabled="true"
+    >
+        <!-- <my-location></my-location>
+        <ui-view name="map-area"></ui-view> -->
+    </ui-gmap-google-map>
+
+    <div class="padding-ticket-subheader"></div>
+    <div class="padding-routepass-subheader"></div>
+    <div class="booking-view">
+      <form name="stopsForm" class="stops-selector">
+        <div class="item item-icon-left item-icon-right board-stop-selector stop-selector">
+          <i class="icon pickup-stop"></i>
+          <span class="placeholder">Pick Up - Enter Postal Code</span>
+          <!-- <span ng-required="true"></span> -->
+          <!-- <i class="icon ion-ios-arrow-right arrow-icon"></i> -->
+        </div>
+        <div class="item item-icon-left item-icon-right alight-stop-selector stop-selector">
+          <i class="icon dropoff-stop"></i>
+          <span class="placeholder">Drop Up - Enter Postal Code</span>
+          <!-- <i class="icon ion-ios-arrow-right arrow-icon"></i> -->
+        </div>
+
+        <div class="item item-icon-left item-icon-right alight-stop-selector stop-selector">
+          <i class="icon dropoff-stop"></i>
+          <span class="placeholder">Drop Up - Enter Postal Code</span>
+          <!-- <i class="icon ion-ios-arrow-right arrow-icon"></i> -->
+        </div>
+      </form>
+    </div>
+
+    <button class="primary-button submit-btn" ui-sref="tabs.your-suggestions-detail" ng-disabled="stopsForm.$invalid">
+      Submit
+    </button>
+
+  </ion-content>
+</ion-view>

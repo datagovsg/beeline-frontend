@@ -1,10 +1,12 @@
 export default [
   '$scope',
   '$ionicPopup',
+  'MapOptions',
   function (
     // Angular Tools
     $scope,
-    $ionicPopup
+    $ionicPopup,
+    MapOptions
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
@@ -16,6 +18,10 @@ export default [
     $scope.data = {
       suggestions: [1, 2, 3],
     }
+
+    $scope.map = MapOptions.defaultMapOptions({
+
+    })
 
     // ------------------------------------------------------------------------
     // Ionic events

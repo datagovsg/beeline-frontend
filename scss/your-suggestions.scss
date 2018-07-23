@@ -120,3 +120,101 @@ suggestion-item {
   text-align: center;
   text-decoration: underline;
 }
+
+#tabs ui-gmap-google-map {
+  height: 100%;
+  top: 0px;
+}
+
+ion-content {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  top: auto;
+  background-color: transparent!important;
+
+  @include desktop {
+    top: $bar-height;
+
+    .padding-ticket-subheader {
+      padding-top: 70px;
+    }
+
+    .padding-routepass-subheader {
+      padding-top: 60px;
+    }
+
+    .booking-view {
+      padding-top: 40px;
+      background-color: $stable;
+    }
+  }
+
+  .stops-selector {
+    width: 90%;
+    margin: auto;
+    position: relative;
+    bottom: -41px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+
+    .stop-selector {
+      padding-top: $padding-large-vertical;
+      padding-bottom: $padding-large-vertical;
+      font-size: $font-size-small;
+
+      .arrow-icon {
+        font-size: $font-size-small * 2;
+      }
+    }
+
+    .board-stop-selector {
+      border-radius: 6px 6px 0px 0px;
+    }
+
+    .alight-stop-selector {
+      border-radius: 0px 0px 6px 6px;
+    }
+  }
+
+  .booking-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // ion-content background-color is transparent
+    background-color: $stable;
+    padding-top: 50px;
+
+    span {
+      margin-top: $padding-base-vertical;
+      margin-bottom: $padding-large-vertical;
+    }
+
+    .book-button {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .advance-button {
+      min-height: 40px;
+    }
+  }
+
+  @keyframes slide-in-from-bottom {
+    0% {
+      transform: translateY(900px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .submit-btn {
+    position: absolute;
+    bottom: 25px;
+  }
+}
