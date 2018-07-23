@@ -1,0 +1,31 @@
+$search-bar-radius: 6px;
+
+.search-page {
+  .search-input-bar {
+    margin: $padding-large-vertical $padding-base-horizontal;
+  }
+
+  input {
+    border: none;
+    border-radius: $search-bar-radius;
+    width: 100%;
+    padding: $padding-base-vertical $padding-base-horizontal;
+    line-height: $font-size-base * 2;
+  }
+
+  .shadow {
+    border-radius: $search-bar-radius;
+    -webkit-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+  }
+
+  .search-results {
+    // hack to get the nested ion-content to not block the search bar
+    margin-top: 60px; 
+
+    .location-result {
+      text-transform: capitalize;
+    }
+  }
+}

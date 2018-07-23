@@ -1,57 +1,36 @@
 .location-search {
   display: flex;
   justify-content: space-between;
+  overflow: hidden;
 
   &.item {
     padding-top: $padding-base-vertical;
     padding-bottom: $padding-base-vertical;
-    z-index: unset;
-    overflow: unset;
   }
 
   &.item-icon-left {
     padding-left: 40px;
   }
 
-  input {
+  .input-box {
     width: 100%;
-    text-transform: capitalize;
-  }
+    padding: $padding-base-vertical $padding-base-horizontal;
 
-  .input-bar {
-    flex-grow: 1;
-    margin-right: $padding-base-horizontal;
-  }
-
-  .angucomplete-searching {
-    background: white;
-  }
-
-  .angucomplete-dropdown {
-    overflow-y: auto;
-    max-height: 200px; // your preference
-    width: 100%;
-    text-overflow: ellipsis;
-  }
-
-  .angucomplete-title {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    text-transform: capitalize;
-    font-size: $font-size-small;
-  }
-
-  .highlight {
-    font-weight: $font-weight-bold;
-  }
-
-  .ion-android-close {
-    // margin-right: $padding-x-small-horizontal;
-    display: flex;
-    &::before {
-      margin-top: auto;
-      margin-bottom: auto;
+    .input-text {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      text-transform: capitalize;
+      font-size: $font-size-small;
     }
   }
+
+  // .ion-android-close {
+  //   // margin-right: $padding-x-small-horizontal;
+  //   display: flex;
+  //   &::before {
+  //     margin-top: auto;
+  //     margin-bottom: auto;
+  //   }
+  // }
 }

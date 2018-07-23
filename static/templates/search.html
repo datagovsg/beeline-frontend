@@ -1,0 +1,21 @@
+<ion-view class="search-page">
+  <ion-nav-title>Search</ion-nav-title>
+  <ion-content scroll="false">
+    <div class="search-input-bar shadow">
+      <input
+        placeholder="Search" 
+        ng-model="data.searchInput"
+        autofocus>
+    </div>
+
+    <ion-content scroll="true" class="search-results">
+      <div
+        ng-repeat="result in disp.results"
+        class="item location-result"
+        on-tap="select(result)"
+      >
+        {{ result.ADDRESS }}
+      </div>
+    </ion-content>
+  </ion-content>
+</ion-view>

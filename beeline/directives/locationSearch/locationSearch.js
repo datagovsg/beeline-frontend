@@ -1,53 +1,46 @@
-angular.module('beeline').directive('locationSearch', function () {
-  return {
-    scope: {
-      queryLocation: '=',
-      ph: '@',
-      isFiltering: '<',
-      icon: '@',
-    },
-    template: `
-      <div class="location-search item item-icon-left">
-        <i class="icon pickup-stop" ng-if="icon === 'pickup'"></i>
-        <i class="icon dropoff-stop" ng-if="icon === 'dropoff'"></i>
-        <div angucomplete-alt
-          class="input-bar"
-          placeholder="{{ph}}"
-          pause="500"
-          selected-object="selectedLocation"
-          remote-url="https://developers.onemap.sg/commonapi/search?returnGeom=Y&getAddrDetails=Y&searchVal="
-          remote-url-data-field="results"
-          title-field="ADDRESS"
-          description-field="description"
-          minlength="2"
-          input-class="form-control form-control-small"
-          match-class="highlight"
-          remote-url-response-formatter="formatResponse">
+angular.module('beeline').directive('locationSearch', [
+  '$state',
+  function ($state) {
+    return {
+      scope: {
+        queryLocation: '=',
+        ph: '@',
+        isFiltering: '<',
+        icon: '@',
+        inputId: '=',
+      },
+      template: `
+        <div class="location-search item item-icon-left">
+          <i class="icon pickup-stop" ng-if="icon === 'pickup'"></i>
+          <i class="icon dropoff-stop" ng-if="icon === 'dropoff'"></i>
+          <div class="input-box" on-tap="openSearch()">
+            <div class="input-text" ng-if="!location">{{ph}}</div>
+            <div class="input-text" ng-if="location">{{location.ADDRESS}}</div>
+          </div>
+          <i
+            ng-show="inputText"
+            class="ion-android-close"
+            on-tap="clearInput()"
+          ></i>
         </div>
-        <i
-          ng-show="!!selectedLocation"
-          class="ion-android-close"
-          on-tap="clearInput()"
-        ></i>
-      </div>
-    `,
-    link (scope, elem, attr) {
-      scope.$watch('selectedLocation', loc => {
-        scope.queryLocation = loc
-      })
-
-      scope.formatResponse = response => {
-        response.results.map(result => {
-          result.ADDRESS = result.ADDRESS.toLowerCase()
-          return result
+      `,
+      link (scope, elem, attr) {
+        scope.$watch('location', loc => {
+          scope.queryLocation = loc
         })
 
-        return response
-      }
+        scope.clearInput = () => {
+          scope.inputText = null
+          scope.$broadcast('angucomplete-alt:clearInput')
+        }
 
-      scope.clearInput = () => {
-        scope.$broadcast('angucomplete-alt:clearInput')
-      }
-    },
-  }
-})
+        scope.openSearch = () => {
+          $state.go('tabs.search', {
+            callback: location => {
+              scope.location = location
+            },
+          })
+        }
+      },
+    }
+  }])

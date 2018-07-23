@@ -222,6 +222,21 @@ export default [
         },
       })
 
+      // ////////////////////////////////////////////////////////////////////////////
+      // Main interface, Search
+      // ////////////////////////////////////////////////////////////////////////////
+      .state('tabs.search', {
+        // url: '/route/:routeId/stops?type&stopId',
+        url: '/search',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/search.html',
+            controller: 'SearchController',
+          },
+        },
+        params: { callback: null },
+      })
+
     let viewedIntroSlidesVersion =
       window.localStorage.viewedBeelineSlidesVersion
     // if none of the above states are matched, use this as the fallback
