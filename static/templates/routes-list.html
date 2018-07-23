@@ -3,7 +3,7 @@
     <menu-hamburger></menu-hamburger>
   </ion-nav-buttons>
   <ion-content scroll="false">
-    <div class="search-container">
+    <div class="search-container" ng-if="!disp.yourRoutes">
 
       <div class="search-inputs shadow">
         <!-- Search Filter  -->
@@ -18,14 +18,13 @@
 
       <div class="search-toggle">
         <button class="primary-button button" ng-click="toggleSearch()"> 
-        <!-- <button class="primary-button button" ng-click="disp.searchFromTo = !disp.searchFromTo">  -->
           <i class="fas fa-search"></i>
-      </button>
+        </button>
       </div>
 
     </div>
     <!-- Scrollable routes list -->
-    <ion-content ng-class="{'from-to': disp.searchFromTo, 'one-search': !disp.searchFromTo}">
+    <ion-content ng-class="{'from-to': !disp.yourRoutes && disp.searchFromTo, 'one-search': !disp.yourRoutes && !disp.searchFromTo}">
 
       <ion-refresher
         pulling-text="Pull to refresh..."

@@ -579,7 +579,6 @@ export default [
     // Text search
     $scope.$watchGroup(
       [
-        'data.placeQuery',
         'disp.routes',
         'disp.liteRoutes',
         'disp.crowdstartRoutes',
@@ -587,13 +586,13 @@ export default [
       ],
       (
         [
-          placeQuery,
           routes,
           liteRoutes,
           crowdstartRoutes,
           routesWithRidesRemaining,
         ]
       ) => {
+        let placeQuery = $scope.data.placeQuery
         if ($scope.disp.searchFromTo || !placeQuery || !routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
 
         let [
@@ -641,8 +640,6 @@ export default [
     // From-to search
     $scope.$watchGroup(
       [
-        'data.pickUpLocation',
-        'data.dropOffLocation',
         'disp.routes',
         'disp.liteRoutes',
         'disp.crowdstartRoutes',
@@ -650,24 +647,24 @@ export default [
       ],
       (
         [
-          pickUpLocation,
-          dropOffLocation,
           routes,
           liteRoutes,
           crowdstartRoutes,
           routesWithRidesRemaining,
         ]
       ) => {
+        let pickUpLocation = $scope.data.pickUpLocation
+        let dropOffLocation = $scope.data.dropOffLocation
         if (!$scope.disp.searchFromTo || (!pickUpLocation && !dropOffLocation) || !routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
 
-        let maxDistance = 2000
+        let maxDistance = 500
         let pickUpLngLat = pickUpLocation ? [
-          parseFloat(pickUpLocation.originalObject.LONGITUDE),
-          parseFloat(pickUpLocation.originalObject.LATITUDE),
+          parseFloat(pickUpLocation.LONGITUDE),
+          parseFloat(pickUpLocation.LATITUDE),
         ] : null
         let dropOffLngLat = dropOffLocation ? [
-          parseFloat(dropOffLocation.originalObject.LONGITUDE),
-          parseFloat(dropOffLocation.originalObject.LATITUDE),
+          parseFloat(dropOffLocation.LONGITUDE),
+          parseFloat(dropOffLocation.LATITUDE),
         ] : null
 
         const filterRoutes = routes => {
