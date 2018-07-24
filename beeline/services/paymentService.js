@@ -67,7 +67,7 @@ angular.module('beeline').factory('PaymentService', [
         await completePayment(paymentOptions, book)
         $state.go('tabs.route-confirmation')
       } catch (err) {
-        await $ionicPopup.alert({
+        $ionicPopup.alert({
           title: 'Error processing payment',
           template: err.data.message,
         })
