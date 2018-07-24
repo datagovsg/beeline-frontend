@@ -13,7 +13,7 @@
   }
 
   .input-box {
-    width: 100%;
+    width: calc(100% - 10px);
     padding: $padding-base-vertical $padding-base-horizontal;
 
     .input-text {
@@ -25,12 +25,11 @@
     }
   }
 
-  // .ion-android-close {
-  //   // margin-right: $padding-x-small-horizontal;
-  //   display: flex;
-  //   &::before {
-  //     margin-top: auto;
-  //     margin-bottom: auto;
-  //   }
-  // }
+  .ion-android-close {
+    display: flex;
+    &::before {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
 }
