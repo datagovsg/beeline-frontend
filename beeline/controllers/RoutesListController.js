@@ -657,7 +657,7 @@ export default [
         let dropOffLocation = $scope.data.dropOffLocation
         if (!$scope.disp.searchFromTo || (!pickUpLocation && !dropOffLocation) || !routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
 
-        let maxDistance = 500
+        let maxDistance = 750
         let pickUpLngLat = pickUpLocation ? [
           parseFloat(pickUpLocation.LONGITUDE),
           parseFloat(pickUpLocation.LATITUDE),
