@@ -226,15 +226,14 @@ export default [
       // Main interface, Search
       // ////////////////////////////////////////////////////////////////////////////
       .state('tabs.search', {
-        // url: '/route/:routeId/stops?type&stopId',
-        url: '/search',
+        url: '/search?type',
         views: {
           menuContent: {
             templateUrl: 'templates/search.html',
             controller: 'SearchController',
           },
         },
-        params: { callback: null },
+        params: { callback: null, location: null },
       })
 
     let viewedIntroSlidesVersion =

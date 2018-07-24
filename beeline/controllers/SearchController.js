@@ -26,10 +26,9 @@ export default [
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
-    // let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
-    // let type = $stateParams.type
-    // let stopId = $stateParams.stopId ? Number($stateParams.stopId) : null
+    let type = $stateParams.type
     let callback = $stateParams.callback
+    let location = $stateParams.location
 
     // ------------------------------------------------------------------------
     // Data Initialization

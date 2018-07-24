@@ -31,6 +31,8 @@ angular.module('beeline').directive('locationSearch', [
 
         scope.openSearch = () => {
           $state.go('tabs.search', {
+            type: scope.icon,
+            location: scope.queryLocation,
             callback: location => {
               scope.queryLocation = location
             },
