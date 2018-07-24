@@ -10,7 +10,7 @@ export default [
   'BookingService',
   'MapService',
   'OneMapPlaceService',
-  function (
+  async function (
     $scope,
     $stateParams,
     $timeout,
@@ -34,13 +34,49 @@ export default [
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
+    let defaultResults = null
+
+    if (type === 'pickup') {
+      defaultResults = [
+        'Punggol MRT',
+        'Jurong East MRT',
+        'Sengkang MRT',
+        'Tampines MRT',
+        'Woodlands MRT',
+        'Yishun MRT',
+        'Bedok MRT',
+      ]
+    } else if (type === 'dropoff') {
+      defaultResults = [
+        'Changi Naval Base',
+        'Tuas Naval Base',
+        'Raffles Place MRT',
+        'Mapletree Business City',
+        'Tanjong Pagar MRT',
+        'Changi Business Park',
+        'Buona Vista MRT',
+        'Depot Road',
+        'One North MRT',
+      ]
+    }
+
     $scope.data = {
-      searchInput: '',
+      searchInput: location ? location.ADDRESS : null,
     }
 
     $scope.disp = {
       results: null,
     }
+
+    $scope.data.defaultResults = defaultResults ? await Promise.all(defaultResults.map(result => {
+      return OneMapPlaceService.getAllResults(result).then(results => {
+        if (results) {
+          let location = results.results[0]
+          location.ADDRESS = result
+          return location
+        }
+      })
+    })) : null
 
     // ------------------------------------------------------------------------
     // Watchers

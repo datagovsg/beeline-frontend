@@ -16,6 +16,14 @@
       >
         {{ result.ADDRESS }}
       </div>
+      <div
+        ng-if="!data.searchInput"
+        ng-repeat="result in data.defaultResults"
+        class="item location-result"
+        on-tap="select(result)"
+      >
+        {{ result.ADDRESS }}
+      </div>
     </ion-content>
   </ion-content>
 </ion-view>
