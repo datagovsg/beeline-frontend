@@ -95,7 +95,12 @@ export default [
     // Watchers
     // ------------------------------------------------------------------------
     $scope.$watch('data.searchInput', input => {
-      if (!input || input.length < 3) {
+      // if input is same as location, means we just entered and can search
+      // straight away
+      if (location && input === location.ADDRESS) {
+        search()
+        search.flush()
+      } else if (!input || input.length < 3) {
         $scope.disp.results = null
       } else {
         search()
