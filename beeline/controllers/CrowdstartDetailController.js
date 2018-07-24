@@ -28,6 +28,7 @@ export default [
 
       if (!user) {
         $scope.disp.bidded = false
+        return
       }
 
       // Figure out if user has bidded on this crowdstart route
