@@ -14,30 +14,25 @@ angular.module('beeline').directive('locationSearch', [
           <i class="icon pickup-stop" ng-if="icon === 'pickup'"></i>
           <i class="icon dropoff-stop" ng-if="icon === 'dropoff'"></i>
           <div class="input-box" on-tap="openSearch()">
-            <div class="input-text" ng-if="!location">{{ph}}</div>
-            <div class="input-text" ng-if="location">{{location.ADDRESS}}</div>
+            <div class="input-text" ng-if="!queryLocation">{{ph}}</div>
+            <div class="input-text" ng-if="queryLocation">{{queryLocation.ADDRESS}}</div>
           </div>
           <i
-            ng-show="inputText"
+            ng-show="queryLocation"
             class="ion-android-close"
             on-tap="clearInput()"
           ></i>
         </div>
       `,
       link (scope, elem, attr) {
-        scope.$watch('location', loc => {
-          scope.queryLocation = loc
-        })
-
         scope.clearInput = () => {
-          scope.inputText = null
-          scope.$broadcast('angucomplete-alt:clearInput')
+          scope.queryLocation = null
         }
 
         scope.openSearch = () => {
           $state.go('tabs.search', {
             callback: location => {
-              scope.location = location
+              scope.queryLocation = location
             },
           })
         }

@@ -776,15 +776,7 @@ export default [
     }
 
     $scope.swapFromTo = function () {
-      [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [$scope.data.dropOffLocation, $scope.data.pickUpLocation]
-
-      // let pickUpText = $scope.data.pickUpLocation ? $scope.data.pickUpLocation.title : null
-      // let dropOffText = $scope.data.dropOffLocation ? $scope.data.dropOffLocation.title : null
-
-      // $scope.$broadcast('angucomplete-alt:clearInput')
-
-      // $scope.$broadcast('angucomplete-alt:changeInput', 'pickup-input', pickUpText)
-      // $scope.$broadcast('angucomplete-alt:changeInput', 'dropoff-input', dropOffText)
+      [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [_.clone($scope.data.dropOffLocation), _.clone($scope.data.pickUpLocation)]
     }
   },
 ]
