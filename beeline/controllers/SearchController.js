@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export default [
   '$scope',
   '$stateParams',
@@ -23,6 +25,18 @@ export default [
     MapService,
     OneMapPlaceService,
   ) {
+    // ------------------------------------------------------------------------
+    // Helper functions
+    // ------------------------------------------------------------------------
+    const search = _.debounce(() => {
+      OneMapPlaceService.getAllResults($scope.data.searchInput).then(results => {
+        if (results) {
+          $scope.disp.results = results.results
+          $scope.$digest()
+        }
+      })
+    }, 500)
+
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
@@ -81,23 +95,16 @@ export default [
     // Watchers
     // ------------------------------------------------------------------------
     $scope.$watch('data.searchInput', input => {
-      if (!input || input.length < 3) return
-
-      OneMapPlaceService.getAllResults(input).then(results => {
-        if (results) {
-          $scope.disp.results = results.results
-        }
-      })
+      if (!input || input.length < 3) {
+        $scope.disp.results = null
+      } else {
+        search()
+      }
     })
 
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    // $ionicLoading.show({
-    //   template: `<ion-spinner icon='crescent'></ion-spinner>\
-    //     <br/><small>Loading stop information</small>`,
-    // })
-
     $scope.select = location => {
       $scope.data.selectedLocation = location
       if (typeof callback === 'function') {
