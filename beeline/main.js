@@ -41,6 +41,7 @@ require('clipboard')
 require('ngclipboard')
 
 // Directives
+require('./directives/autofocus')
 require('./directives/beelineBindHtml')
 require('./directives/companyTnc/companyTnc')
 require('./directives/countdown')
