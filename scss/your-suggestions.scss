@@ -154,7 +154,6 @@ ion-content {
     width: 90%;
     margin: auto;
     position: relative;
-    bottom: -41px;
     border-radius: 6px;
     -webkit-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
     -moz-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
@@ -177,6 +176,16 @@ ion-content {
     .alight-stop-selector {
       border-radius: 0px 0px 6px 6px;
     }
+  }
+
+  .stops-selector:nth-child(1) {
+    top: 20px;
+  }
+  .stops-selector:nth-child(2) {
+    top: 40px;
+  }
+  .stops-selector:nth-child(3) {
+    top: 60px;
   }
 
   .booking-info {
@@ -216,5 +225,20 @@ ion-content {
   .submit-btn {
     position: absolute;
     bottom: 25px;
+  }
+}
+
+.week-checkbox {
+  .item {
+    border: none;
+  }
+
+  ion-item, ion-label {
+    padding: 0;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: row;
   }
 }
