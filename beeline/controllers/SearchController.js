@@ -29,11 +29,15 @@ export default [
     // Helper functions
     // ------------------------------------------------------------------------
     const search = _.debounce(() => {
+      $scope.disp.isFiltering = true
       OneMapPlaceService.getAllResults($scope.data.searchInput).then(results => {
+        $scope.disp.isFiltering = false
         if (results) {
           $scope.disp.results = results.results
-          $scope.$digest()
+        } else {
+          $scope.disp.results = []
         }
+        $scope.$digest()
       })
     }, 500)
 
@@ -79,9 +83,14 @@ export default [
 
     $scope.disp = {
       results: null,
+      type,
+      placeholder: type === 'pickup' ? 'Pick Up Address' : 'Drop Off Address',
+      isFiltering: true,
     }
 
-    $scope.data.defaultResults = defaultResults ? await Promise.all(defaultResults.map(result => {
+    $scope.data.defaultResults = defaultResults
+
+    Promise.all(defaultResults.map(result => {
       return OneMapPlaceService.getAllResults(result).then(results => {
         if (results) {
           let location = results.results[0]
@@ -89,7 +98,9 @@ export default [
           return location
         }
       })
-    })) : null
+    })).then(results => {
+      $scope.data.defaultResults = results
+    })
 
     // ------------------------------------------------------------------------
     // Watchers
@@ -116,6 +127,10 @@ export default [
         callback($scope.data.selectedLocation)
         $ionicHistory.goBack()
       }
+    }
+
+    $scope.clearInput = () => {
+      $scope.data.searchInput = null
     }
   },
 ]

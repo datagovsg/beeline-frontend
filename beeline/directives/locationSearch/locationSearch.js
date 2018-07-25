@@ -1,6 +1,6 @@
 angular.module('beeline').directive('locationSearch', [
-  '$state',
-  function ($state) {
+  '$state', '$timeout',
+  function ($state, $timeout) {
     return {
       scope: {
         queryLocation: '=',
@@ -17,8 +17,9 @@ angular.module('beeline').directive('locationSearch', [
             <div class="input-text" ng-if="!queryLocation">{{ph}}</div>
             <div class="input-text" ng-if="queryLocation">{{queryLocation.ADDRESS}}</div>
           </div>
+          <ion-spinner ng-show="isFiltering"></ion-spinner>
           <i
-            ng-show="queryLocation"
+            ng-show="!isFiltering && queryLocation"
             class="ion-android-close"
             on-tap="clearInput()"
           ></i>
@@ -27,6 +28,10 @@ angular.module('beeline').directive('locationSearch', [
       link (scope, elem, attr) {
         scope.clearInput = () => {
           scope.queryLocation = null
+          scope.isFiltering = true
+          $timeout(() => {
+            scope.isFiltering = false
+          }, 1000)
         }
 
         scope.openSearch = () => {

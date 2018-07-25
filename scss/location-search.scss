@@ -2,10 +2,11 @@
   display: flex;
   justify-content: space-between;
   overflow: hidden;
+  border: none;
 
   &.item {
-    padding-top: $padding-base-vertical;
-    padding-bottom: $padding-base-vertical;
+    padding-top: $padding-x-small-vertical;
+    padding-bottom: $padding-x-small-vertical;
   }
 
   &.item-icon-left {

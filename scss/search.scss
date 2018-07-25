@@ -5,12 +5,13 @@ $search-bar-radius: 6px;
     margin: $padding-large-vertical $padding-base-horizontal;
   }
 
+  .location-search {
+    border-radius: $search-bar-radius;
+  }
+
   input {
     border: none;
-    border-radius: $search-bar-radius;
     width: 100%;
-    padding: $padding-base-vertical $padding-base-horizontal;
-    line-height: $font-size-base * 2;
   }
 
   .shadow {
@@ -22,7 +23,7 @@ $search-bar-radius: 6px;
 
   .search-results {
     // hack to get the nested ion-content to not block the search bar
-    margin-top: 60px; 
+    margin-top: 58px; 
 
     .location-result {
       text-transform: capitalize;

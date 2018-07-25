@@ -5,17 +5,17 @@
   <ion-content scroll="false">
     <div class="search-container" ng-if="!disp.yourRoutes">
 
-      <div class="search-inputs shadow">
+      <div class="search-inputs">
         <!-- Search Filter  -->
         <search-input ng-show="!disp.searchFromTo" query-text="data.queryText" is-filtering="data.isFiltering" ph="Search"
           ng-if="!disp.yourRoutes"></search-input>
 
         <div ng-show="disp.searchFromTo" class="from-to-bars">
-          <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar" input-id="'pickup-input'"></location-search>
-          <button class="primary-button button button-clear switch-button" ng-click="swapFromTo()"> 
+          <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar" input-id="'pickup-input'" is-filtering="data.isFiltering"></location-search>
+          <button class="primary-button button button-clear switch-button activated" ng-click="swapFromTo()"> 
             <i class="icon ion-arrow-swap"></i>
           </button>
-          <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar" input-id="'dropoff-input'"></location-search> 
+          <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar" input-id="'dropoff-input'" is-filtering="data.isFiltering"></location-search> 
         </div>
       </div>
 
