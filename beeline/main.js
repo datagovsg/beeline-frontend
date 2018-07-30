@@ -217,10 +217,6 @@ app
     require('./controllers/LiteDetailController.js').default
   )
   .controller(
-    'SearchController',
-    require('./controllers/SearchController.js').default
-  )
-  .controller(
     'CrowdstartStopsController',
     require('./controllers/CrowdstartStopsController.js').default
   )
