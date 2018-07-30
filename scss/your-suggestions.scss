@@ -123,14 +123,16 @@ suggestion-item {
 
 #tabs ui-gmap-google-map {
   height: 100%;
-  top: 0px;
 }
 
-ion-content {
+.create-new-suggestion {
+  background-color: transparent !important;
+  pointer-events: none !important;
+}
+
+.create-new-suggestion ion-content {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
-  top: auto;
   background-color: transparent!important;
 
   @include desktop {
@@ -144,8 +146,7 @@ ion-content {
       padding-top: 60px;
     }
 
-    .booking-view {
-      padding-top: 40px;
+    .create-view {
       background-color: $stable;
     }
   }
@@ -158,24 +159,6 @@ ion-content {
     -webkit-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
     -moz-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
     box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
-
-    .stop-selector {
-      padding-top: $padding-large-vertical;
-      padding-bottom: $padding-large-vertical;
-      font-size: $font-size-small;
-
-      .arrow-icon {
-        font-size: $font-size-small * 2;
-      }
-    }
-
-    .board-stop-selector {
-      border-radius: 6px 6px 0px 0px;
-    }
-
-    .alight-stop-selector {
-      border-radius: 0px 0px 6px 6px;
-    }
   }
 
   .stops-selector:nth-child(1) {
@@ -188,28 +171,50 @@ ion-content {
     top: 60px;
   }
 
-  .booking-info {
+  .from-to-bars {
     display: flex;
-    flex: 1;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    // ion-content background-color is transparent
-    background-color: $stable;
-    padding-top: 50px;
 
-    span {
-      margin-top: $padding-base-vertical;
-      margin-bottom: $padding-large-vertical;
+    .location-search {
+      padding-right: 47px;
     }
 
-    .book-button {
-      margin-top: 0px;
-      margin-bottom: 0px;
+    .pickup-location-bar {
+      .location-search {
+        border-radius: $search-bar-radius $search-bar-radius 0px 0px;
+      }
     }
-
-    .advance-button {
-      min-height: 40px;
+  
+    .dropoff-location-bar {
+      margin-top: -32px;
+      .location-search {
+        border-radius: 0px 0px $search-bar-radius $search-bar-radius;
+      }
+    }
+  
+    .switch-button {
+      padding: 0px;
+      width: 0px;
+      margin-top: $search-height * -0.5;
+      margin-right: -2px;
+      color: $royal;
+      transform: rotate(90deg);
+      background: white;
+  
+      &.activated {
+        opacity: 1;
+      }
+  
+      &:active {
+        border-bottom: none;
+        box-shadow: none;
+      }
+  
+      .ion-arrow-swap {
+        :before {
+          line-height: 20px;
+        }
+      }
     }
   }
 
@@ -229,16 +234,33 @@ ion-content {
 }
 
 .week-checkbox {
-  .item {
-    border: none;
+  display: flex;
+  background: $light;
+
+  div {
+    flex-basis: 100%;
   }
 
-  ion-item, ion-label {
+  ion-label {
     padding: 0;
+    width: 100%;
+    text-align: center;
   }
 
-  .list {
+  label {
+    padding: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    border: none;
+    align-items: center;
+    border-radius: 6px;
+
+    &.item-checkbox .checkbox {
+      position: relative;
+      margin: 0;
+      top: auto;
+      left: auto;
+      right: auto;
+    }
   }
 }

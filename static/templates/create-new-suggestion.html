@@ -1,70 +1,40 @@
-<ion-view class="your-suggestions" view-title="Suggest a route">
-  <!-- <ion-nav-buttons side="left">
-    <button class="button button-clear back-button"
-            ui-sref="tabs.lite-detail({
-              label: data.label,
-            })"
-            class="item-icon-right">
-       <i class="icon ion-ios-arrow-back"></i>
-    </button>
-  </ion-nav-buttons> -->
+<ion-view class="create-new-suggestion page-with-map" view-title="Suggest a route">
+  
   <ion-content scroll="false">
 
-    <ui-gmap-google-map
-      center="map.center"
-      pan="true"
-      zoom="map.zoom"
-      bounds="map.bounds"
-      dragging="map.dragging"
-      control="map.control"
-      options="map.options"
-      data-tap-disabled="true"
-    >
-        <!-- <my-location></my-location>
-        <ui-view name="map-area"></ui-view> -->
-    </ui-gmap-google-map>
+    <div class="create-view">
+      <div class="from-to-bars stops-selector">
+        <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar"></location-search>
+        <button class="primary-button button button-clear switch-button activated" ng-click="swapFromTo()"> 
+          <i class="icon ion-arrow-swap"></i>
+        </button>
+        <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar"></location-search> 
+      </div>
 
-    <div class="padding-ticket-subheader"></div>
-    <div class="padding-routepass-subheader"></div>
-    <div class="booking-view">
-      <form name="stopsForm">
-        <div class="stops-selector">
-          <div class="item item-icon-left item-icon-right board-stop-selector stop-selector">
-            <i class="icon pickup-stop"></i>
-            <span class="placeholder">Pick Up - Enter Postal Code</span>
-            <!-- <span ng-required="true"></span> -->
-            <!-- <i class="icon ion-ios-arrow-right arrow-icon"></i> -->
+      <div class="stops-selector">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Arrive at
           </div>
-          <div class="item item-icon-left item-icon-right alight-stop-selector stop-selector">
-            <i class="icon dropoff-stop"></i>
-            <span class="placeholder">Drop Up - Enter Postal Code</span>
-            <!-- <i class="icon ion-ios-arrow-right arrow-icon"></i> -->
-          </div>
-        </div>
+          <select ng-model="data.selectedTimeIndex">
+            <option value="" disabled selected hidden>Time at destination</option>
+            <option ng-repeat="t in disp.times" value={{$index}}>{{ t.format('h:mm a') }}</option>
+          </select>
+        </label>
+      </div>
 
-        <div class="stops-selector">
-          <div class="item item-icon-right alight-stop-selector stop-selector">
-            <span class="placeholder">Arrive at</span>
-            <!-- <i class="icon ion-ios-arrow-right arrow-icon"></i> -->
-          </div>
+      <div class="stops-selector week-checkbox">
+        <div ng-repeat="day in data.days">
+          <ion-label>{{day.text}}</ion-label>
+          <ion-checkbox ng-model="day.enabled"></ion-checkbox>
         </div>
+      </div>
 
-        <div class="stops-selector">
-          <div class="item alight-stop-selector stop-selector">
-            <ion-list class="week-checkbox">
-              <ion-item ng-repeat="day in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] track by $index">
-                <ion-label>{{day}}</ion-label>
-                <ion-checkbox [(ngModel)]="{{day}}"></ion-checkbox>
-              </ion-item>
-            </ion-list>
-          </div>
-        </div>
-      </form>
+      <button class="primary-button submit-btn" ng-click="submitSuggestion()" ng-disabled="!data.pickUpLocation || !data.dropOffLocation || !data.selectedTimeIndex || data.daysInvalid">
+          <!-- <button class="primary-button submit-btn" ng-click="submitSuggestion()"> -->
+        Submit
+      </button>
     </div>
-
-    <button class="primary-button submit-btn" ui-sref="tabs.your-suggestions-detail" ng-disabled="stopsForm.$invalid">
-      Submit
-    </button>
 
   </ion-content>
 </ion-view>

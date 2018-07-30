@@ -83,6 +83,7 @@ require('./services/data/LiteRouteSubscriptionService')
 require('./services/data/RoutesService')
 require('./services/data/TicketService')
 require('./services/data/TripService')
+require('./services/data/SuggestionService')
 
 // UI Services
 require('./services/legalese')
@@ -390,11 +391,13 @@ app
     'CrowdstartService',
     'LiteRoutesService',
     'TicketService',
+    'SuggestionService',
     function (
       RoutesService,
       CrowdstartService,
       LiteRoutesService,
-      TicketService
+      TicketService,
+      SuggestionService
     ) {
       // Pre-fetch the routes
       RoutesService.fetchRoutes()
@@ -403,6 +406,7 @@ app
       CrowdstartService.fetchBids()
       LiteRoutesService.fetchLiteRoutes()
       TicketService.fetchTickets()
+      SuggestionService.fetchSuggestions()
     },
   ])
   .run([
