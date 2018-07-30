@@ -1,3 +1,10 @@
+$search-bar-radius: 6px;
+$search-height: 42px;
+
+#tabs ui-gmap-google-map {
+  height: 100%;
+}
+
 suggestion-item {
   display: flex;
 
@@ -106,23 +113,28 @@ suggestion-item {
   }
 }
 
-.header {
-  font-size: 20px;
-  line-height: 45px;
-  font-weight: $font-weight-medium;
-  color: $royal;
-  text-transform: uppercase;
+.your-suggestions {
+  .create-suggestion-btn {
+    position: sticky;
+    bottom: 40px;
+  }
 }
 
-.delete {
-  color: $royal;
-  margin: 25px 0;
-  text-align: center;
-  text-decoration: underline;
-}
-
-#tabs ui-gmap-google-map {
-  height: 100%;
+.your-suggestions-detail {
+  .header {
+    font-size: 20px;
+    line-height: 45px;
+    font-weight: $font-weight-medium;
+    color: $royal;
+    text-transform: uppercase;
+  }
+  
+  .delete {
+    color: $royal;
+    margin: 25px 0;
+    text-align: center;
+    text-decoration: underline;
+  }
 }
 
 .create-new-suggestion {
@@ -218,6 +230,38 @@ suggestion-item {
     }
   }
 
+  .week-checkbox {
+    display: flex;
+    background: $light;
+  
+    div {
+      flex-basis: 100%;
+    }
+  
+    ion-label {
+      padding: 0;
+      width: 100%;
+      text-align: center;
+    }
+  
+    label {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      border: none;
+      align-items: center;
+      border-radius: 6px;
+  
+      &.item-checkbox .checkbox {
+        position: relative;
+        margin: 0;
+        top: auto;
+        left: auto;
+        right: auto;
+      }
+    }
+  }
+
   @keyframes slide-in-from-bottom {
     0% {
       transform: translateY(900px);
@@ -232,6 +276,7 @@ suggestion-item {
     bottom: 25px;
   }
 }
+<<<<<<< HEAD
 
 .week-checkbox {
   display: flex;
@@ -264,3 +309,5 @@ suggestion-item {
     }
   }
 }
+=======
+>>>>>>> 86b9ab5b... refactor suggestion pages scss

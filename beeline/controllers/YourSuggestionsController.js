@@ -5,6 +5,7 @@ export default [
   '$scope',
   '$ionicPopup',
   'loadingSpinner',
+  'MapService',
   'SuggestionService',
   'SharedVariableService',
   function (
@@ -12,6 +13,7 @@ export default [
     $scope,
     $ionicPopup,
     loadingSpinner,
+    MapService,
     SuggestionService,
     SharedVariableService
   ) {
@@ -116,19 +118,21 @@ export default [
       $scope.data.daysInvalid = invalid
     }, true)
 
-    $scope.$watch('data.pickUpLocation', loc => {
-      if (!loc) return
-      let stop = {
-        stop: {
-          coordinates: {
-            type: 'Point',
-            coordinates: [loc.LATITUDE, loc.LONGITUDE],
-          },
-        },
-      }
-      SharedVariableService.setBoardStop(stop)
-      // $scope.mapObject.boardStop.stop = stop
-    })
+    // $scope.$watch('data.pickUpLocation', loc => {
+    //   if (loc) {
+    //     console.log(loc)
+    //     const stop = {
+    //       coordinates: {
+    //         type: 'Point',
+    //         coordinates: [
+    //           parseFloat(loc.LATITUDE),
+    //           parseFloat(loc.LONGITUDE)
+    //         ]
+    //       }
+    //     }
+    //     MapService.emit('board-stop-selected', { stop: stop })
+    //   }
+    // })
 
     $scope.$watch(() => SuggestionService.getSuggestions(), suggestions => {
       $scope.data.suggestions = suggestions

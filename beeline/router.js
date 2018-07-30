@@ -188,6 +188,10 @@ export default [
             templateUrl: 'templates/create-new-suggestion.html',
             controller: 'YourSuggestionsController',
           },
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'MapViewController',
+          },
         },
       })
 
