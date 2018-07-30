@@ -776,7 +776,7 @@ export default [
     }
 
     $scope.swapFromTo = function () {
-      [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [_.clone($scope.data.dropOffLocation), _.clone($scope.data.pickUpLocation)]
+      [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [$scope.data.dropOffLocation, $scope.data.pickUpLocation]
 
       $scope.data.isFiltering = true
       $timeout(() => {

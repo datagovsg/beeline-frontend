@@ -7,7 +7,7 @@
   </div>
   <!-- hide route item if search bar is not empty -->
   <ion-item
-    ng-repeat="route in data.routesYouMayLike | limitTo:20 track by route.id"
+    ng-repeat="route in data.routesYouMayLike | limitTo:25 track by route.id"
     ng-if="!data.placeQuery && !data.pickUpLocation && !data.dropOffLocation && data.routesYouMayLike.length > 0"
     class="item-text-wrap"
   >
@@ -32,12 +32,12 @@
   <!-- START: Available Routes Section -->
   <div
     class="item item-divider"
-    ng-if="disp.liteRoutes.length > 0 || disp.routes.length > 0"
+    ng-if="disp.routes.length > 0"
   >
     Available Routes
   </div>
   <ion-item
-    ng-repeat="route in disp.routes | limitTo:20 track by route.id"
+    ng-repeat="route in disp.routes | limitTo:30 track by route.id"
     class="item-text-wrap"
   >
     <regular-route
@@ -56,7 +56,7 @@
     Crowdstart Routes
   </div>
   <ion-item
-    ng-repeat="route in disp.crowdstartRoutes | limitTo:30 track by $index"
+    ng-repeat="route in disp.crowdstartRoutes | limitTo:5 track by $index"
     class="item-text-wrap"
   >
     <crowdstart-route
@@ -74,7 +74,7 @@
     Tracking Routes
   </div>
   <ion-item
-    ng-repeat="route in disp.liteRoutes | limitTo:10 track by route.label"
+    ng-repeat="route in disp.liteRoutes | limitTo:5 track by route.label"
     class="item-text-wrap"
   >
     <lite-route

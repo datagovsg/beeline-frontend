@@ -85,7 +85,7 @@ export default [
       results: null,
       type,
       placeholder: type === 'pickup' ? 'Pick Up Address' : 'Drop Off Address',
-      isFiltering: true,
+      isFiltering: !location,
     }
 
     $scope.data.defaultResults = defaultResults
@@ -99,6 +99,7 @@ export default [
         }
       })
     })).then(results => {
+      $scope.disp.isFiltering = false
       $scope.data.defaultResults = results
     })
 

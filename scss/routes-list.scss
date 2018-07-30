@@ -1,4 +1,4 @@
-$search-bar-radius: 6px;
+$search-bar-radius: 8px;
 $search-background-color: #e8e8e8;
 
 .routes-view {
@@ -61,12 +61,14 @@ $search-background-color: #e8e8e8;
       .pickup-location-bar {
         .location-search {
           border-radius: $search-bar-radius $search-bar-radius 0px 0px;
+          border-bottom: 1px solid $search-background-color;
         }
       }
 
       .dropoff-location-bar {
         margin-top: -32px;
         .location-search {
+          margin-top: -2px;
           border-radius: 0px 0px $search-bar-radius $search-bar-radius;
         }
       }
