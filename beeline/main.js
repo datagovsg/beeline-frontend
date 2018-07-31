@@ -31,14 +31,17 @@ let app = angular.module('beeline', [
   'multipleDatePicker',
   'ngclipboard',
   'common',
+  'angucomplete-alt',
 ])
 
+require('angucomplete-alt')
 require('angular-simple-logger')
 require('angular-google-maps')
 require('clipboard')
 require('ngclipboard')
 
 // Directives
+require('./directives/autofocus')
 require('./directives/beelineBindHtml')
 require('./directives/companyTnc/companyTnc')
 require('./directives/countdown')
@@ -46,6 +49,7 @@ require('./directives/crowdstartInfo/crowdstartInfo')
 require('./directives/dailyTripsBroker')
 require('./directives/extA')
 require('./directives/liteRouteStop/liteRouteStop')
+require('./directives/locationSearch/locationSearch')
 require('./directives/mapBusIcon')
 require('./directives/mapPolyRoute')
 require('./directives/moreInfo/moreInfo')
@@ -56,6 +60,7 @@ require('./directives/progressBar/progressBar')
 require('./directives/routeItem/animatedRoute')
 require('./directives/routeItem/crowdstartRoute')
 require('./directives/routeItem/liteRoute')
+require('./directives/locationSelectModal/locationSelectModal')
 require('./directives/routeItem/regularRoute')
 require('./directives/routeItem/routeItem')
 require('./directives/routePassExpiry/routePassExpiryModal')

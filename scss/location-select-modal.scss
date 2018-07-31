@@ -1,0 +1,66 @@
+$search-bar-radius: 8px;
+$search-background-color: #e8e8e8;
+
+.search-page {
+  .search-input-bar {
+    padding: 5px;
+    background: $search-background-color;
+  }
+
+  .location-search {
+    border-radius: $search-bar-radius;
+  }
+
+  input {
+    border: none;
+    width: 100%;
+  }
+
+  .shadow {
+    border-radius: $search-bar-radius;
+    -webkit-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.1);
+  }
+
+  .search-results {
+    // hack to get the nested ion-content to not block the search bar
+    margin-top: 58px; 
+
+    .location-result {
+      text-transform: capitalize;
+    }
+  }
+
+  ion-spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .ion-android-close {
+    display: flex;
+    font-size: 20px;
+    
+    &::before {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
+
+  // Styles for inset modal
+  &.modal {
+    border-radius: 0px;
+
+    $modal-inset-margin-horizontal: 0%;
+    $modal-inset-margin-vertical: 0%;
+
+    @media (max-width: 1023px) {
+      width: (100% - (2 * $modal-inset-margin-horizontal));
+      left: $modal-inset-margin-horizontal;
+      height: (100% - (2 * $modal-inset-margin-vertical));
+      min-height: (100% - (2 * $modal-inset-margin-vertical));
+      top: $modal-inset-margin-vertical;
+    }
+  }
+}

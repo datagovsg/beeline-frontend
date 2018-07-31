@@ -1,0 +1,49 @@
+.location-search {
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  border: none;
+
+  &.item {
+    padding-top: $padding-x-small-vertical;
+    padding-bottom: $padding-x-small-vertical;
+  }
+
+  &.item-icon-left {
+    padding-left: 40px;
+  }
+
+  .input-box {
+    width: calc(100% - 35px);
+    padding: $padding-base-vertical $padding-base-horizontal;
+
+    .input-text {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      text-transform: capitalize;
+
+      &.placeholder {
+        color: $hint-color;
+      }
+    }
+  }
+
+  .ion-android-close {
+    display: flex;
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    // margin-right: $padding-small-horizontal;
+    &::before {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
+
+  ion-spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}

@@ -1,24 +1,35 @@
 
 .search-div {
-  $search-height: $bar-height;
-  background: lighten($light-grey, 30%);
-  .search {
-    height: $search-height;
-    border: 5px solid lighten($light-grey, 30%);
-    border-radius: 12px;
-    input {
-      // HACK: re-left aligning overriding our previous ionic override
-      text-align: left !important;
-      padding-left: 0;
-    }
+  display: flex;
+  justify-content: space-between;
+
+  &.item {
+    padding-top: $padding-base-vertical;
+    padding-bottom: $padding-base-vertical;
+    z-index: unset;
+    overflow: unset;
+  }
+
+  &.item-icon-left {
+    padding-left: 40px;
     .icon {
-      // Scaled and moved to taste
-      font-size: $font-size-base * 2;
-      padding-right: 1.5 * $content-padding;
+      font-size: $font-size-base * 1.5;
+    }
+    .ion-android-close {
+      margin-right: $padding-x-small-horizontal;
+      display: flex;
+      font-size: 20px;
+      &::before {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
     }
   }
 
   ion-spinner {
     margin-right: $padding-x-small-horizontal;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }

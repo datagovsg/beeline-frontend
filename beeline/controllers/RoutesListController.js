@@ -93,6 +93,8 @@ export default [
       isFiltering: null,
       routesYouMayLike: null,
       routesAvailable: false,
+      pickUpLocation: null,
+      dropOffLocation: null,
     }
 
     $scope.disp = {
@@ -101,7 +103,13 @@ export default [
         $ionicHistory.currentStateName() === 'tabs.yourRoutes'
           ? 'Your Routes'
           : 'Search Routes',
+      searchFromTo: true,
+      routes: null,
+      liteRoutes: null,
+      crowdstartRoutes: null,
+      routesWithRidesRemaining: null,
     }
+
     // ------------------------------------------------------------------------
     // Ionic events
     // ------------------------------------------------------------------------
@@ -131,29 +139,21 @@ export default [
       let place = { queryText: $scope.data.queryText }
       SearchEventService.emit('search-item', $scope.data.queryText)
 
-      // Reset routes, crowdstartRoutes and liteRoutes here because they are
-      // used to determine whether we do a place query (see watchGroup with
-      // all 3)
-      // If we don't reset, we could end up with the case where the criteria
-      // is applied to the wrong version of them
-      // E.g.
-      // 1. User makes one search. App completely finishes all filtering.
-      // 2. User makes another search.
-      // 3. First time we enter watchgroup for routes + crowdstartRoutes, only
-      //    only one of them has changed. WLOG assume it is routes.
-      // 4. Then routes is filtered from the new search, while crowdstartRoutes
-      //    is filtered from the old search.
-      // 5. Then the check (routes.length + crowdstartRoutes.length +
-      //    liteRoutes.length> 0) is using the wrong version of crowdstartRoutes
-      //    and could result in us doing unnecessary place queries.
-      //
-      // Resetting to null also has the benefit that the check whether we do
-      // place queries is only done once.
-      $scope.data.routes = null
-      $scope.data.crowdstartRoutes = null
-      $scope.data.liteRoutes = null
       $scope.data.placeQuery = place
       $scope.$digest()
+
+      OneMapPlaceService.handleQuery(
+        $scope.data.queryText
+      ).then(place => {
+        if (!place) return
+
+        $scope.data.placeQuery = place
+        $scope.$digest()
+      }).then(async () => {
+        await sleep(500)
+        $scope.data.isFiltering = false
+        $scope.$digest()
+      })
     }
 
     $scope.$watch(
@@ -205,34 +205,23 @@ export default [
       [
         () => RoutesService.getRoutesWithRidesRemaining(),
         () => RoutesService.getPrivateRoutesWithRidesRemaining(),
-        'data.placeQuery',
         'data.recentRoutesById',
       ],
-      ([routes, privateRoutes, placeQuery, recentRoutesById]) => {
+      ([routes, privateRoutes, recentRoutesById]) => {
         // Input validation
         if (!routes || !privateRoutes) return
 
         // Merge public and private routes
         routes = _.concat(routes, privateRoutes)
 
-        // Filtering
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByPlaceAndText(
-            routes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByText(
-            routes,
-            placeQuery.queryText
-          )
-        }
         // Publish
         const recentRouteIds = Object.keys(recentRoutesById || {})
         $scope.data.routesWithRidesRemaining = routes.filter(
           route => !recentRouteIds.map(Number).includes(route.id)
         )
+
+        // Publish shallow copy to disp.routesWithRidesRemaining
+        $scope.disp.routesWithRidesRemaining = _.clone($scope.data.routesWithRidesRemaining)
       }
     )
 
@@ -334,9 +323,8 @@ export default [
       [
         () => LiteRoutesService.getLiteRoutes(),
         () => LiteRouteSubscriptionService.getSubscriptionSummary(),
-        'data.placeQuery',
       ],
-      ([liteRoutes, subscribed, placeQuery]) => {
+      ([liteRoutes, subscribed]) => {
         // Input validation
         if (!liteRoutes || !subscribed) return
         liteRoutes = Object.values(liteRoutes)
@@ -352,19 +340,6 @@ export default [
           }
         )
 
-        // Filtering
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          liteRoutes = SearchService.filterRoutesByPlaceAndText(
-            liteRoutes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          liteRoutes = SearchService.filterRoutesByText(
-            liteRoutes,
-            placeQuery.queryText
-          )
-        }
         // Add the subscription information
         _.forEach(liteRoutes, liteRoute => {
           liteRoute.isSubscribed = Boolean(subscribed.includes(liteRoute.label))
@@ -373,30 +348,22 @@ export default [
         $scope.data.liteRoutes = _.sortBy(liteRoutes, route => {
           return parseInt(route.label.slice(1))
         })
+
+        // Publish shallow copy to disp.liteRoutes
+        $scope.disp.liteRoutes = _.clone($scope.data.liteRoutes)
       }
     )
 
     // Normal routes
     // Sort them by start time
     $scope.$watchGroup(
-      [() => RoutesService.getRoutesWithRoutePass(), 'data.placeQuery'],
-      ([allRoutes, placeQuery]) => {
+      [
+        () => RoutesService.getRoutesWithRoutePass(),
+      ],
+      ([allRoutes]) => {
         // Input validation
         if (!allRoutes) return
 
-        // Filter routes
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          allRoutes = SearchService.filterRoutesByPlaceAndText(
-            allRoutes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          allRoutes = SearchService.filterRoutesByText(
-            allRoutes,
-            placeQuery.queryText
-          )
-        }
         // Sort the routes by the time of day
         $scope.data.routes = _.sortBy(allRoutes, 'label', route => {
           const firstTripStop = _.get(route, 'trips[0].tripStops[0]')
@@ -404,6 +371,9 @@ export default [
           midnightOfTrip.setHours(0, 0, 0, 0)
           return firstTripStop.time.getTime() - midnightOfTrip.getTime()
         })
+
+        // publish shallow copy to disp.routes
+        $scope.disp.routes = _.clone($scope.data.routes)
       }
     )
 
@@ -412,9 +382,8 @@ export default [
       [
         () => CrowdstartService.getCrowdstart(),
         () => CrowdstartService.getBids(),
-        'data.placeQuery',
       ],
-      ([routes, bids, placeQuery]) => {
+      ([routes, bids]) => {
         if (!routes || !bids) return
 
         // Filter out the expired routes
@@ -429,64 +398,11 @@ export default [
           return !biddedRouteIds.includes(route.id)
         })
 
-        // Filter the routes by search query
-        if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByPlaceAndText(
-            routes,
-            placeQuery,
-            placeQuery.queryText
-          )
-        } else if (placeQuery && placeQuery.queryText) {
-          routes = SearchService.filterRoutesByText(
-            routes,
-            placeQuery.queryText
-          )
-        }
         // Map to scope once done
         $scope.data.crowdstartRoutes = routes
-      }
-    )
 
-    // Deciding whether to do a place query
-    $scope.$watchGroup(
-      ['data.routes', 'data.crowdstartRoutes', 'data.liteRoutes'],
-      ([routes, crowdstartRoutes, liteRoutes]) => {
-        const handlePlaceQuery = async function handlePlaceQuery () {
-          // Important comments in the autoComplete function
-          if (!routes || !crowdstartRoutes || !liteRoutes) return
-          // Criteria for making a place query
-          if (routes.length + crowdstartRoutes.length + liteRoutes.length > 0) {
-            return
-          }
-
-          let placeQuery = $scope.data.placeQuery
-          if (!placeQuery) return
-
-          // If placeQuery.geometry exists then we've already made a place query
-          if (placeQuery.geometry) return
-
-          let place = await OneMapPlaceService.handleQuery(
-            $scope.data.queryText
-          )
-
-          // If place is null, setting placeQuery to place will cause the whole
-          // list to be displayed
-          if (!place) return
-
-          $scope.data.placeQuery = place
-          $scope.$digest()
-        }
-
-        const stopFilteringAfterDelay = async function stopFilteringAfterDelay () {
-          await sleep(500)
-          $scope.data.isFiltering = false
-          $scope.$digest()
-        }
-
-        handlePlaceQuery().then(
-          stopFilteringAfterDelay,
-          stopFilteringAfterDelay
-        )
+        // Publish shallow copy to disp.crowdstartRoutes
+        $scope.disp.crowdstartRoutes = _.clone(routes)
       }
     )
 
@@ -637,6 +553,88 @@ export default [
       }
     )
 
+    // Reset disp.xxx when search terms have changed
+    $scope.$watchGroup(
+      [
+        'data.placeQuery',
+        'data.pickUpLocation',
+        'data.dropOffLocation',
+        'disp.searchFromTo',
+      ],
+      (
+        [
+          placeQuery,
+          pickUpLocation,
+          dropOffLocation,
+          searchFromTo,
+        ]
+      ) => {
+        let routes = _.clone($scope.data.routes)
+        let liteRoutes = _.clone($scope.data.liteRoutes)
+        let crowdstartRoutes = _.clone($scope.data.crowdstartRoutes)
+        let routesWithRidesRemaining = _.clone($scope.data.routesWithRidesRemaining)
+
+        if (!routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
+
+        let [
+          fRoutes,
+          fLiteRoutes,
+          fCrowdstartRoutes,
+          fRoutesWithRidesRemaining,
+        ] = [
+          routes,
+          liteRoutes,
+          crowdstartRoutes,
+          routesWithRidesRemaining,
+        ].map(routes => {
+          if (!$scope.disp.searchFromTo) {
+            // text search
+            if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+              routes = SearchService.filterRoutesByPlaceAndText(
+                routes,
+                placeQuery,
+                placeQuery.queryText
+              )
+            } else if (placeQuery && placeQuery.queryText) {
+              routes = SearchService.filterRoutesByText(
+                routes,
+                placeQuery.queryText
+              )
+            }
+          } else {
+            // from-to search
+            let pickUpLocation = $scope.data.pickUpLocation
+            let dropOffLocation = $scope.data.dropOffLocation
+
+            if (!pickUpLocation && !dropOffLocation) return
+
+            let maxDistance = 750
+            let pickUpLngLat = pickUpLocation ? [
+              parseFloat(pickUpLocation.LONGITUDE),
+              parseFloat(pickUpLocation.LATITUDE),
+            ] : null
+            let dropOffLngLat = dropOffLocation ? [
+              parseFloat(dropOffLocation.LONGITUDE),
+              parseFloat(dropOffLocation.LATITUDE),
+            ] : null
+
+            if (pickUpLocation) {
+              routes = SearchService.filterRoutesByLngLatAndType(routes, pickUpLngLat, 'board', maxDistance)
+            }
+            if (dropOffLocation) {
+              routes = SearchService.filterRoutesByLngLatAndType(routes, dropOffLngLat, 'alight', maxDistance)
+            }
+          }
+          return routes
+        })
+
+        $scope.disp.routes = fRoutes
+        $scope.disp.liteRoutes = fLiteRoutes
+        $scope.disp.crowdstartRoutes = fCrowdstartRoutes
+        $scope.disp.routesWithRidesRemaining = fRoutesWithRidesRemaining
+      }
+    )
+
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -702,6 +700,21 @@ export default [
           querystring.stringify({ referrer: appName }),
         '_system'
       )
+    }
+
+    $scope.toggleSearch = function () {
+      $scope.disp.searchFromTo = !$scope.disp.searchFromTo
+    }
+
+    $scope.swapFromTo = function () {
+      $scope.disp.animate = !$scope.disp.animate;
+
+      [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [$scope.data.dropOffLocation, $scope.data.pickUpLocation]
+
+      $scope.data.isFiltering = true
+      $timeout(() => {
+        $scope.data.isFiltering = false
+      }, 1000)
     }
   },
 ]

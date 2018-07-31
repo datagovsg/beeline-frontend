@@ -18,6 +18,7 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/animated-route";
 @import "scss/crowdstart-info";
 @import "scss/lite-route-stop";
+@import "scss/location-search";
 @import "scss/price-calculator";
 @import "scss/progress-bar";
 @import "scss/route-item";
@@ -35,6 +36,7 @@ $ionicons-font-path: "../lib/ionic/fonts";
 @import "scss/crowdstart-summary";
 @import "scss/intro-slides";
 @import "scss/lite-detail";
+@import "scss/location-select-modal";
 @import "scss/purchase-route-pass";
 @import "scss/route-detail";
 @import "scss/route-stops";
@@ -45,3 +47,6 @@ $ionicons-font-path: "../lib/ionic/fonts";
 
 // Modal styles
 @import "scss/login";
+
+// External plugin styles 
+@import "scss/angucomplete-alt";
