@@ -74,6 +74,79 @@ export default [
       return route
     }
 
+    const filterBySearchTerms = function filterBySearchTerms (
+      [
+        placeQuery,
+        pickUpLocation,
+        dropOffLocation,
+        searchFromTo,
+      ]
+    ) {
+      let routes = _.clone($scope.data.routes)
+      let liteRoutes = _.clone($scope.data.liteRoutes)
+      let crowdstartRoutes = _.clone($scope.data.crowdstartRoutes)
+      let routesWithRidesRemaining = _.clone($scope.data.routesWithRidesRemaining)
+
+      if (!routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
+
+      let [
+        fRoutes,
+        fLiteRoutes,
+        fCrowdstartRoutes,
+        fRoutesWithRidesRemaining,
+      ] = [
+        routes,
+        liteRoutes,
+        crowdstartRoutes,
+        routesWithRidesRemaining,
+      ].map(routes => {
+        if (!$scope.disp.searchFromTo) {
+          // text search
+          if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
+            routes = SearchService.filterRoutesByPlaceAndText(
+              routes,
+              placeQuery,
+              placeQuery.queryText
+            )
+          } else if (placeQuery && placeQuery.queryText) {
+            routes = SearchService.filterRoutesByText(
+              routes,
+              placeQuery.queryText
+            )
+          }
+        } else {
+          // from-to search
+          let pickUpLocation = $scope.data.pickUpLocation
+          let dropOffLocation = $scope.data.dropOffLocation
+
+          if (!pickUpLocation && !dropOffLocation) return routes
+
+          let maxDistance = 750
+          let pickUpLngLat = pickUpLocation ? [
+            parseFloat(pickUpLocation.LONGITUDE),
+            parseFloat(pickUpLocation.LATITUDE),
+          ] : null
+          let dropOffLngLat = dropOffLocation ? [
+            parseFloat(dropOffLocation.LONGITUDE),
+            parseFloat(dropOffLocation.LATITUDE),
+          ] : null
+
+          if (pickUpLocation) {
+            routes = SearchService.filterRoutesByLngLatAndType(routes, pickUpLngLat, 'board', maxDistance)
+          }
+          if (dropOffLocation) {
+            routes = SearchService.filterRoutesByLngLatAndType(routes, dropOffLngLat, 'alight', maxDistance)
+          }
+        }
+        return routes
+      })
+
+      $scope.disp.routes = fRoutes
+      $scope.disp.liteRoutes = fLiteRoutes
+      $scope.disp.crowdstartRoutes = fCrowdstartRoutes
+      $scope.disp.routesWithRidesRemaining = fRoutesWithRidesRemaining
+    }
+
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
@@ -561,77 +634,23 @@ export default [
         'data.dropOffLocation',
         'disp.searchFromTo',
       ],
-      (
-        [
-          placeQuery,
-          pickUpLocation,
-          dropOffLocation,
-          searchFromTo,
-        ]
-      ) => {
-        let routes = _.clone($scope.data.routes)
-        let liteRoutes = _.clone($scope.data.liteRoutes)
-        let crowdstartRoutes = _.clone($scope.data.crowdstartRoutes)
-        let routesWithRidesRemaining = _.clone($scope.data.routesWithRidesRemaining)
+      filterBySearchTerms
+    )
 
-        if (!routes || !liteRoutes || !crowdstartRoutes || !routesWithRidesRemaining) return
-
-        let [
-          fRoutes,
-          fLiteRoutes,
-          fCrowdstartRoutes,
-          fRoutesWithRidesRemaining,
-        ] = [
-          routes,
-          liteRoutes,
-          crowdstartRoutes,
-          routesWithRidesRemaining,
-        ].map(routes => {
-          if (!$scope.disp.searchFromTo) {
-            // text search
-            if (placeQuery && placeQuery.geometry && placeQuery.queryText) {
-              routes = SearchService.filterRoutesByPlaceAndText(
-                routes,
-                placeQuery,
-                placeQuery.queryText
-              )
-            } else if (placeQuery && placeQuery.queryText) {
-              routes = SearchService.filterRoutesByText(
-                routes,
-                placeQuery.queryText
-              )
-            }
-          } else {
-            // from-to search
-            let pickUpLocation = $scope.data.pickUpLocation
-            let dropOffLocation = $scope.data.dropOffLocation
-
-            if (!pickUpLocation && !dropOffLocation) return
-
-            let maxDistance = 750
-            let pickUpLngLat = pickUpLocation ? [
-              parseFloat(pickUpLocation.LONGITUDE),
-              parseFloat(pickUpLocation.LATITUDE),
-            ] : null
-            let dropOffLngLat = dropOffLocation ? [
-              parseFloat(dropOffLocation.LONGITUDE),
-              parseFloat(dropOffLocation.LATITUDE),
-            ] : null
-
-            if (pickUpLocation) {
-              routes = SearchService.filterRoutesByLngLatAndType(routes, pickUpLngLat, 'board', maxDistance)
-            }
-            if (dropOffLocation) {
-              routes = SearchService.filterRoutesByLngLatAndType(routes, dropOffLngLat, 'alight', maxDistance)
-            }
-          }
-          return routes
-        })
-
-        $scope.disp.routes = fRoutes
-        $scope.disp.liteRoutes = fLiteRoutes
-        $scope.disp.crowdstartRoutes = fCrowdstartRoutes
-        $scope.disp.routesWithRidesRemaining = fRoutesWithRidesRemaining
+    $scope.$watchGroup(
+      [
+        'data.routes',
+        'data.liteRoutes',
+        'data.crowdstartRoutes',
+        'data.routesWithRidesRemaining',
+      ],
+      () => {
+        filterBySearchTerms([
+          $scope.data.placeQuery,
+          $scope.data.pickUpLocation,
+          $scope.data.dropOffLocation,
+          $scope.disp.searchFromTo,
+        ])
       }
     )
 
