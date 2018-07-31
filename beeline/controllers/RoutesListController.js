@@ -776,6 +776,8 @@ export default [
     }
 
     $scope.swapFromTo = function () {
+      $scope.disp.animate = !$scope.disp.animate;
+
       [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [$scope.data.dropOffLocation, $scope.data.pickUpLocation]
 
       $scope.data.isFiltering = true

@@ -66,34 +66,37 @@ $search-background-color: #e8e8e8;
       }
 
       .dropoff-location-bar {
-        margin-top: -32px;
         .location-search {
-          margin-top: -2px;
+          margin-top: 1px;
           border-radius: 0px 0px $search-bar-radius $search-bar-radius;
         }
       }
 
-      .switch-button {
-        padding: 0px;
-        width: 0px;
-        margin-top: $search-height * -0.5;
-        margin-right: -3px;
-        color: $royal;
-        transform: rotate(90deg);
+      .switch-container {
+        position: absolute;
+        right: 4px;
+        top: 31px;
+        z-index: 100;
         background: white;
+        padding: 0px 10px;
 
-        &.activated {
-          opacity: 1;
-        }
+        .switch-button {
+          border: none;
+          overflow: hidden;
+          background: none;
+          padding: 0px;
+          transition: transform 0.2s linear;
 
-        &:active {
-          border-bottom: none;
-          box-shadow: none;
-        }
+          &.animate-rotate1 {
+            transform: rotate(270deg);
+          }
 
-        .ion-arrow-swap {
-          :before {
-            line-height: 20px;
+          &.animate-rotate2 {
+            transform: rotate(90deg);
+          }
+
+          .ion-arrow-swap {
+            font-size: 20px;
           }
         }
       }
