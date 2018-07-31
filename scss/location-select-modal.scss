@@ -49,18 +49,18 @@ $search-background-color: #e8e8e8;
   }
 
   // Styles for inset modal
-  &.modal {
-    border-radius: 0px;
+  // &.modal {
+  //   border-radius: 0px;
 
-    $modal-inset-margin-horizontal: 0%;
-    $modal-inset-margin-vertical: 0%;
+  //   $modal-inset-margin-horizontal: 0%;
+  //   $modal-inset-margin-vertical: 0%;
 
-    @media (max-width: 1023px) {
-      width: (100% - (2 * $modal-inset-margin-horizontal));
-      left: $modal-inset-margin-horizontal;
-      height: (100% - (2 * $modal-inset-margin-vertical));
-      min-height: (100% - (2 * $modal-inset-margin-vertical));
-      top: $modal-inset-margin-vertical;
-    }
-  }
+  //   @media (max-width: 1023px) {
+  //     width: (100% - (2 * $modal-inset-margin-horizontal));
+  //     left: $modal-inset-margin-horizontal;
+  //     height: (100% - (2 * $modal-inset-margin-vertical));
+  //     min-height: (100% - (2 * $modal-inset-margin-vertical));
+  //     top: $modal-inset-margin-vertical;
+  //   }
+  // }
 }
