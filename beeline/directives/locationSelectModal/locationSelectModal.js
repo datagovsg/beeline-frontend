@@ -26,15 +26,21 @@ angular.module('beeline').directive('locationSelectModal', [
           if (!scope.data.input) return
 
           scope.isFiltering = true
-          OneMapPlaceService.getAllResults(scope.data.input).then(results => {
-            scope.isFiltering = false
-            if (results) {
-              scope.results = results.results
-            } else {
-              scope.results = []
-            }
-            scope.$digest()
-          })
+          const currentPromise =
+                scope.data.latestPromise =
+                OneMapPlaceService
+                  .getAllResults(scope.data.input)
+                  .then(results => {
+                    if (currentPromise === scope.data.latestPromise) {
+                      scope.isFiltering = false
+                      if (results) {
+                        scope.results = results.results
+                      } else {
+                        scope.results = []
+                      }
+                      scope.$digest()
+                    }
+                  })
         }, 500)
 
         // ---------------------------------------------------------------------
@@ -44,6 +50,7 @@ angular.module('beeline').directive('locationSelectModal', [
 
         scope.data = {
           input: scope.location ? scope.location.ADDRESS : null,
+          latestPromise: null,
         }
 
         if (scope.type === 'pickup') {
@@ -101,6 +108,7 @@ angular.module('beeline').directive('locationSelectModal', [
             search()
             search.flush()
           } else if (!input || input.length < 3) {
+            scope.data.latestPromise = null
             scope.results = null
           } else {
             search()
