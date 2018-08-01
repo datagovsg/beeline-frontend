@@ -45,8 +45,8 @@ angular.module('beeline').directive('locationSearch', [
           modalScope.queryLocation = scope.queryLocation
           modalScope.type = scope.icon
           modalScope.location = scope.queryLocation
-          modalScope.callback = async location => {
-            scope.queryLocation = await location
+          modalScope.callback = location => {
+            scope.queryLocation = location
           }
           let modal = $ionicModal.fromTemplate(locationSelectModalTemplate, {
             scope: modalScope,
