@@ -29,6 +29,8 @@ $search-background-color: #e8e8e8;
 
     .location-result {
       text-transform: capitalize;
+      padding-top: $padding-large-vertical;
+      padding-bottom: $padding-large-vertical;
     }
   }
 
@@ -46,6 +48,10 @@ $search-background-color: #e8e8e8;
       margin-top: auto;
       margin-bottom: auto;
     }
+  }
+
+  input {
+    color: $dark;
   }
 
   // Styles for inset modal
