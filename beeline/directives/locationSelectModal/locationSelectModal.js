@@ -79,18 +79,11 @@ angular.module('beeline').directive('locationSelectModal', [
 
         scope.defaultResults = defaultResults
 
-        Promise.all(defaultResults.map(result => {
-          return OneMapPlaceService.getAllResults(result).then(results => {
-            if (results) {
-              let location = results.results[0]
-              location.ADDRESS = result
-              return location
-            }
+        Promise.all(defaultResults.map(OneMapPlaceService.getTopResult))
+          .then(results => {
+            scope.isFiltering = false
+            scope.defaultResults = results
           })
-        })).then(results => {
-          scope.isFiltering = false
-          scope.defaultResults = results
-        })
 
         scope.placeholder = scope.type === 'pickup' ? 'Pick Up Address' : 'Drop Off Address'
 
@@ -122,12 +115,16 @@ angular.module('beeline').directive('locationSelectModal', [
           scope.modal.hide()
         }
 
-        scope.select = async location => {
-          if (typeof location === 'string') return
+        scope.select = location => {
+          if (!location) return
 
-          scope.selectedLocation = location
+          if (typeof location === 'string') {
+            location = OneMapPlaceService.getTopResult(location)
+            return
+          }
+
           if (typeof scope.callback === 'function') {
-            scope.callback(scope.selectedLocation)
+            scope.callback(Promise.resolve(location))
           }
           scope.modal.hide()
         }

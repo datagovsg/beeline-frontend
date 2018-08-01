@@ -17,6 +17,22 @@ angular.module('common').factory('OneMapPlaceService', [
       return result
     }
 
+    const getAllResults = async function getAllResults (queryText) {
+      let result = await makeQuery(queryText)
+      if (!result || (result && result.found === 0)) {
+        return null
+      } else {
+        result.results = result.results.map(location => {
+          for (var prop in location) {
+            // Transform text to lower case. Use CSS to style appropriately
+            location[prop] = location[prop].toLowerCase()
+          }
+          return location
+        })
+        return result
+      }
+    }
+
     return {
       async handleQuery (queryText) {
         let result = await makeQuery(queryText)
@@ -36,20 +52,16 @@ angular.module('common').factory('OneMapPlaceService', [
         }
       },
 
-      async getAllResults (queryText) {
-        let result = await makeQuery(queryText)
-        if (!result || (result && result.found === 0)) {
-          return null
-        } else {
-          result.results = result.results.map(location => {
-            for (var prop in location) {
-              // Transform text to lower case. Use CSS to style appropriately
-              location[prop] = location[prop].toLowerCase()
-            }
-            return location
-          })
-          return result
+      getAllResults,
+
+      async getTopResult (queryText) {
+        let results = await getAllResults(queryText)
+        if (results) {
+          let location = results.results[0]
+          location.ADDRESS = queryText
+          return location
         }
+        return null
       },
     }
   },
