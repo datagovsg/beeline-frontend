@@ -16,7 +16,7 @@ suggestion-item {
     flex-direction: row;
 
     div {
-      background: $royal;
+      background: $light-grey;
       color: $light;
       font-size: $font-size-x-x-small;
       margin-right: 5px;
@@ -27,6 +27,10 @@ suggestion-item {
       vertical-align: middle;
       line-height: 15px;
       font-weight: $font-weight-bold;
+    }
+
+    div.enabled {
+      background: $royal;
     }
   }
   .stops {

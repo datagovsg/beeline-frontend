@@ -231,6 +231,10 @@ app
     'YourSuggestionsController',
     require('./controllers/YourSuggestionsController.js').default
   )
+  .controller(
+    'YourSuggestionsDetailController',
+    require('./controllers/YourSuggestionsDetailController.js').default
+  )
   .config(configureRoutes)
   .config([
     '$locationProvider',

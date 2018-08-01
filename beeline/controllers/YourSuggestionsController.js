@@ -3,17 +3,21 @@ import moment from 'moment'
 
 export default [
   '$scope',
+  '$state',
   '$ionicPopup',
   'loadingSpinner',
   'MapService',
+  'UserService',
   'SuggestionService',
   'SharedVariableService',
   function (
     // Angular Tools
     $scope,
+    $state,
     $ionicPopup,
     loadingSpinner,
     MapService,
+    UserService,
     SuggestionService,
     SharedVariableService
   ) {
@@ -53,7 +57,7 @@ export default [
       dropOffLocation: null,
       selectedTimeIndex: null,
       selectedTime: null,
-      daysInvalid: true,
+      daysInvalid: true
     }
 
     $scope.disp = {
@@ -135,12 +139,20 @@ export default [
     // })
 
     $scope.$watch(() => SuggestionService.getSuggestions(), suggestions => {
-      $scope.data.suggestions = suggestions
+      let user = UserService.getUser()
+      if (!user || !suggestions) return
+      let userSuggestions = suggestions.filter(sug => sug.userId === user.id)
+      $scope.data.suggestions = userSuggestions
     })
 
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
+    
+    $scope.refreshSuggestions = function () {
+      SuggestionService.fetchSuggestions()
+    }
+
     $scope.popupDeleteConfirmation = function () {
       $ionicPopup.confirm({
         title: 'Are you sure you want to delete the suggestions?',
@@ -153,7 +165,7 @@ export default [
 
     $scope.submitSuggestion = async function () {
       try {
-        await loadingSpinner(
+        const data = await loadingSpinner(
           SuggestionService.createSuggestion(
             getLatLng($scope.data.pickUpLocation),
             getLatLng($scope.data.dropOffLocation),
@@ -161,6 +173,10 @@ export default [
             getDaysOfWeek($scope.data.days)
           )
         )
+        $scope.refreshSuggestions()
+        $state.go('tabs.your-suggestions-detail', {
+          suggestionId: data.id
+        })
       } catch (err) {
         await $ionicPopup.alert({
           title: 'Error creating suggestion',
@@ -169,7 +185,7 @@ export default [
           ${err && err.data && err.data.message} Please try again later.</div>
           `,
         })
-        // $state.go('tabs.routes')
+        $state.go('tabs.your-suggestions')
       }
     }
   },

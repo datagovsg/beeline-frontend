@@ -2,6 +2,7 @@ angular.module('beeline').factory('SuggestionService', [
   'RequestService',
   function SuggestionService (RequestService) {
     let suggestions
+    let createdSuggestion
 
     return {
       createSuggestion: function (board, alight, time, daysOfWeek) {
@@ -10,7 +11,18 @@ angular.module('beeline').factory('SuggestionService', [
           url: '/suggestions',
           data: { board, alight, time, daysOfWeek },
         }).then(response => {
+          createdSuggestion = response.data
           return response.data
+        })
+      },
+
+      getSuggestion: function(suggestionId) {
+        let details = createdSuggestion 
+                        ? createdSuggestion 
+                        : suggestions.filter(sug => sug.id === suggestionId)[0]
+        createdSuggestion = null
+        return Promise.resolve({
+          details
         })
       },
 

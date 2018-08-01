@@ -1,13 +1,13 @@
   <div class="left">
     <div class="day-badge">
-      <div ng-repeat="day in ['M', 'T', 'W', 'T', 'F', 'S', 'S'] track by $index">
-        {{day}}
+      <div ng-repeat="(day, enabled) in suggestion.daysOfWeek" ng-class="{'enabled': enabled}">
+        {{day[0]}}
       </div>
     </div>
     <div class="stops">
       <div class="start">
         <span class="stop-icon"></span>
-        <span class="road">Jurong</span>
+        <span class="road">Jurong {{suggestion.id}}</span>
       </div>
       <div class="end">
         <span class="stop-icon"></span>
@@ -20,7 +20,7 @@
             <img class="mini-icon" src="img/icon_schedule.svg">
           </span>
           <span class="mini-info">
-            Arrive by 9.20am
+            Arrive by {{parseTime(suggestion.time)}}
           </span>
         </div>
     </div>

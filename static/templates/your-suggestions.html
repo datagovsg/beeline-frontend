@@ -6,8 +6,9 @@
 
     <div class="item item-divider">Your Suggestions</div>
 
-    <ion-item ng-repeat="item in data.suggestions" class="item-text-wrap">
-      <suggestion-item ui-sref="tabs.your-suggestions-detail"></suggestion-item>
+    <ion-item ng-repeat="suggestion in data.suggestions" class="item-text-wrap">
+      <suggestion-item suggestion="suggestion" ui-sref="tabs.your-suggestions-detail({ suggestionId: suggestion.id })">
+      </suggestion-item>
     </ion-item>
 
     <button class="primary-button create-suggestion-btn" ui-sref="tabs.create-new-suggestion">

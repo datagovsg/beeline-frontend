@@ -171,16 +171,6 @@ export default [
         },
       })
 
-      .state('tabs.your-suggestions-detail', {
-        url: '/your-suggestions/1',
-        views: {
-          menuContent: {
-            templateUrl: 'templates/your-suggestions-detail.html',
-            controller: 'YourSuggestionsController',
-          },
-        },
-      })
-
       .state('tabs.create-new-suggestion', {
         url: '/your-suggestions/create',
         views: {
@@ -191,6 +181,16 @@ export default [
           'map-area': {
             templateUrl: 'templates/map-view.html',
             controller: 'MapViewController',
+          },
+        },
+      })
+
+      .state('tabs.your-suggestions-detail', {
+        url: '/your-suggestions/:suggestionId',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/your-suggestions-detail.html',
+            controller: 'YourSuggestionsDetailController',
           },
         },
       })
