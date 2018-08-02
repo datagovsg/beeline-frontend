@@ -36,45 +36,5 @@
       </span>
     </div>
 
-    <div class="icon-and-schedule">
-      <span class="icon-span">
-          <img class="mini-icon" src="img/icon_crowdstart_timeleft.svg">
-        </span>
-      <span class="mini-info" ng-if="route.daysLeft && route.daysLeft>1">
-          Campaign ends in {{route.daysLeft}} days
-        </span>
-      <span class="mini-info" ng-if="route.daysLeft && route.daysLeft==1">
-          Campaign ends in {{route.daysLeft}} day
-        </span>
-      <span class="mini-info" ng-if="route.isExpired">
-          Campaign has expired
-        </span>
-    </div>
-    <div class="icon-and-schedule">
-      <span class="icon-span">
-          <img class="mini-icon" src="img/icon_schedule.svg">
-        </span>
-      <span class="mini-info">
-          Route starts on {{route.trips[0].date | date:'dd MMM yyyy' : 'Z'}} if activated
-        </span>
-    </div>
-
-    <div class="icon-and-schedule item-text-wrap">
-      <span class="icon-span">
-          <img class="mini-icon" src="img/icon_crowdstart_status.svg">
-        </span>
-      <span class="mini-info">
-          {{route.status}}
-        </span>
-    </div>
-    <div class="icon-and-schedule" ng-if="bids[route.id]">
-      <span class="icon-span">
-        <img class="mini-icon" src="img/icon_crowdstart_activebid.svg">
-      </span>
-      <span class="mini-info">
-          You pre-ordered a Route Pass for {{route.notes.noPasses}} trips.
-        </span>
-    </div>
-
   </route-item-additional-info>
 </route-item>
