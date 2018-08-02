@@ -15,7 +15,7 @@
           <input
             placeholder="{{ placeholder }}" 
             ng-model="data.input"
-            ng-keyup="$event.keyCode == 13 && submit()"
+            ng-keyup="$event.keyCode === 13 && submit()"
             >
         </div>
         <ion-spinner ng-show="isFiltering"></ion-spinner>
