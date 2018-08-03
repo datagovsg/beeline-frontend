@@ -7,10 +7,10 @@
 
       <div class="search-inputs">
         <!-- Search Filter  -->
-        <search-input ng-show="!disp.searchFromTo" query-text="data.queryText" is-filtering="data.isFiltering" ph="Search"
+        <search-input ng-if="!disp.searchFromTo" query-text="data.queryText" is-filtering="data.isFiltering" ph="Search"
           ng-if="!disp.yourRoutes"></search-input>
 
-        <div ng-show="disp.searchFromTo" class="from-to-bars">
+        <div ng-if="disp.searchFromTo" class="from-to-bars">
           <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar" input-id="'pickup-input'" is-filtering="data.isFiltering"></location-search>
           <div class="switch-container">
             <button class="switch-button" ng-class="{ 'animate-rotate1': disp.animate, 'animate-rotate2': !disp.animate }" ng-click="swapFromTo()"> 
