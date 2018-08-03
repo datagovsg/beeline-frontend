@@ -54,7 +54,7 @@ export default [
       dropOffLocation: null,
       selectedTimeIndex: null,
       selectedTime: null,
-      daysInvalid: true
+      daysInvalid: true,
     }
 
     $scope.disp = {
@@ -130,9 +130,9 @@ export default [
             type: 'Point',
             coordinates: [
               parseFloat(loc.LATITUDE),
-              parseFloat(loc.LONGITUDE)
-            ]
-          }
+              parseFloat(loc.LONGITUDE),
+            ],
+          },
         }
         MapService.emit('board-stop-selected', { stop: stop })
       }
@@ -151,7 +151,7 @@ export default [
         return { ...d, enabled: false }
       })
     }
-    
+
     $scope.swapFromTo = function () {
       [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [_.clone($scope.data.dropOffLocation), _.clone($scope.data.pickUpLocation)]
     }
@@ -167,7 +167,7 @@ export default [
           )
         )
         $state.go('tabs.your-suggestions-detail', {
-          suggestionId: data.id
+          suggestionId: data.id,
         })
       } catch (err) {
         console.log(err)

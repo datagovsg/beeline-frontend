@@ -35,7 +35,7 @@ export default [
     // ------------------------------------------------------------------------
     $scope.data = {
       suggestionId: suggestionId,
-      suggestion: null
+      suggestion: null,
     }
 
     // ------------------------------------------------------------------------
@@ -58,7 +58,7 @@ export default [
           $ionicLoading.hide()
           $ionicPopup.alert({
             title: "Sorry there's been a problem loading the suggested route information",
-            subTitle: error
+            subTitle: error,
           })
         })
     })
@@ -74,10 +74,10 @@ export default [
 
     // ------------------------------------------------------------------------
     // UI Hooks
-    // ------------------------------------------------------------------------  
+    // ------------------------------------------------------------------------
     $scope.popupDeleteConfirmation = function () {
       $ionicPopup.confirm({
-        title: 'Are you sure you want to delete the suggestions?'
+        title: 'Are you sure you want to delete the suggestions?',
       }).then(async (proceed) => {
         if (proceed) {
           try {

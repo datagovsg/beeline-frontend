@@ -18,11 +18,11 @@ angular.module('beeline').factory('SuggestionService', [
         )
         const start = {
           lat: suggestion.alight.coordinates[1],
-          lng: suggestion.alight.coordinates[0]
+          lng: suggestion.alight.coordinates[0],
         }
         const end = {
           lat: suggestion.board.coordinates[1],
-          lng: suggestion.board.coordinates[0]
+          lng: suggestion.board.coordinates[0],
         }
         const boardLocation = await OneMapPlaceService.reverseGeocode(start.lat, start.lng)
         const alightLocation = await OneMapPlaceService.reverseGeocode(end.lat, end.lng)
@@ -31,7 +31,7 @@ angular.module('beeline').factory('SuggestionService', [
           ...suggestion,
           similar,
           boardLocation,
-          alightLocation
+          alightLocation,
         }
         return createdSuggestion
       },
@@ -47,12 +47,10 @@ angular.module('beeline').factory('SuggestionService', [
       },
 
       getSuggestion: function (suggestionId) {
-        let details = createdSuggestion 
-                        ? createdSuggestion 
-                        : suggestions.filter(sug => sug.id === suggestionId)[0]
+        let details = createdSuggestion || suggestions.filter(sug => sug.id === suggestionId)[0]
         createdSuggestion = null
         return Promise.resolve({
-          details
+          details,
         })
       },
 
@@ -67,11 +65,11 @@ angular.module('beeline').factory('SuggestionService', [
         const promises = userSuggestions.map(async (sug, index) => {
           const start = {
             lat: sug.alight.coordinates[1],
-            lng: sug.alight.coordinates[0]
+            lng: sug.alight.coordinates[0],
           }
           const end = {
             lat: sug.board.coordinates[1],
-            lng: sug.board.coordinates[0]
+            lng: sug.board.coordinates[0],
           }
           const boardLocation = await OneMapPlaceService.reverseGeocode(start.lat, start.lng)
           const alightLocation = await OneMapPlaceService.reverseGeocode(end.lat, end.lng)
@@ -80,10 +78,10 @@ angular.module('beeline').factory('SuggestionService', [
             ...sug,
             similar,
             boardLocation,
-            alightLocation
+            alightLocation,
           }
         })
-        
+
         await Promise.all(promises)
         suggestions = userSuggestions
         return suggestions
@@ -98,13 +96,13 @@ angular.module('beeline').factory('SuggestionService', [
           return response.data.filter(sug => sug.userId === user.id)
         })
       },
-      
+
       fetchSimilarSuggestions: function (start, end) {
         let queryString = querystring.stringify({
           startLat: start.lat,
           startLng: start.lng,
           endLat: end.lat,
-          endLng: end.lng
+          endLng: end.lng,
         })
         return RequestService.beeline({
           method: 'GET',
@@ -117,11 +115,11 @@ angular.module('beeline').factory('SuggestionService', [
       deleteSuggestion: function (suggestionId) {
         return RequestService.beeline({
           method: 'DELETE',
-          url: `/suggestions/${suggestionId}`
+          url: `/suggestions/${suggestionId}`,
         }).then(response => {
           return response
         })
-      }
+      },
     }
   },
 ])

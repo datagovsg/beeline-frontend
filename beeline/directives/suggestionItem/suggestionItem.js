@@ -7,10 +7,10 @@ angular.module('beeline').directive('suggestionItem', [
       restrict: 'E',
       replace: false,
       scope: {
-        suggestion: '<'
+        suggestion: '<',
       },
       template: suggestionItemTemplate,
-      link: function($scope, element, attr) {
+      link: function ($scope, element, attr) {
         $scope.parseTime = function (time) {
           let hours = moment.duration(time).hours()
           let suffix = hours > 11 ? 'PM' : 'AM'
@@ -19,16 +19,16 @@ angular.module('beeline').directive('suggestionItem', [
           return hours + '.' + minutes + ' ' + suffix
         }
 
-        $scope.getAddress = function(loc) {
+        $scope.getAddress = function (loc) {
           if (loc) {
             const { BLOCK, BUILDINGNAME, ROAD, POSTALCODE } = loc
             return [BLOCK, BUILDINGNAME, ROAD, POSTALCODE]
-              .filter(s => s && s !== "null")  
+              .filter(s => s && s !== 'null')
               .map(s => s.toLowerCase())
-              .join(", ")
+              .join(', ')
           }
         }
-      }
+      },
     }
   },
 ])

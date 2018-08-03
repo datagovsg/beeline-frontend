@@ -37,7 +37,7 @@ angular.module('common').factory('OneMapPlaceService', [
       async reverseGeocode (lat, lng) {
         let url = 'https://api.beeline.sg/onemap/revgeocode?'
         let queryString = querystring.stringify({
-          location: lat + ',' + lng
+          location: lat + ',' + lng,
         })
         let { data: result } = await $http({
           method: 'GET',

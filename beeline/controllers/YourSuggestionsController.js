@@ -19,7 +19,7 @@ export default [
     // Data Initialization
     // ------------------------------------------------------------------------
     $scope.data = {
-      suggestions: null
+      suggestions: null,
     }
 
     // ------------------------------------------------------------------------
@@ -27,7 +27,7 @@ export default [
     // ------------------------------------------------------------------------
     $scope.$on('$ionicView.enter', function () {
       // Refresh suggestions on enter in case we added a new
-      // suggestion or deleted a suggestion 
+      // suggestion or deleted a suggestion
       $scope.refreshSuggestions()
     })
 
@@ -38,7 +38,7 @@ export default [
       console.log('new suggestions')
       $scope.data.suggestions = suggestions
     })
-    
+
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
