@@ -124,17 +124,31 @@ export default [
 
     $scope.$watch('data.pickUpLocation', loc => {
       if (loc) {
-        console.log(loc)
         const stop = {
           coordinates: {
             type: 'Point',
             coordinates: [
-              parseFloat(loc.LATITUDE),
               parseFloat(loc.LONGITUDE),
+              parseFloat(loc.LATITUDE),
             ],
           },
         }
         MapService.emit('board-stop-selected', { stop: stop })
+      }
+    })
+
+    $scope.$watch('data.dropOffLocation', loc => {
+      if (loc) {
+        const stop = {
+          coordinates: {
+            type: 'Point',
+            coordinates: [
+              parseFloat(loc.LONGITUDE),
+              parseFloat(loc.LATITUDE),
+            ],
+          },
+        }
+        MapService.emit('alight-stop-selected', { stop: stop })
       }
     })
 
@@ -170,7 +184,6 @@ export default [
           suggestionId: data.id,
         })
       } catch (err) {
-        console.log(err)
         await $ionicPopup.alert({
           title: 'Error creating suggestion',
           template: `
