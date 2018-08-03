@@ -46,16 +46,6 @@
   font-size: $font-size-base;
 }
 
-
-// To fix bug where on ios the main body content will still scroll even when
-// the modal is open
-// See this for more details:
-// https://stackoverflow.com/questions/3047337/does-overflowhidden-applied-to-body-work-on-iphone-safari
-.modal-open {
-  position:relative;
-  overflow:hidden;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // New global styles
 // Check to see if there's an applicable ionic style first before adding here
