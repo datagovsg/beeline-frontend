@@ -119,8 +119,7 @@ suggestion-item {
 
 .your-suggestions {
   .create-suggestion-btn {
-    position: sticky;
-    bottom: 40px;
+    padding: 20px 0 20px 0;
   }
 }
 
@@ -134,7 +133,7 @@ suggestion-item {
   }
   
   .delete {
-    color: $royal;
+    color: $assertive;
     margin: 25px 0;
     text-align: center;
     text-decoration: underline;

@@ -176,7 +176,7 @@ export default [
         views: {
           menuContent: {
             templateUrl: 'templates/create-new-suggestion.html',
-            controller: 'YourSuggestionsController',
+            controller: 'YourSuggestionsCreateController',
           },
           'map-area': {
             templateUrl: 'templates/map-view.html',

@@ -34,6 +34,18 @@ angular.module('common').factory('OneMapPlaceService', [
     }
 
     return {
+      async reverseGeocode (lat, lng) {
+        let url = 'https://api.beeline.sg/onemap/revgeocode?'
+        let queryString = querystring.stringify({
+          location: lat + ',' + lng
+        })
+        let { data: result } = await $http({
+          method: 'GET',
+          url: url + queryString,
+        })
+        return result.GeocodeInfo[0]
+      },
+
       async handleQuery (queryText) {
         let result = await makeQuery(queryText)
         if (!result || (result && result.found === 0)) {

@@ -6,6 +6,11 @@
 
     <div class="item item-divider">Your Suggestions</div>
 
+    <!-- repeat 5 times -->
+    <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="!data.suggestions">
+      <animated-route></animated-route>
+    </ion-item>
+
     <ion-item ng-repeat="suggestion in data.suggestions" class="item-text-wrap">
       <suggestion-item suggestion="suggestion" ui-sref="tabs.your-suggestions-detail({ suggestionId: suggestion.id })">
       </suggestion-item>

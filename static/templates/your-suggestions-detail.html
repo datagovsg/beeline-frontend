@@ -1,25 +1,25 @@
-<ion-view class="your-suggestions-detail" view-title="Your Suggestions">
-    <ion-nav-buttons side="right">
-        <button 
-          ui-sref="tabs.your-suggestions" 
-          class="button button-icon icon ion-android-close">
-        </button>
-    </ion-nav-buttons>
-    <ion-content>
+<ion-view class="your-suggestions-detail" view-title="Your Suggestions" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+            ui-sref="tabs.your-suggestions"
+            class="item-icon-right">
+        <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
 
-      <ion-item class="item-text-wrap">
-        <suggestion-item></suggestion-item>
-      </ion-item>
-      <ion-item>
-        <span class="header">Generated route {{data.suggestion.id}}</span>
-        <crowdstart-route
-          route="{label: '123'}">
-      </ion-item>
+    <ion-item class="item-text-wrap">
+  <suggestion-item suggestion="data.suggestion"></suggestion-item>
+    </ion-item>
+    <ion-item>
+      <span>Route yet to be generated!</span>
+      <!-- <span class="header">Generated route</span> -->
+      <!-- <crowdstart-route route="{label: '123'}"></crowdstart-route> -->
+    </ion-item>
 
-      <div class="delete">
-        <span on-tap="popupDeleteConfirmation()">Delete Suggestion</span>
-      </div>
-  
-    </ion-content>
-  </ion-view>
-``  
+    <div class="delete">
+      <span on-tap="popupDeleteConfirmation()">Delete Suggestion</span>
+    </div>
+
+  </ion-content>
+</ion-view>

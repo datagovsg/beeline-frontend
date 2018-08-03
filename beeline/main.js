@@ -232,6 +232,10 @@ app
     require('./controllers/YourSuggestionsController.js').default
   )
   .controller(
+    'YourSuggestionsCreateController',
+    require('./controllers/YourSuggestionsCreateController.js').default
+  )
+  .controller(
     'YourSuggestionsDetailController',
     require('./controllers/YourSuggestionsDetailController.js').default
   )
@@ -410,7 +414,6 @@ app
       CrowdstartService.fetchBids()
       LiteRoutesService.fetchLiteRoutes()
       TicketService.fetchTickets()
-      SuggestionService.fetchSuggestions()
     },
   ])
   .run([
