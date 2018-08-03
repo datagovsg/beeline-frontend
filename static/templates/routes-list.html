@@ -12,8 +12,8 @@
 
         <div ng-if="disp.searchFromTo" class="from-to-bars">
           <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar" input-id="'pickup-input'" is-filtering="data.isFiltering"></location-search>
-          <div class="switch-container">
-            <button class="switch-button" ng-class="{ 'animate-rotate1': disp.animate, 'animate-rotate2': !disp.animate }" ng-click="swapFromTo()"> 
+          <div class="switch-container" ng-click="swapFromTo()">
+            <button class="switch-button" ng-class="{ 'animate-rotate1': disp.animate, 'animate-rotate2': !disp.animate }"> 
               <i class="icon ion-arrow-swap"></i>
             </button>
           </div>
@@ -29,7 +29,7 @@
 
     </div>
     <!-- Scrollable routes list -->
-    <ion-content ng-class="{'from-to': !disp.yourRoutes && disp.searchFromTo, 'one-search': !disp.yourRoutes && !disp.searchFromTo}">
+    <ion-content ng-class="{'from-to': !disp.yourRoutes && disp.searchFromTo, 'one-search': !disp.yourRoutes && !disp.searchFromTo}" class="scrollable-routes-list">
 
       <ion-refresher
         pulling-text="Pull to refresh..."
