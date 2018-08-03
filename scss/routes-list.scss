@@ -113,3 +113,12 @@ $search-background-color: #e8e8e8;
     }
   }
 }
+
+.modal-open {
+    -webkit-overflow-scrolling: auto;
+    overflow: hidden;
+  .scrollable-routes-list {
+    overflow: hidden;
+    -webkit-overflow-scrolling: auto;
+  }
+}

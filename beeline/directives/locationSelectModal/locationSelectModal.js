@@ -126,6 +126,14 @@ angular.module('beeline').directive('locationSelectModal', [
           scope.data.input = null
         }
 
+        scope.submit = () => {
+          scope.select(scope.data.input)
+        }
+
+        scope.hideKeyboard = () => {
+          document.activeElement.blur()
+        }
+
         // ---------------------------------------------------------------------
         // Event handlers
         // ---------------------------------------------------------------------
