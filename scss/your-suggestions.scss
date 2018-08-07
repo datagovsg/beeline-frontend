@@ -149,6 +149,7 @@ suggestion-item {
   display: flex;
   flex-direction: column;
   background-color: transparent!important;
+  pointer-events: none;
 
   @include desktop {
     top: $bar-height;
