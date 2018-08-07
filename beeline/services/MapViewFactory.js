@@ -37,6 +37,7 @@ angular.module('beeline').factory('MapViewFactory', [
           {
             stops: [],
             routePath: [],
+            curvedPath: null,
             alightStop: null,
             boardStop: null,
             pingTrips: [],

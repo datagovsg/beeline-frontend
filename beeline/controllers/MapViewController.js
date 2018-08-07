@@ -65,5 +65,9 @@ export default [
       $scope.mapObject.chosenStop = stop
       SharedVariableService.setChosenStop(stop)
     })
+
+    MapService.on('draw-curved-path', route => {
+      $scope.mapObject.curvedPath = route
+    })
   },
 ]

@@ -15,7 +15,8 @@ angular.module('beeline').directive('suggestionItem', [
           let hours = moment.duration(time).hours()
           let suffix = hours > 11 ? 'PM' : 'AM'
           hours = hours > 11 ? hours - 12 : hours
-          const minutes = moment.duration(time).minutes()
+          let minutes = moment.duration(time).minutes()
+          minutes = minutes < 10 ? '0' + minutes : minutes
           return hours + '.' + minutes + ' ' + suffix
         }
 

@@ -152,6 +152,22 @@ export default [
       }
     })
 
+    $scope.$watchGroup(
+      ['data.pickUpLocation', 'data.dropOffLocation'],
+      ([board, alight]) => {
+        if (!board || !alight) return
+        MapService.emit('draw-curved-path', {
+          board: {
+            lat: parseFloat(board.LATITUDE),
+            lng: parseFloat(board.LONGITUDE),
+          },
+          alight: {
+            lat: parseFloat(alight.LATITUDE),
+            lng: parseFloat(alight.LONGITUDE),
+          },
+        })
+      })
+
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -183,6 +199,7 @@ export default [
         $state.go('tabs.your-suggestions-detail', {
           suggestionId: data.id,
         })
+        $scope.refreshSuggestions()
       } catch (err) {
         await $ionicPopup.alert({
           title: 'Error creating suggestion',
@@ -193,6 +210,10 @@ export default [
         })
         $state.go('tabs.your-suggestions')
       }
+    }
+
+    $scope.refreshSuggestions = async function () {
+      await loadingSpinner(SuggestionService.fetchSuggestions())
     }
   },
 ]

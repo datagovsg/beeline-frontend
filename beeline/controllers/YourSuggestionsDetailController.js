@@ -1,6 +1,3 @@
-import _ from 'lodash'
-import moment from 'moment'
-
 export default [
   '$scope',
   '$state',
@@ -81,10 +78,11 @@ export default [
       }).then(async (proceed) => {
         if (proceed) {
           try {
-            const data = await loadingSpinner(
+            await loadingSpinner(
               SuggestionService.deleteSuggestion(suggestionId)
             )
             $state.go('tabs.your-suggestions')
+            $scope.refreshSuggestions()
           } catch (err) {
             await $ionicPopup.alert({
               title: 'Error deleting suggestion',
@@ -96,6 +94,10 @@ export default [
           }
         }
       })
+    }
+
+    $scope.refreshSuggestions = async function () {
+      await loadingSpinner(SuggestionService.fetchSuggestions())
     }
   },
 ]

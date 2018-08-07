@@ -52,6 +52,7 @@ require('./directives/liteRouteStop/liteRouteStop')
 require('./directives/locationSearch/locationSearch')
 require('./directives/mapBusIcon')
 require('./directives/mapPolyRoute')
+require('./directives/mapCurvedRoute')
 require('./directives/moreInfo/moreInfo')
 require('./directives/myLocation')
 require('./directives/poweredByBeeline/poweredByBeeline')
@@ -414,6 +415,7 @@ app
       CrowdstartService.fetchBids()
       LiteRoutesService.fetchLiteRoutes()
       TicketService.fetchTickets()
+      SuggestionService.fetchSuggestions()
     },
   ])
   .run([
