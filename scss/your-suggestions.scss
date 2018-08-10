@@ -7,9 +7,11 @@ $search-height: 42px;
 
 suggestion-item {
   display: flex;
+  padding: 15px;
 
   .left {
     flex: auto;
+    margin-right: 40px;
   }
   .day-badge {
     display: flex;
@@ -18,14 +20,14 @@ suggestion-item {
     div {
       background: $light-grey;
       color: $light;
-      font-size: $font-size-x-x-small;
+      font-size: 12px;
       margin-right: 5px;
-      width: 15px;
-      height: 15px;
+      width: 18px;
+      height: 18px;
       text-align: center;
       border-radius: 2px;
       vertical-align: middle;
-      line-height: 15px;
+      line-height: 18px;
       font-weight: $font-weight-bold;
     }
 
@@ -109,6 +111,7 @@ suggestion-item {
       font-size: 40px;
       line-height: 40px;
       font-weight: $font-weight-bold;
+      margin-bottom: 5px;
     }
     .suggestions {
       color: $light-grey;
@@ -119,7 +122,8 @@ suggestion-item {
 
 .your-suggestions {
   .create-suggestion-btn {
-    padding: 20px 0 20px 0;
+    margin-top: 25px;
+    margin-bottom: 25px;
   }
 }
 

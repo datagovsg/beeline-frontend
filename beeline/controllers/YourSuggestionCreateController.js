@@ -100,7 +100,7 @@ export default [
     // Reset all fields on leaving create-new-suggestion page
     // after creating a new suggestion
     $scope.$on('$ionicView.leave', function () {
-      // $scope.resetSuggestion()
+      $scope.resetSuggestion()
     })
 
     // ------------------------------------------------------------------------
