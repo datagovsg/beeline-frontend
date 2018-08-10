@@ -233,12 +233,12 @@ app
     require('./controllers/YourSuggestionsController.js').default
   )
   .controller(
-    'YourSuggestionsCreateController',
-    require('./controllers/YourSuggestionsCreateController.js').default
+    'YourSuggestionCreateController',
+    require('./controllers/YourSuggestionCreateController.js').default
   )
   .controller(
-    'YourSuggestionsDetailController',
-    require('./controllers/YourSuggestionsDetailController.js').default
+    'YourSuggestionDetailController',
+    require('./controllers/YourSuggestionDetailController.js').default
   )
   .config(configureRoutes)
   .config([
@@ -256,7 +256,7 @@ app
         base.setAttribute('href', '/')
         const [head] = window.document.getElementsByTagName('head')
         head.appendChild(base)
-        // $locationProvider.html5Mode({ enabled: true })
+        $locationProvider.html5Mode({ enabled: true })
       }
     },
   ])
