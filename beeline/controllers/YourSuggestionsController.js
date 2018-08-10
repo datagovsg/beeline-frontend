@@ -1,11 +1,9 @@
 export default [
   '$scope',
-  'loadingSpinner',
   'SuggestionService',
   function (
     // Angular Tools
     $scope,
-    loadingSpinner,
     SuggestionService
   ) {
     // ------------------------------------------------------------------------

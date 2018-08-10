@@ -16,7 +16,7 @@
           <div class="input-label">
             Arrive at
           </div>
-          <select ng-model="data.selectedTimeIndex" data-tap-disabled="true">
+          <select ng-model="data.selectedTimeIndex" data-tap-disabled="true" ng-change="onSelectedTimeChanged()">
             <option value="" disabled selected hidden>Time at destination</option>
             <option ng-repeat="t in disp.times" value={{$index}}>{{ t.format('h:mm a') }}</option>
           </select>
@@ -30,7 +30,10 @@
         </div>
       </div>
 
-      <button class="primary-button submit-btn" ng-click="submitSuggestion()" ng-disabled="!data.pickUpLocation || !data.dropOffLocation || !data.selectedTimeIndex || data.daysInvalid">
+      <button 
+        class="primary-button submit-btn" 
+        ng-click="submitSuggestion()" 
+        ng-disabled="!data.pickUpLocation || !data.dropOffLocation || !data.selectedTimeIndex || data.daysInvalid">
         Submit
       </button>
     </div>

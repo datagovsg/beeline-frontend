@@ -176,7 +176,7 @@ export default [
         views: {
           menuContent: {
             templateUrl: 'templates/create-new-suggestion.html',
-            controller: 'YourSuggestionsCreateController',
+            controller: 'YourSuggestionCreateController',
           },
           'map-area': {
             templateUrl: 'templates/map-view.html',
@@ -185,12 +185,12 @@ export default [
         },
       })
 
-      .state('tabs.your-suggestions-detail', {
+      .state('tabs.your-suggestion-detail', {
         url: '/your-suggestions/:suggestionId',
         views: {
           menuContent: {
-            templateUrl: 'templates/your-suggestions-detail.html',
-            controller: 'YourSuggestionsDetailController',
+            templateUrl: 'templates/your-suggestion-detail.html',
+            controller: 'YourSuggestionDetailController',
           },
         },
       })

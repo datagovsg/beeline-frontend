@@ -97,20 +97,15 @@ export default [
     // ------------------------------------------------------------------------
     // Ionic events
     // ------------------------------------------------------------------------
+    // Reset all fields on leaving create-new-suggestion page
+    // after creating a new suggestion
     $scope.$on('$ionicView.leave', function () {
-      $scope.resetSuggestion()
+      // $scope.resetSuggestion()
     })
 
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    $scope.$watch('data.selectedTimeIndex', i => {
-      if (!i) return
-      const hour = $scope.disp.times[i].hour()
-      const minutes = $scope.disp.times[i].minute()
-      $scope.data.selectedTime = hour * 3600e3 + minutes * 60e3
-    })
-
     $scope.$watch('data.days', days => {
       let invalid = true
       for (let day in days) {
@@ -186,6 +181,13 @@ export default [
       [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [_.clone($scope.data.dropOffLocation), _.clone($scope.data.pickUpLocation)]
     }
 
+    $scope.onSelectedTimeChanged = function () {
+      const i = $scope.data.selectedTimeIndex
+      const hour = $scope.disp.times[i].hour()
+      const minutes = $scope.disp.times[i].minute()
+      $scope.data.selectedTime = hour * 3600e3 + minutes * 60e3
+    }
+
     $scope.submitSuggestion = async function () {
       try {
         const data = await loadingSpinner(
@@ -196,7 +198,7 @@ export default [
             getDaysOfWeek($scope.data.days)
           )
         )
-        $state.go('tabs.your-suggestions-detail', {
+        $state.go('tabs.your-suggestion-detail', {
           suggestionId: data.id,
         })
         $scope.refreshSuggestions()
