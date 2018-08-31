@@ -59,6 +59,7 @@ angular.module('beeline').factory('SuggestionService', [
       },
 
       fetchSuggestions: async function () {
+        if (!UserService.getUser()) return
         let userSuggestions = await this.fetchUserSuggestions()
 
         // ----------------PARALLEL REQUESTS---------------- //

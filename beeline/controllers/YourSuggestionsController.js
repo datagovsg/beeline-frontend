@@ -1,10 +1,12 @@
 export default [
   '$scope',
   'SuggestionService',
+  'UserService',
   function (
     // Angular Tools
     $scope,
-    SuggestionService
+    SuggestionService,
+    UserService
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
@@ -26,6 +28,13 @@ export default [
     $scope.$watch(() => SuggestionService.getSuggestions(), suggestions => {
       $scope.data.suggestions = suggestions
     })
+
+    $scope.$watch(
+      () => UserService.getUser(),
+      user => {
+        SuggestionService.fetchSuggestions()
+      }
+    )
 
     // ------------------------------------------------------------------------
     // UI Hooks
