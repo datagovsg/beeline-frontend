@@ -37,8 +37,11 @@ export default [
         hasTrackingData: $scope.hasTrackingData,
         statusMessages: $scope.mapObject.statusMessages.join(' '),
       }
+
       MapService.emit('tripInfo', tripInfo)
     }
+
+    const statusLoop = MapViewFactory.statusLoop($scope)
 
     // ------------------------------------------------------------------------
     // stateParams
@@ -49,7 +52,6 @@ export default [
     // Data Initialization
     // ------------------------------------------------------------------------
     MapViewFactory.init($scope)
-    const statusLoop = MapViewFactory.statusLoop($scope)
     MapViewFactory.setupPingLoops($scope, pingLoop, statusLoop)
 
     // ------------------------------------------------------------------------

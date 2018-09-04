@@ -55,10 +55,12 @@ angular.module('beeline').factory('MapViewFactory', [
       setupPingLoops: function (scope, pingLoop, statusLoop) {
         // fetch driver pings every 4s and statuses every 60s
         scope.timeout = new SafeInterval(pingLoop, 4000, 1000)
-        scope.statusTimeout = new SafeInterval(statusLoop, 60000, 1000)
+        scope.statusTimeout = new SafeInterval(statusLoop, 10000, 1000)
 
         MapService.once('ping-trips', trips => {
           scope.mapObject.pingTrips = trips
+          pingLoop()
+          statusLoop()
         })
 
         MapService.once('startPingLoop', () => {
