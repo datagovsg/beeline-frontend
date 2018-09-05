@@ -33,6 +33,7 @@ export default [
     $scope.data = {
       suggestionId: suggestionId,
       suggestion: null,
+      routes: null,
     }
 
     // ------------------------------------------------------------------------
@@ -49,7 +50,6 @@ export default [
       SuggestionService.getSuggestion(suggestionId)
         .then(response => {
           $scope.data.suggestion = response.details
-          $ionicLoading.hide()
         })
         .catch(error => {
           $ionicLoading.hide()
@@ -58,16 +58,27 @@ export default [
             subTitle: error,
           })
         })
+
+      $scope.refreshSuggestedRoutes(suggestionId)
     })
 
     $scope.$on('$ionicView.leave', () => {
       $scope.data.suggestionId = null
       $scope.data.suggestion = null
+      $scope.data.routes = null
     })
 
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
+    $scope.$watchGroup(
+      ['data.suggestion', 'data.routes'],
+      ([suggestion, routes]) => {
+        if (suggestion && routes) {
+          $ionicLoading.hide()
+        }
+      }
+    )
 
     // ------------------------------------------------------------------------
     // UI Hooks
@@ -98,6 +109,24 @@ export default [
 
     $scope.refreshSuggestions = async function () {
       await loadingSpinner(SuggestionService.fetchSuggestions())
+    }
+
+    $scope.refreshSuggestedRoutes = function (suggestionId) {
+      SuggestionService.fetchSuggestedRoutes(suggestionId)
+        .then(response => {
+          if (response.length === 0) {
+            setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
+          } else {
+            $scope.data.routes = response[0].route
+          }
+        })
+        .catch(error => {
+          $ionicLoading.hide()
+          $ionicPopup.alert({
+            title: "Sorry there's been a problem loading the suggested route information",
+            subTitle: error,
+          })
+        })
     }
   },
 ]

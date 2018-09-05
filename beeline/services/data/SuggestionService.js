@@ -8,6 +8,15 @@ angular.module('beeline').factory('SuggestionService', [
     let suggestions
     let createdSuggestion
 
+    function convertDaysToBinary (days) {
+      const week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      let sum = 0
+      for (let i = 0; i < week.length; i++) {
+        sum += days[week[i]] * Math.pow(2, i)
+      }
+      return sum
+    }
+
     return {
       createSuggestion: async function (alight, board, time, daysOfWeek) {
         let suggestion = await this.requestCreateNewSuggestion(
@@ -42,6 +51,7 @@ angular.module('beeline').factory('SuggestionService', [
           url: '/suggestions',
           data: { board, alight, time, daysOfWeek },
         }).then(response => {
+          this.triggerRouteGeneration(response.data.id, response.data.daysOfWeek)
           return response.data
         })
       },
@@ -94,7 +104,7 @@ angular.module('beeline').factory('SuggestionService', [
           method: 'GET',
           url: '/suggestions',
         }).then(response => {
-          return response.data.filter(sug => sug.userId === user.id)
+          return response.data
         })
       },
 
@@ -119,6 +129,44 @@ angular.module('beeline').factory('SuggestionService', [
           url: `/suggestions/${suggestionId}`,
         }).then(response => {
           return response
+        })
+      },
+
+      fetchSuggestedRoutes: function (suggestionId) {
+        return RequestService.beeline({
+          method: 'GET',
+          url: `/suggestions/${suggestionId}/suggested_routes`,
+        }).then(response => {
+          return response.data
+        })
+      },
+
+      triggerRouteGeneration: function (suggestionId, days) {
+        const daysOfWeek = convertDaysToBinary(days)
+        return RequestService.beeline({
+          method: 'POST',
+          url: `/suggestions/${suggestionId}/suggested_routes/trigger_route_generation`,
+          data: {
+            maxDetourMinutes: 10,
+            startClusterRadius: 4000,
+            startWalkingDistance: 400,
+            endClusterRadius: 4000,
+            endWalkingDistance: 400,
+            timeAllowance: 1800 * 1000, // Half an hour
+            daysOfWeek, // 0b0011111 - Mon-Fri
+            dataSource: 'suggestions',
+          },
+        }).then(response => {
+          return response.data
+        })
+      },
+
+      convertToCrowdstart: function (suggestionId, routeId) {
+        return RequestService.beeline({
+          method: 'POST',
+          url: `/suggestions/${suggestionId}/suggested_routes/${routeId}/convert_to_crowdstart`,
+        }).then(response => {
+          return response.data
         })
       },
     }
