@@ -4,7 +4,7 @@
     <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <route-share is-normal-route="true" route-id="data.routeId"></route-share>
+    <route-share route-type="'normal'" route-id="data.routeId"></route-share>
   </ion-nav-buttons>
   <div class="bar bar-subheader popup">
     
@@ -21,13 +21,18 @@
           </span>
         </div>
 
-        <div ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)" class="route-pass-remaining popup-left">
+        <div ng-if="data.isLoggedIn && data.passCount > 0" class="route-pass-remaining popup-left">
           <i class="fas fa-ticket-alt"></i>
-          <span class="text" ng-if="data.passCount > 0 || (data.routeSupportsRoutePass && data.isLoggedIn)">{{ data.passCount || 0 }} Route Pass(es)</span> 
+          <span class="text route-pass-button"
+                ng-if="data.passCount === 1"
+                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Pass</u></a></span> 
+          <span class="text route-pass-button"
+                ng-if="data.passCount > 1"
+                ng-click="popupRoutePassExpiry()"><a><u>{{ data.passCount || 0 }} Route Passes</u></a></span>
         </div>
 
-        <div ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)" class="buy-route-pass popup-right">
-          <span class="buy-more-button"
+        <div ng-if="(data.passCount > 0 || data.routeSupportsRoutePass)" class="buy-route-pass popup-right">
+          <span class="route-pass-button"
           ng-if="data.routeSupportsRoutePass"
           ng-click="buyMore()">
           <a><u>Buy Passes to save more</u></a>
@@ -45,15 +50,15 @@
   <ion-content scroll="false">
     <div class="padding-ticket-subheader" ng-if="data.hasNextTripTicket"></div>
     <div class="padding-routepass-subheader" ng-if="data.isLoggedIn && (data.passCount > 0 || data.routeSupportsRoutePass)"></div>
-    <div class="bookingView">
-      <form name="stopsForm" class="stopsSelector">
-        <div class="item item-icon-left item-icon-right boardStopSelector stopSelector" on-tap="choosePickup()">
+    <div class="booking-view">
+      <form name="stopsForm" class="stops-selector">
+        <div class="item item-icon-left item-icon-right board-stop-selector stop-selector" on-tap="choosePickup()">
           <i class="icon pickup-stop"></i>
           <span class="placeholder" ng-hide="data.pickupStop">Select pickup stop</span>
           <span ng-show="data.pickupStop" ng-model="data.pickupStop" ng-bind="(data.pickupStop.time|formatTime) + ' - ' + data.pickupStop.description" ng-required="true"></span>
           <i class="icon ion-ios-arrow-right arrow-icon"></i>
         </div>
-        <div class="item item-icon-left item-icon-right alightStopSelector stopSelector" on-tap="chooseDropoff()">
+        <div class="item item-icon-left item-icon-right alight-stop-selector stop-selector" on-tap="chooseDropoff()">
           <i class="icon dropoff-stop"></i>
           <span class="placeholder" ng-hide="data.dropoffStop">Select dropoff stop</span>
           <span ng-show="data.dropoffStop" ng-model="data.dropoffStop" ng-bind="(data.dropoffStop.time|formatTime) + ' - ' + data.dropoffStop.description" ng-required="true"></span>

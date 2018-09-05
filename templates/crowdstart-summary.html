@@ -1,0 +1,110 @@
+<ion-view id="crowdstart-summary" view-title="Join Crowdstart" hide-back-button="false" can-swipe-back="false">
+
+  <ion-content class="has-header">
+
+    <section class="card text-center" ng-if="disp.bidded">
+      <div class="item withdraw-item">
+        <div class="assertive"><i class="fas fa-user"></i> You've joined this crowdstart route.</div>
+
+        <button class="button button-clear button-royal view-info-button"
+          on-tap="popupWithdraw()">
+          <u>Withdraw my pre-order</u>
+        </button>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <section class="card">
+      <h3 class="item card-title">
+        How to activate a route
+      </h3>
+
+      <div class="item item-text-wrap">
+
+        <crowdstart-info route="book.route"
+         pass-hide="false"
+         preorder-hide="true"
+        ></crowdstart-info>
+
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <company-tnc
+      company-id="book.route.transportCompanyId"
+      notes-hide="true"></company-tnc>
+
+    <section class="card" ng-if="!disp.bidded">
+      <h3 class="item card-title">
+        Future Payment
+      </h3>
+
+      <div class="item item-text-wrap">
+        <table class="booking-info">
+          <tr>
+            <td>{{priceInfo.tripCount || 0}} Trips Route Pass</td>
+            <td class="right">${{priceInfo.totalDue | number:2}}</td>
+          </tr>
+          <tr class="total-sum">
+            <td class="total-sum"><b>Total</b></td>
+            <td class="total-sum right"><b>${{priceInfo.totalDue | number:2}}</b></td>
+          </tr>
+        </table>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <section class="card" ng-if="!disp.bidded">
+      <div class="item item-text-wrap" ng-if="!isLoggedIn || !book.isBid">
+        <div class="check-terms">
+          <ion-checkbox ng-model="book.acceptPolicy">
+            Yes, I have read and agree to the above terms.
+          </ion-checkbox>
+        </div>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <!-- BUTTONS SECTION -->
+    <section class="card" ng-if="!disp.bidded">
+      <div class="item item-text-wrap item-no-title">
+        <div class="buttons">
+          <!-- BUY TICKET BUTTON -->
+          <div ng-if="isLoggedIn">
+            <div class="warning-text" ng-if="!book.acceptPolicy">
+              Please accept the terms and conditions before purchasing
+            </div>
+            <div class="warning-text" ng-if="book.acceptPolicy && !data.hasCreditInfo">
+              Please add your card details for future payment when the route activates.
+            </div>
+            <div class="warning-text" ng-if="book.acceptPolicy && data.hasCreditInfo">
+              This payment will be charged to your <br /><b>{{data.brand}}</b> ending in <b> {{data.last4Digits}}</b> if route is activated.
+            </div>
+
+            <button class="button primary-button"
+                    ng-click="createBid()"
+                    ng-disabled="!book.acceptPolicy || waitingForPaymentResult">
+              <span ng-if="data.hasCreditInfo">Pre-order Route Pass</span>
+              <span ng-if="!data.hasCreditInfo">Confirm Pre-order</span>
+            </button>
+            <div class="text-link-div">
+              <a ng-click="updateSavingCard()" ng-class="!book.acceptPolicy ? 'text-link-disabled' : ''" ng-if="!waitingForPaymentResult">
+               Use a different card for this payment</a>
+            </div>
+          </div>
+
+          <!-- LOGIN BUTTON -->
+          <div ng-if="!isLoggedIn">
+            <div class="warning-text">
+              Please log in to proceed
+            </div>
+
+            <button class="button primary-button" ng-click="login()" ng-disabled="waitingForPaymentResult">
+              Log In
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ion-content>
+</ion-view>

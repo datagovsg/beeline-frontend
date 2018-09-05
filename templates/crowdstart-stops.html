@@ -1,0 +1,44 @@
+<ion-view class="crowdstart-stops page-with-map">
+  <ion-content scroll="false">
+    <ion-content class="list stop-list">
+      <div class="item item-divider"> Boarding Stops </div>
+      <ion-list>
+        <ion-item ng-repeat="stop in data.boardStops"
+                  class="item-text-wrap item-icon-left"
+                  icon="icon ion-ios-checkmark"
+                  on-tap="selectStop(stop)">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
+          </div>
+          <i class="icon stop-icon board"></i>
+        </ion-item>
+      </ion-list>
+      <div class="item item-divider"> Alighting Stops </div>
+      <ion-list>
+        <ion-item  ng-repeat="stop in data.alightStops"
+                    class="item-text-wrap item-icon-left"
+                    icon="icon ion-ios-checkmark"
+                    on-tap="selectStop(stop)">
+          <div class="fullStopDetails">
+            <div class="time">{{stop.time | formatTime}}</div>
+            <div class="details">
+              <div class="description">{{stop.description}}</div>
+              <div class="road">{{stop.road}}</div>
+            </div>
+          </div>
+          <i class="icon stop-icon alight"></i>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    <button
+      class="button primary-button"
+      on-tap="done()"
+    >
+      Close
+    </button>
+  </ion-content>
+</ion-view>

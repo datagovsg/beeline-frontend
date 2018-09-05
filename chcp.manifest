@@ -77,19 +77,11 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "b981300f310a93d861458a8ceaf6baf0"
-  },
-  {
-    "file": "css/ionic.app.css.js",
-    "hash": "03b0e963599fed3cf26a8389ff9248a1"
+    "hash": "b69c0003ee06304c48e635449d6b118a"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "8c45f3f4b4fa7668501d79794489a1e4"
-  },
-  {
-    "file": "css/operator-grab.css.js",
-    "hash": "13e9705faf97577bd9dc61c783e46f5b"
+    "hash": "da99469d0e36ad9c5ce0905a952e7be9"
   },
   {
     "file": "favicon-16x16.png",
@@ -220,10 +212,6 @@
     "hash": "f3b30c389c7d9a82ec9ae0964b388680"
   },
   {
-    "file": "img/bgnokickstarter.svg",
-    "hash": "fa026f3354238511301f0c403c9d2bb4"
-  },
-  {
     "file": "img/bgSuggest.svg",
     "hash": "7229cf6f1dc6178540c9e816140af6aa"
   },
@@ -301,7 +289,7 @@
   },
   {
     "file": "img/busTop-small.png",
-    "hash": "5fe15bb5138601e64edd3b128b599efe"
+    "hash": "0a6b68cda114e1fcbe77061a248d631d"
   },
   {
     "file": "img/govtech_logo.png",
@@ -328,44 +316,16 @@
     "hash": "2adf9767ce0cb0ec52f625f95c6708bd"
   },
   {
-    "file": "img/grab-menu/MenuKickstartActive.svg",
-    "hash": "6f896619ab3b0038ae9fc7a4ef60bd01"
+    "file": "img/icon_crowdstart_activebid.svg",
+    "hash": "113cbc6013124ec8d1a6cf69bf26238d"
   },
   {
-    "file": "img/grab-menu/MenuKickstartNormal.svg",
-    "hash": "75d83e7c47cb23a4409ac11465cece7b"
+    "file": "img/icon_crowdstart_status.svg",
+    "hash": "6c6d34359e504e71f04d14383936e991"
   },
   {
-    "file": "img/grab-menu/MenuRoutesActive.svg",
-    "hash": "66020911f188019891c8d68576abc760"
-  },
-  {
-    "file": "img/grab-menu/MenuRoutesNormal.svg",
-    "hash": "1dac5c4d0551347f1bda0fd0b1188b06"
-  },
-  {
-    "file": "img/grab-menu/MenuSettingsActive.svg",
-    "hash": "dd5a695011e6eb21f38d8b26d25e7180"
-  },
-  {
-    "file": "img/grab-menu/MenuSettingsNormal.svg",
-    "hash": "042fa5cec60d319aa379711202d6bec1"
-  },
-  {
-    "file": "img/grab-menu/MenuSuggestActive.svg",
-    "hash": "3e7203345f1213b89b213e56ba699e3c"
-  },
-  {
-    "file": "img/grab-menu/MenuSuggestNormal.svg",
-    "hash": "9b5db7838d3128d482773d760bbc0d1d"
-  },
-  {
-    "file": "img/grab-menu/MenuTicketsActive.svg",
-    "hash": "f863348661f1bcb5d490ea10872f11e0"
-  },
-  {
-    "file": "img/grab-menu/MenuTicketsNormal.svg",
-    "hash": "21c3539a5957405c2686961fbd699ef7"
+    "file": "img/icon_crowdstart_timeleft.svg",
+    "hash": "cd23e1ea1c0e70742678f119e5efd3ea"
   },
   {
     "file": "img/icon_drop_off.svg",
@@ -374,18 +334,6 @@
   {
     "file": "img/Icon_DropoffWShadow.svg",
     "hash": "7d4465d1ea0a684ec5664bbd923b1b05"
-  },
-  {
-    "file": "img/icon_kickstarter_activebid.svg",
-    "hash": "113cbc6013124ec8d1a6cf69bf26238d"
-  },
-  {
-    "file": "img/icon_kickstarter_status.svg",
-    "hash": "6c6d34359e504e71f04d14383936e991"
-  },
-  {
-    "file": "img/icon_kickstarter_timeleft.svg",
-    "hash": "cd23e1ea1c0e70742678f119e5efd3ea"
   },
   {
     "file": "img/icon_normal.svg",
@@ -432,12 +380,12 @@
     "hash": "213ac9e7ea9e3cece225605595b1048a"
   },
   {
-    "file": "img/introHomeScreen.svg",
-    "hash": "5e22cceabb8b03639484b5cf142b3d48"
+    "file": "img/introCrowdstart.svg",
+    "hash": "2253f3d604aadf85c9e88ef8c9327842"
   },
   {
-    "file": "img/introKickstart.svg",
-    "hash": "2253f3d604aadf85c9e88ef8c9327842"
+    "file": "img/introHomeScreen.svg",
+    "hash": "5e22cceabb8b03639484b5cf142b3d48"
   },
   {
     "file": "img/introSuggest.svg",
@@ -446,14 +394,6 @@
   {
     "file": "img/introTrackOnly.svg",
     "hash": "c100e5bcbbeb0ddaaf9cfd02e01923d1"
-  },
-  {
-    "file": "img/KickstarterProgressBar02_RouteDetails.svg",
-    "hash": "8501fdb5060d6c23cfa62310cf4e60f1"
-  },
-  {
-    "file": "img/KickstarterProgressBar03_ReviewPreorder.svg",
-    "hash": "3258fd2de74d683177be87561a10c5c0"
   },
   {
     "file": "img/lite_success.svg",
@@ -486,6 +426,10 @@
   {
     "file": "img/map/MapRoutePickupStop@2x.png",
     "hash": "26ceb3c98e09377405ff18b927402f4d"
+  },
+  {
+    "file": "img/map/SelectedPinNormal@2x.png",
+    "hash": "6e908e10067ac94b5eb732a524b2ddd5"
   },
   {
     "file": "img/map/SelectedPinStart@2x.png",
@@ -538,46 +482,6 @@
   {
     "file": "img/MapRoutePickupStop@2x.png",
     "hash": "26ceb3c98e09377405ff18b927402f4d"
-  },
-  {
-    "file": "img/menu/MenuKickstartActive.svg",
-    "hash": "4971d496e805c1339abeb588ebaec387"
-  },
-  {
-    "file": "img/menu/MenuKickstartNormal.svg",
-    "hash": "faaaadf899f116411e0fd86fc43f9242"
-  },
-  {
-    "file": "img/menu/MenuRoutesActive.svg",
-    "hash": "e7b5f6fb3e7872f825c358c433e73586"
-  },
-  {
-    "file": "img/menu/MenuRoutesNormal.svg",
-    "hash": "d5061b31c6cf64ed5364b0974becd56a"
-  },
-  {
-    "file": "img/menu/MenuSettingsActive.svg",
-    "hash": "ddf406b52a5324b309cc0c08002c17b1"
-  },
-  {
-    "file": "img/menu/MenuSettingsNormal.svg",
-    "hash": "183e6e89da0d0e90e3648d82c60c4f6e"
-  },
-  {
-    "file": "img/menu/MenuSuggestActive.svg",
-    "hash": "72ddd7e33b64cb47819e313471ff10c0"
-  },
-  {
-    "file": "img/menu/MenuSuggestNormal.svg",
-    "hash": "c59dbe1db389efa80e353026afbd6764"
-  },
-  {
-    "file": "img/menu/MenuTicketsActive.svg",
-    "hash": "16f40183369f7fb56e8968ebc1196cce"
-  },
-  {
-    "file": "img/menu/MenuTicketsNormal.svg",
-    "hash": "0445f92ecc7c4396afdcb461f18816ff"
   },
   {
     "file": "img/pagenotfound.svg",
@@ -652,10 +556,6 @@
     "hash": "177f9b3dd4708bc4254c829e35a03e09"
   },
   {
-    "file": "img/welcome-background.png",
-    "hash": "cf5b0fed9c2e4688b1cd4fbb2b21c948"
-  },
-  {
     "file": "index.html",
     "hash": "8ad169bfa28a1d71323aec69faeb2af1"
   },
@@ -665,15 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "af3d0db9fc9566fbcebc5c75edd15d07"
-  },
-  {
-    "file": "lib/ionic/css/ionic.css",
-    "hash": "c03d8a67f38ce5dce9b784ce9fb49125"
-  },
-  {
-    "file": "lib/ionic/css/ionic.min.css",
-    "hash": "5b49b6261b82f3fccaaeaa9732820607"
+    "hash": "a242a83c91f41270aece9e3bd16edca2"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
@@ -921,7 +813,7 @@
   },
   {
     "file": "manifest.json",
-    "hash": "4eccdf98aa324f8072457468dcb3aefc"
+    "hash": "89d497432b205ff8b933e09bb1123c69"
   },
   {
     "file": "mstile-144x144.png",
@@ -949,47 +841,39 @@
   },
   {
     "file": "templates/booking-history.html",
-    "hash": "8e23cfece3944f5bd59c7b2489800e4c"
+    "hash": "7aeacb42fa0fb6d6a29b726104ad79f8"
+  },
+  {
+    "file": "templates/create-new-suggestion.html",
+    "hash": "f3fdf03fedb25573cc2e6513ba836b31"
+  },
+  {
+    "file": "templates/crowdstart-detail.html",
+    "hash": "de99b57978627d561ff2be2d066bad6f"
+  },
+  {
+    "file": "templates/crowdstart-stops.html",
+    "hash": "a47208d3e65bb47df3809073101212ba"
+  },
+  {
+    "file": "templates/crowdstart-summary.html",
+    "hash": "8a63fa0de70dbc9d180e6545336b5d5e"
   },
   {
     "file": "templates/intro-slides.html",
-    "hash": "d3d861d037c5df5318fdc3b7ad61d487"
-  },
-  {
-    "file": "templates/kickstarter-commit.html",
-    "hash": "0911265f881fae8c59d865f6ee2c67cc"
-  },
-  {
-    "file": "templates/kickstarter-detail.html",
-    "hash": "0f55bec35c082a9ace93308320817685"
-  },
-  {
-    "file": "templates/kickstarter-recap.html",
-    "hash": "5d95c96d215a392b74b1377ec84ffd33"
-  },
-  {
-    "file": "templates/kickstarter-stops.html",
-    "hash": "cbcbc22a77350391ee05b5a16ea6a421"
-  },
-  {
-    "file": "templates/kickstarter-summary.html",
-    "hash": "771b0983c16baa594ee0e548ab5dba37"
-  },
-  {
-    "file": "templates/kickstarter.html",
-    "hash": "b16661dfe3cb2874af703ec82fae1faa"
+    "hash": "7175d6afd23554931163c5a6b2a03c95"
   },
   {
     "file": "templates/map-view.html",
-    "hash": "bcca49eaa0276abe0ae42de143855e23"
+    "hash": "d2ef851ce6b4a62bcd7568fa10abaa6c"
   },
   {
     "file": "templates/privacy-policy.html",
-    "hash": "e7195717b4ffdb75269f674e6bcc5fa6"
+    "hash": "84b68f9c6dea024c2a0a6e57af7facf8"
   },
   {
     "file": "templates/route-detail.html",
-    "hash": "2301d72ed1a6d6af90afa553741c142b"
+    "hash": "90376eb1a56d1eddc933aa327b3df53f"
   },
   {
     "file": "templates/route-stops.html",
@@ -997,11 +881,15 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "15996daf9a56f8ef39dbcfffe18bf036"
+    "hash": "ca41eb6c9bf3e7a2cc093277974210f2"
+  },
+  {
+    "file": "templates/search.html",
+    "hash": "68f999ed1d480b0e9aae6440765903f8"
   },
   {
     "file": "templates/settings.html",
-    "hash": "badd49512debf369acbf792159573611"
+    "hash": "d79a1c932bf07deb611cab8182e50e06"
   },
   {
     "file": "templates/tab-booking-confirmation.html",
@@ -1013,30 +901,38 @@
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "b9659c01950086019d2c7c401504d1c7"
+    "hash": "bfaaaa3d9aff4ef5e07742f89af7b30a"
   },
   {
     "file": "templates/tab-lite-detail.html",
-    "hash": "7ca9f9e118d67876ec9653d9bb71c451"
+    "hash": "a4bc39b877ab726003de39ca92d29f5e"
   },
   {
     "file": "templates/tab-lite-more-info.html",
     "hash": "5e7c35367b74b8a83cb1bee6db250c5e"
   },
   {
+    "file": "templates/tab-purchase-route-pass.html",
+    "hash": "b03e83e0170eed7ec830bb98ef6d986c"
+  },
+  {
     "file": "templates/tabs.html",
-    "hash": "c918355200e362df8e1dc0c6515bc7bd"
+    "hash": "c09b720a4d6ee7f0cf2cbe41c064676a"
   },
   {
     "file": "templates/terms-of-use.html",
-    "hash": "322d33e2e275cbd3fe01fe32a52b2023"
+    "hash": "1bc2e5ca774e530b3b79f6b4ebb82317"
   },
   {
     "file": "templates/tickets.html",
-    "hash": "4c47f70c3cbe21b3539bb509e23ecd6c"
+    "hash": "2322704a6862ccec562bd7de4302ef9e"
   },
   {
-    "file": "templates/welcome.html",
-    "hash": "627ea573fbbabdfcb9871f9edee819ea"
+    "file": "templates/your-suggestion-detail.html",
+    "hash": "b93dd28c264b39b4351cd44c5a20ff57"
+  },
+  {
+    "file": "templates/your-suggestions.html",
+    "hash": "aeb9b260fb2ecce8741b32ecf7c10264"
   }
 ]

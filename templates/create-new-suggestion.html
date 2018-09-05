@@ -1,0 +1,42 @@
+<ion-view class="create-new-suggestion page-with-map">
+  <ion-nav-title>Suggest a route</ion-nav-title>
+  <ion-content scroll="false">
+
+    <div class="create-view">
+      <div class="from-to-bars stops-selector">
+        <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar"></location-search>
+        <button class="primary-button button button-clear switch-button activated" ng-click="swapFromTo()"> 
+          <i class="icon ion-arrow-swap"></i>
+        </button>
+        <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar"></location-search> 
+      </div>
+
+      <div class="stops-selector">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Arrive at
+          </div>
+          <select ng-model="data.selectedTimeIndex" data-tap-disabled="true" ng-change="onSelectedTimeChanged()">
+            <option value="" disabled selected hidden>Time at destination</option>
+            <option ng-repeat="t in disp.times" value={{$index}}>{{ t.format('h:mm a') }}</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="stops-selector week-checkbox">
+        <div ng-repeat="day in data.days">
+          <ion-label>{{day.text}}</ion-label>
+          <ion-checkbox ng-model="day.enabled"></ion-checkbox>
+        </div>
+      </div>
+
+      <button 
+        class="primary-button submit-btn" 
+        ng-click="submitSuggestion()" 
+        ng-disabled="!data.pickUpLocation || !data.dropOffLocation || !data.selectedTimeIndex || data.daysInvalid">
+        Submit
+      </button>
+    </div>
+
+  </ion-content>
+</ion-view>

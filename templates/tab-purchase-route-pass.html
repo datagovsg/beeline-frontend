@@ -1,0 +1,162 @@
+<ion-view view-title="Buy Route Pass">
+  <ion-content class="purchase-route-pass">
+
+    <section class="card">
+      <h3 class="item card-title">
+        Discount Package
+      </h3>
+      <div class="item item-text-wrap">
+
+
+        <div ng-if="book.priceSchedules" class="radios">
+          <ion-radio ng-repeat="schedule in book.priceSchedules" ng-model="book.routePassChoice" class="item-text-wrap item-icon-left" icon="icon ion-ios-checkmark" ng-value="$index">
+            <i class="icon ion-ios-circle-outline not-selected" ng-show="book.routePassChoice !== $index"></i>
+            
+            <div class="left">
+              <div class="schedule-info">
+                {{schedule.quantity}} passes
+              </div>
+            </div>
+
+            <div class="right">
+              <div class="schedule-price original-price">
+                <div class="price">
+                  <div id="dollar">$</div> <div id="number">{{book.originalPriceSchedule.unitPrice | floatRoundUp | number:2}}</div>
+                </div>
+              </div>
+
+              <div class="schedule-price">
+                <div class="price">
+                  <div id="dollar">$</div> <div id="number">{{schedule.unitPrice | floatRoundUp | number:2}}</div>
+                </div>
+                <div id="trip">per pass</div>
+              </div>
+            </div>
+          </ion-radio>
+        </div>
+
+        <div ng-if="!book.priceSchedules" class="spinner text-center">
+          <ion-spinner icon="ios"></ion-spinner>
+        </div>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <section class="card">
+      <h3 class="item card-title">
+        Payment
+      </h3>
+      <div class="item item-text-wrap">
+        <div ng-if="book.priceSchedules" class="payment">
+
+          <div class="price-calc">
+            <div>{{book.selectedPriceSchedule.quantity}} Route Passes x ${{ book.selectedPriceSchedule.unitPrice | floatRoundUp | number: 2 }}</div>
+            <div>${{ book.routePassPrice | number: 2 }}</div>
+          </div>
+
+          <div class="total price-calc">
+            <div class="total-text">Total</div>
+            <div class="total-price">${{ book.routePassPrice | number: 2 }}</div>
+          </div>
+        </div>
+
+        <div ng-if="!book.priceSchedules" class="spinner text-center">
+          <ion-spinner icon="ios"></ion-spinner>
+        </div>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <section class="card">
+      <h3 class="item card-title">
+        Terms and Conditions
+      </h3>
+      <div class="item item-text-wrap">
+        <div class="check-terms">
+          <div class="item item-text-wrap text-center" ng-if="!routePassTerms.error && !routePassTerms.html">
+            <p class="padding-bottom">
+              Loading...
+            </p>
+            <ion-spinner icon="ios"></ion-spinner>
+          </div>
+          <div class="item item-text-wrap" ng-if="routePassTerms.error">
+            <i class="icon ion-alert-circled"></i> There was a problem loading the terms and conditions. Please check your Internet connection.
+          </div>
+          <div class="item-text-wrap features tnc" ng-bind-html="routePassTerms.html"></div>
+        </div>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <section class="card">
+      <div class="item item-text-wrap">
+        <div class="booking-checkbox">
+          <ion-checkbox class="checkbox-text item-text-wrap" ng-model="book.acceptPolicy">
+            I have read and agree to the above terms and would like to proceed.
+          </ion-checkbox>
+        </div>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <section class="card" ng-if="!book.hasSavedPaymentInfo && book.user">
+      <div class="item item-text-wrap">
+        <div class="booking-checkbox">
+          <ion-checkbox class="checkbox-text item-text-wrap" ng-model="book.savePaymentChecked">
+            Yes, I want to save this payment method for fast checkout in the future.
+          </ion-checkbox>
+        </div>
+      </div>
+      <div class="item-divider no-text"></div>
+    </section>
+
+    <section class="card">
+      <div class="item item-text-wrap item-no-title">
+        <div class="buttons">
+          <!-- BUY TICKET BUTTON -->
+          <!-- Note that book.routePassChoice === null is not the same as
+                !book.routePassChoice because when book.routePassChoice is 0
+                one is truthy and one is falsey
+           -->
+          <div ng-if="book.user">
+            <div class="warning-text" ng-if="!book.acceptPolicy || book.isProcessing || book.routePassChoice === null">
+              Please accept the terms and conditions before purchasing
+            </div>
+            <div class="warning-text" ng-if="!(!book.acceptPolicy || book.isProcessing || book.routePassChoice === null) && book.hasSavedPaymentInfo">
+              This payment will be charged to your <b>{{book.brand}}</b>
+              ending in <b>{{book.last4Digits}}</b>.
+            </div>
+            <div class="warning-text" ng-if="!(!book.acceptPolicy || book.isProcessing || book.routePassChoice === null) && !book.hasSavedPaymentInfo">
+              Please ensure that your credit card is ready for the next step in the booking process.
+            </div>
+
+            <button class="primary-button button" ng-click="proceed()"
+                    ng-disabled="!book.acceptPolicy || book.isProcessing || book.routePassChoice === null">
+              <span ng-if="!book.hasSavedPaymentInfo">Proceed</span>
+              <span ng-if="book.hasSavedPaymentInfo">Confirm and Pay</span>
+            </button>
+
+            <div class="text-link-div">
+              <a ng-class="(!book.acceptPolicy || book.isProcessing) ? 'text-link-disabled' : ''"
+                  ng-click="proceed(true)">
+                  Use a different card for this payment
+              </a>
+            </div>
+
+          </div>
+
+          <!-- LOGIN BUTTON -->
+          <div ng-if="!book.user">
+            <div class="warning-text">
+              Please log in to proceed
+            </div>
+            <button class="primary-button button" ng-click="login()"
+                    ng-if="!book.user">
+              Log In
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ion-content>
+</ion-view>

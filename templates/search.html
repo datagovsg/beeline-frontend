@@ -1,0 +1,47 @@
+<ion-view class="search-page">
+  <ion-nav-title>Search Routes</ion-nav-title>
+  <ion-content scroll="false">
+    <div class="search-input-bar">
+      <div class="location-search item item-icon-left">
+        <i class="icon pickup-stop" ng-if="disp.type === 'pickup'"></i>
+        <i class="icon dropoff-stop" ng-if="disp.type === 'dropoff'"></i>
+        <div class="input-box">
+          <input
+            placeholder="{{ disp.placeholder }}" 
+            ng-model="data.searchInput"
+            >
+        </div>
+        <ion-spinner ng-show="disp.isFiltering"></ion-spinner>
+        <i
+          ng-show="!disp.isFiltering && data.searchInput"
+          class="ion-android-close"
+          on-tap="clearInput()"
+        ></i>
+      </div>
+    </div>
+
+    <ion-content scroll="true" class="search-results">
+      <div
+        ng-repeat="result in disp.results"
+        class="item location-result"
+        on-tap="select(result)"
+      >
+        {{ result.ADDRESS }}
+      </div>
+      <div ng-if="!data.searchInput">
+        <div
+          class="item item-divider"
+        >
+          Popular Searches
+        </div>
+        <div
+          ng-repeat="result in data.defaultResults"
+          class="item location-result"
+          on-tap="select(result)"
+        >
+          {{ result.ADDRESS || result }}
+        </div>
+      </div>
+    </ion-content>
+  </ion-content>
+</ion-view>

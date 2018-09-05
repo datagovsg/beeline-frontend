@@ -25,7 +25,7 @@
       <div class="text-center">
         <ion-spinner ng-show="book.isVerifying"></ion-spinner>
       </div>
-      <div class="item feedback">{{book.feedback}}</div>
+      <div class="item feedback assertive item-text-wrap">{{book.feedback}}</div>
 
       <div class="item-divider no-text"></div>
     </section>
@@ -43,11 +43,11 @@
     </section>
 
 
-    <section class="card">
+    <section class="card" id="priceCalc">
       <h3 class="item card-title">
         Payment
       </h3>
-      <price-calculator id="priceCalc" class="item" booking="book" price="book.price">
+      <price-calculator class="item" booking="book" price="book.price">
       </price-calculator>
       <div class="item-divider no-text"></div>
     </section>
@@ -64,7 +64,7 @@
       </div>
       <div class="item-divider no-text"></div>
 
-      <div ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase">
+      <div ng-if="!book.hasSavedPaymentInfo && !disp.zeroDollarPurchase && isLoggedIn">
         <div class="item booking-checkbox">
           <ion-checkbox
             class="checkbox-text item-text-wrap"
@@ -76,66 +76,51 @@
       </div>
     </section>
 
-    <section class="card"
-             ng-if="!isLoggedIn">
-      <div class="item item-text-wrap">
-        You are not logged in. Please enter your mobile number to complete booking.
-
-        <button class="button primary-button"
-                ng-click="login()"
-                ng-disabled="!disp.termsChecked || isPaymentProcessing">
-          Log In
-        </button>
-      </div>
-    </section>
-
-    <section class="card"
-             ng-if="isLoggedIn && book.hasInvalidDate">
-      <div class="item item-text-wrap assertive">
-        You have invalid booking dates. Please re-select your dates.
-      </div>
-    </section>
-
-    <section ng-if="isLoggedIn && disp.zeroDollarPurchase"
-             class="card">
-      <div class="item">
-        <button class="button primary-button"
-                ng-click="payHandler()"
-                ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating">
-          Complete purchase
-        </button>
-      </div>
-    </section>
-
-    <section class="card"
-             ng-if="!disp.zeroDollarPurchase">
-      <div class="item item-text-wrap"
-               ng-if="isLoggedIn && !book.hasSavedPaymentInfo">
-        Please ensure that your credit card is ready for the next step in the booking process.
-        <button class="button primary-button"
-                ng-click="payHandler()"
-                ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating || book.price===undefined">
-          Confirm and Pay
-        </button>
-      </div>
-
-      <div class="card"
-               ng-if="isLoggedIn && book.hasSavedPaymentInfo">
-        <div class="item item-text-wrap">
-          This payment will be charged to your <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b>
-          ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>.
-
-          <button class="button primary-button"
-                  ng-click="payHandler()"
-                  ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating || book.price===undefined">
-            Confirm and Pay
-          </button>
-          <div class="text-link-div">
-            <a ng-class="(!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating) ? 'text-link-disabled' : ''"
-                ng-click="payHandler(true)">
-                Use a different card for this payment
-            </a>
+    <section class="card">
+      <div class="item item-text-wrap item-no-title">
+        <div class="buttons">
+          <!-- BUY TICKET BUTTON -->
+          <!-- Note that book.routePassChoice === null is not the same as
+                !book.routePassChoice because when book.routePassChoice is 0
+                one is truthy and one is falsey
+           -->
+          <div ng-if="isLoggedIn">
+            <div class="warning-text assertive" ng-if="isLoggedIn && book.hasInvalidDate">
+              You have invalid booking dates. Please re-select your dates.
+            </div>
+            <div class="warning-text" ng-if="isLoggedIn && !book.hasInvalidDate && !disp.termsChecked">
+              Please accept the terms and conditions before purchasing
+            </div>
+            <div class="warning-text" ng-if="isLoggedIn && !book.hasInvalidDate && disp.termsChecked && book.hasSavedPaymentInfo"> 
+              This payment will be charged to your <b>{{user.savedPaymentInfo.sources.data[0].brand}}</b> ending in <b> {{user.savedPaymentInfo.sources.data[0].last4}} </b>.
+            </div>
+            <div class="warning-text" ng-if="isLoggedIn && !book.hasInvalidDate && disp.termsChecked && !book.hasSavedPaymentInfo">
+              Please ensure that your credit card is ready for the next step in the booking process.
+            </div>
+            <button class="primary-button button" ng-click="payHandler()"
+                    ng-disabled="!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating || book.price===undefined">
+              <span ng-if="!book.hasSavedPaymentInfo">Complete purchase</span>
+              <span ng-if="book.hasSavedPaymentInfo">Confirm and Pay</span>
+            </button>
+            <div class="text-link-div">
+              <a ng-class="(!disp.termsChecked || isPaymentProcessing || book.hasInvalidDate || isPreviewCalculating) ? 'text-link-disabled' : ''"
+                  ng-click="payHandler(true)">
+                  Use a different card for this payment
+              </a>
+            </div>
           </div>
+
+          <!-- LOGIN BUTTON -->
+          <div ng-if="!isLoggedIn">
+            <div class="warning-text">
+              Please log in to proceed
+            </div>
+            <button class="primary-button button" ng-click="login()"
+                    ng-if="!book.user">
+              Log In
+            </button>
+          </div>
+
         </div>
       </div>
     </section>

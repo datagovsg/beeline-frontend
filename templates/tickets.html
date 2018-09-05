@@ -1,4 +1,4 @@
-<ion-view class="tickets" view-title="Tickets">
+<ion-view class="tickets" view-title="Your Tickets" hide-back-button="true">
   <ion-nav-buttons side="left">
     <menu-hamburger></menu-hamburger>
   </ion-nav-buttons>
@@ -56,7 +56,7 @@
          ng-repeat="ticket in tickets.today"
          on-tap="popupTicketModal(ticket)">
         <b>{{ ticket.boardStop.trip.route.label }}</b>
-        <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> <span class="time">{{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}</span>
+        <span class="date">{{ ticket.boardStop.time | date:'EEE, d MMM y' : '+0800' }}</span> <span class="time">{{ ticket.boardStop.time | date:'h:mm a' : '+0800' | lowercase }}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </button>
       <div ng-if="tickets.soon.length > 0"
@@ -66,7 +66,7 @@
          ng-repeat="ticket in tickets.soon"
          on-tap="popupTicketModal(ticket)">
          <b>{{ ticket.boardStop.trip.route.label }}</b>
-        <span class="date">{{ ticket.boardStop.time | date:'d MMM y' : '+0800' }}</span> {{ ticket.boardStop.time | date:'h:mm a' : '+0800' }}
+        <span class="date">{{ ticket.boardStop.time | date:'EEE, d MMM y' : '+0800' }}</span> <span class="time">{{ ticket.boardStop.time | date:'h:mm a' : '+0800' | lowercase }}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
     </div>
