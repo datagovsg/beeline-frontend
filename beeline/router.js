@@ -40,8 +40,21 @@ export default [
         url: '/routes',
         views: {
           menuContent: {
-            templateUrl: 'templates/routes-list.html',
-            controller: 'RoutesListController',
+            templateUrl: 'templates/routes-search.html',
+            controller: 'RoutesSearchController',
+          },
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'MapViewController',
+          },
+        },
+      })
+      .state('tabs.routes-search-list', {
+        url: '/routes/search?fromLat&fromLng&toLat&toLng',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/routes-search-list.html',
+            controller: 'RoutesSearchListController',
           },
         },
       })

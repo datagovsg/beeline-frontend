@@ -201,6 +201,14 @@ app
     require('./controllers/CrowdstartSummaryController.js').default
   )
   .controller(
+    'RoutesSearchController',
+    require('./controllers/RoutesSearchController.js').default
+  )
+  .controller(
+    'RoutesSearchListController',
+    require('./controllers/RoutesSearchListController.js').default
+  )
+  .controller(
     'TabsController',
     require('./controllers/TabsController.js').default
   )

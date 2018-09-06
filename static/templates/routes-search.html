@@ -1,0 +1,26 @@
+<ion-view class="create-new-suggestion page-with-map">
+  <ion-nav-buttons side="left">
+    <menu-hamburger></menu-hamburger>
+  </ion-nav-buttons>
+  <ion-nav-title>Search Routes</ion-nav-title>
+  <ion-content scroll="false">
+
+    <div class="create-view">
+      <div class="from-to-bars stops-selector">
+        <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar"></location-search>
+        <button class="primary-button button button-clear switch-button activated" ng-click="swapFromTo()"> 
+          <i class="icon ion-arrow-swap"></i>
+        </button>
+        <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar"></location-search> 
+      </div>
+
+      <button 
+        class="primary-button submit-btn" 
+        ng-click="search()" 
+        ng-disabled="!data.pickUpLocation && !data.dropOffLocation">
+        Search
+      </button>
+    </div>
+
+  </ion-content>
+</ion-view>
