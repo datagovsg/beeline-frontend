@@ -4,8 +4,10 @@ angular.module('beeline').factory('SuggestionService', [
   'RequestService',
   'UserService',
   'OneMapPlaceService',
-  function SuggestionService (RequestService, UserService, OneMapPlaceService) {
+  'CrowdstartService',
+  function SuggestionService (RequestService, UserService, OneMapPlaceService, CrowdstartService) {
     let suggestions
+    let routes
     let createdSuggestion
 
     function convertDaysToBinary (days) {
@@ -99,7 +101,6 @@ angular.module('beeline').factory('SuggestionService', [
       },
 
       fetchUserSuggestions: function () {
-        let user = UserService.getUser()
         return RequestService.beeline({
           method: 'GET',
           url: '/suggestions',
@@ -136,8 +137,18 @@ angular.module('beeline').factory('SuggestionService', [
         return RequestService.beeline({
           method: 'GET',
           url: `/suggestions/${suggestionId}/suggested_routes`,
-        }).then(response => {
-          return response.data
+        }).then(async response => {
+          routes = []
+
+          const promises = response.data.map(async r => {
+            // FIXME
+            // const route = await CrowdstartService.getPrivateCrowdstartById(r.routeId)
+            const route = await CrowdstartService.getCrowdstartById(1503)
+            routes.push(route)
+          })
+          await Promise.all(promises)
+
+          return routes
         })
       },
 
