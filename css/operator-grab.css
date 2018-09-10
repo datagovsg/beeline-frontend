@@ -10134,39 +10134,6 @@ textarea {
       min-height: 94%;
       top: 3%; } }
 
-ui-view.ng-enter, ui-view.ng-leave {
-  position: absolute;
-  left: 0;
-  right: 0;
-  -webkit-transition: all .5s ease-in-out;
-  -moz-transition: all .5s ease-in-out;
-  -o-transition: all .5s ease-in-out;
-  transition: all .5s ease-in-out; }
-
-ui-view.ng-enter {
-  opacity: 0;
-  -webkit-transform: scale3d(0.5, 0.5, 0.5);
-  -moz-transform: scale3d(0.5, 0.5, 0.5);
-  transform: scale3d(0.5, 0.5, 0.5); }
-
-ui-view.ng-enter-active {
-  opacity: 1;
-  -webkit-transform: scale3d(1, 1, 1);
-  -moz-transform: scale3d(1, 1, 1);
-  transform: scale3d(1, 1, 1); }
-
-ui-view.ng-leave {
-  opacity: 1;
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0); }
-
-ui-view.ng-leave-active {
-  opacity: 0;
-  -webkit-transform: translate3d(100px, 0, 0);
-  -moz-transform: translate3d(100px, 0, 0);
-  transform: translate3d(100px, 0, 0); }
-
 .has-error {
   padding: 10px;
   margin: 10px 0;
@@ -10316,6 +10283,43 @@ animated-placeholder {
           width: 40%; }
       .preorder-pass .route-pass-body .pass-additional .pass-condition {
         margin-top: 20px; }
+
+.from-to-bars {
+  display: flex;
+  flex-direction: column; }
+  .from-to-bars .location-search {
+    padding-right: 47px; }
+
+.pickup-location-bar .location-search {
+  border-radius: 8px 8px 0px 0px;
+  border-bottom: 1px solid #e8e8e8; }
+
+.dropoff-location-bar .location-search {
+  margin-top: 1px;
+  border-radius: 0px 0px 8px 8px; }
+
+.switch-container {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 100;
+  background: white;
+  padding: 26px 16px; }
+  .switch-container .switch-button {
+    border: none;
+    overflow: hidden;
+    background: none;
+    padding: 0px;
+    transition: transform 0.2s linear; }
+    .switch-container .switch-button.animate-rotate1 {
+      transform: rotate(270deg); }
+    .switch-container .switch-button.animate-rotate2 {
+      transform: rotate(90deg); }
+    .switch-container .switch-button .ion-arrow-swap {
+      font-size: 20px; }
+
+.test {
+  top: 0px; }
 
 .lite-route-stop {
   display: flex; }
@@ -11608,35 +11612,6 @@ ui-gmap-google-map {
   .routes-view .search-container .search-inputs {
     flex-grow: 1;
     width: 100%; }
-    .routes-view .search-container .search-inputs .from-to-bars {
-      display: flex;
-      flex-direction: column; }
-      .routes-view .search-container .search-inputs .from-to-bars .location-search {
-        padding-right: 47px; }
-    .routes-view .search-container .search-inputs .pickup-location-bar .location-search {
-      border-radius: 8px 8px 0px 0px;
-      border-bottom: 1px solid #e8e8e8; }
-    .routes-view .search-container .search-inputs .dropoff-location-bar .location-search {
-      margin-top: 1px;
-      border-radius: 0px 0px 8px 8px; }
-    .routes-view .search-container .search-inputs .switch-container {
-      position: absolute;
-      right: 4px;
-      z-index: 100;
-      background: white;
-      padding: 26px 16px; }
-      .routes-view .search-container .search-inputs .switch-container .switch-button {
-        border: none;
-        overflow: hidden;
-        background: none;
-        padding: 0px;
-        transition: transform 0.2s linear; }
-        .routes-view .search-container .search-inputs .switch-container .switch-button.animate-rotate1 {
-          transform: rotate(270deg); }
-        .routes-view .search-container .search-inputs .switch-container .switch-button.animate-rotate2 {
-          transform: rotate(90deg); }
-        .routes-view .search-container .search-inputs .switch-container .switch-button .ion-arrow-swap {
-          font-size: 20px; }
   .routes-view .search-container .search-toggle {
     display: flex;
     margin-left: 10px; }
@@ -11991,32 +11966,6 @@ suggestion-item {
     top: 40px; }
   .create-new-suggestion ion-content .stops-selector:nth-child(3) {
     top: 60px; }
-  .create-new-suggestion ion-content .from-to-bars {
-    display: flex;
-    flex-direction: column; }
-    .create-new-suggestion ion-content .from-to-bars .location-search {
-      padding-right: 47px; }
-    .create-new-suggestion ion-content .from-to-bars .pickup-location-bar .location-search {
-      border-radius: 6px 6px 0px 0px; }
-    .create-new-suggestion ion-content .from-to-bars .dropoff-location-bar {
-      margin-top: -32px; }
-      .create-new-suggestion ion-content .from-to-bars .dropoff-location-bar .location-search {
-        border-radius: 0px 0px 6px 6px; }
-    .create-new-suggestion ion-content .from-to-bars .switch-button {
-      padding: 0px;
-      width: 0px;
-      margin-top: -21px;
-      margin-right: -2px;
-      color: #00B140;
-      transform: rotate(90deg);
-      background: white; }
-      .create-new-suggestion ion-content .from-to-bars .switch-button.activated {
-        opacity: 1; }
-      .create-new-suggestion ion-content .from-to-bars .switch-button:active {
-        border-bottom: none;
-        box-shadow: none; }
-      .create-new-suggestion ion-content .from-to-bars .switch-button .ion-arrow-swap :before {
-        line-height: 20px; }
   .create-new-suggestion ion-content .week-checkbox {
     display: flex;
     background: #fff; }
