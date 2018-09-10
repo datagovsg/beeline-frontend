@@ -1,56 +1,28 @@
-<ion-view class="routes-view" view-title={{disp.title}} hide-back-button="true">
+<ion-view class="routes-view" view-title="Your Routes" hide-back-button="true">
   <ion-nav-buttons side="left">
     <menu-hamburger></menu-hamburger>
   </ion-nav-buttons>
-  <ion-content scroll="false">
-    <div class="search-container" ng-if="!disp.yourRoutes">
-
-      <div class="search-inputs">
-        <!-- Search Filter  -->
-        <search-input ng-if="!disp.searchFromTo" query-text="data.queryText" is-filtering="data.isFiltering" ph="Search"
-          ng-if="!disp.yourRoutes"></search-input>
-
-        <div ng-if="disp.searchFromTo" class="from-to-bars">
-          <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar" input-id="'pickup-input'" is-filtering="data.isFiltering"></location-search>
-          <from-to-bars drop-off-location="data.dropOffLocation" pick-up-location="data.pickUpLocation"></from-to-bars>
-          <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar" input-id="'dropoff-input'" is-filtering="data.isFiltering"></location-search>
-        </div>
+  <!-- Scrollable routes list -->
+  <ion-content class="scrollable-routes-list">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="refreshRoutes(true)"
+    ></ion-refresher>
+    <ion-list>
+      <!-- Error message if problem getting routes data -->
+      <div class="item item-text-wrap" ng-if="error">
+        <i class="icon ion-alert-circled"></i>
+        There was a problem fetching the routes from the server.
+        Please try again later and let us know at <!--email_off-->feedback@beeline.sg<!--/email_off--> if the problem persists.
       </div>
-
-      <div class="search-toggle" ng-if="false">
-        <button class="primary-button button" ng-click="toggleSearch()"> 
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
-
-    </div>
-    <!-- Scrollable routes list -->
-    <ion-content ng-class="{'from-to': !disp.yourRoutes && disp.searchFromTo, 'one-search': !disp.yourRoutes && !disp.searchFromTo}" class="scrollable-routes-list">
-
-      <ion-refresher
-        pulling-text="Pull to refresh..."
-        on-refresh="refreshRoutes(true)"
-      ></ion-refresher>
-
-      <ion-list>
-        <!-- Error message if problem getting routes data -->
-        <div class="item item-text-wrap" ng-if="error">
-          <i class="icon ion-alert-circled"></i>
-          There was a problem fetching the routes from the server.
-          Please try again later and let us know at <!--email_off-->feedback@beeline.sg<!--/email_off--> if the problem persists.
-        </div>
-        <!-- repeat 5 times -->
-        <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="!data.routesAvailable">
-          <animated-route></animated-route>
-        </ion-item>
-        <!-- Your Routes list -->
-        <your-routes-list></your-routes-list>
-        <!-- Routes list -->
-        <routes-list></routes-list>
-      </ion-list>
-
-    </ion-content>
-
+      <!-- repeat 5 times -->
+      <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="!data.routesAvailable">
+        <animated-route></animated-route>
+      </ion-item>
+      <!-- Your Routes list -->
+      <your-routes-list></your-routes-list>
+      <!-- Routes list -->
+      <!-- <routes-list></routes-list> -->
+    </ion-list>
   </ion-content>
-
 </ion-view>

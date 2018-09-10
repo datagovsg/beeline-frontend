@@ -565,7 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "e5e2779607fcd99d10689bd8525089b7"
+    "hash": "f044af4cada0ae3de126b2a0902a07db"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
@@ -881,7 +881,7 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "7826b913f92c28fcbaed0ae3256ab5ce"
+    "hash": "152189542501b2738c176b906ce93683"
   },
   {
     "file": "templates/routes-search-list.html",
