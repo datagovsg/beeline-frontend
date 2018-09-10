@@ -6,15 +6,23 @@
         <i class="icon ion-ios-arrow-back"></i>
     </button>
   </ion-nav-buttons>
+  
   <ion-content>
 
     <ion-item class="item-text-wrap">
-  <suggestion-item suggestion="data.suggestion"></suggestion-item>
+      <suggestion-item suggestion="data.suggestion"></suggestion-item>
     </ion-item>
+
     <ion-item>
-      <span>Route yet to be generated!</span>
-      <!-- <span class="header">Generated route</span> -->
-      <!-- <crowdstart-route route="{label: '123'}"></crowdstart-route> -->
+      <span ng-if="!data.routes">Route yet to be generated!</span>
+      <div ng-if="data.routes">
+        <span class="header">Generated route</span>
+        <crowdstart-route
+          ng-repeat="route in data.routes" 
+          route="route" 
+          ui-sref="tabs.crowdstart-detail({ routeId: route.id })">
+        </crowdstart-route>
+      </div>
     </ion-item>
 
     <div class="delete">
