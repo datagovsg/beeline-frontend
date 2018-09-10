@@ -10315,6 +10315,9 @@ animated-placeholder {
       transform: rotate(270deg); }
     .switch-container .switch-button.animate-rotate2 {
       transform: rotate(90deg); }
+    .switch-container .switch-button.rotate {
+      transform: rotate(270deg);
+      transition: none; }
     .switch-container .switch-button .ion-arrow-swap {
       font-size: 20px; }
 
