@@ -565,7 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "a436e664009957f3bf6349f30f2701f8"
+    "hash": "e5e2779607fcd99d10689bd8525089b7"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
@@ -845,7 +845,7 @@
   },
   {
     "file": "templates/create-new-suggestion.html",
-    "hash": "9bc636090392d64451eb6c85f967dbbf"
+    "hash": "4f7bf3f3e2e2fd2daf4a353fb0199d6d"
   },
   {
     "file": "templates/crowdstart-detail.html",
@@ -881,7 +881,7 @@
   },
   {
     "file": "templates/routes-list.html",
-    "hash": "ca41eb6c9bf3e7a2cc093277974210f2"
+    "hash": "7826b913f92c28fcbaed0ae3256ab5ce"
   },
   {
     "file": "templates/routes-search-list.html",

@@ -12,11 +12,7 @@
 
         <div ng-if="disp.searchFromTo" class="from-to-bars">
           <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar" input-id="'pickup-input'" is-filtering="data.isFiltering"></location-search>
-          <div class="switch-container" ng-click="swapFromTo()">
-            <button class="switch-button" ng-class="{ 'animate-rotate1': disp.animate, 'animate-rotate2': !disp.animate }"> 
-              <i class="icon ion-arrow-swap"></i>
-            </button>
-          </div>
+          <from-to-bars drop-off-location="data.dropOffLocation" pick-up-location="data.pickUpLocation"></from-to-bars>
           <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar" input-id="'dropoff-input'" is-filtering="data.isFiltering"></location-search>
         </div>
       </div>
