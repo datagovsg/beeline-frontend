@@ -37,6 +37,13 @@
       </div>
       <div ng-if="!data.input">
         <div
+          ng-if="data.myLocation && data.myLocation.latitude && data.myLocation.longitude"
+          class="item location-result"
+          on-tap="selectMyLocation()"
+        >
+          Use my location
+        </div>
+        <div
           class="item item-divider"
         >
           Popular Searches

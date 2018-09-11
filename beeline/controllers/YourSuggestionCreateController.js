@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import moment from 'moment'
 
 export default [
@@ -129,6 +128,8 @@ export default [
           },
         }
         MapService.emit('board-stop-selected', { stop: stop })
+      } else {
+        MapService.emit('board-stop-selected', null)
       }
     })
 
@@ -144,24 +145,30 @@ export default [
           },
         }
         MapService.emit('alight-stop-selected', { stop: stop })
+      } else {
+        MapService.emit('alight-stop-selected', null)
       }
     })
 
     $scope.$watchGroup(
       ['data.pickUpLocation', 'data.dropOffLocation'],
       ([board, alight]) => {
-        if (!board || !alight) return
-        MapService.emit('draw-curved-path', {
-          board: {
-            lat: parseFloat(board.LATITUDE),
-            lng: parseFloat(board.LONGITUDE),
-          },
-          alight: {
-            lat: parseFloat(alight.LATITUDE),
-            lng: parseFloat(alight.LONGITUDE),
-          },
-        })
-      })
+        if (!board || !alight) {
+          MapService.emit('draw-curved-path', null)
+        } else {
+          MapService.emit('draw-curved-path', {
+            board: {
+              lat: parseFloat(board.LATITUDE),
+              lng: parseFloat(board.LONGITUDE),
+            },
+            alight: {
+              lat: parseFloat(alight.LATITUDE),
+              lng: parseFloat(alight.LONGITUDE),
+            },
+          })
+        }
+      }
+    )
 
     // ------------------------------------------------------------------------
     // UI Hooks
@@ -175,10 +182,6 @@ export default [
       $scope.data.days = $scope.data.days.map(d => {
         return { ...d, enabled: false }
       })
-    }
-
-    $scope.swapFromTo = function () {
-      [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [_.clone($scope.data.dropOffLocation), _.clone($scope.data.pickUpLocation)]
     }
 
     $scope.onSelectedTimeChanged = function () {

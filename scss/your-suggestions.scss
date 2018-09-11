@@ -191,53 +191,6 @@ suggestion-item {
     top: 60px;
   }
 
-  .from-to-bars {
-    display: flex;
-    flex-direction: column;
-
-    .location-search {
-      padding-right: 47px;
-    }
-
-    .pickup-location-bar {
-      .location-search {
-        border-radius: $search-bar-radius $search-bar-radius 0px 0px;
-      }
-    }
-  
-    .dropoff-location-bar {
-      margin-top: -32px;
-      .location-search {
-        border-radius: 0px 0px $search-bar-radius $search-bar-radius;
-      }
-    }
-  
-    .switch-button {
-      padding: 0px;
-      width: 0px;
-      margin-top: $search-height * -0.5;
-      margin-right: -2px;
-      color: $royal;
-      transform: rotate(90deg);
-      background: white;
-  
-      &.activated {
-        opacity: 1;
-      }
-  
-      &:active {
-        border-bottom: none;
-        box-shadow: none;
-      }
-  
-      .ion-arrow-swap {
-        :before {
-          line-height: 20px;
-        }
-      }
-    }
-  }
-
   .week-checkbox {
     display: flex;
     background: $light;

@@ -3,7 +3,7 @@ import _ from 'lodash'
 export default [
   '$scope',
   '$ionicSideMenuDelegate',
-  'MapOptions',
+  'MapUtilService',
   'SharedVariableService',
   'uiGmapGoogleMapApi',
   'UserService',
@@ -12,7 +12,7 @@ export default [
   function (
     $scope,
     $ionicSideMenuDelegate,
-    MapOptions,
+    MapUtilService,
     SharedVariableService,
     uiGmapGoogleMapApi,
     UserService,
@@ -38,7 +38,7 @@ export default [
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
-    $scope.map = MapOptions.defaultMapOptions({
+    $scope.map = MapUtilService.defaultMapOptions({
       busLocation: {
         coordinates: null,
         icon: null,
@@ -68,7 +68,7 @@ export default [
     })
 
     gmapIsReady.then(() => {
-      MapOptions.disableMapLinks()
+      MapUtilService.disableMapLinks()
     })
 
     uiGmapGoogleMapApi.then(googleMaps => {
@@ -91,7 +91,7 @@ export default [
 
     $scope.$watch('mapObject.stops', stops => {
       if (stops && stops.length > 0) {
-        const bounds = MapOptions.formBounds(stops)
+        const bounds = MapUtilService.formBounds(stops)
         if ($scope.map.control.getGMap) {
           const gmap = $scope.map.control.getGMap()
           google.maps.event.trigger(gmap, 'resize')

@@ -1,9 +1,10 @@
-import _ from 'lodash'
 
 export default [
   '$q',
   '$scope',
   '$state',
+  '$timeout',
+  '$ionicLoading',
   '$ionicPopup',
   'loadingSpinner',
   'MapService',
@@ -18,6 +19,8 @@ export default [
     $q,
     $scope,
     $state,
+    $timeout,
+    $ionicLoading,
     $ionicPopup,
     loadingSpinner,
     MapService,
@@ -31,6 +34,47 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
+    const updateMapStops = function updateMapStops (stopType) {
+      return (loc) => {
+        if (loc) {
+          const stop = {
+            coordinates: {
+              type: 'Point',
+              coordinates: [
+                parseFloat(loc.LONGITUDE),
+                parseFloat(loc.LATITUDE),
+              ],
+            },
+          }
+          MapService.emit(stopType, { stop: stop })
+        } else {
+          MapService.emit(stopType, null)
+        }
+      }
+    }
+
+    const updateMapCurvedPath = function updateMapCurvedPath ([board, alight]) {
+      if (!board || !alight) {
+        MapService.emit('draw-curved-path', null)
+      } else {
+        MapService.emit('draw-curved-path', {
+          board: {
+            lat: parseFloat(board.LATITUDE),
+            lng: parseFloat(board.LONGITUDE),
+          },
+          alight: {
+            lat: parseFloat(alight.LATITUDE),
+            lng: parseFloat(alight.LONGITUDE),
+          },
+        })
+      }
+    }
+
+    const redrawMapElements = function redrawMapElements () {
+      updateMapStops('board-stop-selected')($scope.data.pickUpLocation)
+      updateMapStops('alight-stop-selected')($scope.data.dropOffLocation)
+      updateMapCurvedPath([$scope.data.pickUpLocation, $scope.data.dropOffLocation])
+    }
 
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -43,89 +87,45 @@ export default [
     // ------------------------------------------------------------------------
     // Ionic events
     // ------------------------------------------------------------------------
-    // Reset all fields on leaving create-new-suggestion page
-    // after creating a new suggestion
-    $scope.$on('$ionicView.leave', function () {
-      $scope.resetSuggestion()
-    })
-
     $scope.$on('$ionicView.enter', function () {
       // Refresh routes on enter for routes in case we did something that
       // changed my routes e.g. unsubscribing lite route, booking a route,
       // withdrawing from crowdstart
       $scope.refreshRoutes(true)
+      redrawMapElements()
     })
 
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    $scope.$watch('data.pickUpLocation', loc => {
-      if (loc) {
-        const stop = {
-          coordinates: {
-            type: 'Point',
-            coordinates: [
-              parseFloat(loc.LONGITUDE),
-              parseFloat(loc.LATITUDE),
-            ],
-          },
-        }
-        MapService.emit('board-stop-selected', { stop: stop })
-      }
-    })
+    $scope.$watch('data.pickUpLocation', updateMapStops('board-stop-selected'))
 
-    $scope.$watch('data.dropOffLocation', loc => {
-      if (loc) {
-        const stop = {
-          coordinates: {
-            type: 'Point',
-            coordinates: [
-              parseFloat(loc.LONGITUDE),
-              parseFloat(loc.LATITUDE),
-            ],
-          },
-        }
-        MapService.emit('alight-stop-selected', { stop: stop })
-      }
-    })
+    $scope.$watch('data.dropOffLocation', updateMapStops('alight-stop-selected'))
 
     $scope.$watchGroup(
       ['data.pickUpLocation', 'data.dropOffLocation'],
-      ([board, alight]) => {
-        if (!board || !alight) return
-        MapService.emit('draw-curved-path', {
-          board: {
-            lat: parseFloat(board.LATITUDE),
-            lng: parseFloat(board.LONGITUDE),
-          },
-          alight: {
-            lat: parseFloat(alight.LATITUDE),
-            lng: parseFloat(alight.LONGITUDE),
-          },
-        })
-      })
+      updateMapCurvedPath
+    )
 
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    $scope.resetSuggestion = function () {
-      $scope.data.pickUpLocation = null
-      $scope.data.dropOffLocation = null
-    }
-
-    $scope.swapFromTo = function () {
-      [$scope.data.pickUpLocation, $scope.data.dropOffLocation] = [_.clone($scope.data.dropOffLocation), _.clone($scope.data.pickUpLocation)]
-    }
-
     $scope.search = function () {
       let pickUp = $scope.data.pickUpLocation
       let dropOff = $scope.data.dropOffLocation
-      $state.go('tabs.routes-search-list', {
-        fromLat: pickUp ? pickUp.LATITUDE : null,
-        fromLng: pickUp ? pickUp.LONGITUDE : null,
-        toLat: dropOff ? dropOff.LATITUDE : null,
-        toLng: dropOff ? dropOff.LONGITUDE : null,
+      $ionicLoading.show({
+        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Searching...</small>`,
       })
+
+      $timeout(() => {
+        $ionicLoading.hide()
+        $state.go('tabs.routes-search-list', {
+          fromLat: pickUp ? pickUp.LATITUDE : null,
+          fromLng: pickUp ? pickUp.LONGITUDE : null,
+          toLat: dropOff ? dropOff.LATITUDE : null,
+          toLng: dropOff ? dropOff.LONGITUDE : null,
+        })
+      }, 800)
     }
 
     // Manually pull the newest data from the server

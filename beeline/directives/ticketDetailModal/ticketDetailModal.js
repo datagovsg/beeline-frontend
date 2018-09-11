@@ -8,8 +8,8 @@ angular.module('beeline').directive('ticketDetailModal', [
   'TripService',
   'UserService',
   'RoutesService',
+  'MapUtilService',
   'MapService',
-  'MapOptions',
   'uiGmapGoogleMapApi',
   'MapViewFactory',
   function (
@@ -19,8 +19,8 @@ angular.module('beeline').directive('ticketDetailModal', [
     TripService,
     UserService,
     RoutesService,
+    MapUtilService,
     MapService,
-    MapOptions,
     uiGmapGoogleMapApi,
     MapViewFactory
   ) {
@@ -108,7 +108,7 @@ angular.module('beeline').directive('ticketDetailModal', [
 
         scope.vehicleId = null
 
-        scope.modalMap = MapOptions.defaultMapOptions({
+        scope.modalMap = MapUtilService.defaultMapOptions({
           zoom: 14,
           busLocation: {
             coordinates: null,
@@ -139,7 +139,7 @@ angular.module('beeline').directive('ticketDetailModal', [
         })
 
         gmapIsReady.then(() => {
-          MapOptions.disableMapLinks()
+          MapUtilService.disableMapLinks()
         })
 
         uiGmapGoogleMapApi.then(googleMaps => {

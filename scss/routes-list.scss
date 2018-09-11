@@ -1,5 +1,3 @@
-$search-bar-radius: 8px;
-$search-background-color: #e8e8e8;
 
 .routes-view {
   $search-height: 42px;
@@ -49,56 +47,6 @@ $search-background-color: #e8e8e8;
       flex-grow: 1;
       width: 100%;
 
-      .from-to-bars {
-        display: flex;
-        flex-direction: column;
-
-        .location-search {
-          padding-right: 47px;
-        }
-      }
-
-      .pickup-location-bar {
-        .location-search {
-          border-radius: $search-bar-radius $search-bar-radius 0px 0px;
-          border-bottom: 1px solid $search-background-color;
-        }
-      }
-
-      .dropoff-location-bar {
-        .location-search {
-          margin-top: 1px;
-          border-radius: 0px 0px $search-bar-radius $search-bar-radius;
-        }
-      }
-
-      .switch-container {
-        position: absolute;
-        right: 4px;
-        z-index: 100;
-        background: white;
-        padding: 26px 16px;
-
-        .switch-button {
-          border: none;
-          overflow: hidden;
-          background: none;
-          padding: 0px;
-          transition: transform 0.2s linear;
-
-          &.animate-rotate1 {
-            transform: rotate(270deg);
-          }
-
-          &.animate-rotate2 {
-            transform: rotate(90deg);
-          }
-
-          .ion-arrow-swap {
-            font-size: 20px;
-          }
-        }
-      }
     }
 
     .search-toggle {

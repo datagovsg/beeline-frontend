@@ -397,3 +397,9 @@ textarea {
     top: $modal-inset-margin-vertical;
   }
 }
+
+// Make the touch target larger for text links/buttons
+.text-link {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
