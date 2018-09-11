@@ -77,11 +77,11 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "58ee383d64a6d1b528f7e1d37fdcddc6"
+    "hash": "94d2209b5fef3f503822dbf46750cda2"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "33da2b93f9562c01c61742d139a458f5"
+    "hash": "c09d47acef60633451fe1086565f70aa"
   },
   {
     "file": "favicon-16x16.png",
@@ -565,7 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "bf55cb63057a88878053608ae0f3c793"
+    "hash": "0a9b7b5244808d6fc5ec9e5d52a3e4b7"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",

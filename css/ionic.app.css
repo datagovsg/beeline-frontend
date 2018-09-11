@@ -10134,6 +10134,10 @@ textarea {
       min-height: 94%;
       top: 3%; } }
 
+.text-link {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+
 .has-error {
   padding: 10px;
   margin: 10px 0;
