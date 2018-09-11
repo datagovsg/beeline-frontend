@@ -77,11 +77,11 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "94d2209b5fef3f503822dbf46750cda2"
+    "hash": "c945cba9fa9db70336564522ad558629"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "c09d47acef60633451fe1086565f70aa"
+    "hash": "f4f0f6765f49949100cba69b4fd82a94"
   },
   {
     "file": "favicon-16x16.png",
@@ -845,7 +845,7 @@
   },
   {
     "file": "templates/create-new-suggestion.html",
-    "hash": "4f7bf3f3e2e2fd2daf4a353fb0199d6d"
+    "hash": "3ae4b2a9bbbb007a32875d514d9c7c71"
   },
   {
     "file": "templates/crowdstart-detail.html",
@@ -925,7 +925,7 @@
   },
   {
     "file": "templates/tabs.html",
-    "hash": "19cb799f6a817a0a6ac428f434d74514"
+    "hash": "81f64cca7c57513f50c093c87ac0c851"
   },
   {
     "file": "templates/terms-of-use.html",

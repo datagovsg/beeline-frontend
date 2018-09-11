@@ -11797,6 +11797,8 @@ ui-gmap-google-map {
   flex-direction: column; }
   #tabs .left-menu-column a {
     color: white; }
+  #tabs .left-menu-column a.divider {
+    margin-bottom: 20px; }
   #tabs .left-menu-column .powered-by-beeline {
     margin-top: auto; }
     #tabs .left-menu-column .powered-by-beeline .item {
