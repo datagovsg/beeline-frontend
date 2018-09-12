@@ -94,6 +94,12 @@
   </p>
   <div ng-hide="suggestHide" class="item">
     Can't find a suitable route?</br>
-    <a href="#" ui-sref="tabs.create-new-suggestion" class="text-link">Suggest a new route</a>
+    <a
+      href="#"
+      ui-sref="tabs.create-new-suggestion({
+        pickUpLocation: data.pickUpLocation,
+        dropOffLocation: data.dropOffLocation,
+      })" 
+      class="text-link">Suggest a new route</a>
   </div>
 </div>

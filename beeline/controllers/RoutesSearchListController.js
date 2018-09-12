@@ -71,10 +71,10 @@ export default [
           parseFloat(dropOffLocation.LATITUDE),
         ] : null
 
-        if (pickUpLocation.LONGITUDE && pickUpLocation.LATITUDE) {
+        if (pickUpLocation && pickUpLocation.LONGITUDE && pickUpLocation.LATITUDE) {
           routes = SearchService.filterRoutesByLngLatAndType(routes, pickUpLngLat, 'board', maxDistance)
         }
-        if (dropOffLocation.LONGITUDE && dropOffLocation.LATITUDE) {
+        if (dropOffLocation && dropOffLocation.LONGITUDE && dropOffLocation.LATITUDE) {
           routes = SearchService.filterRoutesByLngLatAndType(routes, dropOffLngLat, 'alight', maxDistance)
         }
         return routes
@@ -88,20 +88,9 @@ export default [
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
-    let fromLat = $stateParams.fromLat ? Number($stateParams.fromLat) : null
-    let fromLng = $stateParams.fromLng ? Number($stateParams.fromLng) : null
-    let toLat = $stateParams.toLat ? Number($stateParams.toLat) : null
-    let toLng = $stateParams.toLng ? Number($stateParams.toLng) : null
-
     $scope.data = {
-      pickUpLocation: {
-        LONGITUDE: fromLng,
-        LATITUDE: fromLat,
-      },
-      dropOffLocation: {
-        LONGITUDE: toLng,
-        LATITUDE: toLat,
-      },
+      pickUpLocation: $stateParams.pickUpLocation,
+      dropOffLocation: $stateParams.dropOffLocation,
     }
 
     $scope.disp = {}

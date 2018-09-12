@@ -36,12 +36,19 @@
         {{ result.ADDRESS }}
       </div>
       <div ng-if="!data.input">
-        <div
-          ng-if="data.myLocation && data.myLocation.latitude && data.myLocation.longitude"
-          class="item location-result"
-          on-tap="selectMyLocation()"
-        >
-          Use my location
+        <div ng-if="data.myLocation">
+          <div
+            class="item item-divider"
+          >
+            Use My Location
+          </div>
+          <div
+            ng-if="data.myLocation"
+            class="item location-result"
+            on-tap="selectMyLocation()"
+          >
+            {{ data.myLocation.BUILDINGNAME || data.myLocation.ROAD }}
+          </div>
         </div>
         <div
           class="item item-divider"

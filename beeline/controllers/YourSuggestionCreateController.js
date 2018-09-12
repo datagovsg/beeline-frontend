@@ -3,6 +3,7 @@ import moment from 'moment'
 export default [
   '$scope',
   '$state',
+  '$stateParams',
   '$ionicPopup',
   'loadingSpinner',
   'MapService',
@@ -12,6 +13,7 @@ export default [
     // Angular Tools
     $scope,
     $state,
+    $stateParams,
     $ionicPopup,
     loadingSpinner,
     MapService,
@@ -49,8 +51,8 @@ export default [
     // Data Initialization
     // ------------------------------------------------------------------------
     $scope.data = {
-      pickUpLocation: null,
-      dropOffLocation: null,
+      pickUpLocation: $stateParams.pickUpLocation,
+      dropOffLocation: $stateParams.dropOffLocation,
       selectedTimeIndex: null,
       selectedTime: null,
       daysInvalid: true,

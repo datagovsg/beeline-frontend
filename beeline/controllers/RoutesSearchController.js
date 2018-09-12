@@ -120,10 +120,8 @@ export default [
       $timeout(() => {
         $ionicLoading.hide()
         $state.go('tabs.routes-search-list', {
-          fromLat: pickUp ? pickUp.LATITUDE : null,
-          fromLng: pickUp ? pickUp.LONGITUDE : null,
-          toLat: dropOff ? dropOff.LATITUDE : null,
-          toLng: dropOff ? dropOff.LONGITUDE : null,
+          pickUpLocation: pickUp,
+          dropOffLocation: dropOff,
         })
       }, 800)
     }

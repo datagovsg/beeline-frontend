@@ -50,12 +50,16 @@ export default [
         },
       })
       .state('tabs.routes-search-list', {
-        url: '/routes/search?fromLat&fromLng&toLat&toLng',
+        url: '/routes/search',
         views: {
           menuContent: {
             templateUrl: 'templates/routes-search-list.html',
             controller: 'RoutesSearchListController',
           },
+        },
+        params: {
+          pickUpLocation: null,
+          dropOffLocation: null,
         },
       })
       .state('tabs.yourRoutes', {
@@ -195,6 +199,10 @@ export default [
             templateUrl: 'templates/map-view.html',
             controller: 'MapViewController',
           },
+        },
+        params: {
+          pickUpLocation: null,
+          dropOffLocation: null,
         },
       })
 

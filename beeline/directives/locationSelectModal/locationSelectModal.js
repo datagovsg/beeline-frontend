@@ -107,7 +107,7 @@ angular.module('beeline').directive('locationSelectModal', [
 
         scope.$watch(() => MapUtilService.getMyLocation(),
           (myLocation) => {
-            scope.data.myLocation = myLocation
+            scope.data.myLocation = myLocation ? myLocation.location : null
           }
         )
 
@@ -132,12 +132,7 @@ angular.module('beeline').directive('locationSelectModal', [
         }
 
         scope.selectMyLocation = () => {
-          const myLocation = scope.data.myLocation
-          scope.select({
-            ADDRESS: 'My Location',
-            LATITUDE: myLocation.latitude,
-            LONGITUDE: myLocation.longitude,
-          })
+          scope.select(scope.data.myLocation)
         }
 
         scope.clearInput = () => {

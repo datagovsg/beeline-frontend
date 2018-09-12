@@ -17,18 +17,20 @@ angular.module('common').factory('OneMapPlaceService', [
       return result
     }
 
+    const transformPropertiesToLowercase = function transformPropertiesToLowercase (location) {
+      for (var prop in location) {
+        // Transform text to lower case. Use CSS to style appropriately
+        location[prop] = location[prop].toLowerCase()
+      }
+      return location
+    }
+
     const getAllResults = async function getAllResults (queryText) {
       let result = await makeQuery(queryText)
       if (!result || (result && result.found === 0)) {
         return null
       } else {
-        result.results = result.results.map(location => {
-          for (var prop in location) {
-            // Transform text to lower case. Use CSS to style appropriately
-            location[prop] = location[prop].toLowerCase()
-          }
-          return location
-        })
+        result.results = result.results.map(transformPropertiesToLowercase)
         return result
       }
     }
@@ -43,7 +45,8 @@ angular.module('common').factory('OneMapPlaceService', [
           method: 'GET',
           url: url + queryString,
         })
-        return result.GeocodeInfo[0]
+
+        return transformPropertiesToLowercase(result.GeocodeInfo[0])
       },
 
       async handleQuery (queryText) {
