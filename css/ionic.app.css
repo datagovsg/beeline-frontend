@@ -11498,7 +11498,7 @@ trip-code {
   .route-detail ion-content {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     top: auto;
     background-color: transparent !important; }
     @media (min-width: 1024px) {
@@ -11537,7 +11537,8 @@ trip-code {
       align-items: center;
       justify-content: center;
       background-color: #f8f8f8;
-      padding-top: 50px; }
+      padding-top: 50px;
+      padding-bottom: 10px; }
       .route-detail ion-content .booking-info span {
         margin-top: 6px;
         margin-bottom: 10px; }
@@ -11841,11 +11842,7 @@ ui-gmap-google-map {
   height: 100%; }
 
 suggestion-item {
-  display: flex;
   padding: 15px; }
-  suggestion-item .left {
-    flex: auto;
-    margin-right: 40px; }
   suggestion-item .day-badge {
     display: flex;
     flex-direction: row; }
@@ -11863,68 +11860,73 @@ suggestion-item {
       font-weight: 700; }
     suggestion-item .day-badge div.enabled {
       background: #4b3863; }
-  suggestion-item .stops {
-    display: block;
-    /* Determines the amount of vertical spacing
-        between the .bus-number and the stops */
-    margin-top: 12px;
-    position: relative;
-    flex: 1 1 auto; }
-    suggestion-item .stops .stop-icon {
-      /* this value depends on the width of the image -- leaving as a constant */
-      flex: 0 0 auto;
-      width: 8px;
-      height: 8px;
-      border-radius: 4px;
-      margin-top: 7.5px;
-      margin-right: 7.5px; }
-    suggestion-item .stops .start .stop-icon {
-      background: #00C4A5;
-      /*
-        we want line to be:
-            - the height of .start (=> height: 100%),
-            - displace the left of the line to the middle of the circle
-                the image is 10x10 hence left: 4px (to account for width=2px)
-            - .start is inline, so it's height = $line-height-computed.
-              Image is centered vertically => top = $line-height-computed / 2
-              N.B. overflow must be "visible" on .start for this to work
-            - positioned relative to the stop icon => .start { position: relative }
-      */ }
-    suggestion-item .stops .end .stop-icon {
-      background: #FF6C6A; }
-    suggestion-item .stops .start, suggestion-item .stops .end {
-      line-height: 1.42857;
-      position: relative;
-      white-space: normal;
-      display: flex; }
-      suggestion-item .stops .start .road, suggestion-item .stops .end .road {
-        text-transform: capitalize;
-        flex: 1 1 auto;
-        white-space: initial;
-        font-weight: 400;
-        color: #666; }
-    suggestion-item .stops .end {
-      margin-top: 10px;
-      margin-bottom: 10px; }
-  suggestion-item .icon-and-schedule {
-    margin-top: 0.5em;
-    font-weight: 400; }
-    suggestion-item .icon-and-schedule + .icon-and-schedule {
-      margin-top: 0em; }
-  suggestion-item .right {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    text-transform: uppercase; }
-    suggestion-item .right .value {
-      font-size: 40px;
-      line-height: 40px;
-      font-weight: 700;
-      margin-bottom: 5px; }
-    suggestion-item .right .suggestions {
-      color: #a9a9a9;
-      font-size: 12px; }
+  suggestion-item .suggestion-info {
+    display: flex; }
+    suggestion-item .suggestion-info .right {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      text-transform: uppercase; }
+      suggestion-item .suggestion-info .right .value {
+        font-size: 40px;
+        line-height: 40px;
+        font-weight: 700;
+        margin-bottom: 5px; }
+      suggestion-item .suggestion-info .right .suggestions {
+        color: #a9a9a9;
+        font-size: 12px; }
+    suggestion-item .suggestion-info .left {
+      flex: auto;
+      margin-right: 40px; }
+      suggestion-item .suggestion-info .left .stops {
+        display: block;
+        /* Determines the amount of vertical spacing
+            between the .bus-number and the stops */
+        margin-top: 12px;
+        position: relative;
+        flex: 1 1 auto; }
+        suggestion-item .suggestion-info .left .stops .stop-icon {
+          /* this value depends on the width of the image -- leaving as a constant */
+          flex: 0 0 auto;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          margin-top: 7.5px;
+          margin-right: 7.5px; }
+        suggestion-item .suggestion-info .left .stops .start .stop-icon {
+          background: #00C4A5;
+          /*
+            we want line to be:
+                - the height of .start (=> height: 100%),
+                - displace the left of the line to the middle of the circle
+                    the image is 10x10 hence left: 4px (to account for width=2px)
+                - .start is inline, so it's height = $line-height-computed.
+                  Image is centered vertically => top = $line-height-computed / 2
+                  N.B. overflow must be "visible" on .start for this to work
+                - positioned relative to the stop icon => .start { position: relative }
+          */ }
+        suggestion-item .suggestion-info .left .stops .end .stop-icon {
+          background: #FF6C6A; }
+        suggestion-item .suggestion-info .left .stops .start, suggestion-item .suggestion-info .left .stops .end {
+          line-height: 1.42857;
+          position: relative;
+          white-space: normal;
+          display: flex; }
+          suggestion-item .suggestion-info .left .stops .start .road, suggestion-item .suggestion-info .left .stops .end .road {
+            text-transform: capitalize;
+            flex: 1 1 auto;
+            white-space: initial;
+            font-weight: 400;
+            color: #666; }
+        suggestion-item .suggestion-info .left .stops .end {
+          margin-top: 10px;
+          margin-bottom: 10px; }
+      suggestion-item .suggestion-info .left .icon-and-schedule {
+        margin-top: 0.5em;
+        font-weight: 400; }
+        suggestion-item .suggestion-info .left .icon-and-schedule + .icon-and-schedule {
+          margin-top: 0em; }
 
 .your-suggestions .create-suggestion-btn {
   margin-top: 25px;
@@ -11961,6 +11963,8 @@ suggestion-item {
         padding-top: 60px; }
       .create-new-suggestion ion-content .create-view {
         background-color: #f8f8f8; } }
+  .create-new-suggestion ion-content .input-label {
+    font-size: 15px; }
   .create-new-suggestion ion-content .stops-selector {
     width: 90%;
     margin: auto;
@@ -11969,6 +11973,10 @@ suggestion-item {
     -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1); }
+    .create-new-suggestion ion-content .stops-selector label.item-select {
+      border-radius: 6px; }
+    .create-new-suggestion ion-content .stops-selector select {
+      padding-right: 40px; }
   .create-new-suggestion ion-content .stops-selector:nth-child(1) {
     top: 20px; }
   .create-new-suggestion ion-content .stops-selector:nth-child(2) {
@@ -11982,10 +11990,12 @@ suggestion-item {
       flex-basis: 100%; }
     .create-new-suggestion ion-content .week-checkbox ion-label {
       padding: 0;
+      padding-top: 3px;
       width: 100%;
       text-align: center; }
     .create-new-suggestion ion-content .week-checkbox label {
       padding: 0;
+      margin: 0;
       display: flex;
       flex-direction: column;
       border: none;
