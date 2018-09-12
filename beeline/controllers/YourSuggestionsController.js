@@ -29,13 +29,6 @@ export default [
       $scope.data.suggestions = suggestions
     })
 
-    // $scope.$watch(
-    //   () => UserService.getUser(),
-    //   user => {
-    //     SuggestionService.fetchSuggestions()
-    //   }
-    // )
-
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------

@@ -19,6 +19,64 @@ angular.module('beeline').factory('SuggestionService', [
       return sum
     }
 
+    UserService.userEvents.on('userChanged', () => {
+      fetchSuggestions()
+    })
+
+    const fetchSuggestions = async function () {
+      if (!UserService.getUser()) return
+      let userSuggestions = await fetchUserSuggestions()
+
+      // ----------------PARALLEL REQUESTS---------------- //
+      const promises = userSuggestions.map(async (sug, index) => {
+        const start = {
+          lat: sug.alight.coordinates[1],
+          lng: sug.alight.coordinates[0],
+        }
+        const end = {
+          lat: sug.board.coordinates[1],
+          lng: sug.board.coordinates[0],
+        }
+        const boardLocation = await OneMapPlaceService.reverseGeocode(start.lat, start.lng)
+        const alightLocation = await OneMapPlaceService.reverseGeocode(end.lat, end.lng)
+        const similar = await fetchSimilarSuggestions(start, end)
+        userSuggestions[index] = {
+          ...sug,
+          similar,
+          boardLocation,
+          alightLocation,
+        }
+      })
+
+      await Promise.all(promises)
+      suggestions = userSuggestions
+      return suggestions
+    }
+
+    const fetchUserSuggestions = function () {
+      return RequestService.beeline({
+        method: 'GET',
+        url: '/suggestions',
+      }).then(response => {
+        return response.data
+      })
+    }
+
+    const fetchSimilarSuggestions = function (start, end) {
+      let queryString = querystring.stringify({
+        startLat: start.lat,
+        startLng: start.lng,
+        endLat: end.lat,
+        endLng: end.lng,
+      })
+      return RequestService.beeline({
+        method: 'GET',
+        url: '/suggestions/web/similar?' + queryString,
+      }).then(response => {
+        return response.data.length
+      })
+    }
+
     return {
       createSuggestion: async function (alight, board, time, daysOfWeek) {
         let suggestion = await this.requestCreateNewSuggestion(
@@ -70,59 +128,9 @@ angular.module('beeline').factory('SuggestionService', [
         return suggestions
       },
 
-      fetchSuggestions: async function () {
-        if (!UserService.getUser()) return
-        let userSuggestions = await this.fetchUserSuggestions()
-
-        // ----------------PARALLEL REQUESTS---------------- //
-        const promises = userSuggestions.map(async (sug, index) => {
-          const start = {
-            lat: sug.alight.coordinates[1],
-            lng: sug.alight.coordinates[0],
-          }
-          const end = {
-            lat: sug.board.coordinates[1],
-            lng: sug.board.coordinates[0],
-          }
-          const boardLocation = await OneMapPlaceService.reverseGeocode(start.lat, start.lng)
-          const alightLocation = await OneMapPlaceService.reverseGeocode(end.lat, end.lng)
-          const similar = await this.fetchSimilarSuggestions(start, end)
-          userSuggestions[index] = {
-            ...sug,
-            similar,
-            boardLocation,
-            alightLocation,
-          }
-        })
-
-        await Promise.all(promises)
-        suggestions = userSuggestions
-        return suggestions
-      },
-
-      fetchUserSuggestions: function () {
-        return RequestService.beeline({
-          method: 'GET',
-          url: '/suggestions',
-        }).then(response => {
-          return response.data
-        })
-      },
-
-      fetchSimilarSuggestions: function (start, end) {
-        let queryString = querystring.stringify({
-          startLat: start.lat,
-          startLng: start.lng,
-          endLat: end.lat,
-          endLng: end.lng,
-        })
-        return RequestService.beeline({
-          method: 'GET',
-          url: '/suggestions/web/similar?' + queryString,
-        }).then(response => {
-          return response.data.length
-        })
-      },
+      fetchSuggestions: () => fetchSuggestions(),
+      fetchUserSuggestions: () => fetchUserSuggestions(),
+      fetchSimilarSuggestions: () => fetchSimilarSuggestions(),
 
       deleteSuggestion: function (suggestionId) {
         return RequestService.beeline({
