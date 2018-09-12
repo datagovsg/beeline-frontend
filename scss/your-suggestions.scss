@@ -197,6 +197,9 @@ suggestion-item {
 
     select {
       padding-right: 40px;
+      background: none;
+      width: 100%;
+      max-width: 100%;
     }
   }
 
@@ -220,7 +223,7 @@ suggestion-item {
   
     ion-label {
       padding: 0;
-      padding-top: 3px;
+      padding-top: 7px;
       width: 100%;
       text-align: center;
     }
@@ -240,6 +243,7 @@ suggestion-item {
         top: auto;
         left: auto;
         right: auto;
+        padding-top: 2px;
       }
     }
   }

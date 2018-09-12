@@ -53,7 +53,7 @@ export default [
     $scope.data = {
       pickUpLocation: $stateParams.pickUpLocation,
       dropOffLocation: $stateParams.dropOffLocation,
-      selectedTimeIndex: null,
+      selectedTimeIndex: '17', // 8.30 am
       selectedTime: null,
       daysInvalid: true,
     }

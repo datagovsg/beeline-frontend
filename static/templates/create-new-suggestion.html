@@ -12,10 +12,9 @@
       <div class="stops-selector">
         <label class="item item-input item-select">
           <div class="input-label">
-            Arrival to Destination
+            Destination Arrival Time
           </div>
           <select ng-model="data.selectedTimeIndex" data-tap-disabled="true" ng-change="onSelectedTimeChanged()">
-            <option value="" disabled selected hidden>Time</option>
             <option ng-repeat="t in disp.times" value={{$index}}>{{ t.format('h:mm a') }}</option>
           </select>
         </label>
