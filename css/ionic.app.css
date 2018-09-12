@@ -11976,7 +11976,10 @@ suggestion-item {
     .create-new-suggestion ion-content .stops-selector label.item-select {
       border-radius: 6px; }
     .create-new-suggestion ion-content .stops-selector select {
-      padding-right: 40px; }
+      padding-right: 40px;
+      background: none;
+      width: 100%;
+      max-width: 100%; }
   .create-new-suggestion ion-content .stops-selector:nth-child(1) {
     top: 20px; }
   .create-new-suggestion ion-content .stops-selector:nth-child(2) {
@@ -11990,7 +11993,7 @@ suggestion-item {
       flex-basis: 100%; }
     .create-new-suggestion ion-content .week-checkbox ion-label {
       padding: 0;
-      padding-top: 3px;
+      padding-top: 7px;
       width: 100%;
       text-align: center; }
     .create-new-suggestion ion-content .week-checkbox label {
@@ -12006,7 +12009,8 @@ suggestion-item {
         margin: 0;
         top: auto;
         left: auto;
-        right: auto; }
+        right: auto;
+        padding-top: 2px; }
 
 @keyframes slide-in-from-bottom {
   0% {
