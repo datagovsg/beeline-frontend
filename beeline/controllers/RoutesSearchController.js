@@ -114,7 +114,7 @@ export default [
       let pickUp = $scope.data.pickUpLocation
       let dropOff = $scope.data.dropOffLocation
       $ionicLoading.show({
-        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Searching...</small>`,
+        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Searching for routes</small>`,
       })
 
       $timeout(() => {
