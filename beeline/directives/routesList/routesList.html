@@ -83,23 +83,39 @@
   </ion-item>
   <!-- END: Available Lite Routes Section -->
 
-  <!-- No results found message -->
-  <p
-    ng-if="disp.routes.length === 0 &&
-          disp.liteRoutes.length === 0 &&
-          disp.crowdstartRoutes.length === 0"
-    class="text-center"
-  >
-    Sorry, we could not find any routes matching your search query.
-  </p>
-  <div ng-hide="suggestHide" class="item">
-    Can't find a suitable route?</br>
-    <a
+  <div ng-hide="suggestHide" class="item text-center item-text-wrap suggest-route">
+    <!-- No results found message -->
+    <div
+      ng-if="disp.routes.length === 0 &&
+            disp.liteRoutes.length === 0 &&
+            disp.crowdstartRoutes.length === 0"
+      class=""
+    >
+      Sorry, we could not find any routes matching your search query.
+    </div>
+    <div
+      ng-if="disp.routes.length !== 0 ||
+            disp.liteRoutes.length !== 0 ||
+            disp.crowdstartRoutes.length !== 0"
+    >
+      Can't find a suitable route?
+    </div>
+ <!--    <a
       href="#"
       ui-sref="tabs.create-new-suggestion({
         pickUpLocation: data.pickUpLocation,
         dropOffLocation: data.dropOffLocation,
       })" 
-      class="text-link">Suggest a new route</a>
+      class="text-link">Suggest a new route</a> -->
+
+    <button
+      class="primary-button" 
+      ui-sref="tabs.create-new-suggestion({
+        pickUpLocation: data.pickUpLocation,
+        dropOffLocation: data.dropOffLocation,
+      })"
+    >
+      Suggest a new route
+    </button>
   </div>
 </div>
