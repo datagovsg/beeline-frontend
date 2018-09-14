@@ -179,6 +179,35 @@ export default [
       }
     )
 
+    // mix all the routes together
+    $scope.$watchGroup(
+      [
+        'disp.routes',
+        'disp.liteRoutes',
+        'disp.crowdstartRoutes',
+      ],
+      ([routes, liteRoutes, crowdstartRoutes]) => {
+        if (routes && liteRoutes && crowdstartRoutes) {
+          // set id for lite routes so that we can publish unique routes
+          // (see end of this function)
+          liteRoutes.map(route => {
+            route.id = route.routeIds
+          })
+
+          let allRoutes = _.concat(routes, liteRoutes, crowdstartRoutes)
+
+          allRoutes = SearchService.sortRoutesBySearchQueries(
+            allRoutes,
+            $scope.data.pickUpLocation,
+            $scope.data.dropOffLocation,
+          )
+
+          // publish unique routes
+          $scope.data.mixedRoutes = _.uniqBy(allRoutes, 'id')
+        }
+      }
+    )
+
     // Hides the animated loading routes
     $scope.$watchGroup(
       [

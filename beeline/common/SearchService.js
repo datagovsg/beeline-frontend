@@ -196,6 +196,28 @@ angular.module('common').factory('SearchService', [
 
         return _.orderBy(_.map(routes, scoreRoute(stops)), ['score'], ['desc'])
       },
+
+      sortRoutesBySearchQueries: function (routes, pickUpLocation, dropOffLocation) {
+        if (!routes || routes.length === 0) return []
+
+        // Setup pick up and drop off locations as stops to score them
+        let stops = []
+        if (pickUpLocation) {
+          stops.push({
+            lnglat: [parseFloat(pickUpLocation.LONGITUDE), parseFloat(pickUpLocation.LATITUDE)],
+            recency: 1,
+          })
+        }
+
+        if (dropOffLocation) {
+          stops.push({
+            lnglat: [parseFloat(dropOffLocation.LONGITUDE), parseFloat(dropOffLocation.LATITUDE)],
+            recency: 1,
+          })
+        }
+
+        return _.orderBy(_.map(routes, scoreRoute(stops)), ['score'], ['desc'])
+      },
     }
   },
 ])

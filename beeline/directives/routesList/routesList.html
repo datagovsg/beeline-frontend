@@ -1,13 +1,12 @@
 <div>
-  <!-- START: Routes you may like -->
+  <!-- START: All routes -->
   <!-- hide it if search bar is not empty -->
-  <div class="item item-divider" ng-if="!data.placeQuery && !data.pickUpLocation && !data.dropOffLocation && data.routesYouMayLike.length > 0">
-    Routes You May Like
+  <div class="item item-divider" ng-if="data.mixedRoutes.length > 0">
+    Routes
   </div>
   <!-- hide route item if search bar is not empty -->
   <ion-item
-    ng-repeat="route in data.routesYouMayLike track by route.id"
-    ng-if="!data.placeQuery && !data.pickUpLocation && !data.dropOffLocation && data.routesYouMayLike.length > 0"
+    ng-repeat="route in data.mixedRoutes track by route.id"
     class="item-text-wrap"
   >
     <regular-route
@@ -26,62 +25,7 @@
       ui-sref="tabs.lite-detail({ label: route.label })">
     </lite-route>
   </ion-item>
-  <!-- END: Routes you may like -->
-
-  <!-- START: Available Routes Section -->
-  <div
-    class="item item-divider"
-    ng-if="disp.routes.length > 0"
-  >
-    Available Routes
-  </div>
-  <ion-item
-    ng-repeat="route in disp.routes track by route.id"
-    class="item-text-wrap"
-  >
-    <regular-route
-      route="route"
-      ui-sref="tabs.route-detail({ routeId: route.id })">
-    </regular-route>
-  </ion-item>
-  <!-- END: Available Routes Section -->
-
-  <!-- START: Available Crowdstart Routes -->
-  <div
-    class="item item-divider"
-    ng-if="disp.crowdstartRoutes.length > 0"
-    id="crowdstart"
-  >
-    Crowdstart Routes
-  </div>
-  <ion-item
-    ng-repeat="route in disp.crowdstartRoutes track by $index"
-    class="item-text-wrap"
-  >
-    <crowdstart-route
-      route="route"
-      ui-sref="tabs.crowdstart-detail({ routeId: route.id})">
-    </crowdstart-route>
-  </ion-item>
-  <!-- END: Available Crowdstart Section -->
-
-  <!-- START: Available Lite Routes Section -->
-  <div
-    class="item item-divider"
-    ng-if="disp.liteRoutes.length > 0"
-  >
-    Tracking Routes
-  </div>
-  <ion-item
-    ng-repeat="route in disp.liteRoutes track by route.label"
-    class="item-text-wrap"
-  >
-    <lite-route
-      route="route"
-      ui-sref="tabs.lite-detail({ label: route.label })">
-    </lite-route>
-  </ion-item>
-  <!-- END: Available Lite Routes Section -->
+  <!-- END: All routes -->
 
   <div ng-hide="suggestHide" class="item text-center item-text-wrap suggest-route">
     <!-- No results found message -->
@@ -100,13 +44,6 @@
     >
       Can't find a suitable route?
     </div>
- <!--    <a
-      href="#"
-      ui-sref="tabs.create-new-suggestion({
-        pickUpLocation: data.pickUpLocation,
-        dropOffLocation: data.dropOffLocation,
-      })" 
-      class="text-link">Suggest a new route</a> -->
 
     <button
       class="primary-button" 
