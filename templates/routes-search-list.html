@@ -3,11 +3,6 @@
     <!-- Scrollable routes list -->
     <ion-content class="scrollable-routes-list">
 
-      <ion-refresher
-        pulling-text="Pull to refresh..."
-        on-refresh="refreshRoutes(true)"
-      ></ion-refresher>
-
       <ion-list>
         <!-- Error message if problem getting routes data -->
         <div class="item item-text-wrap" ng-if="error">

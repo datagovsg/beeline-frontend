@@ -11628,6 +11628,10 @@ ui-gmap-google-map {
       margin-bottom: auto;
       padding: 10px; }
 
+.routes-view .suggest-route {
+  display: flex;
+  flex-direction: column; }
+
 .modal-open {
   -webkit-overflow-scrolling: auto;
   overflow: hidden; }

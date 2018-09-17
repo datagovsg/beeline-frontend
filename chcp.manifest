@@ -77,19 +77,11 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "92cddd33e03d582a875717728d6471bd"
-  },
-  {
-    "file": "css/ionic.css",
-    "hash": "d4558814e69ebc526c225a52de918ce2"
-  },
-  {
-    "file": "css/ionicons.css",
-    "hash": "47568e0e887556533cc3dae4628181ad"
+    "hash": "9e91469e5237d00d8bb105b0a2e05c78"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "a0e5f0dfd8cc84a051411cb02dbe5125"
+    "hash": "2e6f736233ed0bae5c17a9477b366bad"
   },
   {
     "file": "favicon-16x16.png",
@@ -573,7 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "c826c85faf1deefaa5e259bcc93aaf31"
+    "hash": "32454dd97046403579a350b0b0315001"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
@@ -865,7 +857,7 @@
   },
   {
     "file": "templates/crowdstart-summary.html",
-    "hash": "8a63fa0de70dbc9d180e6545336b5d5e"
+    "hash": "06f8d7d9f32804afc1fd24a6ea25ae98"
   },
   {
     "file": "templates/intro-slides.html",
@@ -893,11 +885,11 @@
   },
   {
     "file": "templates/routes-search-list.html",
-    "hash": "1b35fa41cb965e4bd5baaa2d671b8c3c"
+    "hash": "f25d04f3d61f79b4ca410a4722d23378"
   },
   {
     "file": "templates/routes-search.html",
-    "hash": "fe914e19c9724acbbb8f9d8a92a7a3b9"
+    "hash": "dd1c6d1e2b7fb8f4f5a0ed12546b27d8"
   },
   {
     "file": "templates/search.html",
@@ -917,7 +909,7 @@
   },
   {
     "file": "templates/tab-booking-summary.html",
-    "hash": "bfaaaa3d9aff4ef5e07742f89af7b30a"
+    "hash": "5a47ccc8c203e4510639df4f03095b4f"
   },
   {
     "file": "templates/tab-lite-detail.html",
