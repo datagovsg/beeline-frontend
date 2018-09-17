@@ -78,9 +78,6 @@ export default [
       hasTrips: true,
     }
 
-    // Open the first bus stop by default
-    $scope.current = 0
-
     // ------------------------------------------------------------------------
     // Data Loading
     // ------------------------------------------------------------------------
@@ -107,6 +104,10 @@ export default [
       )
 
       $scope.disp.features = htmlFrom(route[$scope.book.label].features)
+    }).then(() => {
+      // Select default stop 0 then emit lite-route-loaded event
+      $scope.setSelected(0)
+      MapService.emit('lite-route-loaded', $scope.book.route)
     })
 
     // ------------------------------------------------------------------------
