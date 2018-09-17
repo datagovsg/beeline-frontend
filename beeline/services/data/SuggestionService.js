@@ -3,9 +3,8 @@ import querystring from 'querystring'
 angular.module('beeline').factory('SuggestionService', [
   'RequestService',
   'UserService',
-  'OneMapPlaceService',
   'CrowdstartService',
-  function SuggestionService (RequestService, UserService, OneMapPlaceService, CrowdstartService) {
+  function SuggestionService (RequestService, UserService, CrowdstartService) {
     let suggestions
     let routes
     let createdSuggestion
@@ -30,21 +29,19 @@ angular.module('beeline').factory('SuggestionService', [
       // ----------------PARALLEL REQUESTS---------------- //
       const promises = userSuggestions.map(async (sug, index) => {
         const start = {
-          lat: sug.alight.coordinates[1],
-          lng: sug.alight.coordinates[0],
-        }
-        const end = {
           lat: sug.board.coordinates[1],
           lng: sug.board.coordinates[0],
         }
-        const boardLocation = await OneMapPlaceService.reverseGeocode(start.lat, start.lng)
-        const alightLocation = await OneMapPlaceService.reverseGeocode(end.lat, end.lng)
+        const end = {
+          lat: sug.alight.coordinates[1],
+          lng: sug.alight.coordinates[0],
+        }
         const similar = await fetchSimilarSuggestions(start, end)
         userSuggestions[index] = {
           ...sug,
           similar,
-          boardLocation,
-          alightLocation,
+          boardDescription: sug.boardDescription,
+          alightDescription: sug.alightDescription,
         }
       })
 
@@ -78,38 +75,45 @@ angular.module('beeline').factory('SuggestionService', [
     }
 
     return {
-      createSuggestion: async function (alight, board, time, daysOfWeek) {
+      createSuggestion: async function (board, boardDescription, alight, alightDescription, time, daysOfWeek) {
         let suggestion = await this.requestCreateNewSuggestion(
           board,
+          boardDescription,
           alight,
+          alightDescription,
           time,
           daysOfWeek
         )
         const start = {
-          lat: suggestion.alight.coordinates[1],
-          lng: suggestion.alight.coordinates[0],
-        }
-        const end = {
           lat: suggestion.board.coordinates[1],
           lng: suggestion.board.coordinates[0],
         }
-        const boardLocation = await OneMapPlaceService.reverseGeocode(start.lat, start.lng)
-        const alightLocation = await OneMapPlaceService.reverseGeocode(end.lat, end.lng)
+        const end = {
+          lat: suggestion.alight.coordinates[1],
+          lng: suggestion.alight.coordinates[0],
+        }
         const similar = await this.fetchSimilarSuggestions(start, end)
         createdSuggestion = {
           ...suggestion,
           similar,
-          boardLocation,
-          alightLocation,
+          boardDescription: suggestion.boardDescription,
+          alightDescription: suggestion.alightDescription,
         }
         return createdSuggestion
       },
 
-      requestCreateNewSuggestion: function (board, alight, time, daysOfWeek) {
+      requestCreateNewSuggestion: function (
+        board,
+        boardDescription,
+        alight,
+        alightDescription,
+        time,
+        daysOfWeek
+      ) {
         return RequestService.beeline({
           method: 'POST',
           url: '/suggestions',
-          data: { board, alight, time, daysOfWeek },
+          data: { board, boardDescription, alight, alightDescription, time, daysOfWeek },
         }).then(response => {
           this.triggerRouteGeneration(response.data.id, response.data.daysOfWeek)
           return response.data
@@ -130,7 +134,7 @@ angular.module('beeline').factory('SuggestionService', [
 
       fetchSuggestions: () => fetchSuggestions(),
       fetchUserSuggestions: () => fetchUserSuggestions(),
-      fetchSimilarSuggestions: () => fetchSimilarSuggestions(),
+      fetchSimilarSuggestions: (start, end) => fetchSimilarSuggestions(start, end),
 
       deleteSuggestion: function (suggestionId) {
         return RequestService.beeline({
@@ -150,8 +154,13 @@ angular.module('beeline').factory('SuggestionService', [
 
           const promises = response.data.map(async r => {
             // FIXME
-            // const route = await CrowdstartService.getPrivateCrowdstartById(r.routeId)
-            const route = await CrowdstartService.getCrowdstartById(1503)
+            let route
+            if (r.routeId) {
+              route = await CrowdstartService.getCrowdstartById(r.routeId)
+            } else {
+              let crowdstart = await this.convertToCrowdstart(suggestionId, r.id)
+              route = crowdstart.route
+            }
             routes.push(route)
           })
           await Promise.all(promises)
@@ -180,10 +189,10 @@ angular.module('beeline').factory('SuggestionService', [
         })
       },
 
-      convertToCrowdstart: function (suggestionId, routeId) {
+      convertToCrowdstart: function (suggestionId, suggestedRouteId) {
         return RequestService.beeline({
           method: 'POST',
-          url: `/suggestions/${suggestionId}/suggested_routes/${routeId}/convert_to_crowdstart`,
+          url: `/suggestions/${suggestionId}/suggested_routes/${suggestedRouteId}/convert_to_crowdstart`,
         }).then(response => {
           return response.data
         })

@@ -9,11 +9,11 @@
     <div class="stops">
       <div class="start">
         <span class="stop-icon"></span>
-        <span class="road">{{ getAddress(suggestion.boardLocation) }}</span>
+        <span class="road">{{ suggestion.boardDescription.description }}</span>
       </div>
       <div class="end">
         <span class="stop-icon"></span>
-        <span class="road">{{ getAddress(suggestion.alightLocation) }}</span>
+        <span class="road">{{ suggestion.alightDescription.description }}</span>
       </div>
     </div>
     <div class="additional-info">

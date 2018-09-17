@@ -19,16 +19,6 @@ angular.module('beeline').directive('suggestionItem', [
           minutes = minutes < 10 ? '0' + minutes : minutes
           return hours + '.' + minutes + ' ' + suffix
         }
-
-        $scope.getAddress = function (loc) {
-          if (loc) {
-            const { BLOCK, BUILDINGNAME, ROAD, POSTALCODE } = loc
-            return [BLOCK, BUILDINGNAME, ROAD, POSTALCODE]
-              .filter(s => s && s !== 'null')
-              .map(s => s.toLowerCase())
-              .join(', ')
-          }
-        }
       },
     }
   },

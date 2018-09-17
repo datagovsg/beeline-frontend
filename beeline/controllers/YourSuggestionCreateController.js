@@ -39,6 +39,16 @@ export default [
       }
     }
 
+    function getDescription (loc) {
+      let { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME } = loc
+      let postalStr = POSTAL ? 'S (' + POSTAL + ')' : ''
+      return {
+        description: [BLK_NO, ROAD_NAME, BUILDING, postalStr].join(', '),
+        postalCode: parseInt(POSTAL),
+        oneMapData: { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME },
+      }
+    }
+
     function getDaysOfWeek (days) {
       let obj = {}
       days.map(d => {
@@ -193,12 +203,16 @@ export default [
       $scope.data.selectedTime = hour * 3600e3 + minutes * 60e3
     }
 
+    $scope.onSelectedTimeChanged()
+
     $scope.submitSuggestion = async function () {
       try {
         const data = await loadingSpinner(
           SuggestionService.createSuggestion(
             getLatLng($scope.data.pickUpLocation),
+            getDescription($scope.data.pickUpLocation),
             getLatLng($scope.data.dropOffLocation),
+            getDescription($scope.data.dropOffLocation),
             $scope.data.selectedTime,
             getDaysOfWeek($scope.data.days)
           )
