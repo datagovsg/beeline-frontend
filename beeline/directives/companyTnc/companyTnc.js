@@ -10,6 +10,7 @@ angular.module('beeline').directive('companyTnc', [
         features: '=',
         operatedHide: '<?',
         notesHide: '<?',
+        titleText: '<',
       },
       link: function (scope, elem, attr) {
         scope.company = {}
