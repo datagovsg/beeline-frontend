@@ -27,12 +27,24 @@
         </div>
       </div>
 
-      <button 
+      <button
+        ng-if="isLoggedIn"
         class="primary-button submit-btn" 
         ng-click="submitSuggestion()" 
         ng-disabled="!data.pickUpLocation || !data.dropOffLocation || !data.selectedTimeIndex || data.daysInvalid">
         Submit
       </button>
+
+      <!-- LOGIN BUTTON -->
+      <div ng-if="!isLoggedIn" class="submit-btn">
+        <div class="warning-text">
+          Please log in to proceed
+        </div>
+
+        <button class="button primary-button" ng-click="login()">
+          Log In
+        </button>
+      </div>
     </div>
 
   </ion-content>

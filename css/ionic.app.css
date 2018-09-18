@@ -10250,13 +10250,12 @@ animated-placeholder {
     top: 0px;
     margin: 0;
     background-color: #4b3863;
-    text-align: center;
-    height: 50px; }
+    text-align: center; }
     .preorder-pass .route-pass-header h3 {
       font-size: 18px;
       padding: 0;
       margin: 0;
-      margin-top: 15px;
+      margin: 15px 0 15px 0;
       color: #fff;
       text-transform: uppercase; }
   .preorder-pass .route-pass-body {
@@ -12023,7 +12022,8 @@ suggestion-item {
     transform: translateY(0); } }
   .create-new-suggestion ion-content .submit-btn {
     position: absolute;
-    bottom: 25px; }
+    bottom: 25px;
+    width: 100%; }
 
 .login-content {
   padding: 16px;
