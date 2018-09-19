@@ -1,4 +1,5 @@
 import moment from 'moment'
+import _ from 'lodash'
 
 export default [
   '$scope',
@@ -6,6 +7,7 @@ export default [
   '$stateParams',
   '$ionicPopup',
   'loadingSpinner',
+  'UserService',
   'MapService',
   'SuggestionService',
   'SharedVariableService',
@@ -16,6 +18,7 @@ export default [
     $stateParams,
     $ionicPopup,
     loadingSpinner,
+    UserService,
     MapService,
     SuggestionService,
     SharedVariableService
@@ -41,10 +44,10 @@ export default [
 
     function getDescription (loc) {
       let { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME } = loc
-      let postalStr = POSTAL ? 'S (' + POSTAL + ')' : ''
+      let postalStr = POSTAL.toLowerCase() === 'nil' ? 'S (' + POSTAL + ')' : ''
       return {
-        description: [BLK_NO, ROAD_NAME, BUILDING, postalStr].join(', '),
-        postalCode: parseInt(POSTAL),
+        description: [BLK_NO, ROAD_NAME, BUILDING, postalStr].filter(s => s && s.toLowerCase() !== 'nil').join(', '),
+        postalCode: !POSTAL || POSTAL.toLowerCase() === 'nil' ? null : POSTAL,
         oneMapData: { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME },
       }
     }
@@ -55,6 +58,10 @@ export default [
         obj[d.text] = d.enabled
       })
       return obj
+    }
+
+    function parseLatLngStringArr (arr) {
+      return arr.map(a => parseFloat(a))
     }
 
     // ------------------------------------------------------------------------
@@ -117,6 +124,14 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
+    $scope.$watch(
+      () => UserService.getUser(),
+      async user => {
+        $scope.isLoggedIn = Boolean(user)
+        $scope.user = user
+      }
+    )
+
     $scope.$watch('data.days', days => {
       let invalid = true
       for (let day in days) {
@@ -185,6 +200,10 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
+    $scope.login = function () {
+      UserService.promptLogIn()
+    }
+
     $scope.resetSuggestion = function () {
       $scope.data.pickUpLocation = null
       $scope.data.dropOffLocation = null
@@ -205,8 +224,34 @@ export default [
 
     $scope.onSelectedTimeChanged()
 
+    $scope.checkExistingSimilarSuggestions = async function () {
+      const suggestions = SuggestionService.getSuggestions()
+      const match = _.filter(suggestions, s => {
+        let board = $scope.data.pickUpLocation
+        let alight = $scope.data.dropOffLocation
+
+        return _.isEqual(s.board.coordinates, parseLatLngStringArr([board.LONGITUDE, board.LATITUDE])) &&
+          _.isEqual(s.alight.coordinates, parseLatLngStringArr([alight.LONGITUDE, alight.LATITUDE])) &&
+          s.time === $scope.data.selectedTime &&
+          _.isEqual(s.daysOfWeek, getDaysOfWeek($scope.data.days))
+      })
+
+      if (match.length > 0) {
+        await $ionicPopup.alert({
+          title: 'Error creating suggestion',
+          template: `
+          <div>You have already submitted a similar suggestion!</div>
+          `,
+        })
+      }
+
+      return match.length > 0
+    }
+
     $scope.submitSuggestion = async function () {
       try {
+        const similar = await $scope.checkExistingSimilarSuggestions()
+        if (similar) return
         const data = await loadingSpinner(
           SuggestionService.createSuggestion(
             getLatLng($scope.data.pickUpLocation),

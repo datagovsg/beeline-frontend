@@ -36,7 +36,7 @@ angular.module('beeline').factory('SuggestionService', [
           lat: sug.alight.coordinates[1],
           lng: sug.alight.coordinates[0],
         }
-        const similar = await fetchSimilarSuggestions(start, end)
+        const similar = await fetchSimilarSuggestions(start, end, sug.time)
         userSuggestions[index] = {
           ...sug,
           similar,
@@ -59,12 +59,13 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
-    const fetchSimilarSuggestions = function (start, end) {
+    const fetchSimilarSuggestions = function (start, end, time) {
       let queryString = querystring.stringify({
         startLat: start.lat,
         startLng: start.lng,
         endLat: end.lat,
         endLng: end.lng,
+        time,
       })
       return RequestService.beeline({
         method: 'GET',
@@ -92,7 +93,7 @@ angular.module('beeline').factory('SuggestionService', [
           lat: suggestion.alight.coordinates[1],
           lng: suggestion.alight.coordinates[0],
         }
-        const similar = await this.fetchSimilarSuggestions(start, end)
+        const similar = await this.fetchSimilarSuggestions(start, end, suggestion.time)
         createdSuggestion = {
           ...suggestion,
           similar,
@@ -134,7 +135,7 @@ angular.module('beeline').factory('SuggestionService', [
 
       fetchSuggestions: () => fetchSuggestions(),
       fetchUserSuggestions: () => fetchUserSuggestions(),
-      fetchSimilarSuggestions: (start, end) => fetchSimilarSuggestions(start, end),
+      fetchSimilarSuggestions: (start, end, time) => fetchSimilarSuggestions(start, end, time),
 
       deleteSuggestion: function (suggestionId) {
         return RequestService.beeline({
