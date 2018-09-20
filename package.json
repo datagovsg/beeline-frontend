@@ -2,6 +2,8 @@
   "name": "beeline-frontend",
   "version": "1.1.1",
   "description": "The mobile application for Beeline",
+  "license": "MIT",
+  "author": "Government Technology Agency of Singapore (https://www.tech.gov.sg)",
   "engines": {
     "node": "7.8.x"
   },
@@ -123,8 +125,6 @@
     "watch-scss": "npm run build-scss && node-sass --watch --output www/css scss/ionic.app.scss & node-sass --watch --output www/css scss/operator-grab.scss",
     "lint": "lint-staged"
   },
-  "author": "Government Technology Agency of Singapore (https://www.tech.gov.sg)",
-  "license": "Apache-2.0",
   "cordova": {
     "plugins": {
       "cordova-plugin-app-version": {},
