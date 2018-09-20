@@ -64,6 +64,10 @@
   .suggest-route {
     display: flex;
     flex-direction: column;
+
+    div {
+      margin-bottom: $padding-large-vertical;
+    }
   }
 }
 
