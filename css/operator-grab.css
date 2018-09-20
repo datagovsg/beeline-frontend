@@ -11630,6 +11630,8 @@ ui-gmap-google-map {
 .routes-view .suggest-route {
   display: flex;
   flex-direction: column; }
+  .routes-view .suggest-route div {
+    margin-bottom: 10px; }
 
 .modal-open {
   -webkit-overflow-scrolling: auto;
