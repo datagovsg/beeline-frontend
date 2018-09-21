@@ -44,7 +44,7 @@ export default [
 
     function getDescription (loc) {
       let { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME } = loc
-      let postalStr = POSTAL.toLowerCase() === 'nil' ? null : 'S (' + POSTAL + ')'
+      let postalStr = POSTAL.toLowerCase() === 'nil' ? null : 'S(' + POSTAL + ')'
       return {
         description: [BLK_NO, ROAD_NAME, BUILDING, postalStr].filter(s => s && s.toLowerCase() !== 'nil').join(', '),
         postalCode: !POSTAL || POSTAL.toLowerCase() === 'nil' ? null : POSTAL,
