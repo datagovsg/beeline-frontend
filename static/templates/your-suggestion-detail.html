@@ -14,8 +14,9 @@
     </ion-item>
 
     <ion-item>
-      <span ng-if="!data.routes">Route yet to be generated!</span>
-      <div ng-if="data.routes">
+      <span ng-if="data.routes === null">Route yet to be generated!</span>
+      <span ng-if="data.routes.length === 0">No suggested routes found!</span>
+      <div ng-if="data.routes.length > 0">
         <span class="header">Generated route</span>
         <crowdstart-route
           ng-repeat="route in data.routes" 

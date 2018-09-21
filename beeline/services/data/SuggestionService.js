@@ -153,20 +153,24 @@ angular.module('beeline').factory('SuggestionService', [
         }).then(async response => {
           routes = []
 
-          const promises = response.data.map(async r => {
-            // FIXME
-            let route
-            if (r.routeId) {
-              route = await CrowdstartService.getCrowdstartById(r.routeId)
-            } else {
-              let crowdstart = await this.convertToCrowdstart(suggestionId, r.id)
-              route = crowdstart.route
-            }
-            routes.push(route)
-          })
+          const promises = response.data
+            .filter(r => r.route) // omit any false routes
+            .map(async r => {
+              let route
+              if (r.routeId) {
+                route = await CrowdstartService.getCrowdstartById(r.routeId)
+              } else {
+                let crowdstart = await this.convertToCrowdstart(suggestionId, r.id)
+                route = crowdstart.route
+              }
+              routes.push(route)
+            })
           await Promise.all(promises)
 
-          return routes
+          return {
+            done: response.data.length > 0,
+            routes,
+          }
         })
       },
 

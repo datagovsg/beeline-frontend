@@ -43,9 +43,9 @@ export default [
     // Show a loading overlay while we wait
     // force reload when revisit the same route
     $scope.$on('$ionicView.afterEnter', () => {
-      $ionicLoading.show({
-        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-      })
+      // $ionicLoading.show({
+      //   template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
+      // })
 
       SuggestionService.getSuggestion(suggestionId)
         .then(response => {
@@ -59,7 +59,7 @@ export default [
           })
         })
 
-      $scope.refreshSuggestedRoutes(suggestionId)
+      // $scope.refreshSuggestedRoutes(suggestionId)
     })
 
     $scope.$on('$ionicView.leave', () => {
@@ -113,12 +113,11 @@ export default [
 
     $scope.refreshSuggestedRoutes = function (suggestionId) {
       SuggestionService.fetchSuggestedRoutes(suggestionId)
-        .then(response => {
-          if (response.length === 0) {
+        .then(data => {
+          if (!data.done) {
             setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
           } else {
-            // omit any false routes
-            $scope.data.routes = response.filter(d => d)
+            $scope.data.routes = data.routes
           }
         })
         .catch(error => {
