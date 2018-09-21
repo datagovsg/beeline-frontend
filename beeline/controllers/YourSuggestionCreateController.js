@@ -44,7 +44,7 @@ export default [
 
     function getDescription (loc) {
       let { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME } = loc
-      let postalStr = POSTAL.toLowerCase() === 'nil' ? 'S (' + POSTAL + ')' : ''
+      let postalStr = POSTAL.toLowerCase() === 'nil' ? null : 'S (' + POSTAL + ')'
       return {
         description: [BLK_NO, ROAD_NAME, BUILDING, postalStr].filter(s => s && s.toLowerCase() !== 'nil').join(', '),
         postalCode: !POSTAL || POSTAL.toLowerCase() === 'nil' ? null : POSTAL,
@@ -132,6 +132,12 @@ export default [
       }
     )
 
+    $scope.$watch('data.selectedTimeIndex', i => {
+      const hour = $scope.disp.times[i].hour()
+      const minutes = $scope.disp.times[i].minute()
+      $scope.data.selectedTime = hour * 3600e3 + minutes * 60e3
+    })
+
     $scope.$watch('data.days', days => {
       let invalid = true
       for (let day in days) {
@@ -207,22 +213,12 @@ export default [
     $scope.resetSuggestion = function () {
       $scope.data.pickUpLocation = null
       $scope.data.dropOffLocation = null
-      $scope.data.selectedTimeIndex = null
-      $scope.data.selectedTime = null
+      $scope.data.selectedTimeIndex = 17
       $scope.data.daysInvalid = true
       $scope.data.days = $scope.data.days.map(d => {
         return { ...d, enabled: false }
       })
     }
-
-    $scope.onSelectedTimeChanged = function () {
-      const i = $scope.data.selectedTimeIndex
-      const hour = $scope.disp.times[i].hour()
-      const minutes = $scope.disp.times[i].minute()
-      $scope.data.selectedTime = hour * 3600e3 + minutes * 60e3
-    }
-
-    $scope.onSelectedTimeChanged()
 
     $scope.checkExistingSimilarSuggestions = async function () {
       const suggestions = SuggestionService.getSuggestions()

@@ -25,6 +25,28 @@ angular.module('common').factory('OneMapPlaceService', [
       return location
     }
 
+    const transfromRevGeocodeResults = function transfromRevGeocodeResults (data) {
+      const schema = {
+        BLOCK: 'BLK_NO',
+        BUILDINGNAME: 'BUILDING',
+        ROAD: 'ROAD_NAME',
+        POSTALCODE: 'POSTAL',
+        XCOORD: 'X',
+        YCOORD: 'Y',
+        LATITUDE: 'LATITUDE',
+        LONGITUDE: 'LONGITUDE',
+        LONGTITUDE: 'LONGTITUDE',
+      }
+
+      let result = {}
+      Object.entries(data).map(d => {
+        let key = schema[d[0]]
+        result[key] = d[1]
+      })
+
+      return transformPropertiesToLowercase(result)
+    }
+
     const getAllResults = async function getAllResults (queryText) {
       let result = await makeQuery(queryText)
       if (!result || (result && result.found === 0)) {
@@ -46,7 +68,7 @@ angular.module('common').factory('OneMapPlaceService', [
           url: url + queryString,
         })
 
-        return transformPropertiesToLowercase(result.GeocodeInfo[0])
+        return transfromRevGeocodeResults(result.GeocodeInfo[0])
       },
 
       async handleQuery (queryText) {

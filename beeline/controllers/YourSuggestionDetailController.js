@@ -117,7 +117,8 @@ export default [
           if (response.length === 0) {
             setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
           } else {
-            $scope.data.routes = response
+            // omit any false routes
+            $scope.data.routes = response.filter(d => d)
           }
         })
         .catch(error => {
