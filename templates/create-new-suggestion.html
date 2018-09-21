@@ -14,7 +14,7 @@
           <div class="input-label">
             Destination Arrival Time
           </div>
-          <select ng-model="data.selectedTimeIndex" data-tap-disabled="true" ng-change="onSelectedTimeChanged()">
+          <select ng-model="data.selectedTimeIndex" data-tap-disabled="true">
             <option ng-repeat="t in disp.times" value={{$index}}>{{ t.format('h:mm a') }}</option>
           </select>
         </label>
