@@ -11950,6 +11950,9 @@ suggestion-item {
   text-align: center;
   text-decoration: underline; }
 
+.your-suggestion-detail route-item {
+  margin-bottom: 25px; }
+
 .create-new-suggestion {
   background-color: transparent !important;
   pointer-events: none !important; }
