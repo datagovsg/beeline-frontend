@@ -213,7 +213,7 @@ export default [
     $scope.resetSuggestion = function () {
       $scope.data.pickUpLocation = null
       $scope.data.dropOffLocation = null
-      $scope.data.selectedTimeIndex = 17
+      $scope.data.selectedTimeIndex = '17' // 8.30 am
       $scope.data.daysInvalid = true
       $scope.data.days = $scope.data.days.map(d => {
         return { ...d, enabled: false }

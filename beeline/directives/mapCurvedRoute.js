@@ -25,9 +25,6 @@ angular.module('beeline').directive('mapCurvedRoute', function () {
             opacity: 0.7,
           }
 
-          // const start = scope.start
-          // const end = scope.end
-
           scope.curvedPath = range(100)
             .map(i => {
               const tick = i / 99

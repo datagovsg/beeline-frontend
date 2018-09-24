@@ -1,12 +1,10 @@
 export default [
   '$scope',
   'SuggestionService',
-  'UserService',
   function (
     // Angular Tools
     $scope,
-    SuggestionService,
-    UserService
+    SuggestionService
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions

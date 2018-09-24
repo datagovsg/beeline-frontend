@@ -134,11 +134,7 @@ export default [
     })
 
     $scope.$watch(() => SuggestionService.getSuggestions(), suggestions => {
-      if (suggestions && suggestions.length > 0) {
-        $scope.disp.hasSuggestions = true
-      } else {
-        $scope.disp.hasSuggestions = false
-      }
+      $scope.disp.hasSuggestions = suggestions && suggestions.length > 0
     })
 
     // Watcher for side menu opening event

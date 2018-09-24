@@ -22,7 +22,7 @@ angular.module('beeline').factory('SuggestionService', [
       fetchSuggestions()
     })
 
-    const fetchSuggestions = async function () {
+    async function fetchSuggestions () {
       if (!UserService.getUser()) return
       let userSuggestions = await fetchUserSuggestions()
 
@@ -50,7 +50,7 @@ angular.module('beeline').factory('SuggestionService', [
       return suggestions
     }
 
-    const fetchUserSuggestions = function () {
+    function fetchUserSuggestions () {
       return RequestService.beeline({
         method: 'GET',
         url: '/suggestions',
@@ -59,7 +59,7 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
-    const fetchSimilarSuggestions = function (start, end, time) {
+    function fetchSimilarSuggestions (start, end, time) {
       let queryString = querystring.stringify({
         startLat: start.lat,
         startLng: start.lng,
@@ -75,9 +75,56 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
+    function requestCreateNewSuggestion (
+      board,
+      boardDescription,
+      alight,
+      alightDescription,
+      time,
+      daysOfWeek
+    ) {
+      return RequestService.beeline({
+        method: 'POST',
+        url: '/suggestions',
+        data: { board, boardDescription, alight, alightDescription, time, daysOfWeek },
+      }).then(response => {
+        triggerRouteGeneration(response.data.id, response.data.daysOfWeek)
+        return response.data
+      })
+    }
+
+    function triggerRouteGeneration (suggestionId, days) {
+      const daysOfWeek = convertDaysToBinary(days)
+      return RequestService.beeline({
+        method: 'POST',
+        url: `/suggestions/${suggestionId}/suggested_routes/trigger_route_generation`,
+        data: {
+          maxDetourMinutes: 10,
+          startClusterRadius: 4000,
+          startWalkingDistance: 400,
+          endClusterRadius: 4000,
+          endWalkingDistance: 400,
+          timeAllowance: 1800 * 1000, // Half an hour
+          daysOfWeek, // 0b0011111 - Mon-Fri
+          dataSource: 'suggestions',
+        },
+      }).then(response => {
+        return response.data
+      })
+    }
+
+    function convertToCrowdstart (suggestionId, suggestedRouteId) {
+      return RequestService.beeline({
+        method: 'POST',
+        url: `/suggestions/${suggestionId}/suggested_routes/${suggestedRouteId}/convert_to_crowdstart`,
+      }).then(response => {
+        return response.data
+      })
+    }
+
     return {
       createSuggestion: async function (board, boardDescription, alight, alightDescription, time, daysOfWeek) {
-        let suggestion = await this.requestCreateNewSuggestion(
+        let suggestion = await requestCreateNewSuggestion(
           board,
           boardDescription,
           alight,
@@ -93,7 +140,7 @@ angular.module('beeline').factory('SuggestionService', [
           lat: suggestion.alight.coordinates[1],
           lng: suggestion.alight.coordinates[0],
         }
-        const similar = await this.fetchSimilarSuggestions(start, end, suggestion.time)
+        const similar = await fetchSimilarSuggestions(start, end, suggestion.time)
         createdSuggestion = {
           ...suggestion,
           similar,
@@ -101,24 +148,6 @@ angular.module('beeline').factory('SuggestionService', [
           alightDescription: suggestion.alightDescription,
         }
         return createdSuggestion
-      },
-
-      requestCreateNewSuggestion: function (
-        board,
-        boardDescription,
-        alight,
-        alightDescription,
-        time,
-        daysOfWeek
-      ) {
-        return RequestService.beeline({
-          method: 'POST',
-          url: '/suggestions',
-          data: { board, boardDescription, alight, alightDescription, time, daysOfWeek },
-        }).then(response => {
-          this.triggerRouteGeneration(response.data.id, response.data.daysOfWeek)
-          return response.data
-        })
       },
 
       getSuggestion: function (suggestionId) {
@@ -133,9 +162,7 @@ angular.module('beeline').factory('SuggestionService', [
         return suggestions
       },
 
-      fetchSuggestions: () => fetchSuggestions(),
-      fetchUserSuggestions: () => fetchUserSuggestions(),
-      fetchSimilarSuggestions: (start, end, time) => fetchSimilarSuggestions(start, end, time),
+      fetchSuggestions,
 
       deleteSuggestion: function (suggestionId) {
         return RequestService.beeline({
@@ -160,7 +187,7 @@ angular.module('beeline').factory('SuggestionService', [
               if (r.routeId) {
                 route = await CrowdstartService.getCrowdstartById(r.routeId)
               } else {
-                let crowdstart = await this.convertToCrowdstart(suggestionId, r.id)
+                let crowdstart = await convertToCrowdstart(suggestionId, r.id)
                 route = crowdstart.route
               }
               routes.push(route)
@@ -171,35 +198,6 @@ angular.module('beeline').factory('SuggestionService', [
             done: response.data.length > 0,
             routes,
           }
-        })
-      },
-
-      triggerRouteGeneration: function (suggestionId, days) {
-        const daysOfWeek = convertDaysToBinary(days)
-        return RequestService.beeline({
-          method: 'POST',
-          url: `/suggestions/${suggestionId}/suggested_routes/trigger_route_generation`,
-          data: {
-            maxDetourMinutes: 10,
-            startClusterRadius: 4000,
-            startWalkingDistance: 400,
-            endClusterRadius: 4000,
-            endWalkingDistance: 400,
-            timeAllowance: 1800 * 1000, // Half an hour
-            daysOfWeek, // 0b0011111 - Mon-Fri
-            dataSource: 'suggestions',
-          },
-        }).then(response => {
-          return response.data
-        })
-      },
-
-      convertToCrowdstart: function (suggestionId, suggestedRouteId) {
-        return RequestService.beeline({
-          method: 'POST',
-          url: `/suggestions/${suggestionId}/suggested_routes/${suggestedRouteId}/convert_to_crowdstart`,
-        }).then(response => {
-          return response.data
         })
       },
     }
