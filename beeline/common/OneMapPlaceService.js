@@ -26,6 +26,8 @@ angular.module('common').factory('OneMapPlaceService', [
     }
 
     const transfromRevGeocodeResults = function transfromRevGeocodeResults (data) {
+      if (!data) return data
+
       const schema = {
         BLOCK: 'BLK_NO',
         BUILDINGNAME: 'BUILDING',

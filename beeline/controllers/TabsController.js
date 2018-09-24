@@ -7,6 +7,7 @@ export default [
   'SharedVariableService',
   'uiGmapGoogleMapApi',
   'UserService',
+  'SuggestionService',
   '$state',
   'loadingSpinner',
   function (
@@ -16,6 +17,7 @@ export default [
     SharedVariableService,
     uiGmapGoogleMapApi,
     UserService,
+    SuggestionService,
     $state,
     loadingSpinner
   ) {
@@ -49,6 +51,7 @@ export default [
       popupStop: null,
       routeMessage: null,
       isLoggedIn: false,
+      hasSuggestions: false,
     }
 
     // ------------------------------------------------------------------------
@@ -86,6 +89,7 @@ export default [
       () => UserService.getUser(),
       user => {
         $scope.disp.isLoggedIn = user !== null
+        $scope.disp.hasSuggestions = false
       }
     )
 
@@ -126,6 +130,14 @@ export default [
     $scope.$watch('mapObject.alightStop', stop => {
       if (stop) {
         panToStop(stop.stop)
+      }
+    })
+
+    $scope.$watch(() => SuggestionService.getSuggestions(), suggestions => {
+      if (suggestions && suggestions.length > 0) {
+        $scope.disp.hasSuggestions = true
+      } else {
+        $scope.disp.hasSuggestions = false
       }
     })
 
