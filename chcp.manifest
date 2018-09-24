@@ -565,7 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "c492c34d462420a61d5b890a131d1ba3"
+    "hash": "5627a3242f1e5c0e112ebc8f8918e7df"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
@@ -925,7 +925,7 @@
   },
   {
     "file": "templates/tabs.html",
-    "hash": "42a269bc5f9b9b75b4791070f4a6ce3e"
+    "hash": "52441a839b337a9873087362c317c928"
   },
   {
     "file": "templates/terms-of-use.html",
