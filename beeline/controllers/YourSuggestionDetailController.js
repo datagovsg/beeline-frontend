@@ -59,7 +59,7 @@ export default [
           })
         })
 
-      // $scope.refreshSuggestedRoutes(suggestionId)
+      $scope.refreshSuggestedRoutes(suggestionId)
     })
 
     $scope.$on('$ionicView.leave', () => {
