@@ -20,8 +20,9 @@
         <span class="header">Generated route</span>
         <crowdstart-route
           ng-repeat="route in data.routes" 
-          route="route" 
-          ui-sref="tabs.crowdstart-detail({ routeId: route.id })">
+          route="route"
+          ng-click="saveCrowdstartPreview(route)"
+          ui-sref="tabs.crowdstart-detail({ routeId: route.id ? route.id : 'preview' })">
         </crowdstart-route>
       </div>
     </ion-item>
