@@ -47,9 +47,9 @@ export default [
     // Show a loading overlay while we wait
     // force reload when revisit the same route
     $scope.$on('$ionicView.afterEnter', () => {
-      // $ionicLoading.show({
-      //   template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-      // })
+      $ionicLoading.show({
+        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
+      })
 
       SuggestionService.getSuggestion(suggestionId)
         .then(response => {
@@ -130,6 +130,7 @@ export default [
           }
         })
         .catch(error => {
+          $ionicLoading.hide()
           $ionicPopup.alert({
             title: "Sorry there's been a problem loading the suggested route information",
             subTitle: error,
