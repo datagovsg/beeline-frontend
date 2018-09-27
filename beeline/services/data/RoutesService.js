@@ -58,6 +58,9 @@ angular.module('beeline').factory('RoutesService', [
     let recentRoutes
     let privateRoutes
 
+    // For preview route
+    let routePreview
+
     // For single routes
     let lastRouteId = null
     let lastPromise = null
@@ -94,6 +97,9 @@ angular.module('beeline').factory('RoutesService', [
       // Pulls all the trips plus the route path
       // getRoute() will return the heavier stuff (all trips, availability, path)
       getRoute: function (routeId, ignoreCache, options) {
+        if (routeId === 'preview') {
+          return Promise.resolve(routePreview)
+        }
         assert.equal(typeof routeId, 'number')
 
         if (!ignoreCache && !options && lastRouteId === routeId) {
@@ -192,6 +198,10 @@ angular.module('beeline').factory('RoutesService', [
         }
 
         return routesPromise
+      },
+
+      setRoutePreview: function (route) {
+        routePreview = route
       },
 
       getPrivateRoutes: function () {

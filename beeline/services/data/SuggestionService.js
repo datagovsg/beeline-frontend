@@ -93,13 +93,22 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
+    function previewRoute (suggestionId, suggestedRouteId) {
+      return RequestService.beeline({
+        method: 'GET',
+        url: `/suggestions/${suggestionId}/suggested_routes/${suggestedRouteId}/preview_route`,
+      }).then(response => {
+        return response.data
+      })
+    }
+
     function triggerRouteGeneration (suggestionId, days) {
       const daysOfWeek = convertDaysToBinary(days)
       return RequestService.beeline({
         method: 'POST',
         url: `/suggestions/${suggestionId}/suggested_routes/trigger_route_generation`,
         data: {
-          maxDetourMinutes: 10,
+          maxDetourMinutes: 15,
           startClusterRadius: 4000,
           startWalkingDistance: 400,
           endClusterRadius: 4000,
@@ -108,15 +117,6 @@ angular.module('beeline').factory('SuggestionService', [
           daysOfWeek, // 0b0011111 - Mon-Fri
           dataSource: 'suggestions',
         },
-      }).then(response => {
-        return response.data
-      })
-    }
-
-    function convertToCrowdstart (suggestionId, suggestedRouteId) {
-      return RequestService.beeline({
-        method: 'POST',
-        url: `/suggestions/${suggestionId}/suggested_routes/${suggestedRouteId}/convert_to_crowdstart`,
       }).then(response => {
         return response.data
       })
@@ -187,10 +187,13 @@ angular.module('beeline').factory('SuggestionService', [
               if (r.routeId) {
                 route = await CrowdstartService.getCrowdstartById(r.routeId)
               } else {
-                let crowdstart = await convertToCrowdstart(suggestionId, r.id)
-                route = crowdstart.route
+                route = await previewRoute(suggestionId, r.id)
               }
-              routes.push(route)
+              routes.push({
+                ...route,
+                suggestedRouteId: r.id,
+                suggestionId,
+              })
             })
           await Promise.all(promises)
 
@@ -198,6 +201,15 @@ angular.module('beeline').factory('SuggestionService', [
             done: response.data.length > 0,
             routes,
           }
+        })
+      },
+
+      convertToCrowdstart: function (suggestionId, suggestedRouteId) {
+        return RequestService.beeline({
+          method: 'POST',
+          url: `/suggestions/${suggestionId}/suggested_routes/${suggestedRouteId}/convert_to_crowdstart`,
+        }).then(response => {
+          return response.data
         })
       },
     }

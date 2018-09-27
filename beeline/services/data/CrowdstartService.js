@@ -130,6 +130,7 @@ angular.module('beeline').service('CrowdstartService', [
     let bidsCache
     let crowdstartSummary = null
     let bidsById = null
+    let crowdstartPreview = null
     let crowdstartRoutesList = null
     let crowdstartRoutesById = null
     let nearbyCrowdstartRoutesById = null
@@ -307,6 +308,9 @@ angular.module('beeline').service('CrowdstartService', [
       fetchCrowdstart: ignoreCache => fetchCrowdstartRoutes(ignoreCache),
 
       getCrowdstartById: function (routeId) {
+        if (routeId === 'preview') {
+          return crowdstartPreview
+        }
         if (!crowdstartRoutesById) {
           return null
         }
@@ -317,6 +321,10 @@ angular.module('beeline').service('CrowdstartService', [
 
       getCrowdstartRoutesById: function () {
         return crowdstartRoutesById
+      },
+
+      setCrowdstartPreview: function (route) {
+        crowdstartPreview = route
       },
 
       // user personal bid information

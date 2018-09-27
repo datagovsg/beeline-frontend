@@ -6,7 +6,9 @@ export default [
   '$ionicLoading',
   'loadingSpinner',
   'UserService',
+  'RoutesService',
   'SuggestionService',
+  'CrowdstartService',
   function (
     // Angular Tools
     $scope,
@@ -16,7 +18,9 @@ export default [
     $ionicLoading,
     loadingSpinner,
     UserService,
+    RoutesService,
     SuggestionService,
+    CrowdstartService
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
@@ -83,6 +87,11 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
+    $scope.saveCrowdstartPreview = function (route) {
+      CrowdstartService.setCrowdstartPreview(route)
+      RoutesService.setRoutePreview(route)
+    }
+
     $scope.popupDeleteConfirmation = function () {
       $ionicPopup.confirm({
         title: 'Are you sure you want to delete the suggestions?',
@@ -121,7 +130,6 @@ export default [
           }
         })
         .catch(error => {
-          $ionicLoading.hide()
           $ionicPopup.alert({
             title: "Sorry there's been a problem loading the suggested route information",
             subTitle: error,

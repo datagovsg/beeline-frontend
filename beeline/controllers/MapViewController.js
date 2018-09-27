@@ -19,6 +19,7 @@ export default [
     // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+    routeId = $stateParams.routeId === 'preview' ? $stateParams.routeId : routeId
 
     // ------------------------------------------------------------------------
     // Data Initialization
