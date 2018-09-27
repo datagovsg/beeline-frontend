@@ -220,7 +220,7 @@ export default [
       })
     }
 
-    $scope.checkExistingSimilarSuggestions = async function () {
+    $scope.checkExistingDuplicateSuggestions = async function () {
       const suggestions = SuggestionService.getSuggestions()
       const match = _.filter(suggestions, s => {
         let board = $scope.data.pickUpLocation
@@ -236,7 +236,7 @@ export default [
         await $ionicPopup.alert({
           title: 'Error creating suggestion',
           template: `
-          <div>You have already submitted a similar suggestion!</div>
+          <div>You have already submitted a duplicate suggestion!</div>
           `,
         })
       }
@@ -246,8 +246,8 @@ export default [
 
     $scope.submitSuggestion = async function () {
       try {
-        const similar = await $scope.checkExistingSimilarSuggestions()
-        if (similar) return
+        const duplicate = await $scope.checkExistingDuplicateSuggestions()
+        if (duplicate) return
         const data = await loadingSpinner(
           SuggestionService.createSuggestion(
             getLatLng($scope.data.pickUpLocation),
