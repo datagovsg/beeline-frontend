@@ -70,6 +70,7 @@ export default [
     $scope.data = {
       pickUpLocation: $stateParams.pickUpLocation,
       dropOffLocation: $stateParams.dropOffLocation,
+      // TODO: change to int after upgrading to ionic 1.3.3
       selectedTimeIndex: '17', // 8.30 am
       selectedTime: null,
       daysInvalid: true,
@@ -213,6 +214,7 @@ export default [
     $scope.resetSuggestion = function () {
       $scope.data.pickUpLocation = null
       $scope.data.dropOffLocation = null
+      // TODO: change to int after upgrading to ionic 1.3.3
       $scope.data.selectedTimeIndex = '17' // 8.30 am
       $scope.data.daysInvalid = true
       $scope.data.days = $scope.data.days.map(d => {
