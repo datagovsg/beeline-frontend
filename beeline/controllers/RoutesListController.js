@@ -5,43 +5,23 @@ export default [
   '$scope',
   '$q',
   '$state',
-  '$rootScope',
   'RoutesService',
   'CrowdstartService',
   'LiteRoutesService',
   'LiteRouteSubscriptionService',
-  'SearchService',
-  'BookingService',
-  'SearchEventService',
-  'RequestService',
-  '$window',
-  'OneMapPlaceService',
   '$ionicHistory',
-  '$location',
-  '$anchorScroll',
-  '$timeout',
   function (
     // Angular Tools
     $scope,
     $q,
     $state,
-    $rootScope,
     // Route Information
     RoutesService,
     CrowdstartService,
     LiteRoutesService,
     // Misc
     LiteRouteSubscriptionService,
-    SearchService,
-    BookingService,
-    SearchEventService,
-    RequestService,
-    $window,
-    OneMapPlaceService,
-    $ionicHistory,
-    $location,
-    $anchorScroll,
-    $timeout
+    $ionicHistory
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
