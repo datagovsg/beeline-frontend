@@ -47,10 +47,7 @@
 
     <button
       class="primary-button" 
-      ui-sref="tabs.create-new-suggestion({
-        pickUpLocation: data.pickUpLocation,
-        dropOffLocation: data.dropOffLocation,
-      })"
+      ng-click="openLink($event)"
     >
       Suggest a new route
     </button>
