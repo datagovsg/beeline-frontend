@@ -5,15 +5,11 @@ export default [
   '$state',
   '$timeout',
   '$ionicLoading',
-  '$ionicPopup',
-  'loadingSpinner',
   'MapService',
   'RoutesService',
   'LiteRoutesService',
   'CrowdstartService',
   'LiteRouteSubscriptionService',
-  'SuggestionService',
-  'SharedVariableService',
   function (
     // Angular Tools
     $q,
@@ -21,15 +17,11 @@ export default [
     $state,
     $timeout,
     $ionicLoading,
-    $ionicPopup,
-    loadingSpinner,
     MapService,
     RoutesService,
     LiteRoutesService,
     CrowdstartService,
-    LiteRouteSubscriptionService,
-    SuggestionService,
-    SharedVariableService
+    LiteRouteSubscriptionService
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
