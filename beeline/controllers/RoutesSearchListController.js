@@ -4,33 +4,21 @@ export default [
   '$scope',
   '$state',
   '$stateParams',
-  '$ionicHistory',
-  '$ionicPopup',
-  'loadingSpinner',
-  'MapService',
   'SearchService',
   'LiteRoutesService',
   'LiteRouteSubscriptionService',
   'RoutesService',
   'CrowdstartService',
-  'SuggestionService',
-  'SharedVariableService',
   function (
     // Angular Tools
     $scope,
     $state,
     $stateParams,
-    $ionicHistory,
-    $ionicPopup,
-    loadingSpinner,
-    MapService,
     SearchService,
     LiteRoutesService,
     LiteRouteSubscriptionService,
     RoutesService,
-    CrowdstartService,
-    SuggestionService,
-    SharedVariableService
+    CrowdstartService
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
