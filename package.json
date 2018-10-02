@@ -36,6 +36,7 @@
     "moment-timezone": "^0.5.16",
     "multiple-date-picker": "git+https://github.com/datagovsg/MultipleDatePicker.git#annotations",
     "ngclipboard": "^1.1.1",
+    "rollbar": "^2.4.7",
     "uuid": "^3.1.0"
   },
   "devDependencies": {
