@@ -10,6 +10,7 @@ export default [
   'LiteRoutesService',
   'CrowdstartService',
   'LiteRouteSubscriptionService',
+  'GoogleAnalytics',
   function (
     // Angular Tools
     $q,
@@ -21,7 +22,8 @@ export default [
     RoutesService,
     LiteRoutesService,
     CrowdstartService,
-    LiteRouteSubscriptionService
+    LiteRouteSubscriptionService,
+    GoogleAnalytics
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
@@ -105,6 +107,21 @@ export default [
     $scope.search = function () {
       let pickUp = $scope.data.pickUpLocation
       let dropOff = $scope.data.dropOffLocation
+
+      // Send GA event
+      let label = ''
+      if (pickUp) {
+        label += 'Pickup: ' + pickUp.SEARCHVAL + dropOff ? ' | ' : ''
+      }
+      if (dropOff) {
+        label += 'Dropoff: ' + dropOff.SEARCHVAL
+      }
+      GoogleAnalytics.send('send', 'event', {
+        eventCategory: 'search',
+        eventAction: 'search button',
+        eventLabel: label,
+      })
+
       $ionicLoading.show({
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Searching for routes</small>`,
       })
