@@ -17,7 +17,7 @@
       <span ng-if="data.routes === null">Loading routes...</span>
       <span ng-if="data.routes.length === 0">No suggested routes found!</span>
       <div ng-if="data.routes.length > 0">
-        <span class="header">{{ data.routes[0].id ? 'Generated route' : 'Crowdstarted Route' }}</span>
+        <span class="header">{{ data.routes[0].id ? 'Crowdstarted Route' : 'Generated route' }}</span>
         <crowdstart-route
           ng-repeat="route in data.routes" 
           route="route"

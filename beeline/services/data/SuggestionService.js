@@ -109,17 +109,17 @@ angular.module('beeline').factory('SuggestionService', [
         method: 'POST',
         url: `/suggestions/${suggestionId}/suggested_routes/trigger_route_generation`,
         data: {
-          maxDetourMinutes: 15,
-          startClusterRadius: 4000,
+          maxDetourMinutes: 0.5,
+          startClusterRadius: 300,
           startWalkingDistance: 400,
-          endClusterRadius: 4000,
+          endClusterRadius: 300,
           endWalkingDistance: 400,
           timeAllowance: 1800 * 1000, // Half an hour
           daysOfWeek, // 0b0011111 - Mon-Fri
           dataSource: 'suggestions',
-          // imputedDwellTime: Long = 60000,
-          // includeAnonymous: false,
-          // createdSince: Long = 0L
+          imputedDwellTime: 10000,
+          includeAnonymous: false,
+          createdSince: Date.now() - 365 * 24 * 60 * 60 * 1000, // 2 years back
         },
       }).then(response => {
         return response.data
