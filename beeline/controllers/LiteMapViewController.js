@@ -46,7 +46,6 @@ export default [
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
-    let routeLabel = $stateParams.label ? $stateParams.label : null
 
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -57,8 +56,16 @@ export default [
     // ------------------------------------------------------------------------
     // Data Loading
     // ------------------------------------------------------------------------
-    LiteRoutesService.fetchLiteRoute(routeLabel).then(response => {
-      const route = response[routeLabel]
+
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
+    MapService.on('stop-selected', stop => {
+      $scope.mapObject.chosenStop = stop
+      SharedVariableService.setChosenStop(stop)
+    })
+
+    MapService.once('lite-route-loaded', route => {
       if (route.path) {
         RoutesService.decodeRoutePath(route.path)
           .then(decodedPath => {
@@ -70,14 +77,6 @@ export default [
       }
       $scope.mapObject.stops = route.stops
       SharedVariableService.setStops(route.stops)
-    })
-
-    // ------------------------------------------------------------------------
-    // Watchers
-    // ------------------------------------------------------------------------
-    MapService.on('stop-selected', stop => {
-      $scope.mapObject.chosenStop = stop
-      SharedVariableService.setChosenStop(stop)
     })
   },
 ]

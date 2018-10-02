@@ -1,14 +1,12 @@
-<div ng-if="!disp.yourRoutes">
-
-  <!-- START: Routes you may like -->
+<div>
+  <!-- START: All routes -->
   <!-- hide it if search bar is not empty -->
-  <div class="item item-divider" ng-if="!data.placeQuery && !data.pickUpLocation && !data.dropOffLocation && data.routesYouMayLike.length > 0">
-    Routes You May Like
+  <div class="item item-divider" ng-if="data.mixedRoutes.length > 0">
+    Routes
   </div>
   <!-- hide route item if search bar is not empty -->
   <ion-item
-    ng-repeat="route in data.routesYouMayLike | limitTo:25 track by route.id"
-    ng-if="!data.placeQuery && !data.pickUpLocation && !data.dropOffLocation && data.routesYouMayLike.length > 0"
+    ng-repeat="route in data.mixedRoutes track by route.id"
     class="item-text-wrap"
   >
     <regular-route
@@ -27,75 +25,31 @@
       ui-sref="tabs.lite-detail({ label: route.label })">
     </lite-route>
   </ion-item>
-  <!-- END: Routes you may like -->
+  <!-- END: All routes -->
 
-  <!-- START: Available Routes Section -->
-  <div
-    class="item item-divider"
-    ng-if="disp.routes.length > 0"
-  >
-    Available Routes
-  </div>
-  <ion-item
-    ng-repeat="route in disp.routes | limitTo:30 track by route.id"
-    class="item-text-wrap"
-  >
-    <regular-route
-      route="route"
-      ui-sref="tabs.route-detail({ routeId: route.id })">
-    </regular-route>
-  </ion-item>
-  <!-- END: Available Routes Section -->
-  
-  <!-- START: Available Crowdstart Routes -->
-  <div
-    class="item item-divider"
-    ng-if="disp.crowdstartRoutes.length > 0"
-    id="crowdstart"
-  >
-    Crowdstart Routes
-  </div>
-  <ion-item
-    ng-repeat="route in disp.crowdstartRoutes | limitTo:15 track by $index"
-    class="item-text-wrap"
-  >
-    <crowdstart-route
-      route="route"
-      ui-sref="tabs.crowdstart-detail({ routeId: route.id})">
-    </crowdstart-route>
-  </ion-item>
-  <!-- END: Available Crowdstart Section -->
+  <div ng-hide="suggestHide" class="item text-center item-text-wrap suggest-route">
+    <!-- No results found message -->
+    <div
+      ng-if="disp.routes.length === 0 &&
+            disp.liteRoutes.length === 0 &&
+            disp.crowdstartRoutes.length === 0"
+      class=""
+    >
+      Sorry, we could not find any routes matching your search query.
+    </div>
+    <div
+      ng-if="disp.routes.length !== 0 ||
+            disp.liteRoutes.length !== 0 ||
+            disp.crowdstartRoutes.length !== 0"
+    >
+      Can't find a suitable route?
+    </div>
 
-  <!-- START: Available Lite Routes Section -->
-  <div
-    class="item item-divider"
-    ng-if="disp.liteRoutes.length > 0"
-  >
-    Tracking Routes
-  </div>
-  <ion-item
-    ng-repeat="route in disp.liteRoutes | limitTo:5 track by route.label"
-    class="item-text-wrap"
-  >
-    <lite-route
-      route="route"
-      ui-sref="tabs.lite-detail({ label: route.label })">
-    </lite-route>
-  </ion-item>
-  <!-- END: Available Lite Routes Section -->
-  
-  <!-- No results found message -->
-  <p
-    ng-if="data.routes.length === 0 &&
-          disp.liteRoutes.length === 0 &&
-          disp.crowdstartRoutes.length === 0 &&
-          (data.placeQuery && !disp.searchFromTo || data.pickUpLocation && disp.searchFromTo || data.dropOffLocation && disp.searchFromTo)"
-    class="text-center"
-  >
-    Sorry, we could not find any routes matching "{{data.queryText}}".
-  </p>
-  <div ng-hide="suggestHide" class="item">
-    Can't find a suitable route?</br>
-    <a href="#" ng-click="openSuggestionLink($event)">Suggest a new route</a>
+    <button
+      class="primary-button" 
+      ng-click="openLink($event)"
+    >
+      Suggest a new route
+    </button>
   </div>
 </div>

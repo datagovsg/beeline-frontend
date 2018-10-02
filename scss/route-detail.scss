@@ -97,7 +97,7 @@
   ion-content {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     top: auto;
     background-color: transparent!important;
 
@@ -156,6 +156,7 @@
       // ion-content background-color is transparent
       background-color: $stable;
       padding-top: 50px;
+      padding-bottom: 10px;
 
       span {
         margin-top: $padding-base-vertical;

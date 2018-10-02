@@ -1,6 +1,7 @@
 angular.module('beeline').directive('myLocation', [
   'uiGmapGoogleMapApi',
-  function (uiGmapGoogleMapApi) {
+  'MapUtilService',
+  function (uiGmapGoogleMapApi, MapUtilService) {
     return {
       template: `
   <ui-gmap-circle ng-if="coords" idkey="idkey1" center="coords" radius="radius"
@@ -31,34 +32,18 @@ angular.module('beeline').directive('myLocation', [
         scope.idkey1 = `my-location-${Date.now()}-circle`
         scope.idkey2 = `my-location-${Date.now()}-marker`
 
+        scope.$watch(
+          () => MapUtilService.getMyLocation(),
+          (myLocation) => {
+            scope.coords = myLocation
+          }
+        )
+
         uiGmapGoogleMapApi.then(googleMaps => {
           scope.markerOptions.icon = {
             url: 'img/userLocation.svg',
             anchor: new googleMaps.Point(6, 6),
           }
-
-          let watch = navigator.geolocation.watchPosition(
-            success => {
-              scope.coords = {
-                latitude: success.coords.latitude,
-                longitude: success.coords.longitude,
-              }
-              scope.radius = success.coords.accuracy
-              scope.$digest()
-            },
-            error => {
-              scope.coords = null
-              scope.$digest()
-              console.error(error)
-            },
-            {
-              enableHighAccuracy: false,
-            }
-          )
-
-          scope.$on('destroy', () => {
-            navigator.geolocation.clearWatch(watch)
-          })
         })
       },
     }

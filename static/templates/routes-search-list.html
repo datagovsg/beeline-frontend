@@ -1,0 +1,27 @@
+<ion-view class="routes-view" view-title='Search Routes'>
+  <ion-content scroll="false">
+    <!-- Scrollable routes list -->
+    <ion-content class="scrollable-routes-list">
+
+      <ion-list>
+        <!-- Error message if problem getting routes data -->
+        <div class="item item-text-wrap" ng-if="error">
+          <i class="icon ion-alert-circled"></i>
+          There was a problem fetching the routes from the server.
+          Please try again later and let us know at <!--email_off-->feedback@beeline.sg<!--/email_off--> if the problem persists.
+        </div>
+        <!-- repeat 5 times -->
+        <ion-item ng-repeat="a in [1,2,3,4,5]" ng-if="!data.routesAvailable">
+          <animated-route></animated-route>
+        </ion-item>
+        <!-- Your Routes list -->
+        <!-- <your-routes-list></your-routes-list> -->
+        <!-- Routes list -->
+        <routes-list></routes-list>
+      </ion-list>
+
+    </ion-content>
+
+  </ion-content>
+
+</ion-view>

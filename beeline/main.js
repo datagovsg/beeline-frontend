@@ -48,10 +48,12 @@ require('./directives/countdown')
 require('./directives/crowdstartInfo/crowdstartInfo')
 require('./directives/dailyTripsBroker')
 require('./directives/extA')
+require('./directives/fromToBars/fromToBars')
 require('./directives/liteRouteStop/liteRouteStop')
 require('./directives/locationSearch/locationSearch')
 require('./directives/mapBusIcon')
 require('./directives/mapPolyRoute')
+require('./directives/mapCurvedRoute')
 require('./directives/moreInfo/moreInfo')
 require('./directives/myLocation')
 require('./directives/poweredByBeeline/poweredByBeeline')
@@ -73,6 +75,7 @@ require('./directives/companyInfoBroker')
 require('./directives/menuHamburger')
 require('./directives/routesList/routesList')
 require('./directives/routesList/yourRoutesList')
+require('./directives/suggestionItem/suggestionItem')
 
 // Data Services
 require('./services/data/CompanyService')
@@ -82,6 +85,7 @@ require('./services/data/LiteRouteSubscriptionService')
 require('./services/data/RoutesService')
 require('./services/data/TicketService')
 require('./services/data/TripService')
+require('./services/data/SuggestionService')
 
 // UI Services
 require('./services/legalese')
@@ -90,7 +94,7 @@ require('./services/login')
 // Services
 require('./common/BookingService')
 require('./services/fastCheckoutService')
-require('./services/MapOptions')
+require('./services/MapUtilService')
 require('./services/MapViewFactory')
 require('./services/paymentService')
 require('./services/StripeService')
@@ -198,6 +202,14 @@ app
     require('./controllers/CrowdstartSummaryController.js').default
   )
   .controller(
+    'RoutesSearchController',
+    require('./controllers/RoutesSearchController.js').default
+  )
+  .controller(
+    'RoutesSearchListController',
+    require('./controllers/RoutesSearchListController.js').default
+  )
+  .controller(
     'TabsController',
     require('./controllers/TabsController.js').default
   )
@@ -224,6 +236,18 @@ app
   .controller(
     'PurchaseRoutePassController',
     require('./controllers/PurchaseRoutePassController.js').default
+  )
+  .controller(
+    'YourSuggestionsController',
+    require('./controllers/YourSuggestionsController.js').default
+  )
+  .controller(
+    'YourSuggestionCreateController',
+    require('./controllers/YourSuggestionCreateController.js').default
+  )
+  .controller(
+    'YourSuggestionDetailController',
+    require('./controllers/YourSuggestionDetailController.js').default
   )
   .config(configureRoutes)
   .config([
@@ -385,11 +409,13 @@ app
     'CrowdstartService',
     'LiteRoutesService',
     'TicketService',
+    'SuggestionService',
     function (
       RoutesService,
       CrowdstartService,
       LiteRoutesService,
-      TicketService
+      TicketService,
+      SuggestionService
     ) {
       // Pre-fetch the routes
       RoutesService.fetchRoutes()
@@ -398,6 +424,7 @@ app
       CrowdstartService.fetchBids()
       LiteRoutesService.fetchLiteRoutes()
       TicketService.fetchTickets()
+      SuggestionService.fetchSuggestions()
     },
   ])
   .run([

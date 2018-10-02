@@ -1,0 +1,35 @@
+<ion-view class="your-suggestion-detail" view-title="Your Suggestions" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear back-button"
+            ui-sref="tabs.your-suggestions"
+            class="item-icon-right">
+        <i class="icon ion-ios-arrow-back"></i>
+    </button>
+  </ion-nav-buttons>
+  
+  <ion-content>
+
+    <ion-item class="item-text-wrap">
+      <suggestion-item suggestion="data.suggestion"></suggestion-item>
+    </ion-item>
+
+    <ion-item>
+      <span ng-if="data.routes === null">Route yet to be generated!</span>
+      <span ng-if="data.routes.length === 0">No suggested routes found!</span>
+      <div ng-if="data.routes.length > 0">
+        <span class="header">Generated route</span>
+        <crowdstart-route
+          ng-repeat="route in data.routes" 
+          route="route"
+          ng-click="saveCrowdstartPreview(route)"
+          ui-sref="tabs.crowdstart-detail({ routeId: route.id ? route.id : 'preview' })">
+        </crowdstart-route>
+      </div>
+    </ion-item>
+
+    <div class="delete">
+      <span on-tap="popupDeleteConfirmation()">Delete Suggestion</span>
+    </div>
+
+  </ion-content>
+</ion-view>

@@ -1,8 +1,9 @@
 import _ from 'lodash'
 
-angular.module('beeline').service('MapOptions', [
+angular.module('beeline').service('MapUtilService', [
   'uiGmapGoogleMapApi',
-  function MapOptions (uiGmapGoogleMapApi) {
+  'OneMapPlaceService',
+  function MapUtilService (uiGmapGoogleMapApi, OneMapPlaceService) {
     let markerOptionsPromise = uiGmapGoogleMapApi.then(googleMaps => {
       return {
         markerOptions: {
@@ -82,6 +83,33 @@ angular.module('beeline').service('MapOptions', [
         },
       }
     })
+
+    uiGmapGoogleMapApi.then(googleMaps => {
+      navigator.geolocation.watchPosition(
+        async success => {
+          const location = await OneMapPlaceService.reverseGeocode(
+            success.coords.latitude,
+            success.coords.longitude
+          )
+          this.coords = {
+            latitude: success.coords.latitude,
+            longitude: success.coords.longitude,
+            location,
+          }
+        },
+        error => {
+          this.coords = null
+          console.error(error)
+        },
+        {
+          enableHighAccuracy: false,
+        }
+      )
+    })
+
+    this.getMyLocation = function () {
+      return this.coords
+    }
 
     this.defaultMapOptions = function (options) {
       let mapOptions = _.assign(

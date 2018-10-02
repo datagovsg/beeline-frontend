@@ -3,19 +3,21 @@ import _ from 'lodash'
 export default [
   '$scope',
   '$ionicSideMenuDelegate',
-  'MapOptions',
+  'MapUtilService',
   'SharedVariableService',
   'uiGmapGoogleMapApi',
   'UserService',
+  'SuggestionService',
   '$state',
   'loadingSpinner',
   function (
     $scope,
     $ionicSideMenuDelegate,
-    MapOptions,
+    MapUtilService,
     SharedVariableService,
     uiGmapGoogleMapApi,
     UserService,
+    SuggestionService,
     $state,
     loadingSpinner
   ) {
@@ -38,7 +40,7 @@ export default [
     // ------------------------------------------------------------------------
     // Data Initialization
     // ------------------------------------------------------------------------
-    $scope.map = MapOptions.defaultMapOptions({
+    $scope.map = MapUtilService.defaultMapOptions({
       busLocation: {
         coordinates: null,
         icon: null,
@@ -49,6 +51,7 @@ export default [
       popupStop: null,
       routeMessage: null,
       isLoggedIn: false,
+      hasSuggestions: false,
     }
 
     // ------------------------------------------------------------------------
@@ -68,7 +71,7 @@ export default [
     })
 
     gmapIsReady.then(() => {
-      MapOptions.disableMapLinks()
+      MapUtilService.disableMapLinks()
     })
 
     uiGmapGoogleMapApi.then(googleMaps => {
@@ -86,12 +89,13 @@ export default [
       () => UserService.getUser(),
       user => {
         $scope.disp.isLoggedIn = user !== null
+        $scope.disp.hasSuggestions = false
       }
     )
 
     $scope.$watch('mapObject.stops', stops => {
       if (stops && stops.length > 0) {
-        const bounds = MapOptions.formBounds(stops)
+        const bounds = MapUtilService.formBounds(stops)
         if ($scope.map.control.getGMap) {
           const gmap = $scope.map.control.getGMap()
           google.maps.event.trigger(gmap, 'resize')
@@ -127,6 +131,10 @@ export default [
       if (stop) {
         panToStop(stop.stop)
       }
+    })
+
+    $scope.$watch(() => SuggestionService.getSuggestions(), suggestions => {
+      $scope.disp.hasSuggestions = suggestions && suggestions.length > 0
     })
 
     // Watcher for side menu opening event

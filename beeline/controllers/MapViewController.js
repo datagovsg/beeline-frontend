@@ -19,6 +19,7 @@ export default [
     // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+    routeId = $stateParams.routeId === 'preview' ? $stateParams.routeId : routeId
 
     // ------------------------------------------------------------------------
     // Data Initialization
@@ -64,6 +65,10 @@ export default [
     MapService.on('stop-selected', stop => {
       $scope.mapObject.chosenStop = stop
       SharedVariableService.setChosenStop(stop)
+    })
+
+    MapService.on('draw-curved-path', route => {
+      $scope.mapObject.curvedPath = route
     })
   },
 ]

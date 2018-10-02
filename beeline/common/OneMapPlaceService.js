@@ -17,23 +17,62 @@ angular.module('common').factory('OneMapPlaceService', [
       return result
     }
 
+    const transformPropertiesToLowercase = function transformPropertiesToLowercase (location) {
+      for (var prop in location) {
+        // Transform text to lower case. Use CSS to style appropriately
+        location[prop] = location[prop].toLowerCase()
+      }
+      return location
+    }
+
+    const transfromRevGeocodeResults = function transfromRevGeocodeResults (data) {
+      if (!data) return data
+
+      const schema = {
+        BLOCK: 'BLK_NO',
+        BUILDINGNAME: 'BUILDING',
+        ROAD: 'ROAD_NAME',
+        POSTALCODE: 'POSTAL',
+        XCOORD: 'X',
+        YCOORD: 'Y',
+        LATITUDE: 'LATITUDE',
+        LONGITUDE: 'LONGITUDE',
+        LONGTITUDE: 'LONGTITUDE',
+      }
+
+      let result = {}
+      Object.entries(data).map(d => {
+        let key = schema[d[0]]
+        result[key] = d[1]
+      })
+
+      return transformPropertiesToLowercase(result)
+    }
+
     const getAllResults = async function getAllResults (queryText) {
       let result = await makeQuery(queryText)
       if (!result || (result && result.found === 0)) {
         return null
       } else {
-        result.results = result.results.map(location => {
-          for (var prop in location) {
-            // Transform text to lower case. Use CSS to style appropriately
-            location[prop] = location[prop].toLowerCase()
-          }
-          return location
-        })
+        result.results = result.results.map(transformPropertiesToLowercase)
         return result
       }
     }
 
     return {
+      async reverseGeocode (lat, lng) {
+        let url = 'https://api.beeline.sg/onemap/revgeocode?'
+        let queryString = querystring.stringify({
+          location: lat + ',' + lng,
+        })
+        let { data: result } = await $http({
+          method: 'GET',
+          url: url + queryString,
+        })
+
+        return transfromRevGeocodeResults(result.GeocodeInfo[0])
+      },
+
       async handleQuery (queryText) {
         let result = await makeQuery(queryText)
         if (!result || (result && result.found === 0)) {

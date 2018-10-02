@@ -4,9 +4,11 @@ import _ from 'lodash'
 angular.module('beeline').directive('locationSelectModal', [
   '$stateParams',
   'OneMapPlaceService',
+  'MapUtilService',
   function (
     $stateParams,
     OneMapPlaceService,
+    MapUtilService,
   ) {
     return {
       restrict: 'E',
@@ -51,6 +53,7 @@ angular.module('beeline').directive('locationSelectModal', [
         scope.data = {
           input: scope.location ? scope.location.ADDRESS : null,
           latestPromise: null,
+          myLocation: null,
         }
 
         if (scope.type === 'pickup') {
@@ -102,6 +105,12 @@ angular.module('beeline').directive('locationSelectModal', [
           }
         })
 
+        scope.$watch(() => MapUtilService.getMyLocation(),
+          (myLocation) => {
+            scope.data.myLocation = myLocation ? myLocation.location : null
+          }
+        )
+
         // ---------------------------------------------------------------------
         // UI Hooks
         // ---------------------------------------------------------------------
@@ -120,6 +129,10 @@ angular.module('beeline').directive('locationSelectModal', [
             Promise.resolve(location).then(scope.callback)
           }
           scope.modal.hide()
+        }
+
+        scope.selectMyLocation = () => {
+          scope.select(scope.data.myLocation)
         }
 
         scope.clearInput = () => {

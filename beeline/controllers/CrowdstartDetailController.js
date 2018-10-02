@@ -26,7 +26,7 @@ export default [
       const route = await routePromise
       if (!route) return
 
-      if (!user) {
+      if (!user || routeId === 'preview') {
         $scope.disp.bidded = false
         return
       }
@@ -39,6 +39,7 @@ export default [
     // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+    routeId = $stateParams.routeId === 'preview' ? $stateParams.routeId : routeId
 
     // ------------------------------------------------------------------------
     // Data Initialization

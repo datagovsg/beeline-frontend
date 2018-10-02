@@ -17,7 +17,7 @@ angular.module('beeline').directive('locationSearch', [
           <i class="icon dropoff-stop" ng-if="icon === 'dropoff'"></i>
           <div class="input-box" on-tap="openSearch()">
             <div class="input-text placeholder" ng-if="!queryLocation">{{ph}}</div>
-            <div class="input-text" ng-if="queryLocation">{{queryLocation.ADDRESS}}</div>
+            <div class="input-text" ng-if="queryLocation">{{ queryLocation.ADDRESS || queryLocation.BUILDING || queryLocation.ROAD_NAME }}</div>
           </div>
           <ion-spinner ng-show="isFiltering && queryLocation"></ion-spinner>
           <i

@@ -12,6 +12,7 @@ export default [
   'CrowdstartService',
   'CompanyService',
   'StripeService',
+  'SuggestionService',
   function (
     $scope,
     $state,
@@ -22,12 +23,14 @@ export default [
     $ionicPopup,
     CrowdstartService,
     CompanyService,
-    StripeService
+    StripeService,
+    SuggestionService
   ) {
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
     let routeId = $stateParams.routeId ? Number($stateParams.routeId) : null
+    routeId = $stateParams.routeId === 'preview' ? $stateParams.routeId : routeId
     let bidPrice = $stateParams.bidPrice ? Number($stateParams.bidPrice) : null
     let bidded = $stateParams.bidded ? Boolean($stateParams.bidded) : null
 
@@ -123,8 +126,8 @@ export default [
         if (!user || !route) return
 
         // Figure out if user has bidded on this crowdstart route
-        let userIds = route.bids.map(bid => bid.userId)
-        $scope.disp.bidded = userIds.includes(user.id)
+        let userIds = route.bids && route.bids.map(bid => bid.userId)
+        $scope.disp.bidded = userIds && userIds.includes(user.id)
       }
     )
 
@@ -169,15 +172,25 @@ export default [
       }
 
       try {
-        const bidPrice = $scope.priceInfo.bidPrice
-        await loadingSpinner(
-          CrowdstartService.createBid(
-            $scope.book.route,
-            $scope.book.boardStopId,
-            $scope.book.alightStopId,
-            bidPrice
+        if (routeId === 'preview') {
+          await loadingSpinner(
+            SuggestionService.convertToCrowdstart(
+              $scope.book.route.suggestionId,
+              $scope.book.route.suggestedRouteId
+            )
           )
-        )
+        } else {
+          const bidPrice = $scope.priceInfo.bidPrice
+          await loadingSpinner(
+            CrowdstartService.createBid(
+              $scope.book.route,
+              $scope.book.boardStopId,
+              $scope.book.alightStopId,
+              bidPrice
+            )
+          )
+        }
+
         await $ionicPopup.alert({
           title:
             'You have successfully joined the crowdstart route. We will inform you once your route is activated.',

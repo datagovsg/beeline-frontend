@@ -40,9 +40,26 @@ export default [
         url: '/routes',
         views: {
           menuContent: {
-            templateUrl: 'templates/routes-list.html',
-            controller: 'RoutesListController',
+            templateUrl: 'templates/routes-search.html',
+            controller: 'RoutesSearchController',
           },
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'MapViewController',
+          },
+        },
+      })
+      .state('tabs.routes-search-list', {
+        url: '/routes/search',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/routes-search-list.html',
+            controller: 'RoutesSearchListController',
+          },
+        },
+        params: {
+          pickUpLocation: null,
+          dropOffLocation: null,
         },
       })
       .state('tabs.yourRoutes', {
@@ -154,6 +171,47 @@ export default [
           menuContent: {
             templateUrl: 'templates/tickets.html',
             controller: 'TicketsController',
+          },
+        },
+      })
+
+      // ////////////////////////////////////////////////////////////////////////////
+      // Main interface, Suggestions Tab
+      // ////////////////////////////////////////////////////////////////////////////
+      .state('tabs.your-suggestions', {
+        url: '/your-suggestions',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/your-suggestions.html',
+            controller: 'YourSuggestionsController',
+          },
+        },
+      })
+
+      .state('tabs.create-new-suggestion', {
+        url: '/your-suggestions/create',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/create-new-suggestion.html',
+            controller: 'YourSuggestionCreateController',
+          },
+          'map-area': {
+            templateUrl: 'templates/map-view.html',
+            controller: 'MapViewController',
+          },
+        },
+        params: {
+          pickUpLocation: null,
+          dropOffLocation: null,
+        },
+      })
+
+      .state('tabs.your-suggestion-detail', {
+        url: '/your-suggestions/:suggestionId',
+        views: {
+          menuContent: {
+            templateUrl: 'templates/your-suggestion-detail.html',
+            controller: 'YourSuggestionDetailController',
           },
         },
       })

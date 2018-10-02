@@ -1,0 +1,51 @@
+<ion-view class="create-new-suggestion page-with-map">
+  <ion-nav-title>Suggest a route</ion-nav-title>
+  <ion-content scroll="false">
+
+    <div class="create-view">
+      <div class="from-to-bars stops-selector">
+        <location-search query-location="data.pickUpLocation" ph="Pick Up Address" icon="pickup" class="pickup-location-bar"></location-search>
+        <from-to-bars drop-off-location="data.dropOffLocation" pick-up-location="data.pickUpLocation"></from-to-bars>
+        <location-search query-location="data.dropOffLocation" ph="Drop Off Address" icon="dropoff" class="dropoff-location-bar"></location-search> 
+      </div>
+
+      <div class="stops-selector">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Destination Arrival Time
+          </div>
+          <select ng-model="data.selectedTimeIndex" data-tap-disabled="true">
+            <option ng-repeat="t in disp.times" value={{$index}}>{{ t.format('h:mm a') }}</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="stops-selector week-checkbox">
+        <div ng-repeat="day in data.days">
+          <ion-label>{{day.text}}</ion-label>
+          <ion-checkbox ng-model="day.enabled"></ion-checkbox>
+        </div>
+      </div>
+
+      <button
+        ng-if="isLoggedIn"
+        class="primary-button submit-btn" 
+        ng-click="submitSuggestion()" 
+        ng-disabled="!data.pickUpLocation || !data.dropOffLocation || !data.selectedTimeIndex || data.daysInvalid">
+        Submit
+      </button>
+
+      <!-- LOGIN BUTTON -->
+      <div ng-if="!isLoggedIn" class="submit-btn">
+        <div class="warning-text">
+          Please log in to proceed
+        </div>
+
+        <button class="button primary-button" ng-click="login()">
+          Log In
+        </button>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>
