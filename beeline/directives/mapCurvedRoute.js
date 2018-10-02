@@ -5,7 +5,7 @@ angular.module('beeline').directive('mapCurvedRoute', function () {
   return {
     replace: false,
     template: `
-    <ui-gmap-polyline ng-if="curvedPath" path="curvedPath" stroke="strokeOptions" static="true"></ui-gmap-polyline>
+    <ui-gmap-polyline ng-if="curvedPath" path="curvedPath" stroke="strokeOptions" static="true" icons="icons"></ui-gmap-polyline>
     `,
     scope: {
       start: '=',
@@ -20,10 +20,20 @@ angular.module('beeline').directive('mapCurvedRoute', function () {
         ([start, end]) => {
           scope.curvedPath = null
           scope.strokeOptions = {
-            color: '#4b3863',
-            weight: 3.0,
-            opacity: 0.7,
+            opacity: 0,
           }
+
+          const chevronIcons = (color, weight) => [{
+            icon: {
+              strokeOpacity: 1.0,
+              strokeColor: color,
+              strokeWeight: weight,
+              path: 'M -0.5 0 L 0 1 L 0.5 0',
+            },
+            repeat: `${weight * 4}px`,
+          }]
+
+          scope.icons = chevronIcons('#4b3863', 2)
 
           scope.curvedPath = range(100)
             .map(i => {
