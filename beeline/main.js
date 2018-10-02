@@ -15,6 +15,7 @@ import { companyLogo, miniCompanyLogo } from './shared/imageSources'
 // node imports
 import compareVersions from 'compare-versions'
 import assert from 'assert'
+import * as Sentry from '@sentry/browser'
 
 import 'multiple-date-picker/dist/multipleDatePicker'
 
@@ -23,6 +24,9 @@ import configureRoutes from './router.js'
 
 // Import app modules
 import './common/main'
+
+// Initialise Sentry
+Sentry.init({ dsn: 'https://d5c5a5eb0f0647708def16d2d9af2fd4@sentry.io/1291627' })
 
 let app = angular.module('beeline', [
   'ionic',
@@ -33,6 +37,14 @@ let app = angular.module('beeline', [
   'common',
   'angucomplete-alt',
 ])
+
+app
+  .factory('$exceptionHandler', function () {
+    return function (exception, cause) {
+      Sentry.captureException(exception)
+      throw exception
+    }
+  })
 
 require('angucomplete-alt')
 require('angular-simple-logger')
