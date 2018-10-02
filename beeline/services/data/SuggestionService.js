@@ -81,12 +81,13 @@ angular.module('beeline').factory('SuggestionService', [
       alight,
       alightDescription,
       time,
-      daysOfWeek
+      daysOfWeek,
+      referrer
     ) {
       return RequestService.beeline({
         method: 'POST',
         url: '/suggestions',
-        data: { board, boardDescription, alight, alightDescription, time, daysOfWeek },
+        data: { board, boardDescription, alight, alightDescription, time, daysOfWeek, referrer },
       }).then(response => {
         triggerRouteGeneration(response.data.id, response.data.daysOfWeek)
         return response.data
@@ -116,6 +117,9 @@ angular.module('beeline').factory('SuggestionService', [
           timeAllowance: 1800 * 1000, // Half an hour
           daysOfWeek, // 0b0011111 - Mon-Fri
           dataSource: 'suggestions',
+          // imputedDwellTime: Long = 60000,
+          // includeAnonymous: false,
+          // createdSince: Long = 0L
         },
       }).then(response => {
         return response.data
@@ -124,13 +128,15 @@ angular.module('beeline').factory('SuggestionService', [
 
     return {
       createSuggestion: async function (board, boardDescription, alight, alightDescription, time, daysOfWeek) {
+        let referrer = 'Beeline'
         let suggestion = await requestCreateNewSuggestion(
           board,
           boardDescription,
           alight,
           alightDescription,
           time,
-          daysOfWeek
+          daysOfWeek,
+          referrer
         )
         const start = {
           lat: suggestion.board.coordinates[1],
