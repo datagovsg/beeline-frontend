@@ -150,6 +150,11 @@ angular.module('beeline').directive('locationSelectModal', [
         }
 
         scope.selectMyLocation = () => {
+          GoogleAnalytics.send('send', 'event', {
+            eventCategory: 'search',
+            eventAction: 'location select - ' + scope.type,
+            eventLabel: 'my location',
+          })
           scope.select(scope.data.myLocation)
         }
 
