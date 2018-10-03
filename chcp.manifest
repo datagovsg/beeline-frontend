@@ -565,7 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "7c757b91aeea53eb882dd01f25b6fde9"
+    "hash": "e4818593d09eb38fcd3987bbc0d2bab0"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
@@ -845,11 +845,11 @@
   },
   {
     "file": "templates/create-new-suggestion.html",
-    "hash": "4797658f174e6658535a356005738dd4"
+    "hash": "296773ba238f084c4d7c424cc2231a9c"
   },
   {
     "file": "templates/crowdstart-detail.html",
-    "hash": "937057e2a995f4e1ca479168083a154a"
+    "hash": "a1a5caee4580cce344195ded9b164297"
   },
   {
     "file": "templates/crowdstart-stops.html",
@@ -889,7 +889,7 @@
   },
   {
     "file": "templates/routes-search.html",
-    "hash": "dd1c6d1e2b7fb8f4f5a0ed12546b27d8"
+    "hash": "ce8639e609328770381400d440189f5b"
   },
   {
     "file": "templates/search.html",
@@ -937,7 +937,7 @@
   },
   {
     "file": "templates/your-suggestion-detail.html",
-    "hash": "cec005ee46e33a78f848a90fbd6d15a9"
+    "hash": "be9e9330198d52ebb24ec319ce197883"
   },
   {
     "file": "templates/your-suggestions.html",
