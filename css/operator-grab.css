@@ -11886,9 +11886,6 @@ suggestion-item {
       margin-right: 40px; }
       suggestion-item .suggestion-info .left .stops {
         display: block;
-        /* Determines the amount of vertical spacing
-            between the .bus-number and the stops */
-        margin-top: 12px;
         position: relative;
         flex: 1 1 auto; }
         suggestion-item .suggestion-info .left .stops .stop-icon {
