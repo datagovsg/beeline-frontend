@@ -45,9 +45,14 @@
       Can't find a suitable route?
     </div>
 
+    <!-- To open web suggestion page --> 
+    <!-- ng-click="openLink($event)" --> 
     <button
       class="primary-button" 
-      ng-click="openLink($event)"
+      ui-sref="tabs.create-new-suggestion({
+        pickUpLocation: data.pickUpLocation,	
+        dropOffLocation: data.dropOffLocation,	
+      })"
     >
       Suggest a new route
     </button>
