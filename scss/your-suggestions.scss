@@ -61,9 +61,6 @@ suggestion-item {
   
       .stops {
         display: block;
-        /* Determines the amount of vertical spacing
-            between the .bus-number and the stops */
-        margin-top: $font-size-base * 0.8;
         position: relative;
         flex: 1 1 auto;
     

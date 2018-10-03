@@ -1,8 +1,8 @@
-<div class="day-badge">
+<!-- <div class="day-badge">
   <div ng-repeat="(day, enabled) in suggestion.daysOfWeek" ng-class="{'enabled': enabled}">
     {{ day[0] }}
   </div>
-</div>
+</div> -->
 
 <div class="suggestion-info">
   <div class="left">
@@ -23,6 +23,14 @@
         </span>
         <span class="mini-info">
           Arrive by {{ parseTime(suggestion.time) }}
+        </span>
+      </div>
+      <div class="icon-and-schedule">
+        <span class="icon-span">
+          <img class="mini-icon" src="img/icon_schedule.svg">
+        </span>
+        <span class="mini-info">
+          {{ parseSchedule(suggestion.daysOfWeek) }}
         </span>
       </div>
     </div>

@@ -119,7 +119,7 @@ angular.module('beeline').factory('SuggestionService', [
           dataSource: 'suggestions',
           imputedDwellTime: 10000,
           includeAnonymous: false,
-          createdSince: Date.now() - 365 * 24 * 60 * 60 * 1000, // 2 years back
+          createdSince: Date.now() - 2 * 365 * 24 * 60 * 60 * 1000, // 2 years back
         },
       }).then(response => {
         return response.data
