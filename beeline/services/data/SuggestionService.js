@@ -9,15 +9,6 @@ angular.module('beeline').factory('SuggestionService', [
     let routes
     let createdSuggestion
 
-    function convertDaysToBinary (days) {
-      const week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      let sum = 0
-      for (let i = 0; i < week.length; i++) {
-        sum += days[week[i]] * Math.pow(2, i)
-      }
-      return sum
-    }
-
     UserService.userEvents.on('userChanged', () => {
       fetchSuggestions()
     })
@@ -94,7 +85,7 @@ angular.module('beeline').factory('SuggestionService', [
         url: '/suggestions',
         data: { board, boardDescription, alight, alightDescription, time, daysOfWeek, referrer },
       }).then(response => {
-        triggerRouteGeneration(response.data.id, response.data.daysOfWeek)
+        triggerRouteGeneration(response.data.id)
         return response.data
       })
     }
@@ -108,23 +99,22 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
-    function triggerRouteGeneration (suggestionId, days) {
-      const daysOfWeek = convertDaysToBinary(days)
+    function triggerRouteGeneration (suggestionId) {
       return RequestService.beeline({
         method: 'POST',
         url: `/suggestions/${suggestionId}/suggested_routes/trigger_route_generation`,
         data: {
           maxDetourMinutes: 0.5,
-          startClusterRadius: 300,
+          startClusterRadius: 3000,
           startWalkingDistance: 400,
-          endClusterRadius: 300,
+          endClusterRadius: 3000,
           endWalkingDistance: 400,
           timeAllowance: 1800 * 1000, // Half an hour
-          daysOfWeek, // 0b0011111 - Mon-Fri
-          dataSource: 'suggestions',
+          matchDaysOfWeek: true,
           imputedDwellTime: 10000,
           includeAnonymous: false,
-          createdSince: Date.now() - 2 * 365 * 24 * 60 * 60 * 1000, // 2 years back
+          createdSince: Date.now() - 2 * 365 * 24 * 60 * 60 * 1000, // 2 years back,
+          suboptimalStopChoiceAllowance: 10000,
         },
       }).then(response => {
         return response.data
