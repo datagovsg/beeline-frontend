@@ -31,6 +31,13 @@ angular.module('beeline').directive('locationSelectModal', [
         const search = _.debounce(() => {
           if (!scope.data.input) return
 
+          // Send search term to GA
+          GoogleAnalytics.send('send', 'event', {
+            eventCategory: 'search',
+            eventAction: 'search input - ' + scope.type,
+            eventLabel: scope.data.input,
+          })
+
           scope.isFiltering = true
           const currentPromise =
                 scope.data.latestPromise =
