@@ -5,11 +5,13 @@ angular.module('beeline').directive('locationSelectModal', [
   '$stateParams',
   'OneMapPlaceService',
   'MapUtilService',
+  'GoogleAnalytics',
   'loadingSpinner',
   function (
     $stateParams,
     OneMapPlaceService,
     MapUtilService,
+    GoogleAnalytics,
     loadingSpinner
   ) {
     return {
