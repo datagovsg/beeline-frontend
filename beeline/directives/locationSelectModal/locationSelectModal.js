@@ -5,10 +5,12 @@ angular.module('beeline').directive('locationSelectModal', [
   '$stateParams',
   'OneMapPlaceService',
   'MapUtilService',
+  'loadingSpinner',
   function (
     $stateParams,
     OneMapPlaceService,
     MapUtilService,
+    loadingSpinner
   ) {
     return {
       restrict: 'E',
@@ -44,6 +46,10 @@ angular.module('beeline').directive('locationSelectModal', [
                     }
                   })
         }, 500)
+
+        const hide = () => {
+          scope.modal.hide()
+        }
 
         // ---------------------------------------------------------------------
         // Data Initialization
@@ -126,9 +132,12 @@ angular.module('beeline').directive('locationSelectModal', [
           }
 
           if (typeof scope.callback === 'function') {
-            Promise.resolve(location).then(scope.callback)
+            loadingSpinner(
+              Promise.resolve(location).then(scope.callback, hide).then(hide)
+            )
+          } else {
+            hide()
           }
-          scope.modal.hide()
         }
 
         scope.selectMyLocation = () => {
