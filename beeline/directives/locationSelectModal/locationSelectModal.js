@@ -137,7 +137,18 @@ angular.module('beeline').directive('locationSelectModal', [
           if (!location) return
 
           if (typeof location === 'string') {
+            GoogleAnalytics.send('send', 'event', {
+              eventCategory: 'search',
+              eventAction: 'location select - ' + scope.type,
+              eventLabel: 'default location - ' + location,
+            })
             location = OneMapPlaceService.getTopResult(location)
+          } else {
+            GoogleAnalytics.send('send', 'event', {
+              eventCategory: 'search',
+              eventAction: 'location select - ' + scope.type,
+              eventLabel: location.ADDRESS || location.BUILDING || location.ROAD_NAME,
+            })
           }
 
           if (typeof scope.callback === 'function') {
