@@ -23,6 +23,7 @@ angular.module('beeline').directive('suggestionItem', [
         }
 
         $scope.parseSchedule = function (daysOfWeek) {
+          if (!daysOfWeek) return
           let week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
           let weekday = {
             Mon: true,
