@@ -5,11 +5,13 @@ angular.module('beeline').directive('locationSelectModal', [
   '$stateParams',
   'OneMapPlaceService',
   'MapUtilService',
+  'GoogleAnalytics',
   'loadingSpinner',
   function (
     $stateParams,
     OneMapPlaceService,
     MapUtilService,
+    GoogleAnalytics,
     loadingSpinner
   ) {
     return {
@@ -28,6 +30,13 @@ angular.module('beeline').directive('locationSelectModal', [
         // ---------------------------------------------------------------------
         const search = _.debounce(() => {
           if (!scope.data.input) return
+
+          // Send search term to GA
+          GoogleAnalytics.send('send', 'event', {
+            eventCategory: 'search',
+            eventAction: 'search input - ' + scope.type,
+            eventLabel: scope.data.input,
+          })
 
           scope.isFiltering = true
           const currentPromise =
@@ -128,7 +137,18 @@ angular.module('beeline').directive('locationSelectModal', [
           if (!location) return
 
           if (typeof location === 'string') {
+            GoogleAnalytics.send('send', 'event', {
+              eventCategory: 'search',
+              eventAction: 'location select - ' + scope.type,
+              eventLabel: 'default location - ' + location,
+            })
             location = OneMapPlaceService.getTopResult(location)
+          } else {
+            GoogleAnalytics.send('send', 'event', {
+              eventCategory: 'search',
+              eventAction: 'location select - ' + scope.type,
+              eventLabel: location.ADDRESS || location.BUILDING || location.ROAD_NAME,
+            })
           }
 
           if (typeof scope.callback === 'function') {
@@ -141,6 +161,11 @@ angular.module('beeline').directive('locationSelectModal', [
         }
 
         scope.selectMyLocation = () => {
+          GoogleAnalytics.send('send', 'event', {
+            eventCategory: 'search',
+            eventAction: 'location select - ' + scope.type,
+            eventLabel: 'my location',
+          })
           scope.select(scope.data.myLocation)
         }
 

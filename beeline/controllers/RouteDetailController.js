@@ -14,6 +14,7 @@ export default [
   'BookingService',
   'CompanyService',
   'FastCheckoutService',
+  'GoogleAnalytics',
   'MapService',
   'TicketService',
   'TripService',
@@ -31,6 +32,7 @@ export default [
     BookingService,
     CompanyService,
     FastCheckoutService,
+    GoogleAnalytics,
     MapService,
     TicketService,
     TripService,
@@ -240,6 +242,10 @@ export default [
     }
 
     $scope.popupRoutePassExpiry = () => {
+      GoogleAnalytics.send('send', 'event', {
+        eventCategory: 'route pass expiry',
+        eventAction: 'route detail button press',
+      })
       $scope.disp.routePassExpiryModal.show()
     }
 
