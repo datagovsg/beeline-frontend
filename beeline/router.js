@@ -280,8 +280,9 @@ export default [
         },
       })
 
-    let viewedIntroSlidesVersion =
-      window.localStorage.viewedBeelineSlidesVersion
+    let viewedIntroSlidesVersion = window && window.localStorage
+      ? window.localStorage.viewedBeelineSlidesVersion : null
+
     // if none of the above states are matched, use this as the fallback
     if (
       viewedIntroSlidesVersion &&
