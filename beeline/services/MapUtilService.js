@@ -179,16 +179,11 @@ angular.module('beeline').service('MapUtilService', [
       }, 300)
     }
 
-    this.resizePreserveCenter = function (map) {
-      let oldCenter = map.getCenter()
-      google.maps.event.trigger(map, 'resize')
-      map.setCenter(oldCenter)
-    }
-
-    this.formBounds = function (stops) {
+    this.formBounds = async function (stops) {
       if (stops.length === 0) {
         return
       }
+      await uiGmapGoogleMapApi
       let bounds = new google.maps.LatLngBounds()
       for (let s of stops) {
         bounds.extend(
