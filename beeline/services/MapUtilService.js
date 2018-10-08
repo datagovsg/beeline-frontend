@@ -91,15 +91,15 @@ angular.module('beeline').service('MapUtilService', [
             success.coords.latitude,
             success.coords.longitude
           )
-          this.coords = {
+          this.coords = location ? {
             latitude: success.coords.latitude,
             longitude: success.coords.longitude,
             location,
-          }
+          } : null
         },
+        // eslint-disable-next-line handle-callback-err
         error => {
           this.coords = null
-          console.error(error)
         },
         {
           enableHighAccuracy: false,
