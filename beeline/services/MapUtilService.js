@@ -91,15 +91,15 @@ angular.module('beeline').service('MapUtilService', [
             success.coords.latitude,
             success.coords.longitude
           )
-          this.coords = {
+          this.coords = location ? {
             latitude: success.coords.latitude,
             longitude: success.coords.longitude,
             location,
-          }
+          } : null
         },
+        // eslint-disable-next-line handle-callback-err
         error => {
           this.coords = null
-          console.error(error)
         },
         {
           enableHighAccuracy: false,
@@ -179,16 +179,11 @@ angular.module('beeline').service('MapUtilService', [
       }, 300)
     }
 
-    this.resizePreserveCenter = function (map) {
-      let oldCenter = map.getCenter()
-      google.maps.event.trigger(map, 'resize')
-      map.setCenter(oldCenter)
-    }
-
-    this.formBounds = function (stops) {
+    this.formBounds = async function (stops) {
       if (stops.length === 0) {
         return
       }
+      await uiGmapGoogleMapApi
       let bounds = new google.maps.LatLngBounds()
       for (let s of stops) {
         bounds.extend(
