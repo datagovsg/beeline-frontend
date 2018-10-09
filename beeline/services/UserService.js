@@ -265,7 +265,9 @@ angular.module('beeline').factory('UserService', [
     let loginIfNeeded = async function () {
       if (user) return user
       else {
-        return promptLogIn()
+        let user = await promptLogIn()
+        if (user) return user
+        else throw new Error('Log in aborted')
       }
     }
 

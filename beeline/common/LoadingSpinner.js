@@ -42,10 +42,11 @@ angular.module('common').factory('loadingSpinner', [
       assert.strictEqual(typeof p.then, 'function')
       show()
 
-      return p.then(hide, err => {
+      p.then(hide, err => {
         hide()
         throw err
       })
+      return p
     }
   },
 ])

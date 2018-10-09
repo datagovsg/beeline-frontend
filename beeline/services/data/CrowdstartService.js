@@ -67,15 +67,13 @@ let transformCrowdstartData = function (crowdstartRoutes) {
 
     // calculate the pass expiry date
     crowdstart.passExpired = false
-    if (crowdstart.trips.length > 0) {
-      let firstTripDate = new Date(crowdstart.trips[0].date)
-      let passExpiryTime = new Date(
-        firstTripDate.getFullYear(),
-        firstTripDate.getMonth() + 1,
-        firstTripDate.getDate()
-      ).getTime()
-      crowdstart.passExpired = now >= passExpiryTime
-    }
+    let firstTripDate = new Date(crowdstart.trips[0].date)
+    let passExpiryTime = new Date(
+      firstTripDate.getFullYear(),
+      firstTripDate.getMonth() + 1,
+      firstTripDate.getDate()
+    ).getTime()
+    crowdstart.passExpired = now >= passExpiryTime
     updateStatus(crowdstart)
   }
   return crowdstartRoutes
