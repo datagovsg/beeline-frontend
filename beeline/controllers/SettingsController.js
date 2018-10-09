@@ -139,9 +139,9 @@ export default [
     // Ionic Events
     // ------------------------------------------------------------------------
     $scope.$on('$destroy', function () {
-      $scope.faqModal.destroy()
-      $scope.contactUsModal.destroy()
-      $scope.shareReferralModal.destroy()
+      $scope.faqModal.remove()
+      $scope.contactUsModal.remove()
+      $scope.shareReferralModal.remove()
     })
 
     // ------------------------------------------------------------------------

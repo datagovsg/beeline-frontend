@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 /* eslint-disable */
 
 ;(function(i, s, o, g, r, a, m) {
@@ -72,7 +74,8 @@ angular.module('common').run([
       })
     })
 
-    if (window.cordova) {
+    if (_.get(window, 'cordova.getAppVersion.getVersionNumber' !== undefined) &&
+        _.get(window, 'cordova.getAppVersion.getAppName' !== undefined)) {
       window.cordova.getAppVersion.getVersionNumber().then(version => {
         ga('set', 'appVersion', version)
       })
