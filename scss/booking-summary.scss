@@ -26,7 +26,7 @@
     }
 
     .booking-policy {
-      border-top: solid 1px $light-grey;
+      border-top: solid 1px lighten($light-grey, 20%);
 
       // Padding for "button" should be roughly one line height
       padding-top: $font-size-base;
