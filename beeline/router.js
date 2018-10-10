@@ -280,23 +280,32 @@ export default [
         },
       })
 
-    let viewedIntroSlidesVersion = window && window.localStorage
-      ? window.localStorage.viewedBeelineSlidesVersion : null
+    function routeInitialPage () {
+      let viewedIntroSlidesVersion = window && window.localStorage
+        ? window.localStorage.viewedBeelineSlidesVersion : null
 
-    // if none of the above states are matched, use this as the fallback
-    if (
-      viewedIntroSlidesVersion &&
-      viewedIntroSlidesVersion >= introSlidesVersion
-    ) {
-      // user is logged in
-      if (window.localStorage.sessionToken && window.localStorage.beelineUser) {
-        $urlRouterProvider.otherwise('/tabs/routes/yourRoutes')
+      // if none of the above states are matched, use this as the fallback
+      if (
+        viewedIntroSlidesVersion &&
+        viewedIntroSlidesVersion >= introSlidesVersion
+      ) {
+        // user is logged in
+        if (window.localStorage.sessionToken && window.localStorage.beelineUser) {
+          $urlRouterProvider.otherwise('/tabs/routes/yourRoutes')
+        } else {
+          $urlRouterProvider.otherwise('/tabs/routes')
+        }
       } else {
-        $urlRouterProvider.otherwise('/tabs/routes')
+        window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
+        $urlRouterProvider.otherwise('/intro')
       }
+    }
+
+    if (window.cordova) {
+      document.addEventListener('deviceready', routeInitialPage, false)
     } else {
-      window.localStorage.viewedBeelineSlidesVersion = introSlidesVersion
-      $urlRouterProvider.otherwise('/intro')
+      console.warn('No cordova detected')
+      routeInitialPage()
     }
   },
 ]
