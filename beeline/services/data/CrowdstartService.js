@@ -136,6 +136,7 @@ angular.module('beeline').service('CrowdstartService', [
     let crowdstartRoutesList = null
     let crowdstartRoutesById = null
     let nearbyCrowdstartRoutesById = null
+    const beelineCompanyId = 2
 
     const fetchBids = function fetchBids (ignoreCache) {
       if (UserService.getUser()) {
@@ -163,17 +164,28 @@ angular.module('beeline').service('CrowdstartService', [
     const fetchCrowdstartRoutes = function fetchCrowdstartRoutes (ignoreCache) {
       if (crowdstartRoutesCache && !ignoreCache) return crowdstartRoutesCache
       let url = '/crowdstart/status'
+      let requests = []
+
+      // If grabshuttle app, request for beeline's crowdstart routes
       if (p.transportCompanyId) {
-        url +=
-          '?' +
-          querystring.stringify({ transportCompanyId: p.transportCompanyId })
+        requests.push('?' + querystring.stringify({ transportCompanyId: p.transportCompanyId }))
+        requests.push('?' + querystring.stringify({ transportCompanyId: beelineCompanyId }))
+      } else {
+        requests.push('')
       }
-      return (crowdstartRoutesCache = RequestService.beeline({
-        method: 'GET',
-        url: url,
-      }).then(response => {
+      requests = requests.map(qs => {
+        return RequestService.beeline({
+          method: 'GET',
+          url: url + qs,
+        })
+      })
+      return (crowdstartRoutesCache = Promise.all(requests).then(responses => {
+        let routes = responses[0].data
+        if (p.transportCompanyId) {
+          routes = routes.concat(responses[1].data)
+        }
         // return expired crowdstart too
-        crowdstartRoutesList = transformCrowdstartData(response.data)
+        crowdstartRoutesList = transformCrowdstartData(routes)
         crowdstartRoutesById = _.keyBy(crowdstartRoutesList, 'id')
         return crowdstartRoutesList
       }))
