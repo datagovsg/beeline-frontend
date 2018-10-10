@@ -135,7 +135,6 @@ angular.module('beeline').service('CrowdstartService', [
     let crowdstartPreview = null
     let crowdstartRoutesList = null
     let crowdstartRoutesById = null
-    let nearbyCrowdstartRoutesById = null
     const beelineCompanyId = 2
 
     const fetchBids = function fetchBids (ignoreCache) {
@@ -191,84 +190,6 @@ angular.module('beeline').service('CrowdstartService', [
       }))
     }
 
-    const getLocationPromise = function getLocationPromise (
-      enableHighAccuracy = false
-    ) {
-      return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-          success => resolve(success),
-          error => reject(error),
-          { enableHighAccuracy }
-        )
-      })
-    }
-
-    const fetchNearbyCrowdstartIds = async function fetchNearbyCrowdstartIds () {
-      let locationOrNull = null
-      try {
-        await DevicePromise
-        locationOrNull = await getLocationPromise(false)
-      } catch (err) {
-        // Location not found -- suppress error
-        nearbyCrowdstartRoutesById = nearbyCrowdstartRoutesById || null
-        return new Promise((resolve, reject) => {
-          resolve(nearbyCrowdstartRoutesById)
-        })
-      }
-
-      let coords = {
-        latitude: locationOrNull.coords.latitude,
-        longitude: locationOrNull.coords.longitude,
-      }
-
-      let nearbyPromise = RequestService.beeline({
-        method: 'GET',
-        url:
-          '/routes/search_by_latlon?' +
-          querystring.stringify(
-            _.assign(
-              {
-                maxDistance: 2000,
-                startTime: Date.now(),
-                tags: JSON.stringify(['crowdstart']),
-                startLat: coords.latitude,
-                startLng: coords.longitude,
-              },
-              p.transportCompanyId
-                ? { transportCompanyId: p.transportCompanyId }
-                : {}
-            )
-          ),
-      })
-
-      let nearbyReversePromise = RequestService.beeline({
-        method: 'GET',
-        url:
-          '/routes/search_by_latlon?' +
-          querystring.stringify(
-            _.assign(
-              {
-                maxDistance: 2000,
-                startTime: Date.now(),
-                tags: JSON.stringify(['crowdstart']),
-                endLat: coords.latitude,
-                endLng: coords.longitude,
-              },
-              p.transportCompanyId
-                ? { transportCompanyId: p.transportCompanyId }
-                : {}
-            )
-          ),
-      })
-      return Promise.all([nearbyPromise, nearbyReversePromise]).then(values => {
-        let [np, nvp] = values
-        return (nearbyCrowdstartRoutesById = _(np.data.concat(nvp.data))
-          .map(r => r.id)
-          .uniq()
-          .value())
-      })
-    }
-
     UserService.userEvents.on('userChanged', () => {
       fetchBids(true)
       // to load route passes
@@ -279,7 +200,6 @@ angular.module('beeline').service('CrowdstartService', [
       return Promise.all([
         fetchCrowdstartRoutes(true),
         fetchBids(true),
-        fetchNearbyCrowdstartIds(),
       ])
     }
 
@@ -403,12 +323,6 @@ angular.module('beeline').service('CrowdstartService', [
           return response.data
         })
       },
-
-      getNearbyCrowdstartIds: () => {
-        return nearbyCrowdstartRoutesById
-      },
-
-      fetchNearbyCrowdstartIds,
     }
   },
 ])
