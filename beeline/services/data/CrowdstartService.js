@@ -135,7 +135,7 @@ angular.module('beeline').service('CrowdstartService', [
     let crowdstartPreview = null
     let crowdstartRoutesList = null
     let crowdstartRoutesById = null
-    let nearbyCrowdstartRoutesById = null
+    const beelineCompanyId = 2
 
     const fetchBids = function fetchBids (ignoreCache) {
       if (UserService.getUser()) {
@@ -163,98 +163,31 @@ angular.module('beeline').service('CrowdstartService', [
     const fetchCrowdstartRoutes = function fetchCrowdstartRoutes (ignoreCache) {
       if (crowdstartRoutesCache && !ignoreCache) return crowdstartRoutesCache
       let url = '/crowdstart/status'
+      let requests = []
+
+      // If grabshuttle app, request for beeline's crowdstart routes
       if (p.transportCompanyId) {
-        url +=
-          '?' +
-          querystring.stringify({ transportCompanyId: p.transportCompanyId })
+        requests.push('?' + querystring.stringify({ transportCompanyId: p.transportCompanyId }))
+        requests.push('?' + querystring.stringify({ transportCompanyId: beelineCompanyId }))
+      } else {
+        requests.push('')
       }
-      return (crowdstartRoutesCache = RequestService.beeline({
-        method: 'GET',
-        url: url,
-      }).then(response => {
+      requests = requests.map(qs => {
+        return RequestService.beeline({
+          method: 'GET',
+          url: url + qs,
+        })
+      })
+      return (crowdstartRoutesCache = Promise.all(requests).then(responses => {
+        let routes = responses[0].data
+        if (p.transportCompanyId) {
+          routes = routes.concat(responses[1].data)
+        }
         // return expired crowdstart too
-        crowdstartRoutesList = transformCrowdstartData(response.data)
+        crowdstartRoutesList = transformCrowdstartData(routes)
         crowdstartRoutesById = _.keyBy(crowdstartRoutesList, 'id')
         return crowdstartRoutesList
       }))
-    }
-
-    const getLocationPromise = function getLocationPromise (
-      enableHighAccuracy = false
-    ) {
-      return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-          success => resolve(success),
-          error => reject(error),
-          { enableHighAccuracy }
-        )
-      })
-    }
-
-    const fetchNearbyCrowdstartIds = async function fetchNearbyCrowdstartIds () {
-      let locationOrNull = null
-      try {
-        await DevicePromise
-        locationOrNull = await getLocationPromise(false)
-      } catch (err) {
-        // Location not found -- suppress error
-        nearbyCrowdstartRoutesById = nearbyCrowdstartRoutesById || null
-        return new Promise((resolve, reject) => {
-          resolve(nearbyCrowdstartRoutesById)
-        })
-      }
-
-      let coords = {
-        latitude: locationOrNull.coords.latitude,
-        longitude: locationOrNull.coords.longitude,
-      }
-
-      let nearbyPromise = RequestService.beeline({
-        method: 'GET',
-        url:
-          '/routes/search_by_latlon?' +
-          querystring.stringify(
-            _.assign(
-              {
-                maxDistance: 2000,
-                startTime: Date.now(),
-                tags: JSON.stringify(['crowdstart']),
-                startLat: coords.latitude,
-                startLng: coords.longitude,
-              },
-              p.transportCompanyId
-                ? { transportCompanyId: p.transportCompanyId }
-                : {}
-            )
-          ),
-      })
-
-      let nearbyReversePromise = RequestService.beeline({
-        method: 'GET',
-        url:
-          '/routes/search_by_latlon?' +
-          querystring.stringify(
-            _.assign(
-              {
-                maxDistance: 2000,
-                startTime: Date.now(),
-                tags: JSON.stringify(['crowdstart']),
-                endLat: coords.latitude,
-                endLng: coords.longitude,
-              },
-              p.transportCompanyId
-                ? { transportCompanyId: p.transportCompanyId }
-                : {}
-            )
-          ),
-      })
-      return Promise.all([nearbyPromise, nearbyReversePromise]).then(values => {
-        let [np, nvp] = values
-        return (nearbyCrowdstartRoutesById = _(np.data.concat(nvp.data))
-          .map(r => r.id)
-          .uniq()
-          .value())
-      })
     }
 
     UserService.userEvents.on('userChanged', () => {
@@ -267,7 +200,6 @@ angular.module('beeline').service('CrowdstartService', [
       return Promise.all([
         fetchCrowdstartRoutes(true),
         fetchBids(true),
-        fetchNearbyCrowdstartIds(),
       ])
     }
 
@@ -391,12 +323,6 @@ angular.module('beeline').service('CrowdstartService', [
           return response.data
         })
       },
-
-      getNearbyCrowdstartIds: () => {
-        return nearbyCrowdstartRoutesById
-      },
-
-      fetchNearbyCrowdstartIds,
     }
   },
 ])
