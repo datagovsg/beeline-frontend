@@ -11009,7 +11009,7 @@ trip-code {
         padding-right: 0px;
         left: 0px; }
   .booking-summary .card .booking-policy {
-    border-top: solid 1px #a9a9a9;
+    border-top: solid 1px gainsboro;
     padding-top: 15px;
     padding-bottom: 15px; }
   .booking-summary .card .notes-list {
@@ -11648,7 +11648,7 @@ ui-gmap-google-map {
   padding-top: 10px;
   padding-bottom: 10px;
   font-weight: 300;
-  color: #a9a9a9; }
+  color: #666; }
   .settings .list .item .item-note {
     color: #000; }
   .settings .list .item .icon {
@@ -11941,14 +11941,24 @@ suggestion-item {
   color: #00B140;
   text-transform: uppercase; }
 
-.your-suggestion-detail .delete {
-  color: #ff6c6a;
+.your-suggestion-detail .action-link {
   margin: 25px 0;
   text-align: center;
-  text-decoration: underline; }
+  text-decoration: underline;
+  color: #00B140; }
+  .your-suggestion-detail .action-link.delete {
+    color: #ff6c6a; }
 
 .your-suggestion-detail route-item {
   margin-bottom: 25px; }
+
+.your-suggestion-detail .loading-bar div {
+  text-align: center;
+  font-size: 16px; }
+
+.your-suggestion-detail .loading-bar progress-bar .backer-high {
+  transition: all 1.5s;
+  width: 0%; }
 
 .create-new-suggestion {
   background-color: transparent !important;

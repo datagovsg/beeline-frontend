@@ -14,8 +14,13 @@
     </ion-item>
 
     <ion-item>
-      <span ng-if="data.routes === null">Loading routes...</span>
+      <div ng-if="data.routes === null" class="loading-bar">
+        <div>Generate Crowdstart Route...</div>
+        <progress-bar display-label="false" backer1="loadingBar.counter" pax1="loadingBar.timer"></progress-bar>
+      </div>
+
       <span ng-if="data.routes.length === 0">No suggested routes found!</span>
+
       <div ng-if="data.routes.length > 0">
         <span class="header">{{ data.routes[0].id ? 'Crowdstarted Route' : 'Generated route' }}</span>
         <crowdstart-route
@@ -27,9 +32,8 @@
       </div>
     </ion-item>
 
-    <div class="delete">
-      <span on-tap="popupDeleteConfirmation()">Delete Suggestion</span>
-    </div>
+    <div class="action-link" on-tap="showSimilarRoutes()">View Similar Routes</div>
+    <div class="action-link delete" on-tap="popupDeleteConfirmation()">Delete Suggestion</div>
 
   </ion-content>
 </ion-view>
