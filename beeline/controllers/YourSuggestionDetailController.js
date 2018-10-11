@@ -5,7 +5,6 @@ export default [
   '$ionicPopup',
   '$ionicLoading',
   'loadingSpinner',
-  'UserService',
   'RoutesService',
   'SuggestionService',
   'CrowdstartService',
@@ -17,7 +16,6 @@ export default [
     $ionicPopup,
     $ionicLoading,
     loadingSpinner,
-    UserService,
     RoutesService,
     SuggestionService,
     CrowdstartService
@@ -38,6 +36,11 @@ export default [
       suggestionId: suggestionId,
       suggestion: null,
       routes: null,
+    }
+
+    $scope.loadingBar = {
+      timer: 20,
+      counter: 0,
     }
 
     // ------------------------------------------------------------------------
@@ -64,6 +67,17 @@ export default [
         })
 
       $scope.refreshSuggestedRoutes(suggestionId)
+
+      // Update the count down every 1 second
+      let timer = setInterval(function () {
+        $scope.loadingBar.counter++
+        $scope.$apply()
+
+        // If the count down is finished, write some text
+        if ($scope.loadingBar.counter > $scope.loadingBar.timer) {
+          clearInterval(timer)
+        }
+      }, 1000)
     })
 
     $scope.$on('$ionicView.leave', () => {

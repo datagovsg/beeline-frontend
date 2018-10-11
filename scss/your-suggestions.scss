@@ -150,6 +150,11 @@ suggestion-item {
   route-item {
     margin-bottom: 25px;
   }
+
+  progress-bar.loading-bar .backer-high {
+    transition: all 1.5s;
+    width: 0%;
+  }
 }
 
 .create-new-suggestion {
