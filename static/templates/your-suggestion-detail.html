@@ -14,8 +14,11 @@
     </ion-item>
 
     <ion-item>
-      <span ng-if="data.routes === null">Loading routes...</span>
+      <div ng-if="data.routes === null">Loading routes...</div>
+      <progress-bar ng-if="data.routes === null" class="loading-bar" display-label="false" backer1="loadingBar.counter" pax1="loadingBar.timer"></progress-bar>
+
       <span ng-if="data.routes.length === 0">No suggested routes found!</span>
+
       <div ng-if="data.routes.length > 0">
         <span class="header">{{ data.routes[0].id ? 'Crowdstarted Route' : 'Generated route' }}</span>
         <crowdstart-route

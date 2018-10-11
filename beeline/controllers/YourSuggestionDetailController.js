@@ -3,7 +3,6 @@ export default [
   '$state',
   '$stateParams',
   '$ionicPopup',
-  '$ionicLoading',
   'loadingSpinner',
   'RoutesService',
   'SuggestionService',
@@ -14,7 +13,6 @@ export default [
     $state,
     $stateParams,
     $ionicPopup,
-    $ionicLoading,
     loadingSpinner,
     RoutesService,
     SuggestionService,
@@ -50,16 +48,11 @@ export default [
     // Show a loading overlay while we wait
     // force reload when revisit the same route
     $scope.$on('$ionicView.afterEnter', () => {
-      $ionicLoading.show({
-        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-      })
-
       SuggestionService.getSuggestion(suggestionId)
         .then(response => {
           $scope.data.suggestion = response.details
         })
         .catch(error => {
-          $ionicLoading.hide()
           $ionicPopup.alert({
             title: "Sorry there's been a problem loading the suggested route information",
             subTitle: error,
@@ -67,17 +60,6 @@ export default [
         })
 
       $scope.refreshSuggestedRoutes(suggestionId)
-
-      // Update the count down every 1 second
-      let timer = setInterval(function () {
-        $scope.loadingBar.counter++
-        $scope.$apply()
-
-        // If the count down is finished, write some text
-        if ($scope.loadingBar.counter > $scope.loadingBar.timer) {
-          clearInterval(timer)
-        }
-      }, 1000)
     })
 
     $scope.$on('$ionicView.leave', () => {
@@ -89,15 +71,6 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    $scope.$watchGroup(
-      ['data.suggestion', 'data.routes'],
-      ([suggestion, routes]) => {
-        if (suggestion && routes) {
-          $ionicLoading.hide()
-        }
-      }
-    )
-
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -139,12 +112,27 @@ export default [
         .then(data => {
           if (!data.done) {
             setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
+
+            // Update the count down every 1 second
+            let timer = setInterval(function () {
+              if (
+                $scope.loadingBar.counter / $scope.loadingBar.timer > 0.75 &&
+                  !$scope.data.routes
+              ) {
+                return
+              }
+
+              $scope.loadingBar.counter++
+              $scope.$apply()
+              if ($scope.loadingBar.counter > $scope.loadingBar.timer) {
+                clearInterval(timer)
+              }
+            }, 1000)
           } else {
             $scope.data.routes = data.routes
           }
         })
         .catch(error => {
-          $ionicLoading.hide()
           $ionicPopup.alert({
             title: "Sorry there's been a problem loading the suggested route information",
             subTitle: error,

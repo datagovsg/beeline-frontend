@@ -208,7 +208,9 @@ export default [
       try {
         const duplicate = await $scope.checkExistingDuplicateSuggestions()
         if (duplicate) return
-        const data = await loadingSpinner(
+        let data = null
+
+        await loadingSpinner(
           SuggestionService.createSuggestion(
             getLatLng($scope.data.pickUpLocation),
             getDescription($scope.data.pickUpLocation),
@@ -216,8 +218,11 @@ export default [
             getDescription($scope.data.dropOffLocation),
             $scope.data.selectedTime,
             $scope.data.schedule[$scope.data.selectedScheduleIndex].days
-          )
+          ).then(suggestion => {
+            data = suggestion
+          })
         )
+
         $state.go('tabs.your-suggestion-detail', {
           suggestionId: data.id,
         })
