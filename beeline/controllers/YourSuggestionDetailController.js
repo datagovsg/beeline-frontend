@@ -7,6 +7,8 @@ export default [
   'RoutesService',
   'SuggestionService',
   'CrowdstartService',
+  '$ionicLoading',
+  '$timeout',
   function (
     // Angular Tools
     $scope,
@@ -16,7 +18,9 @@ export default [
     loadingSpinner,
     RoutesService,
     SuggestionService,
-    CrowdstartService
+    CrowdstartService,
+    $ionicLoading,
+    $timeout
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
@@ -35,7 +39,7 @@ export default [
       suggestion: null,
       routes: null,
     }
-
+    $scope.refreshSuggestedRoutesTimer = null
     $scope.loadingBar = {
       timer: 20,
       counter: 0,
@@ -51,6 +55,34 @@ export default [
       SuggestionService.getSuggestion(suggestionId)
         .then(response => {
           $scope.data.suggestion = response.details
+
+          let now = new Date()
+          let createdAt = new Date($scope.data.suggestion.createdAt)
+          // If user has exited detail page and route is stil being generated
+          // after timer has ended, pause the timer at 80%
+          if (now - createdAt > $scope.loadingBar.timer * 1000 && !$scope.data.routes) {
+            $scope.loadingBar.counter = $scope.loadingBar.timer * 0.8
+          } else {
+            // Else continue timer
+            $scope.loadingBar.counter = Math.floor((now - createdAt) / 1000)
+
+            let timer = setInterval(function () {
+              // If user is still on the same page and route is stil being generated
+              // after timer has reached 80%, pause the timer
+              if (
+                $scope.loadingBar.counter / $scope.loadingBar.timer >= 0.8 &&
+                  !$scope.data.routes
+              ) {
+                return
+              }
+
+              $scope.loadingBar.counter++
+              $scope.$apply()
+              if ($scope.loadingBar.counter > $scope.loadingBar.timer) {
+                clearInterval(timer)
+              }
+            }, 1000)
+          }
         })
         .catch(error => {
           $ionicPopup.alert({
@@ -63,6 +95,7 @@ export default [
     })
 
     $scope.$on('$ionicView.leave', () => {
+      clearInterval($scope.refreshSuggestedRoutesTimer)
       $scope.data.suggestionId = null
       $scope.data.suggestion = null
       $scope.data.routes = null
@@ -111,25 +144,18 @@ export default [
       SuggestionService.fetchSuggestedRoutes(suggestionId)
         .then(data => {
           if (!data.done) {
-            setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
-
-            // Update the count down every 1 second
-            let timer = setInterval(function () {
-              if (
-                $scope.loadingBar.counter / $scope.loadingBar.timer > 0.75 &&
-                  !$scope.data.routes
-              ) {
-                return
-              }
-
-              $scope.loadingBar.counter++
-              $scope.$apply()
-              if ($scope.loadingBar.counter > $scope.loadingBar.timer) {
-                clearInterval(timer)
-              }
-            }, 1000)
+            $scope.refreshSuggestedRoutesTimer = setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
           } else {
             $scope.data.routes = data.routes
+
+            let now = new Date()
+            let createdAt = new Date($scope.data.suggestion.createdAt)
+            // If suggestion is more than one month old AND no suggested routes found,
+            // trigger route generation again
+            if (now - createdAt > 30 * 24 * 3600e3 && data.routes.length === 0) {
+              SuggestionService.triggerRouteGeneration(suggestionId)
+              $scope.refreshSuggestedRoutes(suggestionId)
+            }
           }
         })
         .catch(error => {
@@ -138,6 +164,23 @@ export default [
             subTitle: error,
           })
         })
+    }
+
+    $scope.showSimilarRoutes = function () {
+      let pickUp = $scope.data.suggestion.boardDescription.oneMapData
+      let dropOff = $scope.data.suggestion.alightDescription.oneMapData
+
+      $ionicLoading.show({
+        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Searching for routes</small>`,
+      })
+
+      $timeout(() => {
+        $ionicLoading.hide()
+        $state.go('tabs.routes-search-list', {
+          pickUpLocation: pickUp,
+          dropOffLocation: dropOff,
+        })
+      }, 800)
     }
   },
 ]

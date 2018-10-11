@@ -43,12 +43,12 @@ export default [
     }
 
     function getDescription (loc) {
-      let { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME } = loc
+      let { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME, LATITUDE, LONGITUDE } = loc
       let postalStr = POSTAL.toLowerCase() === 'nil' ? null : 'S(' + POSTAL + ')'
       return {
         description: [BLK_NO, ROAD_NAME, BUILDING, postalStr].filter(s => s && s.toLowerCase() !== 'nil').join(', '),
         postalCode: !POSTAL || POSTAL.toLowerCase() === 'nil' ? null : POSTAL,
-        oneMapData: { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME },
+        oneMapData: { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME, LATITUDE, LONGITUDE },
       }
     }
 
@@ -208,8 +208,8 @@ export default [
       try {
         const duplicate = await $scope.checkExistingDuplicateSuggestions()
         if (duplicate) return
-        let data = null
 
+        let data = null
         await loadingSpinner(
           SuggestionService.createSuggestion(
             getLatLng($scope.data.pickUpLocation),

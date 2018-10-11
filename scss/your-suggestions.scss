@@ -140,20 +140,30 @@ suggestion-item {
     text-transform: uppercase;
   }
   
-  .delete {
-    color: $assertive;
+  .action-link {
     margin: 25px 0;
     text-align: center;
     text-decoration: underline;
+    color: $royal;
+
+    &.delete {
+      color: $assertive;
+    }
   }
 
   route-item {
     margin-bottom: 25px;
   }
 
-  progress-bar.loading-bar .backer-high {
-    transition: all 1.5s;
-    width: 0%;
+  .loading-bar {
+    div {
+      text-align: center;
+      font-size: 16px;
+    }
+    progress-bar .backer-high {
+      transition: all 1.5s;
+      width: 0%;
+    }
   }
 }
 

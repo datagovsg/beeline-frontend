@@ -205,6 +205,8 @@ angular.module('beeline').factory('SuggestionService', [
         })
       },
 
+      triggerRouteGeneration,
+
       convertToCrowdstart: function (suggestionId, suggestedRouteId) {
         return RequestService.beeline({
           method: 'POST',
