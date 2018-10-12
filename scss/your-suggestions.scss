@@ -6,9 +6,6 @@ $search-height: 42px;
 }
 
 suggestion-item {
-  padding: 15px;
-
-  
 
   .day-badge {
     display: flex;
@@ -126,15 +123,18 @@ suggestion-item {
 
 .your-suggestions {
   .create-suggestion-btn {
-    margin-top: 25px;
-    margin-bottom: 25px;
+    padding: 25px 0;
+
+    button {
+      margin: auto;
+    }
   }
 }
 
 .your-suggestion-detail {
   .header {
     font-size: 20px;
-    line-height: 45px;
+    padding-bottom: 16px;
     font-weight: $font-weight-medium;
     color: $royal;
     text-transform: uppercase;
@@ -142,18 +142,18 @@ suggestion-item {
   }
   
   .action-link {
-    margin: 25px 0;
-    text-align: center;
-    text-decoration: underline;
-    color: $royal;
+    padding: 25px 0;
+    
+    div {
+      text-align: center;
+      text-decoration: underline;
+      color: $royal;
+    }
 
-    &.delete {
+    div.delete {
+      padding-top: 16px;
       color: $assertive;
     }
-  }
-
-  route-item {
-    margin-bottom: 25px;
   }
 
   .loading-bar {
