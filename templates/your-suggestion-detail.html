@@ -13,9 +13,11 @@
       <suggestion-item suggestion="data.suggestion"></suggestion-item>
     </ion-item>
 
+    <div class="item-divider no-text"></div>
+
     <ion-item>
       <div ng-if="data.routes === null" class="loading-bar">
-        <div>Generate Crowdstart Route...</div>
+        <span class="header">Generating Crowdstart Route...</span>
         <progress-bar display-label="false" backer1="loadingBar.counter" pax1="loadingBar.timer"></progress-bar>
       </div>
 
