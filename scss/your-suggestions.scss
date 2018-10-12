@@ -138,6 +138,7 @@ suggestion-item {
     font-weight: $font-weight-medium;
     color: $royal;
     text-transform: uppercase;
+    display: block;
   }
   
   .action-link {
@@ -156,9 +157,8 @@ suggestion-item {
   }
 
   .loading-bar {
-    div {
+    span {
       text-align: center;
-      font-size: 16px;
     }
     progress-bar .backer-high {
       transition: all 1.5s;
