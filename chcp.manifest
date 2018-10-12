@@ -77,11 +77,11 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "198f4fd92827b305124adb08beeeeb5d"
+    "hash": "08e495205a79223599ca4ae844a74c9f"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "c5dbc003d17997e4fdada55b9ebaa2bf"
+    "hash": "96769465df492d2e1f9aaac542f633fb"
   },
   {
     "file": "favicon-16x16.png",
@@ -937,10 +937,10 @@
   },
   {
     "file": "templates/your-suggestion-detail.html",
-    "hash": "d2761bc878bea9acde7ea1e7b8b58dfb"
+    "hash": "f8c6467b0a3bdcfcd78231b7ea547703"
   },
   {
     "file": "templates/your-suggestions.html",
-    "hash": "e445cafd4a671921071f31dd43c6b797"
+    "hash": "18a366c613344927d794cd26a096a636"
   }
 ]
