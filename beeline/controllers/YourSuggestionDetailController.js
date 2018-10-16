@@ -25,7 +25,24 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
+    function startTimer () {
+      let timer = setInterval(function () {
+        // If user is still on the same page and route is stil being generated
+        // after timer has reached 80%, pause the timer
+        if (
+          $scope.loadingBar.counter / $scope.loadingBar.timer >= 0.8 &&
+            !$scope.data.routes
+        ) {
+          return
+        }
 
+        $scope.loadingBar.counter++
+        $scope.$apply()
+        if ($scope.loadingBar.counter > $scope.loadingBar.timer) {
+          clearInterval(timer)
+        }
+      }, 1000)
+    }
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
@@ -52,6 +69,9 @@ export default [
     // Show a loading overlay while we wait
     // force reload when revisit the same route
     $scope.$on('$ionicView.afterEnter', () => {
+      $ionicLoading.show({
+        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
+      })
       SuggestionService.getSuggestion(suggestionId)
         .then(response => {
           $scope.data.suggestion = response.details
@@ -65,23 +85,6 @@ export default [
           } else {
             // Else continue timer
             $scope.loadingBar.counter = Math.floor((now - createdAt) / 1000)
-
-            let timer = setInterval(function () {
-              // If user is still on the same page and route is stil being generated
-              // after timer has reached 80%, pause the timer
-              if (
-                $scope.loadingBar.counter / $scope.loadingBar.timer >= 0.8 &&
-                  !$scope.data.routes
-              ) {
-                return
-              }
-
-              $scope.loadingBar.counter++
-              $scope.$apply()
-              if ($scope.loadingBar.counter > $scope.loadingBar.timer) {
-                clearInterval(timer)
-              }
-            }, 1000)
           }
         })
         .catch(error => {

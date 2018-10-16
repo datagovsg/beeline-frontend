@@ -8,6 +8,7 @@
   </ion-nav-buttons>
   
   <ion-content>
+      <div class="item item-divider">Suggestion</div>
 
     <ion-item class="item-text-wrap">
       <suggestion-item suggestion="data.suggestion"></suggestion-item>
@@ -24,7 +25,7 @@
       <span ng-if="data.routes.length === 0">No suggested routes found!</span>
 
       <div ng-if="data.routes.length > 0">
-        <span class="header">{{ data.routes[0].id ? 'Crowdstart Route' : 'Generated route' }}</span>
+        <span class="header">Crowdstart Route</span>
         <crowdstart-route
           ng-repeat="route in data.routes" 
           route="route"
@@ -35,7 +36,7 @@
     </ion-item>
 
     <div class="action-link">
-      <div on-tap="showSimilarRoutes()">View routes similar to suggestion</div>
+      <div on-tap="showSimilarRoutes()">View Similar Route(s)</div>
       <div class="delete" on-tap="popupDeleteConfirmation()">Delete Suggestion</div>
     </div>
 
