@@ -11864,70 +11864,69 @@ suggestion-item .day-badge {
   suggestion-item .day-badge div.enabled {
     background: #4b3863; }
 
-suggestion-item .suggestion-info {
+suggestion-item .suggestion-detail .stops {
+  display: block;
+  position: relative;
+  flex: 1 1 auto;
+  margin-right: 60px; }
+  suggestion-item .suggestion-detail .stops .stop-icon {
+    /* this value depends on the width of the image -- leaving as a constant */
+    flex: 0 0 auto;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 7.5px;
+    margin-right: 7.5px; }
+  suggestion-item .suggestion-detail .stops .start .stop-icon {
+    background: #00C4A5;
+    /*
+          we want line to be:
+              - the height of .start (=> height: 100%),
+              - displace the left of the line to the middle of the circle
+                  the image is 10x10 hence left: 4px (to account for width=2px)
+              - .start is inline, so it's height = $line-height-computed.
+                Image is centered vertically => top = $line-height-computed / 2
+                N.B. overflow must be "visible" on .start for this to work
+              - positioned relative to the stop icon => .start { position: relative }
+        */ }
+  suggestion-item .suggestion-detail .stops .end .stop-icon {
+    background: #FF6C6A; }
+  suggestion-item .suggestion-detail .stops .start, suggestion-item .suggestion-detail .stops .end {
+    line-height: 1.42857;
+    position: relative;
+    white-space: normal;
+    display: flex; }
+    suggestion-item .suggestion-detail .stops .start .road, suggestion-item .suggestion-detail .stops .end .road {
+      text-transform: capitalize;
+      flex: 1 1 auto;
+      white-space: initial;
+      font-weight: 400;
+      color: #666; }
+  suggestion-item .suggestion-detail .stops .end {
+    margin-top: 10px;
+    margin-bottom: 10px; }
+
+suggestion-item .suggestion-detail .suggestion-detail-info {
   display: flex; }
-  suggestion-item .suggestion-info .right {
+  suggestion-item .suggestion-detail .suggestion-detail-info .right {
     text-align: right;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     text-transform: uppercase; }
-    suggestion-item .suggestion-info .right .value {
-      font-size: 40px;
-      line-height: 40px;
-      font-weight: 700;
-      margin-bottom: 5px; }
-    suggestion-item .suggestion-info .right .suggestions {
+    suggestion-item .suggestion-detail .suggestion-detail-info .right .value {
+      font-size: 34px;
+      line-height: 34px;
+      font-weight: 700; }
+    suggestion-item .suggestion-detail .suggestion-detail-info .right .suggestions {
       color: #a9a9a9;
-      font-size: 12px; }
-  suggestion-item .suggestion-info .left {
-    flex: auto;
-    margin-right: 40px; }
-    suggestion-item .suggestion-info .left .stops {
-      display: block;
-      position: relative;
-      flex: 1 1 auto; }
-      suggestion-item .suggestion-info .left .stops .stop-icon {
-        /* this value depends on the width of the image -- leaving as a constant */
-        flex: 0 0 auto;
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        margin-top: 7.5px;
-        margin-right: 7.5px; }
-      suggestion-item .suggestion-info .left .stops .start .stop-icon {
-        background: #00C4A5;
-        /*
-            we want line to be:
-                - the height of .start (=> height: 100%),
-                - displace the left of the line to the middle of the circle
-                    the image is 10x10 hence left: 4px (to account for width=2px)
-                - .start is inline, so it's height = $line-height-computed.
-                  Image is centered vertically => top = $line-height-computed / 2
-                  N.B. overflow must be "visible" on .start for this to work
-                - positioned relative to the stop icon => .start { position: relative }
-          */ }
-      suggestion-item .suggestion-info .left .stops .end .stop-icon {
-        background: #FF6C6A; }
-      suggestion-item .suggestion-info .left .stops .start, suggestion-item .suggestion-info .left .stops .end {
-        line-height: 1.42857;
-        position: relative;
-        white-space: normal;
-        display: flex; }
-        suggestion-item .suggestion-info .left .stops .start .road, suggestion-item .suggestion-info .left .stops .end .road {
-          text-transform: capitalize;
-          flex: 1 1 auto;
-          white-space: initial;
-          font-weight: 400;
-          color: #666; }
-      suggestion-item .suggestion-info .left .stops .end {
-        margin-top: 10px;
-        margin-bottom: 10px; }
-    suggestion-item .suggestion-info .left .icon-and-schedule {
-      margin-top: 0.5em;
+      font-size: 12px;
+      line-height: 15px; }
+  suggestion-item .suggestion-detail .suggestion-detail-info .left {
+    flex: auto; }
+    suggestion-item .suggestion-detail .suggestion-detail-info .left .icon-and-schedule {
+      margin-top: 0em;
       font-weight: 400; }
-      suggestion-item .suggestion-info .left .icon-and-schedule + .icon-and-schedule {
-        margin-top: 0em; }
 
 .your-suggestions .create-suggestion-btn {
   padding: 25px 0; }
@@ -11941,6 +11940,9 @@ suggestion-item .suggestion-info {
   color: #4b3863;
   text-transform: uppercase;
   display: block; }
+
+.your-suggestion-detail .error {
+  text-transform: capitalize; }
 
 .your-suggestion-detail .action-link {
   padding: 25px 0; }
