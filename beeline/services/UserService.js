@@ -238,8 +238,12 @@ angular.module('beeline').factory('UserService', [
         // Ask for verification code
         let verificationCode = await promptVerificationCode(telephoneNumber)
         if (!verificationCode) return
-        let user = await loadingSpinner(
+        let user
+        await loadingSpinner(
           verifyTelephone(telephoneNumber, verificationCode.code)
+            .then(u => {
+              user = u
+            })
         )
 
         // Is the user name null?

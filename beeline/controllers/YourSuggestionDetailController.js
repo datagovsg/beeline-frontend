@@ -25,13 +25,17 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
+    $scope.parseErrorMsg = function (msg) {
+      return msg.replace(/_/g, ' ') + '!'
+    }
+
     function startTimer () {
       let timer = setInterval(function () {
         // If user is still on the same page and route is stil being generated
         // after timer has reached 80%, pause the timer
         if (
           $scope.loadingBar.counter / $scope.loadingBar.timer >= 0.8 &&
-            !$scope.data.routes
+            !$scope.data.route
         ) {
           return
         }
@@ -54,7 +58,8 @@ export default [
     $scope.data = {
       suggestionId: suggestionId,
       suggestion: null,
-      routes: null,
+      route: null,
+      isLoading: false,
     }
     $scope.refreshSuggestedRoutesTimer = null
     $scope.loadingBar = {
@@ -68,40 +73,29 @@ export default [
     // Load the route information
     // Show a loading overlay while we wait
     // force reload when revisit the same route
-    $scope.$on('$ionicView.afterEnter', () => {
+    $scope.$on('$ionicView.beforeEnter', () => {
       $ionicLoading.show({
-        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
+        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading suggestion</small>`,
       })
-      SuggestionService.getSuggestion(suggestionId)
-        .then(response => {
-          $scope.data.suggestion = response.details
 
-          let now = new Date()
-          let createdAt = new Date($scope.data.suggestion.createdAt)
-          // If user has exited detail page and route is stil being generated
-          // after timer has ended, pause the timer at 80%
-          if (now - createdAt > $scope.loadingBar.timer * 1000 && !$scope.data.routes) {
-            $scope.loadingBar.counter = $scope.loadingBar.timer * 0.8
-          } else {
-            // Else continue timer
-            $scope.loadingBar.counter = Math.floor((now - createdAt) / 1000)
-          }
-        })
-        .catch(error => {
-          $ionicPopup.alert({
-            title: "Sorry there's been a problem loading the suggested route information",
-            subTitle: error,
-          })
-        })
+      $scope.data.suggestion = SuggestionService.getSuggestion(suggestionId)
 
-      $scope.refreshSuggestedRoutes(suggestionId)
+      $scope.data.route = SuggestionService.getSuggestedRoutes(suggestionId)
+
+      $ionicLoading.hide()
+
+      if (!$scope.data.route) {
+        $scope.data.isLoading = true
+        startTimer()
+        $scope.refreshSuggestedRoutes(suggestionId)
+      }
     })
 
     $scope.$on('$ionicView.leave', () => {
       clearInterval($scope.refreshSuggestedRoutesTimer)
       $scope.data.suggestionId = null
       $scope.data.suggestion = null
-      $scope.data.routes = null
+      $scope.data.route = null
     })
 
     // ------------------------------------------------------------------------
@@ -144,20 +138,20 @@ export default [
     }
 
     $scope.refreshSuggestedRoutes = function (suggestionId) {
-      SuggestionService.fetchSuggestedRoutes(suggestionId)
+      SuggestionService.fetchSuggestedRoute(suggestionId)
         .then(data => {
-          if (!data.done) {
+          if (!data) {
             $scope.refreshSuggestedRoutesTimer = setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
           } else {
-            $scope.data.routes = data.routes
+            $scope.data.route = data
+            $scope.data.isLoading = false
 
             let now = new Date()
             let createdAt = new Date($scope.data.suggestion.createdAt)
             // If suggestion is more than one month old AND no suggested routes found,
             // trigger route generation again
-            if (now - createdAt > 30 * 24 * 3600e3 && data.routes.length === 0) {
+            if (now - createdAt > 30 * 24 * 3600e3 && data.status === 'Failure') {
               SuggestionService.triggerRouteGeneration(suggestionId)
-              $scope.refreshSuggestedRoutes(suggestionId)
             }
           }
         })

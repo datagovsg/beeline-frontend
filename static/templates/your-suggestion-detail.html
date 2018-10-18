@@ -17,18 +17,17 @@
     <div class="item-divider no-text"></div>
 
     <ion-item>
-      <div ng-if="data.routes === null" class="loading-bar">
+      <div ng-if="data.isLoading" class="loading-bar">
         <span class="header">Generating Route...</span>
         <progress-bar display-label="false" backer1="loadingBar.counter" pax1="loadingBar.timer"></progress-bar>
       </div>
 
-      <span ng-if="data.routes.length === 0">No suggested routes found!</span>
+      <span ng-if="data.route.status === 'Failure'" class="error">parseErrorMsg(data.route.reason)</span>
 
-      <div ng-if="data.routes.length > 0">
+      <div ng-if="data.route.status === 'Success'">
         <span class="header">Crowdstart Route</span>
         <crowdstart-route
-          ng-repeat="route in data.routes" 
-          route="route"
+          route="data.route"
           ng-click="saveCrowdstartPreview(route)"
           ui-sref="tabs.crowdstart-detail({ routeId: route.id ? route.id : 'preview' })">
         </crowdstart-route>

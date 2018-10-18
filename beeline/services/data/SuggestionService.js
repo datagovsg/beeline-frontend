@@ -6,8 +6,17 @@ angular.module('beeline').factory('SuggestionService', [
   'CrowdstartService',
   function SuggestionService (RequestService, UserService, CrowdstartService) {
     let suggestions
-    let routes
     let createdSuggestion
+    let suggestedRoutes = {}
+
+    function convertDaysToBinary (days) {
+      const week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      let sum = 0
+      for (let i = 0; i < week.length; i++) {
+        sum += days[week[i]] * Math.pow(2, i)
+      }
+      return sum
+    }
 
     UserService.userEvents.on('userChanged', () => {
       fetchSuggestions()
@@ -27,7 +36,7 @@ angular.module('beeline').factory('SuggestionService', [
           lat: sug.alight.coordinates[1],
           lng: sug.alight.coordinates[0],
         }
-        const similar = await fetchSimilarSuggestions(start, end, sug.time)
+        const similar = await fetchSimilarSuggestions(start, end, sug.time, sug.daysOfWeek)
         userSuggestions[index] = {
           ...sug,
           similar,
@@ -50,7 +59,7 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
-    function fetchSimilarSuggestions (start, end, time) {
+    function fetchSimilarSuggestions (start, end, time, daysOfWeek) {
       let queryString = querystring.stringify({
         startLat: start.lat,
         startLng: start.lng,
@@ -61,6 +70,7 @@ angular.module('beeline').factory('SuggestionService', [
         endDistance: 2000,
         maxTimeDifference: 1800e3, // half an hour
         includeAnonymous: false,
+        daysMask: convertDaysToBinary(daysOfWeek),
         createdSince: Date.now() - 2 * 365 * 24 * 60 * 60 * 1000, // 2 years back
       })
       return RequestService.beeline({
@@ -141,7 +151,7 @@ angular.module('beeline').factory('SuggestionService', [
           lat: suggestion.alight.coordinates[1],
           lng: suggestion.alight.coordinates[0],
         }
-        const similar = await fetchSimilarSuggestions(start, end, suggestion.time)
+        const similar = await fetchSimilarSuggestions(start, end, suggestion.time, suggestion.daysOfWeek)
         createdSuggestion = {
           ...suggestion,
           similar,
@@ -154,9 +164,7 @@ angular.module('beeline').factory('SuggestionService', [
       getSuggestion: function (suggestionId) {
         let details = createdSuggestion || suggestions.filter(sug => sug.id === suggestionId)[0]
         createdSuggestion = null
-        return Promise.resolve({
-          details,
-        })
+        return details
       },
 
       getSuggestions: function () {
@@ -174,35 +182,39 @@ angular.module('beeline').factory('SuggestionService', [
         })
       },
 
-      fetchSuggestedRoutes: function (suggestionId) {
+      fetchSuggestedRoute: function (suggestionId) {
         return RequestService.beeline({
           method: 'GET',
           url: `/suggestions/${suggestionId}/suggested_routes`,
         }).then(async response => {
-          routes = []
-
-          const promises = response.data
-            .filter(r => r.route) // omit any false routes
-            .map(async r => {
-              let route
-              if (r.routeId) {
-                route = await CrowdstartService.getCrowdstartById(r.routeId)
-              } else {
-                route = await previewRoute(suggestionId, r.id)
-              }
-              routes.push({
-                ...route,
-                suggestedRouteId: r.id,
-                suggestionId,
-              })
-            })
-          await Promise.all(promises)
-
-          return {
-            done: response.data.length > 0,
-            routes,
+          if (response.data.length === 0) {
+            return null
           }
+          // Get latest suggested route
+          const r = response.data[0]
+
+          let route
+          if (r.routeId) {
+            route = await CrowdstartService.getCrowdstartById(r.routeId)
+          } else {
+            route = await previewRoute(suggestionId, r.id)
+          }
+
+          route = {
+            ...route,
+            status: r.route.status,
+            reason: r.route.reason,
+            suggestedRouteId: r.id,
+            suggestionId,
+          }
+          suggestedRoutes[suggestionId] = route
+
+          return route
         })
+      },
+
+      getSuggestedRoutes: function (suggestionId) {
+        return suggestedRoutes[suggestionId]
       },
 
       triggerRouteGeneration,
