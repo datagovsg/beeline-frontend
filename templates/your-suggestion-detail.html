@@ -22,14 +22,18 @@
         <progress-bar display-label="false" backer1="loadingBar.counter" pax1="loadingBar.timer"></progress-bar>
       </div>
 
-      <span ng-if="data.route.status === 'Failure'" class="error">parseErrorMsg(data.route.reason)</span>
+      <span ng-if="data.suggestedRoute.info.status === 'Failure'" class="error">
+        {{parseErrorMsg(data.suggestedRoute.info.reason)}}
+      </span>
 
-      <div ng-if="data.route.status === 'Success'">
+      <div ng-if="data.suggestedRoute.info.status === 'Success'">
         <span class="header">Crowdstart Route</span>
         <crowdstart-route
-          route="data.route"
-          ng-click="saveCrowdstartPreview(route)"
-          ui-sref="tabs.crowdstart-detail({ routeId: route.id ? route.id : 'preview' })">
+          route="data.suggestedRoute"
+          ng-click="saveCrowdstartPreview(data.suggestedRoute)"
+          ui-sref="tabs.crowdstart-detail({ 
+            routeId: data.suggestedRoute.id ? data.suggestedRoute.id : 'preview' 
+          })">
         </crowdstart-route>
       </div>
     </ion-item>
