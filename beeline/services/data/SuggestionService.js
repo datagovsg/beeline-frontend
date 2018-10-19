@@ -196,25 +196,30 @@ angular.module('beeline').factory('SuggestionService', [
           let route
           if (r.routeId) {
             route = await CrowdstartService.getCrowdstartById(r.routeId)
-          } else {
+          }
+          if (r.route.status === 'Success' && !r.routeId) {
             route = await previewRoute(suggestionId, r.id)
           }
 
-          route = {
+          let suggestedRoute = {
             ...route,
-            status: r.route.status,
-            reason: r.route.reason,
+            info: {
+              status: r.route.status,
+              reason: r.route.reason,
+            },
             suggestedRouteId: r.id,
             suggestionId,
           }
-          suggestedRoutes[suggestionId] = route
+          suggestedRoutes[suggestionId] = suggestedRoute
 
-          return route
+          return suggestedRoute
         })
       },
 
       getSuggestedRoutes: function (suggestionId) {
         return suggestedRoutes[suggestionId]
+          ? Promise.resolve(suggestedRoutes[suggestionId])
+          : this.fetchSuggestedRoute(suggestionId)
       },
 
       triggerRouteGeneration,

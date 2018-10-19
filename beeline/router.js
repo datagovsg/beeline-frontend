@@ -214,6 +214,11 @@ export default [
             controller: 'YourSuggestionDetailController',
           },
         },
+        params: {
+          suggestionId: null,
+          suggestion: null,
+          suggestedRoute: null,
+        },
       })
 
       // ////////////////////////////////////////////////////////////////////////////

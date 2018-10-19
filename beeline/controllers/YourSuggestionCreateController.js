@@ -225,6 +225,7 @@ export default [
 
         $state.go('tabs.your-suggestion-detail', {
           suggestionId: data.id,
+          suggestion: data,
         })
         $scope.refreshSuggestions()
       } catch (err) {
