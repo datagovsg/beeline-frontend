@@ -131,6 +131,27 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
+    async function reTriggerRouteGeneration (suggestedRoute) {
+      console.log(suggestedRoute)
+      if (suggestedRoute.route.status === "Success") {
+        let now = new Date()
+        let updatedAt = new Date(suggestedRoute.updatedAt)
+        // If suggestion is more than one month old
+        // trigger route generation again to refresh the suggested route
+        if (now - updatedAt > 30 * 24 * 3600e3) {
+          console.log("trigger route gen for success route")
+          await triggerRouteGeneration(suggestedRoute.id)
+          return true
+        }
+      }
+      if (suggestedRoute.route.status === "Failure") {
+        console.log("trigger route gen for failure route")
+        await triggerRouteGeneration(suggestedRoute.id)
+        return true
+      }
+      return false
+    }
+
     return {
       createSuggestion: async function (board, boardDescription, alight, alightDescription, time, daysOfWeek) {
         let referrer = 'Beeline'
@@ -187,11 +208,16 @@ angular.module('beeline').factory('SuggestionService', [
           method: 'GET',
           url: `/suggestions/${suggestionId}/suggested_routes`,
         }).then(async response => {
+          console.log("suggested route", response.data)
           if (response.data.length === 0) {
             return null
           }
           // Get latest suggested route
           const r = response.data[0]
+
+          if (reTriggerRouteGeneration(r)) {
+            return null
+          }
 
           let route
           if (r.routeId) {

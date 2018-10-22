@@ -160,7 +160,6 @@ export default [
             $scope.data.suggestedRoute = data
             $scope.data.isLoading = false
 
-            
             clearInterval($scope.refreshSuggestedRoutesTimer)
           }
         })
