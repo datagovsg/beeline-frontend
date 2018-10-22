@@ -25,8 +25,14 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
-    $scope.parseErrorMsg = function (msg) {
-      return msg.replace(/_/g, ' ') + '!'
+    function parseErrorMsg (msg) {
+      if (msg === "too_few_suggestions") {
+        return "We will need at least 15 other similar route suggestions to generate a crowdstart route for you."
+      }
+      if (msg === "no_routes_found") {
+        return "We are unable to generate a crowdstart route for you. Please contact us at feedback@beeline.sg."
+      }
+      return "Internal server error. Please try again later."
     }
 
     function startTimer () {
@@ -98,6 +104,17 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
+    $scope.$watch('data.suggestedRoute', route => {
+      if (route && route.info.status === "Failure") {
+        let msg = parseErrorMsg(route.info.reason)
+        $ionicPopup.alert({
+          title: 'We are sorry!',
+          template: `
+          <div>${msg}</div>
+          `,
+        })
+      }
+    })
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -108,7 +125,7 @@ export default [
 
     $scope.popupDeleteConfirmation = function () {
       $ionicPopup.confirm({
-        title: 'Are you sure you want to delete the suggestions?',
+        title: 'Are you sure you want to delete this suggestion?',
       }).then(async (proceed) => {
         if (proceed) {
           try {
@@ -143,13 +160,8 @@ export default [
             $scope.data.suggestedRoute = data
             $scope.data.isLoading = false
 
-            let now = new Date()
-            let createdAt = new Date($scope.data.suggestion.createdAt)
-            // If suggestion is more than one month old AND no suggested routes found,
-            // trigger route generation again
-            if (now - createdAt > 30 * 24 * 3600e3 && data.info.status === 'Failure') {
-              SuggestionService.triggerRouteGeneration(suggestionId)
-            }
+            
+            clearInterval($scope.refreshSuggestedRoutesTimer)
           }
         })
         .catch(error => {
