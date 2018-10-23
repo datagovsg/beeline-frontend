@@ -79,7 +79,7 @@ export default [
     let createdAt = new Date($scope.data.suggestion.createdAt)
     // set counter based on time passed since suggestion was created
     $scope.loadingBar.counter = now - createdAt > 0.8 * $scope.loadingBar.timer * 1000
-      ? $scope.loadingBar.counter = 0.8 * $scope.loadingBar.timer
+      ? 0.8 * $scope.loadingBar.timer
       : (now - createdAt) / 1000
 
     // ------------------------------------------------------------------------

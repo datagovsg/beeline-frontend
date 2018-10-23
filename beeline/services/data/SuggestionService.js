@@ -8,6 +8,9 @@ angular.module('beeline').factory('SuggestionService', [
     let suggestions
     let createdSuggestion
     let suggestedRoutes = {}
+    
+    let reTriggerRouteGeneration = false
+    let suggRouteLastCreated
 
     function convertDaysToBinary (days) {
       const week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -131,25 +134,23 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
-    async function reTriggerRouteGeneration (suggestedRoute) {
-      console.log(suggestedRoute)
-      if (suggestedRoute.route.status === "Success") {
-        let now = new Date()
-        let updatedAt = new Date(suggestedRoute.updatedAt)
+    async function triggerRouteGenAgain (suggestedRoute) {
+      let now = new Date()
+      let createdAt = new Date(suggestedRoute.createdAt)
+      // Do not trigger if suggestion was created in the last ten minutes
+      if (now - createdAt < 10 * 60 * 1000) return
+      if (
         // If suggestion is more than one month old
         // trigger route generation again to refresh the suggested route
-        if (now - updatedAt > 30 * 24 * 3600e3) {
-          console.log("trigger route gen for success route")
+        (suggestedRoute.route.status === "Success" && now - createdAt > 30 * 24 * 3600e3) 
+        || suggestedRoute.route.status === "Failure"
+      ) {
+          console.log("trigger route gen for route")
           await triggerRouteGeneration(suggestedRoute.id)
-          return true
-        }
+          reTriggerRouteGeneration = true
+          suggRouteLastCreated = new Date(suggestedRoute.createdAt)
+          console.log(reTriggerRouteGeneration, suggRouteLastCreated)
       }
-      if (suggestedRoute.route.status === "Failure") {
-        console.log("trigger route gen for failure route")
-        await triggerRouteGeneration(suggestedRoute.id)
-        return true
-      }
-      return false
     }
 
     return {
@@ -208,17 +209,28 @@ angular.module('beeline').factory('SuggestionService', [
           method: 'GET',
           url: `/suggestions/${suggestionId}/suggested_routes`,
         }).then(async response => {
-          console.log("suggested route", response.data)
           if (response.data.length === 0) {
             return null
           }
           // Get latest suggested route
           const r = response.data[0]
-
-          if (reTriggerRouteGeneration(r)) {
-            return null
+          
+          // check if needed to re-trigger route generation
+          if (!reTriggerRouteGeneration) {
+            await triggerRouteGenAgain(r)
           }
 
+          // if route generation has been re-triggered and 
+          // a new suggested route has not returned
+          if (reTriggerRouteGeneration && new Date(r.createdAt) <= suggRouteLastCreated) {
+            return null
+          }
+          
+          if (reTriggerRouteGeneration) {
+            console.log("new sugg route returned", r)
+          }
+          suggRouteLastCreated = null
+          reTriggerRouteGeneration = false
           let route
           if (r.routeId) {
             route = await CrowdstartService.getCrowdstartById(r.routeId)
