@@ -69,8 +69,8 @@ angular.module('beeline').factory('SuggestionService', [
         endLat: end.lat,
         endLng: end.lng,
         time,
-        startDistance: 2000,
-        endDistance: 2000,
+        startDistance: 400,
+        endDistance: 400,
         maxTimeDifference: 1800e3, // half an hour
         includeAnonymous: false,
         daysMask: convertDaysToBinary(daysOfWeek),
