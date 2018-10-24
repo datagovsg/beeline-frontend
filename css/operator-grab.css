@@ -11941,9 +11941,6 @@ suggestion-item .suggestion-detail .suggestion-detail-info {
   text-transform: uppercase;
   display: block; }
 
-.your-suggestion-detail .error {
-  text-transform: capitalize; }
-
 .your-suggestion-detail .action-link {
   padding: 25px 0; }
   .your-suggestion-detail .action-link div {

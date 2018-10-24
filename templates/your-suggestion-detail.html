@@ -16,15 +16,11 @@
 
     <div class="item-divider no-text"></div>
 
-    <ion-item>
+    <ion-item ng-if="data.suggestedRoute.info.status !== 'Failure'">
       <div ng-if="data.isLoading" class="loading-bar">
         <span class="header">Generating Route...</span>
         <progress-bar display-label="false" backer1="loadingBar.counter" pax1="loadingBar.timer"></progress-bar>
       </div>
-
-      <span ng-if="data.suggestedRoute.info.status === 'Failure'" class="error">
-        {{parseErrorMsg(data.suggestedRoute.info.reason)}}
-      </span>
 
       <div ng-if="data.suggestedRoute.info.status === 'Success'">
         <span class="header">Crowdstart Route</span>
