@@ -26,13 +26,13 @@ export default [
     // Helper Functions
     // ------------------------------------------------------------------------
     function parseErrorMsg (msg) {
-      if (msg === "too_few_suggestions") {
-        return "We will need at least 15 other similar route suggestions to generate a crowdstart route for you."
+      if (msg === 'too_few_suggestions') {
+        return 'We will need at least 15 other similar route suggestions to generate a crowdstart route for you.'
       }
-      if (msg === "no_routes_found") {
-        return "We are unable to generate a crowdstart route for you. Please contact us at feedback@beeline.sg."
+      if (msg === 'no_routes_found') {
+        return 'We are unable to generate a crowdstart route for you. Please contact us at feedback@beeline.sg.'
       }
-      return "Internal server error. Please try again later."
+      return 'Internal server error. Please try again later.'
     }
 
     function startTimer () {
@@ -81,6 +81,10 @@ export default [
     $scope.loadingBar.counter = now - createdAt > 0.8 * $scope.loadingBar.timer * 1000
       ? 0.8 * $scope.loadingBar.timer
       : (now - createdAt) / 1000
+    // if suggestion is more than 10 mins old, start counter from 0
+    $scope.loadingBar.counter = now - createdAt > 10 * 60 * 1000
+      ? 0
+      : $scope.loadingBar.counter
 
     // ------------------------------------------------------------------------
     // Ionic events
@@ -105,7 +109,7 @@ export default [
     // Watchers
     // ------------------------------------------------------------------------
     $scope.$watch('data.suggestedRoute', route => {
-      if (route && route.info.status === "Failure") {
+      if (route && route.info.status === 'Failure') {
         let msg = parseErrorMsg(route.info.reason)
         $ionicPopup.alert({
           title: 'We are sorry!',

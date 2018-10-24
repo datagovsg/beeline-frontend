@@ -8,7 +8,7 @@ angular.module('beeline').factory('SuggestionService', [
     let suggestions
     let createdSuggestion
     let suggestedRoutes = {}
-    
+
     let reTriggerRouteGeneration = false
     let suggRouteLastCreated
 
@@ -138,18 +138,16 @@ angular.module('beeline').factory('SuggestionService', [
       let now = new Date()
       let createdAt = new Date(suggestedRoute.createdAt)
       // Do not trigger if suggestion was created in the last ten minutes
-      if (now - createdAt < 10 * 60 * 1000) return
+      // if (now - createdAt < 10 * 60 * 1000) return
       if (
         // If suggestion is more than one month old
         // trigger route generation again to refresh the suggested route
-        (suggestedRoute.route.status === "Success" && now - createdAt > 30 * 24 * 3600e3) 
-        || suggestedRoute.route.status === "Failure"
+        (suggestedRoute.route.status === 'Success' && now - createdAt > 30 * 24 * 3600e3) ||
+        suggestedRoute.route.status === 'Failure'
       ) {
-          console.log("trigger route gen for route")
-          await triggerRouteGeneration(suggestedRoute.id)
-          reTriggerRouteGeneration = true
-          suggRouteLastCreated = new Date(suggestedRoute.createdAt)
-          console.log(reTriggerRouteGeneration, suggRouteLastCreated)
+        await triggerRouteGeneration(suggestedRoute.seedSuggestionId)
+        reTriggerRouteGeneration = true
+        suggRouteLastCreated = new Date(suggestedRoute.createdAt)
       }
     }
 
@@ -214,21 +212,18 @@ angular.module('beeline').factory('SuggestionService', [
           }
           // Get latest suggested route
           const r = response.data[0]
-          
+
           // check if needed to re-trigger route generation
           if (!reTriggerRouteGeneration) {
             await triggerRouteGenAgain(r)
           }
 
-          // if route generation has been re-triggered and 
+          // if route generation has been re-triggered and
           // a new suggested route has not returned
           if (reTriggerRouteGeneration && new Date(r.createdAt) <= suggRouteLastCreated) {
             return null
           }
-          
-          if (reTriggerRouteGeneration) {
-            console.log("new sugg route returned", r)
-          }
+
           suggRouteLastCreated = null
           reTriggerRouteGeneration = false
           let route
