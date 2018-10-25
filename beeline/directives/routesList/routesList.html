@@ -27,16 +27,22 @@
   </ion-item>
   <!-- END: All routes -->
 
-  <div ng-hide="suggestHide" class="item text-center item-text-wrap suggest-route">
+  <div 
+    ng-if="disp.routes.length === 0 &&
+    disp.liteRoutes.length === 0 &&
+    disp.crowdstartRoutes.length === 0" 
+    ng-hide="suggestHide" 
+    class="item text-center item-text-wrap suggest-route"
+  >
     <!-- No results found message -->
-    <div
-      ng-if="disp.routes.length === 0 &&
-            disp.liteRoutes.length === 0 &&
-            disp.crowdstartRoutes.length === 0"
-      class=""
-    >
-      Sorry, we could not find any routes matching your search query.
-    </div>
+    Sorry, we could not find any routes matching your search query.
+  </div>
+
+  <div 
+    ng-if="disp.displaySuggestBtn" 
+    ng-hide="suggestHide" 
+    class="item text-center item-text-wrap suggest-route"
+  >
     <div
       ng-if="disp.routes.length !== 0 ||
             disp.liteRoutes.length !== 0 ||
@@ -48,6 +54,7 @@
     <!-- To open web suggestion page --> 
     <!-- ng-click="openLink($event)" --> 
     <button
+      ng-if="disp.displaySuggestBtn"
       class="primary-button" 
       ui-sref="tabs.create-new-suggestion({
         pickUpLocation: data.pickUpLocation,	

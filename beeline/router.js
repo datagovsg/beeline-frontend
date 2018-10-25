@@ -60,6 +60,7 @@ export default [
         params: {
           pickUpLocation: null,
           dropOffLocation: null,
+          displaySuggestBtn: true,
         },
       })
       .state('tabs.yourRoutes', {

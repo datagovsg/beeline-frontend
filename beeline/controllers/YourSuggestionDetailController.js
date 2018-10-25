@@ -188,6 +188,7 @@ export default [
         $state.go('tabs.routes-search-list', {
           pickUpLocation: pickUp,
           dropOffLocation: dropOff,
+          displaySuggestBtn: false,
         })
       }, 800)
     }
