@@ -80,6 +80,14 @@
     "hash": "0a8946d0544530f80695ad3ef3decd0c"
   },
   {
+    "file": "css/ionic.css",
+    "hash": "d4558814e69ebc526c225a52de918ce2"
+  },
+  {
+    "file": "css/ionicons.css",
+    "hash": "47568e0e887556533cc3dae4628181ad"
+  },
+  {
     "file": "css/operator-grab.css",
     "hash": "6b26f449496df0950810a7398b57b239"
   },
@@ -565,7 +573,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "008fb6b0e2cb8c44e36e8ee4656f65b3"
+    "hash": "8e0095252c14513bbb0c0ba7c38feb83"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
