@@ -39,7 +39,7 @@ export default [
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading suggestion</small>`,
       })
 
-      let suggestedRoute = await SuggestionService.getSuggestedRoutes(suggestion.id)
+      let suggestedRoute = await SuggestionService.fetchSuggestedRoute(suggestion.id)
 
       $ionicLoading.hide()
       $state.go('tabs.your-suggestion-detail', {

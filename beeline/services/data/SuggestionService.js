@@ -137,8 +137,7 @@ angular.module('beeline').factory('SuggestionService', [
     async function triggerRouteGenAgain (suggestedRoute) {
       let now = new Date()
       let createdAt = new Date(suggestedRoute.createdAt)
-      // Do not trigger if suggestion was created in the last ten minutes
-      // if (now - createdAt < 10 * 60 * 1000) return
+
       if (
         // If suggestion is more than one month old
         // trigger route generation again to refresh the suggested route
@@ -247,12 +246,6 @@ angular.module('beeline').factory('SuggestionService', [
 
           return suggestedRoute
         })
-      },
-
-      getSuggestedRoutes: function (suggestionId) {
-        return suggestedRoutes[suggestionId]
-          ? Promise.resolve(suggestedRoutes[suggestionId])
-          : this.fetchSuggestedRoute(suggestionId)
       },
 
       triggerRouteGeneration,
