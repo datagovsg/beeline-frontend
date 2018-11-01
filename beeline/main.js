@@ -15,7 +15,6 @@ import { companyLogo, miniCompanyLogo } from './shared/imageSources'
 // node imports
 import compareVersions from 'compare-versions'
 import assert from 'assert'
-import Rollbar from 'rollbar'
 
 import 'multiple-date-picker/dist/multipleDatePicker'
 
@@ -34,22 +33,6 @@ let app = angular.module('beeline', [
   'common',
   'angucomplete-alt',
 ])
-
-// Setup rollbar
-const rollbar = new Rollbar({
-  accessToken: 'f7d58cfb8d404c118c69cd321bb6cfef',
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-})
-
-app.factory('$exceptionHandler', function () {
-  return function (exception, cause) {
-    exception.message = exception.message ? exception.message : ''
-    exception.message += 'Angular Exception: "' + cause + '"'
-    rollbar.error(exception)
-    throw exception
-  }
-})
 
 require('angucomplete-alt')
 require('angular-simple-logger')

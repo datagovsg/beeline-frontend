@@ -45,6 +45,10 @@ angular.module('common').service('BookingService', [
               totals: resp.data.totals,
             }
           })
+          .then(null, err => {
+            console.error(err.stack)
+            throw err
+          })
 
         return rv
       }

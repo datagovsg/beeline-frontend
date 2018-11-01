@@ -93,9 +93,9 @@ export default [
       }
     )
 
-    $scope.$watch('mapObject.stops', async stops => {
+    $scope.$watch('mapObject.stops', stops => {
       if (stops && stops.length > 0) {
-        const bounds = await MapUtilService.formBounds(stops)
+        const bounds = MapUtilService.formBounds(stops)
         if ($scope.map.control.getGMap) {
           const gmap = $scope.map.control.getGMap()
           google.maps.event.trigger(gmap, 'resize')

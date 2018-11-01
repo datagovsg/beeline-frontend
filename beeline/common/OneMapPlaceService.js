@@ -65,16 +65,12 @@ angular.module('common').factory('OneMapPlaceService', [
         let queryString = querystring.stringify({
           location: lat + ',' + lng,
         })
+        let { data: result } = await $http({
+          method: 'GET',
+          url: url + queryString,
+        })
 
-        try {
-          let { data: result } = await $http({
-            method: 'GET',
-            url: url + queryString,
-          })
-          return transfromRevGeocodeResults(result.GeocodeInfo[0])
-        } catch (e) {
-          return null
-        }
+        return transfromRevGeocodeResults(result.GeocodeInfo[0])
       },
 
       async handleQuery (queryText) {
