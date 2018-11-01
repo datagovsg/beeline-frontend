@@ -11846,117 +11846,112 @@ ui-gmap-google-map {
 #tabs ui-gmap-google-map {
   height: 100%; }
 
-suggestion-item .day-badge {
-  display: flex;
-  flex-direction: row; }
-  suggestion-item .day-badge div {
-    background: #a9a9a9;
-    color: #fff;
-    font-size: 12px;
-    margin-right: 5px;
-    width: 18px;
-    height: 18px;
-    text-align: center;
-    border-radius: 2px;
-    vertical-align: middle;
-    line-height: 18px;
-    font-weight: 700; }
-  suggestion-item .day-badge div.enabled {
-    background: #00B140; }
-
-suggestion-item .suggestion-detail .stops {
-  display: block;
-  position: relative;
-  flex: 1 1 auto;
-  margin-right: 60px; }
-  suggestion-item .suggestion-detail .stops .stop-icon {
-    /* this value depends on the width of the image -- leaving as a constant */
-    flex: 0 0 auto;
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
-    margin-top: 7.5px;
-    margin-right: 7.5px; }
-  suggestion-item .suggestion-detail .stops .start .stop-icon {
-    background: #00C4A5;
-    /*
-          we want line to be:
-              - the height of .start (=> height: 100%),
-              - displace the left of the line to the middle of the circle
-                  the image is 10x10 hence left: 4px (to account for width=2px)
-              - .start is inline, so it's height = $line-height-computed.
-                Image is centered vertically => top = $line-height-computed / 2
-                N.B. overflow must be "visible" on .start for this to work
-              - positioned relative to the stop icon => .start { position: relative }
-        */ }
-  suggestion-item .suggestion-detail .stops .end .stop-icon {
-    background: #FF6C6A; }
-  suggestion-item .suggestion-detail .stops .start, suggestion-item .suggestion-detail .stops .end {
-    line-height: 1.42857;
-    position: relative;
-    white-space: normal;
-    display: flex; }
-    suggestion-item .suggestion-detail .stops .start .road, suggestion-item .suggestion-detail .stops .end .road {
-      text-transform: capitalize;
-      flex: 1 1 auto;
-      white-space: initial;
-      font-weight: 400;
-      color: #666; }
-  suggestion-item .suggestion-detail .stops .end {
-    margin-top: 10px;
-    margin-bottom: 10px; }
-
-suggestion-item .suggestion-detail .suggestion-detail-info {
-  display: flex; }
-  suggestion-item .suggestion-detail .suggestion-detail-info .right {
-    text-align: right;
+suggestion-item {
+  padding: 15px; }
+  suggestion-item .day-badge {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    text-transform: uppercase; }
-    suggestion-item .suggestion-detail .suggestion-detail-info .right .value {
-      font-size: 34px;
-      line-height: 34px;
-      font-weight: 700; }
-    suggestion-item .suggestion-detail .suggestion-detail-info .right .suggestions {
-      color: #a9a9a9;
+    flex-direction: row; }
+    suggestion-item .day-badge div {
+      background: #a9a9a9;
+      color: #fff;
       font-size: 12px;
-      line-height: 15px; }
-  suggestion-item .suggestion-detail .suggestion-detail-info .left {
-    flex: auto; }
-    suggestion-item .suggestion-detail .suggestion-detail-info .left .icon-and-schedule {
-      margin-top: 0em;
-      font-weight: 400; }
+      margin-right: 5px;
+      width: 18px;
+      height: 18px;
+      text-align: center;
+      border-radius: 2px;
+      vertical-align: middle;
+      line-height: 18px;
+      font-weight: 700; }
+    suggestion-item .day-badge div.enabled {
+      background: #00B140; }
+  suggestion-item .suggestion-info {
+    display: flex; }
+    suggestion-item .suggestion-info .right {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      text-transform: uppercase; }
+      suggestion-item .suggestion-info .right .value {
+        font-size: 40px;
+        line-height: 40px;
+        font-weight: 700;
+        margin-bottom: 5px; }
+      suggestion-item .suggestion-info .right .suggestions {
+        color: #a9a9a9;
+        font-size: 12px; }
+    suggestion-item .suggestion-info .left {
+      flex: auto;
+      margin-right: 40px; }
+      suggestion-item .suggestion-info .left .stops {
+        display: block;
+        /* Determines the amount of vertical spacing
+            between the .bus-number and the stops */
+        margin-top: 12px;
+        position: relative;
+        flex: 1 1 auto; }
+        suggestion-item .suggestion-info .left .stops .stop-icon {
+          /* this value depends on the width of the image -- leaving as a constant */
+          flex: 0 0 auto;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          margin-top: 7.5px;
+          margin-right: 7.5px; }
+        suggestion-item .suggestion-info .left .stops .start .stop-icon {
+          background: #00C4A5;
+          /*
+            we want line to be:
+                - the height of .start (=> height: 100%),
+                - displace the left of the line to the middle of the circle
+                    the image is 10x10 hence left: 4px (to account for width=2px)
+                - .start is inline, so it's height = $line-height-computed.
+                  Image is centered vertically => top = $line-height-computed / 2
+                  N.B. overflow must be "visible" on .start for this to work
+                - positioned relative to the stop icon => .start { position: relative }
+          */ }
+        suggestion-item .suggestion-info .left .stops .end .stop-icon {
+          background: #FF6C6A; }
+        suggestion-item .suggestion-info .left .stops .start, suggestion-item .suggestion-info .left .stops .end {
+          line-height: 1.42857;
+          position: relative;
+          white-space: normal;
+          display: flex; }
+          suggestion-item .suggestion-info .left .stops .start .road, suggestion-item .suggestion-info .left .stops .end .road {
+            text-transform: capitalize;
+            flex: 1 1 auto;
+            white-space: initial;
+            font-weight: 400;
+            color: #666; }
+        suggestion-item .suggestion-info .left .stops .end {
+          margin-top: 10px;
+          margin-bottom: 10px; }
+      suggestion-item .suggestion-info .left .icon-and-schedule {
+        margin-top: 0.5em;
+        font-weight: 400; }
+        suggestion-item .suggestion-info .left .icon-and-schedule + .icon-and-schedule {
+          margin-top: 0em; }
 
 .your-suggestions .create-suggestion-btn {
-  padding: 25px 0; }
-  .your-suggestions .create-suggestion-btn button {
-    margin: auto; }
+  margin-top: 25px;
+  margin-bottom: 25px; }
 
 .your-suggestion-detail .header {
   font-size: 20px;
-  padding-bottom: 16px;
+  line-height: 45px;
   font-weight: 600;
   color: #00B140;
-  text-transform: uppercase;
-  display: block; }
+  text-transform: uppercase; }
 
-.your-suggestion-detail .action-link {
-  padding: 25px 0; }
-  .your-suggestion-detail .action-link div {
-    text-align: center;
-    text-decoration: underline;
-    color: #00B140; }
-  .your-suggestion-detail .action-link div.delete {
-    padding-top: 16px;
-    color: #ff6c6a; }
+.your-suggestion-detail .delete {
+  color: #ff6c6a;
+  margin: 25px 0;
+  text-align: center;
+  text-decoration: underline; }
 
-.your-suggestion-detail .loading-bar span {
-  text-align: center; }
-
-.your-suggestion-detail .loading-bar progress-bar .backer-high {
-  transition: all 1.5s;
-  width: 0%; }
+.your-suggestion-detail route-item {
+  margin-bottom: 25px; }
 
 .create-new-suggestion {
   background-color: transparent !important;
