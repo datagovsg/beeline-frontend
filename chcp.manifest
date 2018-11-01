@@ -77,11 +77,11 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "a8fdf7b8a9c99801565072e67eb1ccbf"
+    "hash": "0a8946d0544530f80695ad3ef3decd0c"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "b2562a72f7c1b403ca6ff9d626f12daa"
+    "hash": "6b26f449496df0950810a7398b57b239"
   },
   {
     "file": "favicon-16x16.png",
@@ -565,7 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "472ca1e79c3d7165476a29cfe11debd0"
+    "hash": "9e3fae8f613c5ce5cf9c9f6ab227b593"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
@@ -845,11 +845,11 @@
   },
   {
     "file": "templates/create-new-suggestion.html",
-    "hash": "3f7546ab25c05b639a172ff95796b94c"
+    "hash": "4be8471bf2693e9e0d7df3637c45bee1"
   },
   {
     "file": "templates/crowdstart-detail.html",
-    "hash": "937057e2a995f4e1ca479168083a154a"
+    "hash": "ae575de10d96b5837037f5d41c779dac"
   },
   {
     "file": "templates/crowdstart-stops.html",
@@ -925,7 +925,7 @@
   },
   {
     "file": "templates/tabs.html",
-    "hash": "52441a839b337a9873087362c317c928"
+    "hash": "e017c71dbf5d05df5c36cd5565ce131e"
   },
   {
     "file": "templates/terms-of-use.html",
@@ -937,10 +937,10 @@
   },
   {
     "file": "templates/your-suggestion-detail.html",
-    "hash": "cec005ee46e33a78f848a90fbd6d15a9"
+    "hash": "8936084d73152635c17e1d639f0ec4da"
   },
   {
     "file": "templates/your-suggestions.html",
-    "hash": "aeb9b260fb2ecce8741b32ecf7c10264"
+    "hash": "2e2be31eed3329c3e688c3c7f37c386e"
   }
 ]
