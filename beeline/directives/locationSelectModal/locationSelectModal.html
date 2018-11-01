@@ -36,7 +36,7 @@
         {{ result.ADDRESS }}
       </div>
       <div ng-if="!data.input">
-        <div ng-if="data.myLocation">
+        <div ng-if="data.myLocation && (data.myLocation.BUILDING || data.myLocation.ROAD_NAME)">
           <div
             class="item item-divider"
           >
