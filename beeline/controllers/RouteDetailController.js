@@ -255,6 +255,22 @@ export default [
       $scope.modalFunctions.recenterMap()
     }
 
+    $scope.bookNextTrip = async () => {
+      if ($scope.data.nextTrip.nextTripCancelled) {
+        const response = await $ionicPopup.confirm({
+          title: 'The next trip is cancelled',
+          template: 'Are you sure you want to proceed?',
+        })
+        if (!response) return
+      }
+      $state.go('tabs.route-summary', {
+        routeId: $scope.data.routeId,
+        boardStop: $scope.data.pickupStop.id,
+        alightStop: $scope.data.dropoffStop.id,
+        selectedDates: [$scope.data.nextTrip.date.getTime()],
+      })
+    }
+
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------

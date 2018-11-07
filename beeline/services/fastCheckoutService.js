@@ -1,4 +1,4 @@
-import { retriveNextTrip } from '../shared/util'
+import { retriveNextRunningTrip, getNextTrip } from '../shared/util'
 import _ from 'lodash'
 
 angular.module('beeline').factory('FastCheckoutService', [
@@ -30,7 +30,7 @@ angular.module('beeline').factory('FastCheckoutService', [
     const verify = function verify (routeId) {
       return new Promise(async (resolve, reject) => {
         let route = await RoutesService.getRoute(routeId, true)
-        let nextTrip = retriveNextTrip(route)
+        let nextTrip = retriveNextRunningTrip(route)
         if (nextTrip === null) {
           return reject(new Error('There is no next trip'))
         }
@@ -66,10 +66,12 @@ angular.module('beeline').factory('FastCheckoutService', [
             hasNextTripTicket = false
           }
         }
+        let nextTripCancelled = !getNextTrip(route.trips).isRunning
         _.assign(nextTrip, {
           hasNextTripTicket,
           seatsAvailable,
           nextTripTicketId,
+          nextTripCancelled,
         })
         if (hasNextTripTicket === true || seatsAvailable === false) {
           nextTrip.errorMessage =
