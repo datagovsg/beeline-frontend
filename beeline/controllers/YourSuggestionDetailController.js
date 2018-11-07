@@ -161,10 +161,19 @@ export default [
           if (!data) {
             $scope.refreshSuggestedRoutesTimer = setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
           } else {
-            $scope.data.suggestedRoute = data
-            $scope.data.isLoading = false
+            let delay = 0
 
-            clearInterval($scope.refreshSuggestedRoutesTimer)
+            // if result is returned too fast
+            // simulate a 3 sec loading time for user
+            if ($scope.loadingBar.counter < 3) {
+              delay = 3000
+            }
+
+            $timeout(() => {
+              $scope.data.suggestedRoute = data
+              $scope.data.isLoading = false
+              clearInterval($scope.refreshSuggestedRoutesTimer)
+            }, delay)
           }
         })
         .catch(error => {
