@@ -66,12 +66,12 @@ angular.module('beeline').factory('FastCheckoutService', [
             hasNextTripTicket = false
           }
         }
-        let nextTripCancelled = !getNextTrip(route.trips).isRunning
+        let nextScheduledTrip = getNextTrip(route.trips)
         _.assign(nextTrip, {
           hasNextTripTicket,
           seatsAvailable,
           nextTripTicketId,
-          nextTripCancelled,
+          nextScheduledTrip,
         })
         if (hasNextTripTicket === true || seatsAvailable === false) {
           nextTrip.errorMessage =

@@ -1,5 +1,6 @@
 import ticketDetailModalTemplate from '../templates/ticket-detail-modal.html'
 import expiryModalTemplate from '../templates/route-pass-expiry-modal.html'
+import moment from 'moment'
 
 export default [
   '$scope',
@@ -256,9 +257,11 @@ export default [
     }
 
     $scope.bookNextTrip = async () => {
-      if ($scope.data.nextTrip.nextTripCancelled) {
+      let trip = $scope.data.nextTrip.nextScheduledTrip
+      if (!trip.isRunning) {
+        let date = moment(trip.date)
         const response = await $ionicPopup.confirm({
-          title: 'The next trip is cancelled',
+          title: `There is no service for ${date.format('ddd')} (${date.format('DD MMM')})`,
           template: 'Are you sure you want to proceed?',
         })
         if (!response) return
