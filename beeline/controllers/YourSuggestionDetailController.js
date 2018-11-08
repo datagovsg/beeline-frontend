@@ -81,8 +81,8 @@ export default [
     $scope.loadingBar.counter = now - createdAt > 0.8 * $scope.loadingBar.timer * 1000
       ? 0.8 * $scope.loadingBar.timer
       : (now - createdAt) / 1000
-    // if suggestion is more than 10 mins old, start counter from 0
-    $scope.loadingBar.counter = now - createdAt > 10 * 60 * 1000
+    // if suggestion is more than 2 mins old, start counter from 0
+    $scope.loadingBar.counter = now - createdAt > 2 * 60 * 1000
       ? 0
       : $scope.loadingBar.counter
 
@@ -103,6 +103,7 @@ export default [
     $scope.$on('$ionicView.leave', () => {
       clearInterval($scope.refreshSuggestedRoutesTimer)
       clearInterval($scope.loadingBarTimer)
+      $scope.data.suggestedRoute = null
     })
 
     // ------------------------------------------------------------------------
@@ -173,6 +174,8 @@ export default [
               $scope.data.suggestedRoute = data
               $scope.data.isLoading = false
               clearInterval($scope.refreshSuggestedRoutesTimer)
+              clearInterval($scope.loadingBarTimer)
+              $scope.loadingBar.counter = 0
             }, delay)
           }
         })
