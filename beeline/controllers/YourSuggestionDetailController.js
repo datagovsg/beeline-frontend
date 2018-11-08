@@ -164,9 +164,9 @@ export default [
             let delay = 0
 
             // if result is returned too fast
-            // simulate a 3 sec loading time for user
-            if ($scope.loadingBar.counter < 3) {
-              delay = 3000
+            // simulate a 2 sec loading time for user
+            if ($scope.loadingBar.counter < 2) {
+              delay = 2000
             }
 
             $timeout(() => {
