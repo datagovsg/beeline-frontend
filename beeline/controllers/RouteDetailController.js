@@ -262,7 +262,7 @@ export default [
         let date = moment(trip.date)
         const response = await $ionicPopup.confirm({
           title: `There is no service for ${date.format('ddd')} (${date.format('DD MMM')})`,
-          template: 'Are you sure you want to proceed?',
+          template: '<div style="text-align: center;">Are you sure you want to proceed?<div>',
         })
         if (!response) return
       }
