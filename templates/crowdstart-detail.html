@@ -5,13 +5,13 @@
    <menu-hamburger ng-if="disp.showHamburger"></menu-hamburger>
  </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <route-share ng-if="book.routeId !== 'preview'" route-type="'crowdstart'" route-id="book.routeId"></route-share>
+    <route-share route-type="'crowdstart'" route-id="book.routeId"></route-share>
   </ion-nav-buttons>
 
   <ion-content class="has-header">
 
     <div class="item progress-bar-item">
-      <progress-bar backer1="book.route.notes.tier[0].count || 0"
+      <progress-bar backer1="book.route.notes.tier[0].count"
         price1="book.route.notes.tier[0].price"
         pax1="book.route.notes.tier[0].pax"
         detail=true

@@ -1,4 +1,4 @@
-<ion-view class="your-suggestion-detail" view-title="View Suggestion" hide-back-button="true">
+<ion-view class="your-suggestion-detail" view-title="Your Suggestions" hide-back-button="true">
   <ion-nav-buttons side="left">
     <button class="button button-clear back-button"
             ui-sref="tabs.your-suggestions"
@@ -8,35 +8,27 @@
   </ion-nav-buttons>
   
   <ion-content>
-      <div class="item item-divider">Suggestion</div>
 
     <ion-item class="item-text-wrap">
       <suggestion-item suggestion="data.suggestion"></suggestion-item>
     </ion-item>
 
-    <div class="item-divider no-text"></div>
-
-    <ion-item ng-if="data.suggestedRoute.info.status !== 'Failure'">
-      <div ng-if="data.isLoading" class="loading-bar">
-        <span class="header">Generating Route...</span>
-        <progress-bar display-label="false" backer1="loadingBar.counter" pax1="loadingBar.timer"></progress-bar>
-      </div>
-
-      <div ng-if="data.suggestedRoute.info.status === 'Success'">
-        <span class="header">Crowdstart Route</span>
+    <ion-item>
+      <span ng-if="data.routes === null">Route yet to be generated!</span>
+      <span ng-if="data.routes.length === 0">No suggested routes found!</span>
+      <div ng-if="data.routes.length > 0">
+        <span class="header">Generated route</span>
         <crowdstart-route
-          route="data.suggestedRoute"
-          ng-click="saveCrowdstartPreview(data.suggestedRoute)"
-          ui-sref="tabs.crowdstart-detail({ 
-            routeId: data.suggestedRoute.id ? data.suggestedRoute.id : 'preview' 
-          })">
+          ng-repeat="route in data.routes" 
+          route="route"
+          ng-click="saveCrowdstartPreview(route)"
+          ui-sref="tabs.crowdstart-detail({ routeId: route.id ? route.id : 'preview' })">
         </crowdstart-route>
       </div>
     </ion-item>
 
-    <div class="action-link">
-      <div on-tap="showSimilarRoutes()">View Similar Route(s)</div>
-      <div class="delete" on-tap="popupDeleteConfirmation()">Delete Suggestion</div>
+    <div class="delete">
+      <span on-tap="popupDeleteConfirmation()">Delete Suggestion</span>
     </div>
 
   </ion-content>

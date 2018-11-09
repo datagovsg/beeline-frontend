@@ -77,12 +77,7 @@
         </span>
         <countdown ng-if="!data.hasNextTripTicket" board-time="data.nextTrip && data.nextTrip.boardTime" booking-ends="data.bookingEnds"></countdown>
 
-        <button class="button primary-button book-button"  ng-disabled="stopsForm.$invalid || !data.nextTrip.seatsAvailable || data.hasNextTripTicket || disp.isBooking || data.bookingEnds || data.boardStopInvalid || data.alightStopInvalid" ui-sref="tabs.route-summary({
-                  routeId: data.routeId,
-                  boardStop: data.pickupStop.id,
-                  alightStop: data.dropoffStop.id,
-                  selectedDates: [data.nextTrip.date.getTime()],
-                })">
+        <button class="button primary-button book-button"  ng-disabled="stopsForm.$invalid || !data.nextTrip.seatsAvailable || data.hasNextTripTicket || disp.isBooking || data.bookingEnds || data.boardStopInvalid || data.alightStopInvalid" ng-click="bookNextTrip()">
           <span ng-if="data.nextTrip.seatsAvailable">Book Next Trip{{ ' '+(data.nextTrip.date.getTime() | date:'dd MMM' : 'Z')+' '}}<span ng-show="data.nextTrip.date">{{'('+(data.nextTrip.date.getTime() | date:'EEE' : 'Z')+')'}}</span></span>
           <span ng-if="!data.nextTrip.seatsAvailable">Tickets are sold out</span>
         </button>
