@@ -72,7 +72,7 @@ export function defaultMapOptions (options) {
   )
 }
 
-export function retriveNextRunningTrip (route) {
+export function retrieveNextRunningTrip (route) {
   // compare current date with nearest date trip's 1st board stop time
   return getNextTrip(route.trips.filter(tr => tr.isRunning))
 }

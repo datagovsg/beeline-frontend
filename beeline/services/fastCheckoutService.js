@@ -30,7 +30,7 @@ angular.module('beeline').factory('FastCheckoutService', [
     const verify = function verify (routeId) {
       return new Promise(async (resolve, reject) => {
         let route = await RoutesService.getRoute(routeId, true)
-        let nextTrip = retriveNextRunningTrip(route)
+        let nextTrip = retrieveNextRunningTrip(route)
         if (nextTrip === null) {
           return reject(new Error('There is no next trip'))
         }
