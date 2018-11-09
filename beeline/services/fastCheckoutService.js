@@ -1,4 +1,4 @@
-import { retriveNextRunningTrip, getNextTrip } from '../shared/util'
+import { retrieveNextRunningTrip, getNextTrip } from '../shared/util'
 import _ from 'lodash'
 
 angular.module('beeline').factory('FastCheckoutService', [
