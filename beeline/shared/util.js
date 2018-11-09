@@ -72,15 +72,19 @@ export function defaultMapOptions (options) {
   )
 }
 
-export function retriveNextTrip (route) {
+export function retrieveNextRunningTrip (route) {
   // compare current date with nearest date trip's 1st board stop time
-  let sortedRunningTripInDates = _.sortBy(
-    route.trips.filter(tr => tr.isRunning),
+  return getNextTrip(route.trips.filter(tr => tr.isRunning))
+}
+
+export function getNextTrip (trips) {
+  let sortedTrips = _.sortBy(
+    trips,
     'date'
   )
   let now = Date.now()
   let nextTrip = null
-  for (let trip of sortedRunningTripInDates) {
+  for (let trip of sortedTrips) {
     let sortedTripStopsInTime = _.sortBy(trip.tripStops, 'time')
     let boardTime = null
     let lastStopTime = null

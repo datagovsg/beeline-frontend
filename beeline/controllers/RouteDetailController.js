@@ -1,5 +1,6 @@
 import ticketDetailModalTemplate from '../templates/ticket-detail-modal.html'
 import expiryModalTemplate from '../templates/route-pass-expiry-modal.html'
+import moment from 'moment'
 
 export default [
   '$scope',
@@ -253,6 +254,24 @@ export default [
       $scope.disp.ticketDetailModal = initTicketModal()
       $scope.disp.ticketDetailModal.show()
       $scope.modalFunctions.recenterMap()
+    }
+
+    $scope.bookNextTrip = async () => {
+      let trip = $scope.data.nextTrip.nextScheduledTrip
+      if (!trip.isRunning) {
+        let date = moment(trip.date)
+        const response = await $ionicPopup.confirm({
+          title: `There is no service for ${date.format('ddd')} (${date.format('DD MMM')})`,
+          template: '<div style="text-align: center;">Are you sure you want to proceed?<div>',
+        })
+        if (!response) return
+      }
+      $state.go('tabs.route-summary', {
+        routeId: $scope.data.routeId,
+        boardStop: $scope.data.pickupStop.id,
+        alightStop: $scope.data.dropoffStop.id,
+        selectedDates: [$scope.data.nextTrip.date.getTime()],
+      })
     }
 
     // ------------------------------------------------------------------------
