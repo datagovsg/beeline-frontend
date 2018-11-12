@@ -19,7 +19,7 @@
     <ion-item ng-if="data.suggestedRoute.info.status !== 'Failure'">
       <div ng-if="data.isLoading" class="loading-bar">
         <span class="header">Generating Route...</span>
-        <progress-bar display-label="false" backer1="loadingBar.counter" pax1="loadingBar.timer"></progress-bar>
+        <progress-bar display-label="false" backer1="loadingBar.counter" pax1="100"></progress-bar>
       </div>
 
       <div ng-if="data.suggestedRoute.info.status === 'Success'">

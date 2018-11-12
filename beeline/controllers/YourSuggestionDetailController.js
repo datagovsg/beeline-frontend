@@ -25,6 +25,29 @@ export default [
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
+    function initialiseLoadingCounter () {
+      let now = new Date()
+      let createdAt = new Date($scope.data.suggestion.createdAt)
+      let timeSinceCreated = (now - createdAt) / 1000
+
+      let maxWaitingTime = $scope.loadingBar.maxWaitingPercentage / $scope.loadingBar.counterProgress
+
+      let counter
+      // set counter based on time passed since suggestion was created
+      if (timeSinceCreated > maxWaitingTime) {
+        counter = $scope.loadingBar.maxWaitingPercentage
+      } else {
+        counter = timeSinceCreated * $scope.loadingBar.counterProgress
+      }
+
+      // if suggestion is more than 2 mins old, start counter from 0
+      if (timeSinceCreated > 2 * 60) {
+        return 0
+      }
+
+      return counter
+    }
+
     function parseErrorMsg (msg) {
       if (msg === 'too_few_suggestions') {
         return 'We will need at least 15 other similar route suggestions to generate a crowdstart route for you.'
@@ -40,16 +63,16 @@ export default [
         // If user is still on the same page and route is stil being generated
         // after timer has reached 80%, pause the timer
         if (
-          $scope.loadingBar.counter / $scope.loadingBar.timer >= 0.8 &&
+          $scope.loadingBar.counter >= $scope.loadingBar.maxWaitingPercentage &&
             !$scope.data.suggestedRoute
         ) {
           $scope.$apply()
           return
         }
 
-        $scope.loadingBar.counter++
+        $scope.loadingBar.counter += $scope.loadingBar.counterProgress
         $scope.$apply()
-        if ($scope.loadingBar.counter > $scope.loadingBar.timer) {
+        if ($scope.loadingBar.counter > 100) {
           clearInterval($scope.loadingBarTimer)
         }
       }, 1000)
@@ -72,19 +95,10 @@ export default [
     $scope.loadingBarTimer = null
 
     $scope.loadingBar = {
-      timer: 20,
+      maxWaitingPercentage: 80,
+      counterProgress: 5, // Percentage that counter progress per sec
     }
-
-    let now = new Date()
-    let createdAt = new Date($scope.data.suggestion.createdAt)
-    // set counter based on time passed since suggestion was created
-    $scope.loadingBar.counter = now - createdAt > 0.8 * $scope.loadingBar.timer * 1000
-      ? 0.8 * $scope.loadingBar.timer
-      : (now - createdAt) / 1000
-    // if suggestion is more than 2 mins old, start counter from 0
-    $scope.loadingBar.counter = now - createdAt > 2 * 60 * 1000
-      ? 0
-      : $scope.loadingBar.counter
+    $scope.loadingBar.counter = initialiseLoadingCounter()
 
     // ------------------------------------------------------------------------
     // Ionic events
@@ -166,7 +180,7 @@ export default [
 
             // if result is returned too fast
             // simulate a 2 sec loading time for user
-            if ($scope.loadingBar.counter < 2) {
+            if ($scope.loadingBar.counter < 2 * $scope.loadingBar.counterProgress) {
               delay = 2000
             }
 

@@ -9,9 +9,6 @@ angular.module('beeline').factory('SuggestionService', [
     let createdSuggestion
     let suggestedRoutes = {}
 
-    let reTriggerRouteGeneration = false
-    let suggRouteLastCreated
-
     function convertDaysToBinary (days) {
       const week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
       let sum = 0
@@ -144,9 +141,15 @@ angular.module('beeline').factory('SuggestionService', [
         (suggestedRoute.route.status === 'Success' && now - createdAt > 30 * 24 * 3600e3) ||
         suggestedRoute.route.status === 'Failure'
       ) {
-        await triggerRouteGeneration(suggestedRoute.seedSuggestionId)
-        reTriggerRouteGeneration = true
-        suggRouteLastCreated = new Date(suggestedRoute.createdAt)
+        let suggestionId = suggestedRoute.seedSuggestionId
+        await triggerRouteGeneration(suggestionId)
+
+        if (!suggestedRoutes[suggestionId]) {
+          suggestedRoutes[suggestionId] = {}
+        }
+
+        suggestedRoutes[suggestionId].reTriggerRouteGeneration = true
+        suggestedRoutes[suggestionId].suggRouteLastCreated = new Date(suggestedRoute.createdAt)
       }
     }
 
@@ -213,18 +216,16 @@ angular.module('beeline').factory('SuggestionService', [
           const r = response.data[0]
 
           // check if needed to re-trigger route generation
-          if (!reTriggerRouteGeneration) {
+          if (!suggestedRoutes[suggestionId] || !suggestedRoutes[suggestionId].reTriggerRouteGeneration) {
             await triggerRouteGenAgain(r)
           }
 
           // if route generation has been re-triggered and
           // a new suggested route has not returned
-          if (reTriggerRouteGeneration && new Date(r.createdAt) <= suggRouteLastCreated) {
+          if (suggestedRoutes[suggestionId] && suggestedRoutes[suggestionId].reTriggerRouteGeneration && new Date(r.createdAt) <= suggestedRoutes[suggestionId].suggRouteLastCreated) {
             return null
           }
 
-          suggRouteLastCreated = null
-          reTriggerRouteGeneration = false
           let route
           if (r.routeId) {
             route = await CrowdstartService.getCrowdstartById(r.routeId)
@@ -241,6 +242,9 @@ angular.module('beeline').factory('SuggestionService', [
             },
             suggestedRouteId: r.id,
             suggestionId,
+            // store the status of route generation
+            reTriggerRouteGeneration: false,
+            suggRouteLastCreated: null,
           }
           suggestedRoutes[suggestionId] = suggestedRoute
 
