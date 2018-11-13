@@ -154,7 +154,8 @@ angular.module('beeline').factory('SuggestionService', [
     }
 
     return {
-      async createSuggestion (board, boardDescription, alight, alightDescription, time, daysOfWeek, referrer) {
+      createSuggestion: async function (board, boardDescription, alight, alightDescription, time, daysOfWeek) {
+        let referrer = 'Beeline'
         let suggestion = await requestCreateNewSuggestion(
           board,
           boardDescription,
@@ -182,19 +183,19 @@ angular.module('beeline').factory('SuggestionService', [
         return createdSuggestion
       },
 
-      getSuggestion (suggestionId) {
+      getSuggestion: function (suggestionId) {
         let details = createdSuggestion || suggestions.filter(sug => sug.id === suggestionId)[0]
         createdSuggestion = null
         return details
       },
 
-      getSuggestions () {
+      getSuggestions: function () {
         return suggestions
       },
 
       fetchSuggestions,
 
-      deleteSuggestion (suggestionId) {
+      deleteSuggestion: function (suggestionId) {
         return RequestService.beeline({
           method: 'DELETE',
           url: `/suggestions/${suggestionId}`,
@@ -203,7 +204,7 @@ angular.module('beeline').factory('SuggestionService', [
         })
       },
 
-      fetchSuggestedRoute (suggestionId) {
+      fetchSuggestedRoute: function (suggestionId) {
         return RequestService.beeline({
           method: 'GET',
           url: `/suggestions/${suggestionId}/suggested_routes`,
@@ -253,7 +254,7 @@ angular.module('beeline').factory('SuggestionService', [
 
       triggerRouteGeneration,
 
-      convertToCrowdstart (suggestionId, suggestedRouteId) {
+      convertToCrowdstart: function (suggestionId, suggestedRouteId) {
         return RequestService.beeline({
           method: 'POST',
           url: `/suggestions/${suggestionId}/suggested_routes/${suggestedRouteId}/convert_to_crowdstart`,
