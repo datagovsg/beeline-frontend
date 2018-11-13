@@ -1,6 +1,6 @@
 <div class="progress-bar">
 
-  <div class="backer-numbers mini-info">
+  <div ng-if="displayLabel" class="backer-numbers mini-info">
     <i class="fas fa-user"></i>
     <span>{{backer1}} out of {{pax1}} pax joined</span>
   </div>
@@ -17,7 +17,7 @@
   <!-- default base bar starts -->
   <div class="bar-default" ng-style="{width: (pax1/pax1)*100 + '%'}">
     <div class="bar-100">
-      <div class="milestone">
+      <div ng-if="needed" class="milestone">
         <div class="milestone-outline"  ng-class="{reached: needed==0}">
         </div>
       </div>

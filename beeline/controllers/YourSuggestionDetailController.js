@@ -3,29 +3,80 @@ export default [
   '$state',
   '$stateParams',
   '$ionicPopup',
-  '$ionicLoading',
   'loadingSpinner',
-  'UserService',
   'RoutesService',
   'SuggestionService',
   'CrowdstartService',
+  '$ionicLoading',
+  '$timeout',
   function (
     // Angular Tools
     $scope,
     $state,
     $stateParams,
     $ionicPopup,
-    $ionicLoading,
     loadingSpinner,
-    UserService,
     RoutesService,
     SuggestionService,
-    CrowdstartService
+    CrowdstartService,
+    $ionicLoading,
+    $timeout
   ) {
     // ------------------------------------------------------------------------
     // Helper Functions
     // ------------------------------------------------------------------------
+    function initialiseLoadingCounter () {
+      let now = new Date()
+      let createdAt = new Date($scope.data.suggestion.createdAt)
+      let timeSinceCreated = (now - createdAt) / 1000
 
+      let maxWaitingTime = $scope.loadingBar.maxWaitingPercentage / $scope.loadingBar.counterProgress
+
+      let counter
+      // set counter based on time passed since suggestion was created
+      if (timeSinceCreated > maxWaitingTime) {
+        counter = $scope.loadingBar.maxWaitingPercentage
+      } else {
+        counter = timeSinceCreated * $scope.loadingBar.counterProgress
+      }
+
+      // if suggestion is more than 2 mins old, start counter from 0
+      if (timeSinceCreated > 2 * 60) {
+        return 0
+      }
+
+      return counter
+    }
+
+    function parseErrorMsg (msg) {
+      if (msg === 'too_few_suggestions') {
+        return 'We will need at least 15 other similar route suggestions to generate a crowdstart route for you.'
+      }
+      if (msg === 'no_routes_found') {
+        return 'We are unable to generate a crowdstart route for you. Please contact us at feedback@beeline.sg.'
+      }
+      return 'Internal server error. Please try again later.'
+    }
+
+    function startTimer () {
+      $scope.loadingBarTimer = setInterval(function () {
+        // If user is still on the same page and route is stil being generated
+        // after timer has reached 80%, pause the timer
+        if (
+          $scope.loadingBar.counter >= $scope.loadingBar.maxWaitingPercentage &&
+            !$scope.data.suggestedRoute
+        ) {
+          $scope.$apply()
+          return
+        }
+
+        $scope.loadingBar.counter += $scope.loadingBar.counterProgress
+        $scope.$apply()
+        if ($scope.loadingBar.counter > 100) {
+          clearInterval($scope.loadingBarTimer)
+        }
+      }, 1000)
+    }
     // ------------------------------------------------------------------------
     // stateParams
     // ------------------------------------------------------------------------
@@ -36,9 +87,18 @@ export default [
     // ------------------------------------------------------------------------
     $scope.data = {
       suggestionId: suggestionId,
-      suggestion: null,
-      routes: null,
+      suggestion: $stateParams.suggestion,
+      suggestedRoute: $stateParams.suggestedRoute,
+      isLoading: false,
     }
+    $scope.refreshSuggestedRoutesTimer = null
+    $scope.loadingBarTimer = null
+
+    $scope.loadingBar = {
+      maxWaitingPercentage: 80,
+      counterProgress: 5, // Percentage that counter progress per sec
+    }
+    $scope.loadingBar.counter = initialiseLoadingCounter()
 
     // ------------------------------------------------------------------------
     // Ionic events
@@ -46,44 +106,34 @@ export default [
     // Load the route information
     // Show a loading overlay while we wait
     // force reload when revisit the same route
-    $scope.$on('$ionicView.afterEnter', () => {
-      $ionicLoading.show({
-        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-      })
-
-      SuggestionService.getSuggestion(suggestionId)
-        .then(response => {
-          $scope.data.suggestion = response.details
-        })
-        .catch(error => {
-          $ionicLoading.hide()
-          $ionicPopup.alert({
-            title: "Sorry there's been a problem loading the suggested route information",
-            subTitle: error,
-          })
-        })
-
-      $scope.refreshSuggestedRoutes(suggestionId)
+    $scope.$on('$ionicView.beforeEnter', () => {
+      if (!$scope.data.suggestedRoute) {
+        $scope.data.isLoading = true
+        startTimer()
+        $scope.refreshSuggestedRoutes(suggestionId)
+      }
     })
 
     $scope.$on('$ionicView.leave', () => {
-      $scope.data.suggestionId = null
-      $scope.data.suggestion = null
-      $scope.data.routes = null
+      clearInterval($scope.refreshSuggestedRoutesTimer)
+      clearInterval($scope.loadingBarTimer)
+      $scope.data.suggestedRoute = null
     })
 
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    $scope.$watchGroup(
-      ['data.suggestion', 'data.routes'],
-      ([suggestion, routes]) => {
-        if (suggestion && routes) {
-          $ionicLoading.hide()
-        }
+    $scope.$watch('data.suggestedRoute', route => {
+      if (route && route.info.status === 'Failure') {
+        let msg = parseErrorMsg(route.info.reason)
+        $ionicPopup.alert({
+          title: 'We are sorry!',
+          template: `
+          <div>${msg}</div>
+          `,
+        })
       }
-    )
-
+    })
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
@@ -94,7 +144,7 @@ export default [
 
     $scope.popupDeleteConfirmation = function () {
       $ionicPopup.confirm({
-        title: 'Are you sure you want to delete the suggestions?',
+        title: 'Are you sure you want to delete this suggestion?',
       }).then(async (proceed) => {
         if (proceed) {
           try {
@@ -121,21 +171,52 @@ export default [
     }
 
     $scope.refreshSuggestedRoutes = function (suggestionId) {
-      SuggestionService.fetchSuggestedRoutes(suggestionId)
+      SuggestionService.fetchSuggestedRoute(suggestionId)
         .then(data => {
-          if (!data.done) {
-            setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
+          if (!data) {
+            $scope.refreshSuggestedRoutesTimer = setTimeout(() => $scope.refreshSuggestedRoutes(suggestionId), 5000)
           } else {
-            $scope.data.routes = data.routes
+            let delay = 0
+
+            // if result is returned too fast
+            // simulate a 2 sec loading time for user
+            if ($scope.loadingBar.counter < 2 * $scope.loadingBar.counterProgress) {
+              delay = 2000
+            }
+
+            $timeout(() => {
+              $scope.data.suggestedRoute = data
+              $scope.data.isLoading = false
+              clearInterval($scope.refreshSuggestedRoutesTimer)
+              clearInterval($scope.loadingBarTimer)
+              $scope.loadingBar.counter = 0
+            }, delay)
           }
         })
         .catch(error => {
-          $ionicLoading.hide()
           $ionicPopup.alert({
             title: "Sorry there's been a problem loading the suggested route information",
             subTitle: error,
           })
         })
+    }
+
+    $scope.showSimilarRoutes = function () {
+      let pickUp = $scope.data.suggestion.boardDescription.oneMapData
+      let dropOff = $scope.data.suggestion.alightDescription.oneMapData
+
+      $ionicLoading.show({
+        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Searching for routes</small>`,
+      })
+
+      $timeout(() => {
+        $ionicLoading.hide()
+        $state.go('tabs.routes-search-list', {
+          pickUpLocation: pickUp,
+          dropOffLocation: dropOff,
+          displaySuggestBtn: false,
+        })
+      }, 800)
     }
   },
 ]
