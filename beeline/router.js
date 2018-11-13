@@ -60,7 +60,6 @@ export default [
         params: {
           pickUpLocation: null,
           dropOffLocation: null,
-          displaySuggestBtn: true,
         },
       })
       .state('tabs.yourRoutes', {
@@ -214,11 +213,6 @@ export default [
             templateUrl: 'templates/your-suggestion-detail.html',
             controller: 'YourSuggestionDetailController',
           },
-        },
-        params: {
-          suggestionId: null,
-          suggestion: null,
-          suggestedRoute: null,
         },
       })
 
