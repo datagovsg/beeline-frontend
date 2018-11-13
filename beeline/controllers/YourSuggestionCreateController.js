@@ -4,6 +4,7 @@ import _ from 'lodash'
 export default [
   '$scope',
   '$state',
+  '$rootScope',
   '$stateParams',
   '$ionicPopup',
   'loadingSpinner',
@@ -15,6 +16,7 @@ export default [
     // Angular Tools
     $scope,
     $state,
+    $rootScope,
     $stateParams,
     $ionicPopup,
     loadingSpinner,
@@ -210,6 +212,7 @@ export default [
         if (duplicate) return
 
         let data = null
+        let referrer = $rootScope.o.APP.NAME.replace(/\s/g, '')
         await loadingSpinner(
           SuggestionService.createSuggestion(
             getLatLng($scope.data.pickUpLocation),
@@ -217,7 +220,8 @@ export default [
             getLatLng($scope.data.dropOffLocation),
             getDescription($scope.data.dropOffLocation),
             $scope.data.selectedTime,
-            $scope.data.schedule[$scope.data.selectedScheduleIndex].days
+            $scope.data.schedule[$scope.data.selectedScheduleIndex].days,
+            referrer
           ).then(suggestion => {
             data = suggestion
           })
