@@ -20,18 +20,22 @@
         </label>
       </div>
 
-      <div class="stops-selector week-checkbox">
-        <div ng-repeat="day in data.days">
-          <ion-label>{{day.text}}</ion-label>
-          <ion-checkbox ng-model="day.enabled"></ion-checkbox>
-        </div>
+      <div class="stops-selector">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Days Of The Week
+          </div>
+          <select ng-model="data.selectedScheduleIndex" data-tap-disabled="true">
+            <option ng-repeat="schedule in data.schedule" value={{$index}}>{{ schedule.value }}</option>
+          </select>
+        </label>
       </div>
 
       <button
         ng-if="isLoggedIn"
         class="primary-button submit-btn" 
         ng-click="submitSuggestion()" 
-        ng-disabled="!data.pickUpLocation || !data.dropOffLocation || !data.selectedTimeIndex || data.daysInvalid">
+        ng-disabled="!data.pickUpLocation || !data.dropOffLocation || !data.selectedTimeIndex">
         Submit
       </button>
 
