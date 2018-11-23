@@ -59,10 +59,37 @@ angular.module('common').factory('OneMapPlaceService', [
       }
     }
 
+    let lastToken = {
+      exp: 0,
+      token: null,
+    }
+
+    const getToken = async function getToken () {
+      var now = new Date().getTime()
+
+      /* 10 minutes to expiry */
+      if (lastToken.exp * 1e3 - now > 10 * 60e3) {
+        return lastToken.token
+      } else {
+        var url = 'https://developers.onemap.sg/publicapi/publicsessionid'
+
+        const token = await $http({ url, method: 'GET' })
+          .then(response => {
+            lastToken.exp = response.data.expiry_timestamp
+            lastToken.token = response.data.access_token
+            return response.data.access_token
+          })
+
+        return token
+      }
+    }
+
     return {
       async reverseGeocode (lat, lng) {
-        let url = 'https://api.beeline.sg/onemap/revgeocode?'
+        let token = await getToken()
+        let url = 'https://developers.onemap.sg/publicapi/revgeocode?'
         let queryString = querystring.stringify({
+          token,
           location: lat + ',' + lng,
         })
         let { data: result } = await $http({
