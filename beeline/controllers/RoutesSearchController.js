@@ -111,11 +111,12 @@ export default [
       // Send GA event
       let label = ''
       if (pickUp) {
-        label += 'Pickup: ' + pickUp.SEARCHVAL + dropOff ? ' | ' : ''
+        label += 'Pickup: ' + pickUp.SEARCHVAL + (dropOff ? ' | ' : '')
       }
       if (dropOff) {
         label += 'Dropoff: ' + dropOff.SEARCHVAL
       }
+
       GoogleAnalytics.send('send', 'event', {
         eventCategory: 'search',
         eventAction: 'search button',
