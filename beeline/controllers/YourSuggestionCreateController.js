@@ -4,7 +4,6 @@ import _ from 'lodash'
 export default [
   '$scope',
   '$state',
-  '$rootScope',
   '$stateParams',
   '$ionicPopup',
   'loadingSpinner',
@@ -16,7 +15,6 @@ export default [
     // Angular Tools
     $scope,
     $state,
-    $rootScope,
     $stateParams,
     $ionicPopup,
     loadingSpinner,
@@ -45,13 +43,21 @@ export default [
     }
 
     function getDescription (loc) {
-      let { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME, LATITUDE, LONGITUDE } = loc
-      let postalStr = !POSTAL || POSTAL.toLowerCase() === 'nil' ? null : 'S(' + POSTAL + ')'
+      let { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME } = loc
+      let postalStr = POSTAL.toLowerCase() === 'nil' ? null : 'S(' + POSTAL + ')'
       return {
         description: [BLK_NO, ROAD_NAME, BUILDING, postalStr].filter(s => s && s.toLowerCase() !== 'nil').join(', '),
         postalCode: !POSTAL || POSTAL.toLowerCase() === 'nil' ? null : POSTAL,
-        oneMapData: { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME, LATITUDE, LONGITUDE },
+        oneMapData: { ADDRESS, BLK_NO, BUILDING, POSTAL, ROAD_NAME },
       }
+    }
+
+    function getDaysOfWeek (days) {
+      let obj = {}
+      days.map(d => {
+        obj[d.text] = d.enabled
+      })
+      return obj
     }
 
     function parseLatLngStringArr (arr) {
@@ -67,21 +73,41 @@ export default [
       // TODO: change to int after upgrading to ionic 1.3.3
       selectedTimeIndex: '17', // 8.30 am
       selectedTime: null,
-      selectedScheduleIndex: '0',
+      daysInvalid: true,
     }
 
     $scope.disp = {
       times: [],
     }
 
-    $scope.data.schedule = [
+    $scope.data.days = [
       {
-        value: 'Weekday',
-        days: { Mon: true, Tue: true, Wed: true, Thu: true, Fri: true, Sat: false, Sun: false },
+        text: 'Mon',
+        enabled: false,
       },
       {
-        value: 'Weekend',
-        days: { Mon: false, Tue: false, Wed: false, Thu: false, Fri: false, Sat: true, Sun: true },
+        text: 'Tue',
+        enabled: false,
+      },
+      {
+        text: 'Wed',
+        enabled: false,
+      },
+      {
+        text: 'Thu',
+        enabled: false,
+      },
+      {
+        text: 'Fri',
+        enabled: false,
+      },
+      {
+        text: 'Sat',
+        enabled: false,
+      },
+      {
+        text: 'Sun',
+        enabled: false,
       },
     ]
 
@@ -112,6 +138,17 @@ export default [
       const minutes = $scope.disp.times[i].minute()
       $scope.data.selectedTime = hour * 3600e3 + minutes * 60e3
     })
+
+    $scope.$watch('data.days', days => {
+      let invalid = true
+      for (let day in days) {
+        if (days[day].enabled) {
+          invalid = false
+          break
+        }
+      }
+      $scope.data.daysInvalid = invalid
+    }, true)
 
     $scope.$watch('data.pickUpLocation', loc => {
       if (loc) {
@@ -179,7 +216,10 @@ export default [
       $scope.data.dropOffLocation = null
       // TODO: change to int after upgrading to ionic 1.3.3
       $scope.data.selectedTimeIndex = '17' // 8.30 am
-      $scope.data.selectedScheduleIndex = '0'
+      $scope.data.daysInvalid = true
+      $scope.data.days = $scope.data.days.map(d => {
+        return { ...d, enabled: false }
+      })
     }
 
     $scope.checkExistingDuplicateSuggestions = async function () {
@@ -191,7 +231,7 @@ export default [
         return _.isEqual(s.board.coordinates, parseLatLngStringArr([board.LONGITUDE, board.LATITUDE])) &&
           _.isEqual(s.alight.coordinates, parseLatLngStringArr([alight.LONGITUDE, alight.LATITUDE])) &&
           s.time === $scope.data.selectedTime &&
-          _.isEqual(s.daysOfWeek, $scope.data.schedule[$scope.data.selectedScheduleIndex].days)
+          _.isEqual(s.daysOfWeek, getDaysOfWeek($scope.data.days))
       })
 
       if (match.length > 0) {
@@ -210,26 +250,18 @@ export default [
       try {
         const duplicate = await $scope.checkExistingDuplicateSuggestions()
         if (duplicate) return
-
-        let data = null
-        let referrer = $rootScope.o.APP.NAME.replace(/\s/g, '')
-        await loadingSpinner(
+        const data = await loadingSpinner(
           SuggestionService.createSuggestion(
             getLatLng($scope.data.pickUpLocation),
             getDescription($scope.data.pickUpLocation),
             getLatLng($scope.data.dropOffLocation),
             getDescription($scope.data.dropOffLocation),
             $scope.data.selectedTime,
-            $scope.data.schedule[$scope.data.selectedScheduleIndex].days,
-            referrer
-          ).then(suggestion => {
-            data = suggestion
-          })
+            getDaysOfWeek($scope.data.days)
+          )
         )
-
         $state.go('tabs.your-suggestion-detail', {
           suggestionId: data.id,
-          suggestion: data,
         })
         $scope.refreshSuggestions()
       } catch (err) {

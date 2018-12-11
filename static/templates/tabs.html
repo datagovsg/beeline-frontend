@@ -52,11 +52,11 @@ navigation history that also transitions its views in and out.
         <a class="item divider" menu-close ui-sref="tabs.your-suggestions" ui-sref-active="active" ng-if="disp.isLoggedIn && disp.hasSuggestions">
           <i class="fas fa-comments fa-fw" aria-hidden="true"></i>&nbsp; Your Suggestions
         </a>
-        <a class="item" menu-close ng-if="!disp.isLoggedIn" ng-click="login()">
-          <i class="fa fa-sign-in-alt fa-fw" aria-hidden="true"></i>&nbsp; Log In
-        </a>
         <a class="item" menu-close ui-sref="tabs.settings" ui-sref-active="active">
           <i class="fa fa-cog fa-fw" aria-hidden="true"></i>&nbsp; Settings
+        </a>
+        <a class="item" menu-close ng-if="!disp.isLoggedIn" ng-click="login()">
+          <i class="fa fa-sign-in-alt fa-fw" aria-hidden="true"></i>&nbsp; Log In
         </a>
         <powered-by-beeline class="powered-by-beeline" suggest-hide="true" power-hide="false" built-by-show="true"></powered-by-beeline>
       </ion-content>

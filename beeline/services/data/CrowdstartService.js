@@ -241,7 +241,6 @@ angular.module('beeline').service('CrowdstartService', [
 
       getCrowdstartById: function (routeId) {
         if (routeId === 'preview') {
-          transformCrowdstartData([crowdstartPreview])
           return crowdstartPreview
         }
         if (!crowdstartRoutesById) {

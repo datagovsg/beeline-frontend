@@ -6,8 +6,8 @@ angular.module('beeline').factory('SuggestionService', [
   'CrowdstartService',
   function SuggestionService (RequestService, UserService, CrowdstartService) {
     let suggestions
+    let routes
     let createdSuggestion
-    let suggestedRoutes = {}
 
     function convertDaysToBinary (days) {
       const week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -36,7 +36,7 @@ angular.module('beeline').factory('SuggestionService', [
           lat: sug.alight.coordinates[1],
           lng: sug.alight.coordinates[0],
         }
-        const similar = await fetchSimilarSuggestions(start, end, sug.time, sug.daysOfWeek)
+        const similar = await fetchSimilarSuggestions(start, end, sug.time)
         userSuggestions[index] = {
           ...sug,
           similar,
@@ -59,19 +59,13 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
-    function fetchSimilarSuggestions (start, end, time, daysOfWeek) {
+    function fetchSimilarSuggestions (start, end, time) {
       let queryString = querystring.stringify({
         startLat: start.lat,
         startLng: start.lng,
         endLat: end.lat,
         endLng: end.lng,
         time,
-        startDistance: 350,
-        endDistance: 350,
-        maxTimeDifference: 1800e3, // half an hour
-        includeAnonymous: false,
-        daysMask: convertDaysToBinary(daysOfWeek),
-        createdSince: Date.now() - 2 * 365 * 24 * 60 * 60 * 1000, // 2 years back
       })
       return RequestService.beeline({
         method: 'GET',
@@ -87,15 +81,14 @@ angular.module('beeline').factory('SuggestionService', [
       alight,
       alightDescription,
       time,
-      daysOfWeek,
-      referrer
+      daysOfWeek
     ) {
       return RequestService.beeline({
         method: 'POST',
         url: '/suggestions',
-        data: { board, boardDescription, alight, alightDescription, time, daysOfWeek, referrer },
+        data: { board, boardDescription, alight, alightDescription, time, daysOfWeek },
       }).then(response => {
-        triggerRouteGeneration(response.data.id)
+        triggerRouteGeneration(response.data.id, response.data.daysOfWeek)
         return response.data
       })
     }
@@ -109,60 +102,35 @@ angular.module('beeline').factory('SuggestionService', [
       })
     }
 
-    function triggerRouteGeneration (suggestionId) {
+    function triggerRouteGeneration (suggestionId, days) {
+      const daysOfWeek = convertDaysToBinary(days)
       return RequestService.beeline({
         method: 'POST',
         url: `/suggestions/${suggestionId}/suggested_routes/trigger_route_generation`,
         data: {
-          maxDetourMinutes: 0.5,
-          startClusterRadius: 3000,
+          maxDetourMinutes: 15,
+          startClusterRadius: 4000,
           startWalkingDistance: 400,
-          endClusterRadius: 3000,
+          endClusterRadius: 4000,
           endWalkingDistance: 400,
           timeAllowance: 1800 * 1000, // Half an hour
-          matchDaysOfWeek: true,
-          imputedDwellTime: 10000,
-          includeAnonymous: false,
-          createdSince: Date.now() - 2 * 365 * 24 * 60 * 60 * 1000, // 2 years back,
-          suboptimalStopChoiceAllowance: 10000,
+          daysOfWeek, // 0b0011111 - Mon-Fri
+          dataSource: 'suggestions',
         },
       }).then(response => {
         return response.data
       })
     }
 
-    async function triggerRouteGenAgain (suggestedRoute) {
-      let now = new Date()
-      let createdAt = new Date(suggestedRoute.createdAt)
-
-      if (
-        // If suggestion is more than one month old
-        // trigger route generation again to refresh the suggested route
-        (suggestedRoute.route.status === 'Success' && now - createdAt > 30 * 24 * 3600e3) ||
-        suggestedRoute.route.status === 'Failure'
-      ) {
-        let suggestionId = suggestedRoute.seedSuggestionId
-        await triggerRouteGeneration(suggestionId)
-
-        if (!suggestedRoutes[suggestionId]) {
-          suggestedRoutes[suggestionId] = {}
-        }
-
-        suggestedRoutes[suggestionId].reTriggerRouteGeneration = true
-        suggestedRoutes[suggestionId].suggRouteLastCreated = new Date(suggestedRoute.createdAt)
-      }
-    }
-
     return {
-      async createSuggestion (board, boardDescription, alight, alightDescription, time, daysOfWeek, referrer) {
+      createSuggestion: async function (board, boardDescription, alight, alightDescription, time, daysOfWeek) {
         let suggestion = await requestCreateNewSuggestion(
           board,
           boardDescription,
           alight,
           alightDescription,
           time,
-          daysOfWeek,
-          referrer
+          daysOfWeek
         )
         const start = {
           lat: suggestion.board.coordinates[1],
@@ -172,7 +140,7 @@ angular.module('beeline').factory('SuggestionService', [
           lat: suggestion.alight.coordinates[1],
           lng: suggestion.alight.coordinates[0],
         }
-        const similar = await fetchSimilarSuggestions(start, end, suggestion.time, suggestion.daysOfWeek)
+        const similar = await fetchSimilarSuggestions(start, end, suggestion.time)
         createdSuggestion = {
           ...suggestion,
           similar,
@@ -182,19 +150,21 @@ angular.module('beeline').factory('SuggestionService', [
         return createdSuggestion
       },
 
-      getSuggestion (suggestionId) {
+      getSuggestion: function (suggestionId) {
         let details = createdSuggestion || suggestions.filter(sug => sug.id === suggestionId)[0]
         createdSuggestion = null
-        return details
+        return Promise.resolve({
+          details,
+        })
       },
 
-      getSuggestions () {
+      getSuggestions: function () {
         return suggestions
       },
 
       fetchSuggestions,
 
-      deleteSuggestion (suggestionId) {
+      deleteSuggestion: function (suggestionId) {
         return RequestService.beeline({
           method: 'DELETE',
           url: `/suggestions/${suggestionId}`,
@@ -203,57 +173,38 @@ angular.module('beeline').factory('SuggestionService', [
         })
       },
 
-      fetchSuggestedRoute (suggestionId) {
+      fetchSuggestedRoutes: function (suggestionId) {
         return RequestService.beeline({
           method: 'GET',
           url: `/suggestions/${suggestionId}/suggested_routes`,
         }).then(async response => {
-          if (response.data.length === 0) {
-            return null
-          }
-          // Get latest suggested route
-          const r = response.data[0]
+          routes = []
 
-          // check if needed to re-trigger route generation
-          if (!suggestedRoutes[suggestionId] || !suggestedRoutes[suggestionId].reTriggerRouteGeneration) {
-            await triggerRouteGenAgain(r)
-          }
+          const promises = response.data
+            .filter(r => r.route) // omit any false routes
+            .map(async r => {
+              let route
+              if (r.routeId) {
+                route = await CrowdstartService.getCrowdstartById(r.routeId)
+              } else {
+                route = await previewRoute(suggestionId, r.id)
+              }
+              routes.push({
+                ...route,
+                suggestedRouteId: r.id,
+                suggestionId,
+              })
+            })
+          await Promise.all(promises)
 
-          // if route generation has been re-triggered and
-          // a new suggested route has not returned
-          if (suggestedRoutes[suggestionId] && suggestedRoutes[suggestionId].reTriggerRouteGeneration && new Date(r.createdAt) <= suggestedRoutes[suggestionId].suggRouteLastCreated) {
-            return null
+          return {
+            done: response.data.length > 0,
+            routes,
           }
-
-          let route
-          if (r.routeId) {
-            route = await CrowdstartService.getCrowdstartById(r.routeId)
-          }
-          if (r.route.status === 'Success' && !r.routeId) {
-            route = await previewRoute(suggestionId, r.id)
-          }
-
-          let suggestedRoute = {
-            ...route,
-            info: {
-              status: r.route.status,
-              reason: r.route.reason,
-            },
-            suggestedRouteId: r.id,
-            suggestionId,
-            // store the status of route generation
-            reTriggerRouteGeneration: false,
-            suggRouteLastCreated: null,
-          }
-          suggestedRoutes[suggestionId] = suggestedRoute
-
-          return suggestedRoute
         })
       },
 
-      triggerRouteGeneration,
-
-      convertToCrowdstart (suggestionId, suggestedRouteId) {
+      convertToCrowdstart: function (suggestionId, suggestedRouteId) {
         return RequestService.beeline({
           method: 'POST',
           url: `/suggestions/${suggestionId}/suggested_routes/${suggestedRouteId}/convert_to_crowdstart`,
