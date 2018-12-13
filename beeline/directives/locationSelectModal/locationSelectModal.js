@@ -137,10 +137,14 @@ angular.module('beeline').directive('locationSelectModal', [
           if (!location) return
 
           if (typeof location === 'string') {
+            let label = ''
+            if (scope.defaultResults.includes(location)) {
+              label = 'default location - '
+            }
             GoogleAnalytics.send('send', 'event', {
               eventCategory: 'search',
               eventAction: 'location select - ' + scope.type,
-              eventLabel: 'default location - ' + location,
+              eventLabel: label + location,
             })
             location = OneMapPlaceService.getTopResult(location)
           } else {
