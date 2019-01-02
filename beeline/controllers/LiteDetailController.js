@@ -249,7 +249,8 @@ export default [
             `,
             })
             .then(() => {
-              $state.transitionTo('tabs.yourRoutes')
+              $ionicHistory.nextViewOptions({disableBack: true})
+              $state.go('tabs.yourRoutes')
             })
         }
       } catch (err) {
