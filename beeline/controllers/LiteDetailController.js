@@ -134,6 +134,7 @@ export default [
 
       const dataPromise = loadingSpinner(
         Promise.all([routePromise, subscriptionPromise]).then(() => {
+          MapService.emit('lite-route-loaded', $scope.book.route)
           MapService.emit('startPingLoop')
 
           const listener = tripInfo => {
@@ -248,7 +249,8 @@ export default [
             `,
             })
             .then(() => {
-              $state.transitionTo('tabs.yourRoutes')
+              $ionicHistory.nextViewOptions({disableBack: true})
+              $state.go('tabs.yourRoutes')
             })
         }
       } catch (err) {
