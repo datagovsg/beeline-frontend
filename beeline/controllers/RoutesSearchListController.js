@@ -81,7 +81,9 @@ export default [
       dropOffLocation: $stateParams.dropOffLocation,
     }
 
-    $scope.disp = {}
+    $scope.disp = {
+      displaySuggestBtn: $stateParams.displaySuggestBtn,
+    }
 
     // ------------------------------------------------------------------------
     // Ionic events
