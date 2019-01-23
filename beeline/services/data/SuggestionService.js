@@ -104,9 +104,9 @@ angular.module('beeline').factory('SuggestionService', [
 
     function triggerRouteGeneration (suggestionId, days) {
       const daysOfWeek = convertDaysToBinary(days)
-      return RequestService.beeline({
+      return RequestService.routing({
         method: 'POST',
-        url: `/suggestions/${suggestionId}/suggested_routes/trigger_route_generation`,
+        url: `/suggestions/${suggestionId}/trigger_route_generation`,
         data: {
           maxDetourMinutes: 15,
           startClusterRadius: 4000,

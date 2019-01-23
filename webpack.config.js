@@ -5,7 +5,7 @@ const InlineEnviromentVariablesPlugin = require('inline-environment-variables-we
 
 const prefix = process.env.BUILD_PREFIX || 'www'
 
-const INLINED_ENVIRONMENT_VARIABLES = ['BACKEND_URL', 'TRACKING_URL']
+const INLINED_ENVIRONMENT_VARIABLES = ['BACKEND_URL', 'TRACKING_URL', 'ROUTING_URL']
 
 INLINED_ENVIRONMENT_VARIABLES.forEach(function (key) {
   assert(process.env[key], 'process.env.' + key + ' must be set')
