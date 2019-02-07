@@ -205,7 +205,7 @@ angular.module('beeline').factory('SuggestionService', [
       },
 
       fetchSuggestedRoute: function (suggestionId) {
-        return RequestService.beeline({
+        return RequestService.routing({
           method: 'GET',
           url: `/suggestions/${suggestionId}/suggested_routes`,
         }).then(async response => {
