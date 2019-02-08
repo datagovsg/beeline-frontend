@@ -16,6 +16,11 @@ const TRACKING_URL_NOT_SET_MESSAGE = `
 TRACKING_URL environment variable not set. Defaulting to ${DEFAULT_TRACKING_URL}
 `
 
+const DEFAULT_ROUTING_URL = 'https://routing.beeline.sg'
+const ROUTING_URL_NOT_SET_MESSAGE = `
+ROUTING_URL environment variable not set. Defaulting to ${DEFAULT_ROUTING_URL}
+`
+
 const BUILD_COMPLETED_MESSAGE = 'Beeline frontend build process complete'
 const PRODUCTION_BUILD_MESSAGE = `
 Starting production build. Remove the --production flag for development builds
@@ -45,6 +50,7 @@ if (production) {
   console.log(PRODUCTION_BUILD_MESSAGE)
   process.env.BACKEND_URL = DEFAULT_BACKEND_URL
   process.env.TRACKING_URL = DEFAULT_TRACKING_URL
+  process.env.ROUTING_URL = DEFAULT_ROUTING_URL
   shell.exec('webpack -p')
   shell.exec('npm run build-scss')
   shell.exec('cordova-hcp build www/')
@@ -60,6 +66,11 @@ if (production) {
   if (typeof process.env.TRACKING_URL === 'undefined') {
     console.log(TRACKING_URL_NOT_SET_MESSAGE)
     process.env.TRACKING_URL = DEFAULT_TRACKING_URL
+  }
+  // Configure default environment variables for non production builds
+  if (typeof process.env.ROUTING_URL === 'undefined') {
+    console.log(ROUTING_URL_NOT_SET_MESSAGE)
+    process.env.ROUTING_URL = DEFAULT_ROUTING_URL
   }
   if (watch) {
     shell.exec('webpack -w', { async: true })

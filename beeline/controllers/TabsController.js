@@ -85,12 +85,15 @@ export default [
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
-    $scope.$watch(
+    $scope.$watchGroup([
       () => UserService.getUser(),
-      user => {
-        $scope.disp.isLoggedIn = user !== null
-        $scope.disp.hasSuggestions = false
-      }
+      () => SuggestionService.getSuggestions(),
+    ],
+    ([user, suggestions]) => {
+      if (!user || !suggestions) return
+      $scope.disp.hasSuggestions = suggestions && suggestions.length > 0
+      $scope.disp.isLoggedIn = user !== null
+    }
     )
 
     $scope.$watch('mapObject.stops', stops => {
@@ -131,10 +134,6 @@ export default [
       if (stop) {
         panToStop(stop.stop)
       }
-    })
-
-    $scope.$watch(() => SuggestionService.getSuggestions(), suggestions => {
-      $scope.disp.hasSuggestions = suggestions && suggestions.length > 0
     })
 
     // Watcher for side menu opening event
