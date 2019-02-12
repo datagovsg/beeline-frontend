@@ -65,6 +65,8 @@ angular.module('beeline').factory('RoutesService', [
     let lastRouteId = null
     let lastPromise = null
 
+    let inFlightRouteRequests = {}
+
     // For Route Passes
     let routePassesCache
     let tagToPassesMap
@@ -117,18 +119,25 @@ angular.module('beeline').factory('RoutesService', [
           options
         )
 
-        lastRouteId = routeId
-        return (lastPromise = RequestService.beeline({
-          method: 'GET',
-          url: `/routes/${routeId}?${querystring.stringify(finalOptions)}`,
-        })
-          .then(function (response) {
-            transformRouteData([response.data])
-            return response.data
+        const url = `/routes/${routeId}?${querystring.stringify(finalOptions)}`
+        let routePromise = inFlightRouteRequests[url]
+
+        if (!routePromise) {
+          const request = RequestService.beeline({
+            method: 'GET',
+            url,
           })
-          .catch(err => {
-            console.error(err)
-          }))
+
+          lastRouteId = routeId
+          lastPromise = routePromise = inFlightRouteRequests[url] = request
+            .then(function (response) {
+              transformRouteData([response.data])
+              return response.data
+            })
+            .catch(console.error)
+            .finally(() => delete inFlightRouteRequests[url])
+        }
+        return routePromise
       },
 
       // Returns list of all routes
@@ -143,8 +152,6 @@ angular.module('beeline').factory('RoutesService', [
       // Return promise with all routes
       fetchRoutes: function (ignoreCache, options) {
         if (routesCache && !ignoreCache && !options) return routesCache
-
-        let url = '/routes?'
 
         // Start at midnight to avoid cut trips in the middle
         // FIXME: use date-based search instead
@@ -165,36 +172,45 @@ angular.module('beeline').factory('RoutesService', [
             : {}
         )
 
-        url += querystring.stringify(finalOptions)
+        const queryString = querystring.stringify(finalOptions)
+        const url = '/routes?' + queryString
+        let routesPromise = inFlightRouteRequests[url]
 
-        let routesPromise = RequestService.beeline({
-          method: 'GET',
-          url: url,
-        }).then(function (response) {
-          // Checking that we have trips,
-          // and that these trips have at least two stops,
-          // so that users of it don't choke on trips[0]
-          let routes = response.data.filter(
-            r =>
-              r.trips &&
-              r.trips.length &&
-              r.trips[0].tripStops &&
-              r.trips[0].tripStops.length >= 2
-          )
-          transformRouteData(routes)
+        if (!routesPromise) {
+          let request = RequestService.beeline({
+            method: 'GET',
+            url,
+          })
 
-          // If options is null/undefined or an empty object, save routes
-          // into activeRoutes
-          if (_.isNil(options) || _.isEqual(options, {})) {
-            activeRoutes = routes
+          routesPromise = inFlightRouteRequests[url] = request
+            .then(function (response) {
+              // Checking that we have trips,
+              // and that these trips have at least two stops,
+              // so that users of it don't choke on trips[0]
+              let routes = response.data.filter(
+                r =>
+                  r.trips &&
+                  r.trips.length &&
+                  r.trips[0].tripStops &&
+                  r.trips[0].tripStops.length >= 2
+              )
+              transformRouteData(routes)
+
+              // If options is null/undefined or an empty object, save routes
+              // into activeRoutes
+              if (_.isNil(options) || _.isEqual(options, {})) {
+                activeRoutes = routes
+              }
+
+              return routes
+            })
+            .finally(() => delete inFlightRouteRequests[url])
+
+          // Cache the promise -- prevents two requests from being
+          // in flight together
+          if (!options) {
+            routesCache = routesPromise
           }
-          return routes
-        })
-
-        // Cache the promise -- prevents two requests from being
-        // in flight together
-        if (!options) {
-          routesCache = routesPromise
         }
 
         return routesPromise
