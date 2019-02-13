@@ -22,6 +22,8 @@ angular.module('beeline').factory('LiteRoutesService', [
     let shouldRefreshLiteTickets = false
     let liteRoutes = null
 
+    let inFlightRouteRequests = {}
+
     // Retrive the data on all lite routes
     // But limits the amount of data retrieved
     // getRoutes() now returns a list of routes, but with very limited
@@ -35,17 +37,26 @@ angular.module('beeline').factory('LiteRoutesService', [
         ? { transportCompanyId: p.transportCompanyId }
         : {}
 
-      let liteRoutesPromise = RequestService.beeline({
-        method: 'GET',
-        url: '/routes/lite?' + querystring.stringify(finalOptions),
-      }).then(response => {
-        liteRoutes = response.data
-        return liteRoutes
-      })
+      let url = '/routes/lite?' + querystring.stringify(finalOptions)
+      let liteRoutesPromise = inFlightRouteRequests[url]
 
-      // Cache the promise -- prevents two requests from being
-      // in flight together
-      liteRoutesCache = liteRoutesPromise
+      if (!liteRoutesPromise) {
+        const request = RequestService.beeline({
+          method: 'GET',
+          url,
+        })
+
+        liteRoutesPromise = inFlightRouteRequests[url] = request
+          .then(response => {
+            liteRoutes = response.data
+            return liteRoutes
+          })
+          .finally(() => delete inFlightRouteRequests[url])
+
+        // Cache the promise -- prevents two requests from being
+        // in flight together
+        liteRoutesCache = liteRoutesPromise
+      }
       return liteRoutesPromise
     }
 
@@ -59,21 +70,28 @@ angular.module('beeline').factory('LiteRoutesService', [
         return lastLiteRoutePromise
       }
 
-      lastLiteRouteLabel = liteRouteLabel
-      return (lastLiteRoutePromise = RequestService.beeline({
-        method: 'GET',
-        url:
-          '/routes/lite?' +
-          querystring.stringify({
-            label: liteRouteLabel,
-            startDate: moment().format('YYYY-MM-DD'),
-            includePath: true,
-          }),
-      })
-        .then(response => response.data)
-        .catch(err => {
-          console.error(err)
-        }))
+      const url = '/routes/lite?' +
+        querystring.stringify({
+          label: liteRouteLabel,
+          startDate: moment().format('YYYY-MM-DD'),
+          includePath: true,
+        })
+
+      let liteRoutePromise = inFlightRouteRequests[url]
+
+      if (!liteRoutePromise) {
+        const request = RequestService.beeline({
+          method: 'GET',
+          url,
+        })
+        lastLiteRouteLabel = liteRouteLabel
+        lastLiteRoutePromise = liteRoutePromise = inFlightRouteRequests[url] = request
+          .then(response => response.data)
+          .catch(console.error)
+          .finally(() => delete inFlightRouteRequests[url])
+      }
+
+      return liteRoutePromise
     }
 
     return {
