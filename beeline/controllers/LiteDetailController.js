@@ -1,5 +1,6 @@
 import { htmlFrom } from '../shared/util'
 import _ from 'lodash'
+import EventEmitter from 'events'
 
 export default [
   '$scope',
@@ -69,6 +70,7 @@ export default [
 
     // Default settings for various info used in the page
     $scope.book = {
+      routeUpdates: new EventEmitter(),
       label,
       route: null,
       waitingForSubscriptionResult: false,
@@ -81,10 +83,8 @@ export default [
     // ------------------------------------------------------------------------
     // Data Loading
     // ------------------------------------------------------------------------
-    let routePromise
     let subscriptionPromise
 
-    routePromise = LiteRoutesService.fetchLiteRoute($scope.book.label)
     subscriptionPromise = LiteRouteSubscriptionService.isSubscribed(
       $scope.book.label
     )
@@ -93,21 +93,23 @@ export default [
       $scope.book.isSubscribed = response
     })
 
-    routePromise.then(route => {
-      $scope.book.route = route[$scope.book.label]
+    const routePromise = new Promise(resolve => {
+      $scope.book.routeUpdates.once('route-updated', route => {
+        $scope.book.route = route
+        // Sort the stops by the first departure time
+        $scope.book.route.stops = _.orderBy(
+          $scope.book.route.stops,
+          ['time[0]'],
+          ['asc']
+        )
 
-      // Sort the stops by the first departure time
-      $scope.book.route.stops = _.orderBy(
-        $scope.book.route.stops,
-        ['time[0]'],
-        ['asc']
-      )
+        $scope.disp.features = htmlFrom(route.features)
 
-      $scope.disp.features = htmlFrom(route[$scope.book.label].features)
-    }).then(() => {
-      // Select default stop 0 then emit lite-route-loaded event
-      $scope.setSelected(0)
-      MapService.emit('lite-route-loaded', $scope.book.route)
+        // Select default stop 0 then emit lite-route-loaded event
+        $scope.setSelected(0)
+        MapService.emit('lite-route-loaded', $scope.book.route)
+        resolve(route)
+      })
     })
 
     // ------------------------------------------------------------------------

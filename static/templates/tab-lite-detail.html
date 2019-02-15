@@ -36,9 +36,11 @@
   </div>
   <ion-content scroll="true">
 
-    <daily-trips-broker trip-label="book.route.label"
-                 daily-trip-ids="book.dailyTripIds"
-                 in-service-window="book.inServiceWindow">
+    <daily-trips-broker 
+      route-updates="book.routeUpdates"
+      trip-label="book.label"
+      daily-trip-ids="book.dailyTripIds"
+      in-service-window="book.inServiceWindow">
     </daily-trips-broker>
 
     <form class="stops-form" name="stopsForm">

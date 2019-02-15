@@ -12,6 +12,7 @@ angular.module('beeline').directive('dailyTripsBroker', [
       template: '',
       scope: {
         tripLabel: '<',
+        routeUpdates: '<',
         dailyTripIds: '=',
         inServiceWindow: '=',
       },
@@ -89,6 +90,7 @@ angular.module('beeline').directive('dailyTripsBroker', [
                 let route = response[scope.tripLabel]
                 scope.dailyTripIds = route.tripIds
                 scheduleServiceWindowChanges(route)
+                scope.routeUpdates.emit('route-updated', route)
               }
             )
           }
