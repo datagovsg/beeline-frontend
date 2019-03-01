@@ -136,10 +136,11 @@ angular.module('beeline').factory('SuggestionService', [
       let createdAt = new Date(suggestedRoute.createdAt)
 
       if (
-        // If suggestion is more than one month old
+        // If successful suggestion is more than one month old
+        // or failed suggestions is more than a day old
         // trigger route generation again to refresh the suggested route
         (suggestedRoute.route.status === 'Success' && now - createdAt > 30 * 24 * 3600e3) ||
-        suggestedRoute.route.status === 'Failure'
+        (suggestedRoute.route.status === 'Failure' && now - createdAt > 24 * 3600e3)
       ) {
         let suggestionId = suggestedRoute.seedSuggestionId
         await triggerRouteGeneration(suggestionId)

@@ -196,7 +196,7 @@ export default [
         .catch(error => {
           $ionicPopup.alert({
             title: "Sorry there's been a problem loading the suggested route information",
-            subTitle: error,
+            subTitle: error && error.data ? error.data : error,
           })
         })
     }
