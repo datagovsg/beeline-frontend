@@ -71,14 +71,17 @@
   span.subHeader {
     font-weight: bold;
   }
+  ol li:before {
+    content: counters(item, ".") ". ";
+    counter-increment: item
+  }
+  ul li:before {
+    content: "• ";
+  }
   ol, ul {
     padding-top: $padding-large-vertical;
     padding-left: $padding-large-horizontal;
     padding-bottom: $padding-large-vertical;
-    li:before {
-      content: counters(item, ".") ". ";
-      counter-increment: item
-    }
     li {
       display: block;
       font-weight: bold;
