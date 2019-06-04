@@ -289,17 +289,10 @@ app
   .config([
     'uiGmapGoogleMapApiProvider',
     function (uiGmapGoogleMapApiProvider) {
-      if (process.env.GOOGLE_API_KEY) {
-        uiGmapGoogleMapApiProvider.configure({
-          key: process.env.GOOGLE_API_KEY,
-          libraries: 'places,geometry',
-        })
-      } else {
-        uiGmapGoogleMapApiProvider.configure({
-          client: 'gme-infocommunications',
-          libraries: 'places,geometry',
-        })
-      }
+      uiGmapGoogleMapApiProvider.configure({
+        key: process.env.GOOGLE_API_KEY,
+        libraries: 'places,geometry',
+      })
     },
   ])
   .config([
