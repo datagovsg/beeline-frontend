@@ -86,12 +86,8 @@ angular.module('beeline').factory('RoutesService', [
     UserService.userEvents.on('userChanged', () => {
       instance.fetchRecentRoutes(true)
       instance.fetchRoutePasses(true)
-      instance.fetchRoutesWithRoutePass()
       instance.fetchRecentRoutes(true)
       instance.fetchRoutePassExpiries(true)
-      instance.fetchRoutePassTags(true)
-      instance.fetchPrivateRoutes(true)
-      instance.fetchPrivateRoutesWithRoutePass(true)
     })
 
     let instance = {
