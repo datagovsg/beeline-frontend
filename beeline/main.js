@@ -415,7 +415,8 @@ app
       TicketService,
       SuggestionService
     ) {
-      // Pre-fetch the routes
+      // Pre-fetch user data
+      RoutesService.fetchRoutePasses()
       RoutesService.fetchRecentRoutes()
       CrowdstartService.fetchBids()
       TicketService.fetchTickets()
