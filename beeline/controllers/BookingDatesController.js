@@ -191,17 +191,11 @@ export default [
     // Data Loading
     // ------------------------------------------------------------------------
     let multipleDatePopup = null
-
-    // look up the route passes the user has, then tally up the
-    // route passes remaining across the route's tags
     const routePromise = loadRoutes()
-    const ridesRemainingPromise = RoutesService.fetchRoutePasses()
-    $q.all([routePromise, ridesRemainingPromise]).then(function ([, ridesRemainingMap]) {
-      let ridesRemaining = 0
-      $scope.book.route.tags.forEach(tag => {
-        ridesRemaining += (ridesRemainingMap[tag] || 0)
-      })
-      $scope.book.route.ridesRemaining = ridesRemaining
+    const ridesRemainingPromise = RoutesService.fetchRoutePassCount()
+    $q.all([routePromise, ridesRemainingPromise]).then(function (values) {
+      let ridesRemainingMap = values[1]
+      $scope.book.route.ridesRemaining = ridesRemainingMap[routeId]
     })
 
     // ------------------------------------------------------------------------

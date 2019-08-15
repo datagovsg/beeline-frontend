@@ -10,26 +10,24 @@ angular.module('beeline').directive('routePassExpiryModal', [
       restrict: 'E',
       template: expiryModalTemplate,
       scope: {
-        route: '=',
+        routeId: '@',
         modal: '=',
       },
       link: function (scope, element, attributes) {
         scope.$watchGroup(
           [
+            () => RoutesService.getRoutePassTags(),
             () => RoutesService.getRoutePassExpiries(),
-            'route',
           ],
-          ([routePassExpiries, route]) => {
+          ([routePassTags, routePassExpiries]) => {
             // Input validation
-            if (!route || !route.tags || !routePassExpiries) return
+            if (!routePassTags || !routePassExpiries) return
 
-            // map the expiry dates of the route passes keyed by
-            // the route's tags into expiries
+            let tags = routePassTags[scope.routeId]
             let expiries = {}
-            for (let tag of route.tags) {
-              if (tag in routePassExpiries) {
-                _.assign(expiries, routePassExpiries[tag])
-              }
+            if (!tags) return
+            for (let tag of tags) {
+              _.assign(expiries, routePassExpiries[tag])
             }
 
             let expiryInfo = []

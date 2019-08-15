@@ -28,33 +28,33 @@ angular.module('beeline').directive('priceCalculator', [
             $scope.booking.promoCode = promoCode
           }
 
-          /**
-           * Update ridesRemaining when user login at the booking summary page
-           * look up the route passes the user has, then tally up the
-           * route passes remaining across the route's tags
-           */
-          const toggleApplyRoutePass = async function toggleApplyRoutePass () {
-            if (!$scope.booking.route) {
-              assert($scope.booking.routeId)
-              $scope.booking.route = await RoutesService.getRoute($scope.booking.routeId)
-            }
-            RoutesService.fetchRoutePasses().then(ridesRemainingMap => {
-              if (ridesRemainingMap) {
-                let ridesRemaining = 0
-                $scope.booking.route.tags.forEach(tag => {
-                  ridesRemaining += (ridesRemainingMap[tag] || 0)
-                })
-                $scope.booking.applyRoutePass = ridesRemaining > 0
-                $scope.booking.route.ridesRemaining = ridesRemaining
-              }
-            })
-          }
-
           $scope.$watch(
             () => UserService.getUser(),
-            async user => {
+            user => {
               $scope.isLoggedIn = !!user
-              await toggleApplyRoutePass()
+
+              // update ridesRemaining when user login at the booking summary page
+              RoutesService.fetchRoutePassCount().then(routePassCountMap => {
+                assert($scope.booking.routeId)
+                if (!$scope.booking.route) {
+                  RoutesService.getRoute($scope.booking.routeId).then(route => {
+                    $scope.booking.route = route
+                    if (routePassCountMap) {
+                      $scope.booking.route.ridesRemaining =
+                        routePassCountMap[$scope.booking.routeId]
+                      $scope.booking.applyRoutePass =
+                        $scope.booking.route.ridesRemaining > 0
+                    }
+                  })
+                } else {
+                  if (routePassCountMap) {
+                    $scope.booking.route.ridesRemaining =
+                      routePassCountMap[$scope.booking.routeId]
+                    $scope.booking.applyRoutePass =
+                      $scope.booking.route.ridesRemaining > 0
+                  }
+                }
+              })
             }
           )
           /**
@@ -62,7 +62,14 @@ angular.module('beeline').directive('priceCalculator', [
            */
           const recomputePrices = async function recomputePrices () {
             assert($scope.booking.routeId)
-            await toggleApplyRoutePass()
+            if (!$scope.booking.route) {
+              $scope.booking.route = await RoutesService.getRoute(
+                $scope.booking.routeId
+              )
+              let routeToRidesRemainingMap = await RoutesService.fetchRoutePassCount()
+              $scope.booking.route.ridesRemaining =
+                routeToRidesRemainingMap[$scope.booking.routeId]
+            }
 
             // Provide a price summary first (don't count total due)
             // This allows the page to resize earlier, so that when

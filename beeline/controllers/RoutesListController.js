@@ -28,17 +28,15 @@ export default [
     // ------------------------------------------------------------------------
     const addExpiryToRoute = function addExpiryToRoute (
       route,
+      routePassTags,
       routePassExpiries
     ) {
-      // Create a map of the route's tags into corresponding expiry dates
       let expiries = {}
-      const scopedTags = _.intersection(route.tags, _.keys(routePassExpiries))
-      // If there are no tags to map, return the route as-is
-      if (scopedTags.length === 0) {
+      if (!routePassTags[route.id]) {
         return route
       }
 
-      for (let tag of scopedTags) {
+      for (let tag of routePassTags[route.id]) {
         _.assign(expiries, routePassExpiries[tag])
       }
       let dates = Object.keys(expiries).map(date => {
@@ -229,12 +227,14 @@ export default [
     // Add expiry to routes
     $scope.$watchGroup(
       [
+        () => RoutesService.getRoutePassTags(),
         () => RoutesService.getRoutePassExpiries(),
         'data.routesWithRidesRemaining',
         'data.recentRoutes',
       ],
       (
         [
+          routePassTags,
           routePassExpiries,
           routesWithRidesRemaining,
           recentRoutes,
@@ -242,6 +242,7 @@ export default [
       ) => {
         // Input validation
         if (
+          !routePassTags ||
           !routePassExpiries ||
           !routesWithRidesRemaining ||
           !recentRoutes
@@ -257,7 +258,7 @@ export default [
           recentRoutes,
         ].map(routes => {
           return routes.map(route => {
-            return addExpiryToRoute(route, routePassExpiries)
+            return addExpiryToRoute(route, routePassTags, routePassExpiries)
           })
         })
 

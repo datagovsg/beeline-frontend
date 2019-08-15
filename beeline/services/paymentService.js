@@ -47,6 +47,8 @@ angular.module('beeline').factory('PaymentService', [
         TicketService.setShouldRefreshTickets()
       } finally {
         RoutesService.fetchRoutePasses(true)
+        RoutesService.fetchRoutePassCount()
+        RoutesService.fetchRoutesWithRoutePass()
       }
     }
 
@@ -208,6 +210,8 @@ angular.module('beeline').factory('PaymentService', [
           })
         } finally {
           RoutesService.fetchRoutePasses(true)
+          RoutesService.fetchRoutePassCount()
+          RoutesService.fetchRoutesWithRoutePass()
         }
         return paymentPromise
       },

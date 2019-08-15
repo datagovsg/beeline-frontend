@@ -190,6 +190,8 @@ angular.module('beeline').service('CrowdstartService', [
 
     UserService.userEvents.on('userChanged', () => {
       fetchBids(true)
+      // to load route passes
+      RoutesService.fetchRoutePassCount(true)
     })
 
     const refresh = function refresh () {
