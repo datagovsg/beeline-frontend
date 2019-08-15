@@ -83,32 +83,21 @@ export default [
     // ------------------------------------------------------------------------
     // Recent routes
     // Need to pull in the "full" data from all routes
-    $scope.$watchGroup(
-      [
-        () => RoutesService.getRecentRoutes(),
-        () => RoutesService.getRoutesWithRoutePass(),
-        () => RoutesService.getPrivateRoutesWithRoutePass(),
-      ],
-      ([recentRoutes, allRoutes, privateRoutes]) => {
+    $scope.$watch(
+      () => RoutesService.getRecentRoutes(),
+      async recentRoutes => {
         // If we cant find route data here then proceed with empty
         // This allows it to organically "clear" any state
-        if (!recentRoutes || !allRoutes || !privateRoutes) return
+        if (!recentRoutes) return
 
         // "Fill in" the recent routes with the all routes data
-        let allRoutesById = _.keyBy(allRoutes, 'id')
-        let privateRoutesById = _.keyBy(privateRoutes, 'id')
         $scope.data.recentRoutes = recentRoutes
-          .map(recentRoute => {
-            return _.assign(
-              {
-                alightStopStopId: recentRoute.alightStopStopId,
-                boardStopStopId: recentRoute.boardStopStopId,
-              },
-              allRoutesById[recentRoute.id] || privateRoutesById[recentRoute.id]
-            )
-            // Clean out "junk" routes which may be old/obsolete
-          })
           .filter(route => route && route.id !== undefined)
+
+        for (const route of $scope.data.recentRoutes) {
+          const routeWithTrip = await RoutesService.getRoute(route.id, true)
+          route.trips = routeWithTrip.trips
+        }
         $scope.data.recentRoutesById = _.keyBy($scope.data.recentRoutes, 'id')
       }
     )
@@ -116,20 +105,36 @@ export default [
     // Crowdstarted routes
     $scope.$watchGroup(
       [
-        () => RoutesService.getRoutesWithRidesRemaining(),
-        () => RoutesService.getPrivateRoutesWithRidesRemaining(),
         'data.recentRoutesById',
+        () => RoutesService.getRoutePasses(),
       ],
-      ([routes, privateRoutes, recentRoutesById]) => {
+      async ([recentRoutesById, ridesRemainingMap]) => {
         // Input validation
-        if (!routes || !privateRoutes) return
+        if (!recentRoutesById || !ridesRemainingMap) return
 
-        // Merge public and private routes
-        routes = _.concat(routes, privateRoutes)
+        Object.values(recentRoutesById).forEach(route => {
+          route.ridesRemaining = 0
+          route.tags.forEach(tag => {
+            route.ridesRemaining += (ridesRemainingMap[tag] || 0)
+          })
+        })
 
-        // Publish
+        const routesWithRidesRemainingPromises = Object.keys(ridesRemainingMap)
+          .map(tag => RoutesService.fetchRoutes(true, { tags: JSON.stringify([ tag ]) }))
+
+        const routesWithRidesRemaining = _(await Promise.all(routesWithRidesRemainingPromises))
+          .flatten()
+          .uniqBy('id')
+          .value()
+
+        routesWithRidesRemaining.forEach(route => {
+          route.ridesRemaining = 0
+          route.tags.forEach(tag => {
+            route.ridesRemaining += (ridesRemainingMap[tag] || 0)
+          })
+        })
         const recentRouteIds = Object.keys(recentRoutesById || {})
-        $scope.data.routesWithRidesRemaining = routes.filter(
+        $scope.data.routesWithRidesRemaining = routesWithRidesRemaining.filter(
           route => !recentRouteIds.map(Number).includes(route.id)
         )
 
