@@ -57,7 +57,7 @@ export default [
 
     const initExpiryModal = function initExpiryModal () {
       let scope = $rootScope.$new()
-      scope.routeId = $scope.data.routeId
+      scope.route = $scope.data.route
 
       let modal = $ionicModal.fromTemplate(expiryModalTemplate, {
         scope,
@@ -285,10 +285,19 @@ export default [
     })
 
     // Get the route passes
-    $scope.$watch(
-      () => RoutesService.getPassCountForRoute(routeId),
-      passCount => {
-        $scope.data.passCount = passCount
+    $scope.$watchGroup(
+      [
+        'data.route',
+        () => RoutesService.getRoutePasses(),
+      ],
+      ([route, ridesRemainingMap]) => {
+        if (route && route.tags && ridesRemainingMap) {
+          let ridesRemaining = 0
+          route.tags.forEach(tag => {
+            ridesRemaining += (ridesRemainingMap[tag] || 0)
+          })
+          $scope.data.passCount = ridesRemaining
+        }
       }
     )
 

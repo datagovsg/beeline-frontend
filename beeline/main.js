@@ -407,22 +407,18 @@ app
   .run([
     'RoutesService',
     'CrowdstartService',
-    'LiteRoutesService',
     'TicketService',
     'SuggestionService',
     function (
       RoutesService,
       CrowdstartService,
-      LiteRoutesService,
       TicketService,
       SuggestionService
     ) {
-      // Pre-fetch the routes
-      RoutesService.fetchRoutes()
+      // Pre-fetch user data
+      RoutesService.fetchRoutePasses()
       RoutesService.fetchRecentRoutes()
-      CrowdstartService.fetchCrowdstart()
       CrowdstartService.fetchBids()
-      LiteRoutesService.fetchLiteRoutes()
       TicketService.fetchTickets()
       SuggestionService.fetchSuggestions()
     },
