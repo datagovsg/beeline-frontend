@@ -290,7 +290,7 @@ export default [
         'data.route',
         () => RoutesService.getRoutePasses(),
       ],
-      async ([route, ridesRemainingMap]) => {
+      ([route, ridesRemainingMap]) => {
         if (route && route.tags && ridesRemainingMap) {
           let ridesRemaining = 0
           route.tags.forEach(tag => {

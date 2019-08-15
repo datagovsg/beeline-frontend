@@ -30,10 +30,10 @@ export default [
       route,
       routePassExpiries
     ) {
-      // map the expiry dates of the route passes keyed by
-      // the route's tags into expiries
+      // Create a map of the route's tags into corresponding expiry dates
       let expiries = {}
       const scopedTags = _.intersection(route.tags, _.keys(routePassExpiries))
+      // If there are no tags to map, return the route as-is
       if (scopedTags.length === 0) {
         return route
       }

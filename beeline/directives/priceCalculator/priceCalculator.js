@@ -28,14 +28,16 @@ angular.module('beeline').directive('priceCalculator', [
             $scope.booking.promoCode = promoCode
           }
 
+          /**
+           * Update ridesRemaining when user login at the booking summary page
+           * look up the route passes the user has, then tally up the
+           * route passes remaining across the route's tags
+           */
           const toggleApplyRoutePass = async function toggleApplyRoutePass () {
             if (!$scope.booking.route) {
               assert($scope.booking.routeId)
               $scope.booking.route = await RoutesService.getRoute($scope.booking.routeId)
             }
-            // update ridesRemaining when user login at the booking summary page
-            // look up the route passes the user has, then tally up the
-            // route passes remaining across the route's tags
             RoutesService.fetchRoutePasses().then(ridesRemainingMap => {
               if (ridesRemainingMap) {
                 let ridesRemaining = 0
@@ -47,6 +49,7 @@ angular.module('beeline').directive('priceCalculator', [
               }
             })
           }
+
           $scope.$watch(
             () => UserService.getUser(),
             async user => {
