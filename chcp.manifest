@@ -77,11 +77,15 @@
   },
   {
     "file": "css/ionic.app.css",
-    "hash": "0a8946d0544530f80695ad3ef3decd0c"
+    "hash": "da82ec7c91ee1e866b80272b1f9a80dc"
+  },
+  {
+    "file": "css/ionic.css",
+    "hash": "2f3df577699279b8ff87fa8f5c22d735"
   },
   {
     "file": "css/operator-grab.css",
-    "hash": "6b26f449496df0950810a7398b57b239"
+    "hash": "5822769379d0f6b1a6c722964c89f5a7"
   },
   {
     "file": "favicon-16x16.png",
@@ -492,10 +496,6 @@
     "hash": "eb275f01352e7e91b01c108be8a810f1"
   },
   {
-    "file": "img/paymentComplete_showTicket.svg",
-    "hash": "ad92012e2a53375301a81fb70d5a04d4"
-  },
-  {
     "file": "img/paymentComplete_track.svg",
     "hash": "6dd4b9e1309771f3f2840a062756e3fd"
   },
@@ -565,7 +565,7 @@
   },
   {
     "file": "lib/beeline/bundle.js",
-    "hash": "4cfa29d0acd2b825cd37ba4e32652f8d"
+    "hash": "826cb0de8e88c882d05b4ab02295ec72"
   },
   {
     "file": "lib/ionic/fonts/ionicons.eot",
@@ -901,7 +901,7 @@
   },
   {
     "file": "templates/tab-booking-confirmation.html",
-    "hash": "d9574ef9b2bc2a4284079fc1121c1336"
+    "hash": "5247d0a7f2f159aef3df1417a8693a18"
   },
   {
     "file": "templates/tab-booking-dates.html",
@@ -913,7 +913,7 @@
   },
   {
     "file": "templates/tab-lite-detail.html",
-    "hash": "a4bc39b877ab726003de39ca92d29f5e"
+    "hash": "4e651481ca886b96ed0f8ea440afaeb3"
   },
   {
     "file": "templates/tab-lite-more-info.html",
