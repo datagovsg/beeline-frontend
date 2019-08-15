@@ -119,10 +119,16 @@ export default [
           })
         })
 
-        const routesWithRidesRemainingPromises = Object.keys(ridesRemainingMap)
-          .map(tag => RoutesService.fetchRoutes(true, { tags: JSON.stringify([ tag ]) }))
+        const findRouteByTag = tag => RoutesService.fetchRoutes(true, { tags: JSON.stringify([ tag ]) })
+        const tags = Object.keys(ridesRemainingMap)
+        const routesWithRidesRemainingPromises = tags.map(findRouteByTag)
 
-        const routesWithRidesRemaining = _(await Promise.all(routesWithRidesRemainingPromises))
+        const routesWithRidesRemainingSearchResults = await Promise.all(routesWithRidesRemainingPromises)
+          .catch(e => {
+            console.warn(e)
+            return []
+          })
+        const routesWithRidesRemaining = _(routesWithRidesRemainingSearchResults)
           .flatten()
           .uniqBy('id')
           .value()
