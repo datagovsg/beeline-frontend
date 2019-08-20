@@ -85,7 +85,6 @@ export default [
       // Refresh routes on enter for routes in case we did something that
       // changed my routes e.g. unsubscribing lite route, booking a route,
       // withdrawing from crowdstart
-      $scope.refreshRoutes(true)
       redrawMapElements()
     })
 
@@ -104,7 +103,7 @@ export default [
     // ------------------------------------------------------------------------
     // UI Hooks
     // ------------------------------------------------------------------------
-    $scope.search = function () {
+    $scope.search = async function () {
       let pickUp = $scope.data.pickUpLocation
       let dropOff = $scope.data.dropOffLocation
 
@@ -127,13 +126,14 @@ export default [
         template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Searching for routes</small>`,
       })
 
-      $timeout(() => {
-        $ionicLoading.hide()
-        $state.go('tabs.routes-search-list', {
-          pickUpLocation: pickUp,
-          dropOffLocation: dropOff,
-        })
-      }, 800)
+      await $scope.refreshRoutes()
+
+      $ionicLoading.hide()
+
+      $state.go('tabs.routes-search-list', {
+        pickUpLocation: pickUp,
+        dropOffLocation: dropOff,
+      })
     }
 
     // Manually pull the newest data from the server
@@ -141,9 +141,7 @@ export default [
     // Note that theres no need to update the scope manually
     // since this is done by the service watchers
     $scope.refreshRoutes = function (ignoreCache) {
-      RoutesService.fetchRoutePasses(ignoreCache)
-      RoutesService.fetchRoutes(ignoreCache)
-      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
+      const routesPromise = RoutesService.fetchRoutesWithRoutePass(ignoreCache)
       const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
       const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
         ignoreCache
