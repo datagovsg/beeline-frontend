@@ -157,7 +157,7 @@ export default [
         if (!personalBids) return
 
         const crowdstarts = await Promise.all(
-          personalBids.map(async bid => CrowdstartService.fetchCrowdstartById(bid.routeId))
+          personalBids.map(bid => CrowdstartService.fetchCrowdstartById(bid.routeId))
         )
         $scope.data.backedCrowdstartRoutes = crowdstarts
           .filter(
@@ -176,8 +176,7 @@ export default [
         let subscribedLiteRoutes = await Promise.all(
           labels.map(async label => {
             const routeByLabel = await LiteRoutesService.fetchLiteRoutes(true, { label })
-            const [ route ] = Object.values(routeByLabel)
-            return route
+            return routeByLabel[label]
           })
         )
         // Sort by label and publish
