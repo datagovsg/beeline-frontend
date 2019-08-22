@@ -28,20 +28,14 @@ angular.module('beeline').factory('LiteRoutesService', [
     // But limits the amount of data retrieved
     // getRoutes() now returns a list of routes, but with very limited
     // trip data (limited to 5 trips, no path)
-    // options specifies query parameters to send to `/routes/lite`.
-    // if options specified, cache implicitly ignored
-    const fetchLiteRoutes = function fetchLiteRoutes (ignoreCache, options) {
-      if (liteRoutesCache && !ignoreCache && !options) {
+    const fetchLiteRoutes = function fetchLiteRoutes (ignoreCache) {
+      if (liteRoutesCache && !ignoreCache) {
         return liteRoutesCache
       }
 
-      // If transportCompanyId is globally set, eg in GrabShuttle,
-      // coerce this option into query params to send
-      const transportCompanyIdOptions = p.transportCompanyId
+      let finalOptions = p.transportCompanyId
         ? { transportCompanyId: p.transportCompanyId }
         : {}
-
-      const finalOptions = Object.assign(transportCompanyIdOptions, options || {})
 
       let url = '/routes/lite?' + querystring.stringify(finalOptions)
       let liteRoutesPromise = inFlightRouteRequests[url]
@@ -54,10 +48,8 @@ angular.module('beeline').factory('LiteRoutesService', [
 
         liteRoutesPromise = inFlightRouteRequests[url] = request
           .then(response => {
-            if (!options) {
-              liteRoutes = response.data
-            }
-            return response.data
+            liteRoutes = response.data
+            return liteRoutes
           })
           .finally(() => delete inFlightRouteRequests[url])
 

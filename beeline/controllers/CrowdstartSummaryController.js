@@ -9,7 +9,6 @@ export default [
   'loadingSpinner',
   'UserService',
   '$ionicPopup',
-  '$ionicLoading',
   'CrowdstartService',
   'CompanyService',
   'StripeService',
@@ -22,7 +21,6 @@ export default [
     loadingSpinner,
     UserService,
     $ionicPopup,
-    $ionicLoading,
     CrowdstartService,
     CompanyService,
     StripeService,
@@ -65,47 +63,33 @@ export default [
     $scope.book.routeId = routeId
     $scope.priceInfo.bidPrice = bidPrice
 
-    // Load the route information
-    // Show a loading overlay while we wait
-    // force reload when revisit the same route
-    $scope.$on('$ionicView.afterEnter', () => {
-      $ionicLoading.show({
-        template: `<ion-spinner icon='crescent'></ion-spinner><br/><small>Loading route information</small>`,
-      })
-
-      CrowdstartService.fetchCrowdstartById(routeId)
-        .then(route => {
-          if (!route) return
-          $scope.book.route = route
-
-          // Add expiry date to route
-          $scope.book.route.expiryDate = moment($scope.book.route.trips[0].date)
-            .add(1, 'months')
-            .format()
-
-          // give 1st and last stop as board and alight stop for fake ticket
-          $scope.book.boardStopId = _.first(route.trips[0].tripStops).id
-          $scope.book.alightStopId = _.last(route.trips[0].tripStops).id
-          $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
-          $scope.priceInfo.totalDue =
-            $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount
-          $scope.$watch('priceInfo.bidPrice', price => {
-            $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
-            $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount
-          })
-        })
-        .catch(error => {
-          $ionicLoading.hide()
-          $ionicPopup.alert({
-            title: "Sorry there's been a problem loading the route information",
-            subTitle: error,
-          })
-        })
-    })
-
     // ------------------------------------------------------------------------
     // Watchers
     // ------------------------------------------------------------------------
+    $scope.$watch(
+      () => CrowdstartService.getCrowdstartById($scope.book.routeId),
+      async routePromise => {
+        const route = await routePromise
+        if (!route) return
+        $scope.book.route = route
+
+        // Add expiry date to route
+        $scope.book.route.expiryDate = moment($scope.book.route.trips[0].date)
+          .add(1, 'months')
+          .format()
+
+        // give 1st and last stop as board and alight stop for fake ticket
+        $scope.book.boardStopId = _.first(route.trips[0].tripStops).id
+        $scope.book.alightStopId = _.last(route.trips[0].tripStops).id
+        $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
+        $scope.priceInfo.totalDue =
+          $scope.priceInfo.bidPrice * $scope.priceInfo.tripCount
+        $scope.$watch('priceInfo.bidPrice', price => {
+          $scope.priceInfo.tripCount = $scope.book.route.notes.noPasses || 0
+          $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount
+        })
+      }
+    )
 
     $scope.$watch(
       () => UserService.getUser(),

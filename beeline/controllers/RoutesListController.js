@@ -6,7 +6,6 @@ export default [
   '$q',
   '$state',
   'RoutesService',
-  'RequestService',
   'CrowdstartService',
   'LiteRoutesService',
   'LiteRouteSubscriptionService',
@@ -18,7 +17,6 @@ export default [
     $state,
     // Route Information
     RoutesService,
-    RequestService,
     CrowdstartService,
     LiteRoutesService,
     // Misc
@@ -151,34 +149,40 @@ export default [
       }
     )
 
-    $scope.$watch(
-      () => CrowdstartService.getBids(),
-      async personalBids => {
-        if (!personalBids) return
+    $scope.$watchGroup(
+      [
+        () => CrowdstartService.getBids(),
+        () => CrowdstartService.getCrowdstartRoutesById(),
+      ],
+      async ([bids, crowdstartRoutesById]) => {
+        if (!bids || !crowdstartRoutesById) return
 
         const crowdstarts = await Promise.all(
-          personalBids.map(bid => CrowdstartService.fetchCrowdstartById(bid.routeId))
+          bids.map(bid => CrowdstartService.getCrowdstartById(bid.routeId))
         )
-        $scope.data.backedCrowdstartRoutes = crowdstarts
-          .filter(
-            route =>
-              (!route.passExpired && route.isActived) ||
-              !route.isExpired ||
-              !route.is7DaysOld
-          )
+        $scope.data.backedCrowdstartRoutes = crowdstarts.filter(
+          route =>
+            (!route.passExpired && route.isActived) ||
+            !route.isExpired ||
+            !route.is7DaysOld
+        )
       }
     )
 
     // Lite routes
-    $scope.$watch(
-      () => LiteRouteSubscriptionService.getSubscriptionSummary(),
-      async labels => {
-        let subscribedLiteRoutes = await Promise.all(
-          labels.map(async label => {
-            const routeByLabel = await LiteRoutesService.fetchLiteRoutes(true, { label })
-            return routeByLabel[label]
-          })
-        )
+    $scope.$watchGroup(
+      [
+        () => LiteRoutesService.getLiteRoutes(),
+        () => LiteRouteSubscriptionService.getSubscriptionSummary(),
+      ],
+      ([liteRoutes, subscribed]) => {
+        // Input validation
+        if (!liteRoutes || !subscribed) return
+        liteRoutes = Object.values(liteRoutes)
+
+        let subscribedLiteRoutes = _.filter(liteRoutes, route => {
+          return !!subscribed.includes(route.label)
+        })
         // Sort by label and publish
         $scope.data.subscribedLiteRoutes = _.sortBy(
           subscribedLiteRoutes,
@@ -286,15 +290,26 @@ export default [
     // since this is done by the service watchers
     $scope.refreshRoutes = function (ignoreCache) {
       RoutesService.fetchRoutePasses(ignoreCache)
+      RoutesService.fetchRoutes(ignoreCache)
+      const routesPromise = RoutesService.fetchRoutesWithRoutePass()
       const recentRoutesPromise = RoutesService.fetchRecentRoutes(ignoreCache)
+      const allLiteRoutesPromise = LiteRoutesService.fetchLiteRoutes(
+        ignoreCache
+      )
+      const crowdstartRoutesPromise = CrowdstartService.fetchCrowdstart(
+        ignoreCache
+      )
       const liteRouteSubscriptionsPromise = LiteRouteSubscriptionService.getSubscriptions(
         ignoreCache
       )
       const bidsPromise = CrowdstartService.fetchBids(ignoreCache)
       return $q
         .all([
+          routesPromise,
           recentRoutesPromise,
+          allLiteRoutesPromise,
           liteRouteSubscriptionsPromise,
+          crowdstartRoutesPromise,
           bidsPromise,
         ])
         .then(() => {
