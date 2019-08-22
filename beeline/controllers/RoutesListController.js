@@ -180,12 +180,14 @@ export default [
           })
         )
         // Sort by label and publish
-        $scope.data.subscribedLiteRoutes = _.sortBy(
-          subscribedLiteRoutes,
-          route => {
-            return parseInt(route.label.slice(1))
-          }
-        )
+        if (subscribedLiteRoutes.length > 0) {
+          $scope.data.subscribedLiteRoutes = _.sortBy(
+            subscribedLiteRoutes,
+            route => {
+              return parseInt(route.label.slice(1))
+            }
+          )
+        }
       }
     )
 
