@@ -69,25 +69,13 @@ export default [
     })
 
     $scope.$on('$ionicView.enter', function () {
+      const routePromise = CrowdstartService.fetchCrowdstartById($scope.book.routeId)
       // For re-computing bidded correctly when re-entering the page
       updateBidded([
         UserService.getUser(),
-        CrowdstartService.getCrowdstartById($scope.book.routeId),
+        routePromise,
       ])
-      if ($ionicHistory.backView()) {
-        $scope.disp.showHamburger = false
-      } else {
-        $scope.disp.showHamburger = true
-      }
-    })
-
-    // ------------------------------------------------------------------------
-    // Watchers
-    // ------------------------------------------------------------------------
-    $scope.$watch(
-      () => CrowdstartService.getCrowdstartById($scope.book.routeId),
-      async routePromise => {
-        const route = await routePromise
+      routePromise.then(route => {
         if (!route) return
         $scope.book.route = route
         $scope.book.bidOptions = route.notes.tier
@@ -100,15 +88,21 @@ export default [
         CompanyService.getCompany(route.transportCompanyId).then(company => {
           $scope.disp.company = company
         })
+      })
+      if ($ionicHistory.backView()) {
+        $scope.disp.showHamburger = false
+      } else {
+        $scope.disp.showHamburger = true
       }
-    )
+    })
 
-    $scope.$watchGroup(
-      [
-        () => UserService.getUser(),
-        () => CrowdstartService.getCrowdstartById($scope.book.routeId),
-      ],
-      updateBidded
+    // ------------------------------------------------------------------------
+    // Watchers
+    // ------------------------------------------------------------------------
+
+    $scope.$watch(
+      () => UserService.getUser(),
+      user => updateBidded([user, CrowdstartService.fetchCrowdstartById($scope.book.routeId)])
     )
 
     // ------------------------------------------------------------------------

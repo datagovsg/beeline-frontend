@@ -193,10 +193,7 @@ angular.module('beeline').service('CrowdstartService', [
     })
 
     const refresh = function refresh () {
-      return Promise.all([
-        fetchCrowdstartRoutes(true),
-        fetchBids(true),
-      ])
+      return fetchBids(true)
     }
 
     // first load
@@ -232,11 +229,22 @@ angular.module('beeline').service('CrowdstartService', [
       return lastPrivateCrowdstartRoutePromise
     }
 
+    const fetchCrowdstartById = async function fetchCrowdstartById (routeId) {
+      const [ route, bids ] = await Promise.all([
+        RoutesService.getRoute(routeId, true, { startDate: 0 }),
+        RequestService.beeline({
+          method: 'GET',
+          url: `/crowdstart/routes/${routeId}/bids`,
+        }).then(response => response.data),
+      ])
+      return transformCrowdstartData([ Object.assign(route, { bids }) ])[0]
+    }
+
     return {
       // all crowdstart routes
       getCrowdstart: () => crowdstartRoutesList,
       fetchCrowdstart: ignoreCache => fetchCrowdstartRoutes(ignoreCache),
-
+      fetchCrowdstartById,
       getCrowdstartById: function (routeId) {
         if (routeId === 'preview') {
           transformCrowdstartData([crowdstartPreview])
