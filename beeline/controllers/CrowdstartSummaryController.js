@@ -94,6 +94,7 @@ export default [
             $scope.priceInfo.totalDue = price * $scope.priceInfo.tripCount
           })
         })
+        .then(() => $ionicLoading.hide())
         .catch(error => {
           $ionicLoading.hide()
           $ionicPopup.alert({
